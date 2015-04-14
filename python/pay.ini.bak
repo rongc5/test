@@ -1,0 +1,19 @@
+[mail]#邮箱登录信息
+mail_host=smtp.ezhang.com
+mail_port=25
+mail_user=ezhang
+mail_alis=hr
+mail_postfix=dfengg.com
+mail_pass=wyhhxxkkll
+
+[text]#邮件正文内容相关信息
+sub=Quarterly Commission Workbook
+body=Attached is quarterly  commission
+myname=Emily zhang
+
+[file]#操作的excel
+workbook=Quarterly Commission Workbook
+format=xlsx
+
+
+

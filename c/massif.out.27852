@@ -1,0 +1,51 @@
+desc: --detailed-freq=1
+cmd: ./app
+time_unit: i
+#-----------
+snapshot=0
+#-----------
+time=0
+mem_heap_B=0
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=detailed
+n0: 0 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+#-----------
+snapshot=1
+#-----------
+time=1441744
+mem_heap_B=100
+mem_heap_extra_B=12
+mem_stacks_B=0
+heap_tree=detailed
+n1: 100 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n1: 100 0x8048484: fn1() (ptr14.c:7)
+  n0: 100 0x80484B9: main (ptr14.c:22)
+#-----------
+snapshot=2
+#-----------
+time=1441787
+mem_heap_B=300
+mem_heap_extra_B=20
+mem_stacks_B=0
+heap_tree=detailed
+n2: 300 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n1: 200 0x8048498: fn2() (ptr14.c:12)
+  n0: 200 0x80484BE: main (ptr14.c:23)
+ n1: 100 0x8048484: fn1() (ptr14.c:7)
+  n0: 100 0x80484B9: main (ptr14.c:22)
+#-----------
+snapshot=3
+#-----------
+time=1441830
+mem_heap_B=600
+mem_heap_extra_B=32
+mem_stacks_B=0
+heap_tree=detailed
+n3: 600 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n1: 300 0x80484AC: fn3() (ptr14.c:17)
+  n0: 300 0x80484C3: main (ptr14.c:24)
+ n1: 200 0x8048498: fn2() (ptr14.c:12)
+  n0: 200 0x80484BE: main (ptr14.c:23)
+ n1: 100 0x8048484: fn1() (ptr14.c:7)
+  n0: 100 0x80484B9: main (ptr14.c:22)

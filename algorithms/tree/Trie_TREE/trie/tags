@@ -1,0 +1,29 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+TRIE_SENTINEL	trie.h	5;"	d
+TRIE_SIZE	trie.h	4;"	d
+_TRIE_H_	trie.h	2;"	d
+_trie_t	trie.h	/^typedef struct _trie_t {$/;"	s
+_trie_t::chars	trie.h	/^    struct _trie_t *chars[TRIE_SIZE];$/;"	m	struct:_trie_t	typeref:struct:_trie_t::_trie_t	access:public
+chars	trie.h	/^    struct _trie_t *chars[TRIE_SIZE];$/;"	m	struct:_trie_t	typeref:struct:_trie_t::_trie_t	access:public
+main	example.c	/^int main(int argc, char **argv) {$/;"	f	signature:(int argc, char **argv)
+std	Makefile	/^	gcc -Wall -ansi -std=c99 -O3 -o example trie.c example.c$/;"	m
+trie_add	trie.c	/^void trie_add(trie_t *t, char *word) {$/;"	f	signature:(trie_t *t, char *word)
+trie_add	trie.h	/^void trie_add(trie_t *, char *);$/;"	p	signature:(trie_t *, char *)
+trie_exists	trie.c	/^int trie_exists(trie_t *t, char *word) {$/;"	f	signature:(trie_t *t, char *word)
+trie_exists	trie.h	/^int trie_exists(trie_t *, char *);$/;"	p	signature:(trie_t *, char *)
+trie_free	trie.c	/^void trie_free(trie_t *t) {$/;"	f	signature:(trie_t *t)
+trie_free	trie.h	/^void trie_free(trie_t *);$/;"	p	signature:(trie_t *)
+trie_init	trie.c	/^inline trie_t *trie_init(void) {$/;"	f	signature:(void)
+trie_init	trie.h	/^trie_t *trie_init(void);$/;"	p	signature:(void)
+trie_load	trie.c	/^int trie_load(trie_t *t, char *file) {$/;"	f	signature:(trie_t *t, char *file)
+trie_load	trie.h	/^int trie_load(trie_t *, char *);$/;"	p	signature:(trie_t *, char *)
+trie_step	trie.h	18;"	d
+trie_strip	trie.c	/^void trie_strip(trie_t *t, char *src, char *dest) {$/;"	f	signature:(trie_t *t, char *src, char *dest)
+trie_strip	trie.h	/^void trie_strip(trie_t *, char *, char *);$/;"	p	signature:(trie_t *, char *, char *)
+trie_t	trie.h	/^} trie_t;$/;"	t	typeref:struct:_trie_t
+trie_word	trie.h	19;"	d

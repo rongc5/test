@@ -1,0 +1,34 @@
+#include <backward/hash_map>
+#include <iostream>
+#include <string>
+
+
+
+//using namespace stdext;
+//using namespace __gnu_cxx;
+
+//namespace std
+//{
+    //using namespace __gnu_cxx;
+//}
+
+using namespace std;
+
+//#pragma warning(disable: 4251)
+
+int main()
+{
+    hash_map<int, string> h_map;
+
+    h_map.insert(1, "hello");
+//    h_map.insert(2, "world");
+
+//    hash_map<int, string>::iterator it;
+
+//    it = h_map.find(1);
+//    if (it != h_map.end())
+//        cout << it->second.c_str() << '\n';
+
+    return 0;
+}
+

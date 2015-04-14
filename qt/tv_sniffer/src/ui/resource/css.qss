@@ -1,0 +1,4 @@
+QMainWindow{background:rgb(0, 0, 0);}
+//QPushButton:hover:!pressed { color: rgb(156, 170, 193); }
+//QGroupBox{background:rgb(156, 170, 193);}
+//QLabel{background:rgb(156, 170, 193);}

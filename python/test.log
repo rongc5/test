@@ -1,0 +1,3 @@
+2013-10-31 10:28:37,934 test.py[line:23] INFO ->first info message
+2013-10-31 10:28:37,934 test.py[line:24] DEBUG ->debug message
+2013-10-31 10:28:37,934 test.py[line:25] ERROR ->debug message

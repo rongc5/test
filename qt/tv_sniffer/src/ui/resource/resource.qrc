@@ -1,0 +1,10 @@
+<!DOCTYPE RCC><RCC version="1.0">
+<qresource>
+    <file>images/background.png</file>
+    <file>images/capture_start_24.png</file>
+    <file>images/capture_stop_24.png</file>
+    <file>images/titl.png</file>
+    <file>css.qss</file>
+    <file>images/start_big.png</file>
+</qresource>
+</RCC>

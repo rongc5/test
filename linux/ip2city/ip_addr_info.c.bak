@@ -1,0 +1,387 @@
+#include "cityidquery.h"
+#include <sys/types.h>
+#include <dirent.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <pthread.h>
+
+//共享内存指针
+char *p_share = NULL;
+//第一条记录指针
+char *p_begin = NULL;
+char *p_end = NULL;
+//总记录数
+int total_record;
+
+off_t filesize = 0;
+
+char cFileName[30] = {"\0"};
+extern char update_time[6];
+//extern pthread_mutex_t m_mutex;
+extern pthread_rwlock_t rwlock;
+
+#define ONEDAY_SECONF 86400
+
+char* getTimeFormat(const char* sFormat = "%Y%m%d%H%M%S", time_t sec = 0);
+time_t getTTime(char* sDateTime, const char* sFormat = "%Y%m%d%H%M%S");
+
+//把4字节转为整数
+unsigned int getlong4(char *pos) //将读取的4个字节转化为长整型数
+{
+    unsigned int result=(((unsigned char )(*(pos+3)))<<24)
+        +(((unsigned char )(*(pos+2)))<<16)
+        +(((unsigned char )(*(pos+1)))<<8)
+        +((unsigned char )(*(pos)));
+    return result;
+}
+//把3字节转为整数
+unsigned int getlong3(char *pos) //将读取的3个字节转化为长整型数
+{
+    unsigned int result=(((unsigned char )(*(pos+2)))<<16)
+        +(((unsigned char )(*(pos+1)))<<8)
+        +((unsigned char )(*(pos)));
+    return result;
+}
+
+/**
+ * 打开共享内存指针
+ *
+ * @return void
+ */
+int openshare(char *qqwrydat_path) // map a normal file as shared mem:
+{
+    printf("===>openshare\n");
+    int fd, err;
+    struct stat statbuf;
+    //pthread_mutex_lock(&m_mutex);
+    fd=open(qqwrydat_path,O_RDWR,00777);
+    if (-1 == fd){
+        perror("open...");
+        //exit(1);
+        //pthread_mutex_unlock(&m_mutex);
+        return -1;;
+    }
+
+    err = stat(qqwrydat_path, &statbuf); 
+    if (err == -1){
+        perror("stat...");
+        //exit(1);
+        //pthread_mutex_unlock(&m_mutex);
+        return -1;;
+    }
+    if  (S_ISREG(statbuf.st_mode)){
+        p_share = (char*)mmap(NULL,statbuf.st_size, PROT_READ,MAP_PRIVATE,fd,0);
+        if(p_share==MAP_FAILED){
+            perror("mmap...");
+            //exit(1);
+            //pthread_mutex_unlock(&m_mutex);
+            return -1;;
+        }
+    }else {
+        printf("%s id not a reg file!\n", qqwrydat_path);
+        //exit(1);
+        //pthread_mutex_unlock(&m_mutex);
+        return -1;
+    }
+
+    filesize = statbuf.st_size;
+
+    close(fd);
+    //第一条记录位置
+    p_begin=p_share+getlong4(p_share);
+    //最后一条记录位置
+    p_end=p_share+getlong4(p_share+4);
+    //记录总数
+    total_record=(getlong4(p_share+4)-getlong4(p_share))/RECORD_LEN;
+    //pthread_mutex_unlock(&m_mutex);
+
+    return 0;
+}
+
+/**
+ * 关闭共享内存指针
+ *
+ * @return void
+ */
+void closeshare()
+{
+    //pthread_mutex_lock(&m_mutex);
+    if (p_share)
+    {
+        printf("===>close p_share\n");
+        munmap( p_share, filesize);
+    }
+    //pthread_mutex_unlock(&m_mutex);
+}
+
+/**
+ * 返回地区信息
+ *
+ * @char *pos 地区的指针
+ * @return char *
+ */
+char *getarea(char *pos) {
+    char *byte=pos; // 标志字节
+    pos++;
+    switch (*byte) {
+        case 0: // 没有区域信息
+            return (char*)UNKNOWN;
+        case 1:
+        case 2: // 标志字节为1或2，表示区域信息被重定向
+            return p_share+getlong3(pos);
+        default: // 否则，表示区域信息没有被重定向
+            return byte;
+    }
+}
+//获得ip所属地理信息,isp
+int getipinfo(char *ipstr,localtmp *p_loc)
+{
+    if (p_share == NULL){
+        perror("openshare...");
+        return -1;
+    }
+
+    char *pos = p_share;
+    int record_len=10;
+    char *firstip=0;
+    //把ip转为整数
+    unsigned int ip=htonl(inet_addr(ipstr));
+    firstip=p_begin; // first record position
+
+    int l=0;
+    int u=total_record;
+    int i=0;
+    char* findip=firstip;
+    unsigned int beginip=0;
+    unsigned int endip=0;
+    //二分法查找
+    while(l <= u)
+    {
+        i=(l+u)/2;
+        pos=firstip+i*RECORD_LEN;
+        beginip = getlong4(pos);
+        pos+=4;
+        if(ip<beginip)
+        {
+            u=i-1;    
+        }
+        else
+        {
+            endip=getlong4(p_share+getlong3(pos));
+            if(ip>endip)
+            {
+                l=i+1;        
+            }
+            else
+            {
+                findip=firstip+i*RECORD_LEN;
+                break;    
+            }
+        }
+    }
+    int offset = getlong3(findip+4);
+    pos=p_share+offset;
+    endip= getlong4(pos); // 用户IP所在范围的结束地址
+    pos+=4;
+
+    unsigned int j=ntohl(beginip);
+    inet_ntop(AF_INET,&j,p_loc->beginip, INET6_ADDRSTRLEN);// 获得开始地址的IP字符串类型
+    j=ntohl(endip);
+    inet_ntop(AF_INET,&j,p_loc->endip, INET6_ADDRSTRLEN);// 获得结束地址的IP字符串类型
+
+    char *byte = pos; // 标志字节
+    pos++;
+    switch (*byte) {
+        case 1:{ // 标志字节为1，表示国家和区域信息都被同时重定向
+                   int countryOffset = getlong3(pos); // 重定向地址
+                   pos+=3;
+                   pos=p_share+countryOffset;
+                   byte = pos; // 标志字节
+                   pos++;
+                   switch (*byte) {
+                       case 2: // 标志字节为2，表示国家信息又被重定向
+                           {
+                               p_loc->p_country=p_share+getlong3(pos);
+                               pos=p_share+countryOffset+4;
+                               p_loc->p_area = getarea(pos);
+                           }
+                           break;
+                       default: // 否则，表示国家信息没有被重定向
+                           {
+                               p_loc->p_country=byte;
+                               p_loc->p_area = getarea(p_loc->p_country+strlen(p_loc->p_country)+1);
+                           }
+                           break;
+                   }
+               }
+               break;
+        case 2: // 标志字节为2，表示国家信息被重定向
+               {
+                   p_loc->p_country=p_share+getlong3(pos);// 重定向地址
+                   pos = p_share + offset + 8;
+                   p_loc->p_area = getarea(pos);
+               }
+               break;
+        default:{ // 否则，表示国家信息没有被重定向
+                    p_loc->p_country=byte;
+                    p_loc->p_area=getarea(p_loc->p_country+strlen(p_loc->p_country)+1);
+                }
+                break;
+    }
+
+    //printf("%s  %s\n", p_loc->p_country, p_loc->p_area);
+    return 0;
+}
+
+/**
+ * 创建线程
+ *
+ * @return void
+ */
+int createThread(char *qqwrydat_path)
+{
+    pthread_t thr_id;
+    int ret = pthread_create(&thr_id, NULL, updateQqwry, (void *)qqwrydat_path);
+    if (ret != 0)
+    {
+        printf("ret = %d\n", ret);
+        return -1;
+    }
+    return 0;
+}
+
+/**
+ * 查找qqwry文件，返回一个文件名最大的文件
+ *
+ * @return char*
+ */
+char* getQqwryFile(char *qqwrydat_path)
+{
+    char* p = NULL;
+    DIR *dp = NULL;
+    struct dirent *dirp = NULL;
+
+    if((dp = opendir(qqwrydat_path)) == NULL)
+    {  
+        printf("can't open [%s]\n", qqwrydat_path);  
+        return NULL; 
+    }
+
+    p = (char*)malloc(30);
+    if (!p)
+    {
+        printf("malloc error, %d:%s\n", errno, strerror(errno));
+        return NULL;
+    }
+    memset(p, 0x00, 30);
+    char cName[30];
+    while((dirp = readdir(dp)) != NULL)
+    {
+        memset(cName, 0x00, sizeof(cName));
+        strncpy(cName, dirp->d_name, 30);
+        // 取文件名日期最大的一个文件
+        if (strncmp(cName, "qqwry", 5) == 0 && strncmp(cName, p, sizeof(cName)) > 0)
+            strncpy(p, cName, 30);
+    }
+
+    return p;
+}
+
+/**
+ * 更新共享内存线程函数
+ *
+ * @return void
+ */
+void *updateQqwry(void *pPtr)
+{
+    printf("thread(%d) start\n", pthread_self());
+    char* cPath = (char*)pPtr;
+    while(1)
+    {
+        char* pName = getQqwryFile(cPath);
+        if (pName)
+        {
+            if (strncmp(pName, cFileName, strlen(pName)) != 0)
+            {
+                strncpy(cFileName, pName, sizeof(cFileName));
+                char cQqwryFile[256];
+                memset(cQqwryFile, 0x00, sizeof(cQqwryFile));
+                sprintf(cQqwryFile, "%s/%s", cPath, cFileName);
+                pthread_rwlock_wrlock(&rwlock);
+                closeshare(); // 释放内存
+                if (openshare(cQqwryFile))// 打开内存
+                    p_share = NULL;
+                pthread_rwlock_unlock(&rwlock);
+                printf("cQqwryFile = %s\n", cQqwryFile);
+            }
+            free(pName);
+            pName = NULL;
+        }
+        char cDate1[40] = {"\0"}, cDate2[40] = {"\0"};
+        time_t t1, t2;
+        unsigned int interval = ONEDAY_SECONF;
+        char *tCur = getTimeFormat("%Y-%m-%d");
+        if (tCur == NULL)
+            goto NEXT;
+        sprintf(cDate1, "%s %s", tCur, update_time);
+        free(tCur);
+        tCur = NULL;
+        t1 = getTTime(cDate1, "%Y-%m-%d %H:%M:%S");
+        if (t1 > time(NULL))
+        {// 今天执行
+            interval = t1 - time(NULL);
+            goto NEXT;
+        }
+        // 明天执行
+        t2 = t1 + ONEDAY_SECONF;
+        interval = t2 - time(NULL);
+NEXT:
+        printf("interval = %u\n", interval);
+        sleep(interval);
+    }
+    printf("thread(%d) end\n", pthread_self());
+}
+
+/**
+ * 格式化日期
+ *
+ * @return char*
+ */
+char* getTimeFormat(const char* sFormat/* = "%Y%m%d%H%M%S"*/, time_t sec/* = 0*/)
+{
+    time_t second = sec ? sec : time(NULL);
+    tm *ptm = localtime(&second);
+    if (ptm == NULL)
+        return NULL;
+
+    int len = 50;
+    char* cTime = (char*)malloc(len);
+    if (cTime == NULL)
+        return NULL;
+    memset(cTime, 0x00, len);
+    if (strftime(cTime, len, sFormat, ptm) == 0)
+    {
+        if (cTime)
+        {
+            free(cTime);
+            cTime = NULL;
+        }
+        return NULL;
+    }
+    return cTime;
+}
+
+/**
+ * 将格式化的日期转成timer_t
+ *
+ * @return time_t
+ */
+time_t getTTime(char* sDateTime, const char* sFormat/*format: = "%Y-%m-%d %H:%M:%S"*/)
+{																										/*like this:"2010-11-15 10:39:30"*/
+    tm stm;
+    if (!strptime(sDateTime, sFormat, &stm)) {
+        return 0;
+    }
+    return mktime(const_cast<tm*>(&stm));
+}

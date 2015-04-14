@@ -1,0 +1,78 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+CC	dport.mk	/^CC=gcc$/;"	m
+CC	dport1.mk	/^CC = gcc$/;"	m
+CC	dport2.mk	/^CC = gcc$/;"	m
+CC	makefile	/^CC = gcc$/;"	m
+CLIENTPORT	myClient.c	3;"	d	file:
+CLIENTPORT	myServer.c	3;"	d	file:
+Connect	SrandPort.c	/^int Connect(int SockFd, char *addr, int domain, int port)$/;"	f	signature:(int SockFd, char *addr, int domain, int port)
+Connect	SrandPort.h	/^int Connect(int SockFd, char *addr, int domain, int port);$/;"	p	signature:(int SockFd, char *addr, int domain, int port)
+InitEpoll	SrandPort.c	/^int InitEpoll(int SockFd)$/;"	f	signature:(int SockFd)
+InitEpoll	SrandPort.h	/^int InitEpoll(int SockFd);$/;"	p	signature:(int SockFd)
+InitSockFd	SrandPort.c	/^int InitSockFd(int port, char *addr, int domain, int type, int protocol)$/;"	f	signature:(int port, char *addr, int domain, int type, int protocol)
+InitSockFd	SrandPort.h	/^int InitSockFd(int port, char *addr, int domain, int type, int protocol);$/;"	p	signature:(int port, char *addr, int domain, int type, int protocol)
+Init_TimerValue	SrandPort.c	/^int Init_TimerValue(double *curtimeval, double *nexttimeval)$/;"	f	signature:(double *curtimeval, double *nexttimeval)
+Init_TimerValue	SrandPort.h	/^int Init_TimerValue(double *curtimeval, double *nexttimeval);$/;"	p	signature:(double *curtimeval, double *nexttimeval)
+LOCALIPADDR1	SrandPort.h	29;"	d
+LOCALIPADDR2	SrandPort.h	30;"	d
+LOCALIPADDR3	SrandPort.h	31;"	d
+MAXLISTENNUM	SrandPort.h	93;"	d
+OClient	dport1.mk	/^OClient = client.o SrandPort.o$/;"	m
+OClient	dport2.mk	/^OClient = myClient.o SrandPort.o$/;"	m
+OClient	makefile	/^OClient = myClient.o SrandPort.o$/;"	m
+OServer	dport1.mk	/^OServer = server.o SrandPort.o$/;"	m
+OServer	dport2.mk	/^OServer = myServer.o SrandPort.o$/;"	m
+OServer	makefile	/^OServer = myServer.o SrandPort.o$/;"	m
+P	SrandPort.c	/^void P(int semid, int numth)$/;"	f	signature:(int semid, int numth)
+P	SrandPort.h	/^void P(int semid, int numth);$/;"	p	signature:(int semid, int numth)
+PORT_NUM	SrandPort.h	35;"	d
+Prolib_t	SrandPort.h	/^}Prolib_t;$/;"	t	typeref:struct:prolib
+SERVERADDR	SrandPort.h	32;"	d
+SERVERPORT	myClient.c	4;"	d	file:
+SERVERPORT	myServer.c	4;"	d	file:
+SetSockFdAttr	SrandPort.c	/^int SetSockFdAttr(int SockFd)$/;"	f	signature:(int SockFd)
+SetSockFdAttr	SrandPort.h	/^int SetSockFdAttr(int SockFd);$/;"	p	signature:(int SockFd)
+V	SrandPort.c	/^void V(int semid, int numth)$/;"	f	signature:(int semid, int numth)
+V	SrandPort.h	/^void V(int semid, int numth);$/;"	p	signature:(int semid, int numth)
+__SRAND__PORT_H	SrandPort.h	2;"	d
+assign_job	SrandPort.c	/^int assign_job(Prolib_t * lib, int numth, int serverport)$/;"	f	signature:(Prolib_t * lib, int numth, int serverport)
+assign_job	SrandPort.h	/^int assign_job(Prolib_t * lib, int numth, int serverport);$/;"	p	signature:(Prolib_t * lib, int numth, int serverport)
+child_work	SrandPort.c	/^void child_work(int numth, Prolib_t *lib)$/;"	f	signature:(int numth, Prolib_t *lib)
+child_work	SrandPort.h	/^static void child_work(int numth, Prolib_t *lib);$/;"	p	signature:(int numth, Prolib_t *lib)
+connectnum	SrandPort.c	/^int connectnum = 0;$/;"	v
+create_child_and_init_lib	SrandPort.c	/^int create_child_and_init_lib(int n, Prolib_t *lib, void(*child_func)(int numth, Prolib_t *lib))$/;"	f	signature:(int n, Prolib_t *lib, void(*child_func)(int numth, Prolib_t *lib))
+create_child_and_init_lib	SrandPort.h	/^int create_child_and_init_lib(int n, Prolib_t *lib, void(*child_func)(int numth, Prolib_t *lib));$/;"	p	signature:(int n, Prolib_t *lib, void(*child_func)(int numth, Prolib_t *lib))
+create_child_process	SrandPort.c	/^int create_child_process(int n, Prolib_t *lib)$/;"	f	signature:(int n, Prolib_t *lib)
+create_child_process	SrandPort.h	/^int create_child_process(int n, Prolib_t *lib);$/;"	p	signature:(int n, Prolib_t *lib)
+create_dynamic_process_libs	SrandPort.c	/^Prolib_t * create_dynamic_process_libs(int n)$/;"	f	signature:(int n)
+create_dynamic_process_libs	SrandPort.h	/^Prolib_t * create_dynamic_process_libs(int n);$/;"	p	signature:(int n)
+generate_dynamic_RandPort	SrandPort.c	/^int generate_dynamic_RandPort(void)$/;"	f	signature:(void)
+generate_dynamic_RandPort	SrandPort.h	/^int generate_dynamic_RandPort(void);$/;"	p	signature:(void)
+init_mmap_memory	SrandPort.h	/^char * init_mmap_memory(void);$/;"	p	signature:(void)
+main	myClient.c	/^int main(int c, char **v)$/;"	f	signature:(int c, char **v)
+main	myServer.c	/^int main(void)$/;"	f	signature:(void)
+newsd_lock	SrandPort.c	/^pthread_mutex_t newsd_lock;$/;"	v
+object	dport2.mk	/^object = myClient.o myServer.o SrandPort.o$/;"	m
+object	makefile	/^object = myClient.o myServer.o SrandPort.o$/;"	m
+pid	SrandPort.h	/^	pid_t pid;$/;"	m	struct:prolib	access:public
+port	SrandPort.h	/^    int port;$/;"	m	struct:prolib	access:public
+process_lib_init	SrandPort.c	/^Prolib_t * process_lib_init(int n, int semid)$/;"	f	signature:(int n, int semid)
+process_lib_init	SrandPort.h	/^Prolib_t * process_lib_init(int n, int semid);$/;"	p	signature:(int n, int semid)
+prolib	SrandPort.h	/^typedef struct prolib$/;"	s
+prolib::pid	SrandPort.h	/^	pid_t pid;$/;"	m	struct:prolib	access:public
+prolib::port	SrandPort.h	/^    int port;$/;"	m	struct:prolib	access:public
+prolib::semid	SrandPort.h	/^    int semid;$/;"	m	struct:prolib	access:public
+prolib::semid_index	SrandPort.h	/^    int semid_index;$/;"	m	struct:prolib	access:public
+sem_init	SrandPort.c	/^int sem_init(int n)$/;"	f	signature:(int n)
+sem_init	SrandPort.h	/^int sem_init(int n);$/;"	p	signature:(int n)
+semid	SrandPort.h	/^    int semid;$/;"	m	struct:prolib	access:public
+semid_index	SrandPort.h	/^    int semid_index;$/;"	m	struct:prolib	access:public
+task	SrandPort.c	/^void task(Prolib_t * ptr)$/;"	f	signature:(Prolib_t * ptr)
+task	SrandPort.h	/^void task(Prolib_t * ptr);$/;"	p	signature:(Prolib_t * ptr)
+thread_handler	SrandPort.c	/^void * thread_handler(void *arg)$/;"	f	signature:(void *arg)
+thread_handler	SrandPort.h	/^void * thread_handler(void *arg);$/;"	p	signature:(void *arg)

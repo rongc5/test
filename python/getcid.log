@@ -1,0 +1,7 @@
+DEBUG    2014-01-03 02:39:48,317 getChannel.py 99    :  Will anailysis caewhilst.log/whilst2014-01-03
+DEBUG    2014-01-03 02:41:35,385 getChannel.py 99    :  Will anailysis caewhilst.log/whilst2014-01-03
+DEBUG    2014-01-03 02:41:49,282 getChannel.py 132   :  file:win32com2.py total: 0 time:1.970000ms 
+DEBUG    2014-01-03 02:41:49,524 getChannel.py 132   :  file:win32com1.py total: 0 time:0.010000ms 
+DEBUG    2014-01-03 02:41:49,805 getChannel.py 132   :  file:win2com.py total: 0 time:0.090000ms 
+DEBUG    2014-01-03 02:44:32,988 getChannel.py 99    :  Will anailysis caewhilst.log/whilst2014-01-03
+DEBUG    2014-01-03 02:44:33,257 getChannel.py 132   :  file:caewhilst.log total: 0 time:0.080000ms 

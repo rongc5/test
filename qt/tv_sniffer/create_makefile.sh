@@ -1,0 +1,1 @@
+qmake -o Makefile tv_sniffer.pro

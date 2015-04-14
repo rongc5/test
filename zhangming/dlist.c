@@ -1,0 +1,71 @@
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
+typedef struct stu
+{
+    char name[32];
+    float avg;
+    struct stu *next;
+    struct stu *priv;
+}STU;
+
+STU *list_init(void)
+{
+    STU * head = (STU *)malloc(sizeof(STU));
+    if (NULL == head)
+    {
+        perror("malloc");
+        exit(0);
+    }
+    head->next = head;
+    head->priv = head;
+    return head;
+}
+
+void list_insert(struct stu *phead, struct stu* pnode)
+{
+    struct stu *e = (struct stu *)malloc(sizeof(struct stu));
+    if (e == NULL)
+    {
+        perror("malloc");
+        exit(0);
+    }
+    memcpy(e, pnode, sizeof(struct stu));
+
+   STU *head = phead;
+    while (phead->next != head)
+    {
+        phead = phead->next;
+    }
+
+}
+
+void list_show(struct stu *phead)
+{
+    STU * head = phead;
+    phead = phead->next;
+    while (phead != head)
+    {
+        printf("%s, %lf\n", phead->name, phead->avg);
+        phead->next = phead;
+        sleep(3);
+    }
+}
+
+int main(void)
+{
+    struct stu *list = list_init();
+    int i = 0;
+    struct stu student;
+    printf("输入学生的姓名与体重\n");
+    for (i = 0; i < 5; i++)
+    {
+        scanf("%s %f", student.name, &student.avg);
+        list_insert(list, &student);
+    }
+
+    list_show(list);
+    return 0;
+}
+

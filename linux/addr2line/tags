@@ -1,0 +1,32 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+CC	Makefile	/^CC = g++$/;"	m
+CPPFLAGS	Makefile	/^CPPFLAGS = -O0 -g -DDEBUG$/;"	m
+DEBUG	addr.h	26;"	d
+NO	addr.h	/^    NO,$/;"	e	enum:__anon1
+OBJLIB	Makefile	/^OBJLIB = libtaddr.so.1.0.0$/;"	m
+OK	addr.h	/^    OK$/;"	e	enum:__anon1
+Status_t	addr.h	/^}Status_t;$/;"	t	typeref:enum:__anon1
+THREADNUM	main.cpp	4;"	d	file:
+THREAD_STACK_SIZE	addr.cpp	4;"	d	file:
+__ADDR_H_	addr.h	2;"	d
+attr	addr.cpp	/^pthread_attr_t attr;$/;"	v
+buf	addr.h	/^    char *buf;$/;"	m	struct:__anon2
+cond	addr.h	/^    pthread_cond_t cond;$/;"	m	struct:__anon2
+creat_threads	addr.cpp	/^int creat_threads(int num, thread_pool_t *pools)$/;"	f
+create_pools	addr.cpp	/^thread_pool_t * create_pools(int thread_num)$/;"	f
+i	addr.h	/^    int i;$/;"	m	struct:__anon2
+index	addr.h	/^    int index;$/;"	m	struct:__anon2
+main	main.cpp	/^int main(int argc, char *argv[])$/;"	f
+mutex	addr.h	/^    pthread_mutex_t mutex;$/;"	m	struct:__anon2
+sigaction_handler	main.cpp	/^void sigaction_handler(int s, siginfo_t *info, void* cont)$/;"	f
+status	addr.h	/^    Status_t status;$/;"	m	struct:__anon2
+task_allocation	addr.cpp	/^int task_allocation(thread_pool_t * pools, int thread_num, int id)$/;"	f
+thread_all	addr.cpp	/^void *thread_all(void *arg)$/;"	f
+thread_pool_t	addr.h	/^}thread_pool_t;$/;"	t	typeref:struct:__anon2
+tid	addr.h	/^    pthread_t tid;$/;"	m	struct:__anon2
+wait_all_threads_ready	addr.cpp	/^void wait_all_threads_ready(thread_pool_t *pools, int thread_num)$/;"	f

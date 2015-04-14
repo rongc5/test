@@ -1,0 +1,17 @@
+[mail]#邮箱登录信息
+mail_host=mail.qq.com
+mail_port=25
+mail_user=cloudservice
+mail_alis=hr
+mail_postfix=haierubic.com
+mail_pass=pwd
+
+to_user=huxb
+to_mail=
+
+[text]#邮件正文内容相关信息
+sub=hello
+body=ok
+myname=Emily liu
+
+

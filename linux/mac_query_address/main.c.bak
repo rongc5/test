@@ -1,0 +1,41 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#include <ctype.h>
+#include <mysql/mysql.h>
+#include <sys/mman.h>
+
+#include <sys/mman.h>
+#include <fcntl.h>
+#include <sys/types.h>
+#include <math.h>
+#include <unistd.h>
+#include <stdio.h>
+#include <string.h>
+#include <sys/stat.h>
+#include <netinet/in.h>
+#include <errno.h> 
+
+#include "cityidquery.h"
+#include "ip_addr_info.h"
+
+
+int main(void)
+{
+    char buf[16];
+    int ret;
+	construct_cityid_cache();
+    while (1){
+        printf("please input ipstr:");
+        fflush(stdout);
+        ret = read(0, buf, 16);
+        buf[ret - 1] = '\0';
+        CIDINFO *tmp = ip_get_cityid(buf);
+        if (tmp != NULL)
+            printf("cityid:%s\n", tmp->cityid);
+    }
+
+    
+	return 0;
+}

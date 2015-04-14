@@ -1,0 +1,1 @@
+cmd_/home/peeter/project/c/zhangming/pipe3.ko := ld -r -m elf_i386 -T /usr/src/linux-headers-2.6.32-24-generic/scripts/module-common.lds --build-id -o /home/peeter/project/c/zhangming/pipe3.ko /home/peeter/project/c/zhangming/pipe3.o /home/peeter/project/c/zhangming/pipe3.mod.o

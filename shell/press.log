@@ -1,0 +1,40 @@
+<2012-07-23 12:37:07 INFO  >  accept num is 717702, and successConnect is 715283, and successDeal is 714730
+<2012-07-23 12:37:07 INFO  >  [UHOME_CMD_DEVICE_UPDATE_SESSION]:[mac]:69ab149bdc6e838a83996254b5276b11
+<2012-07-23 12:37:07 INFO  >  accept num is 717702, and successConnect is 715284, and successDeal is 714731
+<2012-07-23 12:37:07 INFO  >  [UHOME_CMD_DEVICE_LOGIN]:[mac]:08b086882bbf9f68577373b06683eca5 login, [vip]:10105075, [dev_type]:DC1CD000000A, [ip]:192.168.3.115
+<2012-07-23 12:37:07 INFO  >  accept num is 717702, and successConnect is 715285, and successDeal is 714732
+<2012-07-23 12:37:07 ERROR >  file: mysqlquery.cpp, line: 71 , MYSQL ERRORquery failed: call p_appinfo_get('647479'): PROCEDURE haierdb.p_appinfo_get does not exist
+<2012-07-23 12:37:07 INFO  >  accept num is 717706, and successConnect is 715286, and successDeal is 714733
+<2012-07-23 12:37:07 INFO  >  accept num is 717706, and successConnect is 715288, and successDeal is 714734
+<2012-07-23 12:37:07 INFO  >  accept num is 717706, and successConnect is 715288, and successDeal is 714735
+<2012-07-23 12:37:07 INFO  >  accept num is 717706, and successConnect is 715289, and successDeal is 714736
+<2012-07-23 12:37:07 INFO  >  accept num is 717706, and successConnect is 715290, and successDeal is 714737
+<2012-07-23 12:37:07 INFO  >  accept num is 717706, and successConnect is 715291, and successDeal is 714738
+<2012-07-23 12:37:07 INFO  >  accept num is 717706, and successConnect is 715292, and successDeal is 714739
+<2012-07-23 12:37:07 INFO  >  accept num is 717706, and successConnect is 715293, and successDeal is 714740
+<2012-07-23 12:37:07 INFO  >  accept num is 717706, and successConnect is 715294, and successDeal is 714741
+<2012-07-23 12:37:07 INFO  >  [UHOME_CMD_DEVICE_LOGIN]:[mac]:36b8216a8138a2213794c835bc46dc1b login, [vip]:10105075, [dev_type]:DC1CD000000A, [ip]:192.168.3.114
+<2012-07-23 12:37:07 INFO  >  accept num is 717706, and successConnect is 715295, and successDeal is 714742
+<2012-07-23 12:37:07 INFO  >  accept num is 717706, and successConnect is 715297, and successDeal is 714743
+<2012-07-23 12:37:07 INFO  >  [UHOME_CMD_DEVICE_LOGIN]:[mac]:70558fe1e4188b85b5981137a7c3d69c login, [vip]:10105075, [dev_type]:DC1CD000000A, [ip]:192.168.3.114
+<2012-07-23 12:37:07 INFO  >  accept num is 717706, and successConnect is 715298, and successDeal is 714745
+<2012-07-23 12:37:07 INFO  >  accept num is 717706, and successConnect is 715297, and successDeal is 714744
+<2012-07-23 12:37:07 INFO  >  accept num is 717706, and successConnect is 715300, and successDeal is 714746
+<2012-07-23 12:37:07 INFO  >  accept num is 717706, and successConnect is 715300, and successDeal is 714747
+<2012-07-23 12:37:07 INFO  >  accept num is 717707, and successConnect is 715301, and successDeal is 714748
+<2012-07-23 12:37:07 INFO  >  accept num is 717707, and successConnect is 715302, and successDeal is 714749
+<2012-07-23 12:37:07 INFO  >  accept num is 717709, and successConnect is 715303, and successDeal is 714750
+<2012-07-23 12:37:07 INFO  >  accept num is 717710, and successConnect is 715304, and successDeal is 714751
+<2012-07-23 12:37:07 INFO  >  [UHOME_CMD_DEVICE_LOGIN]:[mac]:33914921327f4c9d2d3822333b5ffddf login, [vip]:10105075, [dev_type]:DC1CD000000A, [ip]:192.168.3.114
+<2012-07-23 12:37:07 INFO  >  accept num is 717717, and successConnect is 715305, and successDeal is 714752
+<2012-07-23 12:37:07 INFO  >  accept num is 717717, and successConnect is 715307, and successDeal is 714753
+<2012-07-23 12:37:07 INFO  >  accept num is 717717, and successConnect is 715307, and successDeal is 714754
+<2012-07-23 12:37:07 INFO  >  accept num is 717717, and successConnect is 715308, and successDeal is 714755
+<2012-07-23 12:37:07 INFO  >  accept num is 717717, and successConnect is 715309, and successDeal is 714756
+<2012-07-23 12:37:07 INFO  >  accept num is 717717, and successConnect is 715310, and successDeal is 714757
+<2012-07-23 12:37:07 INFO  >  accept num is 717717, and successConnect is 715311, and successDeal is 714758
+<2012-07-23 12:37:07 INFO  >  accept num is 717717, and successConnect is 715312, and successDeal is 714759
+<2012-07-23 12:37:07 INFO  >  accept num is 717717, and successConnect is 715313, and successDeal is 714760
+<2012-07-23 12:37:07 INFO  >  accept num is 717718, and successConnect is 715314, and successDeal is 714761
+<2012-07-23 12:37:07 INFO  >  accept num is 717718, and successConnect is 715316, and successDeal is 714762
+<2012-07-23 12:37:07 INFO  >  accept num is 717718, and successConnect is 715316, and successDeal is 714763
