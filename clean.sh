@@ -1,6 +1,6 @@
 #!/bin/sh 
 
-array="algorithms  asm  c  c++  design  java  lecture lua  python  regex  zhangming linux"
+array="algorithms  asm  c  c++  design  java  lecture lua  python  regex  zhangming linux gtest"
 #for var in ${var[@]}
 for var in $array
 do
