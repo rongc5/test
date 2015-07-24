@@ -13,17 +13,17 @@
 #      History:
 #=============================================================================
 
-import os
+import os, sys, getopt
 
 
 asp_pvr = {}
 pv_dict = {}
+req_dict = {}
 
 class Task:
-    def __init__(self, src_name):
-        self.src_name = src_name
+    def __init__(self):
         asp_pvr = {}
-        self.data_src = ['pd','pt','wvar','cmatch_ad_src_type', 'ds_ret_src_no_list']
+        self.data_src = ['pd','pt','wvar','cmatch_ad_src_type', 'ds_ret_src_no_list', 'ds_cnt']
         self.req_str = ''
 
     def get_ad_srcno(self, cmatch_ad_src_type):
@@ -32,6 +32,7 @@ class Task:
             return
 
         items = cmatch_ad_src_type.split(';')
+        items = list(set(items))
         for item in items:
             item = item.strip()
             key_str = ''
@@ -42,30 +43,83 @@ class Task:
                 cmatch = sub_items[0]
                 if not sub_items[1]:
                     print sub_items
-                ad_src_no = int(sub_items[1])
+                ad_src_no = sub_items[1]
                 key_str = '%s %s' % (self.req_str, cmatch)
                 if asp_pvr.has_key(key_str):
                     values = asp_pvr[key_str]
-                    if ad_src_no >= 11 and ad_src_no <= 13:
-                        if not values.has_key('baidu'):
-                            values['baidu'] = 1
-                        else:
-                            values['baidu'] = values['baidu'] + 1
-                    elif ad_src_no == 4:
-                        if not values.has_key('ds'):
-                            values['ds'] = 1
-                        else:
-                            values['ds'] = values['ds'] + 1
+                    if not values.has_key(ad_src_no):
+                        values[ad_src_no] = 1
+                    else:
+                        values[ad_src_no] += 1
                     asp_pvr[key_str] = values
                 else:
                     values = {}
-                    if ad_src_no >= 11 and ad_src_no <= 13:
-                        values['baidu'] = 1
+                    values[ad_src_no] = 1
+                    asp_pvr[key_str] = values
+
+
+    def get_ds_ret(self, ds_ret_src_no_list):
+        ds_ret_src_no_list = ds_ret_src_no_list.strip()
+        if not ds_ret_src_no_list:
+            return
+
+        items = ds_ret_src_no_list.split(';')
+        for item in items:
+            item = item.strip()
+            key_str = ''
+            if item:
+                sub_items = item.split(':')
+                if len(sub_items) != 2:
+                    continue
+                cmatch = sub_items[0]
+                ad_src_no = sub_items[1]
+                key_str = '%s %s' % (self.req_str, cmatch)
+                if asp_pvr.has_key(key_str):
+                    values = asp_pvr[key_str]
+                    if int(ad_src_no) == 9:
+                        if not values.has_key(ad_src_no):
+                            values[ad_src_no] = 1
+                        else:
+                            values[ad_src_no] += 1
                         asp_pvr[key_str] = values
-                    elif ad_src_no == 4:
-                        values['ds'] = 1
+                else:
+                    values = {}
+                    if int(ad_src_no) == 9:
+                        values[ad_src_no] = 1
                         asp_pvr[key_str] = values
 
+    def get_ds_cnt(self, ds_cnt):
+        ds_cnt = ds_cnt.strip()
+        if not ds_cnt:
+            return
+
+        if not req_dict.has_key(self.req_str):
+            values = set()
+            req_dict[self.req_str] = values
+
+        items = ds_cnt.split(';')
+        for item in items:
+            if item:
+                sub_items = item.split(',')
+                cmatch = sub_items[0]
+
+                if not cmatch.strip():
+                    continue
+
+                values = req_dict[self.req_str]
+                if cmatch not in  values:
+                    values.add(cmatch)
+                    req_dict[self.req_str] = values
+
+
+
+    def set_pv(self):
+        if pv_dict.has_key(self.req_str):
+            values = pv_dict[self.req_str]
+            values += 1
+            pv_dict[self.req_str] = values
+        else:
+            pv_dict[self.req_str] = 1
 
     def do_one_line(self, line):
         line = line.strip()
@@ -92,8 +146,8 @@ class Task:
 
         if len(data_dict) < len(self.data_src):
             return
-
-        if not int(data_dict['pd']) or  not int(data_dict['pt']):
+        #过滤掉联盟, 联盟pvr 是按mmid, muid 算
+        if not int(data_dict['pd']) or  not int(data_dict['pt']) or int(data_dict['pd']) == 29:
             return
         self.req_str = ''
         #print "data_dict ==>", data_dict
@@ -111,101 +165,135 @@ class Task:
             #print 'cmatch_ad_src_type ==> ', data_dict['cmatch_ad_src_type']
             self.get_ad_srcno(data_dict['cmatch_ad_src_type'])
 
-        if data_dict.has_key('ds_ret_src_no_list'):
-            self.get_ds_ret(data_dict['ds_ret_src_no_list'])
+        #if data_dict.has_key('ds_ret_src_no_list'):
+            #self.get_ds_ret(data_dict['ds_ret_src_no_list'])
 
-    def get_ds_ret(self, ds_ret_src_no_list):
-        ds_ret_src_no_list = ds_ret_src_no_list.strip()
-        if not ds_ret_src_no_list:
-            return
+        if data_dict.has_key('ds_cnt'):
+            self.get_ds_cnt(data_dict['ds_cnt'])
 
-        items = ds_ret_src_no_list.split(';')
-        for item in items:
-            item = item.strip()
-            key_str = ''
-            if item:
-                sub_items = item.split(':')
-                if len(sub_items) != 2:
-                    continue
-                cmatch = sub_items[0]
-                ad_src_no = int(sub_items[1])
-                key_str = '%s %s' % (self.req_str, cmatch)
-                if asp_pvr.has_key(key_str):
-                    values = asp_pvr[key_str]
-                    if ad_src_no == 9:
-                        if not values.has_key('ds_ret_baidu'):
-                            values['ds_ret_baidu'] = 1
-                        else:
-                            values['ds_ret_baidu'] += 1
-                else:
-                    values = {}
-                    if ad_src_no == 9:
-                        values['ds_ret_baidu'] = 1
-
-
-    def set_pv(self):
-        if pv_dict.has_key(self.req_str):
-            values = pv_dict[self.req_str]
-            values += 1
-            pv_dict[self.req_str] = values
-        else:
-            pv_dict[self.req_str] = 1
-
-
-    def do(self):
-        fp_src = open(self.src_name, "r")
-        for line in fp_src:
-            self.do_one_line(line)
-
-        fp_src.close()
-        print 'file %s do over!!' % (self.src_name, )
-
-
-
-
-
-def out_string(dst_name):
-        fp_dest = open(dst_name, "w")
-
-        for key in asp_pvr:
-            out_string = ''
-            values = asp_pvr[key]
-
-            show = 0
-            #if values.has_key('baidu'):
-            #    show += values['baidu']
-            #
-            #if values.has_key('ds'):
-            #    show += values['ds']
-            items = key.split(' ')
-            key_string = '%s %s %s' %  (items[0], items[1], items[2])
-            if not pv_dict.has_key(key_string):
+    def out_string(self):
+        for key in pv_dict:
+            show = pv_dict[key]
+            if not req_dict.has_key(key):
                 continue
-            show = pv_dict[key_string]
 
-            if values.has_key('ds_ret_baidu') and show:
-                out_string = '''%s  pv:%s   baidu:%s    pver:%.5f''' % (key, show, values['ds_ret_baidu'], values['ds_ret_baidu'] * 100.0/show)
-                fp_dest.write(out_string+'\n')
+            cmatch_list = req_dict[key]
+            for cmatch in cmatch_list:
+                key_string = '%s %s' %  (key, cmatch)
+                if asp_pvr.has_key(key_string):
+                    values = asp_pvr[key_string]
+                    #out_string = 'req:%s  show:%d  ' % (key_string, show)
+                    for secondkey in values:
+                        out_string = ''
+                        out_string = 'req:%s_%s_type:%s   show:%d   adshow:%d   pvr:%d''' % (key, cmatch, secondkey, show, values[secondkey],  values[secondkey] * 1000.0/show)
+                        print out_string
+                #else:
+                #    out_string = 'req:%s  show:%d  type:%s  adshow:%d   pvr:%.5f''' % (key_string, show, "0", 0,  0 * 100.0/show)
+                #    print out_string
 
-            if values.has_key('ds') and show:
-                out_string = '''%s  pv:%s   ds:%s   pver:%.5f''' % (key, show, values['ds'], values['ds'] * 100.0/show)
-                fp_dest.write(out_string+'\n')
-        fp_dest.close()
+    def out_type(self):
+           for key in pv_dict:
+            show = pv_dict[key]
+            if not req_dict.has_key(key):
+                continue
+
+            cmatch_list = req_dict[key]
+            for cmatch in cmatch_list:
+                key_string = '%s %s' %  (key, cmatch)
+                if asp_pvr.has_key(key_string):
+                    values = asp_pvr[key_string]
+                    #out_string = 'req:%s  show:%d  ' % (key_string, show)
+                    for secondkey in values:
+                        out_string = ''
+                        if int(secondkey)  == 0:
+                            out_string = 'req:%s type:%s %s' % (key_string, secondkey, '代表返回的是KS广告')
+                        elif int(secondkey) == 1:
+                            out_string = 'req:%s type:%s %s' % (key_string, secondkey, '代表返回的是搜狗广告')
+                        elif int(secondkey) == 2:
+                            out_string = 'req:%s type:%s %s' % (key_string, secondkey, '代表返回的是online广告')
+                        elif int(secondkey) == 4:
+                            out_string = 'req:%s type:%s %s' % (key_string, secondkey, '代表返回的是DS广告')
+                        elif int(secondkey) == 11:
+                            out_string = 'req:%s type:%s %s' % (key_string, secondkey, '代表返回的是百度文本广告')
+                        elif int(secondkey) == 12:
+                            out_string = 'req:%s type:%s %s' % (key_string, secondkey, '代表返回的是百度图片广告')
+                        if out_string.strip():
+                            print out_string
+
+def doTask1():
+    task = Task()
+    for line in sys.stdin:
+        task.do_one_line(line)
+    task.out_string()
 
 
-src_log_name = "asp.log.nt"
-dest_log_name = "log.pvr"
+def doTask2(dirs):
+    task = Task()
+    for file in dirs:
+        fp_src = open(file, "r")
+        for line in fp_src:
+            task.do_one_line(line)
+        fp_src.close()
+    task.out_string()
 
-def doTask():
+def changeDir():
     path = os.path.dirname(os.path.realpath(__file__))
     os.chdir(path)
     dirs = os.listdir(path)
-    for file in dirs:
-        if src_log_name in file:
-            task = Task(file)
-            task.do()
 
 if __name__ == '__main__':
-    doTask()
-    out_string(dest_log_name)
+    changeDir()
+    isFiles = False
+    is_filter = False
+    files = []
+    filter_files = []
+    res_files = []
+
+    try:
+        #opts,args = getopt.getopt(sys.argv[1:],"f:")
+        #for op,value in opts:
+        #    if op == '-f':
+        #        #tmp = os.popen("ls "+value).read()
+        #        #print tmp
+        #        files = sys.argv[2:]
+        #        isFiles =  True
+
+        args = sys.argv[1:]
+        index = 0
+        if '-f' in args:
+            index = args.index('-f')
+            files = args[index + 1:]
+            res_files = files
+            isFiles =  True
+
+        if '-c' in args:
+            index = args.index('-c')
+            filter_files = args[index + 1:]
+            is_filter = True
+
+
+        if is_filter:
+            res_files = []
+            files = files[:index - 1]
+
+            for file in files:
+                flag = 0
+                for file_filter in filter_files:
+                    if file.startswith(file_filter):
+                        flag = 1
+                        break
+                if flag:
+                    continue
+                res_files.append(file)
+
+
+    except getopt.GetoptError as e:
+        print e
+
+    if isFiles:
+        doTask2(res_files)
+        pass
+    else:
+        doTask1()
+
 
