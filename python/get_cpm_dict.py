@@ -15,6 +15,8 @@
 
 import os,getopt,sys
 
+ratio_dict = {'c_230':'0.7'}
+
 
 class Task:
     def __init__(self, src_file, dst_file):
@@ -114,7 +116,10 @@ class Task:
 
             for type in values:
                 out_string = ''
-                out_string = '%s_type:%s    %s    %d' % (key, type, rate, float(rate) * 0.8 * 1000)
+                ratio = 0.8
+                if ratio_dict.has_key(key):
+                    ratio = float(ratio_dict[key])
+                out_string = '%s_type:%s    %s    %d' % (key, type, rate, float(rate) * ratio * 1000)
                 print out_string
 
 def changeDir():

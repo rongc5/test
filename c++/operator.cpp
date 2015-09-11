@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string>
 
 using namespace std;
 
@@ -14,6 +15,10 @@ class Test
             cout << "operator\n";
             return;
         }
+        void operator()(const string & str)
+        {
+            cout << "str:" <<str.c_str()<<'\n';
+        }
 };
 
 int main(int argc, char *argv[])
@@ -22,5 +27,8 @@ int main(int argc, char *argv[])
     
     t();
 
+    Test();
+
+    t("hello world");
     return 0;
 }

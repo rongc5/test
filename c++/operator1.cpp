@@ -2,49 +2,39 @@
 
 using namespace std;
 
-class Test
+class A
 {
-    private:
-        int x;
-        int y;
-        friend bool operator<(const Test &a, const Test &b);
     public:
-        Test(int x, int y):x(x), y(y){}
-        bool operator == (Test & t) const;
+        static void dosomething();
 };
 
-bool Test::operator == (Test & t) const
+void A::dosomething()
 {
-    if (this->x == t.x)
-    {
-        return true;
-    }
-
-    return false;
+    cout << "dosomething\n";
 }
 
-bool operator<(const Test &a, const Test &b)
+template<typename  T>
+class Test
 {
-    if (a.x < b.x)
-    {
-        return true;
-    }
-
-    return false;
-}
+    public:
+        Test()
+        {
+            cout<<"Constructors\n";
+        }
+        void operator()()
+        {
+            cout << "operator\n";
+            T::dosomething();
+            return;
+        }
+};
 
 int main(int argc, char *argv[])
 {
-    Test t(1, 3), u (2, 5);
-    if (t == u)
-    {
-        cout << "==\n";
-    }else if (t < u)
-    {
-        cout << "<\n";
-    }
+    //Test t;
+    
+    //t();
 
+    Test<A>()();
     return 0;
 }
-
-
