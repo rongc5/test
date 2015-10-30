@@ -75,7 +75,7 @@ int main(int argc, char *argv[])
 
     observer * ptr1 = new A;
     wk->add(ptr1);
-    observer * ptr2 = new B;
+    observer * ptr2 = ptr1;
     wk->add(ptr2);
     observer * ptr3 = new C;
     wk->add(ptr3);
