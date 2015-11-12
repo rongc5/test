@@ -23,8 +23,11 @@ input_list = input_string.split(',')
 out_in_dict = {'sty':'st','moblie':'mob','wvar':'wver','qry_src':'qrySrc','industry_id':'ids','np':'nett','rq_cnt':'cnt',
                'rq_cm':'cm','tgds':'tgdsid','op':'ngo'}
 
+#num_lsit = 'st,pi,iploc,mobloc,t,lbsloc,qrySrc,appt,gender,dl,cngo,ids,nett,muid,mmid,ngo,np,ngp,ngc,cnt,ct,loadType,cm'
+#num_dict = num_lsit.split(',')
+
 default_dirct = {'st':'0','cid':'es_10659_1429_2','qry':'搜索广告排序测试','pi':'0','ecpm':"4;5",'ver':"1.1.1",
-                 'nett':'1','cnt':10,'ct':1,'fmt':'1','esid':'9wRV2Dj0MWyicmp','gender':'0','muid':'4194','mmid':'90',
+                 'nett':'1','cnt':10,'ct':1,'fmt':'0','esid':'9wRV2Dj0MWyicmp','gender':'0','muid':'4194','mmid':'90',
                  'qrySrc':'0','appt':'0','ids':'0','iploc':'0','mobloc':'0','ip':"223.73.217.96",'pd':'29','pt':'2',
                  'sid':"b0b7287b-6237-4fc9-9ac7-64f732136c17"}
 
@@ -32,6 +35,7 @@ default_dirct = {'st':'0','cid':'es_10659_1429_2','qry':'搜索广告排序测�
 def handle_asp_log(line):
     out_string = ""
     items = line.split(" ")
+    flag = 0
     for item in items:
         item = item.strip()
         key = ""
@@ -44,7 +48,7 @@ def handle_asp_log(line):
             key = out_in_dict.get(sub_items[0])
         else:
             for k in input_list:
-                if sub_items[0] in k:
+                if sub_items[0] == k:
                     key = k;
                     break;
 
@@ -53,10 +57,27 @@ def handle_asp_log(line):
 
         if not sub_items[1].strip(''):
             for k in filter_list:
-                if key in k:
+                if key == k:
                     return
 
+        if sub_items[0] == 'pd' and int(sub_items[1]) == 29:
+            flag = 1
+
+        if sub_items[0] == 'muid':
+            sub_items[1] = default_dirct.get('muid')
+
+        if sub_items[0] == 'mmid':
+            sub_items[1] = default_dirct.get('mmid')
+
         out_string += ", \"%s\":\"%s\"" %(key, sub_items[1])
+
+
+    if 1 == flag:
+        out_string += ", \"%s\":\"%s\"" %('fmt', default_dirct.get('fmt'))
+        
+
+    if 'pd' not in out_string or 'pt' not in out_string:
+        return
 
     out_string = out_string[2:]
     if out_string.strip(''):
