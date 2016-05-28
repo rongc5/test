@@ -27,28 +27,30 @@ int myisort(int a[], int num)
 int main(void)
 {
     int count = 50, i;
-    int *buf;
+    /*int *buf;*/
 
-    buf = (int *)malloc(sizeof(int)*count);
-    if (!buf){
-        perror("malloc");
-        return -1;
-    }
+    /*buf = (int *)malloc(sizeof(int)*count);*/
+    /*if (!buf){*/
+        /*perror("malloc");*/
+        /*return -1;*/
+    /*}*/
 
-    srand(time(NULL));
+    /*srand(time(NULL));*/
 
-    for (i = 0; i < count; i++){
-        buf[i] = rand()%count;    
-        printf("%-3d", buf[i]);
-        if (i && !(i%10))
-            printf("\n");
-    }
-    printf("\n\n");
+    int buf[6] = {1,2,3,4,6,5};
 
-    myisort(buf, count);
+    /*for (i = 0; i < count; i++){*/
+        /*buf[i] = rand()%count;    */
+        /*printf("%-3d", buf[i]);*/
+        /*if (i && !(i%10))*/
+            /*printf("\n");*/
+    /*}*/
+    /*printf("\n\n");*/
+
+    myisort(buf, 6);
 
 
-    for (i = 0; i < count; i++){
+    for (i = 0; i < 6; i++){
         printf("%-3d", buf[i]);
         if (i && !(i%10))
             printf("\n");

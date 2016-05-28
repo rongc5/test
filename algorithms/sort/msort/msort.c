@@ -46,13 +46,14 @@ int mymsort(int a[], int first, int last, int tmp[])
 int main(void)
 {
     int count = 50, i;
-    int *buf, *tmp;
+    int *tmp;
 
-    buf = (int *)malloc(sizeof(int)*count);
-    if (!buf){
-        perror("malloc");
-        return -1;
-    }
+    int buf[6] = {1, 2, 3, 4, 6, 5};
+    /*buf = (int *)malloc(sizeof(int)*count);*/
+    /*if (!buf){*/
+        /*perror("malloc");*/
+        /*return -1;*/
+    /*}*/
 
     tmp = (int *)malloc(sizeof(int)*count);
     if (!tmp){
@@ -60,20 +61,20 @@ int main(void)
         return -1;
     }
 
-    srand(time(NULL));
+    /*srand(time(NULL));*/
 
-    for (i = 0; i < count; i++){
-        buf[i] = rand()%count;    
-        printf("%-3d", buf[i]);
-        if (i && !(i%10))
-            printf("\n");
-    }
-    printf("\n\n");
+    /*for (i = 0; i < count; i++){*/
+        /*buf[i] = rand()%count;    */
+        /*printf("%-3d", buf[i]);*/
+        /*if (i && !(i%10))*/
+            /*printf("\n");*/
+    /*}*/
+    /*printf("\n\n");*/
 
-    mymsort(buf, 0, count-1, tmp);
+    mymsort(buf, 0, 5, tmp);
     free(tmp);
 
-    for (i = 0; i < count; i++){
+    for (i = 0; i < 6; i++){
         printf("%-3d", buf[i]);
         if (i && !(i%10))
             printf("\n");

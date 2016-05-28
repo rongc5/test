@@ -18,7 +18,7 @@ class Database:
 
     host = 'localhost'
     user = 'root'
-    password = '123'
+    password = '123456'
     db = 'test'
 
     def __init__(self):
@@ -49,29 +49,30 @@ if __name__ == "__main__":
     db = Database()
 
     #CleanUp Operation
-    del_query = "DELETE FROM basic_python_database"
-    db.insert(del_query)
+    #del_query = "DELETE FROM basic_python_database"
+    #db.insert(del_query)
 
     # Data Insert into the table
-    query = """
-        INSERT INTO basic_python_database
-        (`name`, `age`)
-        VALUES
-        ('Mike', 21),
-        ('Michael', 21),
-        ('Imran', 21)
-        """
+    #query = """
+        #INSERT INTO basic_python_database
+        #(`name`, `age`)
+        #VALUES
+        #('Mike', 21),
+        #('Michael', 21),
+        #('Imran', 21)
+        #"""
 
     # db.query(query)
-    db.insert(query)
+    #db.insert(query)
 
     # Data retrieved from the table
-    select_query = """
-        SELECT * FROM basic_python_database
-        WHERE age = 21
-        """
+    #select_query = """
+        #SELECT * FROM basic_python_database
+        #WHERE age = 21
+        #"""
 
-    people = db.query(select_query)
+    str = "select * from epg_channle;"
+    people = db.query(str)
 
     for person in people:
-        print "Found %s " % person['name']
+        print "Found %s " % person
