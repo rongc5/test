@@ -1,0 +1,30 @@
+    CREATE TABLE `fileInfo` (
+            `fileId` INT(11) NOT NULL AUTO_INCREMENT,
+            `fileName` char(50) NOT NULL,
+            `fileContent` char(50) NOT NULL,
+            PRIMARY KEY (`fileId`)
+            ) ;
+
+
+
+    CREATE TABLE `answerInfo` (
+            `answerId` INT(11) NOT NULL AUTO_INCREMENT,
+            `programId` INT(11) NOT NULL,
+            `srcCode` varchar(4096) NOT NULL,
+            `lang` char(50) NOT NULL,
+            `inPutFileId` INT(11) NOT NULL DEFAULT 0,
+            `questionId` INT(11) NOT NULL,
+            `resultInfo` varchar(2048) DEFAULT NULL,
+            `isRun` tinyint NOT NULL DEFAULT 0,
+            PRIMARY KEY (`answerId`)
+            ) ;
+
+    CREATE TABLE `questionInfo` (
+            `questionId` INT(11) NOT NULL AUTO_INCREMENT,
+            `questionName` varchar(50) NOT NULL,
+            `questionContent` varchar(1024) DEFAULT NULL,
+            `stdAnswer` varchar(120) NOT NULL,
+            `inPutFileId` INT(11) NOT NULL,
+            PRIMARY KEY (`questionId`)
+            ) ;
+
