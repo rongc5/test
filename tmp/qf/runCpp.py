@@ -2,17 +2,20 @@
 #coding=utf-8
 
 import os
+from myLog import *
+from utils import *
 
 class RunCpp:
     def __init__(self, log):
         self.log = log
-        #self.lang = ''
-        #self.srcCode = ''
-        #self.inPutfile = ''
-        #self.stdRes = ''
-        #self.answerId = 0
-        #self.srcFile = ''
-        self.rest()
+        self.lang = ''
+        self.srcCode = ''
+        self.inPutFile = ''
+        self.stdRes = ''
+        self.answerId = 0
+        self.srcFile = ''
+        self.exeFile = ''
+        self.errFile = ''
 
     def rest(self):
         self.lang = ''
@@ -87,9 +90,9 @@ class RunCpp:
         self.rest()
         self.lang = lang
         self.srcCode = srcCode
-        self.stdRes = ''
+        self.stdRes = stdRes
         self.inPutfileContent = inPutfileContent
-        self.answerId = 0
+        self.answerId = answerId
 
         self.genBuildFile()
         self.build()

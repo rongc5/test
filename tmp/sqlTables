@@ -1,4 +1,4 @@
-    CREATE TABLE `fileInfo` (
+    CREATE TABLE IF NOT EXISTS `fileInfo` (
             `fileId` INT(11) NOT NULL AUTO_INCREMENT,
             `fileName` char(50) NOT NULL,
             `fileContent` char(50) NOT NULL,
@@ -7,7 +7,7 @@
 
 
 
-    CREATE TABLE `answerInfo` (
+    CREATE TABLE IF NOT EXISTS `answerInfo` (
             `answerId` INT(11) NOT NULL AUTO_INCREMENT,
             `programId` INT(11) NOT NULL,
             `srcCode` varchar(4096) NOT NULL,
@@ -19,7 +19,7 @@
             PRIMARY KEY (`answerId`)
             ) ;
 
-    CREATE TABLE `questionInfo` (
+    CREATE TABLE IF NOT EXISTS `questionInfo` (
             `questionId` INT(11) NOT NULL AUTO_INCREMENT,
             `questionName` varchar(50) NOT NULL,
             `questionContent` varchar(1024) DEFAULT NULL,

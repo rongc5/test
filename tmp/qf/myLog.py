@@ -3,7 +3,7 @@
 import logging
 
 
-def getLoger(log_name, level=logging.INFO):
+def getLoger(log_name, level=logging.DEBUG):
     """
     获取日志对象
     Args:
@@ -19,7 +19,7 @@ def getLoger(log_name, level=logging.INFO):
 
     # 创建文件处理器
     file_handler = logging.FileHandler('%s.log' % log_name.upper())
-    file_handler.setLevel(logging.INFO)
+    file_handler.setLevel(logging.DEBUG)
     # 创建输出处理器
     stream_handler = logging.StreamHandler()
 

@@ -1,11 +1,12 @@
 #!/usr/bin/env python
 #coding=utf-8
 
-import MySQLdb, myLog
+import MySQLdb
+from myLog import *
 
 OperationalError = MySQLdb.OperationalError
 class MySQL:
-    def __init__(self,host,user,password,port=3306,charset="utf8",logger=myLog.getLoger('mysql')):
+    def __init__(self,logger, host,user,password,port=3306,charset="utf8"):
         self.host=host
         self.port=port
         self.user=user
@@ -68,7 +69,7 @@ class MySQL:
         self.conn.close()
 
 if __name__ == '__main__':
-    sql = MySQL('localhost','root','123456')
+    sql = MySQL(getLoger(),'localhost','root','123456')
 
     sql.selectDb('test')
     res = sql.select('select * from epg_channle;')

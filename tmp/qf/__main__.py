@@ -21,7 +21,7 @@ def getAnswerInfo(db, log):
 
     sql = '''select a.answerId as answerId,  a.programId as programId, a.srcCode
     as srcCode, a.lang as lang, a.inPutFileId as inPutFileId, a.questionId as questionId, b.fileContent as inPutFileContent,
-    c.stdAnswer as stdAnswer from answerInfo a , questionInfo c left join fileInfo b on a.inPutFileId = b.fileId where
+    c.stdAnswer as stdAnswer from answerInfo a , questionInfo c left join fileInfo b on inPutFileId = b.fileId where
     a.isRun = 0 and a.questionId = c.questionId limit 1000;'''
 
 
@@ -47,7 +47,7 @@ def updateAnswerInfo(db, log, answerId, resultInfo):
 
 
 def doJobs(db, log):
-    rCpp = RunCpp()
+    rCpp = RunCpp(log)
 
     while 1:
         res = getAnswerInfo(db,log)
@@ -69,6 +69,6 @@ if __name__ == '__main__':
     os.chdir(work_path)
     print("hello world")
     logger = getLoger('qf')
-    db = MySQL('localhost','root','123456',logger=logger)
+    db = MySQL(logger, 'localhost','root','123456')
     doJobs(db, logger)
 
