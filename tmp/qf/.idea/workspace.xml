@@ -29,10 +29,8 @@
       <file leaf-file-name="mysql.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/mysql.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="61" column="26" selection-start="1793" selection-end="1793" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1539">
-              <folding>
-                <element signature="e#37#51#0" expanded="true" />
-              </folding>
+            <state line="61" column="26" selection-start="1793" selection-end="1793" vertical-scroll-proportion="0.0" vertical-offset="1159" max-vertical-offset="1539">
+              <folding />
             </state>
           </provider>
         </entry>
@@ -59,9 +57,7 @@
         <entry file="file://$PROJECT_DIR$/runCpp.py">
           <provider selected="true" editor-type-id="text-editor">
             <state line="99" column="17" selection-start="2543" selection-end="2543" vertical-scroll-proportion="0.0" vertical-offset="1463" max-vertical-offset="2223">
-              <folding>
-                <element signature="e#37#46#0" expanded="true" />
-              </folding>
+              <folding />
             </state>
           </provider>
         </entry>
@@ -70,26 +66,24 @@
         <entry file="file://$PROJECT_DIR$/__main__.py">
           <provider selected="true" editor-type-id="text-editor">
             <state line="39" column="0" selection-start="1048" selection-end="1054" vertical-scroll-proportion="0.0" vertical-offset="513" max-vertical-offset="1520">
-              <folding>
-                <element signature="e#38#58#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="utils.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/utils.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="16" column="31" selection-start="283" selection-end="283" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="456">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="test.py" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="utils.py" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/utils.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="20" column="28" selection-start="392" selection-end="392" vertical-scroll-proportion="0.6451613" vertical-offset="0" max-vertical-offset="665">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="test.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/../test.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="95" column="15" selection-start="2782" selection-end="2782" vertical-scroll-proportion="0.7741935" vertical-offset="1349" max-vertical-offset="2565">
+            <state line="126" column="25" selection-start="3734" selection-end="3746" vertical-scroll-proportion="0.0" vertical-offset="1229" max-vertical-offset="2603">
               <folding>
                 <element signature="e#37#59#0" expanded="true" />
               </folding>
@@ -119,10 +113,10 @@
         <option value="$PROJECT_DIR$/mysql.py" />
         <option value="$PROJECT_DIR$/myLog.py" />
         <option value="$PROJECT_DIR$/__init__.py" />
-        <option value="$PROJECT_DIR$/utils.py" />
         <option value="$PROJECT_DIR$/__main__.py" />
         <option value="$PROJECT_DIR$/runCpp.py" />
         <option value="$PROJECT_DIR$/../test.py" />
+        <option value="$PROJECT_DIR$/utils.py" />
       </list>
     </option>
   </component>
@@ -198,12 +192,12 @@
   <component name="PropertiesComponent">
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="recentsLimit" value="5" />
     <property name="options.lastSelected" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+    <property name="recentsLimit" value="5" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/.." />
     <property name="FullScreen" value="false" />
-    <property name="options.splitter.details.proportions" value="0.2" />
     <property name="options.searchVisible" value="true" />
+    <property name="options.splitter.details.proportions" value="0.2" />
   </component>
   <component name="PyConsoleOptionsProvider">
     <option name="myPythonConsoleState">
@@ -314,6 +308,9 @@
       <option name="PARAMETERS" value="" />
       <method />
     </configuration>
+    <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug" singleton="true">
+      <method />
+    </configuration>
     <configuration default="true" type="tests" factoryName="Unittests">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -335,9 +332,6 @@
       <option name="PUREUNITTEST" value="true" />
       <option name="PARAMS" value="" />
       <option name="USE_PARAM" value="false" />
-      <method />
-    </configuration>
-    <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug" singleton="true">
       <method />
     </configuration>
     <configuration default="true" type="tests" factoryName="Doctests">
@@ -478,26 +472,18 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/../../python/AnalyzeUserEnjoyed.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="14" column="16" selection-start="529" selection-end="535" vertical-scroll-proportion="0.0" vertical-offset="171" max-vertical-offset="4218">
-          <folding />
-        </state>
+        <state line="14" column="16" selection-start="529" selection-end="535" vertical-scroll-proportion="0.0" vertical-offset="171" max-vertical-offset="4218" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="1" column="13" selection-start="35" selection-end="35" vertical-scroll-proportion="0.032258064" vertical-offset="0" max-vertical-offset="589">
-          <folding>
-            <element signature="e#37#56#0" expanded="false" />
-          </folding>
-        </state>
+        <state line="1" column="13" selection-start="35" selection-end="35" vertical-scroll-proportion="0.032258064" vertical-offset="0" max-vertical-offset="589" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/mysql.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="61" column="26" selection-start="1793" selection-end="1793" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1539">
-          <folding>
-            <element signature="e#37#51#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -508,37 +494,33 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/utils.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="16" column="31" selection-start="283" selection-end="283" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="456">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/__main__.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="39" column="0" selection-start="1048" selection-end="1054" vertical-scroll-proportion="0.0" vertical-offset="513" max-vertical-offset="1520">
-          <folding>
-            <element signature="e#38#58#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/runCpp.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="99" column="17" selection-start="2543" selection-end="2543" vertical-scroll-proportion="0.0" vertical-offset="1463" max-vertical-offset="2223">
-          <folding>
-            <element signature="e#37#46#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/../test.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="95" column="15" selection-start="2782" selection-end="2782" vertical-scroll-proportion="0.7741935" vertical-offset="1349" max-vertical-offset="2565">
+        <state line="126" column="25" selection-start="3734" selection-end="3746" vertical-scroll-proportion="0.0" vertical-offset="1229" max-vertical-offset="2603">
           <folding>
             <element signature="e#37#59#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/utils.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="20" column="28" selection-start="392" selection-end="392" vertical-scroll-proportion="0.6451613" vertical-offset="0" max-vertical-offset="665">
+          <folding />
         </state>
       </provider>
     </entry>

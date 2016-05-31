@@ -4,10 +4,10 @@
 
 
 def trimStr(str):
-    str.replace(" ", "")
-    str.replace("\r", "")
-    str.replace("\t", "")
-    str.replace("\n", "")
+    str = str.replace(" ", "")
+    str = str.replace("\r", "")
+    str = str.replace("\t", "")
+    str = str.replace("\n", "")
     return str
 
 def cmp2str(str1, str2):
@@ -15,4 +15,15 @@ def cmp2str(str1, str2):
     str2 = trimStr(str2)
 
     return id(str1) == id(str2)
+
+if __name__ == '__main__':
+    str = '''if (id == -1){
+                printf("%d\\n", id);
+                        return ;
+                        }
+
+                            printf("id:%d, %d\\n", id, a[id]);'''
+    #str = str.replace("\n", "\\n")
+    print str
+
 
