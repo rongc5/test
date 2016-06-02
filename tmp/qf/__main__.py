@@ -5,7 +5,7 @@
 from myLog import  *
 from mysql import *
 from runCpp import *
-import os, time
+import os, time, base64
 
 #工作目录
 work_path = '/tmp/qf'
@@ -58,8 +58,9 @@ def doJobs(db, log):
 
         for item in res:
             if 'gcc' in item['lang'] or 'g++' in item['lang']:
-                resInfo = rCpp.buildAndrun(item['answerId'], item['lang'], item['srcCode'], item['stdAnswer'], item['inPutFileContent'])
-                updateAnswerInfo(db, log, item['answerId'], resInfo)
+                resInfo = rCpp.buildAndrun(item['answerId'], item['lang'], base64.decodestring(item['srcCode']),
+                                           base64.decodestring(item['stdAnswer']), base64.decodestring(item['inPutFileContent']))
+                updateAnswerInfo(db, log, item['answerId'], base64.encodestring(resInfo))
 
 if __name__ == '__main__':
 

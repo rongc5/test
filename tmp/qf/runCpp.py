@@ -12,7 +12,7 @@ class RunCpp:
         self.srcCode = ''
         self.inPutFile = ''
         self.stdRes = ''
-        self.answerId = 0
+        self.answerId = ''
         self.srcFile = ''
         self.exeFile = ''
         self.errFile = ''
@@ -22,7 +22,7 @@ class RunCpp:
         self.srcCode = ''
         self.inPutfileContent = ''
         self.stdRes = ''
-        self.answerId = 0
+        self.answerId = ''
         self.errContent = ''
 
         if os.path.exists(self.srcFile):
@@ -49,22 +49,22 @@ class RunCpp:
         elif 'g++' in self.lang:
             suffix = '.cpp'
         else:
-            self.log.warning("lang Error %s answerId %u" % (self.lang, self.answerId))
+            self.log.warning("lang Error %s answerId %s" % (self.lang, self.answerId))
 
-        self.srcFile = '%u%s' % (self.answerId, suffix)
+        self.srcFile = '%s%s' % (self.answerId, suffix)
         fp = open(self.srcFile, 'w+')
         fp.write(self.srcCode)
         fp.close()
 
         if self.inPutfileContent:
-            self.inPutFile = '%u.txt' % (self.answerId)
+            self.inPutFile = '%s.txt' % (self.answerId)
             fp = open(self.inPutfileContent, 'w+')
             fp.write(self.inPutfileContent)
             fp.close()
 
 
-        self.exeFile = '%u.exe' % (self.answerId)
-        self.errFile = '%u.err' % (self.answerId)
+        self.exeFile = '%s.exe' % (self.answerId)
+        self.errFile = '%s.err' % (self.answerId)
 
 
     def build(self):
@@ -75,6 +75,7 @@ class RunCpp:
         cmd = ''
         if self.inPutFile:
             cmd = './%s %s 2>&1 > %s' % (self.exeFile, self.inPutFile, self.errFile)
+            self.log.info("%s", cmd)
         else:
             cmd = './%s 2>&1 > %s' % (self.exeFile, self.errFile)
 
@@ -107,5 +108,4 @@ class RunCpp:
 
 
 
-if __name__ == '__main__':
-    pass
+if __name__ == '__main_

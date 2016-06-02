@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #coding=utf-8
 
-import sys, os, random
+import sys, os, random, base64
 
 
 from qf import *
@@ -79,23 +79,22 @@ class genTestData:
 
         fp = open(resFile, "r")
         stdAnswer = str(fp.read())
-        #stdAnswer = repr(stdAnswer)[1:-1]
         fp.close()
 
         inPutFileId = '0'
         if inputFile.strip():
             fp = open(inputFile, "r")
             inputFileContent = str(fp.read())
-            #inputFileContent = repr(inputFileContent)[1:-1]
             fp.close()
 
-            sql = '''insert into fileInfo(fileName, fileContent) values('%s', '%s')''' % (inputFile, inputFileContent)
+            sql = '''insert into fileInfo(fileName, fileContent) values('%s', '%s')''' % (inputFile, base64.encodestring(inputFileContent))
             self.db.exesql(sql)
 
             sql ='''SELECT LAST_INSERT_ID();'''
             inPutFileId = self.db.select(sql)[0]['LAST_INSERT_ID()']
 
-        sql = '''insert into questionInfo(questionName, questionContent, stdAnswer, inPutFileId) values('%s', '%s', '%s','%s')''' % ('', strContent, stdAnswer, inPutFileId)
+        sql = '''insert into questionInfo(questionName, questionContent, stdAnswer, inPutFileId)
+         values('%s', '%s', '%s','%s')''' % ('', base64.encodestring(strContent), base64.encodestring(stdAnswer), inPutFileId)
         self.db.exesql(sql)
         self.log.info("sql: %s", sql)
         sql ='''SELECT LAST_INSERT_ID();'''
@@ -105,7 +104,7 @@ class genTestData:
 
         #print(strContent)
         sql = '''insert into answerInfo(programId, srcCode, lang, inPutFileId, questionId, resultInfo) values('%s', '%s',
-        '%s', '%s', '%s', '%s')''' % (programId, strContent, lang, inPutFileId, questionId, '')
+        '%s', '%s', '%s', '%s')''' % (programId, base64.encodestring(strContent), lang, inPutFileId, questionId, '')
         self.log.info("sql: %s", sql)
         self.db.exesql(sql)
 
