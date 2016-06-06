@@ -1,10 +1,14 @@
-JAVAC=javac
-sources = $(wildcard *.java)
-classes = $(sources:.java=.class)
+JFLAGS = -g
+JC = javac
+.SUFFIXES: .java .class
+.java.class:
+	$(JC) $(JFLAGS) $*.java
 
-all:$(class)
+CLASSES = $(wildcard *.java)
+
+default: classes
+
+classes: $(CLASSES:.java=.class)
 
 clean:
-    rm -f *.class
-%.class:%.java
-    $(JAVAC) $<
+	rm -f *.class
