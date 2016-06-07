@@ -65,10 +65,10 @@ class genTestData:
         cmd = ''
 
         suffix = srcFile[srcFile.find('.'):]
-        if '.c' in suffix:
+        if '.c' == suffix:
             lang = 'gcc'
             cmd = '%s -o app %s' %(lang, srcFile)
-        elif '.cpp' in suffix:
+        elif '.cpp' == suffix:
             lang = 'g++'
             cmd = '%s -o app %s' %(lang, srcFile)
 

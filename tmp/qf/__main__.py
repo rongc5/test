@@ -5,11 +5,17 @@
 from myLog import  *
 from mysql import *
 from runCpp import *
+
 import os, time, base64
+
+from  runJava import *
 
 #工作目录
 work_path = '/tmp/qf'
 
+
+#makefile 目录
+makefile_path = ''
 
 
 def getAnswerInfo(db, log):
@@ -57,13 +63,24 @@ def doJobs(db, log):
             continue
 
         for item in res:
+
+            inPutFileContent = item['inPutFileContent'].strip()
+            if inPutFileContent:
+                inPutFileContent = base64.decodestring(inPutFileContent)
+
             if 'gcc' in item['lang'] or 'g++' in item['lang']:
+
                 resInfo = rCpp.buildAndrun(item['answerId'], item['lang'], base64.decodestring(item['srcCode']),
-                                           base64.decodestring(item['stdAnswer']), base64.decodestring(item['inPutFileContent']))
+                                           base64.decodestring(item['stdAnswer']), makefile_path, inPutFileContent)
                 updateAnswerInfo(db, log, item['answerId'], base64.encodestring(resInfo))
+
+            elif 'javac' in item['lang']:
+                pass
+
 
 if __name__ == '__main__':
 
+    makefile_path = '%s/%s' % (os.getcwd(), 'script')
 
     cmd = 'mkdir -p %s' % (work_path)
     os.system(cmd)

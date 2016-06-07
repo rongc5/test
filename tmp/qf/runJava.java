@@ -5,7 +5,7 @@ import os, sys
 from myLog import *
 from utils import *
 
-class RunCpp:
+class RunJava:
     def __init__(self, log):
         self.log = log
         self.lang = ''
@@ -50,12 +50,9 @@ class RunCpp:
         os.chdir(path)
 
         suffix = ''
-        if 'gcc' in self.lang:
-            suffix = '.c'
-            self.mk = 'c.mk'
-        elif 'g++' in self.lang:
-            suffix = '.cpp'
-            self.mk = 'cpp.mk'
+        if 'java' in self.lang:
+            suffix = '.java'
+            self.mk = 'java.mk'
         else:
             self.log.warning("lang Error %s answerId %s" % (self.lang, self.answerId))
 
@@ -86,9 +83,9 @@ class RunCpp:
     def run(self):
         cmd = ''
         if self.inPutfileContent.strip():
-            cmd = './%s %s 2>&1 > %s' % (self.exeFile, self.inPutFile, self.errFile)
+            cmd = 'java ./%s %s 2>&1 > %s' % (self.exeFile, self.inPutFile, self.errFile)
         else:
-            cmd = './%s 2>&1 > %s' % (self.exeFile, self.errFile)
+            cmd = 'java ./%s 2>&1 > %s' % (self.exeFile, self.errFile)
 
         os.system(cmd)
 
