@@ -68,14 +68,21 @@ class genTestData:
         if '.c' == suffix:
             lang = 'gcc'
             cmd = '%s -o app %s' %(lang, srcFile)
+            os.system(cmd)
+            cmd = './%s > %s' % ('app', resFile)
+            os.system(cmd)
         elif '.cpp' == suffix:
             lang = 'g++'
             cmd = '%s -o app %s' %(lang, srcFile)
-
-        os.system(cmd)
-        cmd = './%s > %s' % ('app', resFile)
-        print "cmd: ",cmd
-        os.system(cmd)
+            os.system(cmd)
+            cmd = './%s > %s' % ('app', resFile)
+            os.system(cmd)
+        elif '.java' == suffix:
+            lang = 'javac'
+            cmd = '%s -g %s' % (lang, srcFile)
+            os.system(cmd)
+            cmd = 'java  %s > %s' % (srcFile[0:srcFile.find('.')], resFile)
+            os.system(cmd)
 
         fp = open(resFile, "r")
         stdAnswer = str(fp.read())

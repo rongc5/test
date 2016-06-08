@@ -5,10 +5,9 @@
 from myLog import  *
 from mysql import *
 from runCpp import *
-
+from runJava import *
 import os, time, base64
 
-from  runJava import *
 
 #工作目录
 work_path = '/tmp/qf'
@@ -19,11 +18,6 @@ makefile_path = ''
 
 
 def getAnswerInfo(db, log):
-
-    #sql = '''select a.answerId as answerId,  a.programId as programId, a.srcCode
-    #as srcCode, a.lang as lang, a.inPutFileId as inPutFileId, a.questionId as questionId, b.fileContent as inPutFileContent
-    #from answerInfo a left join fileInfo b on a.inPutFileId = b.fileId where a.isRun = 0 limit 1000;'''
-
 
     sql = '''select a.answerId as answerId,  a.programId as programId, a.srcCode
     as srcCode, a.lang as lang, a.inPutFileId as inPutFileId, a.questionId as questionId, b.fileContent as inPutFileContent,
@@ -54,15 +48,17 @@ def updateAnswerInfo(db, log, answerId, resultInfo):
 
 def doJobs(db, log):
     rCpp = RunCpp(log)
+    rJava = RunJava(log)
 
     while 1:
         res = getAnswerInfo(db,log)
-        print res
+        print("doJobs ===> len = %u", len(res))
         if len(res) <= 0:
             time.sleep(10)
             continue
 
         for item in res:
+
 
             inPutFileContent = item['inPutFileContent'].strip()
             if inPutFileContent:
@@ -74,8 +70,10 @@ def doJobs(db, log):
                                            base64.decodestring(item['stdAnswer']), makefile_path, inPutFileContent)
                 updateAnswerInfo(db, log, item['answerId'], base64.encodestring(resInfo))
 
-            elif 'javac' in item['lang']:
-                pass
+            elif 'java' in item['lang']:
+                resInfo = rJava.buildAndrun(item['answerId'], item['lang'], base64.decodestring(item['srcCode']),
+                                           base64.decodestring(item['stdAnswer']), makefile_path, inPutFileContent)
+                updateAnswerInfo(db, log, item['answerId'], base64.encodestring(resInfo))
 
 
 if __name__ == '__main__':
@@ -85,7 +83,7 @@ if __name__ == '__main__':
     cmd = 'mkdir -p %s' % (work_path)
     os.system(cmd)
     os.chdir(work_path)
-    print("hello world")
+
     logger = getLoger('qf')
     db = MySQL(logger, 'localhost','root','123456')
     doJobs(db, logger)

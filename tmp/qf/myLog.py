@@ -19,7 +19,7 @@ def getLoger(log_name, level=logging.DEBUG):
 
     # 创建文件处理器
     file_handler = logging.FileHandler('%s.log' % log_name.upper())
-    file_handler.setLevel(logging.DEBUG)
+    file_handler.setLevel(logging.INFO)
     # 创建输出处理器
     stream_handler = logging.StreamHandler()
 

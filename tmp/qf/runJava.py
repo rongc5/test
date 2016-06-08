@@ -14,10 +14,10 @@ class RunJava:
         self.stdRes = ''
         self.answerId = ''
         self.srcFile = ''
-        self.exeFile = ''
         self.errFile = ''
         self.mk = ''
         self.makefile_path = ''
+        self.path = ''
 
     def rest(self):
         self.lang = ''
@@ -29,13 +29,12 @@ class RunJava:
 
         self.srcFile = ''
         self.inPutFile = ''
-        self.exeFile = ''
         self.errFile = ''
         self.mk = ''
         self.makefile_path = ''
+        self.path = ''
 
     def clear(self):
-        os.chdir('../')
         cmd = 'rm -rf %s' % (self.answerId)
         os.system(cmd)
 
@@ -44,10 +43,9 @@ class RunJava:
 
     def genBuildFile(self):
 
-        cmd = 'mkdir -p %s ; cd ./%s' % (self.answerId, self.answerId)
+        cmd = 'mkdir -p %s' % (self.answerId)
         os.system(cmd)
-        path = '%s/%s' % (os.getcwd(), self.answerId)
-        os.chdir(path)
+        self.path = '%s/%s' % (os.getcwd(), self.answerId)
 
         suffix = ''
         if 'java' in self.lang:
@@ -56,36 +54,34 @@ class RunJava:
         else:
             self.log.warning("lang Error %s answerId %s" % (self.lang, self.answerId))
 
-        cmd = 'cp %s/%s .' % (self.makefile_path, self.mk)
+        cmd = 'cp %s/%s %s/' % (self.makefile_path, self.mk, self.path)
         os.system(cmd)
 
-        self.srcFile = '%s%s' % (self.answerId, suffix)
+        self.srcFile = '%s/%s%s' % (self.path,self.answerId, suffix)
         fp = open(self.srcFile, 'w+')
         fp.write(self.srcCode)
         fp.close()
 
         if self.inPutfileContent.strip():
-            self.inPutFile = '%s.txt' % (self.answerId)
+            self.inPutFile = '%s/%s.txt' % (self.path,self.answerId)
             fp = open(self.inPutFile, 'w+')
             fp.write(self.inPutfileContent)
             fp.close()
 
-
-        self.exeFile = '%s.exe' % (self.answerId)
-        self.errFile = '%s.err' % (self.answerId)
+        self.errFile = '%s/%s.err' % (self.path,self.answerId)
 
 
 
     def build(self):
-        cmd = 'make -f %s TARGET=%s 2> %s' % (self.mk, self.exeFile, self.errFile)
+        cmd = 'make -f %s 2> %s' % (self.mk, self.errFile)
         os.system(cmd)
 
     def run(self):
         cmd = ''
         if self.inPutfileContent.strip():
-            cmd = 'java ./%s %s 2>&1 > %s' % (self.exeFile, self.inPutFile, self.errFile)
+            cmd = 'java ./%s %s 2>&1 > %s' % (self.answerId, self.inPutFile, self.errFile)
         else:
-            cmd = 'java ./%s 2>&1 > %s' % (self.exeFile, self.errFile)
+            cmd = 'java ./%s 2>&1 > %s' % (self.answerId, self.errFile)
 
         os.system(cmd)
 
@@ -109,12 +105,12 @@ class RunJava:
 
         self.getErrInfo()
         if self.errContent.strip():
-            self.clear()
+            #self.clear()
             return self.errContent
         self.run()
 
         self.getErrInfo()
-        self.clear()
+        #self.clear()
         return self.errContent
 
 

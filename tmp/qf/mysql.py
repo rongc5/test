@@ -32,6 +32,8 @@ class MySQL:
 
     def fetchAll(self):
         result=self.cur.fetchall()
+        print("fetchAll ===> len = %s", result)
+        print("fetchAll ===> len = %u", len(result))
         desc =self.cur.description
         d = []
         for inv in result:
