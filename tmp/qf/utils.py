@@ -14,16 +14,14 @@ def cmp2str(str1, str2):
     str1 = trimStr(str1)
     str2 = trimStr(str2)
 
-    return id(str1) == id(str2)
+    #print str1
+    #print str2
+    return str1 == str2
 
 if __name__ == '__main__':
-    str = '''if (id == -1){
-                printf("%d\\n", id);
-                        return ;
-                        }
-
-                            printf("id:%d, %d\\n", id, a[id]);'''
     #str = str.replace("\n", "\\n")
-    print str
+    str1 = "hello world\n"
+    str2 = "hello       wor       ld \n"
+    print cmp2str(str1, str2)
 
 

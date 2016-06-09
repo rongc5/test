@@ -1,0 +1,32 @@
+2016-06-09 20:20:28,861 test.py [line:60] INFO: test.java
+2016-06-09 20:20:29,542 test.py [line:107] INFO: sql: insert into questionInfo(questionName, questionContent, stdAnswer, inPutFileId)
+         values('', 'Y2xhc3MgQQp7CiAgICBwdWJsaWMgdm9pZCBmKCkKICAgIHsKICAgICAgICBTeXN0ZW0ub3V0LnBy
+aW50ZigiaGVsbG8gd29ybGRcbiIpOwogICAgfQp9CgpwdWJsaWMgY2xhc3MgdGVzdAp7CiAgICBw
+dWJsaWMgc3RhdGljIHZvaWQgbWFpbihTdHJpbmcgW10gYXJncykKICAgIHsKICAgICAgICBuZXcg
+QSgpLmYoKTsKICAgIH0KfQo=
+', 'aGVsbG8gd29ybGQK
+','0')
+2016-06-09 20:20:29,542 test.py [line:116] INFO: sql: insert into answerInfo(programId, srcCode, lang, inPutFileId, questionId, resultInfo) values('79375', 'Y2xhc3MgQQp7CiAgICBwdWJsaWMgdm9pZCBmKCkKICAgIHsKICAgICAgICBTeXN0ZW0ub3V0LnBy
+aW50ZigiaGVsbG8gd29ybGRcbiIpOwogICAgfQp9CgpwdWJsaWMgY2xhc3MgdGVzdAp7CiAgICBw
+dWJsaWMgc3RhdGljIHZvaWQgbWFpbihTdHJpbmcgW10gYXJncykKICAgIHsKICAgICAgICBuZXcg
+QSgpLmYoKTsKICAgIH0KfQo=
+',
+        'javac', '0', '30', '')
+2016-06-09 20:20:35,058 test.py [line:60] INFO: test39.cpp
+2016-06-09 20:20:37,868 test.py [line:107] INFO: sql: insert into questionInfo(questionName, questionContent, stdAnswer, inPutFileId)
+         values('', 'I2luY2x1ZGUgPHNldD4KI2luY2x1ZGUgPGlvc3RyZWFtPgoKdXNpbmcgbmFtZXNwYWNlIHN0ZDsK
+CmludCBtYWluKGludCBhcmdjLCBjaGFyICphcmd2W10pCnsKICAgIHNldDxpbnQ+IHRlc3Q7CiAg
+ICBzZXQ8aW50Pjo6aXRlcmF0b3IgaXQ7CgogICAgZm9yIChpbnQgaSA9IDA7IGkgPCAxMDsgaSsr
+KQogICAgICAgIHRlc3QuaW5zZXJ0KGkpOwoKICAgIGZvciAoaXQgPSB0ZXN0LmJlZ2luKCk7IGl0
+ICE9IHRlc3QuZW5kKCk7IGl0KyspCiAgICAgICAgc3RkOjpjb3V0IDw8ICppdCA8PCBzdGQ6OmVu
+ZGw7CgogICAgcmV0dXJuIDA7Cn0K
+', 'MAoxCjIKMwo0CjUKNgo3CjgKOQo=
+','0')
+2016-06-09 20:20:37,868 test.py [line:116] INFO: sql: insert into answerInfo(programId, srcCode, lang, inPutFileId, questionId, resultInfo) values('39283', 'I2luY2x1ZGUgPHNldD4KI2luY2x1ZGUgPGlvc3RyZWFtPgoKdXNpbmcgbmFtZXNwYWNlIHN0ZDsK
+CmludCBtYWluKGludCBhcmdjLCBjaGFyICphcmd2W10pCnsKICAgIHNldDxpbnQ+IHRlc3Q7CiAg
+ICBzZXQ8aW50Pjo6aXRlcmF0b3IgaXQ7CgogICAgZm9yIChpbnQgaSA9IDA7IGkgPCAxMDsgaSsr
+KQogICAgICAgIHRlc3QuaW5zZXJ0KGkpOwoKICAgIGZvciAoaXQgPSB0ZXN0LmJlZ2luKCk7IGl0
+ICE9IHRlc3QuZW5kKCk7IGl0KyspCiAgICAgICAgc3RkOjpjb3V0IDw8ICppdCA8PCBzdGQ6OmVu
+ZGw7CgogICAgcmV0dXJuIDA7Cn0K
+',
+        'g++', '0', '31', '')

@@ -39,8 +39,11 @@ class MySQL:
         for inv in result:
             _d = {}
             for i in range(0,len(inv)):
-                _d[desc[i][0]] = str(inv[i])
-                d.append(_d)
+                invStr = str(inv[i])
+                if invStr == 'None':
+                    invStr = ""
+                _d[desc[i][0]] = invStr
+            d.append(_d)
         return d
 
     def select(self, sql):

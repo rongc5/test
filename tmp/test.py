@@ -97,6 +97,7 @@ class genTestData:
             sql = '''insert into fileInfo(fileName, fileContent) values('%s', '%s')''' % (inputFile, base64.encodestring(inputFileContent))
             self.db.exesql(sql)
 
+            print sql
             sql ='''SELECT LAST_INSERT_ID();'''
             inPutFileId = self.db.select(sql)[0]['LAST_INSERT_ID()']
 

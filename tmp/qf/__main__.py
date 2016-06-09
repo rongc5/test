@@ -52,7 +52,7 @@ def doJobs(db, log):
 
     while 1:
         res = getAnswerInfo(db,log)
-        print("doJobs ===> len = %u", len(res))
+        #print("doJobs ===> len = %u", len(res))
         if len(res) <= 0:
             time.sleep(10)
             continue

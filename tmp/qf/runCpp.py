@@ -44,7 +44,7 @@ class RunCpp:
 
     def genBuildFile(self):
 
-        cmd = 'mkdir -p %s ; cd ./%s' % (self.answerId, self.answerId)
+        cmd = 'mkdir -p %s' % (self.answerId)
         os.system(cmd)
         path = '%s/%s' % (os.getcwd(), self.answerId)
         os.chdir(path)

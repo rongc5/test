@@ -17,7 +17,7 @@ class RunJava:
         self.errFile = ''
         self.mk = ''
         self.makefile_path = ''
-        self.path = ''
+        self.classNmae = ''
 
     def rest(self):
         self.lang = ''
@@ -32,9 +32,10 @@ class RunJava:
         self.errFile = ''
         self.mk = ''
         self.makefile_path = ''
-        self.path = ''
+        self.classNmae = ''
 
     def clear(self):
+        os.chdir("../")
         cmd = 'rm -rf %s' % (self.answerId)
         os.system(cmd)
 
@@ -45,7 +46,7 @@ class RunJava:
 
         cmd = 'mkdir -p %s' % (self.answerId)
         os.system(cmd)
-        self.path = '%s/%s' % (os.getcwd(), self.answerId)
+        os.chdir(self.answerId)
 
         suffix = ''
         if 'java' in self.lang:
@@ -54,21 +55,35 @@ class RunJava:
         else:
             self.log.warning("lang Error %s answerId %s" % (self.lang, self.answerId))
 
-        cmd = 'cp %s/%s %s/' % (self.makefile_path, self.mk, self.path)
+        cmd = 'cp %s/%s .' % (self.makefile_path, self.mk)
         os.system(cmd)
 
-        self.srcFile = '%s/%s%s' % (self.path,self.answerId, suffix)
+        self.errFile = '%s.err' % (self.answerId)
+
+        self.srcFile = '%s%s' % (self.answerId, suffix)
         fp = open(self.srcFile, 'w+')
         fp.write(self.srcCode)
         fp.close()
 
+        self.build()
+        cmd = '''cat %s | grep "public" | grep "class" > %s''' % (self.errFile, "tmp.txt")
+        os.system(cmd)
+        fp = open("tmp.txt", 'r')
+        self.classNmae = str(fp.read()).strip("\n").split(" ")[2]
+        fp.close()
+        cmd = 'mv %s %s%s' % (self.srcFile, self.classNmae, suffix)
+        print cmd
+        os.system(cmd)
+        self.srcFile = '%s%s' % (self.classNmae, suffix)
+        print self.srcFile
+
+
         if self.inPutfileContent.strip():
-            self.inPutFile = '%s/%s.txt' % (self.path,self.answerId)
+            self.inPutFile = '%s.txt' % (self.answerId)
             fp = open(self.inPutFile, 'w+')
             fp.write(self.inPutfileContent)
             fp.close()
 
-        self.errFile = '%s/%s.err' % (self.path,self.answerId)
 
 
 
@@ -79,9 +94,9 @@ class RunJava:
     def run(self):
         cmd = ''
         if self.inPutfileContent.strip():
-            cmd = 'java ./%s %s 2>&1 > %s' % (self.answerId, self.inPutFile, self.errFile)
+            cmd = 'java %s %s 2>&1 > %s' % (self.classNmae, self.inPutFile, self.errFile)
         else:
-            cmd = 'java ./%s 2>&1 > %s' % (self.answerId, self.errFile)
+            cmd = 'java %s 2>&1 > %s' % (self.classNmae, self.errFile)
 
         os.system(cmd)
 
@@ -105,12 +120,12 @@ class RunJava:
 
         self.getErrInfo()
         if self.errContent.strip():
-            #self.clear()
+            self.clear()
             return self.errContent
         self.run()
 
         self.getErrInfo()
-        #self.clear()
+        self.clear()
         return self.errContent
 
 
