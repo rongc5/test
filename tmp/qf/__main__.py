@@ -6,6 +6,8 @@ from myLog import  *
 from mysql import *
 from runCpp import *
 from runJava import *
+from runPhp import *
+from runJs import *
 import os, time, base64
 
 
@@ -49,6 +51,8 @@ def updateAnswerInfo(db, log, answerId, resultInfo):
 def doJobs(db, log):
     rCpp = RunCpp(log)
     rJava = RunJava(log)
+    rPhp = RunPhp(log)
+    rJs = RunJs(log)
 
     while 1:
         res = getAnswerInfo(db,log)
@@ -74,6 +78,15 @@ def doJobs(db, log):
                 resInfo = rJava.buildAndrun(item['answerId'], item['lang'], base64.decodestring(item['srcCode']),
                                            base64.decodestring(item['stdAnswer']), makefile_path, inPutFileContent)
                 updateAnswerInfo(db, log, item['answerId'], base64.encodestring(resInfo))
+            elif 'php' in item['lang']:
+                resInfo = rPhp.buildAndrun(item['answerId'], item['lang'], base64.decodestring(item['srcCode']),
+                                           base64.decodestring(item['stdAnswer']), makefile_path, inPutFileContent)
+                updateAnswerInfo(db, log, item['answerId'], base64.encodestring(resInfo))
+            elif 'node' in item['lang']:
+                resInfo = rJs.buildAndrun(item['answerId'], item['lang'], base64.decodestring(item['srcCode']),
+                                           base64.decodestring(item['stdAnswer']), makefile_path, inPutFileContent)
+                updateAnswerInfo(db, log, item['answerId'], base64.encodestring(resInfo))
+
 
 
 if __name__ == '__main__':

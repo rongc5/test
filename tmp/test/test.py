@@ -3,7 +3,7 @@
 
 import sys, os, random, base64
 
-
+sys.path.append("..")
 from qf import *
 
 
@@ -82,6 +82,14 @@ class genTestData:
             cmd = '%s -g %s' % (lang, srcFile)
             os.system(cmd)
             cmd = 'java  %s > %s' % (srcFile[0:srcFile.find('.')], resFile)
+            os.system(cmd)
+        elif '.php' == suffix:
+            lang = 'php'
+            cmd = '%s -f %s > %s' % (lang, srcFile, resFile)
+            os.system(cmd)
+        elif '.js' == suffix:
+            lang = 'node'
+            cmd = '%s %s > %s' % (lang, srcFile, resFile)
             os.system(cmd)
 
         fp = open(resFile, "r")
