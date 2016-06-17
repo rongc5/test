@@ -5,6 +5,9 @@ import os, sys
 from myLog import *
 from utils import *
 
+
+
+
 class RunCpp:
     def __init__(self, log):
         self.log = log
@@ -36,8 +39,8 @@ class RunCpp:
 
     def clear(self):
         os.chdir('../')
-        cmd = 'rm -rf %s' % (self.answerId)
-        os.system(cmd)
+        #cmd = 'rm -rf %s' % (self.answerId)
+        #os.system(cmd)
 
     def cmpResult(self):
         return cmp2str(self.stdRes, self.errContent)
@@ -98,6 +101,7 @@ class RunCpp:
         self.errContent = str(fp.read())
         fp.close()
 
+
     def buildAndrun(self, answerId, lang, srcCode, stdRes, makefile_path, inPutfileContent=''):
         self.rest()
         self.lang = lang
@@ -114,7 +118,20 @@ class RunCpp:
         if self.errContent.strip():
             self.clear()
             return self.errContent
-        self.run()
+
+        signal.signal(signal.SIGALRM, threadFun)
+        signal.alarm(3)
+        pid = os.fork()
+        if not pid:
+            self.run()
+            os._exit(0)
+        else:
+            setSubPid(pid)
+            try :
+                os.wait()
+                signal.alarm(0)
+            except OSError:
+                pass
 
         self.getErrInfo()
         self.clear()

@@ -13,6 +13,7 @@ class MySQL:
         self.password=password
         self.charset=charset
         self.logger = logger
+        self.db = ''
         try:
             self.conn=MySQLdb.connect(host=self.host,port=self.port,user=self.user,passwd=self.password)
             self.conn.autocommit(False)
@@ -26,13 +27,21 @@ class MySQL:
 
     def selectDb(self,db):
         try:
+            self.db = db
             self.conn.select_db(db)
         except MySQLdb.Error as e:
             self.logger.warning("Mysql Error %d: %s" % (e.args[0], e.args[1]))
 
+    def checkIsAlive(self):
+        try:
+            sql = "select NOW()"
+            self.cur.execute(sql)
+            results = self.fetchAll()
+        except MySQLdb.Error, e:
+            self.reConnect()
+
     def fetchAll(self):
         result=self.cur.fetchall()
-        print("fetchAll ===> len = %s", result)
         print("fetchAll ===> len = %u", len(result))
         desc =self.cur.description
         d = []
@@ -49,19 +58,23 @@ class MySQL:
     def select(self, sql):
         results = []
         try:
+            self.checkIsAlive()
             self.cur.execute(sql)
             results = self.fetchAll()
+            print results
         except MySQLdb.Error as e:
             self.logger.warning("Mysql Error:%s\nSQL:%s" %(e,sql))
         return results
 
     def exesql(self, sql):
         try:
+            self.checkIsAlive()
             self.cur.execute(sql)
             self.commit()
         except MySQLdb.Error as e:
             self.logger.warning("Mysql Error:%s\nSQL:%s" %(e,sql))
             self.rollback()
+            self.reConnect()
 
     def commit(self):
         self.conn.commit()
@@ -72,6 +85,20 @@ class MySQL:
     def close(self):
         self.cur.close()
         self.conn.close()
+
+    def reConnect(self):
+        self.close()
+        try:
+            self.conn=MySQLdb.connect(host=self.host,port=self.port,user=self.user,passwd=self.password)
+            self.conn.autocommit(False)
+            self.conn.set_character_set(self.charset)
+            self.cur=self.conn.cursor()
+            if self.db:
+                self.selectDb(self.db)
+        except MySQLdb.Error as e:
+            self.logger.warning("Mysql Error %d: %s" % (e.args[0], e.args[1]))
+
+
 
 if __name__ == '__main__':
     sql = MySQL(getLoger(),'localhost','root','123456')

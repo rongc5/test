@@ -122,7 +122,20 @@ class RunJava:
         if self.errContent.strip():
             self.clear()
             return self.errContent
-        self.run()
+
+        signal.signal(signal.SIGALRM, threadFun)
+        signal.alarm(3)
+        pid = os.fork()
+        if not pid:
+            self.run()
+            os._exit(0)
+        else:
+            setSubPid(pid)
+            try :
+                os.wait()
+                signal.alarm(0)
+            except OSError:
+                pass
 
         self.getErrInfo()
         self.clear()

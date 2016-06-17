@@ -72,21 +72,18 @@ def doJobs(db, log):
 
                 resInfo = rCpp.buildAndrun(item['answerId'], item['lang'], base64.decodestring(item['srcCode']),
                                            base64.decodestring(item['stdAnswer']), makefile_path, inPutFileContent)
-                updateAnswerInfo(db, log, item['answerId'], base64.encodestring(resInfo))
 
             elif 'java' in item['lang']:
                 resInfo = rJava.buildAndrun(item['answerId'], item['lang'], base64.decodestring(item['srcCode']),
                                            base64.decodestring(item['stdAnswer']), makefile_path, inPutFileContent)
-                updateAnswerInfo(db, log, item['answerId'], base64.encodestring(resInfo))
             elif 'php' in item['lang']:
                 resInfo = rPhp.buildAndrun(item['answerId'], item['lang'], base64.decodestring(item['srcCode']),
                                            base64.decodestring(item['stdAnswer']), makefile_path, inPutFileContent)
-                updateAnswerInfo(db, log, item['answerId'], base64.encodestring(resInfo))
             elif 'node' in item['lang']:
                 resInfo = rJs.buildAndrun(item['answerId'], item['lang'], base64.decodestring(item['srcCode']),
                                            base64.decodestring(item['stdAnswer']), makefile_path, inPutFileContent)
-                updateAnswerInfo(db, log, item['answerId'], base64.encodestring(resInfo))
 
+            updateAnswerInfo(db, log, item['answerId'], base64.encodestring(resInfo))
 
 
 if __name__ == '__main__':
