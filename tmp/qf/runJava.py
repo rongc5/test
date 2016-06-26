@@ -15,24 +15,13 @@ class RunJava:
         self.answerId = ''
         self.srcFile = ''
         self.errFile = ''
+        self.exec_input_file = ''
         self.mk = ''
         self.makefile_path = ''
         self.classNmae = ''
+        self.exec_input = ''
+        self.param = ''
 
-    def rest(self):
-        self.lang = ''
-        self.srcCode = ''
-        self.inPutfileContent = ''
-        self.stdRes = ''
-        self.answerId = ''
-        self.errContent = ''
-
-        self.srcFile = ''
-        self.inPutFile = ''
-        self.errFile = ''
-        self.mk = ''
-        self.makefile_path = ''
-        self.classNmae = ''
 
     def clear(self):
         os.chdir("../")
@@ -106,14 +95,14 @@ class RunJava:
         self.errContent = str(fp.read())
         fp.close()
 
-    def buildAndrun(self, answerId, lang, srcCode, stdRes, makefile_path, inPutfileContent=''):
+    def buildAndrun(self,item):
         self.rest()
-        self.lang = lang
-        self.srcCode = srcCode
-        self.stdRes = stdRes
-        self.inPutfileContent = inPutfileContent
-        self.answerId = answerId
-        self.makefile_path = makefile_path
+        self.lang = item['lang']
+        self.srcCode = item['srcCode']
+        self.stdRes = item['stdRes']
+        self.inPutfileContent = item['inPutfileContent']
+        self.answerId = item['answerId']
+        self.makefile_path = item['makefile_path']
 
         self.genBuildFile()
         self.build()

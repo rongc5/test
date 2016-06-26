@@ -18,29 +18,19 @@ class RunCpp:
         self.answerId = ''
         self.srcFile = ''
         self.exeFile = ''
+        self.outFile = ''
         self.errFile = ''
+        self.exec_input_file = ''
         self.mk = ''
         self.makefile_path = ''
+        self.exec_input = ''
+        self.param = ''
 
-    def rest(self):
-        self.lang = ''
-        self.srcCode = ''
-        self.inPutfileContent = ''
-        self.stdRes = ''
-        self.answerId = ''
-        self.errContent = ''
-
-        self.srcFile = ''
-        self.inPutFile = ''
-        self.exeFile = ''
-        self.errFile = ''
-        self.mk = ''
-        self.makefile_path = ''
 
     def clear(self):
         os.chdir('../')
-        #cmd = 'rm -rf %s' % (self.answerId)
-        #os.system(cmd)
+        cmd = 'rm -rf %s' % (self.answerId)
+        os.system(cmd)
 
     def cmpResult(self):
         return cmp2str(self.stdRes, self.errContent)
@@ -70,16 +60,20 @@ class RunCpp:
         fp.write(self.srcCode)
         fp.close()
 
-        if self.inPutfileContent.strip():
-            self.inPutFile = '%s.txt' % (self.answerId)
-            fp = open(self.inPutFile, 'w+')
-            fp.write(self.inPutfileContent)
-            fp.close()
+        self.inPutFile = '%s.txt' % (self.answerId)
+        fp = open(self.inPutFile, 'w+')
+        fp.write(self.inPutfileContent)
+        fp.close()
+
+        self.exec_input_file = '%s.exec_input' % (self.answerId)
+        fp = open(self.exec_input_file, 'w+')
+        fp.write(self.exec_input)
+        fp.close()
 
 
         self.exeFile = '%s.exe' % (self.answerId)
         self.errFile = '%s.err' % (self.answerId)
-
+        self.outFile = '%s.outFile' % (self.answerId)
 
 
     def build(self):
@@ -88,36 +82,41 @@ class RunCpp:
 
     def run(self):
         cmd = ''
-        if self.inPutfileContent.strip():
-            cmd = './%s %s 2>&1 > %s' % (self.exeFile, self.inPutFile, self.errFile)
-        else:
-            cmd = './%s 2>&1 > %s' % (self.exeFile, self.errFile)
+        cmd = './%s %s %s 2> %s < %s | head -c 1024 > %s' % (self.exeFile, self.param, self.inPutFile, self.errFile, self.exec_input_file, self.outFile)
 
         os.system(cmd)
 
 
-    def getErrInfo(self):
-        fp = open(self.errFile, 'r')
-        self.errContent = str(fp.read())
-        fp.close()
+    def getResInfo(self, file):
+        try:
+            fp = open(file, 'r')
+            self.errContent = str(fp.read())
+            fp.close()
+        except IOError:
+            pass
 
-
-    def buildAndrun(self, answerId, lang, srcCode, stdRes, makefile_path, inPutfileContent=''):
-        self.rest()
-        self.lang = lang
-        self.srcCode = srcCode
-        self.stdRes = stdRes
-        self.inPutfileContent = inPutfileContent
-        self.answerId = answerId
-        self.makefile_path = makefile_path
+    def buildAndrun(self, item):
+        self.lang = item['lang']
+        self.srcCode = item['srcCode']
+        self.stdRes = item['standard_output']
+        self.inPutfileContent = item['inPutfileContent']
+        self.answerId = item['answerId']
+        self.makefile_path = item['makefile_path']
+        self.exec_input = item['exec_input']
+        self.param = item['param']
 
         self.genBuildFile()
         self.build()
 
-        self.getErrInfo()
-        if self.errContent.strip():
+        resInfo = {}
+        resInfo['id'] = self.answerId
+        resInfo['status'] = 'ok'
+        if not os.path.exists(self.exeFile):
+            self.getResInfo(self.errFile)
+            resInfo['status'] = 'compile_error'
+            resInfo['exec_output'] = self.errContent
             self.clear()
-            return self.errContent
+            return resInfo
 
         signal.signal(signal.SIGALRM, threadFun)
         signal.alarm(3)
@@ -133,10 +132,15 @@ class RunCpp:
             except OSError:
                 pass
 
-        self.getErrInfo()
-        self.clear()
-        return self.errContent
+        if  os.path.exists(self.outFile):
+            self.getResInfo(self.outFile)
+            resInfo['exec_output'] = self.errContent
+        else:
+            self.getResInfo(self.errFile)
+            resInfo['exec_output'] = self.errContent
 
+        self.clear()
+        return resInfo
 
 
 if __name__ == '__main__':

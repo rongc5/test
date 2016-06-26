@@ -42,7 +42,7 @@ class MySQL:
 
     def fetchAll(self):
         result=self.cur.fetchall()
-        print("fetchAll ===> len = %u", len(result))
+        #print("fetchAll ===> len = %u", len(result))
         desc =self.cur.description
         d = []
         for inv in result:
@@ -61,7 +61,7 @@ class MySQL:
             self.checkIsAlive()
             self.cur.execute(sql)
             results = self.fetchAll()
-            print results
+            #print results
         except MySQLdb.Error as e:
             self.logger.warning("Mysql Error:%s\nSQL:%s" %(e,sql))
         return results

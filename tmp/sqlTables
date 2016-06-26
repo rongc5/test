@@ -27,4 +27,24 @@
             `inPutFileId` INT(11) NOT NULL,
             PRIMARY KEY (`questionId`)
             ) ;
+    CREATE TABLE IF NOT EXISTS `student_program`(
+            `id` int(11) NOT NULL AUTO_INCREMENT,
+            `program_id` int(11) NOT NULL DEFAULT '0' COMMENT '对应题目id 表： program_info_id',
+            `stu_id` int(11) NOT NULL DEFAULT '0' COMMENT '学员id',
+            `language` varchar(32) NOT NULL DEFAULT '' COMMENT '支持语言类型  php , java,  c语言 ( 值是c_cpp )  swift, nodejs (值是 javascript)',
+            `status` varchar(32) NOT NULL DEFAULT 'submit_ok' COMMENT '状态,初始状态submit_ok, 编译成功就更改成 ok, 失败就 compile_error , 语法错误就 run_error',
+            `source_code` text NOT NULL COMMENT '程序代码',
+            `create_time` datetime NOT NULL COMMENT '创建时间',
+            `filesize` int(11) NOT NULL DEFAULT '0' COMMENT '程序大小 byte, 根据 souce_code 里面的字节数算出大小， 这个我这边来处理',
+            `exec_lang` text NOT NULL,
+            `exec_input` text NOT NULL COMMENT '执行时的输入 键盘参数',
+            `exec_output` text NOT NULL COMMENT '执行后的输出结果',
+            `standard_output` text NOT NULL COMMENT '标准输出的结果',
+            `consum_time` int(11) NOT NULL DEFAULT '0' COMMENT '程序执行耗费时间',
+            `param` varchar(255) NOT NULL DEFAULT '' COMMENT '参数，比如 php -f ''aa'' ''bb''',
+            PRIMARY KEY (`id`),
+            KEY `program_id` (`program_id`),
+            KEY `stu_id` (`stu_id`),
+            KEY `language` (`language`)
 
+            )
