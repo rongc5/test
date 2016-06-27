@@ -26,8 +26,8 @@ class RunJava:
 
     def clear(self):
         os.chdir("../")
-        cmd = 'rm -rf %s' % (self.answerId)
-        os.system(cmd)
+        #cmd = 'rm -rf %s' % (self.answerId)
+        #os.system(cmd)
 
     def cmpResult(self):
         return cmp2str(self.stdRes, self.errContent)
@@ -59,14 +59,13 @@ class RunJava:
         cmd = '''cat %s | grep "public" | grep "class" > %s''' % (self.errFile, "tmp.txt")
         os.system(cmd)
         fp = open("tmp.txt", 'r')
-        self.classNmae = str(fp.read()).strip("\n").split(" ")[2]
+        tmpStr = str(fp.read())
+        if tmpStr.strip():
+            self.classNmae = tmpStr.strip("\n").split(" ")[2]
+            cmd = 'mv %s %s%s' % (self.srcFile, self.classNmae, suffix)
+            os.system(cmd)
+            self.srcFile = '%s%s' % (self.classNmae, suffix)
         fp.close()
-        cmd = 'mv %s %s%s' % (self.srcFile, self.classNmae, suffix)
-        print cmd
-        os.system(cmd)
-        self.srcFile = '%s%s' % (self.classNmae, suffix)
-        print self.srcFile
-
 
         if self.inPutfileContent.strip():
             self.inPutFile = '%s.txt' % (self.answerId)
@@ -104,7 +103,7 @@ class RunJava:
     def buildAndrun(self,item):
         self.lang = item['lang']
         self.srcCode = item['srcCode']
-        self.stdRes = item['stdRes']
+        self.stdRes = item['standard_output']
         self.inPutfileContent = item['inPutfileContent']
         self.answerId = item['answerId']
         self.makefile_path = item['makefile_path']

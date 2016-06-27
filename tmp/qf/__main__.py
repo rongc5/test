@@ -27,7 +27,7 @@ def getAnswerInfo(db, log):
 
     log.debug("SQL:%s" %(sql))
 
-    db.selectDb('coding')
+    db.selectDb('qf_admin_online')
 
     res = db.select(sql)
 
@@ -36,11 +36,11 @@ def getAnswerInfo(db, log):
 
 def updateAnswerInfo(db, log, resultInfo):
 
-    sql = '''UPDATE  student_program set status = '%s', exec_output = '%s' where id = '%s';''' % (resultInfo['status'], resultInfo['exec_output'], resultInfo['id'])
+    sql = '''UPDATE  student_program set status = '%s', exec_output = '%s' where id = '%s';''' % (db.escape_string(resultInfo['status']), db.escape_string(resultInfo['exec_output']), resultInfo['id'])
 
     log.debug("SQL:%s" % (sql))
 
-    db.selectDb('coding')
+    db.selectDb('qf_admin_online')
     db.exesql(sql)
 
 
@@ -61,11 +61,14 @@ def doJobs(db, log):
                 item['lang'] = 'gcc'
                 rCpp = RunCpp(log)
                 resInfo = rCpp.buildAndrun(item)
-                print "hello world", resInfo
 
-            #elif 'java' in item['lang']:
-            #    rJava = RunJava(log)
-            #    resInfo = rJava.buildAndrun(item)
+            elif 'java' == item['language']:
+		
+                item['lang'] = 'javac'
+                rJava = RunJava(log)
+                resInfo = rJava.buildAndrun(item)
+                print "hello world", resInfo
+		time.sleep(20)
             #elif 'php' in item['lang']:
             #    rPhp = RunPhp(log)
             #    resInfo = rPhp.buildAndrun(item)
@@ -87,6 +90,6 @@ if __name__ == '__main__':
     os.chdir(work_path)
 
     logger = getLoger('qf')
-    db = MySQL(logger, '115.28.35.83','coding','qf3g123')
+    db = MySQL(logger, '115.28.35.83','qf_admin','5dxZM1b!uS')
     doJobs(db, logger)
 

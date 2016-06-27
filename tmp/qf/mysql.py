@@ -25,6 +25,8 @@ class MySQL:
     def __del__(self):
         self.close()
 
+    def escape_string(self, str):
+	return self.conn.escape_string(str)
     def selectDb(self,db):
         try:
             self.db = db
