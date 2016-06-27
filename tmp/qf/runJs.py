@@ -15,18 +15,11 @@ class RunJs:
         self.answerId = ''
         self.srcFile = ''
         self.errFile = ''
+        self.exec_input = ''
+        self.param = ''
+        self.exec_input_file = ''
+        self.outFile = ''
 
-    def rest(self):
-        self.lang = ''
-        self.srcCode = ''
-        self.inPutfileContent = ''
-        self.stdRes = ''
-        self.answerId = ''
-        self.errContent = ''
-
-        self.srcFile = ''
-        self.inPutFile = ''
-        self.errFile = ''
 
     def clear(self):
         os.chdir('../')
@@ -62,6 +55,12 @@ class RunJs:
 
         self.errFile = '%s.err' % (self.answerId)
 
+        self.exec_input_file = '%s.exec_input' % (self.answerId)
+        fp = open(self.exec_input_file, 'w+')
+        fp.write(self.exec_input)
+        fp.close()
+
+        self.outFile = '%s.outFile' % (self.answerId)
 
 
     def build(self):
@@ -69,28 +68,33 @@ class RunJs:
 
     def run(self):
         cmd = ''
-        if self.inPutfileContent.strip():
-            cmd = '%s %s %s 2>&1 > %s' % (self.lang, self.srcFile, self.inPutFile, self.errFile)
-        else:
-            cmd = '%s %s 2>&1 > %s' % (self.lang, self.srcFile, self.errFile)
+
+        cmd = '%s %s %s %s 2>%s <%s | head -c 1024 > %s' % (self.lang, self.srcFile, self.param, self.inPutFile, self.errFile, self.exec_input_file, self.outFile)
 
         os.system(cmd)
 
 
-    def getErrInfo(self):
-        fp = open(self.errFile, 'r')
-        self.errContent = str(fp.read())
-        fp.close()
+    def getResInfo(self, file):
+        try:
+            fp = open(file, 'r')
+            self.errContent = str(fp.read())
+            fp.close()
+        except:
+            pass
 
-    def buildAndrun(self, answerId, lang, srcCode, stdRes, makefile_path, inPutfileContent=''):
-        self.rest()
-        self.lang = lang
-        self.srcCode = srcCode
-        self.stdRes = stdRes
-        self.inPutfileContent = inPutfileContent
-        self.answerId = answerId
+    def buildAndrun(self, item):
+        self.lang = item['lang']
+        self.srcCode = item['srcCode']
+        self.stdRes = item['stdRes']
+        self.inPutfileContent = item['inPutfileContent']
+        self.answerId = item['answerId']
+        self.exec_input = item['exec_input']
+        self.param = item['param']
 
         self.genBuildFile()
+
+        resInfo = {}
+        resInfo['id'] = self.answerId
 
 
         signal.signal(signal.SIGALRM, threadFun)
@@ -107,9 +111,20 @@ class RunJs:
             except OSError:
                 pass
 
-        self.getErrInfo()
+        if  os.path.exists(self.outFile):
+            self.getResInfo(self.outFile)
+            if self.cmpResult():
+                resInfo['status'] = 'ok'
+            else:
+                resInfo['status'] = 'run_error'
+            resInfo['exec_output'] = self.errContent
+        else:
+            self.getResInfo(self.errFile)
+            resInfo['status'] = 'run_error'
+            resInfo['exec_output'] = self.errContent
+
         self.clear()
-        return self.errContent
+        return resInfo
 
 
 

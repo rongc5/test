@@ -29,7 +29,7 @@
       <file leaf-file-name="mysql.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/mysql.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="48" column="19" selection-start="1430" selection-end="1430" vertical-scroll-proportion="0.0" vertical-offset="912" max-vertical-offset="2166">
+            <state line="48" column="19" selection-start="1431" selection-end="1431" vertical-scroll-proportion="0.0" vertical-offset="912" max-vertical-offset="2166">
               <folding />
             </state>
           </provider>
@@ -47,7 +47,7 @@
       <file leaf-file-name="runCpp.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/runCpp.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="123" column="23" selection-start="3099" selection-end="3099" vertical-scroll-proportion="0.0" vertical-offset="209" max-vertical-offset="2793">
+            <state line="57" column="54" selection-start="1336" selection-end="1342" vertical-scroll-proportion="0.0" vertical-offset="646" max-vertical-offset="2945">
               <folding />
             </state>
           </provider>
@@ -56,7 +56,7 @@
       <file leaf-file-name="runJava.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/runJava.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="129" column="22" selection-start="3396" selection-end="3396" vertical-scroll-proportion="0.0" vertical-offset="2451" max-vertical-offset="2907">
+            <state line="95" column="4" selection-start="2561" selection-end="2735" vertical-scroll-proportion="0.0" vertical-offset="1463" max-vertical-offset="3097">
               <folding />
             </state>
           </provider>
@@ -65,7 +65,7 @@
       <file leaf-file-name="runJs.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/runJs.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="99" column="22" selection-start="2471" selection-end="2471" vertical-scroll-proportion="0.0" vertical-offset="1881" max-vertical-offset="2337">
+            <state line="96" column="37" selection-start="2481" selection-end="2481" vertical-scroll-proportion="0.0" vertical-offset="969" max-vertical-offset="2584">
               <folding />
             </state>
           </provider>
@@ -74,16 +74,25 @@
       <file leaf-file-name="runPhp.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/runPhp.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="98" column="22" selection-start="2475" selection-end="2475" vertical-scroll-proportion="0.0" vertical-offset="1862" max-vertical-offset="2318">
+            <state line="70" column="165" selection-start="1867" selection-end="1867" vertical-scroll-proportion="0.0" vertical-offset="1957" max-vertical-offset="2546">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="__main__.py" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="runSwift.py" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/runSwift.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="26" column="23" selection-start="536" selection-end="536" vertical-scroll-proportion="0.516129" vertical-offset="152" max-vertical-offset="2736">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="__main__.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/__main__.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="75" column="40" selection-start="1842" selection-end="1842" vertical-scroll-proportion="0.61290324" vertical-offset="950" max-vertical-offset="1900">
+            <state line="67" column="50" selection-start="1589" selection-end="1589" vertical-scroll-proportion="0.0" vertical-offset="1273" max-vertical-offset="1862">
               <folding />
             </state>
           </provider>
@@ -92,7 +101,7 @@
       <file leaf-file-name="utils.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/utils.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="30" column="0" selection-start="565" selection-end="565" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1273">
+            <state line="30" column="0" selection-start="565" selection-end="565" vertical-scroll-proportion="0.0" vertical-offset="570" max-vertical-offset="1273">
               <folding />
             </state>
           </provider>
@@ -123,13 +132,14 @@
         <option value="$PROJECT_DIR$/../test.py" />
         <option value="$PROJECT_DIR$/myLog.py" />
         <option value="$PROJECT_DIR$/timer.py" />
-        <option value="$PROJECT_DIR$/__main__.py" />
         <option value="$PROJECT_DIR$/utils.py" />
         <option value="$PROJECT_DIR$/mysql.py" />
-        <option value="$PROJECT_DIR$/runJava.py" />
+        <option value="$PROJECT_DIR$/__main__.py" />
         <option value="$PROJECT_DIR$/runCpp.py" />
+        <option value="$PROJECT_DIR$/runJava.py" />
         <option value="$PROJECT_DIR$/runJs.py" />
         <option value="$PROJECT_DIR$/runPhp.py" />
+        <option value="$PROJECT_DIR$/runSwift.py" />
       </list>
     </option>
   </component>
@@ -165,7 +175,6 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -200,17 +209,18 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="options.lastSelected" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
     <property name="recentsLimit" value="5" />
+    <property name="options.lastSelected" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/.." />
     <property name="FullScreen" value="false" />
-    <property name="options.searchVisible" value="true" />
     <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="options.searchVisible" value="true" />
   </component>
   <component name="PyConsoleOptionsProvider">
     <option name="myPythonConsoleState">
@@ -321,9 +331,6 @@
       <option name="PARAMETERS" value="" />
       <method />
     </configuration>
-    <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug" singleton="true">
-      <method />
-    </configuration>
     <configuration default="true" type="tests" factoryName="Unittests">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -345,6 +352,9 @@
       <option name="PUREUNITTEST" value="true" />
       <option name="PARAMS" value="" />
       <option name="USE_PARAM" value="false" />
+      <method />
+    </configuration>
+    <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug" singleton="true">
       <method />
     </configuration>
     <configuration default="true" type="tests" factoryName="Doctests">
@@ -407,7 +417,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1456" height="876" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
@@ -459,11 +469,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/../../../tmp/you-get/tests/test.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="2" column="0" selection-start="23" selection-end="23" vertical-scroll-proportion="0.078431375" vertical-offset="2" max-vertical-offset="684" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../../python/AnalyzeUserEnjoyed.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="14" column="16" selection-start="529" selection-end="535" vertical-scroll-proportion="0.0" vertical-offset="171" max-vertical-offset="4218" />
@@ -508,28 +513,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/mysql.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="48" column="19" selection-start="1430" selection-end="1430" vertical-scroll-proportion="0.0" vertical-offset="944" max-vertical-offset="2147">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/runJava.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="129" column="22" selection-start="3396" selection-end="3396" vertical-scroll-proportion="0.0" vertical-offset="2128" max-vertical-offset="2869">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/runJs.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="99" column="22" selection-start="2471" selection-end="2471" vertical-scroll-proportion="0.0" vertical-offset="1482" max-vertical-offset="2299">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/runPhp.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="98" column="22" selection-start="2475" selection-end="2475" vertical-scroll-proportion="0.0" vertical-offset="1577" max-vertical-offset="2280">
+        <state line="48" column="19" selection-start="1431" selection-end="1431" vertical-scroll-proportion="0.0" vertical-offset="912" max-vertical-offset="2166">
           <folding />
         </state>
       </provider>
@@ -541,16 +525,44 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/runCpp.py">
+    <entry file="file://$PROJECT_DIR$/__main__.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="123" column="23" selection-start="3099" selection-end="3099" vertical-scroll-proportion="0.0" vertical-offset="209" max-vertical-offset="2793">
+        <state line="67" column="50" selection-start="1589" selection-end="1589" vertical-scroll-proportion="0.0" vertical-offset="921" max-vertical-offset="1862">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/__main__.py">
+    <entry file="file://$PROJECT_DIR$/runJava.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="75" column="40" selection-start="1842" selection-end="1842" vertical-scroll-proportion="0.61290324" vertical-offset="950" max-vertical-offset="1900">
+        <state line="95" column="4" selection-start="2561" selection-end="2735" vertical-scroll-proportion="0.0" vertical-offset="1463" max-vertical-offset="3097">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/runJs.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="96" column="37" selection-start="2481" selection-end="2481" vertical-scroll-proportion="0.0" vertical-offset="1596" max-vertical-offset="2584">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/runPhp.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="70" column="165" selection-start="1867" selection-end="1867" vertical-scroll-proportion="0.0" vertical-offset="1957" max-vertical-offset="2546">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/runCpp.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="57" column="54" selection-start="1336" selection-end="1342" vertical-scroll-proportion="0.0" vertical-offset="646" max-vertical-offset="2945">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/runSwift.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="26" column="23" selection-start="536" selection-end="536" vertical-scroll-proportion="0.516129" vertical-offset="152" max-vertical-offset="2736">
           <folding />
         </state>
       </provider>

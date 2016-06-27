@@ -8,7 +8,7 @@ from utils import *
 
 
 
-class RunCpp:
+class RunSwift:
     def __init__(self, log):
         self.log = log
         self.lang = ''
@@ -42,18 +42,7 @@ class RunCpp:
         path = '%s/%s' % (os.getcwd(), self.answerId)
         os.chdir(path)
 
-        suffix = ''
-        if 'gcc' in self.lang:
-            suffix = '.c'
-            self.mk = 'c.mk'
-        elif 'g++' in self.lang:
-            suffix = '.cpp'
-            self.mk = 'cpp.mk'
-        else:
-            self.log.warning("lang Error %s answerId %s" % (self.lang, self.answerId))
-
-        cmd = 'cp %s/%s .' % (self.makefile_path, self.mk)
-        os.system(cmd)
+        suffix = '.swift'
 
         self.srcFile = '%s%s' % (self.answerId, suffix)
         fp = open(self.srcFile, 'w+')
@@ -77,7 +66,7 @@ class RunCpp:
 
 
     def build(self):
-        cmd = 'make -f %s TARGET=%s 2> %s' % (self.mk, self.exeFile, self.errFile)
+        cmd = 'swiftc -o %s %s 2> %s' % (self.exeFile, self.srcFile, self.errFile)
         os.system(cmd)
 
     def run(self):

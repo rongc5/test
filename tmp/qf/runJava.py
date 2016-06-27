@@ -14,6 +14,7 @@ class RunJava:
         self.stdRes = ''
         self.answerId = ''
         self.srcFile = ''
+        self.outFile = ''
         self.errFile = ''
         self.exec_input_file = ''
         self.mk = ''
@@ -73,7 +74,12 @@ class RunJava:
             fp.write(self.inPutfileContent)
             fp.close()
 
+        self.exec_input_file = '%s.exec_input' % (self.answerId)
+        fp = open(self.exec_input_file, 'w+')
+        fp.write(self.exec_input)
+        fp.close()
 
+        self.outFile = '%s.outFile' % (self.answerId)
 
 
     def build(self):
@@ -82,35 +88,41 @@ class RunJava:
 
     def run(self):
         cmd = ''
-        if self.inPutfileContent.strip():
-            cmd = 'java %s %s 2>&1 > %s' % (self.classNmae, self.inPutFile, self.errFile)
-        else:
-            cmd = 'java %s 2>&1 > %s' % (self.classNmae, self.errFile)
+        cmd = 'java %s %s %s 2>%s < %s | head -c 1024 > %s' % (self.classNmae, self.param, self.inPutFile, self.errFile, self.exec_input_file, self.outFile)
 
         os.system(cmd)
 
 
-    def getErrInfo(self):
-        fp = open(self.errFile, 'r')
-        self.errContent = str(fp.read())
-        fp.close()
+    def getResInfo(self, file):
+        try:
+            fp = open(file, 'r')
+            self.errContent = str(fp.read())
+            fp.close()
+        except:
+            pass
 
     def buildAndrun(self,item):
-        self.rest()
         self.lang = item['lang']
         self.srcCode = item['srcCode']
         self.stdRes = item['stdRes']
         self.inPutfileContent = item['inPutfileContent']
         self.answerId = item['answerId']
         self.makefile_path = item['makefile_path']
+        self.exec_input = item['exec_input']
+        self.param = item['param']
 
         self.genBuildFile()
         self.build()
 
-        self.getErrInfo()
-        if self.errContent.strip():
+        resInfo = {}
+        resInfo['id'] = self.answerId
+        tmp_file = '%s.class' % (self.classNmae)
+        if not os.path.exists(tmp_file):
+            self.getResInfo(self.errFile)
+            resInfo['status'] = 'compile_error'
+            resInfo['exec_output'] = self.errContent
             self.clear()
-            return self.errContent
+            return resInfo
 
         signal.signal(signal.SIGALRM, threadFun)
         signal.alarm(3)
@@ -126,9 +138,20 @@ class RunJava:
             except OSError:
                 pass
 
-        self.getErrInfo()
+        if  os.path.exists(self.outFile):
+            self.getResInfo(self.outFile)
+            if self.cmpResult():
+                resInfo['status'] = 'ok'
+            else:
+                resInfo['status'] = 'run_error'
+            resInfo['exec_output'] = self.errContent
+        else:
+            self.getResInfo(self.errFile)
+            resInfo['status'] = 'run_error'
+            resInfo['exec_output'] = self.errContent
+
         self.clear()
-        return self.errContent
+        return resInfo
 
 
 
