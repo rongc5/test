@@ -59,13 +59,16 @@ class RunJava:
         cmd = '''cat %s | grep "public" | grep "class" > %s''' % (self.errFile, "tmp.txt")
         os.system(cmd)
         fp = open("tmp.txt", 'r')
-        tmpStr = str(fp.read())
-        if tmpStr.strip():
-            self.classNmae = tmpStr.strip("\n").split(" ")[2]
-            cmd = 'mv %s %s%s' % (self.srcFile, self.classNmae, suffix)
-            os.system(cmd)
-            self.srcFile = '%s%s' % (self.classNmae, suffix)
-        fp.close()
+        try:
+            for line in fp:
+                items = line.strip("\n").split(" ")
+                if items[0] == "public" and items[1] == "class":
+                    self.classNmae = items[2]
+                    cmd = 'mv %s %s%s' % (self.srcFile, self.classNmae, suffix)
+                    os.system(cmd)
+                    self.srcFile = '%s%s' % (self.classNmae, suffix)
+        finally:
+            fp.close()
 
         if self.inPutfileContent.strip():
             self.inPutFile = '%s.txt' % (self.answerId)

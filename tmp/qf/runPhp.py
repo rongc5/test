@@ -22,8 +22,8 @@ class RunPhp:
 
     def clear(self):
         os.chdir('../')
-        cmd = 'rm -rf %s' % (self.answerId)
-        os.system(cmd)
+        #cmd = 'rm -rf %s' % (self.answerId)
+        #os.system(cmd)
 
     def cmpResult(self):
         return cmp2str(self.stdRes, self.errContent)
@@ -84,7 +84,7 @@ class RunPhp:
     def buildAndrun(self, item):
         self.lang = item['lang']
         self.srcCode = item['srcCode']
-        self.stdRes = item['stdRes']
+        self.stdRes = item['standard_output']
         self.inPutfileContent = item['inPutfileContent']
         self.answerId = item['answerId']
         self.exec_input = item['exec_input']

@@ -69,15 +69,17 @@ def doJobs(db, log):
                 rJava = RunJava(log)
                 resInfo = rJava.buildAndrun(item)
                 print "hello world", resInfo
-            #elif 'php' in item['language']:
-            #    rPhp = RunPhp(log)
-            #    resInfo = rPhp.buildAndrun(item)
+            elif 'php' in item['language']:
+                item['lang'] = 'php'
+                rPhp = RunPhp(log)
+                resInfo = rPhp.buildAndrun(item)
             #elif 'node' in item['language']:
             #    rJs = RunJs(log)
             #    resInfo = rJs.buildAndrun(item)
-            #elif 'swift' in item['language']:
-            #    rSwift = RunSWift(log)
-            #    resInfo = rSwift.buildAndrun(item)
+            elif 'swift' in item['language']:
+                item['lang'] = 'swiftc'
+                rSwift = RunSWift(log)
+                resInfo = rSwift.buildAndrun(item)
 
 
             if len(resInfo):
