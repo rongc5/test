@@ -73,12 +73,13 @@ def doJobs(db, log):
                 item['lang'] = 'php'
                 rPhp = RunPhp(log)
                 resInfo = rPhp.buildAndrun(item)
-            #elif 'node' in item['language']:
-            #    rJs = RunJs(log)
-            #    resInfo = rJs.buildAndrun(item)
+            elif 'javascript' in item['language']:
+                item['lang'] = 'node'
+                rJs = RunJs(log)
+                resInfo = rJs.buildAndrun(item)
             elif 'swift' in item['language']:
                 item['lang'] = 'swiftc'
-                rSwift = RunSWift(log)
+                rSwift = RunSwift(log)
                 resInfo = rSwift.buildAndrun(item)
 
 

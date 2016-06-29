@@ -85,7 +85,7 @@ class RunJs:
     def buildAndrun(self, item):
         self.lang = item['lang']
         self.srcCode = item['srcCode']
-        self.stdRes = item['stdRes']
+        self.stdRes = item['standard_output']
         self.inPutfileContent = item['inPutfileContent']
         self.answerId = item['answerId']
         self.exec_input = item['exec_input']
