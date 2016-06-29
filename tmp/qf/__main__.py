@@ -8,6 +8,7 @@ from runCpp import *
 from runJava import *
 from runPhp import *
 from runJs import *
+from runSwift import *
 import os, time, base64
 
 
@@ -63,18 +64,20 @@ def doJobs(db, log):
                 resInfo = rCpp.buildAndrun(item)
 
             elif 'java' == item['language']:
-		
+
                 item['lang'] = 'javac'
                 rJava = RunJava(log)
                 resInfo = rJava.buildAndrun(item)
                 print "hello world", resInfo
-		time.sleep(20)
-            #elif 'php' in item['lang']:
+            #elif 'php' in item['language']:
             #    rPhp = RunPhp(log)
             #    resInfo = rPhp.buildAndrun(item)
-            #elif 'node' in item['lang']:
+            #elif 'node' in item['language']:
             #    rJs = RunJs(log)
             #    resInfo = rJs.buildAndrun(item)
+            #elif 'swift' in item['language']:
+            #    rSwift = RunSWift(log)
+            #    resInfo = rSwift.buildAndrun(item)
 
 
             if len(resInfo):
@@ -91,5 +94,10 @@ if __name__ == '__main__':
 
     logger = getLoger('qf')
     db = MySQL(logger, '115.28.35.83','qf_admin','5dxZM1b!uS')
+
+    PATH = os.getenv('PATH')
+    PATH = '%s:%s' % (PATH, '/home/yang/jdk1.8/bin')
+    os.environ['PATH'] = PATH
+
     doJobs(db, logger)
 
