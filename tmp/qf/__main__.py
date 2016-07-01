@@ -95,6 +95,9 @@ if __name__ == '__main__':
     os.system(cmd)
     os.chdir(work_path)
 
+    daemon = Daemon()
+    daemon.daemonize()
+
     logger = getLoger('qf')
     db = MySQL(logger, '115.28.35.83','qf_admin','5dxZM1b!uS')
 
