@@ -91,12 +91,12 @@ if __name__ == '__main__':
 
     makefile_path = '%s/%s' % (os.getcwd(), 'script')
 
+    daemon = Daemon()
+    daemon.daemonize()
+
     cmd = 'mkdir -p %s' % (work_path)
     os.system(cmd)
     os.chdir(work_path)
-
-    daemon = Daemon()
-    daemon.daemonize()
 
     logger = getLoger('qf')
     db = MySQL(logger, '115.28.35.83','qf_admin','5dxZM1b!uS')

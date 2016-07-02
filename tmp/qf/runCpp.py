@@ -33,7 +33,10 @@ class RunCpp:
         #os.system(cmd)
 
     def cmpResult(self):
-        return cmp2str(self.stdRes, self.errContent)
+        res = cmp2str(self.stdRes, self.errContent)
+        self.log.warning("cmpResult %s  %s %d" % (self.stdRes, self.errContent, res))
+
+        return res
 
     def genBuildFile(self):
 
