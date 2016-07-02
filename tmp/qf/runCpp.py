@@ -34,7 +34,7 @@ class RunCpp:
 
     def cmpResult(self):
         res = cmp2str(self.stdRes, self.errContent)
-        self.log.warning("cmpResult %s  %s %d" % (self.stdRes, self.errContent, res))
+        self.log.warning("id %s cmpResult %s  %s %d" % (self.answerId, self.stdRes, self.errContent, res))
 
         return res
 
