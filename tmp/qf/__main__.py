@@ -56,6 +56,7 @@ def doJobs(db, log):
 
         for item in res:
 
+            os.chdir(work_path)
             resInfo = {}
             item['makefile_path'] = makefile_path
             if  'cpp' in item['language']:

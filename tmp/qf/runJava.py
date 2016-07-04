@@ -17,7 +17,6 @@ class RunJava:
         self.outFile = ''
         self.errFile = ''
         self.exec_input_file = ''
-        self.mk = ''
         self.makefile_path = ''
         self.classNmae = ''
         self.exec_input = ''
@@ -38,22 +37,17 @@ class RunJava:
         os.system(cmd)
         os.chdir(self.answerId)
 
-        suffix = ''
-        if 'java' in self.lang:
-            suffix = '.java'
-            self.mk = 'java.mk'
-        else:
-            self.log.warning("lang Error %s answerId %s" % (self.lang, self.answerId))
-
-        cmd = 'cp %s/%s .' % (self.makefile_path, self.mk)
-        os.system(cmd)
+        suffix = '.java'
 
         self.errFile = '%s.err' % (self.answerId)
 
         self.srcFile = '%s%s' % (self.answerId, suffix)
-        fp = open(self.srcFile, 'w+')
+        fp = open("tmp.txt", 'w+')
         fp.write(self.srcCode)
         fp.close()
+
+        cmd = '''cat %s | grep -v "package" > %s''' % ("tmp.txt", self.srcFile)
+        os.system(cmd)
 
         self.build()
         cmd = '''cat %s | grep "public" | grep "class" > %s''' % (self.errFile, "tmp.txt")
@@ -85,7 +79,7 @@ class RunJava:
 
 
     def build(self):
-        cmd = 'make -f %s 2> %s' % (self.mk, self.errFile)
+        cmd = '%s %s 2> %s' % (self.lang, self.srcFile, self.errFile)
         os.system(cmd)
 
     def run(self):

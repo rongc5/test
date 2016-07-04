@@ -21,8 +21,6 @@ class RunCpp:
         self.outFile = ''
         self.errFile = ''
         self.exec_input_file = ''
-        self.mk = ''
-        self.makefile_path = ''
         self.exec_input = ''
         self.param = ''
 
@@ -48,15 +46,10 @@ class RunCpp:
         suffix = ''
         if 'gcc' in self.lang:
             suffix = '.c'
-            self.mk = 'c.mk'
         elif 'g++' in self.lang:
             suffix = '.cpp'
-            self.mk = 'cpp.mk'
         else:
             self.log.warning("lang Error %s answerId %s" % (self.lang, self.answerId))
-
-        cmd = 'cp %s/%s .' % (self.makefile_path, self.mk)
-        os.system(cmd)
 
         self.srcFile = '%s%s' % (self.answerId, suffix)
         fp = open(self.srcFile, 'w+')
@@ -80,7 +73,7 @@ class RunCpp:
 
 
     def build(self):
-        cmd = 'make -f %s TARGET=%s 2> %s' % (self.mk, self.exeFile, self.errFile)
+        cmd = '%s -o %s %s 2> %s' % (self.lang, self.exeFile, self.srcFile, self.errFile)
         os.system(cmd)
 
     def run(self):
@@ -104,7 +97,6 @@ class RunCpp:
         self.stdRes = item['standard_output']
         self.inPutfileContent = item['inPutfileContent']
         self.answerId = item['answerId']
-        self.makefile_path = item['makefile_path']
         self.exec_input = item['exec_input']
         self.param = item['param']
 
