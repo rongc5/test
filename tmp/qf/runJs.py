@@ -96,20 +96,19 @@ class RunJs:
         resInfo = {}
         resInfo['id'] = self.answerId
 
-
-        signal.signal(signal.SIGALRM, threadFun)
-        signal.alarm(3)
         pid = os.fork()
         if not pid:
             self.run()
             os._exit(0)
-        else:
-            setSubPid(pid)
-            try :
-                os.wait()
-                signal.alarm(0)
-            except OSError:
-                pass
+
+        setSubPid(pid)
+        signal.signal(signal.SIGALRM, threadFun)
+        signal.alarm(3)
+        try :
+            os.wait()
+            signal.alarm(0)
+        except OSError:
+            pass
 
         if  os.path.exists(self.outFile):
             self.getResInfo(self.outFile)

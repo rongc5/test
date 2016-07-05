@@ -14,6 +14,7 @@ def getLoger(log_name, level=logging.DEBUG):
     """
     # 创建一个logger
     logger = logging.getLogger(log_name)
+
     # 设置日志级别
     logger.setLevel(level)
 

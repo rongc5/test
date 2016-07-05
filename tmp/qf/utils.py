@@ -21,14 +21,18 @@ def cmp2str(str1, str2):
 
 def threadFun(signum, frame):
 
-    subPid = int(getSubPid())
-    if subPid:
+    subPid = getSubPid()
+    if checkProcessExist(subPid):
         try:
             os.kill(subPid, signal.SIGKILL)
-            truncateSubPid()
         except OSError:
             pass
 
+
+def checkProcessExist(pid):
+    str = '''/proc/%s''' % (pid)
+
+    return os.path.exists(str)
 
 def getSubPid():
     pid = ""
