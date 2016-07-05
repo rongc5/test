@@ -23,8 +23,8 @@ class RunJs:
 
     def clear(self):
         os.chdir('../')
-        #cmd = 'rm -rf %s' % (self.answerId)
-        #os.system(cmd)
+        cmd = 'rm -rf %s' % (self.answerId)
+        os.system(cmd)
 
     def cmpResult(self):
         return cmp2str(self.stdRes, self.errContent)

@@ -18,8 +18,10 @@ def getLoger(log_name, level=logging.DEBUG):
     # 设置日志级别
     logger.setLevel(level)
 
+
+
     # 创建文件处理器
-    file_handler = logging.FileHandler('%s.log' % log_name.upper())
+    file_handler = logging.FileHandler('%s.log' % log_name.upper(), 'w')
     file_handler.setLevel(logging.INFO)
     # 创建输出处理器
     stream_handler = logging.StreamHandler()
@@ -28,6 +30,7 @@ def getLoger(log_name, level=logging.DEBUG):
     formatter = logging.Formatter('%(asctime)s %(filename)s [line:%(lineno)d] %(levelname)s: %(message)s')
     file_handler.setFormatter(formatter)
     stream_handler.setFormatter(formatter)
+
 
     # 给logger添加处理器
     logger.addHandler(file_handler)

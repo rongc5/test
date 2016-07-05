@@ -21,8 +21,8 @@ def cmp2str(str1, str2):
 
 def threadFun(signum, frame):
 
-    subPid = getSubPid()
-    if checkProcessExist(subPid):
+    subPid = int(getSubPid())
+    if checkProcessExist(str(subPid)):
         try:
             os.kill(subPid, signal.SIGKILL)
         except OSError:
