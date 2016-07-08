@@ -29,8 +29,7 @@ class RunPhp:
 
         cmd = 'mkdir -p %s' % (self.path)
         os.system(cmd)
-        path = '%s/%s' % (os.getcwd(), self.answerId)
-        os.chdir(path)
+        os.chdir(self.path)
 
         suffix = ''
         if 'php' in self.lang:
@@ -39,20 +38,16 @@ class RunPhp:
             self.log.warning("lang Error %s answerId %s" % (self.lang, self.answerId))
 
         self.srcFile = '%s%s' % (self.answerId, suffix)
-        fp = open(self.srcFile, 'w+')
-        fp.write(self.srcCode)
-        fp.close()
+        writeStrToFile(self.srcFile, self.srcCode)
+
 
         if self.inPutfileContent.strip():
             self.inPutFile = '%s.txt' % (self.answerId)
-            fp = open(self.inPutFile, 'w+')
-            fp.write(self.inPutfileContent)
-            fp.close()
+            writeStrToFile(self.inPutFile, self.inPutfileContent)
+
 
         self.exec_input_file = '%s.exec_input' % (self.answerId)
-        fp = open(self.exec_input_file, 'w+')
-        fp.write(self.exec_input)
-        fp.close()
+        writeStrToFile(self.exec_input_file, self.exec_input)
 
         self.errFile = getErrFileName(self.answerId)
         self.outFile = getOutPutFileName(self.answerId)
@@ -83,6 +78,16 @@ class RunPhp:
         self.genBuildFile()
 
         self.run()
+
+        if  os.path.exists(self.outFile):
+                exec_output = getFileInfo(self.outFile)
+                if cmp2str(exec_output, item['standard_output']):
+                    writeStrToFile(self.statFile, 'ok')
+                else:
+                    writeStrToFile(self.statFile, 'run_error')
+        else:
+                writeStrToFile(self.statFile, 'run_error')
+
 
         return
 

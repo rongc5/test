@@ -46,6 +46,14 @@ def getFileInfo(file):
 
     return strContent
 
+
+def writeStrToFile(file, content, modle='w'):
+    try:
+        fp = open(file, modle)
+        fp.write(content)
+        fp.close()
+    except:
+        pass
 def checkProcessExist(pid):
     pidStr = '''/proc/%s''' % (str(pid))
 

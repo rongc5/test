@@ -37,8 +37,7 @@ class RunCpp:
 
         cmd = 'mkdir -p %s' % (self.path)
         os.system(cmd)
-        path = '%s/%s' % (os.getcwd(), self.answerId)
-        os.chdir(path)
+        os.chdir(self.path)
 
         suffix = ''
         if 'gcc' in self.lang:
@@ -49,19 +48,15 @@ class RunCpp:
             self.log.warning("lang Error %s answerId %s" % (self.lang, self.answerId))
 
         self.srcFile = '%s%s' % (self.answerId, suffix)
-        fp = open(self.srcFile, 'w+')
-        fp.write(self.srcCode)
-        fp.close()
+        writeStrToFile(self.srcFile, self.srcCode)
+
 
         self.inPutFile = '%s.txt' % (self.answerId)
-        fp = open(self.inPutFile, 'w+')
-        fp.write(self.inPutfileContent)
-        fp.close()
+        writeStrToFile(self.inPutFile, self.inPutfileContent)
+
 
         self.exec_input_file = '%s.exec_input' % (self.answerId)
-        fp = open(self.exec_input_file, 'w+')
-        fp.write(self.exec_input)
-        fp.close()
+        writeStrToFile(self.exec_input_file, self.exec_input)
 
 
         self.exeFile = '%s.exe' % (self.answerId)
@@ -75,6 +70,8 @@ class RunCpp:
         os.system(cmd)
 
     def run(self):
+
+        sys.stdout.flush()
         cmd = ''
         cmd = './%s %s %s 2> %s < %s | head -c 1024 > %s' % (self.exeFile, self.param, self.inPutFile, self.errFile, self.exec_input_file, self.outFile)
 
@@ -95,12 +92,25 @@ class RunCpp:
         self.build()
 
         if not os.path.exists(self.exeFile):
-            fp = open(self.statFile, 'w')
-            fp.write('compile_error')
-            fp.close()
+
+            writeStrToFile(self.statFile, 'compile_error')
+
             return
 
+        else:
+            writeStrToFile(self.statFile, 'compile_ok')
+
         self.run()
+
+        if  os.path.exists(self.outFile):
+                exec_output = getFileInfo(self.outFile)
+                if cmp2str(exec_output, item['standard_output']):
+                    writeStrToFile(self.statFile, 'ok')
+                else:
+                    writeStrToFile(self.statFile, 'run_error')
+        else:
+                writeStrToFile(self.statFile, 'run_error')
+
 
         return
 

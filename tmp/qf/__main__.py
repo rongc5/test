@@ -67,7 +67,7 @@ def getResToDb(db, log, item):
         if abs(current_milli_time - item['current_milli_time']) >= run_time_out * 1000:
             try:
                 os.kill(int(pid), signal.SIGKILL)
-            except OSError:
+            finally:
                 return False
         else:
             return False
@@ -75,18 +75,12 @@ def getResToDb(db, log, item):
 
     item['status'] = getFileInfo(getStatusFileName(item['answerId']))
 
-    if 'compile_error' not in item['status']:
-        if  os.path.exists(item['outFile']):
-                item['exec_output'] = getFileInfo(getOutPutFileName(item['answerId']))
-                if cmp2str(item['exec_output'], item['standard_output']):
-                    item['status'] = 'ok'
-                else:
-                    item['status'] = 'run_error'
-        else:
-                item['exec_output'] = getFileInfo(getErrFileName(item['answerId']))
-                item['status'] = 'run_error'
+    if item['status'] == 'ok':
+        item['exec_output'] = getFileInfo(getOutPutFileName(item['answerId']))
     else:
         item['exec_output'] = getFileInfo(getErrFileName(item['answerId']))
+        if item['status'] == 'compile_ok':
+            item['status'] = 'run_error'
 
     updateAnswerInfo(db, log, item)
 
@@ -103,8 +97,9 @@ def doJobs(db, log):
         res = getAnswerInfo(db,log)
         #print("doJobs ===> len = %u", len(res))
 
-        checkRunRes(db, log)
         if len(res) <= 0:
+            if len(pidSet) > 0:
+                checkRunRes(db, log)
             time.sleep(run_time_out)
             continue
 
@@ -141,6 +136,7 @@ def doJobs(db, log):
                     rSwift = RunSwift(log)
                     rSwift.buildAndrun(item)
 
+                sys.stdout.flush()
                 os._exit(0)
             else:
                 tmp = {}
@@ -159,8 +155,8 @@ if __name__ == '__main__':
 
     makefile_path = '%s/%s' % (os.getcwd(), 'script')
 
-    daemon = Daemon()
-    daemon.daemonize()
+    #daemon = Daemon()
+    #daemon.daemonize()
 
     cmd = 'mkdir -p %s' % (work_path)
     os.system(cmd)

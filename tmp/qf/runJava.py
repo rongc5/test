@@ -32,14 +32,15 @@ class RunJava:
 
         cmd = 'mkdir -p %s' % (self.path)
         os.system(cmd)
-        os.chdir(self.answerId)
+        os.chdir(self.path)
 
         suffix = '.java'
 
         self.srcFile = '%s%s' % (self.answerId, suffix)
-        fp = open("tmp.txt", 'w+')
-        fp.write(self.srcCode)
-        fp.close()
+
+        writeStrToFile("tmp.txt", self.srcCode)
+
+        self.errFile = getErrFileName(self.answerId)
 
         cmd = '''cat %s | grep -v "package" > %s''' % ("tmp.txt", self.srcFile)
         os.system(cmd)
@@ -47,6 +48,7 @@ class RunJava:
         self.build()
         cmd = '''cat %s | grep "public" | grep "class" > %s''' % (self.errFile, "tmp.txt")
         os.system(cmd)
+        sys.stdout.flush()
         fp = open("tmp.txt", 'r')
         try:
             for line in fp:
@@ -61,16 +63,12 @@ class RunJava:
 
         if self.inPutfileContent.strip():
             self.inPutFile = '%s.txt' % (self.answerId)
-            fp = open(self.inPutFile, 'w+')
-            fp.write(self.inPutfileContent)
-            fp.close()
+            writeStrToFile(self.inPutFile, self.inPutfileContent)
+
 
         self.exec_input_file = '%s.exec_input' % (self.answerId)
-        fp = open(self.exec_input_file, 'w+')
-        fp.write(self.exec_input)
-        fp.close()
+        writeStrToFile(self.exec_input_file, self.exec_input)
 
-        self.errFile = getErrFileName(self.answerId)
         self.outFile = getOutPutFileName(self.answerId)
         self.statFile = getStatusFileName(self.answerId)
 
@@ -99,15 +97,24 @@ class RunJava:
         self.genBuildFile()
         self.build()
 
-        if not os.path.exists(self.exeFile):
-            fp = open(self.statFile, 'w')
-            fp.write('compile_error')
-            fp.close()
+        exeFile = '''%s.class''' % (self.classNmae)
+        if not os.path.exists(exeFile):
+            writeStrToFile(self.statFile, 'compile_error')
             return
+        else:
+            writeStrToFile(self.statFile, 'compile_ok')
+
 
         self.run()
 
-        return
+        if  os.path.exists(self.outFile):
+                exec_output = getFileInfo(self.outFile)
+                if cmp2str(exec_output, item['standard_output']):
+                    writeStrToFile(self.statFile, 'ok')
+                else:
+                    writeStrToFile(self.statFile, 'run_error')
+        else:
+                writeStrToFile(self.statFile, 'run_error')
 
 
 
