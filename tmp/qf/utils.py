@@ -51,6 +51,7 @@ def writeStrToFile(file, content, modle='w'):
     try:
         fp = open(file, modle)
         fp.write(content)
+        fp.flush()
         fp.close()
     except:
         pass

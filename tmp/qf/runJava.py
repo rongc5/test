@@ -56,6 +56,7 @@ class RunJava:
                 if items[0] == "public" and items[1] == "class":
                     self.classNmae = items[2]
                     cmd = 'mv %s %s%s' % (self.srcFile, self.classNmae, suffix)
+                    print cmd
                     os.system(cmd)
                     self.srcFile = '%s%s' % (self.classNmae, suffix)
         finally:
@@ -97,12 +98,18 @@ class RunJava:
         self.genBuildFile()
         self.build()
 
-        exeFile = '''%s.class''' % (self.classNmae)
-        if not os.path.exists(exeFile):
+        cmd = 'ls *.class > %s' % ("tmp.txt")
+        os.system(cmd)
+        name = getFileInfo("tmp.txt")
+
+        if not name.strip():
             writeStrToFile(self.statFile, 'compile_error')
             return
         else:
             writeStrToFile(self.statFile, 'compile_ok')
+
+        if not self.classNmae.strip():
+            self.classNmae = name[0:name.find('.')]
 
 
         self.run()

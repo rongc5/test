@@ -28,7 +28,7 @@ def getAnswerInfo(db, log):
     b.input_file as inPutfileContent from student_program a,
     program_info b where a.program_id = b.id and a.status = "submit_ok" limit 1000;'''
 
-    log.debug("SQL:%s" %(sql))
+    #log.debug("SQL:%s" %(sql))
 
     db.selectDb('qf_admin_online')
 
@@ -47,16 +47,31 @@ def updateAnswerInfo(db, log, resultInfo):
     db.exesql(sql)
 
 def checkRunRes(db, log):
-    for pid in pidSet.keys():
-        if getResToDb(db, log, pidSet[pid]):
-            del(pidSet[pid])
+    for answerId in pidSet.keys():
+        if getResToDb(db, log, pidSet[answerId]):
+	        #print 'Del', answerId, pidSet
+            del(pidSet[answerId])
+	        #print 'AfterDel', pidSet
+
+
+def checkRecordExist(answerid):
+    flag = False
+    #print pidSet, " ==> "
+     
+    if pidSet.has_key(answerid):
+	    flag = True
+ 
+    return flag
 
 
 
 def getResToDb(db, log, item):
     path = item['path']
     if not os.path.exists(path):
-        return True
+        if checkProcessExist(item['subPid']):
+            return False
+        else:
+	        return True
 
     os.chdir(path)
 
@@ -66,26 +81,30 @@ def getResToDb(db, log, item):
     if checkProcessExist(pid):
         if abs(current_milli_time - item['current_milli_time']) >= run_time_out * 1000:
             try:
+		        #print 'kill ', pid
                 os.kill(int(pid), signal.SIGKILL)
-            finally:
+            except:
                 return False
         else:
             return False
 
 
+    item['status'] = ''
     item['status'] = getFileInfo(getStatusFileName(item['answerId']))
 
     if item['status'] == 'ok':
         item['exec_output'] = getFileInfo(getOutPutFileName(item['answerId']))
     else:
-        item['exec_output'] = getFileInfo(getErrFileName(item['answerId']))
+        item['exec_output']=getFileInfo(getOutPutFileName(item['answerId']))
+        if not item['exec_output'].strip():
+            item['exec_output'] = getFileInfo(getErrFileName(item['answerId']))
         if item['status'] == 'compile_ok':
             item['status'] = 'run_error'
 
     updateAnswerInfo(db, log, item)
 
     os.chdir(work_path)
-    cmd = 'rm -rf %s' % (item['path'])
+    cmd = 'rm -rf %s' % (item['answerId'])
     os.system(cmd)
 
     return True
@@ -93,17 +112,25 @@ def getResToDb(db, log, item):
 
 def doJobs(db, log):
 
+    tmpRes = []
     while 1:
+        if len(pidSet) > 0:
+            checkRunRes(db, log)
+
         res = getAnswerInfo(db,log)
         #print("doJobs ===> len = %u", len(res))
 
-        if len(res) <= 0:
-            if len(pidSet) > 0:
-                checkRunRes(db, log)
+        if len(res) <= 0 or not cmp(tmpRes, res):
             time.sleep(run_time_out)
             continue
 
+	    tmpRes = res
+        #print 'hello', "answerId"
+
         for item in res:
+
+            if checkRecordExist(item['answerId']):
+                continue
 
             while len(pidSet) >= max_subPid_num:
                 checkRunRes(db, log)
@@ -112,6 +139,7 @@ def doJobs(db, log):
             item['path'] = '''%s/%s''' % (work_path, item['answerId'])
             item['makefile_path'] = makefile_path
 
+ 	        #print os.getpid(), item['answerId'], item['answerId'], '__main__'
             pid = os.fork()
             if not pid:
 
@@ -137,6 +165,7 @@ def doJobs(db, log):
                     rSwift.buildAndrun(item)
 
                 sys.stdout.flush()
+
                 os._exit(0)
             else:
                 tmp = {}
@@ -145,7 +174,7 @@ def doJobs(db, log):
                 tmp['current_milli_time'] = getMilliSeconds()
                 tmp['path'] = item['path']
                 tmp['standard_output'] = item['standard_output']
-                pidSet[pid] = tmp
+                pidSet[item['answerId']] = tmp
 
                 checkRunRes(db, log)
 
@@ -155,8 +184,8 @@ if __name__ == '__main__':
 
     makefile_path = '%s/%s' % (os.getcwd(), 'script')
 
-    #daemon = Daemon()
-    #daemon.daemonize()
+    daemon = Daemon()
+    daemon.daemonize()
 
     cmd = 'mkdir -p %s' % (work_path)
     os.system(cmd)
