@@ -20,7 +20,7 @@ makefile_path = ''
 pidSet = {}
 
 run_time_out = 3 #3 秒
-max_subPid_num = 10 #最大子进程数量
+max_subPid_num = 2 #最大子进程数量
 
 def getAnswerInfo(db, log):
 
@@ -57,13 +57,19 @@ def checkRunRes(db, log):
 def checkRecordExist(answerid):
     flag = False
     #print pidSet, " ==> "
-     
+
     if pidSet.has_key(answerid):
 	    flag = True
- 
+
     return flag
 
-
+def checkOnlineSubpidNum():
+    i = 0
+    for answerId in pidSet.keys():
+        item = pidSet[answerId]
+        if checkProcessExist(item['subPid']):
+            i = i + 1
+    return i
 
 def getResToDb(db, log, item):
     path = item['path']
@@ -100,10 +106,13 @@ def getResToDb(db, log, item):
             item['exec_output'] = getFileInfo(getErrFileName(item['answerId']))
         if item['status'] == 'compile_ok':
             item['status'] = 'run_error'
+    if not item['status'].strip():
+	return True
 
     updateAnswerInfo(db, log, item)
 
     os.chdir(work_path)
+    #if item['status'] == 'ok':
     cmd = 'rm -rf %s' % (item['answerId'])
     os.system(cmd)
 
@@ -125,16 +134,18 @@ def doJobs(db, log):
             continue
 
 	    tmpRes = res
-        #print 'hello', "answerId"
+
+
 
         for item in res:
+	    print item, "hello world"
 
             if checkRecordExist(item['answerId']):
                 continue
 
-            while len(pidSet) >= max_subPid_num:
+            while checkOnlineSubpidNum() >= max_subPid_num:
                 checkRunRes(db, log)
-                time.sleep(0.5)
+                time.sleep(1)
 
             item['path'] = '''%s/%s''' % (work_path, item['answerId'])
             item['makefile_path'] = makefile_path
