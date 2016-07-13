@@ -5,6 +5,7 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="qf" />
+    <orderEntry type="module" module-name="python" />
   </component>
   <component name="PyDocumentationSettings">
     <option name="myDocStringFormat" value="Plain" />

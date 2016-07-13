@@ -3,213 +3,91 @@
 
 
 from myLog import  *
-from mysql import *
-from runCpp import *
-from runJava import *
-from runPhp import *
-from runJs import *
-from runSwift import *
-import os, time, base64
-
-
-#工作目录
-work_path = '/tmp/qf'
-#makefile 目录
-makefile_path = ''
-
-pidSet = {}
-
-run_time_out = 3 #3 秒
-max_subPid_num = 2 #最大子进程数量
-
-def getAnswerInfo(db, log):
-
-    sql = '''select a.id as answerId, a.source_code as srcCode, a.language as language, a.exec_input, a.param, a.standard_output,
-    b.input_file as inPutfileContent from student_program a,
-    program_info b where a.program_id = b.id and a.status = "submit_ok" limit 1000;'''
-
-    #log.debug("SQL:%s" %(sql))
-
-    db.selectDb('qf_admin_online')
-
-    res = db.select(sql)
-
-    return res
-
-
-def updateAnswerInfo(db, log, resultInfo):
-
-    sql = '''UPDATE  student_program set status = '%s', exec_output = '%s' where id = '%s';''' % (db.escape_string(resultInfo['status']), db.escape_string(resultInfo['exec_output']), resultInfo['answerId'])
-
-    log.debug("SQL:%s" % (sql))
-
-    db.selectDb('qf_admin_online')
-    db.exesql(sql)
-
-def checkRunRes(db, log):
-    for answerId in pidSet.keys():
-        if getResToDb(db, log, pidSet[answerId]):
-	        #print 'Del', answerId, pidSet
-            del(pidSet[answerId])
-	        #print 'AfterDel', pidSet
-
-
-def checkRecordExist(answerid):
-    flag = False
-    #print pidSet, " ==> "
-
-    if pidSet.has_key(answerid):
-	    flag = True
-
-    return flag
-
-def checkOnlineSubpidNum():
-    i = 0
-    for answerId in pidSet.keys():
-        item = pidSet[answerId]
-        if checkProcessExist(item['subPid']):
-            i = i + 1
-    return i
-
-def getResToDb(db, log, item):
-    path = item['path']
-    if not os.path.exists(path):
-        if checkProcessExist(item['subPid']):
-            return False
-        else:
-	        return True
-
-    os.chdir(path)
-
-    current_milli_time = getMilliSeconds()
-
-    pid = item['subPid']
-    if checkProcessExist(pid):
-        if abs(current_milli_time - item['current_milli_time']) >= run_time_out * 1000:
-            try:
-		        #print 'kill ', pid
-                os.kill(int(pid), signal.SIGKILL)
-            except:
-                return False
-        else:
-            return False
-
-
-    item['status'] = ''
-    item['status'] = getFileInfo(getStatusFileName(item['answerId']))
-
-    if item['status'] == 'ok':
-        item['exec_output'] = getFileInfo(getOutPutFileName(item['answerId']))
-    else:
-        item['exec_output']=getFileInfo(getOutPutFileName(item['answerId']))
-        if not item['exec_output'].strip():
-            item['exec_output'] = getFileInfo(getErrFileName(item['answerId']))
-        if item['status'] == 'compile_ok':
-            item['status'] = 'run_error'
-    if not item['status'].strip():
-	return True
-
-    updateAnswerInfo(db, log, item)
-
-    os.chdir(work_path)
-    #if item['status'] == 'ok':
-    cmd = 'rm -rf %s' % (item['answerId'])
-    os.system(cmd)
-
-    return True
-
-
-def doJobs(db, log):
-
-    tmpRes = []
-    while 1:
-        if len(pidSet) > 0:
-            checkRunRes(db, log)
-
-        res = getAnswerInfo(db,log)
-        #print("doJobs ===> len = %u", len(res))
-
-        if len(res) <= 0 or not cmp(tmpRes, res):
-            time.sleep(run_time_out)
-            continue
-
-	    tmpRes = res
+from utils import *
+import os, time
+import ConfigParser
+import redis
 
 
 
-        for item in res:
-	    print item, "hello world"
+class Task:
 
-            if checkRecordExist(item['answerId']):
-                continue
+    def __init__(self, log, cfg):
+        self.cfg = cfg
+        self.log = log
+        conf = ConfigParser.ConfigParser()
+        conf.read(cfg)
+        #redis 配置读取
+        self.redis_host = conf.get("redis", "redis_host")
+        self.redis_port = conf.getint("redis", "redis_port")
+        self.redis_passwd = conf.get("redis", "redis_passwd")
 
-            while checkOnlineSubpidNum() >= max_subPid_num:
-                checkRunRes(db, log)
-                time.sleep(1)
+        #充值信息读取
+        self.whether_to_recharge=conf.get("recharge", "whether_to_charge")
+        self.userId_to_recharge=conf.get("recharge", "userId")
+        self.money_to_recharge=conf.getint("recharge", "money")
 
-            item['path'] = '''%s/%s''' % (work_path, item['answerId'])
-            item['makefile_path'] = makefile_path
+        #账户信息读取
+        self.whether_to_query = conf.get("account_query", "whether_to_query")
+        self.userId_to_query = conf.get("account_query", "userId")
+        self.date_to_query = conf.get("account_query", "date")
 
- 	        #print os.getpid(), item['answerId'], item['answerId'], '__main__'
-            pid = os.fork()
-            if not pid:
+        self.log.info("cfg:%s", conf.sections())
 
-                if  'cpp' in item['language']:
-                    item['lang'] = 'gcc'
-                    rCpp = RunCpp(log)
-                    rCpp.buildAndrun(item)
-                elif 'java' == item['language']:
-                    item['lang'] = 'javac'
-                    rJava = RunJava(log)
-                    rJava.buildAndrun(item)
-                elif 'php' in item['language']:
-                    item['lang'] = 'php'
-                    rPhp = RunPhp(log)
-                    rPhp.buildAndrun(item)
-                elif 'javascript' in item['language']:
-                    item['lang'] = 'node'
-                    rJs = RunJs(log)
-                    rJs.buildAndrun(item)
-                elif 'swift' in item['language']:
-                    item['lang'] = 'swiftc'
-                    rSwift = RunSwift(log)
-                    rSwift.buildAndrun(item)
+    def do(self):
+        #r = redis.Redis(self.redis_host,self.redis_port,0,self.redis_passwd)
+        r = redis.Redis(self.redis_host,self.redis_port)
+        if not r.ping():
+            return
 
-                sys.stdout.flush()
+        #充值处理
+        if 'yes' in self.whether_to_recharge.lower():
+            #总金额
 
-                os._exit(0)
-            else:
-                tmp = {}
-                tmp['answerId'] = item['answerId']
-                tmp['subPid'] = pid
-                tmp['current_milli_time'] = getMilliSeconds()
-                tmp['path'] = item['path']
-                tmp['standard_output'] = item['standard_output']
-                pidSet[item['answerId']] = tmp
+            key = '%s_total' % (self.userId_to_recharge)
+            total = r.get(key)
+            self.log.info("Before recharge ==> userid:%s total:%s recharge:%s", self.userId_to_recharge, total, self.money_to_recharge)
+            total = r.incrby(key, self.money_to_recharge)
+            self.log.info("After recharge ==> userid:%s total:%s recharge:%s", self.userId_to_recharge, total, self.money_to_recharge)
 
-                checkRunRes(db, log)
+
+        #查询处理
+        if 'yes' in self.whether_to_query.lower():
+            #日消费
+            key = '%s_%s_cost' % (self.userId_to_query, self.date_to_query)
+            date_cost = r.get(key)
+
+            #总消费
+            key = '%s_cost' % (self.userId_to_query)
+            cost = r.get(key)
+
+            #总金额
+            key = '%s_total' % (self.userId_to_query)
+            total = r.get(key)
+
+            #总余额
+            key = '%s_balance' % (self.userId_to_query)
+            balance = r.get(key)
+
+            self.log.info("account_query ==> userid:%s total:%s balance:%s cost:%s date_cost:%s", self.userId_to_recharge, total, balance, cost, date_cost)
+
+
+
+
+
+
+
 
 
 
 if __name__ == '__main__':
 
-    makefile_path = '%s/%s' % (os.getcwd(), 'script')
+    #daemon = Daemon()
+    #daemon.daemonize()
 
-    daemon = Daemon()
-    daemon.daemonize()
 
-    cmd = 'mkdir -p %s' % (work_path)
-    os.system(cmd)
-    os.chdir(work_path)
+    logger = getLoger('logs/dsp')
 
-    logger = getLoger('qf')
-    db = MySQL(logger, '115.28.35.83','qf_admin','5dxZM1b!uS')
-
-    PATH = os.getenv('PATH')
-    PATH = '%s:%s' % (PATH, '/home/yang/jdk1.8/bin')
-    os.environ['PATH'] = PATH
-
-    signal.signal(signal.SIGCHLD, signal.SIG_IGN)
-
-    doJobs(db, logger)
+    job = Task(logger, "conf/dsp.ini")
+    job.do()
 
