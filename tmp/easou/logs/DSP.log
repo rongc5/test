@@ -1,0 +1,7 @@
+2016-07-13 18:26:54,696 __main__.py [line:35] INFO: cfg:['redis', 'recharge', 'account_query']
+2016-07-13 18:30:19,818 __main__.py [line:35] INFO: cfg:['redis', 'recharge', 'account_query']
+2016-07-13 18:34:59,339 __main__.py [line:35] INFO: cfg:['redis', 'recharge', 'account_query']
+2016-07-13 18:36:27,633 __main__.py [line:35] INFO: cfg:['redis', 'recharge', 'account_query']
+2016-07-13 18:36:27,633 __main__.py [line:49] INFO: Before recharge ==> userid:dsp total:None recharge:1000
+2016-07-13 18:36:27,634 __main__.py [line:51] INFO: After recharge ==> userid:dsp total:1000 recharge:1000
+2016-07-13 18:36:27,634 __main__.py [line:72] INFO: account_query ==> userid:dsp total:1000 balance:None cost:None date_cost:None
