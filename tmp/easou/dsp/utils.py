@@ -4,6 +4,7 @@
 import os,sys
 
 
+
 class Daemon:
         """
         A generic daemon class.

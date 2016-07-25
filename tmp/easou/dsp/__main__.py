@@ -46,6 +46,9 @@ class Task:
 
             key = '%s_total' % (self.userId_to_recharge)
             total = r.get(key)
+            if not total:
+                total = '0'
+
             self.log.info("Before recharge ==> userid:%s total:%s recharge:%s", self.userId_to_recharge, total, self.money_to_recharge)
             total = r.incrby(key, self.money_to_recharge)
             self.log.info("After recharge ==> userid:%s total:%s recharge:%s", self.userId_to_recharge, total, self.money_to_recharge)
@@ -56,18 +59,26 @@ class Task:
             #日消费
             key = '%s_%s_cost' % (self.userId_to_query, self.date_to_query)
             date_cost = r.get(key)
+            if not date_cost:
+                date_cost = '0'
 
             #总消费
             key = '%s_cost' % (self.userId_to_query)
             cost = r.get(key)
+            if not cost:
+                cost = '0'
 
             #总金额
             key = '%s_total' % (self.userId_to_query)
             total = r.get(key)
+            if not total:
+                total = '0'
 
             #总余额
             key = '%s_balance' % (self.userId_to_query)
             balance = r.get(key)
+            if not balance:
+                balance = '0'
 
             self.log.info("account_query ==> userid:%s total:%s balance:%s cost:%s date_cost:%s", self.userId_to_recharge, total, balance, cost, date_cost)
 
