@@ -97,7 +97,7 @@ if __name__ == '__main__':
     #daemon.daemonize()
 
 
-    logger = getLoger('logs/dsp')
+    logger = getLoger('recharge')
 
     job = Task(logger, "conf/dsp.ini")
     job.do()
