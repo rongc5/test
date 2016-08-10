@@ -15,28 +15,49 @@ class Task:
     def __init__(self, log, cfg):
         self.cfg = cfg
         self.log = log
-        conf = ConfigParser.ConfigParser()
-        conf.read(cfg)
+        self.conf = ConfigParser.ConfigParser()
+        self.conf.read(cfg)
         #redis 配置读取
-        self.redis_host = conf.get("redis", "redis_host")
-        self.redis_port = conf.getint("redis", "redis_port")
-        self.redis_passwd = conf.get("redis", "redis_passwd")
+        self.redis_host = self.conf.get("redis", "redis_host")
+        self.redis_port = self.conf.getint("redis", "redis_port")
+        self.redis_passwd = self.conf.get("redis", "redis_passwd")
 
         #充值信息读取
-        self.whether_to_recharge=conf.get("recharge", "whether_to_charge")
-        self.userId_to_recharge=conf.get("recharge", "userId")
-        self.money_to_recharge=conf.getint("recharge", "money")
+        self.whether_to_recharge=self.conf.get("recharge", "whether_to_charge")
+        self.whether_to_reset=self.conf.get("recharge", "whether_to_reset")
+        self.userId_to_recharge=self.conf.get("recharge", "userId")
+        self.money_to_recharge=self.conf.getint("recharge", "money")
 
         #账户信息读取
-        self.whether_to_query = conf.get("account_query", "whether_to_query")
-        self.userId_to_query = conf.get("account_query", "userId")
-        self.date_to_query = conf.get("account_query", "date")
+        self.whether_to_query = self.conf.get("account_query", "whether_to_query")
+        self.userId_to_query = self.conf.get("account_query", "userId")
+        self.date_to_query = self.conf.get("account_query", "date")
 
-        self.log.info("cfg:%s", conf.sections())
+        self.log.info("cfg:%s", self.conf.sections())
+
+    def reset(self, r):
+        key = '%s_total' % (self.userId_to_recharge)
+        total = r.get(key)
+        if not total:
+            total = '0'
+
+        key = '%s_cost' % (self.userId_to_recharge)
+        cost = r.get(key)
+        if not cost:
+            cost = '0'
+
+        self.log.info("Before reset ==> userid:%s total:%s cost:%s recharge:%s", self.userId_to_recharge, total, cost, self.money_to_recharge)
+        if cost >= total:
+            key = '%s_total' % (self.userId_to_recharge)
+            r.set(key, '0')
+
+            key = '%s_cost' % (self.userId_to_recharge)
+            r.set(key, '0')
+
 
     def do(self):
-        #r = redis.Redis(self.redis_host,self.redis_port,0,self.redis_passwd)
-        r = redis.Redis(self.redis_host,self.redis_port)
+        r = redis.Redis(self.redis_host,self.redis_port,0,self.redis_passwd)
+        #r = redis.Redis(self.redis_host,self.redis_port)
         if not r.ping():
             return
 
@@ -44,14 +65,26 @@ class Task:
         if 'yes' in self.whether_to_recharge.lower():
             #总金额
 
+            if 'yes' in self.whether_to_reset.lower():
+                self.reset(r)
+
             key = '%s_total' % (self.userId_to_recharge)
             total = r.get(key)
             if not total:
                 total = '0'
 
-            self.log.info("Before recharge ==> userid:%s total:%s recharge:%s", self.userId_to_recharge, total, self.money_to_recharge)
+            key = '%s_cost' % (self.userId_to_recharge)
+            cost = r.get(key)
+            if not cost:
+                cost = '0'
+
             total = r.incrby(key, self.money_to_recharge)
-            self.log.info("After recharge ==> userid:%s total:%s recharge:%s", self.userId_to_recharge, total, self.money_to_recharge)
+
+            self.log.info("After recharge ==> userid:%s total:%s cost:%s recharge:%s", self.userId_to_recharge, total, cost, self.money_to_recharge)
+
+            self.conf.set('recharge', 'whether_to_charge', 'NO')
+            self.conf.set('recharge', 'whether_to_reset', 'NO')
+            self.conf.write(open(self.cfg, 'w'))
 
 
         #查询处理
