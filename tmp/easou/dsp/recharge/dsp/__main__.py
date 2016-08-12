@@ -47,13 +47,56 @@ class Task:
             cost = '0'
 
         self.log.info("Before reset ==> userid:%s total:%s cost:%s recharge:%s", self.userId_to_recharge, total, cost, self.money_to_recharge)
-        if cost >= total:
-            key = '%s_total' % (self.userId_to_recharge)
-            r.set(key, '0')
+        key = '%s_total' % (self.userId_to_recharge)
+        r.set(key, '0')
 
-            key = '%s_cost' % (self.userId_to_recharge)
-            r.set(key, '0')
+        key = '%s_cost' % (self.userId_to_recharge)
+        r.set(key, '0')
 
+        self.conf.set('recharge', 'whether_to_reset', 'NO')
+        self.conf.write(open(self.cfg, 'w'))
+
+
+    def recharge(self, r):
+        key = '%s_total' % (self.userId_to_recharge)
+        total = r.incrby(key, self.money_to_recharge)
+        total = r.get(key)
+        if not total:
+            total = '0'
+
+        key = '%s_cost' % (self.userId_to_recharge)
+        cost = r.get(key)
+        if not cost:
+            cost = '0'
+
+        self.conf.set('recharge', 'whether_to_charge', 'NO')
+        self.conf.write(open(self.cfg, 'w'))
+
+        self.log.info("After recharge ==> userid:%s total:%s cost:%s recharge:%s", self.userId_to_recharge, total, cost, self.money_to_recharge)
+
+
+    def query(self, r):
+        key = '%s_%s_cost' % (self.userId_to_query, self.date_to_query)
+        date_cost = r.get(key)
+        if not date_cost:
+            date_cost = '0'
+
+        key = '%s_cost' % (self.userId_to_query)
+        cost = r.get(key)
+        if not cost:
+            cost = '0'
+
+        key = '%s_total' % (self.userId_to_query)
+        total = r.get(key)
+        if not total:
+            total = '0'
+
+        key = '%s_balance' % (self.userId_to_query)
+        balance = r.get(key)
+        if not balance:
+            balance = '0'
+
+        self.log.info("account_query ==> userid:%s total:%s balance:%s cost:%s date_cost:%s", self.userId_to_recharge, total, balance, cost, date_cost)
 
     def do(self):
         r = redis.Redis(self.redis_host,self.redis_port,0,self.redis_passwd)
@@ -61,74 +104,23 @@ class Task:
         if not r.ping():
             return
 
+        if 'yes' in self.whether_to_reset.lower():
+            self.reset(r)
+
         #充值处理
         if 'yes' in self.whether_to_recharge.lower():
             #总金额
-
-            if 'yes' in self.whether_to_reset.lower():
-                self.reset(r)
-
-            key = '%s_total' % (self.userId_to_recharge)
-            total = r.get(key)
-            if not total:
-                total = '0'
-
-            key = '%s_cost' % (self.userId_to_recharge)
-            cost = r.get(key)
-            if not cost:
-                cost = '0'
-
-            total = r.incrby(key, self.money_to_recharge)
-
-            self.log.info("After recharge ==> userid:%s total:%s cost:%s recharge:%s", self.userId_to_recharge, total, cost, self.money_to_recharge)
-
-            self.conf.set('recharge', 'whether_to_charge', 'NO')
-            self.conf.set('recharge', 'whether_to_reset', 'NO')
-            self.conf.write(open(self.cfg, 'w'))
+            self.recharge(r)
 
 
-        #查询处理
         if 'yes' in self.whether_to_query.lower():
-            #日消费
-            key = '%s_%s_cost' % (self.userId_to_query, self.date_to_query)
-            date_cost = r.get(key)
-            if not date_cost:
-                date_cost = '0'
-
-            #总消费
-            key = '%s_cost' % (self.userId_to_query)
-            cost = r.get(key)
-            if not cost:
-                cost = '0'
-
-            #总金额
-            key = '%s_total' % (self.userId_to_query)
-            total = r.get(key)
-            if not total:
-                total = '0'
-
-            #总余额
-            key = '%s_balance' % (self.userId_to_query)
-            balance = r.get(key)
-            if not balance:
-                balance = '0'
-
-            self.log.info("account_query ==> userid:%s total:%s balance:%s cost:%s date_cost:%s", self.userId_to_recharge, total, balance, cost, date_cost)
-
-
-
-
-
-
-
-
+            self.query(r)
 
 
 if __name__ == '__main__':
 
     #daemon = Daemon()
     #daemon.daemonize()
-
 
     logger = getLoger('recharge')
 

@@ -39,7 +39,7 @@ class Handler(BaseHTTPRequestHandler):
                 adps.creative_id  = str(id)
                 adps.title = 'title_%d' % (id)
                 adps.desc = 'desc_%d' % (id)
-                adps.click_url = 'http%3A%2F%2Fqd.shangjijm.com%2Ffuqidao%2Fqd5.html'
+                adps.click_url = 'http://%s:%s/click_url?title=%s&creative_id=%s' % (IP, PORT, adps.title, adps.creative_id)
                 adps.show_url = 'http%3A%2F%2Fqd.shangjijm.com%2F'
                 adps.img_url = 'http://a.hiphotos.baidu.com/zhidao/pic/item/f9dcd100baa1cd11aa2ca018bf12c8fcc3ce2d74.jpg'
 
@@ -75,6 +75,14 @@ class Handler(BaseHTTPRequestHandler):
         creative_id = query['creative_id'][0]
         logger.info('recv show mon url: sid: %s creative_id: %s', sid, creative_id)
 
+
+    def deal_click_url(self, query):
+        creative_id = query['creative_id'][0]
+        title = query['title'][0]
+        self.wfile.write("hello world")
+        logger.info('recv click_url: creative_id: %s title: %s', creative_id, title)
+
+
     def do_GET(self):
         self.send_response(200)
         self.send_header("Content-type", 'text/plain')
@@ -93,6 +101,10 @@ class Handler(BaseHTTPRequestHandler):
         elif '/showmonUrl.html' in parsed_path.path:
             res = urlparse.parse_qs(parsed_path.query)
             self.deal_showmon_url(res)
+        elif '/click_url' in parsed_path.path:
+            res = urlparse.parse_qs(parsed_path.query)
+            self.deal_click_url(res)
+
 
 
 
