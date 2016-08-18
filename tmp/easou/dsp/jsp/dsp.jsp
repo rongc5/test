@@ -10,12 +10,12 @@
 <%!Logger log = Logger.getLogger("dsp");%>
 <%
     String args = request.getQueryString();
-    int idx = args.indexOf("ecoms_gad=");
+    int idx = args.indexOf("url=");
     if (-1 == idx) {
 	
     } else {
 
-	    String target_url = args.substring(idx + "ecoms_gad=".length());
+	    String target_url = args.substring(idx + "url=".length());
 
 	    try{
         	log.info(args);
@@ -25,5 +25,3 @@
 	    }finally {
 	
     	}
-   }
-%>
