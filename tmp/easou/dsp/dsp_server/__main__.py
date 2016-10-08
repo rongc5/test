@@ -28,10 +28,13 @@ class Handler(BaseHTTPRequestHandler):
         bid_res = easou_adx_pb2.BidResponse()
         bid_res.bid = bid_req.bid
 
+        count = 0
         for adzinfo in bid_req.adzinfo:
             ads = bid_res.ads.add()
             ads.adzinfo_id = int(adzinfo.pid)
-            ads.view_type.extend(adzinfo.view_type)
+            ads.view_type = int(adzinfo.view_type[count])
+	    ads.creative_type = 1
+	    count = count + 1
 
             for i in range(adzinfo.ad_bid_count):
                 adps = ads.adps.add()
@@ -41,7 +44,7 @@ class Handler(BaseHTTPRequestHandler):
                 adps.desc = 'desc_%d' % (id)
                 adps.click_url = 'http://%s:%s/click_url?title=%s&creative_id=%s' % (IP, PORT, adps.title, adps.creative_id)
                 adps.show_url = 'http%3A%2F%2Fqd.shangjijm.com%2F'
-                adps.img_url = 'http://a.hiphotos.baidu.com/zhidao/pic/item/f9dcd100baa1cd11aa2ca018bf12c8fcc3ce2d74.jpg'
+                adps.img_url = 'http://ubmcmm.baidustatic.com/media/v1/0f000rguXKkIAekXoyuAJf.jpg'
 
                 adps.show_mon_url = 'http://%s:%s/showmonUrl.html?id=%s&creative_id=%s' % (IP, PORT, bid_res.bid, adps.creative_id)
                 adps.open_type = 1
@@ -82,6 +85,38 @@ class Handler(BaseHTTPRequestHandler):
         self.wfile.write("hello world")
         logger.info('recv click_url: creative_id: %s title: %s', creative_id, title)
 
+    def deal_req_adview(self, query):
+        adstr = '''{
+            "res": 1,
+            "co": 1,
+            "mg": "",
+            "ad": [
+                    {
+                        "abi": "",
+                        "ast": "一款你不得不玩的游戏",
+                        "adi": "20150528-135744_zceCCbKv_61-357-U9fM-1_1",
+                        "aic": "",
+                        "ate": "萌江湖创造手游新奇迹",
+                        "api": [
+                                "http://test2014.adview.cn:8088/agent/image/zceccbkv20150526164937501000_640_320.jpg"
+                                ],
+                                "apn": "",
+                                "ati": "萌江湖重磅上市",
+                                "dpn": "",
+                                "at": 15,
+                                "dai": "",
+                                "al": "http://www.baidu.com",
+                                "das": "",
+                                "dan": "",
+                                "act": 2,
+                                "ec": ["url1","url2"],
+                                "es": { "0": ["url3","url4"]}
+                    }
+                    ]
+                    }'''
+
+        self.wfile.write(adstr)
+
 
     def do_GET(self):
         self.send_response(200)
@@ -104,6 +139,9 @@ class Handler(BaseHTTPRequestHandler):
         elif '/click_url' in parsed_path.path:
             res = urlparse.parse_qs(parsed_path.query)
             self.deal_click_url(res)
+        elif '/requestAdViewAds.html' in parsed_path.path:
+            res = urlparse.parse_qs(parsed_path.query)
+            self.deal_req_adview(res)
 
 
 
