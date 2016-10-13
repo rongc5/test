@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/../../../comment/app_snssdk/.idea/app_snssdk.iml" filepath="$PROJECT_DIR$/../../../comment/app_snssdk/.idea/app_snssdk.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/dsp.iml" filepath="$PROJECT_DIR$/.idea/dsp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../../../stock/py/.idea/py.iml" filepath="$PROJECT_DIR$/../../../stock/py/.idea/py.iml" />
     </modules>
   </component>
 </project>
