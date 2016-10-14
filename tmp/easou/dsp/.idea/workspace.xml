@@ -23,49 +23,13 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="commit_headline.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../../../comment/app_snssdk/commit_headline.py">
+      <file leaf-file-name="HTMLParser.py" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://D:/Python27/Lib/HTMLParser.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="22" column="0" selection-start="1298" selection-end="1298" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="646">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="myLog.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/recharge/dsp/myLog.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="37" column="4" selection-start="884" selection-end="908" vertical-scroll-proportion="0.0" vertical-offset="161" max-vertical-offset="874">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="utils.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/recharge/dsp/utils.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="40" column="44" selection-start="1181" selection-end="1181" vertical-scroll-proportion="0.0" vertical-offset="9" max-vertical-offset="1235">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="get_plate_list.py" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/../../../stock/py/get_plate_list.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="75" column="21" selection-start="1644" selection-end="1644" vertical-scroll-proportion="0.8134642" vertical-offset="845" max-vertical-offset="1577">
+            <state line="71" column="6" selection-start="2442" selection-end="2442" vertical-scroll-proportion="-2.545582" vertical-offset="3164" max-vertical-offset="9082">
               <folding>
-                <element signature="e#38#52#0" expanded="true" />
+                <element signature="e#371#388#0" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="utils.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../../../stock/py/utils.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="8" column="0" selection-start="55" selection-end="55" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1292">
-              <folding />
             </state>
           </provider>
         </entry>
@@ -93,6 +57,7 @@
         <option value="$PROJECT_DIR$/../../../stock/py/get_is_list.py" />
         <option value="$PROJECT_DIR$/../../../stock/py/utils.py" />
         <option value="$PROJECT_DIR$/../../../stock/py/get_plate_list.py" />
+        <option value="$PROJECT_DIR$/../../../stock/py/get_stock_urls.py" />
       </list>
     </option>
   </component>
@@ -128,6 +93,7 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -168,18 +134,17 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="options.lastSelected" value="com.jetbrains.python.configuration.PythonSdkConfigurable" />
     <property name="recentsLimit" value="5" />
+    <property name="options.lastSelected" value="com.jetbrains.python.configuration.PythonSdkConfigurable" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../../../comment/app_snssdk" />
     <property name="FullScreen" value="false" />
-    <property name="options.searchVisible" value="true" />
     <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="options.searchVisible" value="true" />
   </component>
   <component name="RunManager" selected="Python.__main__">
     <configuration default="false" name="__main__" type="PythonConfigurationType" factoryName="Python" temporary="true">
@@ -285,9 +250,6 @@
       <option name="PARAMETERS" value="" />
       <method />
     </configuration>
-    <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug" singleton="true">
-      <method />
-    </configuration>
     <configuration default="true" type="tests" factoryName="Unittests">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -309,6 +271,9 @@
       <option name="PUREUNITTEST" value="true" />
       <option name="PARAMS" value="" />
       <option name="USE_PARAM" value="false" />
+      <method />
+    </configuration>
+    <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug" singleton="true">
       <method />
     </configuration>
     <configuration default="true" type="tests" factoryName="Doctests">
@@ -370,8 +335,8 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1456" height="876" extended-state="6" />
-    <editor active="false" />
+    <frame x="-8" y="-8" width="1456" height="876" extended-state="7" />
+    <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -403,7 +368,7 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="2" />
+      <option name="time" value="3" />
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
@@ -447,41 +412,14 @@
         <state line="22" column="25" selection-start="711" selection-end="713" vertical-scroll-proportion="0.57" vertical-offset="0" max-vertical-offset="700" />
       </provider>
     </entry>
-    <entry file="file://D:/Python27/Lib/HTMLParser.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="9" column="0" selection-start="370" selection-end="370" vertical-scroll-proportion="-2.3197675" vertical-offset="1767" max-vertical-offset="9082">
-          <folding>
-            <element signature="e#371#388#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/dsp_server/utils.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="-0.73211783" vertical-offset="522" max-vertical-offset="1235">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../../comment/app_snssdk/commit_headline.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="22" column="0" selection-start="1298" selection-end="1298" vertical-scroll-proportion="0.0" vertical-offset="418" max-vertical-offset="646">
-          <folding />
-        </state>
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="-0.73211783" vertical-offset="522" max-vertical-offset="1235" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/recharge/dsp/__main__.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="51" column="0" selection-start="1616" selection-end="1616" vertical-scroll-proportion="-0.37307152" vertical-offset="1159" max-vertical-offset="2489">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/recharge/dsp/myLog.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="37" column="4" selection-start="884" selection-end="908" vertical-scroll-proportion="0.0" vertical-offset="161" max-vertical-offset="874">
-          <folding />
-        </state>
+        <state line="51" column="0" selection-start="1616" selection-end="1616" vertical-scroll-proportion="-0.37307152" vertical-offset="1159" max-vertical-offset="2489" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/../../../stock/py/utils.py">
@@ -491,18 +429,32 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/recharge/dsp/utils.py">
+    <entry file="file://$PROJECT_DIR$/recharge/dsp/myLog.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="40" column="44" selection-start="1181" selection-end="1181" vertical-scroll-proportion="0.0" vertical-offset="351" max-vertical-offset="1235">
+        <state line="37" column="4" selection-start="884" selection-end="908" vertical-scroll-proportion="0.9859747" vertical-offset="0" max-vertical-offset="874">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../../../stock/py/get_plate_list.py">
+    <entry file="file://$PROJECT_DIR$/recharge/dsp/utils.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="75" column="21" selection-start="1644" selection-end="1644" vertical-scroll-proportion="0.8134642" vertical-offset="845" max-vertical-offset="1577">
+        <state line="53" column="0" selection-start="1701" selection-end="1701" vertical-scroll-proportion="1.4123422" vertical-offset="0" max-vertical-offset="1235">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../../comment/app_snssdk/commit_headline.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="22" column="0" selection-start="1298" selection-end="1298" vertical-scroll-proportion="0.5971429" vertical-offset="0" max-vertical-offset="700">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://D:/Python27/Lib/HTMLParser.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="71" column="6" selection-start="2442" selection-end="2442" vertical-scroll-proportion="-2.545582" vertical-offset="3164" max-vertical-offset="9082">
           <folding>
-            <element signature="e#38#52#0" expanded="true" />
+            <element signature="e#371#388#0" expanded="true" />
           </folding>
         </state>
       </provider>
