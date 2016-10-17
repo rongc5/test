@@ -1,3 +1,7 @@
-#!/bin/bash
+#!/usr/bin/env python2
+#encoding=gbk
 
-awk -F' ' '{print $2}' | xargs -n1 python get_stock_urls.py -u
+import urllib2
+
+import utils
+#from htm
