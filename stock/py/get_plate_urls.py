@@ -80,7 +80,7 @@ def main(argv):
             path = a
 
     if not flag:
-        date = time.strftime('%Y-%m-%d',time.localtime(time.time()))
+        date = time.strftime('%Y%m%d',time.localtime(time.time()))
         saveFileName = '%s_bk_urls' % (date)
 
     if path.strip():

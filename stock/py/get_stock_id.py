@@ -86,7 +86,7 @@ def main(argv):
             url = a
 
     if not flag:
-        date = time.strftime('%Y-%m-%d',time.localtime(time.time()))
+        date = time.strftime('%Y%m%d',time.localtime(time.time()))
         saveFileName = '%s_stockIds' % (date)
 
     if path.strip():
