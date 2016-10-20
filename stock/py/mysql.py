@@ -2,7 +2,7 @@
 #coding=utf-8
 
 import MySQLdb
-from myLog import *
+
 
 OperationalError = MySQLdb.OperationalError
 class MySQL:
@@ -14,10 +14,11 @@ class MySQL:
         self.charset=charset
         self.db = ''
         try:
-            self.conn=MySQLdb.connect(host=self.host,port=self.port,user=self.user,passwd=self.password)
+            self.conn=MySQLdb.connect(host=self.host,port=self.port,user=self.user,passwd=self.password, charset='utf8')
             self.conn.autocommit(False)
-            self.conn.set_character_set(self.charset)
+            #self.conn.set_character_set(self.charset)
             self.cur=self.conn.cursor()
+            self.cur.execute('SET NAMES utf8')
         except MySQLdb.Error as e:
             print("Mysql Error %d: %s" % (e.args[0], e.args[1]))
 
@@ -44,6 +45,7 @@ class MySQL:
     def fetchAll(self):
         result=self.cur.fetchall()
         #print("fetchAll ===> len = %u", len(result))
+        #print result
         desc =self.cur.description
         d = []
         for inv in result:
@@ -71,6 +73,17 @@ class MySQL:
         try:
             self.checkIsAlive()
             self.cur.execute(sql)
+            self.commit()
+        except MySQLdb.Error as e:
+            print("Mysql Error:%s\nSQL:%s" %(e,sql))
+            self.rollback()
+            self.reConnect()
+
+
+    def execute(self, sql, param):
+        try:
+            self.checkIsAlive()
+            self.cur.execute(sql, param)
             self.commit()
         except MySQLdb.Error as e:
             print("Mysql Error:%s\nSQL:%s" %(e,sql))

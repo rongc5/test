@@ -68,6 +68,7 @@ class Handler(BaseHTTPRequestHandler):
     def do_GET(self):
         response = self.path
         self.send_response(200)
+        print 'do_GET receive'
         self.send_header("Content-type", 'text/plain')
         self.end_headers()
         if not 'width' in self.path:
@@ -93,12 +94,12 @@ class ThreadedHTTPServer(ThreadingMixIn, HTTPServer):
 
 
 def do():
-    server = ThreadedHTTPServer((I, 8080), Handler)
+    server = ThreadedHTTPServer((I, 8888), Handler)
     #server = HTTPServer(('localhost', 8080), Handler)
     print 'Starting server, use <Ctrl-C> to stop'
     server.serve_forever()
 
-PORT = 8080
+PORT = 8088
 I="0.0.0.0"
 if __name__ == '__main__':
     do()

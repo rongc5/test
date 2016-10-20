@@ -14,7 +14,7 @@ def is_in_list(item, out_list):
         #if tmp.find(keystr) != -1:
         #print key, item
         if key in item:
-            #print key, item, '123'
+            print key, item, '123'
             return key
 
     return ''
@@ -39,7 +39,7 @@ def job(line, fp, out_dict, out_list):
         out_item = is_in_list(item, out_list)
 
         if out_item.strip():
-            #print out_item
+            print out_item
             out_dict[count] = out_item
 
         if count in out_dict.keys():
@@ -85,9 +85,7 @@ def insertTable(db, line):
     if not is_num_by_except(items[0]):
         return
     sql = '''insert into stock_list(stock_id, stock_name, stock_price, circulated_market_value, circulation_capital_stock, ratios, industry) values(%s, %s, %s, %s, %s, %s, %s);'''
-    #param = (items[0].decode('gbk').encode('utf-8'), items[1].decode('gbk').encode('utf-8'),items[6].decode('gbk').encode('utf-8'), items[2].decode('gbk').encode('utf-8'), items[3].decode('gbk').encode('utf-8'), items[4].decode('gbk').encode('utf-8'), items[5].decode('gbk').encode('utf-8'))
-    param = (items[0], items[1],items[6], items[2], items[3], items[4], items[5])
-
+    param = (items[0].decode('gbk').encode('utf-8'), items[1].decode('gbk').encode('utf-8'),items[6].decode('gbk').encode('utf-8'), items[2].decode('gbk').encode('utf-8'), items[3].decode('gbk').encode('utf-8'), items[4].decode('gbk').encode('utf-8'), items[5].decode('gbk').encode('utf-8'))
     db.execute(sql, param)
 
 def truncate(db):
@@ -109,47 +107,4 @@ def get_stock_list(filename):
         if not line:
             continue
 
-        job(line, fp,out_dict, out_list)
-    fp.close()
-
-    return saveFileName
-
-def main(argv):
-
-    reload(sys)
-    sys.setdefaultencoding("utf-8")
-    try:
-        opts, args = getopt.getopt(argv[1:], 'f:')
-    except getopt.GetoptError, err:
-        print str(err)
-        sys.exit(2)
-
-    FileName = ''
-    for o,a in opts:
-        #print o, a
-        if o in '-f':
-            FileName = a
-
-    saveFileName = ''
-    saveFileName = get_stock_list(FileName)
-
-    db = MySQL('localhost','root','123456')
-    db.selectDb('stock')
-
-    createTable(db)
-
-    #truncate(db)
-    for line in open(saveFileName):
-        line = line.strip()
-        #print line
-        if not line:
-            continue
-
-        insertTable(db, line)
-
-
-if __name__ == '__main__':
-    main(sys.argv)
-
-
-
+        job(line, fp,out_dict, out

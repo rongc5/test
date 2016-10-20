@@ -2,15 +2,13 @@
 <module type="PYTHON_MODULE" version="4">
   <component name="NewModuleRootManager">
     <content url="file://$MODULE_DIR$" />
-    <orderEntry type="jdk" jdkName="Python 2.7.6 (D:/Python27/python.exe)" jdkType="Python SDK" />
+    <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module" module-name="qf" />
+    <orderEntry type="module" module-name="python" />
+    <orderEntry type="module" module-name="easou" />
+    <orderEntry type="module" module-name="py" />
+    <orderEntry type="module" module-name="app_snssdk" />
   </component>
   <component name="PyDocumentationSettings">
-    <option name="myDocStringFormat" value="Plain" />
-  </component>
-  <component name="TestRunnerService">
-    <option name="projectConfiguration" value="Unittests" />
-    <option name="PROJECT_TEST_RUNNER" value="Unittests" />
-  </component>
-</module>
-
+    <option name="myDocStringFormat" value="Plain" />
