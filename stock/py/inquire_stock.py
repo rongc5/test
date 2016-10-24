@@ -6,17 +6,35 @@ from mysql import *
 import getopt, sys, re, string, time
 
 
-def selectDDX_date(db, date):
-    if date:
-        sql = '''SELECT a.stock_id, b.stock_name, a.deal_price, b.circulated_market_value, b.ratios,
-a.deal_hand, a.deal_action, a.deal_date, a.deal_time from
-stock_ddx as a, stock_list as b
-WHERE deal_date = '%s' and a.stock_id = b.stock_id;''' % (date)
+def selectDDX_date(db, date, isall):
+    sql = ''
+    if isall:
+        if date:
+            sql = '''SELECT a.stock_id, b.stock_name, a.deal_price, b.circulated_market_value, b.ratios,
+    a.deal_hand, a.deal_action, a.deal_date, a.deal_time from
+    stock_ddx as a, stock_list as b
+    WHERE deal_date = '%s' and a.stock_id = b.stock_id;''' % (date)
+        else:
+            sql = '''SELECT a.stock_id, b.stock_name, a.deal_price, b.circulated_market_value, b.ratios,
+    a.deal_hand, a.deal_action, a.deal_date, a.deal_time from
+    stock_ddx as a, stock_list as b
+    WHERE a.stock_id = b.stock_id;'''
     else:
-        sql = '''SELECT a.stock_id, b.stock_name, a.deal_price, b.circulated_market_value, b.ratios,
+        if date:
+            sql = '''SELECT c.stock_id, b.stock_name, a.deal_price, b.circulated_market_value, b.ratios,
 a.deal_hand, a.deal_action, a.deal_date, a.deal_time from
-stock_ddx as a, stock_list as b
-WHERE a.stock_id = b.stock_id;'''
+stock_ddx as a, stock_list as b, (SELECT DISTINCT stock_id from stock_ddx where deal_action = 'B' and
+deal_date = '%s') as `c`
+WHERE c.stock_id = b.stock_id and c.stock_id = a.stock_id and a.deal_date = '%s' and c.stock_id not in
+(SELECT DISTINCT stock_id from stock_ddx where deal_action = 'S' and deal_date = '%s')
+ ORDER BY a.deal_hand DESC;''' % (date, date, date)
+        else:
+            sql = '''SELECT c.stock_id, b.stock_name, a.deal_price, b.circulated_market_value, b.ratios,
+a.deal_hand, a.deal_action, a.deal_date, a.deal_time from
+stock_ddx as a, stock_list as b, (SELECT DISTINCT stock_id from stock_ddx where deal_action = 'B') as `c`
+WHERE c.stock_id = b.stock_id and c.stock_id = a.stock_id and c.stock_id not in
+(SELECT DISTINCT stock_id from stock_ddx where deal_action = 'S')
+ ORDER BY a.deal_hand DESC;'''
 
     res = db.select(sql)
 
@@ -124,7 +142,7 @@ def main(argv):
 
 
     try:
-        opts, args = getopt.getopt(argv[1:], 'd:hs:t:')
+        opts, args = getopt.getopt(argv[1:], 'ad:hs:t:')
     except getopt.GetoptError, err:
         print str(err)
         sys.exit(2)
@@ -133,6 +151,7 @@ def main(argv):
     date = ''
     stockid = ''
     t = 0
+    is_all = 0
     for o,a in opts:
         if o in '-d':
             date = a
@@ -144,6 +163,8 @@ def main(argv):
         elif o in '-t':
             stockid = a
             t = 1
+        elif o in '-a':
+            is_all = 1
 
     #if not date:
     #    date = time.strftime('%Y%m%d',time.localtime(time.time()))
@@ -156,7 +177,7 @@ def main(argv):
     elif stockid:
         selectDDX_stockid(db, date, stockid)
     else:
-        selectDDX_date(db, date)
+        selectDDX_date(db, date, is_all)
 
 
 if __name__ == '__main__':
