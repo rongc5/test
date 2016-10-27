@@ -1,6 +1,7 @@
 #ifndef __SINGLETON_BASE_H_
 #define __SINGLETON_BASE_H_
 
+namespace MZFRAME {
 template<class T>
 class singleton_base
 {
@@ -27,5 +28,6 @@ private:
 template<class T>
 T* singleton_base<T>::_p_instance = NULL;
 
+}
 #endif
 

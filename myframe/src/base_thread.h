@@ -2,7 +2,9 @@
 #define __BASE_THREAD_HPP_
 #include <pthread.h>
 #include <vector>
-using namespace MYFRAME
+
+namespace MZFRAME {
+
 using namespace std;
 
 class base_thread
@@ -64,5 +66,7 @@ class base_thread
 		pthread_t _thread_id;
 		bool _run_flag;
 };
+
+}
 #endif
 
