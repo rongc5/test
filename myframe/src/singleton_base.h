@@ -12,15 +12,13 @@ public:
 	}
 	static void set_instance(T *instance)
 	{     
-		_p_instance = instance;
-	}
-	static void del_instance()
-	{
 		if(NULL != _p_instance)
 		{
 			delete _p_instance;
 			_p_instance = NULL;
 		}
+
+		_p_instance = instance;
 	}
 private:
 	static T *_p_instance;	

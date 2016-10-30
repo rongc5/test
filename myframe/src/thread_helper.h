@@ -25,7 +25,7 @@ class thread_lock {
         thread_mutex_t * _mutex;
 };
 
-thread_rwlock_t{
+class thread_rwlock_t{
     public:
         thread_rwlock_t();
         ~thread_rwlock_t();

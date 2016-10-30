@@ -2,12 +2,12 @@
 
 namespace MZFRAME {
 
-thread_mutex_t::thread_mutex()
+thread_mutex_t::thread_mutex_t()
 {
     pthread_mutex_init(&_mutex, NULL);
 }
 
-thread_mutex_t::~thread_mutex()
+thread_mutex_t::~thread_mutex_t()
 {
     pthread_mutex_destroy(&_mutex);
 }
@@ -22,7 +22,7 @@ void thread_mutex_t::unlock()
     pthread_mutex_unlock(&_mutex);
 }
 
-thread_lock::thread_lock(thread_mutex * mutex)
+thread_lock::thread_lock(thread_mutex_t * mutex)
 {
     _mutex = mutex;
     if (_mutex != NULL){
@@ -47,17 +47,17 @@ thread_rwlock_t::~thread_rwlock_t()
     pthread_rwlock_destroy(&_rwlock);
 }
 
-thread_rwlock_t::read_lock()
+void thread_rwlock_t::read_lock()
 {
     pthread_rwlock_rdlock(&_rwlock); 
 }
 
-thread_rwlock_t::write_lock()
+void thread_rwlock_t::write_lock()
 {
     pthread_rwlock_wrlock(&_rwlock);
 }
 
-thread_rwlock_t::unlock()
+void thread_rwlock_t::unlock()
 {
     pthread_rwlock_wrlock(&_rwlock);
 }
