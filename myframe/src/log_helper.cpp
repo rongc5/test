@@ -1,5 +1,4 @@
 #include "log_helper.h"
-#include "utils.h"
 #include <pthread.h>
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -54,7 +53,7 @@ namespace MZFRAME {
                 snprintf(dest, dest_len, "%s.%s", base_file_name, "nt");
                 break;
             case LOGTRACE:
-                snprintf(dest, dest_len, "%s.%s", base_file_name, "ta");
+                snprintf(dest, dest_len, "%s.%s", base_file_name, "tc");
                 break;
             case LOGDEBUG:
                 snprintf(dest, dest_len, "%s.%s", base_file_name, "db");
@@ -74,7 +73,7 @@ namespace MZFRAME {
             _loger[type] = new log_helper();
             char tmp[SIZE_LEN_64];
             get_file_name(type, tmp, sizeof(tmp));
-            printf("%s\n", tmp);
+            //printf("%s\n", tmp);
             _loger[type]->init(tmp, _max_size, _max_record);
         }
 
@@ -111,13 +110,9 @@ namespace MZFRAME {
     
        check_to_renmae();
 
-       char tmp[SIZE_LEN_64];
-       ASSERT(!utils::get_date_str(tmp, sizeof(tmp), DATEFORMAT), printf("get date str failed\n"));
-
        FILE * fp = fopen(_file_name, "a+");
        ASSERT(fp != NULL, printf("file_name: %s\n", _file_name));
 
-       fprintf(fp, "%lu\t%s: ", pthread_self(), tmp);
        vfprintf(fp, format, ap);
        fprintf(fp, "\n");
        fclose(fp);
@@ -135,13 +130,16 @@ namespace MZFRAME {
         struct stat statBuf;
         int ret = stat(_file_name, &statBuf);     
         
+        //printf("%lu %lu %lu\n", _max_size, _max_record, _current_record);
+
         utils::get_date_str(tmp, sizeof(tmp), "%Y%m%d%H%M%S");
-        if (_max_size && statBuf.st_size > _max_size){
+        if (_max_size && statBuf.st_size >= _max_size){
             snprintf(path, sizeof(path), "%s.%s", _file_name, tmp);
             rename(_file_name, path);
             _current_record = 0;
-        }else if (_max_record && _current_record > _max_record){
+        }else if (_max_record && _current_record >= _max_record){
             snprintf(path, sizeof(path), "%s.%s", _file_name, tmp);
+            //printf("111 %s %s\n", tmp, path);
             rename(_file_name, path);
             _current_record = 0;
         }

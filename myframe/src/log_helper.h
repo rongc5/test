@@ -6,6 +6,7 @@
 #include "singleton_base.h"
 #include "thread_helper.h"
 #include <stdarg.h>
+#include "utils.h"
 
 namespace MZFRAME {
 
@@ -29,8 +30,27 @@ class log_mgr;
         //singleton_base<log_mgr>::get_instance()->log(LOGDEBUG, fmt, ##arg); 
 #define LOG_DEBUG(fmt, arg...) \
     do { \
-        singleton_base<log_mgr>::get_instance()->log(LOGDEBUG, fmt, ##arg); \
+        char tmp[SIZE_LEN_64]; \
+        utils::get_date_str(tmp, sizeof(tmp), DATEFORMAT); \
+        singleton_base<log_mgr>::get_instance()->log(LOGDEBUG, "DEBUG: %s * %lu [%s:%s():%d] "fmt, tmp, pthread_self(), __FILE__, __FUNCTION__, __LINE__, ##arg); \
     } while (0)
+
+
+#define LOG_NOTICE(fmt, arg...) \
+    do { \
+        char tmp[SIZE_LEN_64]; \
+        utils::get_date_str(tmp, sizeof(tmp), DATEFORMAT); \
+        singleton_base<log_mgr>::get_instance()->log(LOGNOTICE, "NOTICE: %s * %lu [%s:%s():%d] "fmt, tmp, pthread_self(), __FILE__, __FUNCTION__, __LINE__, ##arg); \
+    } while (0)
+
+
+#define LOG_WARNING(fmt, arg...) \
+    do { \
+        char tmp[SIZE_LEN_64]; \
+        utils::get_date_str(tmp, sizeof(tmp), DATEFORMAT); \
+        singleton_base<log_mgr>::get_instance()->log(LOGWARNING, "WARNING: %s * %lu [%s:%s():%d] "fmt, tmp, pthread_self(), __FILE__, __FUNCTION__, __LINE__, ##arg); \
+    } while (0)
+
 
 
 #define LOG_MAX_SIZE 50*1024*1024
