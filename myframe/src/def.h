@@ -9,7 +9,7 @@ static const uint32_t SIZE_LEN_64 = 64;
 static const uint32_t SIZE_LEN_128 = 128; 
 static const uint32_t SIZE_LEN_256 = 256; 
 
-#define ASSERT(valid, PRINT) \
+#define ASSERT_DO(valid, PRINT) \
     do{ \
         if (!(valid)) { \
             PRINT; \
@@ -17,6 +17,12 @@ static const uint32_t SIZE_LEN_256 = 256;
         } \
     }while(0)
 
+#define ASSERT(valid) \
+    do{ \
+        if (!(valid)) { \
+            return -1; \
+        } \
+    }while(0)
 
 
 #endif

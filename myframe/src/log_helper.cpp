@@ -111,7 +111,7 @@ namespace MZFRAME {
        check_to_renmae();
 
        FILE * fp = fopen(_file_name, "a+");
-       ASSERT(fp != NULL, printf("file_name: %s\n", _file_name));
+       ASSERT_DO(fp != NULL, printf("file_name: %s\n", _file_name));
 
        vfprintf(fp, format, ap);
        fprintf(fp, "\n");

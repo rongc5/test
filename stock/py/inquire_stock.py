@@ -51,9 +51,11 @@ WHERE c.stock_id = b.stock_id and c.stock_id = a.stock_id and c.stock_id not in
 
         #过滤掉流通市值大于100亿的股票
         se = re.search('[0-9]{1,}.{0,1}[0-9]{1,}', circulated_market_value)
-        market_value = se.group(0)
-        if string.atof(market_value) > 100:
-            continue
+        market_value = 0
+        if se:
+            market_value = se.group(0)
+            if string.atof(market_value) > 100:
+                continue
 
         #过滤掉股价大于20的股票
         #print deal_price, market_value
@@ -68,8 +70,10 @@ WHERE c.stock_id = b.stock_id and c.stock_id = a.stock_id and c.stock_id not in
         se = re.search('[0-9]{1,}.{0,1}[0-9]{1,}', ratios)
         if not se:
             continue
+
         ra = se.group(0)
-        if not string.atof(ratios) or string.atof(ratios) > 200:
+        #if not string.atof(ratios) or string.atof(ratios) > 200:
+        if string.atof(ratios) > 200:
             continue
 
         sb = '%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s' % (stock_id, stock_name, deal_price, circulated_market_value, ratios, deal_hand, deal_action, deal_date, deal_time)
