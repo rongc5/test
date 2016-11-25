@@ -1,7 +1,7 @@
 #ifndef __EPOLL_HELPER__
 #define __EPOLL_HELPER__
 
-#include "def.h"
+#include <sys/epoll.h>
 
 namespace MZFRAME {
 

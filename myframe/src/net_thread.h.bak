@@ -1,0 +1,23 @@
+#ifndef __NET_THREAD_H__
+#define __NET_THREAD_H__
+
+#include <map>
+
+using namespace std;
+
+class epoll_helper;
+
+class net_thread:public base_thread
+{
+	public:
+		net_thread();
+		~net_thread();
+		void init();
+		void *run();
+	protected:
+		epoll_helper * _epoll;
+		static map<pthread_t, int> _thd_fd_map;
+};
+
+
+#endif

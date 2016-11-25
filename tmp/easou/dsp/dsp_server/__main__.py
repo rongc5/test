@@ -124,7 +124,7 @@ class Handler(BaseHTTPRequestHandler):
         self.end_headers()
 
         parsed_path = urlparse.urlparse(self.path)
-        print parsed_path
+        print self.path
         if '/requestAds.html' in parsed_path.path:
             res = urlparse.parse_qs(parsed_path.query)
             self.deal_req_ads(base64.decodestring(unquote(res['req'][0])))
@@ -142,7 +142,9 @@ class Handler(BaseHTTPRequestHandler):
         elif '/requestAdViewAds.html' in parsed_path.path:
             res = urlparse.parse_qs(parsed_path.query)
             self.deal_req_adview(res)
-
+	elif '/adview_ec.jsp' in parsed_path.path or '/adview_es.jsp' in parsed_path.path:
+	    self.wfile.write(self.path)
+	    logger.info('adview %s', self.path)
 
 
 
@@ -153,6 +155,8 @@ class Handler(BaseHTTPRequestHandler):
         self.send_response(200)
         self.send_header("Content-type", 'text/plain')
         self.end_headers()
+	
+        self.do_GET()
 
 
 
@@ -168,8 +172,8 @@ def do():
     server.serve_forever()
 
 PORT = 8888
-IP="10.26.28.193"
+IP="223.99.226.165"
 if __name__ == '__main__':
     daemon = Daemon()
-    daemon.daemonize()
+    #daemon.daemonize()
     do()

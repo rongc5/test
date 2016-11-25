@@ -34,4 +34,9 @@ class base_thread
 	protected:
 		pthread_t _thread_id;
 		bool _run_flag;
-        static vector<base_thread*> _th
+    static vector<base_thread*> _thd_vec;
+};
+
+}
+#endif
+
