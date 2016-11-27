@@ -45,7 +45,7 @@ namespace MZFRAME {
 			}
 			else		
 			{
-				base_net_obj * p = dynamic_cast<base_net_obj*>(_epoll_events[i].data.ptr);
+				base_obj * p = dynamic_cast<base_obj*>(_epoll_events[i].data.ptr);
 				if (p != NULL)
 				{
 					try

@@ -1,0 +1,36 @@
+#ifndef __SERVER_HELPER_H__
+#define __SERVER_HELPER_H__
+
+
+#include "common_thread.h"
+
+namespace MZFRAME {
+
+
+    typedef int (* callback_proc)();
+
+
+    class server_helper {
+    
+        public:
+				server_helper();
+				~server_helper();
+
+				void run();
+
+        private:  
+
+
+            int pthread_num; 
+
+            int connect_timeout;
+            int read_timeout;
+
+            int listen_port;
+    };
+
+}
+
+
+
+#endif

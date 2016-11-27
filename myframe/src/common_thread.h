@@ -13,7 +13,7 @@ class common_thread:public base_thread
 		common_thread();
 		~common_thread();
 		void init();
-		int put_msg(pthread_t thd, base_net_obj *p_obj);
+		int put_msg(pthread_t thd, base_obj *p_obj);
 		void *run();
 	protected:
 		epoll_helper * _epoll;
