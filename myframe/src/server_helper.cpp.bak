@@ -35,8 +35,7 @@ namespace MZFRAME {
 			void server_helper::run()
 				{
 						for (int i = 1; i <= _server_info._thread_num; i++){
-								common_thread * tmp = new common_thread();
-								_work_thread_mgr.push_back(tmp);	
+								common_thread * tmp = new common_thread();	
 						}
 				}
 	

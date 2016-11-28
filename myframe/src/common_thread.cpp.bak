@@ -21,6 +21,7 @@ namespace MZFRAME {
 		ASSERT_DO(ret != -1, LOG_WARNING("socketpair fail errstr[%s]", strerror(errno)));
 		
 		_thd_fd_map[get_thread_id()] = fd[0];
+		_thd_fd = fd[1];
 	}
 	
 	map<pthread_t, int> net_thread::_thd_fd_map;

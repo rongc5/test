@@ -21,7 +21,8 @@ namespace MZFRAME {
        
        string _ip;
        
-       server_info_t & operator = (const server_info_t & ser_t); 			
+       server_info_t & operator = (const server_info_t & ser_t); 
+				
 		};
 
 

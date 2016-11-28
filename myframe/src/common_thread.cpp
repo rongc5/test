@@ -2,13 +2,13 @@
 
 namespace MZFRAME {
 
-	common_thread::net_thread()
+	common_thread::common_thread()
 	{
 		_epoll = NULL;
 		_thd_fd = 0;
 	}
 	
-	common_thread::net_thread()
+	common_thread::common_thread()
 	{
 		ASSERT_DO(!_epoll, delete _epoll);
 	}
