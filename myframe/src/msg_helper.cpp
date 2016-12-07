@@ -9,8 +9,6 @@ struct obj_id_str;
 
 
 
-
-//线程间发送消息使用
 class base_net_msg {
 	
 	public:
@@ -34,12 +32,6 @@ class add_net_msg {
 			virtual void event_process(const int32_t events);
 }
 
-enum MSG_OP {
-		ADD_TO_EPOLL_IN,
-		
-		MSG_OP_SIZE
-	};
-
 
 typedef struct _msg_t
 {		 
@@ -50,34 +42,44 @@ typedef struct _msg_t
      unsigned int body_len;
 } msg_t;
 	
-// 线程间通信消息
-struct obj_id_str : public to_string{
+
+struct obj_id_str {
 	obj_id_str()
 	{
-		_obj_op = 0;
 		_obj_id = 0;
+		_obj_op = 0;
 		_thread_id = 0;
-		unsigned int obj_len;
 	}
 	
-	uint64_t _obj_op; //消息命令
 	uint64_t _obj_id; //消息id
+	uint64_t _obj_op; //消息命令
 	pthread_t _thread_id;//线程id
-	unsigned int obj_len;//消息长度
-	
-	bool operator==(const obj_id_str &o1) const;
+	  
 	
 	
-	bool operator<(const obj_id_str &o1) const;
+	bool operator==(const obj_id_str &o1) const
+	{
+		return _thread_id == o1._thread_id && _obj_id == o1._obj_id && _obj_op == o1._obj_op;
+	}
+	
+	
+	bool operator<(const obj_id_str &o1) const
+	{
+		if (_obj_id != o1._obj_id){
+			return 	_obj_id < o1._obj_id;
+		}
+		else if (_obj_op < o1._obj_op)
+		{
+			return _obj_op_obj_op < o1._obj_op;
+		}
+		else 
+		{
+			return _thread_id < o1._thread_id;
+		}
+	}
 		
 	};
 	
 	
-
 	
 	
-	
-	
-}
-
-#endif

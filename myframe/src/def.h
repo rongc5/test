@@ -12,10 +12,13 @@
 #include <vector>
 
 #include <map>
+#include <list>
+#include <string>
 
 #include <sys/types.h>
 #include <sys/socket.h>
 
+using namespace std;
 
 
 static const uint32_t SIZE_LEN_16 = 16; 

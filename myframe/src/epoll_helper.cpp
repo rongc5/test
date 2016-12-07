@@ -21,8 +21,27 @@ namespace MZFRAME {
         _epoll_fd = epoll_create(_real_epoll_size);
 		_real_epoll_wait_time = epoll_wait_time;
 		
-		ASSERT_DO(_epoll_fd != -1, LOG_WARNING("epoll_create fail errno[%u] errstr[%s]", errno, strerror(errno)));
+		ASSERT_DO(_epoll_fd != -1, LOG_WARNING("epoll_create fail errstr[%s]", strerror(errno)));
     }
+    
+  
+void common_epoll::add_to_epoll(epoll_event & event)
+{		
+	int ret = epoll_ctl(_epoll_fd, EPOLL_CTL_ADD, event.data.fd, &event);
+	ASSERT_DO(ret == 0, LOG_WARNING("add to epoll fail errstr[%s]", strerror(errno)));
+}
+    
+void common_epoll::del_from_epoll(epoll_event & event)
+{	
+	int ret = epoll_ctl(_epoll_fd, EPOLL_CTL_DEL, event.data.fd, &event);
+	ASSERT_DO(ret == 0, LOG_WARNING("del from epoll fail errstr[%s]", strerror(errno)));
+}
+
+void common_epoll::mod_from_epoll(epoll_event & event)
+{
+	int ret = epoll_ctl(_epoll_fd, EPOLL_CTL_MOD, event.data.fd, &event);
+	ASSERT_DO(ret == 0, LOG_WARNING("mod from epoll fail errstr[%s]", strerror(errno)));
+}
 	
 	int common_epoll::epoll_wait()
 	{
@@ -37,31 +56,15 @@ namespace MZFRAME {
 		ASSERT_DO(nfds != -1, LOG_WARNING("epoll_wait fail errno[%u] errstr[%s]", errno, strerror(errno)));
 
 		for (int i =0; i < nfds; i++)
-		{		
-			if (_epoll_events[i].data.ptr == NULL)
-			{
-				LOG_WARNING("_epoll_events[i].data.ptr is NULL");
-				continue;
-			}
-			else		
-			{
-				base_obj * p = dynamic_cast<base_obj*>(_epoll_events[i].data.ptr);
-				if (p != NULL)
-				{
+		{										
 					try
 					{
-						p->event_process(_epoll_events[i].events);
+						_net_process->event_process(_epoll_events[i].events);
 					}
 					catch(std::exception &e)
 					{
 						LOG_WARNING("exception [%s]", e.what());
 					}
-				}
-				else 
-				{
-					LOG_WARNING("_epoll_events[i].data.ptr is not base_net_obj");
-				}
-			}
 		}
 		return nfds;
 	}

@@ -13,6 +13,13 @@ namespace MZFRAME{
 						
     };
 
+		// to string ·½·¨
+		class to_string {
+			public:
+				to_string(){}
+				virtual ~to_string(){}
+				virtual const char * to_str(char * dst, size_t dst_len)=0;				
+		};
 
 }
 
