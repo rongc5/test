@@ -61,23 +61,4 @@ struct obj_id_str : public to_string{
 	}
 	
 	uint64_t _obj_op; //消息命令
-	uint64_t _obj_id; //消息id
-	pthread_t _thread_id;//线程id
-	unsigned int obj_len;//消息长度
-	
-	bool operator==(const obj_id_str &o1) const;
-	
-	
-	bool operator<(const obj_id_str &o1) const;
-		
-	};
-	
-	
-
-	
-	
-	
-	
-}
-
-#endif
+	uint64_

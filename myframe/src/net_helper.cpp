@@ -3,29 +3,29 @@
 namespace MZFRAME {
 	
 	
-	void net_helper::event_process(const int32_t events)
+	void net_helper::event_process(epoll_event * event)
 		{
-				if ((event & EPOLLERR) == EPOLLERR || (event & EPOLLHUP) == EPOLLHUP)
+				if ((event->events & EPOLLERR) == EPOLLERR || (event->events & EPOLLHUP) == EPOLLHUP)
 				{
 					THROW_SOCKET_EXPECT(0, "epoll error ");
 				}
 		
 
-				if ((event & EPOLLIN) == EPOLLIN) //读
+				if ((event->events & EPOLLIN) == EPOLLIN) //读
 				{
 					recv_process();
 				}
 		
-				if ((event & EPOLLOUT) == EPOLLOUT ) //写
+				if ((event->events & EPOLLOUT) == EPOLLOUT ) //写
 				{
 					send_process();
 				}		
 		}
 	
 	
-	ssize_t net_helper::RECV(void *buf, size_t len)
+	ssize_t net_helper::RECV(int fd, void *buf, size_t len)
 		{
-			ssize_t ret = recv(_sock, buf, len, MSG_DONTWAIT);
+			ssize_t ret = recv(fd, buf, len, MSG_DONTWAIT);
 			if (ret == 0)
 			{
 				_process->peer_close();
@@ -38,7 +38,11 @@ namespace MZFRAME {
 					if ((_epoll_event & EPOLLET) == EPOLLET) //边缘触发重新加入
 					{
 						_net_event = _net_event & (~BASE_READ_EVENT);
+						epoll_event event;
+						event.data.fd = fd;
+						event.events = 
 						add_event(EPOLLIN);
+						_epoll->add_to_epoll()
 	          ret = 0;
 					}
 				}
@@ -55,7 +59,7 @@ namespace MZFRAME {
 		
 		
 		
-	virtual ssize_t SEND(const void *buf, const size_t len)
+	virtual ssize_t SEND(int fd, const void *buf, const size_t len)
 	{
 		if (len == 0) //上层抛一个长度为0的数据过来 ,直接关闭
 		{

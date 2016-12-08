@@ -10,7 +10,7 @@ namespace MZFRAME{
     
         public:
             static int get_date_str(char dest[], size_t dest_len, const char * format);
-						
+						static uint64_t utils::GetTickCount();	
     };
 
 		// to string ·½·¨
@@ -20,6 +20,9 @@ namespace MZFRAME{
 				virtual ~to_string(){}
 				virtual const char * to_str(char * dst, size_t dst_len)=0;				
 		};
+		
+		
+		
 
 }
 
