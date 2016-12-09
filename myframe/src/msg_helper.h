@@ -51,14 +51,4 @@ typedef struct _msg_t
 } msg_t;
 	
 // 线程间通信消息
-struct obj_id_str : public to_string{
-	obj_id_str()
-	{
-		_obj_op = 0;
-		_obj_id = 0;
-		_thread_id = 0;
-		unsigned int obj_len;
-	}
-	
-	uint64_t _obj_op; //消息命令
-	uint64_
+struct obj_id_str : public to_stri

@@ -3,6 +3,7 @@
 namespace MZFRAME {
 
 
+
     epoll_helper::epoll_helper()
     {
         _epoll_fd = 0;
@@ -12,16 +13,16 @@ namespace MZFRAME {
 
     epoll_helper::~epoll_helper()
     {		
-		ASSERT_DO(!_epoll_events, delete [] _epoll_events);
+			ASSERT_DO(!_epoll_events, delete [] _epoll_events);
     }
 
-    void epoll_helper::init(const uint32_t epoll_size, uint32_t epoll_wait_time)
+    void epoll_helper::init(const uint32_t epoll_size, uint32_t epoll_time)
     {
-        _real_epoll_size = (epoll_size == 0)?_s_epoll_size:epoll_size;
+        _real_epoll_size = (epoll_size == 0)?DEFAULT_EPOLL_SIZE:epoll_size;
         _epoll_fd = epoll_create(_real_epoll_size);
-		_real_epoll_wait_time = epoll_wait_time;
+				_real_epoll_wait_time = (epoll_time < 0)? -1: epoll_time;
 		
-		ASSERT_DO(_epoll_fd != -1, LOG_WARNING("epoll_create fail errstr[%s]", strerror(errno)));
+				ASSERT_DO(_epoll_fd != -1, LOG_WARNING("epoll_create fail errstr[%s]", strerror(errno)));
     }
     
   
@@ -59,7 +60,7 @@ void common_epoll::mod_from_epoll(epoll_event & event)
 		{										
 					try
 					{
-						_net_process->event_process(_epoll_events[i].events);
+						_net_process->event_process(_epoll_events[i]);
 					}
 					catch(std::exception &e)
 					{
@@ -68,6 +69,17 @@ void common_epoll::mod_from_epoll(epoll_event & event)
 		}
 		return nfds;
 	}
+
+
+	void common_epoll::set_container(net_obj_container * net_container)
+		{
+			_net_process = net_container;	
+		}
+
+
+
+
+}
 
 
 
