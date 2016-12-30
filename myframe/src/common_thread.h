@@ -1,43 +1,40 @@
 #ifndef __COMMON_THREAD_H__
 #define __COMMON_THREAD_H__
 
-#include "def.h"
+#include "base_def.h"
 
 
 namespace MZFRAME {
 
-using namespace std;
 
-class epoll_helper;
+    class common_thread:public base_thread
+    {
+        public:
+            common_thread();
+            ~common_thread();
+            void init();
+            int put_msg(pthread_t thd, base_obj *p_obj);
+            void *run();
+            void obj_process();
+            void set_channelid(int fd)
+            {
+                _channel_id = fd;
+            }
+
+        protected:
+            const obj_id_str & get_id_str()
+            {
+                id_str._obj_id++;
+                return id_str;
+            }
 
 
+        protected:
 
-
-
-
-template<class THREAD_PROCESS>
-class common_thread:public base_thread
-{
-	public:
-		common_thread();
-		~common_thread();
-		void init();
-		int put_msg(pthread_t thd, base_obj *p_obj);
-		void *run();
-		void set_process(PROCESS *p);
-		void obj_process();
-		void put_msg(pthread_t tid, obj_id_str & obj_str);
-		void put_msg(obj_id_str & obj_str);
-		
-	protected:
-		
-		static map<pthread_t, int> _thd_fd_map;
-		int _thd_fd;
-		uint64_t _obj_id;
-		
-		
-		THREAD_PROCESS *_process;
-};
+            base_net_container * _base_container;
+            obj_id_str _id_str;
+            int _channel_id;
+    };
 
 }
 #endif

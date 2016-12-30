@@ -19,7 +19,7 @@ namespace MZFRAME {
             LOG_WARNING("start thread fail");
             return false;
         }
-        _thd_vec.push_back(this);
+        _thread_vec.push_back(this);
         return true;
     }
 
@@ -55,7 +55,8 @@ namespace MZFRAME {
     {
         return _thread_id;
     }
-
-    vector<base_thread*> base_thread::_thd_vec;
+    
+    
+    vector<base_thread*> base_thread::_thread_vec;
 }
 

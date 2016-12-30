@@ -2,21 +2,21 @@
 
 namespace MZFRAME {
 	
-	template<class THREAD_PROCESS>
-	common_thread<THREAD_PROCESS>::common_thread()
+
+	common_thread::common_thread()
 	{
 		_epoll = NULL;
 		_thd_fd = 0;
 	}
 	
-	template<class THREAD_PROCESS>
-	common_thread<THREAD_PROCESS>::common_thread()
+	
+	common_thread::common_thread()
 	{
 		ASSERT_DO(!_epoll, delete _epoll);
 	}
 	
-	template<class THREAD_PROCESS>
-	void common_thread<THREAD_PROCESS>::init()
+	
+	void common_thread::init()
 	{
 		int fd[2], ret;
 	
@@ -27,18 +27,16 @@ namespace MZFRAME {
 		_thd_fd = fd[1];
 	}
 	
-	template<class THREAD_PROCESS>
-	void common_thread<THREAD_PROCESS>::set_process(PROCESS *p)
+	
+	void common_thread::set_process(PROCESS *p)
 	{
 		if (_process != NULL)
 			delete _process;
 		_process = p;
 	}
-	
-	
-	
-	template<class THREAD_PROCESS>
-	void common_thread<THREAD_PROCESS>::put_msg(pthread_t tid, obj_id_str & obj_str)
+
+
+	void common_thread::put_msg(pthread_t tid, obj_id_str & obj_str)
 		{
 				map<pthread_t, int>::iterator it;
 				
@@ -54,10 +52,30 @@ namespace MZFRAME {
 		}
 	
 	
+	 void set_thd_fd(int fd)
+	 {
+			_thd_fd = fd;
+			struct epoll_event fds;
+			
+			fds.data.fd = fd;
+			fds.events = EPOLLIN | EPOLLET;
+			_net_container->add_event(fds);
+	 }
+	 
+	 void common_thread::*run()
+	 	{
+	 		while(get_run_flag())
+			{
+				obj_process();
+			}
+	 	}
 	
 	
 	
 	
-	map<pthread_t, int> net_thread::_thd_fd_map;
+	
+	
+	
+	
 	
 }

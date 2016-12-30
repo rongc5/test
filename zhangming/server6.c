@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-#include <fcntl.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <netinet/ip.h>
@@ -10,10 +9,14 @@
 #include <poll.h>
 #include <errno.h>
 
-#define SERVERADDR "192.168.1.104"
-#define SERVERPORT 8888
-int main(void)
+int main(int c, char **v)
 {
+    if (c != 3) {
+        fprintf(stderr, "usage...\n");
+        exit(1);
+    }
+
+
     struct sockaddr_in serverend, clientend;
     char buf[512], ipbuf[16];
     socklen_t len;
@@ -22,8 +25,8 @@ int main(void)
     pid_t pid;
 
     serverend.sin_family = AF_INET;
-    serverend.sin_port = htons(SERVERPORT);
-    inet_pton(AF_INET, SERVERADDR, &serverend.sin_addr);
+    serverend.sin_port = htons(atoi(v[2]));
+    inet_pton(AF_INET, v[1], &serverend.sin_addr);
 
     sd = socket(AF_INET, SOCK_STREAM, 0);
     if (-1 == sd)
@@ -50,54 +53,20 @@ int main(void)
             exit(1);
         }
         printf("Client addr:%s, port:%d connect success!\n",
-        (char *)inet_ntop(AF_INET, &clientend.sin_addr, ipbuf, 16),  ntohs(clientend.sin_port));
-        pid = fork();
-        if (-1 == pid)
+                (char *)inet_ntop(AF_INET, &clientend.sin_addr, ipbuf, 16),  ntohs(clientend.sin_port));
+
+        sleep(10);
+        ret = read(newsd, buf, 512);
+        if (-1 == ret)
         {
-            perror("fork");
+            perror("read");
             exit(1);
         }
+        buf[ret] = '\0';
+        printf("recv  %s\n", buf);
 
-        if (0 == pid)
-        {
-            close(sd);//attention
-            ret = read(newsd, buf, 512);
-            if (-1 == ret)
-            {
-                perror("read");
-                exit(1);
-            }
-            buf[ret] = '\0';
-        }
-        if (access(buf, R_OK) == -1)
-        {
-            printf("File %s error!\n", buf);
-            sprintf(buf, "error");
-            write(newsd, buf, strlen(buf));
-            write(newsd, &errno, sizeof(errno));
-            close(newsd);
-            exit(1);
-        }else
-        {
-            fd = open(buf, O_RDONLY);
-            while (1)
-            {
-                ret = read(fd, buf, 30);
-                if (0 == ret)
-                    break;
-
-                write(newsd, buf, ret);
-                ret = rand()%5;
-                if (ret == 3)
-                    sleep(5);
-                else
-                    usleep(300000);
-            }
-            close(newsd);
-            close(fd);
-            exit(0);
-        }
+        close(newsd);
     }
-    close(newsd);//attention!!!!!
+    close(sd);
 }
 

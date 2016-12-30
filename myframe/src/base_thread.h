@@ -1,41 +1,55 @@
-#ifndef __BASE_THREAD_HPP_
-#define __BASE_THREAD_HPP_
+#ifndef __BASE_THREAD_H__
+#define __BASE_THREAD_H__
 
-#include <pthread.h>
-#include <vector>
+#include "base_def.h"
 
 namespace MZFRAME {
 
-    using namespace std;
 
-    class base_thread
-    {
-        public:
-            base_thread();
+class base_thread
+{
+	public:
+		base_thread();
 
-            virtual ~base_thread();
+		
+		virtual ~base_thread();
 
-            virtual bool start();
+		
+		virtual bool start();
 
-            void join_thread();
 
-            virtual bool stop();
+		void join_thread();
 
-            virtual void* run() = 0;
+		
+		virtual bool stop();
 
-            static void *base_thread_proc(void *arg);
+		
+		virtual void* run() = 0;
 
-            bool get_run_flag();
+		
+		static void *base_thread_proc(void *arg);
 
-            void set_run_flag(bool flag);
+		
+		static void stop_all_thread();
 
-            pthread_t get_thread_id();
 
-        protected:
-            pthread_t _thread_id;
-            bool _run_flag;
-            static vector<base_thread*> _thd_vec;
-    };
+		static void join_all_thread();
+
+
+		bool get_run_flag();
+
+
+		void set_run_flag(bool flag);
+
+
+		pthread_t get_thread_id();
+
+	protected:
+		pthread_t _thread_id;
+		bool _run_flag;
+		
+		static vector<base_thread*>	_thread_vec;
+};
 
 }
 
