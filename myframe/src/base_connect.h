@@ -54,10 +54,8 @@ public:
 
 	void init(const uint8_t epool_type = 0/*0:lt,  1:et*/)
 	{
-	       _epoll_type = epool_type; //初始化
-              
-		_net_event = 0;
-		
+        _epoll_type = epool_type; //初始化
+
 		_connect_timeout = CONNECT_TIME_OUT;
 		
 		_recv_buf.resize(max_recv_data);		
@@ -70,6 +68,7 @@ public:
 		_process = NULL;
 		_p_epoll = NULL;
 		_sock = 0;
+        _channel_id = 0;
 	}
 	
 	
@@ -132,14 +131,25 @@ public:
         return ret;
 	}
 
-    void put_msg(string *p_msg)
+    int put_msg(string *p_msg)
     {
         if (!p_msg || p_msg->length())
         {
-            return;
+            return -1;
         }
+
+        if (_channel_id) {
+            ret = write(_channel_id, p_msg->c_str(), p_msg->length());
+        }
+
+        return ret;
     }
 	
+    void set_channelid(int channel_id)
+    {
+        _channel_id = channel_id;
+    }
+
 	size_t process_recv_buf(char *buf, size_t len)
 	{
 		size_t p_ret = _process->process_recv_buf((char*)_recv_buf.c_str(), _recv_buf_len);
@@ -160,21 +170,6 @@ public:
 	{
 		delete this;
 		return 0;
-	}
-	
-
-	void process(normal_obj_msg *p_msg)
-	{
-		obj_setsock_msg *p_set_msg = dynamic_cast<obj_setsock_msg*>(p_msg);
-		if (p_set_msg != NULL)//设置sockoption
-		{
-			setsockopt(this->_sock, p_set_msg->_level, p_set_msg->_optname, 
-				p_set_msg->_option.c_str(), p_set_msg->_option.length());
-		}
-		else
-		{
-			_process->process_s(p_msg);
-		}
 	}
 
 	void get_local_addr(sockaddr_in &addr)
@@ -316,10 +311,9 @@ protected:
 	size_t _recv_buf_len;
 	string* _p_send_buf;	
 	uint64_t _connect_timeout;
-
-	uint8_t _net_event;
-
 	uint8_t _epoll_type;
+
+    int _channel_id;
 };
 	
 	

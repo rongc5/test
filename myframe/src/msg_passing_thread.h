@@ -6,6 +6,7 @@
 namespace MZFRAME {
 	
 	
+    
 	class msg_passing_thread : public base_thread
 		{
 			public:
@@ -19,12 +20,9 @@ namespace MZFRAME {
 				NET_OBJ * gen_connect(const int fd, const sockaddr_in &addr);
 				
 			protected:
-				map<pthread_t, int> _thd_fd_map;
-				net_obj_container _net_container;	
+				map<pthread_t, int> _thd_channel_map;
+                base_net_container * _net_container;	
 		};
-	
-	
-	
 }
 
 

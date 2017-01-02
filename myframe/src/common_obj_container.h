@@ -17,9 +17,6 @@ class common_obj_container:public base_net_container
 		virtual ~common_obj_container()
 		{
 		}
-	
-		
-		void insert(base_net_obj *p_obj);
 		
 		base_net_obj* find(uint64_t obj_id);
 		

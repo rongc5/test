@@ -42,11 +42,9 @@ public:
 	virtual void event_process(const int32_t events) = 0;
 	virtual int destroy() = 0;
 	
-	virtual void process()=0;
-	
 	virtual void set_net_container(base_net_container *p_net_container);
 	
-	virtual void put_msg(string *p_msg) = 0
+	virtual int put_msg(string *p_msg) = 0
 	
 	size_t process_recv_buf(char *buf, size_t len) = 0;
 

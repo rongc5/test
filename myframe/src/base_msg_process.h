@@ -158,26 +158,6 @@ class base_msg_process
         {
         }
 
-        virtual void process_s(normal_obj_msg *p_msg)
-        {		
-            ku_data_obj_msg *p_k_m = dynamic_cast<ku_data_obj_msg*>(p_msg);
-            if (p_k_m != NULL)
-            {
-                if (p_k_m->_extend_data.length() > MAX_EXTEND_BODY_LEN)
-                {
-                    THROW_COMMON_EXCEPT(-1, "extend body len  must less than " << MAX_EXTEND_BODY_LEN);
-                }
-                msg_base_head head;			
-                gen_head(p_k_m->_s_data, head, p_k_m->_extend_data);
-
-                string *p = new string();
-                p->append((char*)&head, sizeof(head));
-                p->append(p_k_m->_extend_data);
-                p->append(p_k_m->_s_data);
-                put_msg(p);
-            }	
-        }
-
         void reset()
         {
             recv_init();
