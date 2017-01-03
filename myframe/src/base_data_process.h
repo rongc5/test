@@ -32,17 +32,21 @@ class base_data_process
 			return ret;
         }
 
+
         void  on_connect_comming()
         {
+
         }
 
-        
-	protected:
-		void trans_msg(const string &buf);
+        virtual uint32_t get_head_len() = 0;
 
 	public:
 		string _s_buf;
+
+    protected:
+        virtual void put_msg(string * p_msg);
 	private:	
+
 		base_msg_process<base_data_process> *_p_msg_process;
 };
 #endif

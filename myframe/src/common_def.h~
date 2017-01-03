@@ -49,7 +49,7 @@ struct obj_id_str : public to_string{
 
 
 
-enum RECV_MSG_STATUS                                                             {
+enum RECV_MSG_PROCESS_STATUS                                                             {
     RECV_MSG_HEAD,
     RECV_MSG_BODY   
 };

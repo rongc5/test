@@ -69,6 +69,7 @@ void* msg_passing_thread::run()
 
 NET_OBJ * gen_connect(const int fd, const sockaddr_in &addr)
 {
+    NET_OBJ * p_connect = NULL;
 
 }
 

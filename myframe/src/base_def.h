@@ -20,6 +20,9 @@ using namespace std;
 #define DEFAULT_EPOLL_WAITE 20
 
 
+#define MSG_HEAD_BODY_LENTH_LEN 4
+
+
 const size_t SEND_BUF_SIZE = 20 * 1024;
 const uint64_t CONNECT_TIME_OUT = 180 * 1000;
 
