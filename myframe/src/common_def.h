@@ -49,18 +49,22 @@ struct obj_id_str : public to_string{
 
 
 
-enum RECV_MSG_STATUS                                                             {
+enum RECV_MSG_STATUS{
     RECV_MSG_HEAD,
     RECV_MSG_BODY   
 };
 
+
+enum NET_OBJ_RANGE {
+    INTERNAL,
+    EXTERNAL
+};
 
 
 struct _pass_msg_t {
     struct obj_id_str _src_obj;
     struct obj_id_str _dst_obj;
     int len;
-    string _msg;
 };
 
 

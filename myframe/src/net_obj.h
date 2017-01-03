@@ -68,10 +68,21 @@ public:
     {
 		return _id_str;
 	}
+
+    NET_OBJ_RANGE get_limit_range()
+    {
+        return _range;
+    }
+
+    void set_limit_range(NET_OBJ_RANGE range)
+    {
+        _range = range;
+    }
 	
 protected:
 	base_net_container *_p_net_container;
 	common_epoll *_p_epoll;
+    NET_OBJ_RANGE _range;
 	int _epoll_event;
 	int _fd;	
 	obj_id_str _id_str;

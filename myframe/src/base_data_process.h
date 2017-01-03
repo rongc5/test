@@ -38,13 +38,20 @@ class base_data_process
 
         }
 
-        virtual uint32_t get_head_len() = 0;
+        //
+        uint32_t get_head_len()
+        {
+            return 32;
+        }
 
 	public:
 		string _s_buf;
 
     protected:
-        virtual void put_msg(string * p_msg);
+        virtual void put_msg(string * p_msg)
+        {
+            _p_msg_process->put_msg(p_msg);
+        }
 	private:	
 
 		base_msg_process<base_data_process> *_p_msg_process;

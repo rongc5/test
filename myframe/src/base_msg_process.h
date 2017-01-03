@@ -114,6 +114,25 @@ class base_msg_process
         {
             _data_process->on_connect_comming();
         }
+
+        void put_msg(string *p_msg)
+        {
+            if (!p_msg || p_msg->length() < sizeof(_pass_msg_t)){
+                //LOG_WARN
+                delete p_msg;
+                return;
+            }
+
+            _pass_msg_t * ptr = (_pass_msg_t *)p_msg->c_str();
+            if (ptr->_dst_obj == _p_connect->get_id_str()) {
+                if (_p_connect->get_limit_range() == INTERNAL) {
+                    
+                }
+            }
+
+            _send_list.push_back(p_msg);
+        }
+
     private:
 
         void clear_send_list()
@@ -135,10 +154,6 @@ class base_msg_process
             return p;
         }
 
-        void put_msg(string *p_msg)
-        {
-            _send_list.push_back(p_msg);
-        }
     private:		
         list<string*> _send_list;
         DATA_PROCESS *_data_process;
