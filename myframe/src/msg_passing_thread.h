@@ -16,12 +16,15 @@ namespace MZFRAME {
 				int register_thread(common_thread *thread);
 				
 				virtual void* run();
-				
-				NET_OBJ * gen_connect(const int fd, const sockaddr_in &addr);
+
+                static int find_channelid(pthread_t tid);
+
+            protected:
+                NET_OBJ * gen_connect(const int fd, const sockaddr_in &addr);
 				
 			protected:
-				map<pthread_t, int> _thd_channel_map;
-                base_net_container * _net_container;	
+                base_net_container * _net_container;
+				static map<pthread_t, int> _thd_channel_map;
 		};
 }
 

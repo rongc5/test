@@ -5,25 +5,6 @@
 #include "common_thread_obj.h"
 #include "base_net_container.h"
 
-const uint32_t BASE_READ_EVENT = 1;
-const uint32_t BASE_WRITE_EVENT = 2;
-
-
-const int max_recv_data = 1024*20;
-const int max_send_num = 5;
-enum CONNECT_STATUS
-{
-	CLOSED = 0,
-	CONNECT_OK = 1,
-	CONNECTING = 2	
-};
-
-enum EPOLL_TYPE
-{
-       EPOLL_LT_TYPE = 0,
-       EPOLL_ET_TYPE 
-};
-
 template<class PROCESS>
 class base_connect:public NET_OBJ
 {
@@ -131,25 +112,6 @@ public:
         return ret;
 	}
 
-    int put_msg(string *p_msg)
-    {
-        if (!p_msg || p_msg->length())
-        {
-            return -1;
-        }
-
-        if (_channel_id) {
-            ret = write(_channel_id, p_msg->c_str(), p_msg->length());
-        }
-
-        return ret;
-    }
-	
-    void set_channelid(int channel_id)
-    {
-        _channel_id = channel_id;
-    }
-
 	size_t process_recv_buf(char *buf, size_t len)
 	{
 		size_t p_ret = _process->process_recv_buf((char*)_recv_buf.c_str(), _recv_buf_len);
@@ -177,12 +139,6 @@ public:
 		socklen_t len = 0;
 		getsockname(_sock, (sockaddr*)&addr, &len);
 	}
-
-	virtual connect_info* gen_connect_info()
-	{
-		return NULL;
-	}
-	
 	
 	protected:
 	virtual ssize_t RECV(void *buf, size_t len)
@@ -312,8 +268,6 @@ protected:
 	string* _p_send_buf;	
 	uint64_t _connect_timeout;
 	uint8_t _epoll_type;
-
-    int _channel_id;
 };
 	
 	

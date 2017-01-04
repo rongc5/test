@@ -44,8 +44,6 @@ public:
 	
 	virtual void set_net_container(base_net_container *p_net_container);
 	
-	virtual int put_msg(string *p_msg) = 0
-	
 	size_t process_recv_buf(char *buf, size_t len) = 0;
 
 	virtual int get_event()
@@ -69,20 +67,10 @@ public:
 		return _id_str;
 	}
 
-    NET_OBJ_RANGE get_limit_range()
-    {
-        return _range;
-    }
-
-    void set_limit_range(NET_OBJ_RANGE range)
-    {
-        _range = range;
-    }
 	
 protected:
 	base_net_container *_p_net_container;
 	common_epoll *_p_epoll;
-    NET_OBJ_RANGE _range;
 	int _epoll_event;
 	int _fd;	
 	obj_id_str _id_str;
@@ -101,6 +89,7 @@ public:
 	{		
 	}
 	virtual void close()=0;	
+
 	virtual void get_local_addr(sockaddr_in &addr)=0;
 
 

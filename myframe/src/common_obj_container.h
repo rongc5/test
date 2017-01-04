@@ -6,7 +6,6 @@
 #include "base_net_container.h"
 
 
-
 class common_obj_container:public base_net_container
 {
 	public:

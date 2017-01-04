@@ -41,7 +41,7 @@ class base_data_process
         //
         uint32_t get_head_len()
         {
-            return 32;
+            return sizeof(msg_t);
         }
 
 	public:

@@ -1,27 +1,23 @@
-#ifndef _BASE_MSG_PROCESS_H_
-#define _BASE_MSG_PROCESS_H_
+#ifndef _MSG_PASSING_PROCESS_H_
+#define _MSG_PASSING_PROCESS_H_
 
 #include "common_epoll.h"
 #include "net_obj.h"
 #include "common_def.h"
 
 template<class DATA_PROCESS>
-class base_msg_process
+class msg_passing_process
 {
     public:
-        base_msg_process(void *p)
+        msg_passing_process(void *p)
         {
             //_p_cur_send_msg = NULL;
             clear_send_list();
-            _data_process = DATA_PROCESS::gen_process((void*)this);
             _p_connect = (NET_OBJ*)p;
-            _channel_id = 0;
         }
 
-        virtual ~base_msg_process()
+        virtual ~msg_passing_process()
         {
-            if (_data_process != NULL)
-                delete _data_process;
             clear_send_list();
         }	
 
@@ -34,14 +30,15 @@ class base_msg_process
             {
                 RECV_MSG_STATUS status = RECV_MSG_HEAD;
                 size_t msg_body_len = 0;
+                uint32_t head_len = sizeof(_pass_msg_t);
                 if (status == RECV_MSG_HEAD)
                 {
-                    if (left_len > _data_process->get_head_len())
+                    if (left_len > head_len)
                     {
                         char *ptr = "";
 
-                        if (_data_process->get_head_len() >= MSG_HEAD_BODY_LENTH_LEN) 
-                            ptr = buf + _data_process->get_head_len() - MSG_HEAD_BODY_LENTH_LEN;
+                        if (head_len >= MSG_HEAD_BODY_LENTH_LEN) 
+                            ptr = buf + head_len - MSG_HEAD_BODY_LENTH_LEN;
                         else {
                             ptr = buf;
                         }
@@ -58,10 +55,11 @@ class base_msg_process
 
                 if (status == RECV_MSG_BODY)
                 {
-                    if (left_len >= _data_process->get_head_len() + msg_body_len) {
-                        size_t tmpret = _data_process->process_recv_buf(buf, _data_process->get_head_len() + msg_body_len);
+                    if (left_len >= head_len + msg_body_len) {
 
-                        left_len -= _data_process->get_head_len() + msg_body_len;
+                        process_s(buf, head_len +msg_body_len);
+
+                        left_len -= head_len + msg_body_len;
                         buf = buf + left_len;
                     } else {
                         break;
@@ -71,6 +69,22 @@ class base_msg_process
 
             return len - left_len;
         }	
+
+        void process_s(char *buf, size_t len)
+        {
+            if (len < sizeof(_pass_msg_t) || !buf) {
+                return ;
+            }
+
+            _pass_msg_t * ptr = (_pass_msg_t *) buf;
+            
+            int id  = _msg_passing_thread::find_channelid(ptr->_dst_obj._thread_id);
+            if (id != -1){
+                write(id, buf);
+                delete buf;
+            }
+
+        }
 
         string *get_send_buf()
         {
@@ -85,7 +99,6 @@ class base_msg_process
         void reset()
         {
             clear_send_list();
-            _data_process->reset();
         }
 
         virtual void routine()
@@ -113,32 +126,6 @@ class base_msg_process
 
         void on_connect_comming()
         {
-            _data_process->on_connect_comming();
-        }
-
-        void put_msg(string *p_msg)
-        {
-            if (!p_msg || p_msg->length() < sizeof(_pass_msg_t)){
-                //LOG_WARN
-                delete p_msg;
-                return;
-            }
-
-            _pass_msg_t * ptr = (_pass_msg_t *)p_msg->c_str();
-            if (ptr->_dst_obj == _p_connect->get_id_str()) {
-                string *tmp_str = new string(*p_msg, sizeof(_pass_msg_t), p_msg->length() - sizeof(_pass_msg_t));
-                delete p_msg;
-                _send_list.push_back(tmp_str);
-            } else {
-                if (_channel_id) {
-                    ret = write(_channel_id, p_msg->c_str(), p_msg->length());
-                } 
-            }
-        }
-
-        void set_channelid(int channel_id)
-        {   
-            _channel_id = channel_id;
         }
 
     private:
@@ -163,9 +150,7 @@ class base_msg_process
         }
 
     private:		
-        int _channel_id;
         list<string*> _send_list;
-        DATA_PROCESS *_data_process;
         NET_OBJ *_p_connect;
 };
 #endif
