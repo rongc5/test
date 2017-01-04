@@ -5,7 +5,6 @@
 #include "net_obj.h"
 #include "common_def.h"
 
-template<class DATA_PROCESS>
 class base_msg_process
 {
     public:
@@ -13,15 +12,13 @@ class base_msg_process
         {
             //_p_cur_send_msg = NULL;
             clear_send_list();
-            _data_process = DATA_PROCESS::gen_process((void*)this);
             _p_connect = (NET_OBJ*)p;
             _channel_id = 0;
+            _head_len = 0;
         }
 
         virtual ~base_msg_process()
         {
-            if (_data_process != NULL)
-                delete _data_process;
             clear_send_list();
         }	
 
@@ -36,12 +33,12 @@ class base_msg_process
                 size_t msg_body_len = 0;
                 if (status == RECV_MSG_HEAD)
                 {
-                    if (left_len > _data_process->get_head_len())
+                    if (left_len > _head_len)
                     {
                         char *ptr = "";
 
-                        if (_data_process->get_head_len() >= MSG_HEAD_BODY_LENTH_LEN) 
-                            ptr = buf + _data_process->get_head_len() - MSG_HEAD_BODY_LENTH_LEN;
+                        if (_head_len >= MSG_HEAD_BODY_LENTH_LEN) 
+                            ptr = buf + _head_len - MSG_HEAD_BODY_LENTH_LEN;
                         else {
                             ptr = buf;
                         }
@@ -58,10 +55,10 @@ class base_msg_process
 
                 if (status == RECV_MSG_BODY)
                 {
-                    if (left_len >= _data_process->get_head_len() + msg_body_len) {
-                        size_t tmpret = _data_process->process_recv_buf(buf, _data_process->get_head_len() + msg_body_len);
+                    if (left_len >= _head_len->get_head_len() + msg_body_len) {
+                        process_s(buf, _head_len + msg_body_len);
 
-                        left_len -= _data_process->get_head_len() + msg_body_len;
+                        left_len -= _head_len + msg_body_len;
                         buf = buf + left_len;
                     } else {
                         break;
@@ -85,7 +82,6 @@ class base_msg_process
         void reset()
         {
             clear_send_list();
-            _data_process->reset();
         }
 
         virtual void routine()
@@ -107,13 +103,18 @@ class base_msg_process
         {
         }
 
+
+        size_t process_s(char *buf, size_t len)
+        {
+            return len;
+        }
+
         void set_para()
         {		   
         }
 
         void on_connect_comming()
         {
-            _data_process->on_connect_comming();
         }
 
         void put_msg(string *p_msg)
@@ -163,9 +164,9 @@ class base_msg_process
         }
 
     private:		
+        size_t _head_len;
         int _channel_id;
         list<string*> _send_list;
-        DATA_PROCESS *_data_process;
         NET_OBJ *_p_connect;
 };
 #endif
