@@ -43,8 +43,13 @@ public:
 	virtual int destroy() = 0;
 	
 	virtual void set_net_container(base_net_container *p_net_container);
+    base_net_container * get_net_container()
+    {
+        return _p_net_container;
+    }
 	
 	size_t process_recv_buf(char *buf, size_t len) = 0;
+    void process_send_buf(string * buf) = 0;
 
 	virtual int get_event()
 	{
@@ -56,13 +61,13 @@ public:
 		return _fd;
 	}
 
-    int set_id_str(obj_id_str & id_str)
+    int set_id(obj_id_str & id_str)
     {
         _id_str = id_str;
         return 0;
     }
 	
-	const obj_id_str & get_id_str()
+	const obj_id_str & get_id()
     {
 		return _id_str;
 	}

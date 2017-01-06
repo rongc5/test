@@ -13,7 +13,6 @@ class base_msg_process
             //_p_cur_send_msg = NULL;
             clear_send_list();
             _p_connect = (NET_OBJ*)p;
-            _channel_id = 0;
             _head_len = 0;
         }
 
@@ -22,7 +21,7 @@ class base_msg_process
             clear_send_list();
         }	
 
-        size_t process_recv_buf(char *buf, size_t len)
+        virtual size_t process_recv_buf(char *buf, size_t len)
         {
             LOG_DEBUG("recv buf %d", len);
             //size_t ret = 0;
@@ -69,17 +68,20 @@ class base_msg_process
             return len - left_len;
         }	
 
+        virtual int process_send_buf(string * buf)
+        {
+            _send_list.push_back(tmp_str);
+
+            return 0;
+        }
+
         string *get_send_buf()
         {
             string *ret =  get_send_msg();
             return ret;
         }
 
-        void handle_timeout(const uint32_t timer_type)
-        {
-        }
-
-        void reset()
+        virtual void reset()
         {
             clear_send_list();
         }
@@ -93,56 +95,24 @@ class base_msg_process
             return _p_connect;
         }
 
-        connect_info *gen_connect_info()
-        {
-            connect_info *p_info = new ku_connect_info();
-            return p_info;
-        }
-
-        void peer_close()
+        virtual void peer_close()
         {
         }
 
 
-        size_t process_s(char *buf, size_t len)
-        {
-            return len;
-        }
+        virtual size_t process_s(char *buf, size_t len) = 0
 
-        void set_para()
-        {		   
-        }
-
-        void on_connect_comming()
+        virtual void set_para()
         {
         }
 
-        void put_msg(string *p_msg)
+        virtual void on_connect_comming()
         {
-            if (!p_msg || p_msg->length() < sizeof(_pass_msg_t)){
-                //LOG_WARN
-                delete p_msg;
-                return;
-            }
-
-            _pass_msg_t * ptr = (_pass_msg_t *)p_msg->c_str();
-            if (ptr->_dst_obj == _p_connect->get_id_str()) {
-                string *tmp_str = new string(*p_msg, sizeof(_pass_msg_t), p_msg->length() - sizeof(_pass_msg_t));
-                delete p_msg;
-                _send_list.push_back(tmp_str);
-            } else {
-                if (_channel_id) {
-                    ret = write(_channel_id, p_msg->c_str(), p_msg->length());
-                } 
-            }
         }
 
-        void set_channelid(int channel_id)
-        {   
-            _channel_id = channel_id;
-        }
+        virtual void put_msg(string *p_msg) = 0;
 
-    private:
+    protected:
 
         void clear_send_list()
         {			
@@ -163,9 +133,8 @@ class base_msg_process
             return p;
         }
 
-    private:		
+    protected:		
         size_t _head_len;
-        int _channel_id;
         list<string*> _send_list;
         NET_OBJ *_p_connect;
 };

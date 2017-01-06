@@ -46,7 +46,7 @@ void net_obj_container::obj_process()
 	}       
 }
 
-base_net_obj* net_obj_container::find(uint64_t obj_id)
+base_net_obj* net_obj_container::find(obj_id_str * obj_id)
 {
 	base_net_obj *p_obj = NULL;
 	map<uint64_t, base_net_obj*>::iterator itr =  _obj_net_map.find(obj_id);
@@ -61,11 +61,11 @@ void net_obj_container::push_net_obj(base_net_obj *p_obj)
 	_obj_net_map.insert(make_pair(p_obj->get_id(), p_obj));
 }
 
-bool net_obj_container::erase(uint64_t obj_id)
+bool net_obj_container::erase(obj_id_str *obj_id)
 {
 	bool ret = false;
 	base_net_obj *p_obj = NULL;
-	map<uint64_t, base_net_obj*>::iterator itr =  _obj_net_map.find(obj_id);
+	map<uint64_t, base_net_obj*>::iterator itr =  _obj_net_map.find(*obj_id);
 	if (itr != _obj_net_map.end())
 	{
 		p_obj = itr->second;

@@ -15,6 +15,9 @@ class base_net_container
 		}
 		
 		virtual void push_net_obj(base_net_obj *p_obj) = 0;
+        base_net_obj* find(obj_id_str * obj_id) = 0;
+        bool erase(obj_id_str *_obj_id) = 0;
+        virtual void obj_process() = 0;
 		
 		common_epoll *get_epoll()
 		{

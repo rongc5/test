@@ -117,6 +117,11 @@ public:
 		size_t p_ret = _process->process_recv_buf((char*)_recv_buf.c_str(), _recv_buf_len);
 		return p_ret;
 	}
+
+    void process_send_buf(string * buf)
+    {
+        _process->process_send_buf(buf);
+    }
 		
 	int get_sock()
 	{

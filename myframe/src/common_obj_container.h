@@ -17,15 +17,15 @@ class common_obj_container:public base_net_container
 		{
 		}
 		
-		base_net_obj* find(uint64_t obj_id);
+		virtual base_net_obj* find(obj_id_str * obj_id);
 		
-		bool erase(uint64_t obj_id);
+		virtual bool erase(obj_id_str *obj_id);
 
 		virtual void obj_process();
 
 		void push_net_obj(base_net_obj *p_obj);
 	protected:
-		map<uint64_t, base_net_obj*> _obj_net_map;
+		map<obj_id_str, base_net_obj*> _obj_net_map;
 };
 
 
