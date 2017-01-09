@@ -25,12 +25,6 @@ namespace MZFRAME {
                 _base_container->obj_process();
             }
 
-            virtual void *run()
-            {
-                init();
-                obj_process();
-            }
-
             void init(const string &ip, unsigned short port)
             {
                 listen_connect<>                

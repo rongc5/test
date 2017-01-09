@@ -14,7 +14,7 @@ class listen_connect:public base_net_obj
 		listen_connect()
 		{
 			_port = 0;
-			_process = NULL;
+            _channelid = 0;
 		}
 
 		~listen_connect()
@@ -82,6 +82,10 @@ class listen_connect:public base_net_obj
 						getpeername(tmp_sock, (sockaddr*)&addr, &len);
 					}
 					_process->process(tmp_sock, addr);
+
+                    _pass_msg_t head;
+                    head.
+                    write(_channelid, );
 				}
 			}
 			else
@@ -106,25 +110,15 @@ class listen_connect:public base_net_obj
 			return;
 		}
 
-		void set_process(LISTEN_PROCESS *p)
+		void set_channelid(const int channelid)
 		{
-			if (_process != NULL)
-				delete _process;
-			_process = p;
+            _channelid = channelid;
 		}
 
-		void set_thread_index(const uint16_t thread_index)
-		{
-		}
-
-		uint16_t get_thread_index() 
-		{
-			return 0;
-		}
 	private:
 		string _ip;
 		unsigned short _port;
-		LISTEN_PROCESS *_process;
+        int _channelid;
 };
 #endif
 
