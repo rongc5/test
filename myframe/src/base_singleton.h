@@ -1,9 +1,9 @@
-#ifndef __SINGLETON_BASE_H_
-#define __SINGLETON_BASE_H_
+#ifndef __BASE_SINGLETON_H__
+#define __BASE_SINGLETON_H__
 
 namespace MZFRAME {
 template<class T>
-class singleton_base
+class base_singleton
 {
 public:
 	static T *get_instance()
@@ -24,7 +24,7 @@ private:
 	static T *_p_instance;	
 };
 template<class T>
-T* singleton_base<T>::_p_instance = NULL;
+T* base_singleton<T>::_p_instance = NULL;
 
 }
 #endif

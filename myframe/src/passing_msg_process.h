@@ -1,28 +1,27 @@
-#ifndef _COMMON_MSG_PROCESS_H_
-#define _COMMON_MSG_PROCESS_H_
+#ifndef _CHANNEL_MSG_PROCESS_H_
+#define _CHANNEL_MSG_PROCESS_H_
 
 #include "common_epoll.h"
 #include "net_obj.h"
 #include "common_def.h"
 
 template<class DATA_PROCESS>
-class common_msg_process:public base_msg_process
+class passing_msg_process:public base_msg_process
 {
     public:
-        common_msg_process(void *p):_channelid(0), base_msg_process(p)
+        passing_msg_process(void *p):base_msg_process(p)
         {
             _data_process = DATA_PROCESS::gen_process((void*)this);
-
         }
 
-        virtual ~common_msg_process()
+        virtual ~passing_msg_process()
         {
             if (_data_process){
                 delete _data_process;
             }
         }	
-
-		virtual size_t process_recv_buf(char *buf, size_t len)
+        
+      virtual size_t process_recv_buf(char *buf, size_t len)
         {
             LOG_DEBUG("recv buf %d", len);
             //size_t ret = 0;
@@ -56,16 +55,7 @@ class common_msg_process:public base_msg_process
                 if (status == RECV_MSG_BODY)
                 {
                     if (left_len >= _head_len->get_head_len() + msg_body_len) {
-
-                        string tmp_buf;
-                        _pass_msg_t tmp_head;
-                        tmp_head._src_obj = _p_connect->get_id();
-                        tmp_head._dst_obj = _p_connect->get_id();
-                        tmp_head.len = _head_len + msg_body_len;
-                        memcpy((void *)tmp_buf.c_str(), &tmp_head, sizeof(tmp_head));
-                        tmp_buf.append (buf, _head_len + msg_body_len);
-
-                        process_s(tmp_buf.c_str(), tmp_buf.length());
+                        process_s(buf, _head_len + msg_body_len);
 
                         left_len -= _head_len + msg_body_len;
                         buf = buf + left_len;
@@ -78,7 +68,8 @@ class common_msg_process:public base_msg_process
             return len - left_len;
         }	
 
-      size_t process_s(char *buf, size_t len)
+
+        size_t process_s(char *buf, size_t len)
         {
             return _data_process->process_recv_buf(buf, len);
         }
@@ -91,17 +82,20 @@ class common_msg_process:public base_msg_process
                 return;
             }
 
-            write(_channelid, p_msg->c_str(), p_msg->length());
-            delete p_msg;
+            _pass_msg_t * ptr = (_pass_msg_t *)p_msg;
+            
+            obj_id_str id_str = ptr->_dst_obj;
+            id_str._obj_id = 0;
+            base_net_container * net_container = _p_connect->get_net_container();
+            if (!net_container) {
+                return;
+            }
+            base_net_obj * net_obj = net_container->find(&id_str);
+            if (net_obj) {
+                net_obj->process_send_buf(p_msg);
+            }
         }
-
-        void set_channelid(int channelid)
-        {
-            _channelid = channelid;
-        }
-
     protected:
-              int _channelid;
         DATA_PROCESS *_data_process;
 
 };
