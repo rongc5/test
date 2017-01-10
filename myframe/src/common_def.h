@@ -54,11 +54,25 @@ enum RECV_MSG_STATUS{
     RECV_MSG_BODY   
 };
 
+/******* 内部消息通讯使用 begin *******************/
+
 struct _pass_msg_t {
     struct obj_id_str _src_obj;
     struct obj_id_str _dst_obj;
     int len;
 };
+
+enum pass_msg_cmd {
+    ADD_NEW_SOCEKT,
+};
+
+struct add_new_socket {
+    int _op;
+    int fd;
+};
+
+
+/*********内部消息通讯使用 end **************/
 
 enum CONNECT_STATUS
 {

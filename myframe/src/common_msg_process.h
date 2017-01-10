@@ -9,7 +9,7 @@ template<class DATA_PROCESS>
 class common_msg_process:public base_msg_process
 {
     public:
-        common_msg_process(void *p):_channelid(0), base_msg_process(p)
+        common_msg_process(void *p):_thread(NULL), base_msg_process(p)
         {
             _data_process = DATA_PROCESS::gen_process((void*)this);
 
@@ -91,17 +91,19 @@ class common_msg_process:public base_msg_process
                 return;
             }
 
-            write(_channelid, p_msg->c_str(), p_msg->length());
+            if (_thread) {
+                write(_thread->get_channelid(), p_msg->c_str(), p_msg->length());
+            }
             delete p_msg;
         }
 
-        void set_channelid(int channelid)
+        void set_common_thread(common_thread *thread)
         {
-            _channelid = channelid;
+            _thread = thread;
         }
 
     protected:
-              int _channelid;
+        common_thread *_thread;
         DATA_PROCESS *_data_process;
 
 };

@@ -48,8 +48,6 @@ public:
         return _p_net_container;
     }
 	
-	size_t process_recv_buf(char *buf, size_t len) = 0;
-    void process_send_buf(string * buf) = 0;
 
 	virtual int get_event()
 	{
@@ -94,7 +92,8 @@ public:
 	{		
 	}
 	virtual void close()=0;	
-
+	size_t process_recv_buf(char *buf, size_t len) = 0;
+    void process_send_buf(string * buf) = 0;
 	virtual void get_local_addr(sockaddr_in &addr)=0;
 
 

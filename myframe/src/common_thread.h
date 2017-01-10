@@ -14,9 +14,14 @@ namespace MZFRAME {
             virtual ~common_thread(){};
             virtual void *run();
             virtual void obj_process() = 0;
-            void set_channelid(int fd)
+            virtual void set_channelid(int fd)
             {
                 _channel_id = fd;
+            }
+            
+            int get_channelid()
+            {
+                return _channel_id;
             }
 
         protected:

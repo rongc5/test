@@ -15,7 +15,7 @@ class channel_data_process
 
 		virtual size_t process_recv_buf(char *buf, size_t len)
         {
-
+            
         }
 
         static channel_data_process* gen_process(void *p) 
