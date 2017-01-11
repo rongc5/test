@@ -40,22 +40,22 @@ class server_mgr
             passing_msg_thread::register_thread(_listen_obj_thread);
 
 
-
-
-            obj_thread<net_obj_container> _listen_obj_thread;
+            _worker_thread = new common_net_thread<MSG_PROCESS>[_thread_num];
             //线程对象
-            _p_obj_thread_arr = new obj_thread<net_obj_container>[_thread_num];			
             //处理对象线程
             for(int ii=0; ii < _thread_num; ii++)
             {
-                _p_obj_thread_arr[ii].start(_extra_info._epoll_size);
+                passing_msg_thread::register_thread(_worker_thread[i]);
+                _listen_obj_thread->add_job_thread(_worker_thread[i]->get_thread_id());
+                _worker_thread[i]->start();
             }
+            _listen_obj_thread->start();
 
 		}
 
 	private:
         listen_thread * _listen_obj_thread;
-		obj_thread<net_obj_container> *_p_obj_thread_arr;
+        common_net_thread<MSG_PROCESS> *_worker_thread;
 		int _thread_num;
 		string _server_ip;
 		unsigned short _server_port;

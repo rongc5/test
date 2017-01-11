@@ -47,6 +47,8 @@ namespace MZFRAME {
                 process->set_common_thread(this);
                 p_connect->set_process(process);
                 p_connect->set_net_container(_base_container);
+
+                return p_connect;
             }
 
         protected:

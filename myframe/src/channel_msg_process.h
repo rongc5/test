@@ -9,7 +9,7 @@ template<class DATA_PROCESS>
 class channel_msg_process:public base_msg_process
 {
     public:
-        channel_msg_process(void *p):base_msg_process(p)
+        channel_msg_process(void *p):base_msg_process(p), _thread(NULL)
         {
             _data_process = DATA_PROCESS::gen_process((void*)this);
         }
@@ -93,7 +93,19 @@ class channel_msg_process:public base_msg_process
                 net_obj->process_send_buf(p_msg);
             }
         }
+
+        void set_common_thread(common_thread *thread)
+        {
+            _thread = thread;
+        }
+
+        common_thread* get_common_thread()
+        {
+            return _thread;
+        }
+
     protected:
+        common_thread *_thread;
         DATA_PROCESS *_data_process;
 
 };
