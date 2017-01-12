@@ -1,108 +1,98 @@
 #ifndef __NET_OBJ_H__
 #define __NET_OBJ_H__
 
-#define "base_def.h"
+#include "base_def.h"
+#include "common_def.h"
+#include "common_epoll.h"
 
 
+class base_net_container;
 class common_epoll;
+namespace MZFRAME {
 
-class connect_info
-{
-	public:
-		connect_info()
-		{
-			_epoll_type = 0;
-		}
-		virtual ~connect_info()
-		{
-		}
-		
-	public:	
-		sockaddr_in _addr;
-		uint8_t _epoll_type;
-};
-
-struct obj_id_str;
-
-class base_net_obj
-{
-public:
-	base_net_obj()
-	{
-		_fd = 0;
-		_epoll_event = 0;
-		_p_net_container = NULL;
-		_p_epoll = NULL;
-	}
-	
-	virtual ~base_net_obj()
-	{
-	}
-	
-	virtual void event_process(const int32_t events) = 0;
-	virtual int destroy() = 0;
-	
-	virtual void set_net_container(base_net_container *p_net_container);
-    base_net_container * get_net_container()
+    class base_net_obj
     {
-        return _p_net_container;
-    }
-	
+        public:
+            base_net_obj()
+            {
+                _fd = 0;
+                _epoll_event = 0;
+                _p_net_container = NULL;
+                _p_epoll = NULL;
+            }
 
-	virtual int get_event()
-	{
-		return _epoll_event
-	}
-	
-	int get_sock()
-	{
-		return _fd;
-	}
+            virtual ~base_net_obj()
+            {
+            }
 
-    int set_id(obj_id_str & id_str)
+            virtual int real_net_process() = 0;
+            virtual void event_process(const int32_t events) = 0;
+            virtual int destroy() = 0;
+
+            virtual void set_net_container(base_net_container *p_net_container);
+            base_net_container * get_net_container()
+            {
+                return _p_net_container;
+            }
+
+
+            virtual int get_event()
+            {
+                return _epoll_event;
+            }
+
+            int get_sock()
+            {
+                return _fd;
+            }
+
+            int set_id(obj_id_str & id_str)
+            {
+                _id_str = id_str;
+                return 0;
+            }
+
+            const obj_id_str & get_id()
+            {
+                return _id_str;
+            }
+
+
+        protected:
+            base_net_container *_p_net_container;
+            common_epoll *_p_epoll;
+            int _epoll_event;
+            int _fd;	
+            obj_id_str _id_str;
+    };
+
+    class NET_OBJ:public base_net_obj
     {
-        _id_str = id_str;
-        return 0;
-    }
-	
-	const obj_id_str & get_id()
-    {
-		return _id_str;
-	}
-
-	
-protected:
-	base_net_container *_p_net_container;
-	common_epoll *_p_epoll;
-	int _epoll_event;
-	int _fd;	
-	obj_id_str _id_str;
-};
-
-class NET_OBJ:public base_net_obj
-{
-public:
-	NET_OBJ()
-	{
-		memset(&_peer_addr, 0, sizeof(_peer_addr));
-		_p_epoll = NULL;
-		_epoll_event = 0;
-	}
-	virtual ~NET_OBJ()
-	{		
-	}
-	virtual void close()=0;	
-	size_t process_recv_buf(char *buf, size_t len) = 0;
-    void process_send_buf(string * buf) = 0;
-	virtual void get_local_addr(sockaddr_in &addr)=0;
+        public:
+            NET_OBJ()
+            {
+                memset(&_peer_addr, 0, sizeof(_peer_addr));
+                _p_epoll = NULL;
+                _epoll_event = 0;
+            }
+            virtual ~NET_OBJ()
+            {		
+            }
+            virtual void close()=0;	
+            virtual size_t process_recv_buf(char *buf, size_t len) = 0;
+            virtual void process_send_buf(string * buf) = 0;
+            virtual void get_local_addr(sockaddr_in &addr)=0;
 
 
-	/*******************************************************/	
-	void get_peer_addr(sockaddr_in &addr);
-	
-protected:
-	sockaddr_in _peer_addr;	
-};
+            /*******************************************************/	
+            void get_peer_addr(sockaddr_in &addr);
+
+        protected:
+            sockaddr_in _peer_addr;	
+    };
+
+
+}
 
 
 #endif

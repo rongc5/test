@@ -4,19 +4,19 @@
 #include "common_epoll.h"
 #include "common_thread_obj.h"
 #include "base_net_container.h"
+#include "net_obj.h"
+
+
+namespace MZFRAME {
 
 template<class PROCESS>
 class base_connect:public NET_OBJ
 {
     public:
-        base_connect(const connect_info &info)
-        {		
-            init(info._epoll_type);
-        }	
 
-        base_connect(const int32_t sock, const connect_info &info/*0:lt,  1:et*/)
+        base_connect(const int32_t sock, EPOLL_TYPE epoll_type/*0:lt,  1:et*/)
         {
-            init(info._speed, info._epoll_type);
+            init(epoll_type);
             _sock = sock;
             base_connect<PROCESS>::_peer_addr = info._addr;
         }
@@ -33,7 +33,7 @@ class base_connect:public NET_OBJ
                 delete _p_send_buf;
         }
 
-        void init(const uint8_t epool_type = 0/*0:lt,  1:et*/)
+        void init(EPOLL_TYPE epool_type = 0/*0:lt,  1:et*/)
         {
             _epoll_type = epool_type; //≥ı ºªØ
 
@@ -272,7 +272,9 @@ class base_connect:public NET_OBJ
         size_t _recv_buf_len;
         string* _p_send_buf;	
         uint64_t _connect_timeout;
-        uint8_t _epoll_type;
+        EPOLL_TYPE _epoll_type;
 };
 
+}
 
+#endif

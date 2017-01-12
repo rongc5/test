@@ -1,56 +1,62 @@
 #ifndef __COMMON_EPOLL_H_
 #define __COMMON_EPOLL_H_
 
-#include <sys/epoll.h>
+#include "base_def.h"
+#include "common_def.h"
 #include "net_obj.h"
+#include "common_exception.h"
 
-using namespace MYFRAMECOMMON;
-using namespace std;
+class base_net_obj;
 
-class common_epoll
-{
-    public:
-        common_epoll()
-        {
-            _epoll_events = NULL;
-            _real_epoll_size = 0;
-        }
+namespace MZFRAME {
 
-        ~common_epoll()
-        {
-            if (_epoll_events != NULL)
-                delete [] _epoll_events;
-        }
-
-        void init(const uint32_t epoll_size = 0, int epoll_wait_time)
-        {
-            _epoll_size = (epoll_size == 0)?DAFAULT_EPOLL_SIZE:epoll_size;
-            
-            _epoll_wait_time = epoll_wait_time;
-            	
-            _epoll_fd = epoll_create(_epoll_size);
-            if (_epoll_fd == -1)
-            {       
-                THROW_COMMON_EXCEPT(errno, "epoll_create fail " << strerror(errno));
+    class common_epoll
+    {
+        public:
+            common_epoll()
+            {
+                _epoll_events = NULL;
+                _epoll_size = 0;
             }
-            _epoll_events = new epoll_event[_epoll_size]; 
-                            
-        }
 
-        void add_to_epoll(base_net_obj *p_obj);
+            ~common_epoll()
+            {
+                if (_epoll_events != NULL)
+                    delete [] _epoll_events;
+            }
 
-        void del_from_epoll(base_net_obj *p_obj);
+            void init(const uint32_t epoll_size = DAFAULT_EPOLL_SIZE, int epoll_wait_time = DEFAULT_EPOLL_WAITE)
+            {
+                _epoll_size = (epoll_size == 0)?DAFAULT_EPOLL_SIZE:epoll_size;
 
-        void mod_from_epoll(base_net_obj *p_obj);
+                _epoll_wait_time = epoll_wait_time;
 
-        int epoll_wait(map<uint64_t, base_net_obj*> &expect_list);
+                _epoll_fd = epoll_create(_epoll_size);
+                if (_epoll_fd == -1)
+                {       
+                    THROW_COMMON_EXCEPT("epoll_create fail " << strerror(errno));
+                }
+                _epoll_events = new epoll_event[_epoll_size]; 
 
-    private:
-        int _epoll_fd;
-        struct epoll_event *_epoll_events;
-        uint32_t _epoll_size;
-        int _epoll_wait_time;
-};
+            }
+
+            void add_to_epoll(base_net_obj *p_obj);
+
+            void del_from_epoll(base_net_obj *p_obj);
+
+            void mod_from_epoll(base_net_obj *p_obj);
+
+            int epoll_wait(map<obj_id_str, base_net_obj*> &expect_list);
+
+        private:
+            int _epoll_fd;
+            struct epoll_event *_epoll_events;
+            uint32_t _epoll_size;
+            int _epoll_wait_time;
+    };
+
+
+}
 
 #endif
 

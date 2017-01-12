@@ -4,6 +4,7 @@
 #include "common_epoll.h"
 #include <list>
 #include "net_obj.h"
+#include "common_def.h"
 
 using namespace std;
 

@@ -34,7 +34,7 @@ class passing_msg_process:public base_msg_process
                 {
                     if (left_len > _head_len)
                     {
-                        char *ptr = "";
+                        const char *ptr = "";
 
                         if (_head_len >= MSG_HEAD_BODY_LENTH_LEN) 
                             ptr = buf + _head_len - MSG_HEAD_BODY_LENTH_LEN;

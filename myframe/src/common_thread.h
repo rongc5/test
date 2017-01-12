@@ -3,7 +3,7 @@
 
 #include "base_def.h"
 
-
+class base_thread;
 namespace MZFRAME {
 
 

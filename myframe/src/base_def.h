@@ -4,13 +4,27 @@
 
 #include <sys/socket.h>
 #include <sys/epoll.h>
+#include <pthread.h>
+#include <time.h>
+#include <errno.h>
+#include <string.h>
+#include <netinet/in.h>
+#include <sys/types.h>
+#include <stdio.h>
+#include <stdarg.h>
+
+#include <sys/stat.h>
+#include <unistd.h>
+#include <string.h>
+
+
+#include <vector>
 #include <string>
 #include <list>
 #include <map>
-#include <pthread.h>
-#include <vector>
-#include <time.h>
-
+#include <strstream>
+#include <sstream>
+#include <exception>
 
 
 using namespace std;
@@ -28,6 +42,15 @@ const uint64_t CONNECT_TIME_OUT = 180 * 1000;
 
 const int max_recv_data = 1024*20;
 const int max_send_num = 5;
+
+
+
+
+
+/******** 长度定义 *************/
+
+#define SIZE_LEN_64 64
+
 
 
 

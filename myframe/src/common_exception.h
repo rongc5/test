@@ -1,84 +1,42 @@
-#ifndef __MY_EXCEPTION_H
-#define  __MY_EXCEPTION_H
-#include <sys/types.h>
-#include <string>
-using namespace std;
-namespace MYFRAMECOMMON{
+#ifndef  __COMMON_EXCEPTION_H
+#define  __COMMON_EXCEPTION_H
 
-/**
-* dec:
-* ClassName:CMyException
-* author: 
-* version:
-*CreateTime: 2006.11.25
-*/
-class CMyException:public std::exception
-{
-public:
-        CMyException(const string &sErrMsg)
-        {
-                m_sErrMsg = sErrMsg;
-        }
-        ~CMyException()throw()
-        {
-                
-        }
-        
-        string &GetErrMsg()
-        {
-                return m_sErrMsg;
-        }
+#include "base_def.h"
+#include "log_helper.h"
 
-		const char *what() const throw()
-		{
-			return m_sErrMsg.c_str();
-		}
-protected:
-        string m_sErrMsg;
-};
+namespace MZFRAME {
 
-class CMyCommonException : public std::exception 
-{
-public:
-	CMyCommonException(const int32_t uiErrCode, const string &sErrStr)
-	{
-		m_uiErrCode = uiErrCode;
-		m_sErrStr = sErrStr;
-	}
-	virtual ~CMyCommonException() throw(){};    
+    class CMyCommonException : public std::exception 
+    {
+        public:
 
-public:
-	virtual const char* what() const throw()
-	{
-		return m_sErrStr.c_str();
-	}
+            CMyCommonException(const string &sErrStr)
+            {
+                m_sErrStr = sErrStr;
+            }
 
-	int32_t getErrCode()
-	{
-		return m_uiErrCode;
-	}
+            virtual ~CMyCommonException() throw(){};    
 
-protected:
-	int32_t			m_uiErrCode;
-	string			m_sErrStr;		
-};
+        public:
+            virtual const char* what() const throw()
+            {
+                return m_sErrStr.c_str();
+            }
 
-#define THROW_COMMON_EXCEPT(errorid, errorstr) \
-	{\
-		stringstream ss; \
-		ss << errorstr; \
-		if (errorid < 100) \
-		{\
-			WRITE_ERROR("throw exception, %s:%d, error %s", __FILE__, __LINE__,  ss.str().c_str());\
-		}\
-		else\
-		{\
-			WRITE_DEBUG("throw exception, %s:%d, error %s", __FILE__, __LINE__,  ss.str().c_str());\
-		}\
-		throw CMyCommonException(errorid, ss.str());\
-	}
+        protected:
+            string			m_sErrStr;		
+    };
 
-
+#define THROW_COMMON_EXCEPT(errorstr) \
+    {\
+        stringstream ss; \
+        ss << errorstr; \
+        {\
+            LOG_WARNING("throw exception, %s:%d, error %s", __FILE__, __LINE__,  ss.str().c_str());\
+        }\
+        throw CMyCommonException(ss.str());\
+    }
 }
+
 #endif
 

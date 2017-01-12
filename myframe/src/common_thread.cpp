@@ -1,7 +1,7 @@
 #include "common_thread.h"
+#include "base_thread.h"
 
 namespace MZFRAME {
-
 
     common_thread::common_thread()
     {
@@ -9,7 +9,7 @@ namespace MZFRAME {
     }
 
 
-    void common_thread::*run()
+    void * common_thread::run()
     {
         while(get_run_flag())
         {

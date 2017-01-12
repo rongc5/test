@@ -1,7 +1,6 @@
 #include "common_epoll.h"
+#include "net_obj.h"
 
-int common_epoll::_s_epoll_size = 1000;
-int common_epoll::_s_epoll_wait_time = 20;
 
 
 void common_epoll::add_to_epoll(base_net_obj *p_obj)

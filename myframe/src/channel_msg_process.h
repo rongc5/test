@@ -4,110 +4,116 @@
 #include "common_epoll.h"
 #include "net_obj.h"
 #include "common_def.h"
+#include "common_thread.h"
 
-template<class DATA_PROCESS>
-class channel_msg_process:public base_msg_process
-{
-    public:
-        channel_msg_process(void *p):base_msg_process(p), _thread(NULL)
+namespace MZFRAME {
+
+    template<class DATA_PROCESS>
+        class channel_msg_process:public base_msg_process
+    {
+        public:
+            channel_msg_process(void *p):base_msg_process(p), _thread(NULL)
         {
             _data_process = DATA_PROCESS::gen_process((void*)this);
         }
 
-        virtual ~channel_msg_process()
-        {
-            if (_data_process){
-                delete _data_process;
-            }
-        }	
-        
-      virtual size_t process_recv_buf(char *buf, size_t len)
-        {
-            LOG_DEBUG("recv buf %d", len);
-            //size_t ret = 0;
-            size_t left_len = len;
-            while(left_len > 0)
+            virtual ~channel_msg_process()
             {
-                RECV_MSG_STATUS status = RECV_MSG_HEAD;
-                size_t msg_body_len = 0;
-                if (status == RECV_MSG_HEAD)
+                if (_data_process){
+                    delete _data_process;
+                }
+            }	
+
+            virtual size_t process_recv_buf(char *buf, size_t len)
+            {
+                LOG_DEBUG("recv buf %d", len);
+                //size_t ret = 0;
+                size_t left_len = len;
+                while(left_len > 0)
                 {
-                    if (left_len > _head_len)
+                    RECV_MSG_STATUS status = RECV_MSG_HEAD;
+                    size_t msg_body_len = 0;
+                    if (status == RECV_MSG_HEAD)
                     {
-                        char *ptr = "";
+                        if (left_len > _head_len)
+                        {
+                            char *ptr = "";
 
-                        if (_head_len >= MSG_HEAD_BODY_LENTH_LEN) 
-                            ptr = buf + _head_len - MSG_HEAD_BODY_LENTH_LEN;
-                        else {
-                            ptr = buf;
+                            if (_head_len >= MSG_HEAD_BODY_LENTH_LEN) 
+                                ptr = buf + _head_len - MSG_HEAD_BODY_LENTH_LEN;
+                            else {
+                                ptr = buf;
+                            }
+
+                            msg_body_len = ntohl(*ptr);
+
+                            _status = RECV_MSG_BODY;
                         }
-
-                        msg_body_len = ntohl(*ptr);
-
-                        _status = RECV_MSG_BODY;
+                        else
+                        {
+                            break;
+                        }
                     }
-                    else
+
+                    if (status == RECV_MSG_BODY)
                     {
-                        break;
-                    }
+                        if (left_len >= _head_len->get_head_len() + msg_body_len) {
+                            process_s(buf, _head_len + msg_body_len);
+
+                            left_len -= _head_len + msg_body_len;
+                            buf = buf + left_len;
+                        } else {
+                            break;
+                        } 
+                    }				
                 }
 
-                if (status == RECV_MSG_BODY)
-                {
-                    if (left_len >= _head_len->get_head_len() + msg_body_len) {
-                        process_s(buf, _head_len + msg_body_len);
+                return len - left_len;
+            }	
 
-                        left_len -= _head_len + msg_body_len;
-                        buf = buf + left_len;
-                    } else {
-                        break;
-                    } 
-                }				
+
+            size_t process_s(char *buf, size_t len)
+            {
+                return _data_process->process_recv_buf(buf, len);
             }
 
-            return len - left_len;
-        }	
+            void put_msg(string *p_msg)
+            {
+                if (!p_msg || p_msg->length() < sizeof(_pass_msg_t)){
+                    //LOG_WARN
+                    delete p_msg;
+                    return;
+                }
 
+                _pass_msg_t * ptr = (_pass_msg_t *)p_msg;
 
-        size_t process_s(char *buf, size_t len)
-        {
-            return _data_process->process_recv_buf(buf, len);
-        }
-
-        void put_msg(string *p_msg)
-        {
-            if (!p_msg || p_msg->length() < sizeof(_pass_msg_t)){
-                //LOG_WARN
-                delete p_msg;
-                return;
+                base_net_container * net_container = _p_connect->get_net_container();
+                if (!net_container) {
+                    return;
+                }
+                base_net_obj * net_obj = net_container->find(&ptr->_dst_obj);
+                if (net_obj) {
+                    net_obj->process_send_buf(p_msg);
+                }
             }
 
-            _pass_msg_t * ptr = (_pass_msg_t *)p_msg;
-            
-            base_net_container * net_container = _p_connect->get_net_container();
-            if (!net_container) {
-                return;
+            void set_common_thread(common_thread *thread)
+            {
+                _thread = thread;
             }
-            base_net_obj * net_obj = net_container->find(&ptr->_dst_obj);
-            if (net_obj) {
-                net_obj->process_send_buf(p_msg);
+
+            common_thread* get_common_thread()
+            {
+                return _thread;
             }
-        }
 
-        void set_common_thread(common_thread *thread)
-        {
-            _thread = thread;
-        }
+        protected:
+            common_thread *_thread;
+            DATA_PROCESS *_data_process;
 
-        common_thread* get_common_thread()
-        {
-            return _thread;
-        }
+    };
 
-    protected:
-        common_thread *_thread;
-        DATA_PROCESS *_data_process;
+}
 
-};
 #endif
 

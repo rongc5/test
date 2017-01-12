@@ -1,5 +1,9 @@
 #include "passing_msg_thread.h"
-
+#include "net_obj.h"
+#include "common_thread.h"
+#include "common_obj_container.h"
+#include "passing_msg_process.h"
+#include "passing_data_process.h"
 
 namespace MZFRAME {
 
@@ -61,16 +65,13 @@ namespace MZFRAME {
         return NULL;
     }
 
-    NET_OBJ * msg_passing_thread::gen_connect(const int fd, const sockaddr_in &addr)
+    NET_OBJ * msg_passing_thread::gen_connect(const int fd, EPOLL_TYPE epoll_type)
     {
-        connect_info info;
-        info._addr = addr;
-        info._epoll_type = _EPOLL_LT_TYPE;
         NET_OBJ * p_connect = NULL;
-        p_connect = new base_connect<passing_msg_process<passing_data_process>>(fd, info);
+        p_connect = new base_connect<passing_msg_process<passing_data_process> >(fd, epoll_type);
         passing_msg_process<passing_data_process> *process = new passing_msg_process<passing_data_process>((NET_OBJ*)p_connect);
         
-        base_connect<passing_msg_process<passing_data_process>> * tmp_con = (base_connect<passing_msg_process<passing_data_process>> *)p_connect;
+        base_connect<passing_msg_process<passing_data_process> > * tmp_con = (base_connect<passing_msg_process<passing_data_process> > *)p_connect;
         tmp_con->set_process(process);
 
         return p_connect;

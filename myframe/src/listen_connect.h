@@ -3,7 +3,6 @@
 
 #include "common_epoll.h"
 #include <string>
-#include "base_obj_id.h"
 #include "base_connect.h"
 using namespace std;
 

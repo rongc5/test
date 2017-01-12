@@ -6,7 +6,7 @@
 
 namespace MZFRAME {
 
-
+    template<class WORKER_MGR>
     class listen_thread:public common_thread
     {
         public:
@@ -31,6 +31,8 @@ namespace MZFRAME {
 
             void init(const string &ip, unsigned short port)
             {
+                _ip = ip;
+                _port = port;
                 _count = 0;
                 _base_container = new common_obj_container();
                 listen_connect<listen_data_process> * p_connect
@@ -41,18 +43,22 @@ namespace MZFRAME {
                 data_process->set_thread(this);
                 p_connect->set_process(data_process);
                 p_connect->set_net_container(_base_container);
-            }
-            
-            void add_job_thread(pthread_t tid)
-            {
-                _worker_vec.push_back(tid);
+
+                passing_msg_thread::register_thread(_listen_obj_thread);
             }
 
             pthread_t get_worker_id()
             {
-                int i = 0;
-                i = _count % _worker_vec.size();
-                return _worker_vec[i];
+                _worker_mgr->get_one_worker()->get_thread_id();
+            }
+
+            void set_worker_mgr(WORKER_MGR * worker_mgr)
+            {
+                if (_worker_mgr && _worker_mgr != worker_mgr){
+                    delete _worker_mgr;
+                }
+                
+                _worker_mgr = worker_mgr;
             }
 
         protected:
@@ -64,8 +70,9 @@ namespace MZFRAME {
             }
 
         protected:
-            unsigned int _count;
-            vector<pthread_t> _worker_vec;
+            string _ip;
+            unsigned short _port;
+            WORKER_MGR * _worker_mgr;
             base_net_container * _base_container;
             obj_id_str _id_str;
     };

@@ -1,12 +1,10 @@
 #ifndef __LOG_HELPER_H_
 #define __LOG_HELPER_H_
 
-#include <stdio.h>
-#include "def.h"
-#include "singleton_base.h"
+#include "base_def.h"
+#include "base_singleton.h"
 #include "thread_helper.h"
-#include <stdarg.h>
-#include "utils.h"
+#include "common_def.h"
 
 namespace MZFRAME {
 
@@ -31,24 +29,24 @@ class log_mgr;
 #define LOG_DEBUG(fmt, arg...) \
     do { \
         char tmp[SIZE_LEN_64]; \
-        utils::get_date_str(tmp, sizeof(tmp), DATEFORMAT); \
-        singleton_base<log_mgr>::get_instance()->log(LOGDEBUG, "DEBUG: %s * %lu [%s:%s():%d] "fmt, tmp, pthread_self(), __FILE__, __FUNCTION__, __LINE__, ##arg); \
+        get_date_str(tmp, sizeof(tmp), DATEFORMAT); \
+        base_singleton<log_mgr>::get_instance()->log(LOGDEBUG, "DEBUG: %s * %lu [%s:%s():%d] "fmt, tmp, pthread_self(), __FILE__, __FUNCTION__, __LINE__, ##arg); \
     } while (0)
 
 
 #define LOG_NOTICE(fmt, arg...) \
     do { \
         char tmp[SIZE_LEN_64]; \
-        utils::get_date_str(tmp, sizeof(tmp), DATEFORMAT); \
-        singleton_base<log_mgr>::get_instance()->log(LOGNOTICE, "NOTICE: %s * %lu [%s:%s():%d] "fmt, tmp, pthread_self(), __FILE__, __FUNCTION__, __LINE__, ##arg); \
+        get_date_str(tmp, sizeof(tmp), DATEFORMAT); \
+        base_singleton<log_mgr>::get_instance()->log(LOGNOTICE, "NOTICE: %s * %lu [%s:%s():%d] "fmt, tmp, pthread_self(), __FILE__, __FUNCTION__, __LINE__, ##arg); \
     } while (0)
 
 
 #define LOG_WARNING(fmt, arg...) \
     do { \
         char tmp[SIZE_LEN_64]; \
-        utils::get_date_str(tmp, sizeof(tmp), DATEFORMAT); \
-        singleton_base<log_mgr>::get_instance()->log(LOGWARNING, "WARNING: %s * %lu [%s:%s():%d] "fmt, tmp, pthread_self(), __FILE__, __FUNCTION__, __LINE__, ##arg); \
+        get_date_str(tmp, sizeof(tmp), DATEFORMAT); \
+        base_singleton<log_mgr>::get_instance()->log(LOGWARNING, "WARNING: %s * %lu [%s:%s():%d] "fmt, tmp, pthread_self(), __FILE__, __FUNCTION__, __LINE__, ##arg); \
     } while (0)
 
 

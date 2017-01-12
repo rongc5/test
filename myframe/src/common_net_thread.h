@@ -2,6 +2,11 @@
 #define __COMMON_NET_THREAD_H__
 
 #include "base_def.h"
+#include "channel_msg_process.h"
+#include "common_thread.h"
+#include "channel_data_process.h"
+#include "common_obj_container.h"
+#include "net_obj.h"
 
 
 namespace MZFRAME {
@@ -27,7 +32,8 @@ namespace MZFRAME {
             virtual void set_channelid(int fd)
             {
                 common_thread::set_channelid(fd);
-                base_connect<channel_msg_process<channel_data_process> > * p_connect = new base_connect<channel_msg_process<channel_data_process> >();
+                
+                base_connect<channel_msg_process<channel_data_process> > * p_connect = new base_connect<channel_msg_process<channel_data_process> >(fd, EPOLL_LT_TYPE);
                 
                 p_connect->set_id(gen_id_str());
                 channel_msg_process<channel_data_process> * process = new channel_msg_process<channel_data_process>(p_connect);
