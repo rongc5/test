@@ -37,6 +37,11 @@ using namespace std;
 #define MSG_HEAD_BODY_LENTH_LEN 4
 
 
+
+#define LOG_DATE_FORMAT "%Y-%m-%d %H:%M:%S"
+
+
+
 const size_t SEND_BUF_SIZE = 20 * 1024;
 const uint64_t CONNECT_TIME_OUT = 180 * 1000;
 
@@ -50,6 +55,7 @@ const int max_send_num = 5;
 /******** 长度定义 *************/
 
 #define SIZE_LEN_64 64
+
 
 
 

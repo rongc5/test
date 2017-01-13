@@ -5,6 +5,7 @@
 #include "net_obj.h"
 #include "common_def.h"
 #include "common_thread.h"
+#include "base_net_container.h"
 
 namespace MZFRAME {
 
@@ -47,7 +48,7 @@ namespace MZFRAME {
 
                             msg_body_len = ntohl(*ptr);
 
-                            _status = RECV_MSG_BODY;
+                            status = RECV_MSG_BODY;
                         }
                         else
                         {
@@ -57,7 +58,7 @@ namespace MZFRAME {
 
                     if (status == RECV_MSG_BODY)
                     {
-                        if (left_len >= _head_len->get_head_len() + msg_body_len) {
+                        if (left_len >= _head_len + msg_body_len) {
                             process_s(buf, _head_len + msg_body_len);
 
                             left_len -= _head_len + msg_body_len;

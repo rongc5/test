@@ -3,9 +3,10 @@
 
 #include "common_epoll.h"
 #include "common_def.h"
-#include "net_obj.h"
+//#include "net_obj.h"
 
 
+class base_net_obj;
 namespace MZFRAME {
 
 

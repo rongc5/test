@@ -2,9 +2,10 @@
 #define __BASE_CONNECT_H__
 
 #include "common_epoll.h"
-#include "common_thread_obj.h"
 #include "base_net_container.h"
 #include "net_obj.h"
+#include "log_helper.h"
+#include "common_exception.h"
 
 
 namespace MZFRAME {
@@ -18,7 +19,12 @@ class base_connect:public NET_OBJ
         {
             init(epoll_type);
             _sock = sock;
-            base_connect<PROCESS>::_peer_addr = info._addr;
+            struct sockaddr_in sa;
+            
+            int len = sizeof(sa);
+            if (getpeername(sock, (struct sockaddr *)&sa, &len)) {
+                base_connect<PROCESS>::_peer_addr = sa;
+            }
         }
 
         ~base_connect()
@@ -49,7 +55,6 @@ class base_connect:public NET_OBJ
             _process = NULL;
             _p_epoll = NULL;
             _sock = 0;
-            _channel_id = 0;
         }
 
 
@@ -87,7 +92,7 @@ class base_connect:public NET_OBJ
         {
             if ((event & EPOLLERR) == EPOLLERR || (event & EPOLLHUP) == EPOLLHUP)
             {
-                THROW_SOCKET_EXPECT(0, "epoll error ");
+                THROW_COMMON_EXCEPT("epoll error ");
             }
 
             if ((event & EPOLLIN) == EPOLLIN) //读
@@ -152,13 +157,13 @@ class base_connect:public NET_OBJ
             if (ret == 0)
             {
                 _process->peer_close();
-                THROW_SOCKET_EXPECT(0, "the client close the socket(" << _sock << ")");
+                THROW_COMMON_EXCEPT("the client close the socket(" << _sock << ")");
             }
             else if (ret < 0)
             {
                 if (errno != EAGAIN)
                 {
-                    THROW_SOCKET_EXPECT(errno, "this socket occur fatal error " << strerror(errno));
+                    THROW_COMMON_EXCEPT("this socket occur fatal error " << strerror(errno));
                 }
             }
 
@@ -169,7 +174,7 @@ class base_connect:public NET_OBJ
         {
             if (len == 0) //上层抛一个长度为0的数据过来 ,直接关闭
             {
-                THROW_SOCKET_EXPECT(0, "close the socket " << _sock);
+                THROW_COMMON_EXCEPT("close the socket " << _sock);
             }
 
             ssize_t ret =  send(_sock, buf, len, MSG_DONTWAIT);
@@ -177,7 +182,7 @@ class base_connect:public NET_OBJ
             {
                 if (errno != EAGAIN && errno != EWOULDBLOCK)
                 {
-                    THROW_SOCKET_EXPECT(errno, "send data error " << strerror(errno));
+                    THROW_COMMON_EXCEPT("send data error " << strerror(errno));
                 }
             }
             return ret;
@@ -250,7 +255,7 @@ class base_connect:public NET_OBJ
                     else if (ret >= 0)
                     {
                         _p_send_buf->erase(0, ret);
-                        WRITE_WARN("_p_send_buf erase %d", ret);
+                        LOG_WARNING("_p_send_buf erase %d", ret);
                         is_break = true;
                     }
                     else //<0
@@ -266,7 +271,7 @@ class base_connect:public NET_OBJ
 
 
     protected:
-
+        int32_t _sock;
         PROCESS *_process;
         string _recv_buf;
         size_t _recv_buf_len;

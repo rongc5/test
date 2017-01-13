@@ -7,6 +7,7 @@
 #include "channel_data_process.h"
 #include "common_obj_container.h"
 #include "net_obj.h"
+#include "base_connect.h"
 
 
 namespace MZFRAME {
@@ -33,7 +34,7 @@ namespace MZFRAME {
             {
                 common_thread::set_channelid(fd);
                 
-                base_connect<channel_msg_process<channel_data_process> > * p_connect = new base_connect<channel_msg_process<channel_data_process> >(fd, EPOLL_LT_TYPE);
+                base_connect< channel_msg_process<channel_data_process> > * p_connect = new base_connect< channel_msg_process<channel_data_process> >(fd, EPOLL_LT_TYPE);
                 
                 p_connect->set_id(gen_id_str());
                 channel_msg_process<channel_data_process> * process = new channel_msg_process<channel_data_process>(p_connect);

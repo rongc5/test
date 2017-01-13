@@ -4,6 +4,9 @@
 #include "common_obj_container.h"
 #include "passing_msg_process.h"
 #include "passing_data_process.h"
+#include "base_connect.h"
+#include "log_helper.h"
+#include "base_net_container.h"
 
 namespace MZFRAME {
 

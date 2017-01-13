@@ -4,100 +4,110 @@
 #include "common_epoll.h"
 #include "net_obj.h"
 #include "common_def.h"
+#include "log_helper.h"
+#include "base_msg_process.h"
 
-template<class DATA_PROCESS>
-class passing_msg_process:public base_msg_process
-{
-    public:
-        passing_msg_process(void *p):base_msg_process(p)
+
+namespace MZFRAME {
+
+    template<class DATA_PROCESS>
+        class passing_msg_process:public base_msg_process
+    {
+        public:
+            passing_msg_process(void *p):base_msg_process(p)
         {
             _data_process = DATA_PROCESS::gen_process((void*)this);
         }
 
-        virtual ~passing_msg_process()
-        {
-            if (_data_process){
-                delete _data_process;
-            }
-        }	
-        
-      virtual size_t process_recv_buf(char *buf, size_t len)
-        {
-            LOG_DEBUG("recv buf %d", len);
-            //size_t ret = 0;
-            size_t left_len = len;
-            while(left_len > 0)
+            virtual ~passing_msg_process()
             {
-                RECV_MSG_STATUS status = RECV_MSG_HEAD;
-                size_t msg_body_len = 0;
-                if (status == RECV_MSG_HEAD)
+                if (_data_process){
+                    delete _data_process;
+                }
+            }	
+
+            virtual size_t process_recv_buf(char *buf, size_t len)
+            {
+                LOG_DEBUG("recv buf %d", len);
+                //size_t ret = 0;
+                size_t left_len = len;
+                while(left_len > 0)
                 {
-                    if (left_len > _head_len)
+                    RECV_MSG_STATUS status = RECV_MSG_HEAD;
+                    size_t msg_body_len = 0;
+                    if (status == RECV_MSG_HEAD)
                     {
-                        const char *ptr = "";
+                        if (left_len > _head_len)
+                        {
+                            const char *ptr = "";
 
-                        if (_head_len >= MSG_HEAD_BODY_LENTH_LEN) 
-                            ptr = buf + _head_len - MSG_HEAD_BODY_LENTH_LEN;
-                        else {
-                            ptr = buf;
+                            if (_head_len >= MSG_HEAD_BODY_LENTH_LEN) 
+                                ptr = buf + _head_len - MSG_HEAD_BODY_LENTH_LEN;
+                            else {
+                                ptr = buf;
+                            }
+
+                            msg_body_len = ntohl(*ptr);
+
+                            _status = RECV_MSG_BODY;
                         }
-
-                        msg_body_len = ntohl(*ptr);
-
-                        _status = RECV_MSG_BODY;
+                        else
+                        {
+                            break;
+                        }
                     }
-                    else
+
+                    if (status == RECV_MSG_BODY)
                     {
-                        break;
-                    }
+                        if (left_len >= _head_len->get_head_len() + msg_body_len) {
+                            process_s(buf, _head_len + msg_body_len);
+
+                            left_len -= _head_len + msg_body_len;
+                            buf = buf + left_len;
+                        } else {
+                            break;
+                        } 
+                    }				
                 }
 
-                if (status == RECV_MSG_BODY)
-                {
-                    if (left_len >= _head_len->get_head_len() + msg_body_len) {
-                        process_s(buf, _head_len + msg_body_len);
+                return len - left_len;
+            }	
 
-                        left_len -= _head_len + msg_body_len;
-                        buf = buf + left_len;
-                    } else {
-                        break;
-                    } 
-                }				
+
+            size_t process_s(char *buf, size_t len)
+            {
+                return _data_process->process_recv_buf(buf, len);
             }
 
-            return len - left_len;
-        }	
+            void put_msg(string *p_msg)
+            {
+                if (!p_msg || p_msg->length() < sizeof(_pass_msg_t)){
+                    //LOG_WARN
+                    delete p_msg;
+                    return;
+                }
 
+                _pass_msg_t * ptr = (_pass_msg_t *)p_msg;
 
-        size_t process_s(char *buf, size_t len)
-        {
-            return _data_process->process_recv_buf(buf, len);
-        }
-
-        void put_msg(string *p_msg)
-        {
-            if (!p_msg || p_msg->length() < sizeof(_pass_msg_t)){
-                //LOG_WARN
-                delete p_msg;
-                return;
+                obj_id_str id_str = ptr->_dst_obj;
+                id_str._obj_id = 0;
+                base_net_container * net_container = _p_connect->get_net_container();
+                if (!net_container) {
+                    return;
+                }
+                base_net_obj * net_obj = net_container->find(&id_str);
+                if (net_obj) {
+                    net_obj->process_send_buf(p_msg);
+                }
             }
 
-            _pass_msg_t * ptr = (_pass_msg_t *)p_msg;
-            
-            obj_id_str id_str = ptr->_dst_obj;
-            id_str._obj_id = 0;
-            base_net_container * net_container = _p_connect->get_net_container();
-            if (!net_container) {
-                return;
-            }
-            base_net_obj * net_obj = net_container->find(&id_str);
-            if (net_obj) {
-                net_obj->process_send_buf(p_msg);
-            }
-        }
-    protected:
-        DATA_PROCESS *_data_process;
 
-};
+        protected:
+            DATA_PROCESS *_data_process;
+
+    };
+
+
+}
 #endif
 

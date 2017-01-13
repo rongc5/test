@@ -3,11 +3,9 @@
 
 #include "base_def.h"
 #include "common_def.h"
-#include "common_epoll.h"
 
-
-class base_net_container;
 class common_epoll;
+class base_net_container;
 namespace MZFRAME {
 
     class base_net_obj
@@ -29,7 +27,15 @@ namespace MZFRAME {
             virtual void event_process(const int32_t events) = 0;
             virtual int destroy() = 0;
 
-            virtual void set_net_container(base_net_container *p_net_container);
+            virtual void set_net_container(base_net_container *p_net_container)
+            {
+                _p_net_container = p_net_container;
+                _id_str = p_net_container->get_id_str();
+                _p_epoll = p_net_container->get_epoll();
+                _p_epoll->add_to_epoll(this);
+            }
+            virtual size_t process_recv_buf(char *buf, size_t len) = 0;
+            virtual void process_send_buf(string * buf) = 0;
             base_net_container * get_net_container()
             {
                 return _p_net_container;
@@ -79,13 +85,14 @@ namespace MZFRAME {
             {		
             }
             virtual void close()=0;	
-            virtual size_t process_recv_buf(char *buf, size_t len) = 0;
-            virtual void process_send_buf(string * buf) = 0;
             virtual void get_local_addr(sockaddr_in &addr)=0;
 
 
             /*******************************************************/	
-            void get_peer_addr(sockaddr_in &addr);
+            void get_peer_addr(sockaddr_in &addr)
+            {
+                addr = _peer_addr;
+            }
 
         protected:
             sockaddr_in _peer_addr;	

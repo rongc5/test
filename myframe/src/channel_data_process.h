@@ -3,6 +3,7 @@
 
 #include "common_msg_process.h"
 #include "common_net_thread.h"
+#include "common_thread.h"
 
 namespace MZFRAME {
 
@@ -31,7 +32,8 @@ namespace MZFRAME {
                 if (op == ADD_NEW_SOCEKT){
                     add_new_socket *stu = (add_new_socket *)(buf + sizeof(head));
                     int fd = stu->fd;
-                    common_net_thread *net_thread = dynamic_cast<common_net_thread *>_p_msg_process->get_common_thread();
+                    common_thread * thread =  _p_msg_process->get_common_thread();
+                    common_net_thread<channel_msg_process<channel_data_process > > *net_thread = dynamic_cast<common_net_thread<channel_msg_process<channel_data_process > > * >(thread);
                     if (net_thread){
                         net_thread->gen_connect(fd);
                     }

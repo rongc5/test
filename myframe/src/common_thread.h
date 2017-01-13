@@ -2,8 +2,8 @@
 #define __COMMON_THREAD_H__
 
 #include "base_def.h"
+#include "base_thread.h"
 
-class base_thread;
 namespace MZFRAME {
 
 
