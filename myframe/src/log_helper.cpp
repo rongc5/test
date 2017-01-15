@@ -1,10 +1,5 @@
 #include "log_helper.h"
-#include <pthread.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <unistd.h>
-#include <string.h>
-
+#include "base_def.h"
 
 namespace MZFRAME {
 
@@ -17,7 +12,7 @@ namespace MZFRAME {
         _max_size = 0;
         _max_record = 0;
     }
-    
+
     log_mgr::~log_mgr()
     {
         for (int i = 0; i < sizeof(_loger)/sizeof(_loger[0]); i++){
@@ -102,25 +97,25 @@ namespace MZFRAME {
 
     int log_helper::log_write(const char *format,  va_list &ap)
     {
-       if (_file_name[0] == '\0'){
+        if (_file_name[0] == '\0'){
             return -1;
-       } 
+        } 
 
-       thread_lock lock(&_mutex);
-    
-       check_to_renmae();
+        thread_lock lock(&_mutex);
 
-       FILE * fp = fopen(_file_name, "a+");
-       ASSERT_DO(fp != NULL, printf("file_name: %s\n", _file_name));
+        check_to_renmae();
 
-       vfprintf(fp, format, ap);
-       fprintf(fp, "\n");
-       fclose(fp);
-       if (_max_record) {
-           _current_record++;
-       }
+        FILE * fp = fopen(_file_name, "a+");
+        ASSERT_DO(fp != NULL, printf("file_name: %s\n", _file_name));
 
-       return 0;
+        vfprintf(fp, format, ap);
+        fprintf(fp, "\n");
+        fclose(fp);
+        if (_max_record) {
+            _current_record++;
+        }
+
+        return 0;
     }
 
     void log_helper::check_to_renmae()
@@ -129,10 +124,10 @@ namespace MZFRAME {
         char path[SIZE_LEN_128];
         struct stat statBuf;
         int ret = stat(_file_name, &statBuf);     
-        
+
         //printf("%lu %lu %lu\n", _max_size, _max_record, _current_record);
 
-        utils::get_date_str(tmp, sizeof(tmp), "%Y%m%d%H%M%S");
+        get_date_str(tmp, sizeof(tmp), "%Y%m%d%H%M%S");
         if (_max_size && statBuf.st_size >= _max_size){
             snprintf(path, sizeof(path), "%s.%s", _file_name, tmp);
             rename(_file_name, path);

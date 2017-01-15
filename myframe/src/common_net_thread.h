@@ -47,7 +47,7 @@ namespace MZFRAME {
             NET_OBJ * gen_connect(const int fd)
             {
                 
-                base_connect<MSG_PROCESS> * p_connect = new base_connect<MSG_PROCESS>();
+                base_connect<MSG_PROCESS> * p_connect = new base_connect<MSG_PROCESS>(fd, EPOLL_LT_TYPE);
                 
                 p_connect->set_id(gen_id_str());
                 MSG_PROCESS * process = new MSG_PROCESS(p_connect);

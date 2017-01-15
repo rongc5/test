@@ -6,14 +6,15 @@
 #include "common_def.h"
 #include "common_thread.h"
 #include "base_net_container.h"
+#include "base_msg_process.h"
 
 namespace MZFRAME {
 
     template<class DATA_PROCESS>
-        class channel_msg_process:public base_msg_process
+    class channel_msg_process:public base_msg_process
     {
         public:
-            channel_msg_process(void *p):base_msg_process(p), _thread(NULL)
+        channel_msg_process(void *p):base_msg_process(p), _thread(NULL)
         {
             _data_process = DATA_PROCESS::gen_process((void*)this);
         }
@@ -38,7 +39,7 @@ namespace MZFRAME {
                     {
                         if (left_len > _head_len)
                         {
-                            char *ptr = "";
+                            const char *ptr = "";
 
                             if (_head_len >= MSG_HEAD_BODY_LENTH_LEN) 
                                 ptr = buf + _head_len - MSG_HEAD_BODY_LENTH_LEN;

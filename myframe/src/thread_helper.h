@@ -1,7 +1,7 @@
 #ifndef __THREAD_HELPER_H_
 #define __THREAD_HELPER_H_
 
-#include <pthread.h>
+#include "base_def.h"
 
 
 namespace MZFRAME {

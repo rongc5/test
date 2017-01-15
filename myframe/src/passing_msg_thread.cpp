@@ -7,6 +7,8 @@
 #include "base_connect.h"
 #include "log_helper.h"
 #include "base_net_container.h"
+#include "base_def.h"
+#include "common_def.h"
 
 namespace MZFRAME {
 
@@ -21,44 +23,51 @@ namespace MZFRAME {
         }
     }
 
-    static int passing_msg_thread::register_thread(common_thread *thread)
+    int passing_msg_thread::register_thread(common_thread *thread)
     {
         if (!thread) {
             return -1;
         }
 
         passing_msg_thread * pass_thread = base_singleton<passing_msg_thread>::get_instance();
-        if (!passing_msg_thread) {
+        if (!pass_thread) {
             base_singleton<passing_msg_thread>::set_instance(new passing_msg_thread());
 
             pass_thread = base_singleton<passing_msg_thread>::get_instance();
         }
 
-        int fd[2], ret;
+        int fd[2], ret, len;
 
         ret = socketpair(AF_UNIX, 0, SOCK_STREAM, fd);
-        ASSERT_DO(ret != -1, LOG_WARNING("socketpair fail errstr[%s]", strerror(errno)));
+        ASSERT_DO(ret != -1, (LOG_WARNING("socketpair fail errstr[%s]", strerror(errno))));
 
         struct sockaddr_in sa;
-        if(!getpeername(fd[0], (struct sockaddr *)&sa, &len))
+        len = sizeof(sa);
+        if(!getpeername(fd[0], (struct sockaddr *)&sa, (socklen_t *)&len))
         {
             LOG_WARNING("getpeername fail errstr[%s]", strerror(errno)); 
+            return -1;
         }
 
-        NET_OBJ *p_connect = gen_connect(fd[0], sa);
+        NET_OBJ *p_connect = pass_thread->gen_connect(fd[0], EPOLL_LT_TYPE);
         if (p_connect){
-            obj_id_str id_str;
-            id_str._thread_id = thread->get_thread_id();
-            base_net_container * net_container = passing_msg_thread->get_net_container();
-            net_container->push_net_obj(p_connect);
+            p_connect->set_id(pass_thread->gen_id_str());
+            p_connect->set_net_container(pass_thread->get_net_container());
+            pass_thread->set_dest_obj(thread->get_thread_id(), p_connect);
             thread->set_channelid(fd[1]);
         }
 
         return 0;
     }
 
+    const obj_id_str & passing_msg_thread::gen_id_str()
+    {
+        _id_str._thread_id = get_thread_id();
+        _id_str._obj_id++;
+        return _id_str;
+    }
 
-    void* msg_passing_thread::run()
+    void* passing_msg_thread::run()
     {
         while (get_run_flag())
         {
@@ -68,18 +77,43 @@ namespace MZFRAME {
         return NULL;
     }
 
-    NET_OBJ * msg_passing_thread::gen_connect(const int fd, EPOLL_TYPE epoll_type)
+    NET_OBJ * passing_msg_thread::gen_connect(const int fd, EPOLL_TYPE epoll_type)
     {
         NET_OBJ * p_connect = NULL;
         p_connect = new base_connect<passing_msg_process<passing_data_process> >(fd, epoll_type);
         passing_msg_process<passing_data_process> *process = new passing_msg_process<passing_data_process>((NET_OBJ*)p_connect);
         
+        process->set_passing_thread(this);
         base_connect<passing_msg_process<passing_data_process> > * tmp_con = (base_connect<passing_msg_process<passing_data_process> > *)p_connect;
         tmp_con->set_process(process);
 
         return p_connect;
     }
 
+    const base_net_obj * passing_msg_thread::get_dest_obj(pthread_t tid)
+    {
+        map<pthread_t, base_net_obj*>::iterator it;
+        it = _thread_obj_map.find(tid);
+        if (it != _thread_obj_map.end()){
+            return _thread_obj_map[tid];
+        }
+        return NULL;
+    }
 
+    void passing_msg_thread::set_dest_obj(pthread_t tid, base_net_obj * p_obj)
+    {
+        map<pthread_t, base_net_obj*>::iterator it;
+        it = _thread_obj_map.find(tid);
+        if (it != _thread_obj_map.end() && p_obj != _thread_obj_map[tid]){
+            delete _thread_obj_map[tid];
+        }
+
+        _thread_obj_map[tid] = p_obj;
+    }
+
+    base_net_container * passing_msg_thread::get_net_container()
+    {
+        return _net_container;
+    }
 
 }

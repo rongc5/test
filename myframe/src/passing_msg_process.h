@@ -6,6 +6,8 @@
 #include "common_def.h"
 #include "log_helper.h"
 #include "base_msg_process.h"
+#include "base_net_container.h"
+#include "passing_msg_thread.h"
 
 
 namespace MZFRAME {
@@ -14,7 +16,7 @@ namespace MZFRAME {
         class passing_msg_process:public base_msg_process
     {
         public:
-            passing_msg_process(void *p):base_msg_process(p)
+            passing_msg_process(void *p):base_msg_process(p), _thread(NULL)
         {
             _data_process = DATA_PROCESS::gen_process((void*)this);
         }
@@ -49,7 +51,7 @@ namespace MZFRAME {
 
                             msg_body_len = ntohl(*ptr);
 
-                            _status = RECV_MSG_BODY;
+                            status = RECV_MSG_BODY;
                         }
                         else
                         {
@@ -59,7 +61,7 @@ namespace MZFRAME {
 
                     if (status == RECV_MSG_BODY)
                     {
-                        if (left_len >= _head_len->get_head_len() + msg_body_len) {
+                        if (left_len >= _head_len + msg_body_len) {
                             process_s(buf, _head_len + msg_body_len);
 
                             left_len -= _head_len + msg_body_len;
@@ -89,21 +91,30 @@ namespace MZFRAME {
 
                 _pass_msg_t * ptr = (_pass_msg_t *)p_msg;
 
-                obj_id_str id_str = ptr->_dst_obj;
-                id_str._obj_id = 0;
-                base_net_container * net_container = _p_connect->get_net_container();
-                if (!net_container) {
+
+                if (!_thread){
                     return;
                 }
-                base_net_obj * net_obj = net_container->find(&id_str);
+                
+                const base_net_obj * net_obj =_thread->get_dest_obj(ptr->_dst_obj._thread_id);
                 if (net_obj) {
                     net_obj->process_send_buf(p_msg);
                 }
             }
+            
+            void set_passing_thread(passing_msg_thread * thread)
+            {
+                _thread = thread;
+            }
 
+            passing_msg_thread * get_passing_thread()
+            {
+                return _thread;
+            }
 
         protected:
             DATA_PROCESS *_data_process;
+            passing_msg_thread * _thread;
 
     };
 

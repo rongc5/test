@@ -22,7 +22,7 @@ class base_connect:public NET_OBJ
             struct sockaddr_in sa;
             
             int len = sizeof(sa);
-            if (getpeername(sock, (struct sockaddr *)&sa, &len)) {
+            if (getpeername(sock, (struct sockaddr *)&sa, (socklen_t *)&len)) {
                 base_connect<PROCESS>::_peer_addr = sa;
             }
         }

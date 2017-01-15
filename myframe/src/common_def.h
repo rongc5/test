@@ -1,96 +1,100 @@
 #ifndef __COMMON_DEF_H__
 #define __COMMON_DEF_H__
 
-
+#include "base_def.h"
 
 namespace MZFRAME {
-	
-	
-class to_string {
-			public:
-				to_string(){}
-				virtual ~to_string(){}
-				virtual const char * to_str(char * dst, size_t dst_len)=0;				
-};
-	
-	
-	
-struct host_str {
-    string  _ip;
-    uint16_t _port;
-};
 
-typedef struct _msg_t
-{		 
-	   uint64_t _obj_id; //消s息id
-     uint64_t _obj_op; //消息命令
-     unsigned short version; //
-     unsigned int reserved; //保留字段
-     unsigned int body_len;
-} msg_t;
-
-
-struct obj_id_str : public to_string{
-	obj_id_str()
-	{
-		_obj_id = 0;
-		_thread_id = 0;
-	}
-	
-	uint64_t _obj_id; //消息id
-	pthread_t _thread_id;//线程id
-	
-	bool operator==(const obj_id_str &o1) const;
-	
-	bool operator<(const obj_id_str &o1) const;	
-	
-	virtual const char * to_str(char * dst, size_t dst_len);
-};
+    class to_string {
+        public:
+            to_string(){}
+            virtual ~to_string(){}
+            virtual const char * to_str(char * dst, size_t dst_len)=0;				
+    };
 
 
 
-enum RECV_MSG_STATUS{
-    RECV_MSG_HEAD,
-    RECV_MSG_BODY   
-};
+    struct host_str {
+        string  _ip;
+        uint16_t _port;
+    };
 
-/******* 内部消息通讯使用 begin *******************/
-
-struct _pass_msg_t {
-    struct obj_id_str _src_obj;
-    struct obj_id_str _dst_obj;
-    int len;
-};
-
-enum pass_msg_cmd {
-    ADD_NEW_SOCEKT,
-};
-
-struct add_new_socket {
-    int _op;
-    int fd;
-};
+    typedef struct _msg_t
+    {		 
+        uint64_t _obj_id; //消s息id
+        uint64_t _obj_op; //消息命令
+        unsigned short version; //
+        unsigned int reserved; //保留字段
+        unsigned int body_len;
+    } msg_t;
 
 
-/*********内部消息通讯使用 end **************/
+    struct obj_id_str : public to_string{
+        obj_id_str()
+        {
+            _obj_id = 0;
+            _thread_id = 0;
+        }
 
-enum CONNECT_STATUS
-{
-    CLOSED = 0,
-    CONNECT_OK = 1,
-    CONNECTING = 2  
-};
+        uint64_t _obj_id; //消息id
+        pthread_t _thread_id;//线程id
 
-enum EPOLL_TYPE
-{
-    EPOLL_LT_TYPE = 0,
-    EPOLL_ET_TYPE 
-};
+        bool operator==(const obj_id_str &o1) const;
+
+        bool operator<(const obj_id_str &o1) const;	
+
+        virtual const char * to_str(char * dst, size_t dst_len);
+    };
 
 
-int get_date_str(char dest[], size_t dest_len, const char * format);
 
-uint64_t GetTickCount();
+    enum RECV_MSG_STATUS{
+        RECV_MSG_HEAD,
+        RECV_MSG_BODY   
+    };
+
+    /******* 内部消息通讯使用 begin *******************/
+
+    struct _pass_msg_t {
+        struct obj_id_str _src_obj;
+        struct obj_id_str _dst_obj;
+        int len;
+    };
+
+    enum pass_msg_cmd {
+        ADD_NEW_SOCEKT,
+    };
+
+    struct add_new_socket {
+        int _op;
+        int fd;
+    };
+
+
+    /*********内部消息通讯使用 end **************/
+
+    enum CONNECT_STATUS
+    {
+        CLOSED = 0,
+        CONNECT_OK = 1,
+        CONNECTING = 2  
+    };
+
+    enum EPOLL_TYPE
+    {
+        EPOLL_LT_TYPE = 0,
+        EPOLL_ET_TYPE 
+    };
+
+
+#define PASSING_ACCEPT_NONE 00000000
+#define PASSING_ACCEPT_READ 00000001
+#define PASSING_ACCEPT_WRITE 00000010
+#define PASSING_ACCEPT_ALL 00000011
+
+    int get_date_str(char dest[], size_t dest_len, const char * format);
+
+    uint64_t GetTickCount();
 
 
 

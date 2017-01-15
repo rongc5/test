@@ -38,9 +38,6 @@ namespace MZFRAME {
                 unsigned int _count;
                 common_net_thread<MSG_PROCESS> *_worker_thread;
         };
-
-
-
 }
 
 #endif
