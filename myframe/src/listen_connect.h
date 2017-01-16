@@ -45,19 +45,19 @@ class listen_connect:public base_net_obj
 			_sock = socket(AF_INET, SOCK_STREAM, 0);
 			if (_sock < 0) 
 			{
-				THROW_COMMON_EXCEPT(errno, "socket error " << strerror(errno));     
+				THROW_COMMON_EXCEPT("socket error " << strerror(errno));     
 			}
 			setsockopt(_sock, SOL_SOCKET, SO_REUSEADDR, (void*)(&(reuse_addr)), sizeof(reuse_addr));
 
 			if (::bind(_sock, (struct sockaddr *) &address, sizeof(address)) < 0) 
 			{	     
-				THROW_COMMON_EXCEPT(errno, "bind error "  << strerror(errno) << " " << ip << ":" << port);
+				THROW_COMMON_EXCEPT("bind error "  << strerror(errno) << " " << ip << ":" << port);
 			}        
 
 			ret = listen(_sock, 250);
 			if (ret == -1)
 			{
-				THROW_COMMON_EXCEPT(errno, "listen error "  << strerror(errno));
+				THROW_COMMON_EXCEPT("listen error "  << strerror(errno));
 			}
 			_epoll_event = EPOLLIN | EPOLLERR | EPOLLHUP;
 		}

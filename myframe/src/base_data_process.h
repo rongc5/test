@@ -17,6 +17,7 @@ namespace MZFRAME {
 
             virtual size_t process_recv_buf(char *buf, size_t len)
             {
+                return len;
             }
 
             static base_data_process* gen_process(void *p) 

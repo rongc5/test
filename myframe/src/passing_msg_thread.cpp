@@ -39,7 +39,9 @@ namespace MZFRAME {
         int fd[2], ret, len;
 
         ret = socketpair(AF_UNIX, 0, SOCK_STREAM, fd);
-        ASSERT_DO(ret != -1, (LOG_WARNING("socketpair fail errstr[%s]", strerror(errno))));
+        if (ret < 0) {
+            LOG_WARNING("socketpair fail errstr[%s]", strerror(errno));
+        }
 
         struct sockaddr_in sa;
         len = sizeof(sa);

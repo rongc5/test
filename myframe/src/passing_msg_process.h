@@ -96,7 +96,7 @@ namespace MZFRAME {
                     return;
                 }
                 
-                const base_net_obj * net_obj =_thread->get_dest_obj(ptr->_dst_obj._thread_id);
+                base_net_obj * net_obj = const_cast<base_net_obj *>(_thread->get_dest_obj(ptr->_dst_obj._thread_id));
                 if (net_obj) {
                     net_obj->process_send_buf(p_msg);
                 }

@@ -16,7 +16,7 @@ int main(int argc, char *argv[])
     LOG_WARNING("hello world %d", 1);
     LOG_WARNING("hello world");
 
-    ASSERT_DO(ret != -1, (LOG_WARNING("socketpair fail errstr[%s]", strerror(errno))));
+    LOG_WARNING("socketpair fail errstr[%s]", strerror(errno));
 
     return 0;
 }

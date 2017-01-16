@@ -2,6 +2,13 @@
 #define __LISTEN_THREAD_H__
 
 #include "base_def.h"
+#include "common_thread.h"
+#include "base_net_container.h"
+#include "passing_msg_thread.h"
+#include "common_obj_container.h"
+#include "listen_connect.h"
+#include "common_def.h"
+#include "listen_data_process.h"
 
 
 namespace MZFRAME {
@@ -33,10 +40,8 @@ namespace MZFRAME {
             {
                 _ip = ip;
                 _port = port;
-                _count = 0;
                 _base_container = new common_obj_container();
-                listen_connect<listen_data_process> * p_connect
-                    = new listen_connect<listen_connect>();
+                listen_connect<listen_data_process> * p_connect = new listen_connect<listen_connect>();
                 listen_data_process * data_process = new listen_data_process(p_connect);
                 p_connect->set_id(gen_id_str());
                 p_connect->init(ip, port);
@@ -49,7 +54,7 @@ namespace MZFRAME {
 
             pthread_t get_worker_id()
             {
-                _worker_mgr->get_one_worker()->get_thread_id();
+                return _worker_mgr->get_one_worker()->get_thread_id();
             }
 
             void set_worker_mgr(WORKER_MGR * worker_mgr)

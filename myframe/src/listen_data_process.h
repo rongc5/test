@@ -2,6 +2,7 @@
 #define __LISTEN_DATA_PROCESS_H__
 
 #include "common_msg_process.h"
+#include "listen_thread.h"
 
 class listen_data_process
 {
