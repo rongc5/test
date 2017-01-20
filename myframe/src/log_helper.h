@@ -6,7 +6,6 @@
 #include "thread_helper.h"
 #include "common_def.h"
 
-namespace MZFRAME {
 
     enum LogType {
         LOGOFF,
@@ -27,7 +26,7 @@ namespace MZFRAME {
     do { \
         char tmp[SIZE_LEN_64]; \
         get_date_str(tmp, sizeof(tmp), LOG_DATE_FORMAT); \
-        base_singleton<log_mgr>::get_instance()->log(LOGDEBUG, "DEBUG: %s * %lu [%s:%s():%d] "fmt, tmp, pthread_self(), __FILE__, __FUNCTION__, __LINE__, ##arg); \
+        base_singleton<log_mgr>::get_instance_ex()->log(LOGDEBUG, "DEBUG: %s * %lu [%s:%s():%d] "fmt, tmp, pthread_self(), __FILE__, __FUNCTION__, __LINE__, ##arg); \
     } while (0)
 
 
@@ -35,7 +34,7 @@ namespace MZFRAME {
     do { \
         char tmp[SIZE_LEN_64]; \
         get_date_str(tmp, sizeof(tmp), LOG_DATE_FORMAT); \
-        base_singleton<log_mgr>::get_instance()->log(LOGNOTICE, "NOTICE: %s * %lu [%s:%s():%d] "fmt, tmp, pthread_self(), __FILE__, __FUNCTION__, __LINE__, ##arg); \
+        base_singleton<log_mgr>::get_instance_ex()->log(LOGNOTICE, "NOTICE: %s * %lu [%s:%s():%d] "fmt, tmp, pthread_self(), __FILE__, __FUNCTION__, __LINE__, ##arg); \
     } while (0)
 
 
@@ -43,7 +42,7 @@ namespace MZFRAME {
     do { \
         char tmp[SIZE_LEN_64]; \
         get_date_str(tmp, sizeof(tmp), LOG_DATE_FORMAT); \
-        base_singleton<log_mgr>::get_instance()->log(LOGWARNING, "WARNING: %s * %lu [%s:%s():%d] "fmt, tmp, pthread_self(), __FILE__, __FUNCTION__, __LINE__, ##arg); \
+        base_singleton<log_mgr>::get_instance_ex()->log(LOGWARNING, "WARNING: %s * %lu [%s:%s():%d] "fmt, tmp, pthread_self(), __FILE__, __FUNCTION__, __LINE__, ##arg); \
     } while (0)
 
 
@@ -83,8 +82,6 @@ namespace MZFRAME {
     };
 
 
-
-}
 
 #endif
 

@@ -2,73 +2,75 @@
 #include "net_obj.h"
 #include "common_exception.h"
 
-namespace MZFRAME {
 
-    void common_epoll::add_to_epoll(base_net_obj *p_obj)
+void common_epoll::add_to_epoll(base_net_obj *p_obj)
+{		
+    int tmpOprate = EPOLL_CTL_ADD;
+    struct epoll_event tmpEvent;
+    memset(&tmpEvent, 0, sizeof(epoll_event));
+    tmpEvent.events = p_obj->get_event();
+    tmpEvent.data.ptr = p_obj;
+    int ret = epoll_ctl(_epoll_fd, tmpOprate, p_obj->get_sock(), &tmpEvent);
+    PDEBUG("_epoll_fd[%d] fd[%d]\n", _epoll_fd, p_obj->get_sock());
+    if (ret != 0) {
+        THROW_COMMON_EXCEPT("add to epoll fail " << strerror(errno));
+        PDEBUG("add to epoll fail %s", strerror(errno));
+    }
+}
+
+void common_epoll::del_from_epoll(base_net_obj *p_obj)
+{	
+    int tmpOprate = EPOLL_CTL_DEL;
+    struct epoll_event tmpEvent;
+    memset(&tmpEvent, 0, sizeof(epoll_event));
+    tmpEvent.data.ptr = p_obj;
+    int ret = epoll_ctl(_epoll_fd, tmpOprate, p_obj->get_sock(), &tmpEvent);
+    if (ret != 0)
+        THROW_COMMON_EXCEPT("del from epoll fail " << strerror(errno));
+}
+
+void common_epoll::mod_from_epoll(base_net_obj *p_obj)
+{
+    int tmpOprate = EPOLL_CTL_MOD;
+    struct epoll_event tmpEvent;
+    tmpEvent.events =  p_obj->get_event();  
+    tmpEvent.data.ptr = p_obj;
+    int ret = epoll_ctl(_epoll_fd, tmpOprate, p_obj->get_sock(), &tmpEvent);
+    if (ret != 0)
+        THROW_COMMON_EXCEPT("mod from epoll fail "<< strerror(errno));
+}
+
+int common_epoll::epoll_wait(map<obj_id_str, base_net_obj*> &expect_list)
+{
+    int  nfds = ::epoll_wait(_epoll_fd, _epoll_events, _epoll_size,  _epoll_wait_time);
+    if (nfds == -1)
+    {
+        THROW_COMMON_EXCEPT("epoll_wait fail "<< strerror(errno));          
+    }      
+
+    for (int i =0; i < nfds; i++)
     {		
-        int tmpOprate = EPOLL_CTL_ADD;
-        struct epoll_event tmpEvent;
-        memset(&tmpEvent, 0, sizeof(epoll_event));
-        tmpEvent.events = p_obj->get_event();
-        tmpEvent.data.ptr = p_obj;
-        int ret = epoll_ctl(_epoll_fd, tmpOprate, p_obj->get_sock(), &tmpEvent);
-        if (ret != 0)
-            THROW_COMMON_EXCEPT("add to epoll fail " << strerror(errno));
-    }
-
-    void common_epoll::del_from_epoll(base_net_obj *p_obj)
-    {	
-        int tmpOprate = EPOLL_CTL_DEL;
-        struct epoll_event tmpEvent;
-        memset(&tmpEvent, 0, sizeof(epoll_event));
-        tmpEvent.data.ptr = p_obj;
-        int ret = epoll_ctl(_epoll_fd, tmpOprate, p_obj->get_sock(), &tmpEvent);
-        if (ret != 0)
-            THROW_COMMON_EXCEPT("del from epoll fail " << strerror(errno));
-    }
-
-    void common_epoll::mod_from_epoll(base_net_obj *p_obj)
-    {
-        int tmpOprate = EPOLL_CTL_MOD;
-        struct epoll_event tmpEvent;
-        tmpEvent.events =  p_obj->get_event();  
-        tmpEvent.data.ptr = p_obj;
-        int ret = epoll_ctl(_epoll_fd, tmpOprate, p_obj->get_sock(), &tmpEvent);
-        if (ret != 0)
-            THROW_COMMON_EXCEPT("mod from epoll fail "<< strerror(errno));
-    }
-
-    int common_epoll::epoll_wait(map<obj_id_str, base_net_obj*> &expect_list)
-    {
-        int  nfds = ::epoll_wait(_epoll_fd, _epoll_events, _epoll_size,  _epoll_wait_time);
-        if (nfds == -1)
+        PDEBUG("get_sock \n");
+        if (_epoll_events[i].data.ptr != NULL) 		
         {
-            THROW_COMMON_EXCEPT("epoll_wait fail "<< strerror(errno));          
-        }      
-
-        for (int i =0; i < nfds; i++)
-        {		
-            if (_epoll_events[i].data.ptr != NULL) 		
+            base_net_obj * p = (base_net_obj*)(_epoll_events[i].data.ptr);
+            if (p != NULL)
             {
-                base_net_obj * p = (base_net_obj*)(_epoll_events[i].data.ptr);
-                if (p != NULL)
+                PDEBUG("get_sock[%d]\n", p->get_sock());
+                try
                 {
-                    try
-                    {
-                        p->event_process(_epoll_events[i].events);
-                    }
-                    catch(CMyCommonException &e)
-                    {
-                        expect_list.insert(make_pair(p->get_id(), p));
-                    }
-                    catch(std::exception &e)
-                    {
-                        expect_list.insert(make_pair(p->get_id(), p));
-                    }
+                    p->event_process(_epoll_events[i].events);
+                }
+                catch(CMyCommonException &e)
+                {
+                    expect_list.insert(make_pair(p->get_id(), p));
+                }
+                catch(std::exception &e)
+                {
+                    expect_list.insert(make_pair(p->get_id(), p));
                 }
             }
         }
-        return nfds;
     }
-
+    return nfds;
 }

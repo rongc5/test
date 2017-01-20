@@ -4,7 +4,6 @@
 #include "base_def.h"
 #include "log_helper.h"
 
-namespace MZFRAME {
 
     class CMyCommonException : public std::exception 
     {
@@ -36,7 +35,6 @@ namespace MZFRAME {
         }\
         throw CMyCommonException(ss.str());\
     }
-}
 
 #endif
 

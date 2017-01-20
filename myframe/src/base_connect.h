@@ -8,8 +8,6 @@
 #include "common_exception.h"
 
 
-namespace MZFRAME {
-
 template<class PROCESS>
 class base_connect:public NET_OBJ
 {
@@ -18,7 +16,7 @@ class base_connect:public NET_OBJ
         base_connect(const int32_t sock, EPOLL_TYPE epoll_type/*0:lt,  1:et*/)
         {
             init(epoll_type);
-            _sock = sock;
+            _fd = sock;
             struct sockaddr_in sa;
             
             int len = sizeof(sa);
@@ -54,21 +52,21 @@ class base_connect:public NET_OBJ
 
             _process = NULL;
             _p_epoll = NULL;
-            _sock = 0;
+            _fd = 0;
         }
 
 
         void close()
         {
-            if (_sock != 0)
+            if (_fd != 0)
             {
                 if (_p_epoll != NULL)
                 {
                     _p_epoll->del_from_epoll(this);
                 }
 
-                ::close(_sock);
-                _sock = 0;
+                ::close(_fd);
+                _fd = 0;
                 _epoll_event = EPOLLIN | EPOLLERR | EPOLLHUP;
                 if (_p_send_buf != NULL)
                 {
@@ -123,14 +121,9 @@ class base_connect:public NET_OBJ
             return p_ret;
         }
 
-        void process_send_buf(string * buf)
-        {
-            _process->process_send_buf(buf);
-        }
-
         int get_sock()
         {
-            return _sock;
+            return _fd;
         }
 
         int get_event()
@@ -147,17 +140,17 @@ class base_connect:public NET_OBJ
         void get_local_addr(sockaddr_in &addr)
         {
             socklen_t len = 0;
-            getsockname(_sock, (sockaddr*)&addr, &len);
+            getsockname(_fd, (sockaddr*)&addr, &len);
         }
 
     protected:
         virtual ssize_t RECV(void *buf, size_t len)
         {
-            ssize_t ret = recv(_sock, buf, len, MSG_DONTWAIT);
+            ssize_t ret = recv(_fd, buf, len, MSG_DONTWAIT);
             if (ret == 0)
             {
                 _process->peer_close();
-                THROW_COMMON_EXCEPT("the client close the socket(" << _sock << ")");
+                THROW_COMMON_EXCEPT("the client close the socket(" << _fd << ")");
             }
             else if (ret < 0)
             {
@@ -166,6 +159,7 @@ class base_connect:public NET_OBJ
                     THROW_COMMON_EXCEPT("this socket occur fatal error " << strerror(errno));
                 }
             }
+            PDEBUG("fd[%d]\n", _fd);
 
             return ret;
         }
@@ -174,10 +168,10 @@ class base_connect:public NET_OBJ
         {
             if (len == 0) //上层抛一个长度为0的数据过来 ,直接关闭
             {
-                THROW_COMMON_EXCEPT("close the socket " << _sock);
+                THROW_COMMON_EXCEPT("close the socket " << _fd);
             }
 
-            ssize_t ret =  send(_sock, buf, len, MSG_DONTWAIT);
+            ssize_t ret =  send(_fd, buf, len, MSG_DONTWAIT);
             if (ret < 0)
             {
                 if (errno != EAGAIN && errno != EWOULDBLOCK)
@@ -271,7 +265,6 @@ class base_connect:public NET_OBJ
 
 
     protected:
-        int32_t _sock;
         PROCESS *_process;
         string _recv_buf;
         size_t _recv_buf_len;
@@ -280,6 +273,5 @@ class base_connect:public NET_OBJ
         EPOLL_TYPE _epoll_type;
 };
 
-}
 
 #endif

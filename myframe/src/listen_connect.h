@@ -2,9 +2,10 @@
 #define __LISTEN_CONNECT_H__
 
 #include "common_epoll.h"
-#include <string>
-#include "base_connect.h"
-using namespace std;
+#include "base_def.h"
+#include "common_def.h"
+#include "net_obj.h"
+
 
 template<class LISTEN_PROCESS>
 class listen_connect:public base_net_obj
@@ -13,7 +14,6 @@ class listen_connect:public base_net_obj
 		listen_connect()
 		{
 			_port = 0;
-            _channelid = 0;
 		}
 
 		~listen_connect()
@@ -42,19 +42,19 @@ class listen_connect:public base_net_obj
 				address.sin_addr.s_addr = htonl(INADDR_ANY);
 			}
 
-			_sock = socket(AF_INET, SOCK_STREAM, 0);
-			if (_sock < 0) 
+			_fd = socket(AF_INET, SOCK_STREAM, 0);
+			if (_fd < 0) 
 			{
 				THROW_COMMON_EXCEPT("socket error " << strerror(errno));     
 			}
-			setsockopt(_sock, SOL_SOCKET, SO_REUSEADDR, (void*)(&(reuse_addr)), sizeof(reuse_addr));
+			setsockopt(_fd, SOL_SOCKET, SO_REUSEADDR, (void*)(&(reuse_addr)), sizeof(reuse_addr));
 
-			if (::bind(_sock, (struct sockaddr *) &address, sizeof(address)) < 0) 
+			if (::bind(_fd, (struct sockaddr *) &address, sizeof(address)) < 0) 
 			{	     
 				THROW_COMMON_EXCEPT("bind error "  << strerror(errno) << " " << ip << ":" << port);
 			}        
 
-			ret = listen(_sock, 250);
+			ret = listen(_fd, 250);
 			if (ret == -1)
 			{
 				THROW_COMMON_EXCEPT("listen error "  << strerror(errno));
@@ -74,7 +74,7 @@ class listen_connect:public base_net_obj
 				int tmp_sock = 0;
 				sockaddr_in addr;	
 				socklen_t len = 0;
-				while((tmp_sock = accept(_sock, (sockaddr*)&addr, &len)) != -1)
+				while((tmp_sock = accept(_fd, (sockaddr*)&addr, &len)) != -1)
 				{				
 					_process->process(tmp_sock);
 				}
@@ -96,11 +96,6 @@ class listen_connect:public base_net_obj
 			return 0;
 		}
 
-		void set_channelid(const int channelid)
-		{
-            _channelid = channelid;
-		}
-
         void set_process(LISTEN_PROCESS *p)
         {
             if (_process != NULL)
@@ -113,5 +108,7 @@ class listen_connect:public base_net_obj
 		unsigned short _port;
         LISTEN_PROCESS *_process;
 };
+
+
 #endif
 

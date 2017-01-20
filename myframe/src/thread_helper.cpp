@@ -1,6 +1,5 @@
 #include "thread_helper.h"
 
-namespace MZFRAME {
 
 thread_mutex_t::thread_mutex_t()
 {
@@ -62,4 +61,3 @@ void thread_rwlock_t::unlock()
     pthread_rwlock_wrlock(&_rwlock);
 }
 
-}

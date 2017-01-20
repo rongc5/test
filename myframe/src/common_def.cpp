@@ -1,6 +1,5 @@
 #include "common_def.h"
 
-namespace MZFRAME {
 
     bool obj_id_str::operator==(const obj_id_str &o1) const
     {
@@ -60,6 +59,3 @@ namespace MZFRAME {
 
 
 
-
-
-}

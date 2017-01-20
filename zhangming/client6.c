@@ -10,7 +10,7 @@
 #include <poll.h>
 #include <sys/time.h>
 
-#define SERVERADDR "192.168.1.104"
+#define SERVERADDR "0.0.0.0"
 #define SERVERPORT 8888
 static int token = 0;
 #define CPS 30

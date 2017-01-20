@@ -1,12 +1,11 @@
 #include "log_helper.h"
 #include "base_def.h"
 
-namespace MZFRAME {
 
     log_mgr::log_mgr()
     {
         _type = LOGOFF;
-        for (int i = 0; i < sizeof(_loger)/sizeof(_loger[0]); i++){
+        for (uint32_t i = 0; i < sizeof(_loger)/sizeof(_loger[0]); i++){
             _loger[i] = NULL;
         }
         _max_size = 0;
@@ -15,7 +14,7 @@ namespace MZFRAME {
 
     log_mgr::~log_mgr()
     {
-        for (int i = 0; i < sizeof(_loger)/sizeof(_loger[0]); i++){
+        for (uint32_t i = 0; i < sizeof(_loger)/sizeof(_loger[0]); i++){
             if (_loger[i])
                 delete _loger[i];
         }
@@ -42,7 +41,7 @@ namespace MZFRAME {
                 snprintf(dest, dest_len, "%s.%s", base_file_name, "ft");
                 break;
             case LOGWARNING:
-                snprintf(dest, dest_len, "%s.%s", base_file_name, "wr");
+                snprintf(dest, dest_len, "%s.%s", base_file_name, "wn");
                 break;
             case LOGNOTICE:
                 snprintf(dest, dest_len, "%s.%s", base_file_name, "nt");
@@ -123,7 +122,7 @@ namespace MZFRAME {
         char tmp[SIZE_LEN_64];
         char path[SIZE_LEN_128];
         struct stat statBuf;
-        int ret = stat(_file_name, &statBuf);     
+        stat(_file_name, &statBuf);     
 
         //printf("%lu %lu %lu\n", _max_size, _max_record, _current_record);
 
@@ -145,4 +144,3 @@ namespace MZFRAME {
 
 
 
-}

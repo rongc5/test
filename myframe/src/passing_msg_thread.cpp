@@ -3,119 +3,125 @@
 #include "common_thread.h"
 #include "common_obj_container.h"
 #include "passing_msg_process.h"
-#include "passing_data_process.h"
 #include "base_connect.h"
 #include "log_helper.h"
 #include "base_net_container.h"
 #include "base_def.h"
 #include "common_def.h"
 
-namespace MZFRAME {
 
+passing_msg_thread::passing_msg_thread():_net_container(NULL){
+    _net_container = new (std::nothrow)common_obj_container();
+}
 
-    passing_msg_thread::passing_msg_thread():_net_container(NULL){
-        _net_container = new (std::nothrow)common_obj_container();
+passing_msg_thread::~passing_msg_thread(){
+    if (_net_container){
+        delete _net_container;
+    }
+}
+
+int passing_msg_thread::register_thread(common_thread *thread)
+{
+    if (!thread) {
+        return -1;
     }
 
-    passing_msg_thread::~passing_msg_thread(){
-        if (_net_container){
-            delete _net_container;
-        }
+    passing_msg_thread * pass_thread = base_singleton<passing_msg_thread>::get_instance();
+    if (!pass_thread) {
+        base_singleton<passing_msg_thread>::set_instance(new passing_msg_thread());
+
+        pass_thread = base_singleton<passing_msg_thread>::get_instance();
     }
 
-    int passing_msg_thread::register_thread(common_thread *thread)
+    int fd[2], ret;
+
+    ret = socketpair(AF_UNIX,SOCK_STREAM,0,fd); 
+    if (ret < 0) {
+        LOG_WARNING("socketpair fail errstr[%s]", strerror(errno));
+    }
+
+    PDEBUG("fd[0] %d fd[1] %d\n", fd[0], fd[1]);
+
+    NET_OBJ *p_connect = pass_thread->gen_connect(fd[0], EPOLL_LT_TYPE);
+    if (p_connect){
+        p_connect->set_id(pass_thread->gen_id_str());
+        p_connect->set_net_container(pass_thread->get_net_container());
+        pass_thread->set_dest_obj(thread, p_connect);
+        thread->set_channelid(fd[1]);
+    }
+
+    return 0;
+}
+
+const obj_id_str & passing_msg_thread::gen_id_str()
+{
+    _id_str._thread_id = get_thread_id();
+    _id_str._obj_id++;
+    return _id_str;
+}
+
+void* passing_msg_thread::run()
+{
+    while (get_run_flag())
     {
-        if (!thread) {
-            return -1;
-        }
-
-        passing_msg_thread * pass_thread = base_singleton<passing_msg_thread>::get_instance();
-        if (!pass_thread) {
-            base_singleton<passing_msg_thread>::set_instance(new passing_msg_thread());
-
-            pass_thread = base_singleton<passing_msg_thread>::get_instance();
-        }
-
-        int fd[2], ret, len;
-
-        ret = socketpair(AF_UNIX, 0, SOCK_STREAM, fd);
-        if (ret < 0) {
-            LOG_WARNING("socketpair fail errstr[%s]", strerror(errno));
-        }
-
-        struct sockaddr_in sa;
-        len = sizeof(sa);
-        if(!getpeername(fd[0], (struct sockaddr *)&sa, (socklen_t *)&len))
-        {
-            LOG_WARNING("getpeername fail errstr[%s]", strerror(errno)); 
-            return -1;
-        }
-
-        NET_OBJ *p_connect = pass_thread->gen_connect(fd[0], EPOLL_LT_TYPE);
-        if (p_connect){
-            p_connect->set_id(pass_thread->gen_id_str());
-            p_connect->set_net_container(pass_thread->get_net_container());
-            pass_thread->set_dest_obj(thread->get_thread_id(), p_connect);
-            thread->set_channelid(fd[1]);
-        }
-
-        return 0;
+        PDEBUG("hello world\n");
+        _net_container->obj_process();
     }
 
-    const obj_id_str & passing_msg_thread::gen_id_str()
-    {
-        _id_str._thread_id = get_thread_id();
-        _id_str._obj_id++;
-        return _id_str;
+    return NULL;
+}
+
+NET_OBJ * passing_msg_thread::gen_connect(const int fd, EPOLL_TYPE epoll_type)
+{
+    NET_OBJ * p_connect = NULL;
+    p_connect = new base_connect<passing_msg_process>(fd, epoll_type);
+    passing_msg_process *process = new passing_msg_process((NET_OBJ*)p_connect);
+
+    process->set_head_len(sizeof(_pass_msg_t));
+    process->set_passing_thread(this);
+    base_connect<passing_msg_process> * tmp_con = (base_connect<passing_msg_process> *)p_connect;
+    tmp_con->set_process(process);
+
+    return p_connect;
+}
+
+base_net_obj * passing_msg_thread::get_dest_obj(pthread_t tid)
+{
+    map<pthread_t, base_net_obj *>::iterator it;
+
+    it = _net_obj_map.find(tid);
+    if (it != _net_obj_map.end()){
+        return it->second;
+    }
+    return NULL;
+}
+
+common_thread * passing_msg_thread::get_dest_thread(pthread_t tid)
+{
+    map<pthread_t, common_thread *>::iterator it;
+
+    it = _thread_obj_map.find(tid);
+    if (it != _thread_obj_map.end()){
+        return it->second;
+    }
+    return NULL;
+}
+
+void passing_msg_thread::set_dest_obj(common_thread *thread, base_net_obj * p_obj)
+{
+    map<pthread_t, common_thread *>::iterator it;
+    it = _thread_obj_map.find(thread->get_thread_id());
+    if (it != _thread_obj_map.end()){
+        return ;
     }
 
-    void* passing_msg_thread::run()
-    {
-        while (get_run_flag())
-        {
-            _net_container->obj_process();
-        }
-
-        return NULL;
-    }
-
-    NET_OBJ * passing_msg_thread::gen_connect(const int fd, EPOLL_TYPE epoll_type)
-    {
-        NET_OBJ * p_connect = NULL;
-        p_connect = new base_connect<passing_msg_process<passing_data_process> >(fd, epoll_type);
-        passing_msg_process<passing_data_process> *process = new passing_msg_process<passing_data_process>((NET_OBJ*)p_connect);
-        
-        process->set_passing_thread(this);
-        base_connect<passing_msg_process<passing_data_process> > * tmp_con = (base_connect<passing_msg_process<passing_data_process> > *)p_connect;
-        tmp_con->set_process(process);
-
-        return p_connect;
-    }
-
-    const base_net_obj * passing_msg_thread::get_dest_obj(pthread_t tid)
-    {
-        map<pthread_t, base_net_obj*>::iterator it;
-        it = _thread_obj_map.find(tid);
-        if (it != _thread_obj_map.end()){
-            return _thread_obj_map[tid];
-        }
-        return NULL;
-    }
-
-    void passing_msg_thread::set_dest_obj(pthread_t tid, base_net_obj * p_obj)
-    {
-        map<pthread_t, base_net_obj*>::iterator it;
-        it = _thread_obj_map.find(tid);
-        if (it != _thread_obj_map.end() && p_obj != _thread_obj_map[tid]){
-            delete _thread_obj_map[tid];
-        }
-
-        _thread_obj_map[tid] = p_obj;
-    }
-
-    base_net_container * passing_msg_thread::get_net_container()
-    {
-        return _net_container;
-    }
+    _thread_obj_map[thread->get_thread_id()] = thread;
+    _net_obj_map[thread->get_thread_id()] = p_obj;
 
 }
+
+base_net_container * passing_msg_thread::get_net_container()
+{
+    return _net_container;
+}
+

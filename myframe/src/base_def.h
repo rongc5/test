@@ -18,6 +18,8 @@
 #include <unistd.h>
 #include <string.h>
 
+#include <arpa/inet.h>
+
 #include <unistd.h>
 
 
@@ -25,9 +27,11 @@
 #include <string>
 #include <list>
 #include <map>
+#include <set>
 #include <strstream>
 #include <sstream>
 #include <exception>
+#include <memory>
 
 
 using namespace std;
@@ -65,9 +69,26 @@ static const uint32_t SIZE_LEN_256 = 256;
 
 
 
+/***************************/
+
+
+typedef signed char  int8_t;
+typedef unsigned char  uint8_t;
+typedef short int16_t;
+typedef unsigned short uint16_t;
+typedef int int32_t;
+typedef unsigned int uint32_t;
+
 
 
 /***************************/
+
+#define PASSING_ACCEPT_NONE 0
+#define PASSING_ACCEPT_IN 1
+
+
+/***************************/
+
 
 
 #define ASSERT_DO(valid, PRINT) \
@@ -79,11 +100,22 @@ static const uint32_t SIZE_LEN_256 = 256;
     }while(0)
 
 #define ASSERT(valid) \
-        do { \
-            if (!(valid)) { \
-                return -1; \
-            } \
-        }while(0)
+    do { \
+        if (!(valid)) { \
+            return -1; \
+        } \
+    }while(0)
+
+
+
+/*****************************/
+
+
+#if DEBUG
+#define PDEBUG(format, arg...) printf("line:[%d],func:[%s],file:[%s] "format, __LINE__, __func__, __FILE__, ##arg)
+#else
+#define PDEBUG(format, arg...) do while(0)
+#endif
 
 
 

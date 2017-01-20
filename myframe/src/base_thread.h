@@ -3,7 +3,6 @@
 
 #include "base_def.h"
 
-namespace MZFRAME {
 
 
 class base_thread
@@ -51,7 +50,6 @@ class base_thread
 		static vector<base_thread*>	_thread_vec;
 };
 
-}
 
 #endif
 

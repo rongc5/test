@@ -5,8 +5,6 @@
 #include "net_obj.h"
 #include "common_def.h"
 
-namespace MZFRAME {
-
 
     class base_msg_process
     {
@@ -25,14 +23,6 @@ namespace MZFRAME {
             }	
 
             virtual size_t process_recv_buf(char *buf, size_t len) = 0;
-
-
-            virtual int process_send_buf(string * buf)
-            {
-                _send_list.push_back(buf);
-
-                return 0;
-            }
 
             string *get_send_buf()
             {
@@ -69,7 +59,7 @@ namespace MZFRAME {
             {
             }
 
-            virtual void put_msg(string *p_msg) = 0;
+            virtual void put_msg(char *buf, size_t len) = 0;
 
             void set_head_len(size_t head_len)
             {
@@ -103,7 +93,5 @@ namespace MZFRAME {
             NET_OBJ *_p_connect;
     };
 
-
-}
 #endif
 

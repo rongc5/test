@@ -4,7 +4,6 @@
 #include "base_def.h"
 #include "base_thread.h"
 
-namespace MZFRAME {
 
 
     class common_thread:public base_thread
@@ -24,10 +23,19 @@ namespace MZFRAME {
                 return _channel_id;
             }
 
-        protected:
+            void set_passing_type(int type)
+            {
+                _passing_type = type;
+            }
 
+            int get_passing_type()
+            {
+                return _passing_type;
+            }
+
+        protected:
+            int _passing_type;
             int _channel_id;
     };
 
-}
 #endif

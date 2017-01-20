@@ -2,9 +2,6 @@
 #define __DOUBLE_BUFFER_H_
 
 
-namespace MZFRAME{
-
-
 template<class T>
 class double_buffer{
 	
@@ -53,5 +50,3 @@ class double_buffer{
 	};
 
 
-
-}

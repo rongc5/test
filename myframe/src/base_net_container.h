@@ -6,31 +6,27 @@
 
 class base_net_obj;
 class common_epoll;
-namespace MZFRAME {
 
+class base_net_container
+{
+    public:
+        base_net_container();
+        virtual ~base_net_container();
 
-    class base_net_container
-    {
-        public:
-            base_net_container();
-            virtual ~base_net_container();
+        virtual void push_net_obj(base_net_obj *p_obj) = 0;
+        virtual base_net_obj* find(obj_id_str * obj_id) = 0;
+        virtual bool erase(obj_id_str *_obj_id) = 0;
+        virtual void obj_process() = 0;
 
-            virtual void push_net_obj(base_net_obj *p_obj) = 0;
-            virtual base_net_obj* find(obj_id_str * obj_id) = 0;
-            virtual bool erase(obj_id_str *_obj_id) = 0;
-            virtual void obj_process() = 0;
+        common_epoll *get_epoll();
 
-            common_epoll *get_epoll();
+        void init(const uint32_t epoll_size = 0);
 
-            void init(const uint32_t epoll_size = 0);
+    protected:
 
-        protected:
+        common_epoll *_p_epoll;
+};
 
-            common_epoll *_p_epoll;
-    };
-
-
-}
 
 #endif
 

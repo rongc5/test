@@ -8,7 +8,6 @@
 
 class base_net_obj;
 
-namespace MZFRAME {
 
     class common_epoll
     {
@@ -56,7 +55,6 @@ namespace MZFRAME {
     };
 
 
-}
 
 #endif
 

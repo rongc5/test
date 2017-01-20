@@ -5,13 +5,13 @@
 #include "common_epoll.h"
 #include "base_net_container.h"
 
-namespace MZFRAME {
 
     class common_obj_container:public base_net_container
     {
         public:
             common_obj_container()
             {
+                base_net_container::init();
             }
 
             virtual ~common_obj_container()
@@ -82,7 +82,7 @@ namespace MZFRAME {
                 }
 
 
-                int ret = _p_epoll->epoll_wait(exp_list);
+                _p_epoll->epoll_wait(exp_list);
                 if (exp_list.size() != 0)
                 {
                     for (map<obj_id_str, base_net_obj*>::iterator itr = exp_list.begin(); itr != exp_list.end(); ++itr)
@@ -97,7 +97,5 @@ namespace MZFRAME {
             map<obj_id_str, base_net_obj*> _obj_net_map;
     };
 
-
-}
 #endif
 

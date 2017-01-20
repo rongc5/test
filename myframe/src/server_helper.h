@@ -4,7 +4,6 @@
 
 #include "common_thread.h"
 
-namespace MZFRAME {
 
 
     typedef int (* callback_proc)();
@@ -41,7 +40,6 @@ namespace MZFRAME {
 
     };
 
-}
 
 
 

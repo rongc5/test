@@ -10,11 +10,11 @@
 #include <poll.h>
 
 #define SERVERADDR "127.0.0.1"
-#define SERVERPORT 80
+#define SERVERPORT 8
 
 int main(int c, char **v)
 {
-    if (c != 2)
+    if (c != 3)
     {
         fprintf(stderr, "usage...\n");
         exit(1);
@@ -28,8 +28,8 @@ int main(int c, char **v)
 
     len = sizeof(addr);
     addr.sin_family = AF_INET;
-    addr.sin_port = htons(SERVERPORT);
-    inet_pton(AF_INET, SERVERADDR, &addr.sin_addr);
+    addr.sin_port = htons(atoi(v[2]));
+    inet_pton(AF_INET, v[1], &addr.sin_addr);
 
     sd = socket(AF_INET, SOCK_STREAM, 0);
     if (-1 == sd)
@@ -50,30 +50,6 @@ int main(int c, char **v)
 
     write(sd, buf, strlen(buf));
 
-    fd = creat(v[1], 0666);
-    if (-1 == fd)
-    {
-        perror("creat");
-        exit(1);
-    }
-
-    fds.fd = sd;
-    fds.events = POLLIN;
-
-    while (1)
-    {
-        ret = poll(&fds, 1, 3000);
-        if (0 == ret)
-        {
-            printf("transport end!\n");
-            break;
-        }
-
-        ret = read(sd, buf, 512);
-        write(fd, buf, ret);
-        write(1, ".....", 5);
-    }
-    close(fd);
     close(sd);
     exit(0);
 }

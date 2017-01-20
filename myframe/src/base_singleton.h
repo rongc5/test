@@ -1,7 +1,6 @@
 #ifndef __BASE_SINGLETON_H__
 #define __BASE_SINGLETON_H__
 
-namespace MZFRAME {
 template<class T>
 class base_singleton
 {
@@ -10,6 +9,16 @@ public:
 	{		
 		return _p_instance;
 	}
+
+    static T *get_instance_ex()
+    {
+        if (!_p_instance){
+            _p_instance = new T;
+        }
+
+        return _p_instance;
+    }
+
 	static void set_instance(T *instance)
 	{     
 		if(NULL != _p_instance)
@@ -26,6 +35,5 @@ private:
 template<class T>
 T* base_singleton<T>::_p_instance = NULL;
 
-}
 #endif
 

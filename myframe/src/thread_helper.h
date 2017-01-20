@@ -4,8 +4,6 @@
 #include "base_def.h"
 
 
-namespace MZFRAME {
-
 class thread_mutex_t{
     public:
         thread_mutex_t();
@@ -38,6 +36,5 @@ class thread_rwlock_t{
 };
 
 
-}
 
 #endif

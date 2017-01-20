@@ -17,7 +17,7 @@ class FOO{
         }
 };
 
-void g(shared_ptr<FOO> & foo)
+void g(shared_ptr<FOO>  foo)
 {
     cout << "I also have a Foo with refcount " << foo.use_count() << endl;
 }
