@@ -144,9 +144,9 @@ class base_connect:public NET_OBJ
         }
 
     protected:
-        virtual ssize_t RECV(void *buf, size_t len)
+        virtual int RECV(void *buf, size_t len)
         {
-            ssize_t ret = recv(_fd, buf, len, MSG_DONTWAIT);
+            int ret = recv(_fd, buf, len, MSG_DONTWAIT);
             if (ret == 0)
             {
                 _process->peer_close();
@@ -158,8 +158,8 @@ class base_connect:public NET_OBJ
                 {
                     THROW_COMMON_EXCEPT("this socket occur fatal error " << strerror(errno));
                 }
+                ret = 0;
             }
-            PDEBUG("fd[%d]\n", _fd);
 
             return ret;
         }
@@ -178,6 +178,7 @@ class base_connect:public NET_OBJ
                 {
                     THROW_COMMON_EXCEPT("send data error " << strerror(errno));
                 }
+                ret = 0;
             }
             return ret;
         }

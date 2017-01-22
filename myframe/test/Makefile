@@ -1,7 +1,7 @@
 HOME_DIR=../
-LIB_DIR=${HOME_DIR}src/
+LIB_DIR=${HOME_DIR}src
 
-INCLUDE = -I./${LIB_DIR}/ 		    
+INCLUDE = -I./${LIB_DIR}/
 
 LIB = -lpthread
 

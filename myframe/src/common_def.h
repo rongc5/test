@@ -63,7 +63,7 @@ struct _pass_msg_t {
     struct obj_id_str _src_obj;
     struct obj_id_str _dst_obj;
     pass_msg_cmd _op;
-    int len;
+    int body_len;
 };
 
 

@@ -87,6 +87,7 @@
                 {
                     for (map<obj_id_str, base_net_obj*>::iterator itr = exp_list.begin(); itr != exp_list.end(); ++itr)
                     {         	
+                        PDEBUG("epoll_wait fail erase\n");          
                         _obj_net_map.erase(itr->second->get_id());
                         itr->second->destroy();
                     }

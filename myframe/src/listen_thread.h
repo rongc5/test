@@ -5,7 +5,6 @@
 #include "common_thread.h"
 #include "base_net_container.h"
 #include "common_obj_container.h"
-#include "passing_msg_thread.h"
 #include "listen_connect.h"
 #include "common_def.h"
 #include "listen_data_process.h"
@@ -25,7 +24,6 @@ class listen_thread:public common_thread
 
         virtual void obj_process()
         {
-            _worker_mgr->start();            
             _base_container->obj_process();
         }
 
@@ -47,7 +45,6 @@ class listen_thread:public common_thread
             p_connect->set_process(data_process);
             p_connect->set_net_container(_base_container);
             set_passing_type(PASSING_ACCEPT_NONE);
-            passing_msg_thread::register_thread(this);
         }
 
         pthread_t get_worker_id()

@@ -21,7 +21,7 @@ size_t listen_data_process::process(int fd)
         head._dst_obj._thread_id = _thread->get_worker_id();
         head._src_obj = _p_connect->get_id();
         head._op = ADD_NEW_SOCEKT;
-        head.len = sizeof(fd);
+        head.body_len = sizeof(fd);
 
         memcpy((void*)tmp_str.c_str(), &head, sizeof(head));
         memcpy((char *)tmp_str.c_str()+tmp_str.length(), &fd, sizeof(fd));

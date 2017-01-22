@@ -37,7 +37,6 @@ class common_net_thread:public common_thread
             p_connect->set_id(gen_id_str());
             channel_msg_process * process = new channel_msg_process(p_connect);
             process->set_common_thread(this);
-            process->set_head_len(sizeof(_pass_msg_t));
             p_connect->set_process(process);
             p_connect->set_net_container(_base_container);
         }

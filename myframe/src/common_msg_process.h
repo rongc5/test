@@ -36,19 +36,13 @@ class common_msg_process:public base_msg_process
             {
                 RECV_MSG_STATUS status = RECV_MSG_HEAD;
                 size_t msg_body_len = 0;
+                _head_len = sizeof(_msg_t); 
                 if (status == RECV_MSG_HEAD)
                 {
                     if (left_len > _head_len)
                     {
-                        char *ptr = "";
-
-                        if (_head_len >= MSG_HEAD_BODY_LENTH_LEN) 
-                            ptr = buf + _head_len - MSG_HEAD_BODY_LENTH_LEN;
-                        else {
-                            ptr = buf;
-                        }
-
-                        msg_body_len = ntohl(*ptr);
+                        _msg_t * ptr = (_msg_t *) buf;
+                        msg_body_len = ptr->body_len;
 
                         status = RECV_MSG_BODY;
                     }
@@ -66,7 +60,7 @@ class common_msg_process:public base_msg_process
                         _pass_msg_t tmp_head;
                         tmp_head._src_obj = _p_connect->get_id();
                         tmp_head._dst_obj = _p_connect->get_id();
-                        tmp_head.len = _head_len + msg_body_len;
+                        tmp_head.body_len = _head_len + msg_body_len;
                         memcpy((void *)tmp_buf.c_str(), &tmp_head, sizeof(tmp_head));
                         tmp_buf.append (buf, _head_len + msg_body_len);
 

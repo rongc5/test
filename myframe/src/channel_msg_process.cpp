@@ -8,26 +8,23 @@
 
 size_t channel_msg_process::process_recv_buf(char *buf, size_t len)
 {
-    LOG_DEBUG("recv buf %d", len);
+    PDEBUG("recv buf [%d] tid [%lu] step1\n", len, pthread_self());
     //size_t ret = 0;
     size_t left_len = len;
     while(left_len > 0)
     {
+    PDEBUG("recv buf [%d] tid [%lu] left_len[%d] step2\n", len, pthread_self(), left_len);
         RECV_MSG_STATUS status = RECV_MSG_HEAD;
         size_t msg_body_len = 0;
+        _head_len = sizeof(_pass_msg_t);
         if (status == RECV_MSG_HEAD)
         {
             if (left_len > _head_len)
             {
-                const char *ptr = "";
+                _pass_msg_t * ptr = (_pass_msg_t *) buf;
 
-                if (_head_len >= MSG_HEAD_BODY_LENTH_LEN) 
-                    ptr = buf + _head_len - MSG_HEAD_BODY_LENTH_LEN;
-                else {
-                    ptr = buf;
-                }
-
-                msg_body_len = *ptr;
+                PDEBUG("recv buf [%d] tid [%lu] left_len[%d] _head_len[%d] step3\n", len, pthread_self(), left_len, _head_len);
+                msg_body_len = ptr->body_len;
 
                 status = RECV_MSG_BODY;
             }

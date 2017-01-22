@@ -13,9 +13,9 @@
 class passing_msg_process:public base_msg_process
 {
     public:
-    passing_msg_process(void *p):base_msg_process(p), _thread(NULL)
-    {
-    }
+        passing_msg_process(void *p):base_msg_process(p), _thread(NULL)
+        {
+        }
 
         virtual ~passing_msg_process()
         {
@@ -23,27 +23,21 @@ class passing_msg_process:public base_msg_process
 
         virtual size_t process_recv_buf(char *buf, size_t len)
         {
-            LOG_DEBUG("recv buf %d", len);
             PDEBUG("recv buf %d", len);
             //size_t ret = 0;
             size_t left_len = len;
             while(left_len > 0)
             {
                 RECV_MSG_STATUS status = RECV_MSG_HEAD;
+                _head_len = sizeof(_pass_msg_t);
                 size_t msg_body_len = 0;
                 if (status == RECV_MSG_HEAD)
                 {
                     if (left_len > _head_len)
                     {
-                        const char *ptr = "";
+                        _pass_msg_t * ptr = (_pass_msg_t *) buf;
 
-                        if (_head_len >= MSG_HEAD_BODY_LENTH_LEN) 
-                            ptr = buf + _head_len - MSG_HEAD_BODY_LENTH_LEN;
-                        else {
-                            ptr = buf;
-                        }
-
-                        msg_body_len = ntohl(*ptr);
+                        msg_body_len = ptr->body_len;
 
                         status = RECV_MSG_BODY;
                     }

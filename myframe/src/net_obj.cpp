@@ -27,7 +27,7 @@ void base_net_obj::set_net_container(base_net_container *p_net_container)
     try {
         _p_epoll->add_to_epoll(this);
         _p_net_container->push_net_obj(this);
-        PDEBUG("get_sock() %d\n", get_sock());
+        PDEBUG("set_net_container get_sock() %d\n", get_sock());
     }
     catch (std::exception &e)
     {

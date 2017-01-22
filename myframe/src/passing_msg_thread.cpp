@@ -31,6 +31,7 @@ int passing_msg_thread::register_thread(common_thread *thread)
         base_singleton<passing_msg_thread>::set_instance(new passing_msg_thread());
 
         pass_thread = base_singleton<passing_msg_thread>::get_instance();
+        pass_thread->start();
     }
 
     int fd[2], ret;
@@ -40,14 +41,15 @@ int passing_msg_thread::register_thread(common_thread *thread)
         LOG_WARNING("socketpair fail errstr[%s]", strerror(errno));
     }
 
-    PDEBUG("fd[0] %d fd[1] %d\n", fd[0], fd[1]);
 
-    NET_OBJ *p_connect = pass_thread->gen_connect(fd[0], EPOLL_LT_TYPE);
+    thread->start();
+    NET_OBJ *p_connect = pass_thread->gen_connect(fd[1], EPOLL_LT_TYPE);
     if (p_connect){
         p_connect->set_id(pass_thread->gen_id_str());
         p_connect->set_net_container(pass_thread->get_net_container());
         pass_thread->set_dest_obj(thread, p_connect);
-        thread->set_channelid(fd[1]);
+        PDEBUG("tid[%lu], fd[1] %d fd[0] %d\n", thread->get_thread_id(), fd[1], fd[0]);
+        thread->set_channelid(fd[0]);
     }
 
     return 0;
@@ -64,7 +66,6 @@ void* passing_msg_thread::run()
 {
     while (get_run_flag())
     {
-        PDEBUG("hello world\n");
         _net_container->obj_process();
     }
 
@@ -77,7 +78,6 @@ NET_OBJ * passing_msg_thread::gen_connect(const int fd, EPOLL_TYPE epoll_type)
     p_connect = new base_connect<passing_msg_process>(fd, epoll_type);
     passing_msg_process *process = new passing_msg_process((NET_OBJ*)p_connect);
 
-    process->set_head_len(sizeof(_pass_msg_t));
     process->set_passing_thread(this);
     base_connect<passing_msg_process> * tmp_con = (base_connect<passing_msg_process> *)p_connect;
     tmp_con->set_process(process);
@@ -118,6 +118,7 @@ void passing_msg_thread::set_dest_obj(common_thread *thread, base_net_obj * p_ob
     _thread_obj_map[thread->get_thread_id()] = thread;
     _net_obj_map[thread->get_thread_id()] = p_obj;
 
+    PDEBUG("_net_obj_map [%d]\n", _net_obj_map.size());
 }
 
 base_net_container * passing_msg_thread::get_net_container()

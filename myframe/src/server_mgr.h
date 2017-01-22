@@ -43,6 +43,7 @@ class server_mgr
 
             for (int i = 0; i < _thread_num; i++) {
                 thread_mgr->add_thread(&_worker_thread[i]);
+                _worker_thread[i].start();
                 passing_msg_thread::register_thread(&_worker_thread[i]);
             }
 
@@ -50,6 +51,7 @@ class server_mgr
             _listen_obj_thread->init(_server_ip, _server_port);
             _listen_obj_thread->set_worker_mgr(thread_mgr);
             _listen_obj_thread->start();
+            passing_msg_thread::register_thread(_listen_obj_thread);
         }
 
     private:

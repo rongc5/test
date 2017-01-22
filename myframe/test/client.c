@@ -50,6 +50,9 @@ int main(int c, char **v)
 
     write(sd, buf, strlen(buf));
 
+    while (1)
+        sleep(1);
+
     close(sd);
     exit(0);
 }
