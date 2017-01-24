@@ -13,7 +13,7 @@ size_t channel_msg_process::process_recv_buf(char *buf, size_t len)
     size_t left_len = len;
     while(left_len > 0)
     {
-    PDEBUG("recv buf [%d] tid [%lu] left_len[%d] step2\n", len, pthread_self(), left_len);
+        PDEBUG("recv buf [%d] tid [%lu] left_len[%d] step2\n", len, pthread_self(), left_len);
         RECV_MSG_STATUS status = RECV_MSG_HEAD;
         size_t msg_body_len = 0;
         _head_len = sizeof(_pass_msg_t);

@@ -1,5 +1,6 @@
 HOME_DIR=../
 LIB_DIR=${HOME_DIR}src
+IDL_DIR=$(HOME_DIR)idl
 
 INCLUDE = -I./${LIB_DIR}/
 
@@ -21,6 +22,7 @@ OBJ	= ${LIB_DIR}/base_net_container.o                        \
     ${LIB_DIR}/passing_msg_thread.o                        \
     ${LIB_DIR}/thread_helper.o                        \
     ${LIB_DIR}/listen_data_process.o                        \
+    ${IDL_DIR}/myframe.pb.o                        \
     ./test_server.o                        
 
 EXEC=server

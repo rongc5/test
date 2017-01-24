@@ -8,6 +8,8 @@
 #include <netinet/ip.h>
 #include <errno.h>
 #include <poll.h>
+#include "../src/common_def.h"
+#include "../src/base_def.h"
 
 #define SERVERADDR "127.0.0.1"
 #define SERVERPORT 8
@@ -44,11 +46,18 @@ int main(int c, char **v)
         perror("connect");
         exit(1);
     }
-    printf("connect success!\n");
-    sprintf(buf, "%s%s\r\n", "GET /weather/101010100.shtml HTTP/1.1\r\n",
-            "Host: www.weather.com.cn\r\n");
 
-    write(sd, buf, strlen(buf));
+    _pass_msg_t head;
+    
+    printf("connect success!\n");
+    head.body_len = sizeof("hello world");
+    memcpy(buf, &head, sizeof(head));
+    ret = sprintf(buf + sizeof(head), "%s", "hello world");
+
+    while (1) {
+        write(sd, buf, strlen(buf));
+        sleep(3);
+    }
 
     while (1)
         sleep(1);

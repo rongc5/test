@@ -1,0 +1,31 @@
+package com.mingz.frame;
+
+
+enum PassMsgCmd
+{
+    ADD_NEW_SOCEKT = 0;
+    COMMON_MSG = 1;
+};
+
+message ObjId
+{
+    required uint32 obj_id = 1;
+    required uint32 thread_index = 2;
+};
+
+message PassMsgHead //内部传递的消息
+{
+    required ObjId src_id = 1;
+    required ObjId dst_id = 2;
+    required PassMsgCmd cmd = 3;
+    required string str = 4;
+};
+
+message CommonMsgHead
+{
+    required uint32 obj_id = 1;
+    required uint32 obj_op = 2;
+    required uint32 version = 3;
+    required uint32 reserved = 4;
+    required string str = 5;
+};

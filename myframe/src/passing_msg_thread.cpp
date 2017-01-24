@@ -32,6 +32,7 @@ int passing_msg_thread::register_thread(common_thread *thread)
 
         pass_thread = base_singleton<passing_msg_thread>::get_instance();
         pass_thread->start();
+        PDEBUG("alloc pass_thread\n");
     }
 
     int fd[2], ret;

@@ -17,12 +17,6 @@ class base_connect:public NET_OBJ
         {
             init(epoll_type);
             _fd = sock;
-            struct sockaddr_in sa;
-            
-            int len = sizeof(sa);
-            if (getpeername(sock, (struct sockaddr *)&sa, (socklen_t *)&len)) {
-                base_connect<PROCESS>::_peer_addr = sa;
-            }
         }
 
         ~base_connect()
@@ -90,11 +84,13 @@ class base_connect:public NET_OBJ
         {
             if ((event & EPOLLERR) == EPOLLERR || (event & EPOLLHUP) == EPOLLHUP)
             {
+                PDEBUG("epoll error \n");
                 THROW_COMMON_EXCEPT("epoll error ");
             }
 
             if ((event & EPOLLIN) == EPOLLIN) //读
             {
+                PDEBUG("event_process [%d]\n", _fd);
                 recv_process();
             }
 
@@ -110,7 +106,7 @@ class base_connect:public NET_OBJ
 
             real_recv();
 
-            real_send();
+            //real_send();
 
             return ret;
         }
@@ -150,12 +146,14 @@ class base_connect:public NET_OBJ
             if (ret == 0)
             {
                 _process->peer_close();
+                PDEBUG("the client close the socket [%d]\n", _fd);
                 THROW_COMMON_EXCEPT("the client close the socket(" << _fd << ")");
             }
             else if (ret < 0)
             {
                 if (errno != EAGAIN)
                 {
+                    PDEBUG("this socket occur fatal error [%s]\n", strerror(errno));
                     THROW_COMMON_EXCEPT("this socket occur fatal error " << strerror(errno));
                 }
                 ret = 0;
@@ -213,6 +211,7 @@ class base_connect:public NET_OBJ
 
             if (_recv_buf_len > 0)
             {
+                PDEBUG("recv _fd[%d] _recv_buf_len [%d]\n", _fd, _recv_buf_len); 
                 size_t p_ret = _process->process_recv_buf((char*)_recv_buf.c_str(), _recv_buf_len);
                 if (p_ret < _recv_buf_len)//表名上层处理能力跟不上,停止接受数据
                 {

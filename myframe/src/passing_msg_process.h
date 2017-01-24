@@ -23,7 +23,7 @@ class passing_msg_process:public base_msg_process
 
         virtual size_t process_recv_buf(char *buf, size_t len)
         {
-            PDEBUG("recv buf %d", len);
+            PDEBUG("recv buf %d\n", len);
             //size_t ret = 0;
             size_t left_len = len;
             while(left_len > 0)

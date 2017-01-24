@@ -13,8 +13,8 @@ void common_epoll::add_to_epoll(base_net_obj *p_obj)
     int ret = epoll_ctl(_epoll_fd, tmpOprate, p_obj->get_sock(), &tmpEvent);
     PDEBUG("add to epoll _epoll_fd[%d] _get_sock [%d]\n", _epoll_fd, p_obj->get_sock());
     if (ret != 0) {
-        THROW_COMMON_EXCEPT("add to epoll fail " << strerror(errno));
         PDEBUG("add to epoll fail %s", strerror(errno));
+        THROW_COMMON_EXCEPT("add to epoll fail " << strerror(errno));
     }
 }
 
@@ -51,6 +51,7 @@ int common_epoll::epoll_wait(map<obj_id_str, base_net_obj*> &expect_list)
 
     for (int i =0; i < nfds; i++)
     {		
+        PDEBUG("_epoll_fd [%d]\n", _epoll_fd);
         if (_epoll_events[i].data.ptr != NULL) 		
         {
             base_net_obj * p = (base_net_obj*)(_epoll_events[i].data.ptr);
