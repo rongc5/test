@@ -1,4 +1,4 @@
-package com.mingz.frame;
+//package com.mingz.frame;
 
 
 enum PassMsgCmd
@@ -13,7 +13,7 @@ message ObjId
     required uint32 thread_index = 2;
 };
 
-message PassMsgHead //内部传递的消息
+message PassMsg //内部传递的消息
 {
     required ObjId src_id = 1;
     required ObjId dst_id = 2;
@@ -21,7 +21,7 @@ message PassMsgHead //内部传递的消息
     required string str = 4;
 };
 
-message CommonMsgHead
+message CommonMsg
 {
     required uint32 obj_id = 1;
     required uint32 obj_op = 2;

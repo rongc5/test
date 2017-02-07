@@ -1,9 +1,13 @@
 #include "log_helper.h"
 #include "base_thread.h"
+#include "thread_helper.h"
 
 
 base_thread::base_thread():_thread_id(0), _run_flag(true)
 {
+    thread_lock lock(&base_thread::_mutex);
+    _thread_index_start++;
+    _thread_index = _thread_index_start;
 }
 
 base_thread::~base_thread()
@@ -76,6 +80,14 @@ pthread_t base_thread::get_thread_id()
     return _thread_id;
 }
 
+uint32_t base_thread::get_thread_index()
+{
+    return _thread_index;
+}
+
 
 vector<base_thread*> base_thread::_thread_vec;
 
+uint32_t base_thread::_thread_index_start;
+
+thread_mutex_t base_thread::_mutex;

@@ -25,16 +25,16 @@ class base_net_obj
 
         int get_sock();
 
-        int set_id(const obj_id_str & id_str);
+        int set_id(const ObjId & id_str);
 
-        const obj_id_str & get_id();
+        const ObjId & get_id();
 
     protected:
         base_net_container *_p_net_container;
         common_epoll *_p_epoll;
         int _epoll_event;
         int _fd;	
-        obj_id_str _id_str;
+        ObjId _id_str;
 };
 
 class NET_OBJ:public base_net_obj

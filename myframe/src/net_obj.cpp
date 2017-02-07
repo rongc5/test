@@ -27,12 +27,10 @@ void base_net_obj::set_net_container(base_net_container *p_net_container)
     try {
         _p_epoll->add_to_epoll(this);
         _p_net_container->push_net_obj(this);
-        PDEBUG("set_net_container get_sock() %d\n", get_sock());
     }
     catch (std::exception &e)
     {
         LOG_WARNING("%s", e.what());
-        PDEBUG("%s\n", e.what());
         delete this;
     }
     catch (...)
@@ -57,13 +55,13 @@ int base_net_obj::get_sock()
     return _fd;
 }
 
-int base_net_obj::set_id(const obj_id_str & id_str)
+int base_net_obj::set_id(const ObjId & id_str)
 {
     _id_str = id_str;
     return 0;
 }
 
-const obj_id_str & base_net_obj::get_id()
+const ObjId & base_net_obj::get_id()
 {
     return _id_str;
 }

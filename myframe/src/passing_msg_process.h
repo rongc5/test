@@ -29,15 +29,15 @@ class passing_msg_process:public base_msg_process
             while(left_len > 0)
             {
                 RECV_MSG_STATUS status = RECV_MSG_HEAD;
-                _head_len = sizeof(_pass_msg_t);
+                _head_len = sizeof(int);
                 size_t msg_body_len = 0;
                 if (status == RECV_MSG_HEAD)
                 {
                     if (left_len > _head_len)
                     {
-                        _pass_msg_t * ptr = (_pass_msg_t *) buf;
 
-                        msg_body_len = ptr->body_len;
+                        int *p_len = (int *)buf;
+                        msg_body_len = ntohl(*p_len);
 
                         status = RECV_MSG_BODY;
                     }
@@ -50,7 +50,7 @@ class passing_msg_process:public base_msg_process
                 if (status == RECV_MSG_BODY)
                 {
                     if (left_len >= _head_len + msg_body_len) {
-                        process_s(buf, _head_len + msg_body_len);
+                        process_s(buf + _head_len, _head_len + msg_body_len);
 
                         left_len -= _head_len + msg_body_len;
                         buf = buf + left_len;
@@ -72,20 +72,20 @@ class passing_msg_process:public base_msg_process
 
         void put_msg(char *buf, size_t len)
         {
-            PDEBUG("step 888888888888888");
-            if (!buf || len < sizeof(_pass_msg_t)){
+            if (!buf || !len){
                 //LOG_WARN
                 return;
             }
-            PDEBUG("step 1111111111111119");
-
-            _pass_msg_t * ptr = (_pass_msg_t *)buf;
 
             if (!_thread){
                 return;
             }
 
-            common_thread * dest_thread = _thread->get_dest_thread(ptr->_dst_obj._thread_id);
+            
+             PassMsg pass_msg;
+             pass_msg.ParseFromArray(buf, len);
+
+            common_thread * dest_thread = _thread->get_dest_thread(pass_msg.dst_id().thread_index());
             if (dest_thread && (dest_thread->get_passing_type() & PASSING_ACCEPT_IN)) {
                 write(dest_thread->get_channelid(), buf, len);
             }

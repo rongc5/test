@@ -16,21 +16,17 @@
 #include <google/protobuf/wire_format.h>
 // @@protoc_insertion_point(includes)
 
-namespace com {
-namespace mingz {
-namespace frame {
-
 namespace {
 
 const ::google::protobuf::Descriptor* ObjId_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   ObjId_reflection_ = NULL;
-const ::google::protobuf::Descriptor* PassMsgHead_descriptor_ = NULL;
+const ::google::protobuf::Descriptor* PassMsg_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
-  PassMsgHead_reflection_ = NULL;
-const ::google::protobuf::Descriptor* CommonMsgHead_descriptor_ = NULL;
+  PassMsg_reflection_ = NULL;
+const ::google::protobuf::Descriptor* CommonMsg_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
-  CommonMsgHead_reflection_ = NULL;
+  CommonMsg_reflection_ = NULL;
 const ::google::protobuf::EnumDescriptor* PassMsgCmd_descriptor_ = NULL;
 
 }  // namespace
@@ -58,43 +54,43 @@ void protobuf_AssignDesc_myframe_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(ObjId));
-  PassMsgHead_descriptor_ = file->message_type(1);
-  static const int PassMsgHead_offsets_[4] = {
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PassMsgHead, src_id_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PassMsgHead, dst_id_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PassMsgHead, cmd_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PassMsgHead, str_),
+  PassMsg_descriptor_ = file->message_type(1);
+  static const int PassMsg_offsets_[4] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PassMsg, src_id_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PassMsg, dst_id_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PassMsg, cmd_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PassMsg, str_),
   };
-  PassMsgHead_reflection_ =
+  PassMsg_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
-      PassMsgHead_descriptor_,
-      PassMsgHead::default_instance_,
-      PassMsgHead_offsets_,
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PassMsgHead, _has_bits_[0]),
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PassMsgHead, _unknown_fields_),
+      PassMsg_descriptor_,
+      PassMsg::default_instance_,
+      PassMsg_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PassMsg, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PassMsg, _unknown_fields_),
       -1,
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
-      sizeof(PassMsgHead));
-  CommonMsgHead_descriptor_ = file->message_type(2);
-  static const int CommonMsgHead_offsets_[5] = {
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(CommonMsgHead, obj_id_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(CommonMsgHead, obj_op_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(CommonMsgHead, version_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(CommonMsgHead, reserved_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(CommonMsgHead, str_),
+      sizeof(PassMsg));
+  CommonMsg_descriptor_ = file->message_type(2);
+  static const int CommonMsg_offsets_[5] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(CommonMsg, obj_id_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(CommonMsg, obj_op_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(CommonMsg, version_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(CommonMsg, reserved_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(CommonMsg, str_),
   };
-  CommonMsgHead_reflection_ =
+  CommonMsg_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
-      CommonMsgHead_descriptor_,
-      CommonMsgHead::default_instance_,
-      CommonMsgHead_offsets_,
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(CommonMsgHead, _has_bits_[0]),
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(CommonMsgHead, _unknown_fields_),
+      CommonMsg_descriptor_,
+      CommonMsg::default_instance_,
+      CommonMsg_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(CommonMsg, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(CommonMsg, _unknown_fields_),
       -1,
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
-      sizeof(CommonMsgHead));
+      sizeof(CommonMsg));
   PassMsgCmd_descriptor_ = file->enum_type(0);
 }
 
@@ -111,9 +107,9 @@ void protobuf_RegisterTypes(const ::std::string&) {
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     ObjId_descriptor_, &ObjId::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
-    PassMsgHead_descriptor_, &PassMsgHead::default_instance());
+    PassMsg_descriptor_, &PassMsg::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
-    CommonMsgHead_descriptor_, &CommonMsgHead::default_instance());
+    CommonMsg_descriptor_, &CommonMsg::default_instance());
 }
 
 }  // namespace
@@ -121,10 +117,10 @@ void protobuf_RegisterTypes(const ::std::string&) {
 void protobuf_ShutdownFile_myframe_2eproto() {
   delete ObjId::default_instance_;
   delete ObjId_reflection_;
-  delete PassMsgHead::default_instance_;
-  delete PassMsgHead_reflection_;
-  delete CommonMsgHead::default_instance_;
-  delete CommonMsgHead_reflection_;
+  delete PassMsg::default_instance_;
+  delete PassMsg_reflection_;
+  delete CommonMsg::default_instance_;
+  delete CommonMsg_reflection_;
 }
 
 void protobuf_AddDesc_myframe_2eproto() {
@@ -134,24 +130,22 @@ void protobuf_AddDesc_myframe_2eproto() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-    "\n\rmyframe.proto\022\017com.mingz.frame\"-\n\005ObjI"
-    "d\022\016\n\006obj_id\030\001 \002(\r\022\024\n\014thread_index\030\002 \002(\r\""
-    "\224\001\n\013PassMsgHead\022&\n\006src_id\030\001 \002(\0132\026.com.mi"
-    "ngz.frame.ObjId\022&\n\006dst_id\030\002 \002(\0132\026.com.mi"
-    "ngz.frame.ObjId\022(\n\003cmd\030\003 \002(\0162\033.com.mingz"
-    ".frame.PassMsgCmd\022\013\n\003str\030\004 \002(\t\"_\n\rCommon"
-    "MsgHead\022\016\n\006obj_id\030\001 \002(\r\022\016\n\006obj_op\030\002 \002(\r\022"
-    "\017\n\007version\030\003 \002(\r\022\020\n\010reserved\030\004 \002(\r\022\013\n\003st"
-    "r\030\005 \002(\t*0\n\nPassMsgCmd\022\022\n\016ADD_NEW_SOCEKT\020"
-    "\000\022\016\n\nCOMMON_MSG\020\001", 377);
+    "\n\rmyframe.proto\"-\n\005ObjId\022\016\n\006obj_id\030\001 \002(\r"
+    "\022\024\n\014thread_index\030\002 \002(\r\"`\n\007PassMsg\022\026\n\006src"
+    "_id\030\001 \002(\0132\006.ObjId\022\026\n\006dst_id\030\002 \002(\0132\006.ObjI"
+    "d\022\030\n\003cmd\030\003 \002(\0162\013.PassMsgCmd\022\013\n\003str\030\004 \002(\t"
+    "\"[\n\tCommonMsg\022\016\n\006obj_id\030\001 \002(\r\022\016\n\006obj_op\030"
+    "\002 \002(\r\022\017\n\007version\030\003 \002(\r\022\020\n\010reserved\030\004 \002(\r"
+    "\022\013\n\003str\030\005 \002(\t*0\n\nPassMsgCmd\022\022\n\016ADD_NEW_S"
+    "OCEKT\020\000\022\016\n\nCOMMON_MSG\020\001", 303);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "myframe.proto", &protobuf_RegisterTypes);
   ObjId::default_instance_ = new ObjId();
-  PassMsgHead::default_instance_ = new PassMsgHead();
-  CommonMsgHead::default_instance_ = new CommonMsgHead();
+  PassMsg::default_instance_ = new PassMsg();
+  CommonMsg::default_instance_ = new CommonMsg();
   ObjId::default_instance_->InitAsDefaultInstance();
-  PassMsgHead::default_instance_->InitAsDefaultInstance();
-  CommonMsgHead::default_instance_->InitAsDefaultInstance();
+  PassMsg::default_instance_->InitAsDefaultInstance();
+  CommonMsg::default_instance_->InitAsDefaultInstance();
   ::google::protobuf::internal::OnShutdown(&protobuf_ShutdownFile_myframe_2eproto);
 }
 
@@ -428,29 +422,29 @@ void ObjId::Swap(ObjId* other) {
 // ===================================================================
 
 #ifndef _MSC_VER
-const int PassMsgHead::kSrcIdFieldNumber;
-const int PassMsgHead::kDstIdFieldNumber;
-const int PassMsgHead::kCmdFieldNumber;
-const int PassMsgHead::kStrFieldNumber;
+const int PassMsg::kSrcIdFieldNumber;
+const int PassMsg::kDstIdFieldNumber;
+const int PassMsg::kCmdFieldNumber;
+const int PassMsg::kStrFieldNumber;
 #endif  // !_MSC_VER
 
-PassMsgHead::PassMsgHead()
+PassMsg::PassMsg()
   : ::google::protobuf::Message() {
   SharedCtor();
 }
 
-void PassMsgHead::InitAsDefaultInstance() {
-  src_id_ = const_cast< ::com::mingz::frame::ObjId*>(&::com::mingz::frame::ObjId::default_instance());
-  dst_id_ = const_cast< ::com::mingz::frame::ObjId*>(&::com::mingz::frame::ObjId::default_instance());
+void PassMsg::InitAsDefaultInstance() {
+  src_id_ = const_cast< ::ObjId*>(&::ObjId::default_instance());
+  dst_id_ = const_cast< ::ObjId*>(&::ObjId::default_instance());
 }
 
-PassMsgHead::PassMsgHead(const PassMsgHead& from)
+PassMsg::PassMsg(const PassMsg& from)
   : ::google::protobuf::Message() {
   SharedCtor();
   MergeFrom(from);
 }
 
-void PassMsgHead::SharedCtor() {
+void PassMsg::SharedCtor() {
   _cached_size_ = 0;
   src_id_ = NULL;
   dst_id_ = NULL;
@@ -459,11 +453,11 @@ void PassMsgHead::SharedCtor() {
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
-PassMsgHead::~PassMsgHead() {
+PassMsg::~PassMsg() {
   SharedDtor();
 }
 
-void PassMsgHead::SharedDtor() {
+void PassMsg::SharedDtor() {
   if (str_ != &::google::protobuf::internal::kEmptyString) {
     delete str_;
   }
@@ -473,34 +467,34 @@ void PassMsgHead::SharedDtor() {
   }
 }
 
-void PassMsgHead::SetCachedSize(int size) const {
+void PassMsg::SetCachedSize(int size) const {
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
   _cached_size_ = size;
   GOOGLE_SAFE_CONCURRENT_WRITES_END();
 }
-const ::google::protobuf::Descriptor* PassMsgHead::descriptor() {
+const ::google::protobuf::Descriptor* PassMsg::descriptor() {
   protobuf_AssignDescriptorsOnce();
-  return PassMsgHead_descriptor_;
+  return PassMsg_descriptor_;
 }
 
-const PassMsgHead& PassMsgHead::default_instance() {
+const PassMsg& PassMsg::default_instance() {
   if (default_instance_ == NULL) protobuf_AddDesc_myframe_2eproto();
   return *default_instance_;
 }
 
-PassMsgHead* PassMsgHead::default_instance_ = NULL;
+PassMsg* PassMsg::default_instance_ = NULL;
 
-PassMsgHead* PassMsgHead::New() const {
-  return new PassMsgHead;
+PassMsg* PassMsg::New() const {
+  return new PassMsg;
 }
 
-void PassMsgHead::Clear() {
+void PassMsg::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (has_src_id()) {
-      if (src_id_ != NULL) src_id_->::com::mingz::frame::ObjId::Clear();
+      if (src_id_ != NULL) src_id_->::ObjId::Clear();
     }
     if (has_dst_id()) {
-      if (dst_id_ != NULL) dst_id_->::com::mingz::frame::ObjId::Clear();
+      if (dst_id_ != NULL) dst_id_->::ObjId::Clear();
     }
     cmd_ = 0;
     if (has_str()) {
@@ -513,13 +507,13 @@ void PassMsgHead::Clear() {
   mutable_unknown_fields()->Clear();
 }
 
-bool PassMsgHead::MergePartialFromCodedStream(
+bool PassMsg::MergePartialFromCodedStream(
     ::google::protobuf::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!(EXPRESSION)) return false
   ::google::protobuf::uint32 tag;
   while ((tag = input->ReadTag()) != 0) {
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // required .com.mingz.frame.ObjId src_id = 1;
+      // required .ObjId src_id = 1;
       case 1: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
@@ -532,7 +526,7 @@ bool PassMsgHead::MergePartialFromCodedStream(
         break;
       }
 
-      // required .com.mingz.frame.ObjId dst_id = 2;
+      // required .ObjId dst_id = 2;
       case 2: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
@@ -546,7 +540,7 @@ bool PassMsgHead::MergePartialFromCodedStream(
         break;
       }
 
-      // required .com.mingz.frame.PassMsgCmd cmd = 3;
+      // required .PassMsgCmd cmd = 3;
       case 3: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
@@ -555,8 +549,8 @@ bool PassMsgHead::MergePartialFromCodedStream(
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
                  input, &value)));
-          if (::com::mingz::frame::PassMsgCmd_IsValid(value)) {
-            set_cmd(static_cast< ::com::mingz::frame::PassMsgCmd >(value));
+          if (::PassMsgCmd_IsValid(value)) {
+            set_cmd(static_cast< ::PassMsgCmd >(value));
           } else {
             mutable_unknown_fields()->AddVarint(3, value);
           }
@@ -600,21 +594,21 @@ bool PassMsgHead::MergePartialFromCodedStream(
 #undef DO_
 }
 
-void PassMsgHead::SerializeWithCachedSizes(
+void PassMsg::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // required .com.mingz.frame.ObjId src_id = 1;
+  // required .ObjId src_id = 1;
   if (has_src_id()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
       1, this->src_id(), output);
   }
 
-  // required .com.mingz.frame.ObjId dst_id = 2;
+  // required .ObjId dst_id = 2;
   if (has_dst_id()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
       2, this->dst_id(), output);
   }
 
-  // required .com.mingz.frame.PassMsgCmd cmd = 3;
+  // required .PassMsgCmd cmd = 3;
   if (has_cmd()) {
     ::google::protobuf::internal::WireFormatLite::WriteEnum(
       3, this->cmd(), output);
@@ -635,23 +629,23 @@ void PassMsgHead::SerializeWithCachedSizes(
   }
 }
 
-::google::protobuf::uint8* PassMsgHead::SerializeWithCachedSizesToArray(
+::google::protobuf::uint8* PassMsg::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
-  // required .com.mingz.frame.ObjId src_id = 1;
+  // required .ObjId src_id = 1;
   if (has_src_id()) {
     target = ::google::protobuf::internal::WireFormatLite::
       WriteMessageNoVirtualToArray(
         1, this->src_id(), target);
   }
 
-  // required .com.mingz.frame.ObjId dst_id = 2;
+  // required .ObjId dst_id = 2;
   if (has_dst_id()) {
     target = ::google::protobuf::internal::WireFormatLite::
       WriteMessageNoVirtualToArray(
         2, this->dst_id(), target);
   }
 
-  // required .com.mingz.frame.PassMsgCmd cmd = 3;
+  // required .PassMsgCmd cmd = 3;
   if (has_cmd()) {
     target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
       3, this->cmd(), target);
@@ -674,25 +668,25 @@ void PassMsgHead::SerializeWithCachedSizes(
   return target;
 }
 
-int PassMsgHead::ByteSize() const {
+int PassMsg::ByteSize() const {
   int total_size = 0;
 
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    // required .com.mingz.frame.ObjId src_id = 1;
+    // required .ObjId src_id = 1;
     if (has_src_id()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
           this->src_id());
     }
 
-    // required .com.mingz.frame.ObjId dst_id = 2;
+    // required .ObjId dst_id = 2;
     if (has_dst_id()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
           this->dst_id());
     }
 
-    // required .com.mingz.frame.PassMsgCmd cmd = 3;
+    // required .PassMsgCmd cmd = 3;
     if (has_cmd()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::EnumSize(this->cmd());
@@ -717,10 +711,10 @@ int PassMsgHead::ByteSize() const {
   return total_size;
 }
 
-void PassMsgHead::MergeFrom(const ::google::protobuf::Message& from) {
+void PassMsg::MergeFrom(const ::google::protobuf::Message& from) {
   GOOGLE_CHECK_NE(&from, this);
-  const PassMsgHead* source =
-    ::google::protobuf::internal::dynamic_cast_if_available<const PassMsgHead*>(
+  const PassMsg* source =
+    ::google::protobuf::internal::dynamic_cast_if_available<const PassMsg*>(
       &from);
   if (source == NULL) {
     ::google::protobuf::internal::ReflectionOps::Merge(from, this);
@@ -729,14 +723,14 @@ void PassMsgHead::MergeFrom(const ::google::protobuf::Message& from) {
   }
 }
 
-void PassMsgHead::MergeFrom(const PassMsgHead& from) {
+void PassMsg::MergeFrom(const PassMsg& from) {
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (from.has_src_id()) {
-      mutable_src_id()->::com::mingz::frame::ObjId::MergeFrom(from.src_id());
+      mutable_src_id()->::ObjId::MergeFrom(from.src_id());
     }
     if (from.has_dst_id()) {
-      mutable_dst_id()->::com::mingz::frame::ObjId::MergeFrom(from.dst_id());
+      mutable_dst_id()->::ObjId::MergeFrom(from.dst_id());
     }
     if (from.has_cmd()) {
       set_cmd(from.cmd());
@@ -748,19 +742,19 @@ void PassMsgHead::MergeFrom(const PassMsgHead& from) {
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
 
-void PassMsgHead::CopyFrom(const ::google::protobuf::Message& from) {
+void PassMsg::CopyFrom(const ::google::protobuf::Message& from) {
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-void PassMsgHead::CopyFrom(const PassMsgHead& from) {
+void PassMsg::CopyFrom(const PassMsg& from) {
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-bool PassMsgHead::IsInitialized() const {
+bool PassMsg::IsInitialized() const {
   if ((_has_bits_[0] & 0x0000000f) != 0x0000000f) return false;
 
   if (has_src_id()) {
@@ -772,7 +766,7 @@ bool PassMsgHead::IsInitialized() const {
   return true;
 }
 
-void PassMsgHead::Swap(PassMsgHead* other) {
+void PassMsg::Swap(PassMsg* other) {
   if (other != this) {
     std::swap(src_id_, other->src_id_);
     std::swap(dst_id_, other->dst_id_);
@@ -784,11 +778,11 @@ void PassMsgHead::Swap(PassMsgHead* other) {
   }
 }
 
-::google::protobuf::Metadata PassMsgHead::GetMetadata() const {
+::google::protobuf::Metadata PassMsg::GetMetadata() const {
   protobuf_AssignDescriptorsOnce();
   ::google::protobuf::Metadata metadata;
-  metadata.descriptor = PassMsgHead_descriptor_;
-  metadata.reflection = PassMsgHead_reflection_;
+  metadata.descriptor = PassMsg_descriptor_;
+  metadata.reflection = PassMsg_reflection_;
   return metadata;
 }
 
@@ -796,28 +790,28 @@ void PassMsgHead::Swap(PassMsgHead* other) {
 // ===================================================================
 
 #ifndef _MSC_VER
-const int CommonMsgHead::kObjIdFieldNumber;
-const int CommonMsgHead::kObjOpFieldNumber;
-const int CommonMsgHead::kVersionFieldNumber;
-const int CommonMsgHead::kReservedFieldNumber;
-const int CommonMsgHead::kStrFieldNumber;
+const int CommonMsg::kObjIdFieldNumber;
+const int CommonMsg::kObjOpFieldNumber;
+const int CommonMsg::kVersionFieldNumber;
+const int CommonMsg::kReservedFieldNumber;
+const int CommonMsg::kStrFieldNumber;
 #endif  // !_MSC_VER
 
-CommonMsgHead::CommonMsgHead()
+CommonMsg::CommonMsg()
   : ::google::protobuf::Message() {
   SharedCtor();
 }
 
-void CommonMsgHead::InitAsDefaultInstance() {
+void CommonMsg::InitAsDefaultInstance() {
 }
 
-CommonMsgHead::CommonMsgHead(const CommonMsgHead& from)
+CommonMsg::CommonMsg(const CommonMsg& from)
   : ::google::protobuf::Message() {
   SharedCtor();
   MergeFrom(from);
 }
 
-void CommonMsgHead::SharedCtor() {
+void CommonMsg::SharedCtor() {
   _cached_size_ = 0;
   obj_id_ = 0u;
   obj_op_ = 0u;
@@ -827,11 +821,11 @@ void CommonMsgHead::SharedCtor() {
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
-CommonMsgHead::~CommonMsgHead() {
+CommonMsg::~CommonMsg() {
   SharedDtor();
 }
 
-void CommonMsgHead::SharedDtor() {
+void CommonMsg::SharedDtor() {
   if (str_ != &::google::protobuf::internal::kEmptyString) {
     delete str_;
   }
@@ -839,28 +833,28 @@ void CommonMsgHead::SharedDtor() {
   }
 }
 
-void CommonMsgHead::SetCachedSize(int size) const {
+void CommonMsg::SetCachedSize(int size) const {
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
   _cached_size_ = size;
   GOOGLE_SAFE_CONCURRENT_WRITES_END();
 }
-const ::google::protobuf::Descriptor* CommonMsgHead::descriptor() {
+const ::google::protobuf::Descriptor* CommonMsg::descriptor() {
   protobuf_AssignDescriptorsOnce();
-  return CommonMsgHead_descriptor_;
+  return CommonMsg_descriptor_;
 }
 
-const CommonMsgHead& CommonMsgHead::default_instance() {
+const CommonMsg& CommonMsg::default_instance() {
   if (default_instance_ == NULL) protobuf_AddDesc_myframe_2eproto();
   return *default_instance_;
 }
 
-CommonMsgHead* CommonMsgHead::default_instance_ = NULL;
+CommonMsg* CommonMsg::default_instance_ = NULL;
 
-CommonMsgHead* CommonMsgHead::New() const {
-  return new CommonMsgHead;
+CommonMsg* CommonMsg::New() const {
+  return new CommonMsg;
 }
 
-void CommonMsgHead::Clear() {
+void CommonMsg::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     obj_id_ = 0u;
     obj_op_ = 0u;
@@ -876,7 +870,7 @@ void CommonMsgHead::Clear() {
   mutable_unknown_fields()->Clear();
 }
 
-bool CommonMsgHead::MergePartialFromCodedStream(
+bool CommonMsg::MergePartialFromCodedStream(
     ::google::protobuf::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!(EXPRESSION)) return false
   ::google::protobuf::uint32 tag;
@@ -978,7 +972,7 @@ bool CommonMsgHead::MergePartialFromCodedStream(
 #undef DO_
 }
 
-void CommonMsgHead::SerializeWithCachedSizes(
+void CommonMsg::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // required uint32 obj_id = 1;
   if (has_obj_id()) {
@@ -1015,7 +1009,7 @@ void CommonMsgHead::SerializeWithCachedSizes(
   }
 }
 
-::google::protobuf::uint8* CommonMsgHead::SerializeWithCachedSizesToArray(
+::google::protobuf::uint8* CommonMsg::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
   // required uint32 obj_id = 1;
   if (has_obj_id()) {
@@ -1054,7 +1048,7 @@ void CommonMsgHead::SerializeWithCachedSizes(
   return target;
 }
 
-int CommonMsgHead::ByteSize() const {
+int CommonMsg::ByteSize() const {
   int total_size = 0;
 
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
@@ -1105,10 +1099,10 @@ int CommonMsgHead::ByteSize() const {
   return total_size;
 }
 
-void CommonMsgHead::MergeFrom(const ::google::protobuf::Message& from) {
+void CommonMsg::MergeFrom(const ::google::protobuf::Message& from) {
   GOOGLE_CHECK_NE(&from, this);
-  const CommonMsgHead* source =
-    ::google::protobuf::internal::dynamic_cast_if_available<const CommonMsgHead*>(
+  const CommonMsg* source =
+    ::google::protobuf::internal::dynamic_cast_if_available<const CommonMsg*>(
       &from);
   if (source == NULL) {
     ::google::protobuf::internal::ReflectionOps::Merge(from, this);
@@ -1117,7 +1111,7 @@ void CommonMsgHead::MergeFrom(const ::google::protobuf::Message& from) {
   }
 }
 
-void CommonMsgHead::MergeFrom(const CommonMsgHead& from) {
+void CommonMsg::MergeFrom(const CommonMsg& from) {
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (from.has_obj_id()) {
@@ -1139,25 +1133,25 @@ void CommonMsgHead::MergeFrom(const CommonMsgHead& from) {
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
 
-void CommonMsgHead::CopyFrom(const ::google::protobuf::Message& from) {
+void CommonMsg::CopyFrom(const ::google::protobuf::Message& from) {
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-void CommonMsgHead::CopyFrom(const CommonMsgHead& from) {
+void CommonMsg::CopyFrom(const CommonMsg& from) {
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-bool CommonMsgHead::IsInitialized() const {
+bool CommonMsg::IsInitialized() const {
   if ((_has_bits_[0] & 0x0000001f) != 0x0000001f) return false;
 
   return true;
 }
 
-void CommonMsgHead::Swap(CommonMsgHead* other) {
+void CommonMsg::Swap(CommonMsg* other) {
   if (other != this) {
     std::swap(obj_id_, other->obj_id_);
     std::swap(obj_op_, other->obj_op_);
@@ -1170,19 +1164,15 @@ void CommonMsgHead::Swap(CommonMsgHead* other) {
   }
 }
 
-::google::protobuf::Metadata CommonMsgHead::GetMetadata() const {
+::google::protobuf::Metadata CommonMsg::GetMetadata() const {
   protobuf_AssignDescriptorsOnce();
   ::google::protobuf::Metadata metadata;
-  metadata.descriptor = CommonMsgHead_descriptor_;
-  metadata.reflection = CommonMsgHead_reflection_;
+  metadata.descriptor = CommonMsg_descriptor_;
+  metadata.reflection = CommonMsg_reflection_;
   return metadata;
 }
 
 
 // @@protoc_insertion_point(namespace_scope)
-
-}  // namespace frame
-}  // namespace mingz
-}  // namespace com
 
 // @@protoc_insertion_point(global_scope)

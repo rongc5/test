@@ -36,13 +36,13 @@ class common_msg_process:public base_msg_process
             {
                 RECV_MSG_STATUS status = RECV_MSG_HEAD;
                 size_t msg_body_len = 0;
-                _head_len = sizeof(_msg_t); 
+                _head_len = sizeof(int); 
                 if (status == RECV_MSG_HEAD)
                 {
                     if (left_len > _head_len)
                     {
-                        _msg_t * ptr = (_msg_t *) buf;
-                        msg_body_len = ptr->body_len;
+                        int *p_len = (int *)buf;
+                        msg_body_len = ntohl(*p_len);
 
                         status = RECV_MSG_BODY;
                     }
@@ -56,15 +56,19 @@ class common_msg_process:public base_msg_process
                 {
                     if (left_len >= _head_len + msg_body_len) {
 
-                        string tmp_buf;
-                        _pass_msg_t tmp_head;
-                        tmp_head._src_obj = _p_connect->get_id();
-                        tmp_head._dst_obj = _p_connect->get_id();
-                        tmp_head.body_len = _head_len + msg_body_len;
-                        memcpy((void *)tmp_buf.c_str(), &tmp_head, sizeof(tmp_head));
-                        tmp_buf.append (buf, _head_len + msg_body_len);
+                        PassMsg head;
+                        ObjId *src_id, *dest_id;
+                        src_id = head.mutable_dst_id();
+                        *src_id = _p_connect->get_id();
+                        dest_id = head.mutable_src_id(); 
+                        *dest_id =  _p_connect->get_id();
+                        head.set_cmd(COMMON_MSG);
+                        head.set_str(buf + _head_len, msg_body_len);
 
-                        process_s(tmp_buf.c_str(), tmp_buf.length());
+                        string out;
+                        head.SerializeToString(&out);
+
+                        process_s(out.c_str(), out.size());
 
                         left_len -= _head_len + msg_body_len;
                         buf = buf + left_len;
@@ -84,7 +88,7 @@ class common_msg_process:public base_msg_process
 
         void put_msg(char * buf, size_t len)
         {
-            if (!buf || len < sizeof(_pass_msg_t)){
+            if (!buf || !len){
                 //LOG_WARN
                 return;
             }

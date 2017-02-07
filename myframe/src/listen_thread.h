@@ -47,9 +47,9 @@ class listen_thread:public common_thread
             set_passing_type(PASSING_ACCEPT_NONE);
         }
 
-        pthread_t get_worker_id()
+        uint32_t get_worker_id()
         {
-            return _worker_mgr->get_idle_worker()->get_thread_id();
+            return _worker_mgr->get_idle_worker()->get_thread_index();
         }
 
         void set_worker_mgr(base_thread_mgr * worker_mgr)
@@ -62,10 +62,13 @@ class listen_thread:public common_thread
         }
 
     protected:
-        const obj_id_str & gen_id_str()
+        const ObjId & gen_id_str()
         {
-            _id_str._thread_id = get_thread_id();
-            _id_str._obj_id++;
+            uint32_t thread_index = get_thread_index();
+            _id_str.set_thread_index(thread_index);
+            uint32_t  obj_id = _id_str.obj_id();
+            obj_id++;
+            _id_str.set_obj_id(obj_id);
             return _id_str;
         }
 
@@ -74,7 +77,7 @@ class listen_thread:public common_thread
         unsigned short _port;
         base_thread_mgr *_worker_mgr;
         base_net_container * _base_container;
-        obj_id_str _id_str;
+        ObjId _id_str;
 };
 
 #endif

@@ -2,9 +2,9 @@ HOME_DIR=../
 LIB_DIR=${HOME_DIR}src
 IDL_DIR=$(HOME_DIR)idl
 
-INCLUDE = -I./${LIB_DIR}/
+INCLUDE = -I./${LIB_DIR}/ -I./${IDL_DIR}/
 
-LIB = -lpthread
+LIB = -lpthread -lprotobuf
 
 CPPFLAGS = -g -msse3 -Wall $(INCLUDE) -DDEBUG=1
 CC  = g++ $(CPPFLAGS)

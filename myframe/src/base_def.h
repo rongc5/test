@@ -28,13 +28,16 @@
 #include <list>
 #include <map>
 #include <set>
-#include <strstream>
+//#include <strstream>
 #include <sstream>
 #include <exception>
 #include <memory>
 
+#include "myframe.pb.h"
 
 using namespace std;
+
+//using namespace com::mingz::frame;
 
 
 #define DAFAULT_EPOLL_SIZE 1000
@@ -51,6 +54,7 @@ const int max_recv_data = 1024*20;
 const int max_send_num = 5;
 
 
+#define MAX_BUF_SIZE 1024 * 10 * 10
 
 
 
@@ -61,7 +65,11 @@ static const uint32_t SIZE_LEN_32 = 32;
 static const uint32_t SIZE_LEN_64 = 64; 
 static const uint32_t SIZE_LEN_128 = 128; 
 static const uint32_t SIZE_LEN_256 = 256;
-
+static const uint32_t SIZE_LEN_512 = 512;
+static const uint32_t SIZE_LEN_1024 = 1024;
+static const uint32_t SIZE_LEN_2048 = 2048;
+static const uint32_t SIZE_LEN_4096 = 4096;
+static const uint32_t SIZE_LEN_8192 = 8192;
 
 
 /***************************/

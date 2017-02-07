@@ -49,17 +49,21 @@ int passing_msg_thread::register_thread(common_thread *thread)
         p_connect->set_id(pass_thread->gen_id_str());
         p_connect->set_net_container(pass_thread->get_net_container());
         pass_thread->set_dest_obj(thread, p_connect);
-        PDEBUG("tid[%lu], fd[1] %d fd[0] %d\n", thread->get_thread_id(), fd[1], fd[0]);
+        PDEBUG("thread_index[%u], fd[1] %d fd[0] %d\n", thread->get_thread_index(), fd[1], fd[0]);
         thread->set_channelid(fd[0]);
     }
 
     return 0;
 }
 
-const obj_id_str & passing_msg_thread::gen_id_str()
+const ObjId & passing_msg_thread::gen_id_str()
 {
-    _id_str._thread_id = get_thread_id();
-    _id_str._obj_id++;
+    uint32_t thread_index = get_thread_index();
+    _id_str.set_thread_index(thread_index);
+    uint32_t  obj_id = _id_str.obj_id();
+    obj_id++;
+    _id_str.set_obj_id(obj_id);
+
     return _id_str;
 }
 
@@ -86,22 +90,22 @@ NET_OBJ * passing_msg_thread::gen_connect(const int fd, EPOLL_TYPE epoll_type)
     return p_connect;
 }
 
-base_net_obj * passing_msg_thread::get_dest_obj(pthread_t tid)
+base_net_obj * passing_msg_thread::get_dest_obj(uint32_t thread_index)
 {
-    map<pthread_t, base_net_obj *>::iterator it;
+    map<uint32_t,base_net_obj* >::iterator it;
 
-    it = _net_obj_map.find(tid);
+    it = _net_obj_map.find(thread_index);
     if (it != _net_obj_map.end()){
         return it->second;
     }
     return NULL;
 }
 
-common_thread * passing_msg_thread::get_dest_thread(pthread_t tid)
+common_thread * passing_msg_thread::get_dest_thread(uint32_t thread_index)
 {
-    map<pthread_t, common_thread *>::iterator it;
+    map<uint32_t, common_thread *>::iterator it;
 
-    it = _thread_obj_map.find(tid);
+    it = _thread_obj_map.find(thread_index);
     if (it != _thread_obj_map.end()){
         return it->second;
     }
@@ -110,14 +114,14 @@ common_thread * passing_msg_thread::get_dest_thread(pthread_t tid)
 
 void passing_msg_thread::set_dest_obj(common_thread *thread, base_net_obj * p_obj)
 {
-    map<pthread_t, common_thread *>::iterator it;
-    it = _thread_obj_map.find(thread->get_thread_id());
+    map<uint32_t, common_thread *>::iterator it;
+    it = _thread_obj_map.find(thread->get_thread_index());
     if (it != _thread_obj_map.end()){
         return ;
     }
 
-    _thread_obj_map[thread->get_thread_id()] = thread;
-    _net_obj_map[thread->get_thread_id()] = p_obj;
+    _thread_obj_map[thread->get_thread_index()] = thread;
+    _net_obj_map[thread->get_thread_index()] = p_obj;
 
     PDEBUG("_net_obj_map [%d]\n", _net_obj_map.size());
 }

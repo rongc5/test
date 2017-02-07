@@ -84,13 +84,11 @@ class base_connect:public NET_OBJ
         {
             if ((event & EPOLLERR) == EPOLLERR || (event & EPOLLHUP) == EPOLLHUP)
             {
-                PDEBUG("epoll error \n");
                 THROW_COMMON_EXCEPT("epoll error ");
             }
 
             if ((event & EPOLLIN) == EPOLLIN) //读
             {
-                PDEBUG("event_process [%d]\n", _fd);
                 recv_process();
             }
 
@@ -211,7 +209,6 @@ class base_connect:public NET_OBJ
 
             if (_recv_buf_len > 0)
             {
-                PDEBUG("recv _fd[%d] _recv_buf_len [%d]\n", _fd, _recv_buf_len); 
                 size_t p_ret = _process->process_recv_buf((char*)_recv_buf.c_str(), _recv_buf_len);
                 if (p_ret < _recv_buf_len)//表名上层处理能力跟不上,停止接受数据
                 {

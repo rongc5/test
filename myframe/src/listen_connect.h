@@ -14,6 +14,7 @@ class listen_connect:public base_net_obj
 		listen_connect()
 		{
 			_port = 0;
+            _process = NULL;
 		}
 
 		~listen_connect()

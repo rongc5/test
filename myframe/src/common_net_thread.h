@@ -56,17 +56,20 @@ class common_net_thread:public common_thread
         }
 
     protected:
-        const obj_id_str & gen_id_str()
+        const ObjId & gen_id_str()
         {
-            _id_str._thread_id = get_thread_id();
-            _id_str._obj_id++;
+            uint32_t obj_id = _id_str.obj_id();
+            uint32_t thread_index = get_thread_index();
+            _id_str.set_thread_index(thread_index);
+            obj_id++;
+            _id_str.set_obj_id(obj_id);
             return _id_str;
         }
 
     protected:
 
         base_net_container * _base_container;
-        obj_id_str _id_str;
+        ObjId _id_str;
 };
 
 #endif

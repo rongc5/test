@@ -27,18 +27,14 @@
 #include <google/protobuf/unknown_field_set.h>
 // @@protoc_insertion_point(includes)
 
-namespace com {
-namespace mingz {
-namespace frame {
-
 // Internal implementation detail -- do not call these.
 void  protobuf_AddDesc_myframe_2eproto();
 void protobuf_AssignDesc_myframe_2eproto();
 void protobuf_ShutdownFile_myframe_2eproto();
 
 class ObjId;
-class PassMsgHead;
-class CommonMsgHead;
+class PassMsg;
+class CommonMsg;
 
 enum PassMsgCmd {
   ADD_NEW_SOCEKT = 0,
@@ -129,7 +125,7 @@ class ObjId : public ::google::protobuf::Message {
   inline ::google::protobuf::uint32 thread_index() const;
   inline void set_thread_index(::google::protobuf::uint32 value);
 
-  // @@protoc_insertion_point(class_scope:com.mingz.frame.ObjId)
+  // @@protoc_insertion_point(class_scope:ObjId)
  private:
   inline void set_has_obj_id();
   inline void clear_has_obj_id();
@@ -153,14 +149,14 @@ class ObjId : public ::google::protobuf::Message {
 };
 // -------------------------------------------------------------------
 
-class PassMsgHead : public ::google::protobuf::Message {
+class PassMsg : public ::google::protobuf::Message {
  public:
-  PassMsgHead();
-  virtual ~PassMsgHead();
+  PassMsg();
+  virtual ~PassMsg();
 
-  PassMsgHead(const PassMsgHead& from);
+  PassMsg(const PassMsg& from);
 
-  inline PassMsgHead& operator=(const PassMsgHead& from) {
+  inline PassMsg& operator=(const PassMsg& from) {
     CopyFrom(from);
     return *this;
   }
@@ -174,17 +170,17 @@ class PassMsgHead : public ::google::protobuf::Message {
   }
 
   static const ::google::protobuf::Descriptor* descriptor();
-  static const PassMsgHead& default_instance();
+  static const PassMsg& default_instance();
 
-  void Swap(PassMsgHead* other);
+  void Swap(PassMsg* other);
 
   // implements Message ----------------------------------------------
 
-  PassMsgHead* New() const;
+  PassMsg* New() const;
   void CopyFrom(const ::google::protobuf::Message& from);
   void MergeFrom(const ::google::protobuf::Message& from);
-  void CopyFrom(const PassMsgHead& from);
-  void MergeFrom(const PassMsgHead& from);
+  void CopyFrom(const PassMsg& from);
+  void MergeFrom(const PassMsg& from);
   void Clear();
   bool IsInitialized() const;
 
@@ -207,30 +203,30 @@ class PassMsgHead : public ::google::protobuf::Message {
 
   // accessors -------------------------------------------------------
 
-  // required .com.mingz.frame.ObjId src_id = 1;
+  // required .ObjId src_id = 1;
   inline bool has_src_id() const;
   inline void clear_src_id();
   static const int kSrcIdFieldNumber = 1;
-  inline const ::com::mingz::frame::ObjId& src_id() const;
-  inline ::com::mingz::frame::ObjId* mutable_src_id();
-  inline ::com::mingz::frame::ObjId* release_src_id();
-  inline void set_allocated_src_id(::com::mingz::frame::ObjId* src_id);
+  inline const ::ObjId& src_id() const;
+  inline ::ObjId* mutable_src_id();
+  inline ::ObjId* release_src_id();
+  inline void set_allocated_src_id(::ObjId* src_id);
 
-  // required .com.mingz.frame.ObjId dst_id = 2;
+  // required .ObjId dst_id = 2;
   inline bool has_dst_id() const;
   inline void clear_dst_id();
   static const int kDstIdFieldNumber = 2;
-  inline const ::com::mingz::frame::ObjId& dst_id() const;
-  inline ::com::mingz::frame::ObjId* mutable_dst_id();
-  inline ::com::mingz::frame::ObjId* release_dst_id();
-  inline void set_allocated_dst_id(::com::mingz::frame::ObjId* dst_id);
+  inline const ::ObjId& dst_id() const;
+  inline ::ObjId* mutable_dst_id();
+  inline ::ObjId* release_dst_id();
+  inline void set_allocated_dst_id(::ObjId* dst_id);
 
-  // required .com.mingz.frame.PassMsgCmd cmd = 3;
+  // required .PassMsgCmd cmd = 3;
   inline bool has_cmd() const;
   inline void clear_cmd();
   static const int kCmdFieldNumber = 3;
-  inline ::com::mingz::frame::PassMsgCmd cmd() const;
-  inline void set_cmd(::com::mingz::frame::PassMsgCmd value);
+  inline ::PassMsgCmd cmd() const;
+  inline void set_cmd(::PassMsgCmd value);
 
   // required string str = 4;
   inline bool has_str() const;
@@ -244,7 +240,7 @@ class PassMsgHead : public ::google::protobuf::Message {
   inline ::std::string* release_str();
   inline void set_allocated_str(::std::string* str);
 
-  // @@protoc_insertion_point(class_scope:com.mingz.frame.PassMsgHead)
+  // @@protoc_insertion_point(class_scope:PassMsg)
  private:
   inline void set_has_src_id();
   inline void clear_has_src_id();
@@ -257,8 +253,8 @@ class PassMsgHead : public ::google::protobuf::Message {
 
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
 
-  ::com::mingz::frame::ObjId* src_id_;
-  ::com::mingz::frame::ObjId* dst_id_;
+  ::ObjId* src_id_;
+  ::ObjId* dst_id_;
   ::std::string* str_;
   int cmd_;
 
@@ -270,18 +266,18 @@ class PassMsgHead : public ::google::protobuf::Message {
   friend void protobuf_ShutdownFile_myframe_2eproto();
 
   void InitAsDefaultInstance();
-  static PassMsgHead* default_instance_;
+  static PassMsg* default_instance_;
 };
 // -------------------------------------------------------------------
 
-class CommonMsgHead : public ::google::protobuf::Message {
+class CommonMsg : public ::google::protobuf::Message {
  public:
-  CommonMsgHead();
-  virtual ~CommonMsgHead();
+  CommonMsg();
+  virtual ~CommonMsg();
 
-  CommonMsgHead(const CommonMsgHead& from);
+  CommonMsg(const CommonMsg& from);
 
-  inline CommonMsgHead& operator=(const CommonMsgHead& from) {
+  inline CommonMsg& operator=(const CommonMsg& from) {
     CopyFrom(from);
     return *this;
   }
@@ -295,17 +291,17 @@ class CommonMsgHead : public ::google::protobuf::Message {
   }
 
   static const ::google::protobuf::Descriptor* descriptor();
-  static const CommonMsgHead& default_instance();
+  static const CommonMsg& default_instance();
 
-  void Swap(CommonMsgHead* other);
+  void Swap(CommonMsg* other);
 
   // implements Message ----------------------------------------------
 
-  CommonMsgHead* New() const;
+  CommonMsg* New() const;
   void CopyFrom(const ::google::protobuf::Message& from);
   void MergeFrom(const ::google::protobuf::Message& from);
-  void CopyFrom(const CommonMsgHead& from);
-  void MergeFrom(const CommonMsgHead& from);
+  void CopyFrom(const CommonMsg& from);
+  void MergeFrom(const CommonMsg& from);
   void Clear();
   bool IsInitialized() const;
 
@@ -368,7 +364,7 @@ class CommonMsgHead : public ::google::protobuf::Message {
   inline ::std::string* release_str();
   inline void set_allocated_str(::std::string* str);
 
-  // @@protoc_insertion_point(class_scope:com.mingz.frame.CommonMsgHead)
+  // @@protoc_insertion_point(class_scope:CommonMsg)
  private:
   inline void set_has_obj_id();
   inline void clear_has_obj_id();
@@ -397,7 +393,7 @@ class CommonMsgHead : public ::google::protobuf::Message {
   friend void protobuf_ShutdownFile_myframe_2eproto();
 
   void InitAsDefaultInstance();
-  static CommonMsgHead* default_instance_;
+  static CommonMsg* default_instance_;
 };
 // ===================================================================
 
@@ -452,37 +448,37 @@ inline void ObjId::set_thread_index(::google::protobuf::uint32 value) {
 
 // -------------------------------------------------------------------
 
-// PassMsgHead
+// PassMsg
 
-// required .com.mingz.frame.ObjId src_id = 1;
-inline bool PassMsgHead::has_src_id() const {
+// required .ObjId src_id = 1;
+inline bool PassMsg::has_src_id() const {
   return (_has_bits_[0] & 0x00000001u) != 0;
 }
-inline void PassMsgHead::set_has_src_id() {
+inline void PassMsg::set_has_src_id() {
   _has_bits_[0] |= 0x00000001u;
 }
-inline void PassMsgHead::clear_has_src_id() {
+inline void PassMsg::clear_has_src_id() {
   _has_bits_[0] &= ~0x00000001u;
 }
-inline void PassMsgHead::clear_src_id() {
-  if (src_id_ != NULL) src_id_->::com::mingz::frame::ObjId::Clear();
+inline void PassMsg::clear_src_id() {
+  if (src_id_ != NULL) src_id_->::ObjId::Clear();
   clear_has_src_id();
 }
-inline const ::com::mingz::frame::ObjId& PassMsgHead::src_id() const {
+inline const ::ObjId& PassMsg::src_id() const {
   return src_id_ != NULL ? *src_id_ : *default_instance_->src_id_;
 }
-inline ::com::mingz::frame::ObjId* PassMsgHead::mutable_src_id() {
+inline ::ObjId* PassMsg::mutable_src_id() {
   set_has_src_id();
-  if (src_id_ == NULL) src_id_ = new ::com::mingz::frame::ObjId;
+  if (src_id_ == NULL) src_id_ = new ::ObjId;
   return src_id_;
 }
-inline ::com::mingz::frame::ObjId* PassMsgHead::release_src_id() {
+inline ::ObjId* PassMsg::release_src_id() {
   clear_has_src_id();
-  ::com::mingz::frame::ObjId* temp = src_id_;
+  ::ObjId* temp = src_id_;
   src_id_ = NULL;
   return temp;
 }
-inline void PassMsgHead::set_allocated_src_id(::com::mingz::frame::ObjId* src_id) {
+inline void PassMsg::set_allocated_src_id(::ObjId* src_id) {
   delete src_id_;
   src_id_ = src_id;
   if (src_id) {
@@ -492,35 +488,35 @@ inline void PassMsgHead::set_allocated_src_id(::com::mingz::frame::ObjId* src_id
   }
 }
 
-// required .com.mingz.frame.ObjId dst_id = 2;
-inline bool PassMsgHead::has_dst_id() const {
+// required .ObjId dst_id = 2;
+inline bool PassMsg::has_dst_id() const {
   return (_has_bits_[0] & 0x00000002u) != 0;
 }
-inline void PassMsgHead::set_has_dst_id() {
+inline void PassMsg::set_has_dst_id() {
   _has_bits_[0] |= 0x00000002u;
 }
-inline void PassMsgHead::clear_has_dst_id() {
+inline void PassMsg::clear_has_dst_id() {
   _has_bits_[0] &= ~0x00000002u;
 }
-inline void PassMsgHead::clear_dst_id() {
-  if (dst_id_ != NULL) dst_id_->::com::mingz::frame::ObjId::Clear();
+inline void PassMsg::clear_dst_id() {
+  if (dst_id_ != NULL) dst_id_->::ObjId::Clear();
   clear_has_dst_id();
 }
-inline const ::com::mingz::frame::ObjId& PassMsgHead::dst_id() const {
+inline const ::ObjId& PassMsg::dst_id() const {
   return dst_id_ != NULL ? *dst_id_ : *default_instance_->dst_id_;
 }
-inline ::com::mingz::frame::ObjId* PassMsgHead::mutable_dst_id() {
+inline ::ObjId* PassMsg::mutable_dst_id() {
   set_has_dst_id();
-  if (dst_id_ == NULL) dst_id_ = new ::com::mingz::frame::ObjId;
+  if (dst_id_ == NULL) dst_id_ = new ::ObjId;
   return dst_id_;
 }
-inline ::com::mingz::frame::ObjId* PassMsgHead::release_dst_id() {
+inline ::ObjId* PassMsg::release_dst_id() {
   clear_has_dst_id();
-  ::com::mingz::frame::ObjId* temp = dst_id_;
+  ::ObjId* temp = dst_id_;
   dst_id_ = NULL;
   return temp;
 }
-inline void PassMsgHead::set_allocated_dst_id(::com::mingz::frame::ObjId* dst_id) {
+inline void PassMsg::set_allocated_dst_id(::ObjId* dst_id) {
   delete dst_id_;
   dst_id_ = dst_id;
   if (dst_id) {
@@ -530,77 +526,77 @@ inline void PassMsgHead::set_allocated_dst_id(::com::mingz::frame::ObjId* dst_id
   }
 }
 
-// required .com.mingz.frame.PassMsgCmd cmd = 3;
-inline bool PassMsgHead::has_cmd() const {
+// required .PassMsgCmd cmd = 3;
+inline bool PassMsg::has_cmd() const {
   return (_has_bits_[0] & 0x00000004u) != 0;
 }
-inline void PassMsgHead::set_has_cmd() {
+inline void PassMsg::set_has_cmd() {
   _has_bits_[0] |= 0x00000004u;
 }
-inline void PassMsgHead::clear_has_cmd() {
+inline void PassMsg::clear_has_cmd() {
   _has_bits_[0] &= ~0x00000004u;
 }
-inline void PassMsgHead::clear_cmd() {
+inline void PassMsg::clear_cmd() {
   cmd_ = 0;
   clear_has_cmd();
 }
-inline ::com::mingz::frame::PassMsgCmd PassMsgHead::cmd() const {
-  return static_cast< ::com::mingz::frame::PassMsgCmd >(cmd_);
+inline ::PassMsgCmd PassMsg::cmd() const {
+  return static_cast< ::PassMsgCmd >(cmd_);
 }
-inline void PassMsgHead::set_cmd(::com::mingz::frame::PassMsgCmd value) {
-  assert(::com::mingz::frame::PassMsgCmd_IsValid(value));
+inline void PassMsg::set_cmd(::PassMsgCmd value) {
+  assert(::PassMsgCmd_IsValid(value));
   set_has_cmd();
   cmd_ = value;
 }
 
 // required string str = 4;
-inline bool PassMsgHead::has_str() const {
+inline bool PassMsg::has_str() const {
   return (_has_bits_[0] & 0x00000008u) != 0;
 }
-inline void PassMsgHead::set_has_str() {
+inline void PassMsg::set_has_str() {
   _has_bits_[0] |= 0x00000008u;
 }
-inline void PassMsgHead::clear_has_str() {
+inline void PassMsg::clear_has_str() {
   _has_bits_[0] &= ~0x00000008u;
 }
-inline void PassMsgHead::clear_str() {
+inline void PassMsg::clear_str() {
   if (str_ != &::google::protobuf::internal::kEmptyString) {
     str_->clear();
   }
   clear_has_str();
 }
-inline const ::std::string& PassMsgHead::str() const {
+inline const ::std::string& PassMsg::str() const {
   return *str_;
 }
-inline void PassMsgHead::set_str(const ::std::string& value) {
+inline void PassMsg::set_str(const ::std::string& value) {
   set_has_str();
   if (str_ == &::google::protobuf::internal::kEmptyString) {
     str_ = new ::std::string;
   }
   str_->assign(value);
 }
-inline void PassMsgHead::set_str(const char* value) {
+inline void PassMsg::set_str(const char* value) {
   set_has_str();
   if (str_ == &::google::protobuf::internal::kEmptyString) {
     str_ = new ::std::string;
   }
   str_->assign(value);
 }
-inline void PassMsgHead::set_str(const char* value, size_t size) {
+inline void PassMsg::set_str(const char* value, size_t size) {
   set_has_str();
   if (str_ == &::google::protobuf::internal::kEmptyString) {
     str_ = new ::std::string;
   }
   str_->assign(reinterpret_cast<const char*>(value), size);
 }
-inline ::std::string* PassMsgHead::mutable_str() {
+inline ::std::string* PassMsg::mutable_str() {
   set_has_str();
   if (str_ == &::google::protobuf::internal::kEmptyString) {
     str_ = new ::std::string;
   }
   return str_;
 }
-inline ::std::string* PassMsgHead::release_str() {
+inline ::std::string* PassMsg::release_str() {
   clear_has_str();
   if (str_ == &::google::protobuf::internal::kEmptyString) {
     return NULL;
@@ -610,7 +606,7 @@ inline ::std::string* PassMsgHead::release_str() {
     return temp;
   }
 }
-inline void PassMsgHead::set_allocated_str(::std::string* str) {
+inline void PassMsg::set_allocated_str(::std::string* str) {
   if (str_ != &::google::protobuf::internal::kEmptyString) {
     delete str_;
   }
@@ -625,144 +621,144 @@ inline void PassMsgHead::set_allocated_str(::std::string* str) {
 
 // -------------------------------------------------------------------
 
-// CommonMsgHead
+// CommonMsg
 
 // required uint32 obj_id = 1;
-inline bool CommonMsgHead::has_obj_id() const {
+inline bool CommonMsg::has_obj_id() const {
   return (_has_bits_[0] & 0x00000001u) != 0;
 }
-inline void CommonMsgHead::set_has_obj_id() {
+inline void CommonMsg::set_has_obj_id() {
   _has_bits_[0] |= 0x00000001u;
 }
-inline void CommonMsgHead::clear_has_obj_id() {
+inline void CommonMsg::clear_has_obj_id() {
   _has_bits_[0] &= ~0x00000001u;
 }
-inline void CommonMsgHead::clear_obj_id() {
+inline void CommonMsg::clear_obj_id() {
   obj_id_ = 0u;
   clear_has_obj_id();
 }
-inline ::google::protobuf::uint32 CommonMsgHead::obj_id() const {
+inline ::google::protobuf::uint32 CommonMsg::obj_id() const {
   return obj_id_;
 }
-inline void CommonMsgHead::set_obj_id(::google::protobuf::uint32 value) {
+inline void CommonMsg::set_obj_id(::google::protobuf::uint32 value) {
   set_has_obj_id();
   obj_id_ = value;
 }
 
 // required uint32 obj_op = 2;
-inline bool CommonMsgHead::has_obj_op() const {
+inline bool CommonMsg::has_obj_op() const {
   return (_has_bits_[0] & 0x00000002u) != 0;
 }
-inline void CommonMsgHead::set_has_obj_op() {
+inline void CommonMsg::set_has_obj_op() {
   _has_bits_[0] |= 0x00000002u;
 }
-inline void CommonMsgHead::clear_has_obj_op() {
+inline void CommonMsg::clear_has_obj_op() {
   _has_bits_[0] &= ~0x00000002u;
 }
-inline void CommonMsgHead::clear_obj_op() {
+inline void CommonMsg::clear_obj_op() {
   obj_op_ = 0u;
   clear_has_obj_op();
 }
-inline ::google::protobuf::uint32 CommonMsgHead::obj_op() const {
+inline ::google::protobuf::uint32 CommonMsg::obj_op() const {
   return obj_op_;
 }
-inline void CommonMsgHead::set_obj_op(::google::protobuf::uint32 value) {
+inline void CommonMsg::set_obj_op(::google::protobuf::uint32 value) {
   set_has_obj_op();
   obj_op_ = value;
 }
 
 // required uint32 version = 3;
-inline bool CommonMsgHead::has_version() const {
+inline bool CommonMsg::has_version() const {
   return (_has_bits_[0] & 0x00000004u) != 0;
 }
-inline void CommonMsgHead::set_has_version() {
+inline void CommonMsg::set_has_version() {
   _has_bits_[0] |= 0x00000004u;
 }
-inline void CommonMsgHead::clear_has_version() {
+inline void CommonMsg::clear_has_version() {
   _has_bits_[0] &= ~0x00000004u;
 }
-inline void CommonMsgHead::clear_version() {
+inline void CommonMsg::clear_version() {
   version_ = 0u;
   clear_has_version();
 }
-inline ::google::protobuf::uint32 CommonMsgHead::version() const {
+inline ::google::protobuf::uint32 CommonMsg::version() const {
   return version_;
 }
-inline void CommonMsgHead::set_version(::google::protobuf::uint32 value) {
+inline void CommonMsg::set_version(::google::protobuf::uint32 value) {
   set_has_version();
   version_ = value;
 }
 
 // required uint32 reserved = 4;
-inline bool CommonMsgHead::has_reserved() const {
+inline bool CommonMsg::has_reserved() const {
   return (_has_bits_[0] & 0x00000008u) != 0;
 }
-inline void CommonMsgHead::set_has_reserved() {
+inline void CommonMsg::set_has_reserved() {
   _has_bits_[0] |= 0x00000008u;
 }
-inline void CommonMsgHead::clear_has_reserved() {
+inline void CommonMsg::clear_has_reserved() {
   _has_bits_[0] &= ~0x00000008u;
 }
-inline void CommonMsgHead::clear_reserved() {
+inline void CommonMsg::clear_reserved() {
   reserved_ = 0u;
   clear_has_reserved();
 }
-inline ::google::protobuf::uint32 CommonMsgHead::reserved() const {
+inline ::google::protobuf::uint32 CommonMsg::reserved() const {
   return reserved_;
 }
-inline void CommonMsgHead::set_reserved(::google::protobuf::uint32 value) {
+inline void CommonMsg::set_reserved(::google::protobuf::uint32 value) {
   set_has_reserved();
   reserved_ = value;
 }
 
 // required string str = 5;
-inline bool CommonMsgHead::has_str() const {
+inline bool CommonMsg::has_str() const {
   return (_has_bits_[0] & 0x00000010u) != 0;
 }
-inline void CommonMsgHead::set_has_str() {
+inline void CommonMsg::set_has_str() {
   _has_bits_[0] |= 0x00000010u;
 }
-inline void CommonMsgHead::clear_has_str() {
+inline void CommonMsg::clear_has_str() {
   _has_bits_[0] &= ~0x00000010u;
 }
-inline void CommonMsgHead::clear_str() {
+inline void CommonMsg::clear_str() {
   if (str_ != &::google::protobuf::internal::kEmptyString) {
     str_->clear();
   }
   clear_has_str();
 }
-inline const ::std::string& CommonMsgHead::str() const {
+inline const ::std::string& CommonMsg::str() const {
   return *str_;
 }
-inline void CommonMsgHead::set_str(const ::std::string& value) {
+inline void CommonMsg::set_str(const ::std::string& value) {
   set_has_str();
   if (str_ == &::google::protobuf::internal::kEmptyString) {
     str_ = new ::std::string;
   }
   str_->assign(value);
 }
-inline void CommonMsgHead::set_str(const char* value) {
+inline void CommonMsg::set_str(const char* value) {
   set_has_str();
   if (str_ == &::google::protobuf::internal::kEmptyString) {
     str_ = new ::std::string;
   }
   str_->assign(value);
 }
-inline void CommonMsgHead::set_str(const char* value, size_t size) {
+inline void CommonMsg::set_str(const char* value, size_t size) {
   set_has_str();
   if (str_ == &::google::protobuf::internal::kEmptyString) {
     str_ = new ::std::string;
   }
   str_->assign(reinterpret_cast<const char*>(value), size);
 }
-inline ::std::string* CommonMsgHead::mutable_str() {
+inline ::std::string* CommonMsg::mutable_str() {
   set_has_str();
   if (str_ == &::google::protobuf::internal::kEmptyString) {
     str_ = new ::std::string;
   }
   return str_;
 }
-inline ::std::string* CommonMsgHead::release_str() {
+inline ::std::string* CommonMsg::release_str() {
   clear_has_str();
   if (str_ == &::google::protobuf::internal::kEmptyString) {
     return NULL;
@@ -772,7 +768,7 @@ inline ::std::string* CommonMsgHead::release_str() {
     return temp;
   }
 }
-inline void CommonMsgHead::set_allocated_str(::std::string* str) {
+inline void CommonMsg::set_allocated_str(::std::string* str) {
   if (str_ != &::google::protobuf::internal::kEmptyString) {
     delete str_;
   }
@@ -788,17 +784,13 @@ inline void CommonMsgHead::set_allocated_str(::std::string* str) {
 
 // @@protoc_insertion_point(namespace_scope)
 
-}  // namespace frame
-}  // namespace mingz
-}  // namespace com
-
 #ifndef SWIG
 namespace google {
 namespace protobuf {
 
 template <>
-inline const EnumDescriptor* GetEnumDescriptor< ::com::mingz::frame::PassMsgCmd>() {
-  return ::com::mingz::frame::PassMsgCmd_descriptor();
+inline const EnumDescriptor* GetEnumDescriptor< ::PassMsgCmd>() {
+  return ::PassMsgCmd_descriptor();
 }
 
 }  // namespace google

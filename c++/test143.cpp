@@ -23,6 +23,12 @@ struct _pass_msg_t {
 };
 
 
+struct test_t {
+    int len;
+    char buf[1024];
+};
+
+
 int main(int argc, char *argv[])
 {
     
@@ -41,6 +47,29 @@ int main(int argc, char *argv[])
     
     phead = (_pass_msg_t *) str.c_str();
     printf("%d\t%d\n", phead->body_len, str.size());
+
+    {
+        string str;
+        str.append("hello world");
+        test_t t;
+        t.len = str.size();
+        memcpy(t.buf, str.c_str(), str.size());
+
+        printf("%d\t%s\t%d\n", t.len, t.buf, strlen(t.buf));
+
+
+        memset(buf, 0, sizeof(buf));
+
+        memcpy(buf, &t, sizeof(t));
+
+        test_t * ptr = (test_t *) buf;
+
+        printf("%d\t%s\t%d\n", ptr->len, ptr->buf, strlen(ptr->buf));
+
+
+
+        
+    }
 
     return 0;
 }

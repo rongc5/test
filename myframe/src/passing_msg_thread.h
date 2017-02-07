@@ -21,19 +21,19 @@ class passing_msg_thread : public base_thread
 
         base_net_container * get_net_container();
 
-        common_thread * get_dest_thread(pthread_t tid);
-        base_net_obj * get_dest_obj(pthread_t tid);
+        common_thread * get_dest_thread(uint32_t thread_index);
+        base_net_obj * get_dest_obj(uint32_t thread_index);
 
         void set_dest_obj(common_thread * thread, base_net_obj * p_obj);
 
         NET_OBJ * gen_connect(const int fd, EPOLL_TYPE epoll_type);
-        const obj_id_str & gen_id_str();
+        const ObjId & gen_id_str();
 
     protected:
         base_net_container * _net_container;
-        obj_id_str _id_str;
-        map<pthread_t, base_net_obj *> _net_obj_map;
-        map<pthread_t, common_thread *> _thread_obj_map;
+        ObjId _id_str;
+        map<uint32_t, base_net_obj *> _net_obj_map;
+        map<uint32_t, common_thread *> _thread_obj_map;
 };
 
 
