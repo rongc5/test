@@ -1,7 +1,6 @@
 #ifndef __COMMON_OBJ_CONTAINER_H__
 #define __COMMON_OBJ_CONTAINER_H__
 
-#include "base_def.h"
 #include "common_def.h"
 #include "common_epoll.h"
 #include "base_net_container.h"

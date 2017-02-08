@@ -1,7 +1,7 @@
 #ifndef __COMMON_NET_THREAD_H__
 #define __COMMON_NET_THREAD_H__
 
-#include "base_def.h"
+#include "common_def.h"
 #include "channel_msg_process.h"
 #include "common_thread.h"
 #include "common_obj_container.h"

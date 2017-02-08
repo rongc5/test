@@ -2,7 +2,6 @@
 #define __LISTEN_CONNECT_H__
 
 #include "common_epoll.h"
-#include "base_def.h"
 #include "common_def.h"
 #include "net_obj.h"
 

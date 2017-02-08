@@ -1,7 +1,6 @@
 #ifndef __NET_OBJ_H__
 #define __NET_OBJ_H__
 
-#include "base_def.h"
 #include "common_def.h"
 
 

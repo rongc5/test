@@ -114,10 +114,13 @@ typedef unsigned int uint32_t;
 /*****************************/
 
 
-#if DEBUG
-#define PDEBUG(format, arg...) printf("line:[%d],func:[%s],file:[%s] "format, __LINE__, __func__, __FILE__, ##arg)
+#ifdef DEBUG
+#define PDEBUG(format, arg...) \
+    do { \
+        printf("tid:[%lu],line:[%d],func:[%s],file:[%s] "format, pthread_self(), __LINE__, __func__, __FILE__, ##arg); \
+} while (0)
 #else
-#define PDEBUG(format, arg...) do while(0)
+    #define PDEBUG(format, arg...) do while(0)
 #endif
 
 

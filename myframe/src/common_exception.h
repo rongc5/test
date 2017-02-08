@@ -1,7 +1,7 @@
 #ifndef  __COMMON_EXCEPTION_H
 #define  __COMMON_EXCEPTION_H
 
-#include "base_def.h"
+#include "common_def.h"
 #include "log_helper.h"
 
 

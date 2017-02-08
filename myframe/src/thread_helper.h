@@ -1,7 +1,7 @@
 #ifndef __THREAD_HELPER_H_
 #define __THREAD_HELPER_H_
 
-#include "base_def.h"
+#include "common_def.h"
 
 
 class thread_mutex_t{

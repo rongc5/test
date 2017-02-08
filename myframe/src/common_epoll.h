@@ -1,7 +1,6 @@
 #ifndef __COMMON_EPOLL_H_
 #define __COMMON_EPOLL_H_
 
-#include "base_def.h"
 #include "common_def.h"
 #include "net_obj.h"
 #include "common_exception.h"

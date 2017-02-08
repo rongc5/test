@@ -1,7 +1,7 @@
 #ifndef __BASE_THREAD_MGR_H__
 #define __BASE_THREAD_MGR_H__
 
-#include "base_def.h"
+#include "common_def.h"
 #include "base_thread.h"
 
 
@@ -46,6 +46,7 @@ class base_thread_mgr
             if (_it_count == _thread_mgr.end()){
                 _it_count = _thread_mgr.begin();
             }
+            PDEBUG("size:[%d] threadid[%lu]\n", _thread_mgr.size(), (*_it_count)->get_thread_id());
 
             set<base_thread *>::iterator tmp_it = _it_count;
             _it_count++;

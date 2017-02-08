@@ -51,25 +51,7 @@ size_t channel_msg_process::process_s(char *buf, size_t len)
         return 0;
     } 
 
-    PassMsg pass_msg;
-    pass_msg.ParseFromArray(buf, len);
-
-    switch (pass_msg.cmd())
-    {
-        case ADD_NEW_SOCEKT:
-            {
-                common_net_thread<channel_msg_process> *net_thread = dynamic_cast<common_net_thread<channel_msg_process> * >(_thread);
-                int fd = atoi(pass_msg.str().c_str());
-
-                if (net_thread){
-                    net_thread->gen_connect(fd);
-                }
-            }
-
-            break;
-        default:
-            put_msg(buf, len);
-    }
+	put_msg(buf, len);
 
     return len;
 }
@@ -88,13 +70,32 @@ void channel_msg_process::put_msg(char * buf, size_t len)
     }
 
 
-    PassMsg pass_msg;
+	 PassMsg pass_msg;
     pass_msg.ParseFromArray(buf, len);
 
-    NET_OBJ * net_obj = dynamic_cast<NET_OBJ *>(net_container->find(&pass_msg.dst_id()));
-    if (net_obj) {
-        net_obj->process_recv_buf(buf, len);
+    switch (pass_msg.cmd())
+    {
+        case ADD_NEW_SOCEKT:
+            {
+                common_net_thread<channel_msg_process> *net_thread = dynamic_cast<common_net_thread<channel_msg_process> * >(_thread);
+                int fd = atoi(pass_msg.str().c_str());
+                PDEBUG("recv fd[%d]\n", fd);
+
+                if (net_thread){
+                    net_thread->gen_connect(fd);
+                }
+            }
+
+            break;
+        default:
+        		{
+				 	NET_OBJ * net_obj = dynamic_cast<NET_OBJ *>(net_container->find(&pass_msg.dst_id()));
+					if (net_obj) {
+						net_obj->process_recv_buf(buf, len);
+					}
+				}
     }
+
 }
 
 void channel_msg_process::set_common_thread(common_thread *thread)

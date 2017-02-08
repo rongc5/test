@@ -1,7 +1,7 @@
 #ifndef __BASE_THREAD_H__
 #define __BASE_THREAD_H__
 
-#include "base_def.h"
+#include "common_def.h"
 #include "thread_helper.h"
 
 

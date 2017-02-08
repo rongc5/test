@@ -86,8 +86,12 @@ class passing_msg_process:public base_msg_process
              pass_msg.ParseFromArray(buf, len);
 
             common_thread * dest_thread = _thread->get_dest_thread(pass_msg.dst_id().thread_index());
+            if (dest_thread) {
+                PDEBUG("%lu %d %d\n",dest_thread->get_thread_id(), dest_thread->get_passing_type(), dest_thread->get_passing_type() & PASSING_ACCEPT_IN);
+            }
             if (dest_thread && (dest_thread->get_passing_type() & PASSING_ACCEPT_IN)) {
                 write(dest_thread->get_channelid(), buf, len);
+                PDEBUG("write channelid[%d] len[%d]\n", dest_thread->get_channelid(), len);
             }
         }
 

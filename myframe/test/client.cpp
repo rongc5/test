@@ -9,7 +9,6 @@
 #include <errno.h>
 #include <poll.h>
 #include "../src/common_def.h"
-#include "../src/base_def.h"
 
 #define SERVERADDR "127.0.0.1"
 #define SERVERPORT 8
@@ -47,12 +46,24 @@ int main(int c, char **v)
         exit(1);
     }
 
-    _pass_msg_t head;
+    CommonMsg msg;;
+    msg.set_obj_id(1);
+    msg.set_obj_op(1);
+    msg.set_version(1);
+    msg.set_reserved(0);
+
+    sprintf(buf, "%s", "hello world");
+    msg.set_str(buf);
     
-    printf("connect success!\n");
-    head.body_len = sizeof("hello world");
-    memcpy(buf, &head, sizeof(head));
-    ret = sprintf(buf + sizeof(head), "%s", "hello world");
+    string out;
+    msg.SerializeToString(&out);
+
+    int length = htonl(out.size());
+    memset(buf, 0, sizeof(buf));
+
+    memcpy(buf, &length, sizeof(length));
+    printf("%d\n", out.size());
+    memcpy(buf+sizeof(length), out.c_str(), out.size());
 
     while (1) {
         write(sd, buf, strlen(buf));
