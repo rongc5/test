@@ -3,10 +3,11 @@
 
 #include "base_def.h"
 #include "common_def.h"
-#include "common_thread.h"
+#include "common_net_thread.h"
 #include "base_msg_process.h"
 
 
+class base_net_thread;
 class channel_msg_process:public base_msg_process
 {
     public:
@@ -24,12 +25,12 @@ class channel_msg_process:public base_msg_process
 
     void put_msg(char * buf, size_t len);
 
-    void set_common_thread(common_thread *thread);
+    void set_base_net_thread(base_net_thread *thread);
 
-    common_thread* get_common_thread();
+    base_net_thread* get_base_net_thread();
 
     protected:
-    common_thread *_thread;
+        base_net_thread *_thread;
 };
 
 

@@ -17,6 +17,7 @@ class base_thread_mgr
         
         void add_thread(base_thread * thread)
         {
+            PDEBUG("add threadid[%lu] index[%lu]\n", thread->get_thread_id(), thread->get_thread_index());
             _thread_mgr.insert(thread);
         }
 

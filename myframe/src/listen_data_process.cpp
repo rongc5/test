@@ -22,10 +22,11 @@ size_t listen_data_process::process(int fd)
         PassMsg head;
         ObjId *src_id, *dest_id;
 
-        src_id = head.mutable_dst_id();
+        src_id = head.mutable_src_id();
         *src_id = _p_connect->get_id();
-        dest_id = head.mutable_src_id();
+        dest_id = head.mutable_dst_id();
         dest_id->set_thread_index(_thread->get_worker_id());
+        PDEBUG("dest get_thread_index[%d], listen_thread[%d]\n", _thread->get_worker_id(), _thread->get_thread_index());
         dest_id->set_obj_id(0);
         head.set_cmd(ADD_NEW_SOCEKT);
 
@@ -38,7 +39,7 @@ size_t listen_data_process::process(int fd)
         string out;
         head.SerializeToString(&out);
 
-        int len = htonl(out.size());
+        int len = out.size();
 
         memcpy(buf, &len, sizeof(len));
         memcpy(buf + sizeof(len), out.c_str(), out.size());

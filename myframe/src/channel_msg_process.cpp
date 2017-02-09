@@ -7,6 +7,7 @@
 
 size_t channel_msg_process::process_recv_buf(char *buf, size_t len)
 {
+    PDEBUG("recv [%d]\n", len);
     size_t left_len = len;
     while(left_len > 0)
     {
@@ -18,7 +19,7 @@ size_t channel_msg_process::process_recv_buf(char *buf, size_t len)
             if (left_len > _head_len)
             {
                 int *p_len = (int *)buf;
-                msg_body_len = ntohl(*p_len);
+                msg_body_len = *p_len;
 
                 status = RECV_MSG_BODY;
             }
@@ -31,10 +32,10 @@ size_t channel_msg_process::process_recv_buf(char *buf, size_t len)
         if (status == RECV_MSG_BODY)
         {
             if (left_len >= _head_len + msg_body_len) {
-                process_s(buf + _head_len, msg_body_len);
+                process_s(buf, _head_len + msg_body_len);
 
-                left_len -= _head_len + msg_body_len;
-                buf = buf + left_len;
+                left_len -= (_head_len + msg_body_len);
+                buf = buf + _head_len + msg_body_len;
             } else {
                 break;
             } 
@@ -47,7 +48,7 @@ size_t channel_msg_process::process_recv_buf(char *buf, size_t len)
 
 size_t channel_msg_process::process_s(char *buf, size_t len)
 {
-    if (!buf || !len) {
+    if (!buf || len < _head_len) {
         return 0;
     } 
 
@@ -58,7 +59,7 @@ size_t channel_msg_process::process_s(char *buf, size_t len)
 
 void channel_msg_process::put_msg(char * buf, size_t len)
 {
-    if (!buf || !len){
+    if (!buf || len < _head_len){
         //LOG_WARN
         return;
     }
@@ -71,18 +72,17 @@ void channel_msg_process::put_msg(char * buf, size_t len)
 
 
 	 PassMsg pass_msg;
-    pass_msg.ParseFromArray(buf, len);
+    pass_msg.ParseFromArray(buf + _head_len, len - _head_len);
 
     switch (pass_msg.cmd())
     {
         case ADD_NEW_SOCEKT:
             {
-                common_net_thread<channel_msg_process> *net_thread = dynamic_cast<common_net_thread<channel_msg_process> * >(_thread);
                 int fd = atoi(pass_msg.str().c_str());
-                PDEBUG("recv fd[%d]\n", fd);
 
-                if (net_thread){
-                    net_thread->gen_connect(fd);
+                if (_thread){
+                    PDEBUG("recv fd[%d]\n", fd);
+                    _thread->gen_connect(fd);
                 }
             }
 
@@ -98,12 +98,12 @@ void channel_msg_process::put_msg(char * buf, size_t len)
 
 }
 
-void channel_msg_process::set_common_thread(common_thread *thread)
+void channel_msg_process::set_base_net_thread(base_net_thread *thread)
 {
     _thread = thread;
 }
 
-common_thread* channel_msg_process::get_common_thread()
+base_net_thread* channel_msg_process::get_base_net_thread()
 {
     return _thread;
 }

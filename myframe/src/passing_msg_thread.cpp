@@ -43,12 +43,12 @@ int passing_msg_thread::register_thread(common_thread *thread)
     }
 
 
-    thread->start();
     NET_OBJ *p_connect = pass_thread->gen_connect(fd[1], EPOLL_LT_TYPE);
     if (p_connect){
         p_connect->set_id(pass_thread->gen_id_str());
         p_connect->set_net_container(pass_thread->get_net_container());
         pass_thread->set_dest_obj(thread, p_connect);
+        pass_thread->set_dest_channelid(thread->get_thread_index(), fd[1]);
         PDEBUG("thread_index[%u], fd[1] %d fd[0] %d\n", thread->get_thread_index(), fd[1], fd[0]);
         thread->set_channelid(fd[0]);
     }
@@ -125,6 +125,23 @@ void passing_msg_thread::set_dest_obj(common_thread *thread, base_net_obj * p_ob
 
     PDEBUG("_net_obj_map [%d]\n", _net_obj_map.size());
 }
+
+void passing_msg_thread::set_dest_channelid(uint32_t thread_index, uint32_t channelid)
+{
+    _thread_channelid_map[thread_index] = channelid;
+}
+
+uint32_t passing_msg_thread::get_dest_channelid(uint32_t thread_index)
+{
+    map<uint32_t,uint32_t >::iterator it; 
+    it = _thread_channelid_map.find(thread_index);
+    if (it != _thread_channelid_map.end()){
+        return it->second;
+    }
+
+    return 0;
+}
+
 
 base_net_container * passing_msg_thread::get_net_container()
 {

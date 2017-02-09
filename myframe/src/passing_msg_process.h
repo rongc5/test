@@ -37,8 +37,9 @@ class passing_msg_process:public base_msg_process
                     {
 
                         int *p_len = (int *)buf;
-                        msg_body_len = ntohl(*p_len);
+                        msg_body_len = *p_len;
 
+                        PDEBUG("left_len[%d] _head_len[%d] msg_body_len[%d]\n", left_len, _head_len, msg_body_len);
                         status = RECV_MSG_BODY;
                     }
                     else
@@ -50,15 +51,16 @@ class passing_msg_process:public base_msg_process
                 if (status == RECV_MSG_BODY)
                 {
                     if (left_len >= _head_len + msg_body_len) {
-                        process_s(buf + _head_len, _head_len + msg_body_len);
+                        process_s(buf, _head_len + msg_body_len);
 
-                        left_len -= _head_len + msg_body_len;
-                        buf = buf + left_len;
+                        left_len -= (_head_len + msg_body_len);
+                        buf = buf + _head_len + msg_body_len;
                     } else {
                         break;
                     } 
                 }				
             }
+            PDEBUG("len[%d]\n", len - left_len);
 
             return len - left_len;
         }	
@@ -72,7 +74,7 @@ class passing_msg_process:public base_msg_process
 
         void put_msg(char *buf, size_t len)
         {
-            if (!buf || !len){
+            if (!buf || len < _head_len){
                 //LOG_WARN
                 return;
             }
@@ -83,15 +85,21 @@ class passing_msg_process:public base_msg_process
 
             
              PassMsg pass_msg;
-             pass_msg.ParseFromArray(buf, len);
+             pass_msg.ParseFromArray(buf + _head_len, len - _head_len);
 
             common_thread * dest_thread = _thread->get_dest_thread(pass_msg.dst_id().thread_index());
             if (dest_thread) {
-                PDEBUG("%lu %d %d\n",dest_thread->get_thread_id(), dest_thread->get_passing_type(), dest_thread->get_passing_type() & PASSING_ACCEPT_IN);
+                PDEBUG("%d %d %d\n",dest_thread->get_thread_index(), dest_thread->get_passing_type(), dest_thread->get_passing_type() & PASSING_ACCEPT_IN);
             }
-            if (dest_thread && (dest_thread->get_passing_type() & PASSING_ACCEPT_IN)) {
-                write(dest_thread->get_channelid(), buf, len);
-                PDEBUG("write channelid[%d] len[%d]\n", dest_thread->get_channelid(), len);
+            
+            int channelid = 0;
+            if (dest_thread){
+                channelid = _thread->get_dest_channelid(dest_thread->get_thread_index());
+            }
+
+            if (dest_thread && (dest_thread->get_passing_type() & PASSING_ACCEPT_IN) && channelid) {
+                write(channelid, buf, len);
+                PDEBUG("write channelid[%d] len[%d]\n", channelid, len);
             }
         }
 

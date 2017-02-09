@@ -2,6 +2,7 @@
 #define __BASE_DATA_PROCESS_H__
 
 #include "common_msg_process.h"
+#include "common_def.h"
 
 
 class base_data_process
@@ -16,7 +17,16 @@ class base_data_process
 
         virtual size_t process_recv_buf(char *buf, size_t len)
         {
-            write(1, buf, len);
+            PassMsg pass_msg;
+            pass_msg.ParseFromArray(buf, len);
+            
+            CommonMsg msg;
+            char * ptr = (char *)pass_msg.str().c_str();
+            msg.ParseFromArray(ptr + 4, *ptr);
+
+            printf("%s\n", msg.str().c_str());
+
+            //write(1, buf, len);
             return len;
         }
 

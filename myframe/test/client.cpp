@@ -58,20 +58,18 @@ int main(int c, char **v)
     string out;
     msg.SerializeToString(&out);
 
-    int length = htonl(out.size());
+    int length = out.size();
     memset(buf, 0, sizeof(buf));
 
     memcpy(buf, &length, sizeof(length));
-    printf("%d\n", out.size());
     memcpy(buf+sizeof(length), out.c_str(), out.size());
 
+    printf("%d %d\n", out.size(), strlen(buf));
+    write(sd, buf, out.size() + sizeof(length));
     while (1) {
-        write(sd, buf, strlen(buf));
+        write(sd, buf, out.size() + sizeof(length));
         sleep(3);
     }
-
-    while (1)
-        sleep(1);
 
     close(sd);
     exit(0);

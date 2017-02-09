@@ -26,6 +26,9 @@ class passing_msg_thread : public base_thread
 
         void set_dest_obj(common_thread * thread, base_net_obj * p_obj);
 
+        void set_dest_channelid(uint32_t thread_index, uint32_t channelid);
+        uint32_t get_dest_channelid(uint32_t thread_index);
+
         NET_OBJ * gen_connect(const int fd, EPOLL_TYPE epoll_type);
         const ObjId & gen_id_str();
 
@@ -34,6 +37,7 @@ class passing_msg_thread : public base_thread
         ObjId _id_str;
         map<uint32_t, base_net_obj *> _net_obj_map;
         map<uint32_t, common_thread *> _thread_obj_map;
+        map<uint32_t, uint32_t> _thread_channelid_map;
 };
 
 

@@ -157,6 +157,8 @@ class base_connect:public NET_OBJ
                 ret = 0;
             }
 
+            if (ret)
+            PDEBUG("_fd[%d] ret[%d] len[%d]\n", _fd, ret, len);
             return ret;
         }
 
@@ -204,11 +206,14 @@ class base_connect:public NET_OBJ
             if (tmp_len > 0) //接收缓冲满了也可以先不接收
             {
                 ret = RECV((void*)(_recv_buf.c_str() + _recv_buf_len), tmp_len);
+                if (ret)
+                PDEBUG("ret [%d]\n", ret);
                 _recv_buf_len += ret;
             }
 
             if (_recv_buf_len > 0)
             {
+                //PDEBUG("process_recv_buf _recv_buf_len[%d]\n", _recv_buf_len);
                 size_t p_ret = _process->process_recv_buf((char*)_recv_buf.c_str(), _recv_buf_len);
                 if (p_ret < _recv_buf_len)//表名上层处理能力跟不上,停止接受数据
                 {
@@ -217,6 +222,7 @@ class base_connect:public NET_OBJ
                 }
 
                 _recv_buf_len = _recv_buf_len - p_ret;			
+                //PDEBUG("p_ret[%d] _recv_buf_len[%d]\n", p_ret, _recv_buf_len);
             }		
         }
 

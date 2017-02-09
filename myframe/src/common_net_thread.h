@@ -10,8 +10,17 @@
 
 
 
+class base_net_thread: public common_thread
+{
+    public:
+        virtual ~base_net_thread()
+        {}
+        virtual NET_OBJ * gen_connect(const int fd) = 0;
+};
+
+
 template<class MSG_PROCESS>
-class common_net_thread:public common_thread
+class common_net_thread:public base_net_thread
 {
     public:
         common_net_thread():_base_container(NULL){
@@ -36,7 +45,7 @@ class common_net_thread:public common_thread
 
             p_connect->set_id(gen_id_str());
             channel_msg_process * process = new channel_msg_process(p_connect);
-            process->set_common_thread(this);
+            process->set_base_net_thread(this);
             p_connect->set_process(process);
             p_connect->set_net_container(_base_container);
         }
@@ -48,7 +57,7 @@ class common_net_thread:public common_thread
 
             p_connect->set_id(gen_id_str());
             MSG_PROCESS * process = new MSG_PROCESS(p_connect);
-            process->set_common_thread(this);
+            process->set_base_net_thread(this);
             p_connect->set_process(process);
             p_connect->set_net_container(_base_container);
 
