@@ -33,13 +33,11 @@ LIBNAME=myframe
 all	: $(LIBNAME)
 
 clean	:
-	/bin/rm -rf $(LIB_DIR)/lib$(LIBNAME).a  $(INC_DIR)/*.h $(OBJ)
+	/bin/rm -rf $(LIB_DIR)/lib$(LIBNAME).a  $(OBJ)
 
 #=================================================
 $(LIBNAME):$(OBJ)
 	$(AR) -ruv $(SRC_DIR)/lib$@.a $(OBJ)
-	mkdir -p $(LIB_DIR) $(NC_DIR)
-	cp $(SRC_DIR)/*.h $(INC_DIR)
 	mv $(SRC_DIR)/lib$@.a $(LIB_DIR)
 
 %.o : %.cc
