@@ -32,7 +32,7 @@ int passing_msg_thread::register_thread(common_thread *thread)
 
         pass_thread = base_singleton<passing_msg_thread>::get_instance();
         pass_thread->start();
-        PDEBUG("alloc pass_thread\n");
+        //PDEBUG("alloc pass_thread\n");
     }
 
     int fd[2], ret;
@@ -49,7 +49,7 @@ int passing_msg_thread::register_thread(common_thread *thread)
         p_connect->set_net_container(pass_thread->get_net_container());
         pass_thread->set_dest_obj(thread, p_connect);
         pass_thread->set_dest_channelid(thread->get_thread_index(), fd[1]);
-        PDEBUG("thread_index[%u], fd[1] %d fd[0] %d\n", thread->get_thread_index(), fd[1], fd[0]);
+        //PDEBUG("thread_index[%u], fd[1] %d fd[0] %d\n", thread->get_thread_index(), fd[1], fd[0]);
         thread->set_channelid(fd[0]);
     }
 
@@ -123,7 +123,7 @@ void passing_msg_thread::set_dest_obj(common_thread *thread, base_net_obj * p_ob
     _thread_obj_map[thread->get_thread_index()] = thread;
     _net_obj_map[thread->get_thread_index()] = p_obj;
 
-    PDEBUG("_net_obj_map [%d]\n", _net_obj_map.size());
+    //PDEBUG("_net_obj_map [%d]\n", _net_obj_map.size());
 }
 
 void passing_msg_thread::set_dest_channelid(uint32_t thread_index, uint32_t channelid)

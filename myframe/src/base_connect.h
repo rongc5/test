@@ -157,8 +157,6 @@ class base_connect:public NET_OBJ
                 ret = 0;
             }
 
-            if (ret)
-            PDEBUG("_fd[%d] ret[%d] len[%d]\n", _fd, ret, len);
             return ret;
         }
 
@@ -206,8 +204,6 @@ class base_connect:public NET_OBJ
             if (tmp_len > 0) //接收缓冲满了也可以先不接收
             {
                 ret = RECV((void*)(_recv_buf.c_str() + _recv_buf_len), tmp_len);
-                if (ret)
-                PDEBUG("ret [%d]\n", ret);
                 _recv_buf_len += ret;
             }
 

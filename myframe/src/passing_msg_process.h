@@ -23,7 +23,7 @@ class passing_msg_process:public base_msg_process
 
         virtual size_t process_recv_buf(char *buf, size_t len)
         {
-            PDEBUG("recv buf %d\n", len);
+            //PDEBUG("recv buf %d\n", len);
             //size_t ret = 0;
             size_t left_len = len;
             while(left_len > 0)
@@ -60,7 +60,7 @@ class passing_msg_process:public base_msg_process
                     } 
                 }				
             }
-            PDEBUG("len[%d]\n", len - left_len);
+            //PDEBUG("len[%d]\n", len - left_len);
 
             return len - left_len;
         }	
@@ -88,9 +88,9 @@ class passing_msg_process:public base_msg_process
              pass_msg.ParseFromArray(buf + _head_len, len - _head_len);
 
             common_thread * dest_thread = _thread->get_dest_thread(pass_msg.dst_id().thread_index());
-            if (dest_thread) {
-                PDEBUG("%d %d %d\n",dest_thread->get_thread_index(), dest_thread->get_passing_type(), dest_thread->get_passing_type() & PASSING_ACCEPT_IN);
-            }
+            //if (dest_thread) {
+                //PDEBUG("%d %d %d\n",dest_thread->get_thread_index(), dest_thread->get_passing_type(), dest_thread->get_passing_type() & PASSING_ACCEPT_IN);
+            //}
             
             int channelid = 0;
             if (dest_thread){
@@ -99,7 +99,7 @@ class passing_msg_process:public base_msg_process
 
             if (dest_thread && (dest_thread->get_passing_type() & PASSING_ACCEPT_IN) && channelid) {
                 write(channelid, buf, len);
-                PDEBUG("write channelid[%d] len[%d]\n", channelid, len);
+                //PDEBUG("write channelid[%d] len[%d]\n", channelid, len);
             }
         }
 

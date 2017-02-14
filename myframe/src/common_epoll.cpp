@@ -11,9 +11,9 @@ void common_epoll::add_to_epoll(base_net_obj *p_obj)
     tmpEvent.events = p_obj->get_event();
     tmpEvent.data.ptr = p_obj;
     int ret = epoll_ctl(_epoll_fd, tmpOprate, p_obj->get_sock(), &tmpEvent);
-    PDEBUG("add to epoll _epoll_fd[%d] _get_sock [%d]\n", _epoll_fd, p_obj->get_sock());
+    //PDEBUG("add to epoll _epoll_fd[%d] _get_sock [%d]\n", _epoll_fd, p_obj->get_sock());
     if (ret != 0) {
-        PDEBUG("add to epoll fail %s", strerror(errno));
+        //PDEBUG("add to epoll fail %s", strerror(errno));
         THROW_COMMON_EXCEPT("add to epoll fail " << strerror(errno));
     }
 }
@@ -46,12 +46,14 @@ int common_epoll::epoll_wait(map<ObjId, base_net_obj*> &expect_list)
     if (nfds == -1)
     {
         PDEBUG("epoll_wait fail [%s]\n", strerror(errno));          
+        if (errno == EINTR)
+            return 0;
         THROW_COMMON_EXCEPT("epoll_wait fail "<< strerror(errno));          
     }      
 
     for (int i =0; i < nfds; i++)
     {		
-        PDEBUG("_epoll_fd [%d]\n", _epoll_fd);
+        //PDEBUG("_epoll_fd [%d]\n", _epoll_fd);
         if (_epoll_events[i].data.ptr != NULL) 		
         {
             base_net_obj * p = (base_net_obj*)(_epoll_events[i].data.ptr);
@@ -60,7 +62,7 @@ int common_epoll::epoll_wait(map<ObjId, base_net_obj*> &expect_list)
                 try
                 {
                     p->event_process(_epoll_events[i].events);
-                    PDEBUG("get_sock[%d]\n", p->get_sock());
+                    //PDEBUG("get_sock[%d]\n", p->get_sock());
                 }
                 catch(CMyCommonException &e)
                 {

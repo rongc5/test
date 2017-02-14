@@ -1,6 +1,9 @@
 #/bin/sh
 
-protoc  --cpp_out=./idl/ ./idl/myframe.proto
+cd idl
+protoc  --cpp_out=. ./myframe.proto
+
+cd ..
 
 mkdir -p include lib
 cp src/*.h include

@@ -24,7 +24,7 @@ class base_data_process
             char * ptr = (char *)pass_msg.str().c_str();
             msg.ParseFromArray(ptr + 4, *ptr);
 
-            printf("%s\n", msg.str().c_str());
+            PDEBUG("%s\n", msg.str().c_str());
 
             //write(1, buf, len);
             return len;

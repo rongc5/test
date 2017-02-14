@@ -3,7 +3,6 @@
 
 #include "common_def.h"
 
-
 class listen_thread;
 class base_net_obj;
 class listen_data_process

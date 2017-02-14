@@ -25,7 +25,7 @@ class common_thread:public base_thread
 
         void set_passing_type(int type)
         {
-            PDEBUG("%lu %d\n", get_thread_id(), type);
+            //PDEBUG("%lu %d\n", get_thread_id(), type);
             _passing_type = type;
         }
 
