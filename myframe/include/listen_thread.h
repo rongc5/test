@@ -13,7 +13,7 @@
 class listen_thread:public common_thread
 {
     public:
-        listen_thread():_base_container(NULL){
+        listen_thread():_worker_mgr(NULL), _base_container(NULL){
         };
         virtual ~listen_thread(){
             if (_base_container){

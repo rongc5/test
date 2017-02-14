@@ -51,7 +51,7 @@ class server_mgr
             _listen_obj_thread->init(_server_ip, _server_port);
             _listen_obj_thread->set_worker_mgr(thread_mgr);
             passing_msg_thread::register_thread(_listen_obj_thread);
-            //thread_mgr->start();
+            thread_mgr->start();
             _listen_obj_thread->start();
         }
 

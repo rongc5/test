@@ -11,7 +11,7 @@ int main(int argc, char *argv[])
     base_singleton<log_mgr>::get_instance()->init(LOGDEBUG,"test",0, 10000);
 
 
-    server_mgr<common_msg_process<base_data_process> > * server = new server_mgr<common_msg_process<base_data_process> >(1, "", 8888);
+    server_mgr<common_msg_process<base_data_process> > * server = new server_mgr<common_msg_process<base_data_process> >(2, "", 8888);
 
     server->run();
     
