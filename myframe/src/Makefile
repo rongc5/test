@@ -1,7 +1,6 @@
 HOME_DIR=./
-SRC_DIR=${HOME_DIR}src
+SRC_DIR=${HOME_DIR}core
 IDL_DIR=$(HOME_DIR)idl
-INC_DIR=${HOME_DIR}include
 LIB_DIR=${HOME_DIR}lib
 
 INCLUDE = -I./${SRC_DIR}/ -I./${IDL_DIR}/
@@ -38,7 +37,7 @@ clean	:
 #=================================================
 $(LIBNAME):$(OBJ)
 	$(AR) -ruv $(SRC_DIR)/lib$@.a $(OBJ)
-	mv $(SRC_DIR)/lib$@.a $(LIB_DIR)
+	mv core/lib$@.a .
 
 %.o : %.cc
 	$(CC) $(CXXFLAGS) -c $< -o $@ $(LIB) $(INCLUDE)

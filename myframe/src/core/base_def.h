@@ -34,6 +34,7 @@
 #include <memory>
 
 #include "myframe.pb.h"
+#include "zmq.h"
 
 using namespace std;
 
@@ -123,6 +124,8 @@ typedef unsigned int uint32_t;
     #define PDEBUG(format, arg...) do while(0)
 #endif
 
+/*****************************/
+#define DEFAULT_LOG_MAX_SIZE 50*1024*1024
 
 
 #endif

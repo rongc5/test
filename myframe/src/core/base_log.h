@@ -1,5 +1,5 @@
-#ifndef __LOG_HELPER_H_
-#define __LOG_HELPER_H_
+#ifndef __BASE_LOG_H_
+#define __BASE_LOG_H_
 
 #include "base_singleton.h"
 #include "thread_helper.h"
@@ -41,13 +41,25 @@ class log_mgr;
     do { \
         char tmp[SIZE_LEN_64]; \
         get_date_str(tmp, sizeof(tmp), LOG_DATE_FORMAT); \
-        base_singleton<log_mgr>::get_instance_ex()->log(LOGWARNING, "WARNING: %s * %lu [%s:%s():%d] "fmt, tmp, pthread_self(), __FILE__, __FUNCTION__, __LINE__, ##arg); \
+        string str;
+        sprintf(str.c_str(), "WARNING\t%s\t[%lu]\t[%d\t%s()\t%s] "fmt, tmp,pthread_self(), __LINE__, __func__, __FILE__, ##arg);
+        base_singleton<log_mgr>::get_instance_ex()->log(LOGWARNING, str); \
     } while (0)
 
 
 
-#define LOG_MAX_SIZE 50*1024*1024
-#define LOG_MAX_RECORD 10000
+struct log_conf{
+    uint32_t file_max_size;
+    char prefix_file_name[SIZE_LEN_256];
+    LogType type;
+    
+    log_conf()
+    {
+        file_max_size = DEFAULT_LOG_MAX_SIZE;
+        prefix_file_name[0] = '0';
+        type = LOGDEBUG;
+    }
+};
 
 class log_mgr {
     public:
@@ -58,6 +70,8 @@ class log_mgr {
         void get_file_name(LogType type, char dest[], size_t dest_len);
 
     private:
+
+        map<pthread_t, fd> _thread_fd_map;
         LogType _type;
         log_helper * _loger[LOGSIZE];
         char base_file_name[SIZE_LEN_64];
