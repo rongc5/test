@@ -1,14 +1,16 @@
 #/bin/sh
 
 
-cd src
-cd idl
-protoc  --cpp_out=. ./myframe.proto
-cd ..
 
 
 rm -rf lib
 mkdir -p lib
+
+
+cd src
+cd idl
+protoc  --cpp_out=. ./myframe.proto
+cd ..
 
 
 if [ $# == 0 ]; then

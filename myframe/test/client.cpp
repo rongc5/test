@@ -8,7 +8,7 @@
 #include <netinet/ip.h>
 #include <errno.h>
 #include <poll.h>
-#include "../src/common_def.h"
+#include "common_def.h"
 
 #define SERVERADDR "127.0.0.1"
 #define SERVERPORT 8

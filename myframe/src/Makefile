@@ -1,7 +1,6 @@
 HOME_DIR=./
 SRC_DIR=${HOME_DIR}core
 IDL_DIR=$(HOME_DIR)idl
-LIB_DIR=${HOME_DIR}lib
 
 INCLUDE = -I./${SRC_DIR}/ -I./${IDL_DIR}/
 LIB = -L/usr/lib/ -lpthread \
@@ -16,7 +15,7 @@ OBJ	= ${SRC_DIR}/base_net_container.o                        \
     ${SRC_DIR}/channel_msg_process.o                        \
     ${SRC_DIR}/common_epoll.o                        \
     ${SRC_DIR}/common_thread.o                        \
-    ${SRC_DIR}/log_helper.o                        \
+    ${SRC_DIR}/log_thread.o                        \
     ${SRC_DIR}/net_obj.o                        \
     ${SRC_DIR}/passing_msg_thread.o                        \
     ${SRC_DIR}/thread_helper.o                        \
@@ -32,7 +31,7 @@ LIBNAME=myframe
 all	: $(LIBNAME)
 
 clean	:
-	/bin/rm -rf $(LIB_DIR)/lib$(LIBNAME).a  $(OBJ)
+	/bin/rm -rf  $(OBJ)
 
 #=================================================
 $(LIBNAME):$(OBJ)

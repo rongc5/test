@@ -8,50 +8,40 @@
 class log_thread : public base_thread
 {
     public:
-        log_thread():_net_container(NULL)
-    {}
+        log_thread(log_conf & conf):_list(NULL), _mutex(NULL), _conf(conf)
+    {
+        _list = new list<log_msg *>[_conf.bucketlen];
+        _mutex = new thread_mutex_t[_conf.bucketlen];
+    }
 
         virtual ~log_thread()
         {
-            if (_net_container){
-                delete _net_container;
-            }
+           if (_list) {
+                clear();
+           } 
+
+           delete [] _list;
+           delete [] _mutex;
         }
         
-        static int add(int fd)
-        {
-            log_thread * thread = base_singleton<log_thread>::get_instance();
-            if (!thread) {
-                thread = new log_thread()
-                base_singleton<log_thread>::::set_instance(thread);
-                thread->start();
-            }
+        int add(log_msg * msg);
 
-            thread->gen_connect(fd, EPOLL_LT_TYPE);
-        }
+        static int put_msg(log_msg *msg);
 
-        virtual void* run()
-        {
-            while (get_run_flag())
-            {
-                _net_container->obj_process();
-            }
-        }
+        virtual void* run();
+    
+        void log_write(log_msg * msg);
 
-        NET_OBJ * gen_connect(const int fd, EPOLL_TYPE epoll_type)
-        {
-            NET_OBJ * p_connect = NULL;
-            p_connect = new base_connect<log_msg_process>(fd, epoll_type);
-            log_msg_process *process = new log_msg_process((NET_OBJ*)p_connect);
+        void get_file_name(LogType type, char dest[], size_t dest_len);
 
-            base_connect<log_msg_process> * tmp_con =                               (base_connect<log_msg_process> *)p_connect;
-            tmp_con->set_process(process);
+        void check_to_renmae(const char *filename, int max_size);
 
-            return p_connect;
-        }
+        void clear();
 
     protected:
-        base_net_container * _net_container;        
+        list<log_msg *> * _list;
+        thread_mutex_t * _mutex;
+        log_conf _conf;
 };
 
 

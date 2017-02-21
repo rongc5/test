@@ -62,19 +62,18 @@ struct log_msg {
     string str;
 };
 
-void get_proc_name(char buf[], size_t buf_len);
 
 struct log_conf{
     uint32_t file_max_size;
     char prefix_file_name[SIZE_LEN_256];
     LogType type;
     int bucketlen;
-    int deal_mode; // 1 write log 2 print log 3 write && print
+    int deal_mode;
 
     log_conf()
     {
         file_max_size = DEFAULT_LOG_MAX_SIZE;
-        get_proc_name(prefix_file_name, sizeof(prefix_file_name));
+        prefix_file_name[0] = '0';
         type = LOGDEBUG;
         bucketlen = DEFAULT_LOG_BUCKETLEN;
         deal_mode = 1;

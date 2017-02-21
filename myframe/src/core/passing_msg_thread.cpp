@@ -8,6 +8,7 @@
 #include "base_net_container.h"
 #include "base_def.h"
 #include "common_def.h"
+#include "base_singleton.h"
 
 
 passing_msg_thread::passing_msg_thread():_net_container(NULL){

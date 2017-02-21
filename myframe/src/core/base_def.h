@@ -57,6 +57,8 @@ const int max_send_num = 5;
 
 #define MAX_BUF_SIZE 1024 * 10 * 10
 
+#define DEFAULT_LOG_BUCKETLEN 200
+
 
 
 /******** 长度定义 *************/

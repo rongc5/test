@@ -1,7 +1,7 @@
-HOME_DIR=../
-INC_DIR=${HOME_DIR}include
+HOME_DIR=../src/
+INC_DIR=${HOME_DIR}core
 IDL_DIR=$(HOME_DIR)idl
-LIB_DIR=$(HOME_DIR)lib
+LIB_DIR=../lib
 
 INCLUDE = -I./${INC_DIR}/ -I./${IDL_DIR}/
 
