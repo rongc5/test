@@ -20,12 +20,12 @@
 do { \
     char tmp[SIZE_LEN_64]; \
         get_date_str(tmp, sizeof(tmp), LOG_DATE_FORMAT); \
-        log_msg * msg =  new log_msg(); \
-        msg->type = LOGWARNING; \
+        log_msg * lgmsg =  new log_msg(); \
+        lgmsg->type = LOGWARNING; \
         char buf[SIZE_LEN_8192]; \
-        snprintf(buf, sizeof(buf), "WARNING\t%s\t[%lu]\t[%d:%s():%s] "fmt, tmp,pthread_self(), __LINE__, __func__, __FILE__,     ##arg); \
-        msg->str.append(buf); \
-        log_thread::put_msg(msg); \
+        snprintf(buf, sizeof(buf), "[WARNING]:[%s]:[%lu]:[%d:%s():%s] "fmt, tmp,pthread_self(), __LINE__, __func__, __FILE__,     ##arg); \
+        lgmsg->str.append(buf); \
+        log_thread::put_msg(lgmsg); \
 } while (0)
 
 
@@ -33,12 +33,12 @@ do { \
 do { \
     char tmp[SIZE_LEN_64]; \
         get_date_str(tmp, sizeof(tmp), LOG_DATE_FORMAT); \
-        log_msg * msg =  new log_msg(); \
-        msg->type = LOGFATAL; \
+        log_msg * lgmsg =  new log_msg(); \
+        lgmsg->type = LOGFATAL; \
         char buf[SIZE_LEN_8192]; \
-        snprintf(buf, sizeof(buf), "FATAL\t%s\t[%lu]\t[%d:%s():%s] "fmt, tmp,pthread_self(), __LINE__, __func__, __FILE__,     ##arg); \
-        msg->str.append(buf); \
-        log_thread::put_msg(msg); \
+        snprintf(buf, sizeof(buf), "[FATAL]:[%s]:[%lu]:[%d:%s():%s] "fmt, tmp,pthread_self(), __LINE__, __func__, __FILE__,     ##arg); \
+        lgmsg->str.append(buf); \
+        log_thread::put_msg(lgmsg); \
 } while (0)
 
 
@@ -46,12 +46,12 @@ do { \
 do { \
     char tmp[SIZE_LEN_64]; \
         get_date_str(tmp, sizeof(tmp), LOG_DATE_FORMAT); \
-        log_msg * msg =  new log_msg(); \
-        msg->type = LOGNOTICE; \
+        log_msg * lgmsg =  new log_msg(); \
+        lgmsg->type = LOGNOTICE; \
         char buf[SIZE_LEN_8192]; \
-        snprintf(buf, sizeof(buf), "NOTICE\t%s\t[%lu]\t[%d:%s():%s] "fmt, tmp,pthread_self(), __LINE__, __func__, __FILE__,     ##arg); \
-        msg->str.append(buf); \
-        log_thread::put_msg(msg); \
+        snprintf(buf, sizeof(buf), "[NOTICE]:[%s]:[%lu]:[%d:%s():%s] "fmt, tmp,pthread_self(), __LINE__, __func__, __FILE__,     ##arg); \
+        lgmsg->str.append(buf); \
+        log_thread::put_msg(lgmsg); \
 } while (0)
 
 
@@ -60,12 +60,12 @@ do { \
 do { \
     char tmp[SIZE_LEN_64]; \
         get_date_str(tmp, sizeof(tmp), LOG_DATE_FORMAT); \
-        log_msg * msg =  new log_msg(); \
-        msg->type = LOGTRACE; \
+        log_msg * lgmsg =  new log_msg(); \
+        lgmsg->type = LOGTRACE; \
         char buf[SIZE_LEN_8192]; \
-        snprintf(buf, sizeof(buf), "TRACE\t%s\t[%lu]\t[%d:%s():%s] "fmt, tmp,pthread_self(), __LINE__, __func__, __FILE__,     ##arg); \
-        msg->str.append(buf); \
-        log_thread::put_msg(msg); \
+        snprintf(buf, sizeof(buf), "[TRACE]:[%s]:[%lu]:[%d:%s():%s] "fmt, tmp,pthread_self(), __LINE__, __func__, __FILE__,     ##arg); \
+        lgmsg->str.append(buf); \
+        log_thread::put_msg(lgmsg); \
 } while (0)
 
 
@@ -73,12 +73,12 @@ do { \
 do { \
     char tmp[SIZE_LEN_64]; \
         get_date_str(tmp, sizeof(tmp), LOG_DATE_FORMAT); \
-        log_msg * msg =  new log_msg(); \
-        msg->type = LOGDEBUG; \
+        log_msg * lgmsg =  new log_msg(); \
+        lgmsg->type = LOGDEBUG; \
         char buf[SIZE_LEN_8192]; \
-        snprintf(buf, sizeof(buf), "DEBUG\t%s\t[%lu]\t[%d:%s():%s] "fmt, tmp,pthread_self(), __LINE__, __func__, __FILE__,     ##arg); \
-        msg->str.append(buf); \
-        log_thread::put_msg(msg); \
+        snprintf(buf, sizeof(buf), "[DEBUG]:[%s]:[%lu]:[%d:%s():%s] "fmt, tmp,pthread_self(), __LINE__, __func__, __FILE__,     ##arg); \
+        lgmsg->str.append(buf); \
+        log_thread::put_msg(lgmsg); \
 } while (0)
 
 

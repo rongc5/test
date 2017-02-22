@@ -3,17 +3,16 @@
 
 #include "common_thread.h"
 #include "base_net_container.h"
-#include "common_obj_container.h"
+#include "forward_obj_container.h"
 #include "listen_connect.h"
 #include "common_def.h"
 #include "listen_data_process.h"
-#include "base_thread_mgr.h"
 
 
 class listen_thread:public common_thread
 {
     public:
-        listen_thread():_worker_mgr(NULL), _base_container(NULL){
+        listen_thread():_base_container(NULL), _current_indx(0){
         };
         virtual ~listen_thread(){
             if (_base_container){
@@ -26,16 +25,11 @@ class listen_thread:public common_thread
             _base_container->obj_process();
         }
 
-        virtual void set_channelid(int fd)
-        {
-            common_thread::set_channelid(fd);
-        }
-
         void init(const string &ip, unsigned short port)
         {
             _ip = ip;
             _port = port;
-            _base_container = new common_obj_container();
+            _base_container = new forward_obj_container();
             listen_connect<listen_data_process> * p_connect = new listen_connect<listen_data_process>();
             listen_data_process * data_process = new listen_data_process(p_connect);
             p_connect->set_id(gen_id_str());
@@ -43,21 +37,38 @@ class listen_thread:public common_thread
             data_process->set_thread(this);
             p_connect->set_process(data_process);
             p_connect->set_net_container(_base_container);
-            set_passing_type(PASSING_ACCEPT_NONE);
         }
 
+        int add_worker_thread(common_thread * thread)
+        {
+            _worker_thrds.push_back(thread);
+            add_forward_thread(thread, gen_id_str());
+
+            return 0;
+        }
+        
+        int add_forward_thread(common_thread *thread, const ObjId & id_str)
+        {
+            _base_container->add_forward_thread(thread, id_str);
+            return 0;
+        }
+
+            
         uint32_t get_worker_id()
         {
-            return _worker_mgr->get_idle_worker()->get_thread_index();
-        }
+            uint32_t index = _current_indx;
+            _current_indx++;
 
-        void set_worker_mgr(base_thread_mgr * worker_mgr)
-        {
-            if (_worker_mgr && _worker_mgr != worker_mgr){
-                delete _worker_mgr;
+            if (_current_indx >= _worker_thrds.size()){
+                _current_indx = 0;
             }
 
-            _worker_mgr = worker_mgr;
+            return _worker_thrds[index]->get_thread_index();
+        }
+
+        uint32_t get_dest_channelid(uint32_t thread_index)
+        {
+            return _base_container->get_dest_channelid(thread_index);
         }
 
     protected:
@@ -72,11 +83,13 @@ class listen_thread:public common_thread
         }
 
     protected:
+
         string _ip;
         unsigned short _port;
-        base_thread_mgr *_worker_mgr;
-        base_net_container * _base_container;
+        forward_obj_container * _base_container;
         ObjId _id_str;
+        vector<base_thread*> _worker_thrds;
+        uint32_t _current_indx;
 };
 
 #endif

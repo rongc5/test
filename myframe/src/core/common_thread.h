@@ -23,19 +23,7 @@ class common_thread:public base_thread
             return _channel_id;
         }
 
-        void set_passing_type(int type)
-        {
-            //PDEBUG("%lu %d\n", get_thread_id(), type);
-            _passing_type = type;
-        }
-
-        int get_passing_type()
-        {
-            return _passing_type;
-        }
-
     protected:
-        int _passing_type;
         int _channel_id;
 };
 

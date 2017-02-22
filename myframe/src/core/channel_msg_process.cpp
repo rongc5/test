@@ -7,7 +7,7 @@
 
 size_t channel_msg_process::process_recv_buf(char *buf, size_t len)
 {
-    PDEBUG("recv [%d]\n", len);
+    LOG_DEBUG("recv [%d]\n", len);
     size_t left_len = len;
     while(left_len > 0)
     {
@@ -81,7 +81,7 @@ void channel_msg_process::put_msg(char * buf, size_t len)
                 int fd = atoi(pass_msg.str().c_str());
 
                 if (_thread){
-                    PDEBUG("recv fd[%d]\n", fd);
+                    LOG_DEBUG("recv fd[%d]\n", fd);
                     _thread->gen_connect(fd);
                 }
             }

@@ -3,6 +3,7 @@
 
 #include "common_msg_process.h"
 #include "common_def.h"
+#include "log_helper.h"
 
 
 class base_data_process
@@ -24,7 +25,7 @@ class base_data_process
             char * ptr = (char *)pass_msg.str().c_str();
             msg.ParseFromArray(ptr + 4, *ptr);
 
-            PDEBUG("%s\n", msg.str().c_str());
+            LOG_DEBUG("%s\n", msg.str().c_str());
 
             //write(1, buf, len);
             return len;

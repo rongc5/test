@@ -18,7 +18,6 @@ size_t listen_data_process::process(int fd)
 
     if (_thread){
 
-
         PassMsg head;
         ObjId *src_id, *dest_id;
 
@@ -44,9 +43,12 @@ size_t listen_data_process::process(int fd)
         memcpy(buf, &len, sizeof(len));
         memcpy(buf + sizeof(len), out.c_str(), out.size());
 
-        write(_thread->get_channelid(), buf, sizeof(len) + out.size());
-        PDEBUG("write to fd [%d] fd size[%d]\n", _thread->get_channelid(), sizeof(len)+ out.size());
-        //int ret = write(_thread->get_channelid(), "hello world", sizeof("hello world"));
+        uint32_t channelid = _thread->get_dest_channelid(_thread->get_worker_id());
+        if (channelid) {
+            write(channelid, buf, sizeof(len) + out.size());
+            LOG_DEBUG("write to fd [%d] fd size[%d]\n", channelid, sizeof(len)+ out.size());
+            //int ret = write(_thread->get_channelid(), "hello world", sizeof("hello world"));
+        }
     }
 
     return 0;

@@ -13,7 +13,7 @@ int main(int argc, char *argv[])
 
     LOG_INIT(conf); 
 
-    server_mgr<common_msg_process<base_data_process> > * server = new server_mgr<common_msg_process<base_data_process> >(2, "", 8888);
+    server_mgr<common_msg_process<base_data_process> > * server = new server_mgr<common_msg_process<base_data_process> >(10, "", 8888);
 
     server->run();
     

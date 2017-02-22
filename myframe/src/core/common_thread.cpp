@@ -5,7 +5,6 @@
 common_thread::common_thread()
 {
     _channel_id = 0;
-    set_passing_type(PASSING_ACCEPT_IN);
 }
 
 

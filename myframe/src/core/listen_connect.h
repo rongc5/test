@@ -76,7 +76,7 @@ class listen_connect:public base_net_obj
 				socklen_t len = 0;
 				while((tmp_sock = accept(_fd, (sockaddr*)&addr, &len)) != -1)
 				{				
-                    PDEBUG("recv fd[%d]\n", tmp_sock);
+                    LOG_DEBUG("recv fd[%d]\n", tmp_sock);
 					_process->process(tmp_sock);
 				}
 			}
