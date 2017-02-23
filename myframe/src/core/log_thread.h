@@ -16,6 +16,7 @@ class log_thread : public base_thread
             char buf[SIZE_LEN_256];
             snprintf(buf, sizeof(buf), "mkdir -p %s", _conf.log_path);
             system(buf);
+            chdir(_conf.log_path);
         }
     }
 
