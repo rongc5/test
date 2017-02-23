@@ -1,4 +1,4 @@
-HOME_DIR=../src/
+HOME_DIR=../
 INC_DIR=${HOME_DIR}core
 IDL_DIR=$(HOME_DIR)idl
 LIB_DIR=../lib

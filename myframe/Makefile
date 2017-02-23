@@ -36,7 +36,6 @@ clean	:
 #=================================================
 $(LIBNAME):$(OBJ)
 	$(AR) -ruv $(SRC_DIR)/lib$@.a $(OBJ)
-	mv core/lib$@.a .
 
 %.o : %.cc
 	$(CC) $(CXXFLAGS) -c $< -o $@ $(LIB) $(INCLUDE)
