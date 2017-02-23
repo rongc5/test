@@ -88,19 +88,19 @@ void log_thread::get_file_name(LogType type, char dest[], size_t dest_len)
     switch (type)
     {   
         case LOGFATAL:
-            snprintf(dest, dest_len, "%s.%s", _conf.prefix_file_name, "ft");
+            snprintf(dest, dest_len, "%s%s.%s", _conf.log_path, _conf.prefix_file_name, "ft");
             break;
         case LOGWARNING:
-            snprintf(dest, dest_len, "%s.%s", _conf.prefix_file_name, "wn");
+            snprintf(dest, dest_len, "%s%s.%s", _conf.log_path, _conf.prefix_file_name, "wn");
             break;
         case LOGNOTICE:
-            snprintf(dest, dest_len, "%s.%s", _conf.prefix_file_name, "nt");
+            snprintf(dest, dest_len, "%s%s.%s", _conf.log_path, _conf.prefix_file_name, "nt");
             break;
         case LOGTRACE:
-            snprintf(dest, dest_len, "%s.%s", _conf.prefix_file_name, "tc");
+            snprintf(dest, dest_len, "%s%s.%s", _conf.log_path, _conf.prefix_file_name, "tc");
             break;
         case LOGDEBUG:
-            snprintf(dest, dest_len, "%s.%s", _conf.prefix_file_name, "db");
+            snprintf(dest, dest_len, "%s%s.%s", _conf.log_path, _conf.prefix_file_name, "db");
             break;
         default:
             break;

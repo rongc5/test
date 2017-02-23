@@ -13,6 +13,8 @@
 #include <stdio.h>
 #include <stdarg.h>
 #include <sys/time.h>
+#include <dirent.h>
+
 
 #include <sys/stat.h>
 #include <unistd.h>

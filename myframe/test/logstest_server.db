@@ -1,0 +1,9 @@
+[DEBUG]:[2017-02-23 14:40:07]:[3056909168]:[10:process_recv_buf():core/channel_msg_process.cpp] recv [22]
+[DEBUG]:[2017-02-23 14:40:07]:[3056909168]:[84:put_msg():core/channel_msg_process.cpp] recv fd[35]
+[DEBUG]:[2017-02-23 14:40:07]:[3056909168]:[28:process_recv_buf():./../src/core/base_data_process.h] hello world
+[DEBUG]:[2017-02-23 14:40:07]:[3056909168]:[28:process_recv_buf():./../src/core/base_data_process.h] hello world
+[DEBUG]:[2017-02-23 14:40:07]:[2962500464]:[79:event_process():./../src/core/listen_connect.h] recv fd[35]
+[DEBUG]:[2017-02-23 14:40:07]:[2962500464]:[49:process():core/listen_data_process.cpp] write to fd [18] fd size[22]
+[DEBUG]:[2017-02-23 14:40:10]:[3056909168]:[28:process_recv_buf():./../src/core/base_data_process.h] hello world
+[DEBUG]:[2017-02-23 14:40:13]:[3056909168]:[28:process_recv_buf():./../src/core/base_data_process.h] hello world
+[DEBUG]:[2017-02-23 14:40:16]:[3056909168]:[28:process_recv_buf():./../src/core/base_data_process.h] hello world

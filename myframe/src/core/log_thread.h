@@ -12,6 +12,11 @@ class log_thread : public base_thread
     {
         _list = new list<log_msg *>[_conf.bucketlen];
         _mutex = new thread_mutex_t[_conf.bucketlen];
+        if (_conf.log_path[0] != '0') {
+            char buf[SIZE_LEN_256];
+            snprintf(buf, sizeof(buf), "mkdir -p %s", _conf.log_path);
+            system(buf);
+        }
     }
 
         virtual ~log_thread()
