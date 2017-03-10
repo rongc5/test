@@ -3,9 +3,11 @@
 
 int log_thread::add(log_msg * msg)
 {
-    pthread_t tid = pthread_self();
+    if (!msg) {
+        return -1;
+    }
 
-    int index = tid % _conf.bucketlen;
+    int index = msg->st % _conf.bucketlen;
 
     thread_lock lock(&_mutex[index]);
 

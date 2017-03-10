@@ -2,10 +2,10 @@
 #include "log_helper.h"
 
 
-int get_date_str(char dest[], size_t dest_len, const char * format)
+time_t get_date_str(char dest[], size_t dest_len, const char * format)
 {
     if (!dest || !dest_len || !format){
-        return -1;
+        return 0;
     }   
 
     time_t now;
@@ -15,7 +15,7 @@ int get_date_str(char dest[], size_t dest_len, const char * format)
     tm_now = localtime(&now);
     strftime(dest, dest_len, format, tm_now);
 
-    return 0;
+    return now;
 }
 
 

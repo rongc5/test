@@ -38,7 +38,7 @@ enum RECV_MSG_STATUS
 };
 
 
-int get_date_str(char dest[], size_t dest_len, const char * format);
+time_t get_date_str(char dest[], size_t dest_len, const char * format);
 
 uint64_t GetTickCount();
 
@@ -59,6 +59,7 @@ enum LogType {
 
 struct log_msg {
     LogType type; 
+    time_t st;
     string str;
 };
 
