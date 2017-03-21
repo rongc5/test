@@ -94,7 +94,7 @@ class ThreadedHTTPServer(ThreadingMixIn, HTTPServer):
 
 
 def do():
-    server = ThreadedHTTPServer((I, 8888), Handler)
+    server = ThreadedHTTPServer((I, 8088), Handler)
     #server = HTTPServer(('localhost', 8080), Handler)
     print 'Starting server, use <Ctrl-C> to stop'
     server.serve_forever()
