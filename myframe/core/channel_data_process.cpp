@@ -1,43 +1,21 @@
-#include "common_msg_process.h"
-#include "common_net_thread.h"
-#include "common_thread.h"
 #include "channel_data_process.h"
-#include "common_thread.h"
-
-
-channel_data_process::channel_data_process(void *p)
-{
-    _p_msg_process = (channel_msg_process<channel_data_process>*)p;			
-}
 
 size_t channel_data_process::process_recv_buf(char *buf, size_t len)
 {
-    if (!buf || !len || len < sizeof(_pass_msg_t)) {
-        return 0;
-    } 
-
-    _pass_msg_t *head = (_pass_msg_t *)buf;
-    if (head->len < 4){
-        return 0;
+    LOG_DEBUG("recv [%d]\n", len);
+    size_t left_len = len;
+    if (left_len > 0 && _thread)
+    {
+        _thread->deal_msg();
     }
 
-    int op = *(int *)(buf + sizeof(head));
-    if (op == ADD_NEW_SOCEKT){
-        add_new_socket *stu = (add_new_socket *)(buf + sizeof(head));
-        int fd = stu->fd;
-        common_thread * thread =  _p_msg_process->get_common_thread();
-        common_net_thread<channel_msg_process<channel_data_process > > *net_thread = dynamic_cast<common_net_thread<channel_msg_process<channel_data_process > > * >(thread);
-        if (net_thread){
-            net_thread->gen_connect(fd);
-        }
-    }
+    return len;
+}	
 
-    return 0;
+
+void channel_data_process::set_base_net_thread(base_net_thread *thread)
+{
+    _thread = thread;
 }
 
-channel_data_process* channel_data_process::gen_process(void *p) 
-{   
-    channel_data_process *p_tmp = new channel_data_process(p);
-    return p_tmp;
-}   
 

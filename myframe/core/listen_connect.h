@@ -60,6 +60,8 @@ class listen_connect:public base_net_obj
 				THROW_COMMON_EXCEPT("listen error "  << strerror(errno));
 			}
 			_epoll_event = EPOLLIN | EPOLLERR | EPOLLHUP;
+
+            set_unblock(_fd);
 		}
 
 		int real_net_process()

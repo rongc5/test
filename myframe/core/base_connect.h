@@ -109,9 +109,9 @@ class base_connect:public NET_OBJ
             return ret;
         }
 
-        size_t process_recv_buf(char *buf, size_t len)
+        size_t process_s(pass_msg* p_msg)
         {
-            size_t p_ret =_process->process_s((char*)_recv_buf.c_str(), _recv_buf_len);
+            size_t p_ret =_process->process_s(p_msg);
             return p_ret;
         }
 
@@ -209,7 +209,7 @@ class base_connect:public NET_OBJ
 
             if (_recv_buf_len > 0)
             {
-                //PDEBUG("process_recv_buf _recv_buf_len[%d]\n", _recv_buf_len);
+                LOG_DEBUG("process_recv_buf _recv_buf_len[%d] fd[%d]\n", _recv_buf_len, _fd);
                 size_t p_ret = _process->process_recv_buf((char*)_recv_buf.c_str(), _recv_buf_len);
                 if (p_ret < _recv_buf_len)//表名上层处理能力跟不上,停止接受数据
                 {

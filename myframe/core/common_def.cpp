@@ -29,10 +29,10 @@ uint64_t GetTickCount()
 
 bool operator<(const ObjId & oj1, const ObjId & oj2)
 {
-    if (oj1.obj_id() != oj2.obj_id()){
-        return oj1.obj_id() < oj2.obj_id();
-    } else if (oj1.thread_index() != oj2.thread_index()) {
-        return oj1.thread_index() < oj2.thread_index();
+    if (oj1._id != oj2._id){
+        return oj1._id < oj2._id;
+    } else if (oj1.thread_index != oj2.thread_index) {
+        return oj1.thread_index < oj2.thread_index;
     }else 
         return false;
 }
@@ -66,4 +66,13 @@ void get_proc_name(char buf[], size_t buf_len) {
     snprintf(buf, buf_len, "%s", p + 1);
     return;
 }
+
+void set_unblock(int fd)
+{
+    int ret = fcntl(fd, F_GETFL);
+
+    fcntl(fd, F_SETFL, ret | O_NONBLOCK);
+}
+
+
 

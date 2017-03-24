@@ -2,9 +2,9 @@
 #define __LISTEN_DATA_PROCESS_H__
 
 #include "common_def.h"
+#include "base_net_thread.h"
+#include "net_obj.h"
 
-class listen_thread;
-class base_net_obj;
 class listen_data_process
 {
     public:
@@ -12,13 +12,13 @@ class listen_data_process
 
         virtual ~listen_data_process(){}
 
-        virtual size_t process(int fd);
+        size_t process(int fd);
 
-        void set_thread(listen_thread * thread);
+        void set_thread(base_net_thread * thread);
 
     protected:	
         base_net_obj * _p_connect;
-        listen_thread * _thread;
+        base_net_thread * _thread;
 };
 
 #endif

@@ -1,5 +1,4 @@
 #include "server_mgr.h"
-#include "common_msg_process.h"
 #include "base_data_process.h"
 #include "base_thread.h"
 #include "base_singleton.h"
@@ -13,7 +12,7 @@ int main(int argc, char *argv[])
 
     LOG_INIT(conf); 
 
-    server_mgr<common_msg_process<base_data_process> > * server = new server_mgr<common_msg_process<base_data_process> >(10, "", 8888);
+    server_mgr<base_data_process> * server = new server_mgr<base_data_process >("", 8888);
 
     server->run();
     

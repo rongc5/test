@@ -14,6 +14,7 @@
 #include <stdarg.h>
 #include <sys/time.h>
 #include <dirent.h>
+#include <fcntl.h>
 
 
 #include <sys/stat.h>
@@ -30,13 +31,13 @@
 #include <list>
 #include <map>
 #include <set>
+#include <deque>
 //#include <strstream>
 #include <sstream>
 #include <exception>
 #include <memory>
 
 #include "myframe.pb.h"
-#include "zmq.h"
 
 using namespace std;
 

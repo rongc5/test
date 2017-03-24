@@ -6,7 +6,7 @@
 
 class common_epoll;
 class base_net_container;
-class base_net_obj
+class base_net_obj: public normal_msg
 {
     public:
         base_net_obj();
@@ -44,7 +44,7 @@ class NET_OBJ:public base_net_obj
         virtual ~NET_OBJ();
         virtual void close()=0;	
         virtual void get_local_addr(sockaddr_in &addr)=0;
-        virtual size_t process_recv_buf(char *buf, size_t len) = 0;
+        virtual size_t process_s(pass_msg* p_msg) = 0;
 
         /*******************************************************/	
         void get_peer_addr(sockaddr_in &addr);

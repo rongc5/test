@@ -1,10 +1,4 @@
 #include "listen_data_process.h"
-#include "listen_thread.h"
-#include "base_thread_mgr.h"
-#include "net_obj.h"
-#include "myframe.pb.h"
-#include "common_def.h"
-
 
 listen_data_process::listen_data_process(void *p)
 {
@@ -15,48 +9,27 @@ listen_data_process::listen_data_process(void *p)
 
 size_t listen_data_process::process(int fd)
 {
-
     if (_thread){
+        pass_msg * p_msg = new pass_msg();
 
-        PassMsg head;
-        ObjId *src_id, *dest_id;
+        recv_msg_fd * r_fd = new recv_msg_fd();
+        r_fd->fd = fd;
 
-        src_id = head.mutable_src_id();
-        *src_id = _p_connect->get_id();
-        dest_id = head.mutable_dst_id();
-        dest_id->set_thread_index(_thread->get_worker_id());
-        //PDEBUG("dest get_thread_index[%d], listen_thread[%d] threadid[%lu]\n", _thread->get_worker_id(), _thread->get_thread_index(), _thread->get_thread_id());
-        dest_id->set_obj_id(0);
-        head.set_cmd(ADD_NEW_SOCEKT);
+        p_msg->p_msg = r_fd;
+        p_msg->_obj_id = _p_connect->get_id();
+        p_msg->_flag = 1;
+        p_msg->_p_op = PASS_NEW_FD;
 
-        char tmp[SIZE_LEN_16];
-        snprintf(tmp, sizeof(tmp), "%d", fd);
-        head.set_str(tmp);
-
-        char buf[SIZE_LEN_256] = {0};
-
-        string out;
-        head.SerializeToString(&out);
-
-        int len = out.size();
-
-        memcpy(buf, &len, sizeof(len));
-        memcpy(buf + sizeof(len), out.c_str(), out.size());
-
-        uint32_t channelid = _thread->get_dest_channelid(_thread->get_worker_id());
-        if (channelid) {
-            write(channelid, buf, sizeof(len) + out.size());
-            LOG_DEBUG("write to fd [%d] fd size[%d]\n", channelid, sizeof(len)+ out.size());
-            //int ret = write(_thread->get_channelid(), "hello world", sizeof("hello world"));
-        }
+        _thread->put_msg(p_msg);
     }
 
     return 0;
 }
 
-void listen_data_process::set_thread(listen_thread * thread)
+void listen_data_process::set_thread(base_net_thread * thread)
 {
-    _thread = thread;    
+    _thread = thread;
 }
+
 
 

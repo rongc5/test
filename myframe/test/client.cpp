@@ -66,8 +66,10 @@ int main(int c, char **v)
 
     printf("%d %d\n", out.size(), strlen(buf));
     write(sd, buf, out.size() + sizeof(length));
+    //write(sd, "hello", sizeof("hello world"));
     while (1) {
         write(sd, buf, out.size() + sizeof(length));
+        //write(sd, "hello", sizeof("hello world"));
         sleep(3);
     }
 
