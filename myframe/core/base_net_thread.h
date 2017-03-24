@@ -17,7 +17,6 @@ class base_net_thread:public base_thread
         };
         virtual ~base_net_thread(){
             if (_base_container){
-                LOG_DEBUG("hello ");
                 delete _base_container;
             }
         };

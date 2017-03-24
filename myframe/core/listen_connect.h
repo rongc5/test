@@ -106,6 +106,11 @@ class listen_connect:public base_net_obj
             _process = p;
         }
 
+        virtual size_t process_s(pass_msg* p_msg)
+        {
+
+        }
+
 	private:
 		string _ip;
 		unsigned short _port;

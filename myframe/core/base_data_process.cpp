@@ -53,6 +53,8 @@ size_t base_data_process::process_recv_buf(char *buf, size_t len)
 
 size_t base_data_process::process_s(pass_msg * p_msg)
 {
+    REC_OBJ<pass_msg> rec(p_msg);
+
     LOG_DEBUG("%s\n", "hello world");
     return 0;
 }

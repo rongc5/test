@@ -53,6 +53,17 @@ class common_obj_container:public base_net_container
             return ret;
         }
 
+        virtual void put_msg(pass_msg* p_msg)
+        {
+            base_net_obj * net_obj = find(&p_msg->_obj_id);
+            if (!net_obj) {
+                REC_OBJ<pass_msg> rec(p_msg);
+                return;
+            }
+
+            net_obj->process_s(p_msg);
+        }
+
         virtual void obj_process()
         {   
             map<ObjId, base_net_obj*> exp_list;

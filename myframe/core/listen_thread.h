@@ -57,21 +57,24 @@ class listen_thread: public base_net_thread
                     return ;
                 }
 
-                uint32_t index = _current_indx;
-                _current_indx++;
 
-                if (_current_indx >= _worker_thrds.size()){
-                    _current_indx = 0;
+                {
+                    uint32_t index = _current_indx;
+                    _current_indx++;
+
+                    if (_current_indx >= _worker_thrds.size()){
+                        _current_indx = 0;
+                    }
+
+                    pass_msg * p_msg = new pass_msg();
+
+                    p_msg->p_msg = p_connect;
+                    p_msg->_obj_id = _listen_connect->get_id();
+                    p_msg->_flag = 0;
+                    p_msg->_p_op = PASS_NEW_CONNECT;
+
+                    _worker_thrds[index]->put_msg(p_msg);
                 }
-
-                pass_msg * p_msg = new pass_msg();
-
-                p_msg->p_msg = p_connect;
-                p_msg->_obj_id = _listen_connect->get_id();
-                p_msg->_flag = 0;
-                p_msg->_p_op = PASS_NEW_CONNECT;
-
-                _worker_thrds[index]->put_msg(p_msg);
             }
         }
 

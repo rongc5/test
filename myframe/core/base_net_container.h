@@ -17,6 +17,8 @@ class base_net_container
         virtual base_net_obj* find(const ObjId * obj_id) = 0;
         virtual bool erase(ObjId *_obj_id) = 0;
         virtual void obj_process() = 0;
+        virtual void put_msg(pass_msg* p_msg) = 0;
+
 
         common_epoll *get_epoll();
 

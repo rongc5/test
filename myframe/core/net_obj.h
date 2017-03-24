@@ -20,6 +20,7 @@ class base_net_obj: public normal_msg
         virtual void set_net_container(base_net_container *p_net_container);
         base_net_container * get_net_container();
 
+        virtual size_t process_s(pass_msg* p_msg) = 0;
         virtual int get_event();
 
         int get_sock();
@@ -44,7 +45,6 @@ class NET_OBJ:public base_net_obj
         virtual ~NET_OBJ();
         virtual void close()=0;	
         virtual void get_local_addr(sockaddr_in &addr)=0;
-        virtual size_t process_s(pass_msg* p_msg) = 0;
 
         /*******************************************************/	
         void get_peer_addr(sockaddr_in &addr);

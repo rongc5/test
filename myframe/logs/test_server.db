@@ -11203,3 +11203,53 @@
 [DEBUG]:[2017-03-23 23:17:11]:[3067427696]:[5:process_recv_buf():core/base_data_process.cpp] recv msg
 [DEBUG]:[2017-03-23 23:17:11]:[3067427696]:[18:process_recv_buf():core/base_data_process.cpp] msg_body_len[21]
 [DEBUG]:[2017-03-23 23:17:11]:[3067427696]:[56:process_s():core/base_data_process.cpp] hello world
+[DEBUG]:[2017-03-24 14:00:33]:[3077588688]:[14:add_to_epoll():core/common_epoll.cpp] add to epoll _epoll_fd[3] _get_sock [4]
+[DEBUG]:[2017-03-24 14:01:41]:[3067091824]:[57:epoll_wait():core/common_epoll.cpp] epoll_fd [3]
+[DEBUG]:[2017-03-24 14:01:41]:[3067091824]:[65:epoll_wait():core/common_epoll.cpp] get_sock[4]
+[DEBUG]:[2017-03-24 14:01:41]:[3067091824]:[81:event_process():./../core/listen_connect.h] recv fd[5]
+[DEBUG]:[2017-03-24 14:01:41]:[3067091824]:[54:put_msg():./../core/listen_thread.h] recv_fd: 5
+[DEBUG]:[2017-03-24 14:01:41]:[3067091824]:[14:add_to_epoll():core/common_epoll.cpp] add to epoll _epoll_fd[3] _get_sock [5]
+[DEBUG]:[2017-03-24 14:01:41]:[3067091824]:[57:epoll_wait():core/common_epoll.cpp] epoll_fd [3]
+[DEBUG]:[2017-03-24 14:01:41]:[3067091824]:[65:epoll_wait():core/common_epoll.cpp] get_sock[5]
+[DEBUG]:[2017-03-24 14:01:41]:[3067091824]:[212:real_recv():./../core/base_connect.h] process_recv_buf _recv_buf_len[25] fd[5]
+[DEBUG]:[2017-03-24 14:01:41]:[3067091824]:[5:process_recv_buf():core/base_data_process.cpp] recv msg
+[DEBUG]:[2017-03-24 14:01:41]:[3067091824]:[18:process_recv_buf():core/base_data_process.cpp] msg_body_len[21]
+[DEBUG]:[2017-03-24 14:01:41]:[3067091824]:[58:process_s():core/base_data_process.cpp] hello world
+[DEBUG]:[2017-03-24 14:01:41]:[3067091824]:[57:epoll_wait():core/common_epoll.cpp] epoll_fd [3]
+[DEBUG]:[2017-03-24 14:01:41]:[3067091824]:[65:epoll_wait():core/common_epoll.cpp] get_sock[5]
+[DEBUG]:[2017-03-24 14:01:41]:[3067091824]:[212:real_recv():./../core/base_connect.h] process_recv_buf _recv_buf_len[25] fd[5]
+[DEBUG]:[2017-03-24 14:01:41]:[3067091824]:[5:process_recv_buf():core/base_data_process.cpp] recv msg
+[DEBUG]:[2017-03-24 14:01:41]:[3067091824]:[18:process_recv_buf():core/base_data_process.cpp] msg_body_len[21]
+[DEBUG]:[2017-03-24 14:01:41]:[3067091824]:[58:process_s():core/base_data_process.cpp] hello world
+[DEBUG]:[2017-03-24 14:01:44]:[3067091824]:[57:epoll_wait():core/common_epoll.cpp] epoll_fd [3]
+[DEBUG]:[2017-03-24 14:01:44]:[3067091824]:[65:epoll_wait():core/common_epoll.cpp] get_sock[5]
+[DEBUG]:[2017-03-24 14:01:44]:[3067091824]:[212:real_recv():./../core/base_connect.h] process_recv_buf _recv_buf_len[25] fd[5]
+[DEBUG]:[2017-03-24 14:01:44]:[3067091824]:[5:process_recv_buf():core/base_data_process.cpp] recv msg
+[DEBUG]:[2017-03-24 14:01:44]:[3067091824]:[18:process_recv_buf():core/base_data_process.cpp] msg_body_len[21]
+[DEBUG]:[2017-03-24 14:01:44]:[3067091824]:[58:process_s():core/base_data_process.cpp] hello world
+[DEBUG]:[2017-03-24 14:01:47]:[3067091824]:[57:epoll_wait():core/common_epoll.cpp] epoll_fd [3]
+[DEBUG]:[2017-03-24 14:01:47]:[3067091824]:[65:epoll_wait():core/common_epoll.cpp] get_sock[5]
+[DEBUG]:[2017-03-24 14:01:47]:[3067091824]:[212:real_recv():./../core/base_connect.h] process_recv_buf _recv_buf_len[25] fd[5]
+[DEBUG]:[2017-03-24 14:01:47]:[3067091824]:[5:process_recv_buf():core/base_data_process.cpp] recv msg
+[DEBUG]:[2017-03-24 14:01:47]:[3067091824]:[18:process_recv_buf():core/base_data_process.cpp] msg_body_len[21]
+[DEBUG]:[2017-03-24 14:01:47]:[3067091824]:[58:process_s():core/base_data_process.cpp] hello world
+[DEBUG]:[2017-03-24 14:01:50]:[3067091824]:[57:epoll_wait():core/common_epoll.cpp] epoll_fd [3]
+[DEBUG]:[2017-03-24 14:01:50]:[3067091824]:[65:epoll_wait():core/common_epoll.cpp] get_sock[5]
+[DEBUG]:[2017-03-24 14:01:50]:[3067091824]:[212:real_recv():./../core/base_connect.h] process_recv_buf _recv_buf_len[25] fd[5]
+[DEBUG]:[2017-03-24 14:01:50]:[3067091824]:[5:process_recv_buf():core/base_data_process.cpp] recv msg
+[DEBUG]:[2017-03-24 14:01:50]:[3067091824]:[18:process_recv_buf():core/base_data_process.cpp] msg_body_len[21]
+[DEBUG]:[2017-03-24 14:01:50]:[3067091824]:[58:process_s():core/base_data_process.cpp] hello world
+[DEBUG]:[2017-03-24 14:01:53]:[3067091824]:[57:epoll_wait():core/common_epoll.cpp] epoll_fd [3]
+[DEBUG]:[2017-03-24 14:01:53]:[3067091824]:[65:epoll_wait():core/common_epoll.cpp] get_sock[5]
+[DEBUG]:[2017-03-24 14:01:53]:[3067091824]:[212:real_recv():./../core/base_connect.h] process_recv_buf _recv_buf_len[25] fd[5]
+[DEBUG]:[2017-03-24 14:01:53]:[3067091824]:[5:process_recv_buf():core/base_data_process.cpp] recv msg
+[DEBUG]:[2017-03-24 14:01:53]:[3067091824]:[18:process_recv_buf():core/base_data_process.cpp] msg_body_len[21]
+[DEBUG]:[2017-03-24 14:01:53]:[3067091824]:[58:process_s():core/base_data_process.cpp] hello world
+[DEBUG]:[2017-03-24 14:01:56]:[3067091824]:[57:epoll_wait():core/common_epoll.cpp] epoll_fd [3]
+[DEBUG]:[2017-03-24 14:01:56]:[3067091824]:[65:epoll_wait():core/common_epoll.cpp] get_sock[5]
+[DEBUG]:[2017-03-24 14:01:56]:[3067091824]:[212:real_recv():./../core/base_connect.h] process_recv_buf _recv_buf_len[25] fd[5]
+[DEBUG]:[2017-03-24 14:01:56]:[3067091824]:[5:process_recv_buf():core/base_data_process.cpp] recv msg
+[DEBUG]:[2017-03-24 14:01:56]:[3067091824]:[18:process_recv_buf():core/base_data_process.cpp] msg_body_len[21]
+[DEBUG]:[2017-03-24 14:01:56]:[3067091824]:[58:process_s():core/base_data_process.cpp] hello world
+[DEBUG]:[2017-03-24 14:01:56]:[3067091824]:[57:epoll_wait():core/common_epoll.cpp] epoll_fd [3]
+[DEBUG]:[2017-03-24 14:01:56]:[3067091824]:[65:epoll_wait():core/common_epoll.cpp] get_sock[5]
