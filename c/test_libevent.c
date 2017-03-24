@@ -8,6 +8,8 @@
 
 void http_request_done(struct evhttp_request *req, void *arg)
 {
+    printf("%d\n", req->evcon->fd);
+
     printf("send request ok...\n");
     size_t len = evbuffer_get_length(req->input_buffer);
     unsigned char * str = evbuffer_pullup(req->input_buffer, len);
@@ -34,14 +36,15 @@ int main()
 
     base = event_base_new();
     //conn = evhttp_connection_new(base, NULL, "192.168.1.109", 8081);
-    for (int i = 1; i <= 3; i++) {
     conn = evhttp_connection_new("127.0.0.1", 8088);
     evhttp_connection_set_base(conn, base);
 
     req = evhttp_request_new(http_request_done, base);
+    int i = 0;
     evhttp_add_header(req->output_headers, "Host", "localhost");
     evhttp_make_request(conn, req, EVHTTP_REQ_GET, "/test");
     evhttp_connection_set_timeout(req->evcon, 100);
+    printf("%p\n", req->evcon);
     event_base_dispatch(base);
 
     evhttp_connection_free(conn);
