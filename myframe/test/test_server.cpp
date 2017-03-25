@@ -1,17 +1,18 @@
 #include "server_mgr.h"
-#include "common_msg_process.h"
 #include "base_data_process.h"
 #include "base_thread.h"
+#include "base_singleton.h"
 
 
 int main(int argc, char *argv[])
 {
+    log_conf conf;
+    conf.deal_mode = 3;
+    //strcpy(conf.prefix_file_name, "asp");
 
-    base_singleton<log_mgr>::set_instance(new log_mgr());
-    base_singleton<log_mgr>::get_instance()->init(LOGDEBUG,"test",0, 10000);
+    LOG_INIT(conf); 
 
-
-    server_mgr<common_msg_process<base_data_process> > * server = new server_mgr<common_msg_process<base_data_process> >(1, "", 8888);
+    server_mgr<base_data_process> * server = new server_mgr<base_data_process >("", 8888);
 
     server->run();
     

@@ -8,7 +8,7 @@
 #include <netinet/ip.h>
 #include <errno.h>
 #include <poll.h>
-#include "../src/common_def.h"
+#include "common_def.h"
 
 #define SERVERADDR "127.0.0.1"
 #define SERVERPORT 8
@@ -66,8 +66,10 @@ int main(int c, char **v)
 
     printf("%d %d\n", out.size(), strlen(buf));
     write(sd, buf, out.size() + sizeof(length));
+    //write(sd, "hello", sizeof("hello world"));
     while (1) {
         write(sd, buf, out.size() + sizeof(length));
+        //write(sd, "hello", sizeof("hello world"));
         sleep(3);
     }
 

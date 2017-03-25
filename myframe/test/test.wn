@@ -1,5 +1,0 @@
-WARNING: 2017-02-09 17:57:14 * 3078028144 [./../include/base_connect.h:RECV():148] throw exception error the client close the socket(11)
-WARNING: 2017-02-09 18:01:35 * 3078499184 [./../include/base_connect.h:RECV():148] throw exception error the client close the socket(11)
-WARNING: 2017-02-09 18:40:14 * 3078450032 [./../include/base_connect.h:RECV():148] throw exception error the client close the socket(11)
-WARNING: 2017-02-09 18:44:28 * 3078437744 [./../include/base_connect.h:RECV():148] throw exception error the client close the socket(11)
-WARNING: 2017-02-09 18:46:32 * 3078044528 [./../include/base_connect.h:RECV():148] throw exception error the client close the socket(11)

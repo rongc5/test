@@ -1,6 +1,6 @@
 #!/bin/sh 
 
-array="algorithms  asm  c  c++  design  java  lecture lua  python  zhangming linux gtest mysql golang"
+array="algorithms  asm  c  c++  design  java  lecture lua  python  zhangming linux gtest mysql golang  myframe"
 #for var in ${var[@]}
 for var in $array
 do
