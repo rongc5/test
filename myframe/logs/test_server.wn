@@ -1,0 +1,2 @@
+[WARNING]:[2017-03-23 22:58:37]:[3067997040]:[149:RECV():./../core/base_connect.h] throw exception error the client close the socket(5)
+[WARNING]:[2017-03-24 14:01:56]:[3067091824]:[148:RECV():./../core/base_connect.h] throw exception error the client close the socket(5)
