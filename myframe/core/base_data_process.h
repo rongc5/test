@@ -4,16 +4,13 @@
 #include "common_epoll.h"
 #include "net_obj.h"
 #include "common_def.h"
-#include "base_net_thread.h"
 
-class base_net_thread;
 class base_data_process
 {
     public:
         base_data_process(void *p)
         {
             _p_connect = (NET_OBJ*)p;
-            _thread = NULL;
         }
 
         virtual ~base_data_process()
@@ -46,10 +43,9 @@ class base_data_process
 
         virtual size_t process_recv_buf(char *buf, size_t len);
 
-        size_t process_s(pass_msg * p_msg);
+        virtual size_t process_recv(pass_msg * p_msg);
 
-
-        void set_base_net_thread(base_net_thread *thread);
+        void process_send(string *p_msg);
 
     protected:
         void clear_send_list()
@@ -63,8 +59,10 @@ class base_data_process
 
         string *get_send_msg()
         {
-            if (_send_list.begin() == _send_list.end())
+            if (_send_list.begin() == _send_list.end()) {
+                _p_connect->del_event(EPOLLOUT);
                 return NULL;
+            }
 
             string *p = *(_send_list.begin());
             _send_list.erase(_send_list.begin());
@@ -73,7 +71,6 @@ class base_data_process
 
 
     protected:
-        base_net_thread * _thread;
         NET_OBJ *_p_connect;
         list<string*> _send_list;
 };

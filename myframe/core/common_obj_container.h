@@ -55,13 +55,13 @@ class common_obj_container:public base_net_container
 
         virtual void put_msg(pass_msg* p_msg)
         {
-            base_net_obj * net_obj = find(&p_msg->_obj_id);
+            base_net_obj * net_obj = find(&p_msg->_dest_id);
             if (!net_obj) {
                 REC_OBJ<pass_msg> rec(p_msg);
                 return;
             }
 
-            net_obj->process_s(p_msg);
+            net_obj->process_recv(p_msg);
         }
 
         virtual void obj_process()

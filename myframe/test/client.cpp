@@ -22,10 +22,9 @@ int main(int c, char **v)
     }
 
     struct sockaddr_in addr;
-    char buf[4096];
+    char buf[4096], tmp[4096];
     socklen_t len;
-    int sd, ret, fd;
-    struct pollfd fds;
+    int sd, ret;
 
     len = sizeof(addr);
     addr.sin_family = AF_INET;
@@ -65,11 +64,13 @@ int main(int c, char **v)
     memcpy(buf+sizeof(length), out.c_str(), out.size());
 
     printf("%d %d\n", out.size(), strlen(buf));
-    write(sd, buf, out.size() + sizeof(length));
     //write(sd, "hello", sizeof("hello world"));
     while (1) {
         write(sd, buf, out.size() + sizeof(length));
         //write(sd, "hello", sizeof("hello world"));
+        read(sd, tmp, sizeof(tmp));
+        printf("recv: %s\n", tmp);
+        //printf("recv: \n");
         sleep(3);
     }
 

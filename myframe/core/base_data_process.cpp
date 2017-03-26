@@ -1,4 +1,5 @@
 #include "base_data_process.h"
+#include "base_net_thread.h"
 
 size_t base_data_process::process_recv_buf(char *buf, size_t len)
 {
@@ -30,15 +31,17 @@ size_t base_data_process::process_recv_buf(char *buf, size_t len)
             if (left_len >= _head_len + msg_body_len) {
 
                 pass_msg * p_msg = new pass_msg();
-                p_msg->_obj_id = _p_connect->get_id();
+                p_msg->_src_id = _p_connect->get_id();
+                p_msg->_dest_id = _p_connect->get_id();
                 p_msg->_p_op = PASS_NEW_MSG;
                 p_msg->_flag = 1;
                 recv_msg * r_msg = new recv_msg();
+                r_msg->_flag = 0;
                 p_msg->p_msg = r_msg;
                 r_msg->_len = _head_len + msg_body_len;
                 r_msg->_ptr = buf;
 
-                process_s(p_msg);
+                process_recv(p_msg);
 
                 left_len -= (_head_len + msg_body_len);
                 buf = buf + _head_len + msg_body_len;
@@ -51,7 +54,7 @@ size_t base_data_process::process_recv_buf(char *buf, size_t len)
     return len - left_len;
 }	
 
-size_t base_data_process::process_s(pass_msg * p_msg)
+size_t base_data_process::process_recv(pass_msg * p_msg)
 {
     REC_OBJ<pass_msg> rec(p_msg);
 
@@ -59,10 +62,15 @@ size_t base_data_process::process_s(pass_msg * p_msg)
     return 0;
 }
 
-
-void base_data_process::set_base_net_thread(base_net_thread *thread)
+void base_data_process::process_send(string *p_msg)
 {
-    _thread = thread;
+    bool if_add = false;
+    if (_send_list.begin() == _send_list.end())
+        if_add = true;
+
+    _send_list.push_back(p_msg);
+    if (if_add)
+        _p_connect->add_event(EPOLLOUT);
 }
 
 

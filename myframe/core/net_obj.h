@@ -14,13 +14,15 @@ class base_net_obj: public normal_msg
         virtual ~base_net_obj();
 
         virtual int real_net_process() = 0;
-        virtual void event_process(const int32_t events) = 0;
+        virtual void event_process(int events) = 0;
         virtual int destroy() = 0;
 
         virtual void set_net_container(base_net_container *p_net_container);
         base_net_container * get_net_container();
 
-        virtual size_t process_s(pass_msg* p_msg) = 0;
+        virtual size_t process_recv(pass_msg* p_msg) = 0;
+        virtual void add_event(int event);
+        virtual void del_event(int event);    
         virtual int get_event();
 
         int get_sock();

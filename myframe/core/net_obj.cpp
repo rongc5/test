@@ -16,6 +16,7 @@ base_net_obj::base_net_obj()
 
 base_net_obj::~base_net_obj()
 {
+
 }
 
 
@@ -44,6 +45,17 @@ base_net_container * base_net_obj::get_net_container()
     return _p_net_container;
 }
 
+void base_net_obj::add_event(int event)
+{
+    _epoll_event = _epoll_event | event;
+    _p_epoll->mod_from_epoll(this);
+}
+
+void base_net_obj::del_event(int event)
+{
+    _epoll_event = _epoll_event & (~event);
+    _p_epoll->mod_from_epoll(this);
+}
 
 int base_net_obj::get_event()
 {

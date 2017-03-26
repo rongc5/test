@@ -2,12 +2,10 @@
 #define __BASE_NET_THREAD_H__
 
 #include "common_def.h"
-#include "channel_data_process.h"
 #include "base_thread.h"
 #include "common_obj_container.h"
 #include "net_obj.h"
 #include "base_connect.h"
-
 
 class base_net_thread:public base_thread
 {
@@ -19,6 +17,8 @@ class base_net_thread:public base_thread
             if (_base_container){
                 delete _base_container;
             }
+
+            close(_channelid);
         };
 
         virtual void *run();
@@ -27,10 +27,19 @@ class base_net_thread:public base_thread
 
         virtual void put_msg(pass_msg * msg);
 
-        pass_msg* get_msg();
+        static void passing_msg(pass_msg * msg);
 
-        virtual void deal_msg();
+        virtual void routine_msg();
 
+        /************* *****************/
+
+        virtual void handle_new_fd(pass_msg * p_msg);
+
+        virtual void handle_new_connect(pass_msg * p_msg);
+
+        virtual void handle_new_msg(pass_msg * p_msg);
+
+        static base_net_thread * get_base_net_thread_obj(uint32_t thread_index);
     protected:
         const ObjId & gen_id_str();
 
@@ -43,7 +52,10 @@ class base_net_thread:public base_thread
         base_net_container * _base_container;
         ObjId _id_str;
         deque<pass_msg *> _queue;
-        thread_mutex_t _mutex;
+        thread_mutex_t _base_net_mutex;
+
+        typedef typename map<uint32_t, base_net_thread *>::iterator bntMapIter;
+        static map<uint32_t, base_net_thread *> _base_net_thread_map;
 };
 
 #endif

@@ -1,2 +1,7 @@
 [WARNING]:[2017-03-23 22:58:37]:[3067997040]:[149:RECV():./../core/base_connect.h] throw exception error the client close the socket(5)
 [WARNING]:[2017-03-24 14:01:56]:[3067091824]:[148:RECV():./../core/base_connect.h] throw exception error the client close the socket(5)
+[WARNING]:[2017-03-26 22:46:35]:[3067657072]:[148:RECV():./../core/base_connect.h] throw exception error the client close the socket(7)
+[WARNING]:[2017-03-26 23:23:19]:[3067014000]:[148:RECV():./../core/base_connect.h] throw exception error the client close the socket(7)
+[WARNING]:[2017-03-26 23:38:46]:[3056528240]:[148:RECV():./../core/base_connect.h] throw exception error the client close the socket(25)
+[WARNING]:[2017-03-26 23:42:56]:[3035548528]:[148:RECV():./../core/base_connect.h] throw exception error the client close the socket(26)
+[WARNING]:[2017-03-26 23:42:58]:[3046038384]:[148:RECV():./../core/base_connect.h] throw exception error the client close the socket(25)

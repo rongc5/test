@@ -62,8 +62,6 @@ class listen_connect:public base_net_obj
 			_epoll_event = EPOLLIN | EPOLLERR | EPOLLHUP;
 
             set_unblock(_fd);
-
-            struct event_base* base = event_base_new();
 		}
 
 		int real_net_process()
@@ -108,9 +106,11 @@ class listen_connect:public base_net_obj
             _process = p;
         }
 
-        virtual size_t process_s(pass_msg* p_msg)
+        virtual size_t process_recv(pass_msg* p_msg)
         {
+            REC_OBJ<pass_msg> rec(p_msg);
 
+            return 0;
         }
 
 	private:

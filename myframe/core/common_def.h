@@ -105,17 +105,16 @@ void set_unblock(int fd);
 enum pass_msg_op
 {
     PASS_NEW_FD,
-    PASS_NEW_CONNECT = 0,
-    PASS_NEW_MSG = 1,
-    PASS_MSG
+    PASS_NEW_CONNECT = 1,
+    PASS_NEW_MSG
 };
 
 struct ObjId
 {
     uint32_t _id;
-    uint32_t thread_index;
+    uint32_t _thread_index;
 
-    ObjId():_id(0), thread_index(0){}
+    ObjId():_id(0), _thread_index(0){}
 };
 
 bool operator < (const ObjId & oj1, const ObjId & oj2);
@@ -128,7 +127,8 @@ struct normal_msg
 
 struct pass_msg //内部传递的消息
 {
-    ObjId _obj_id;
+    ObjId _src_id;
+    ObjId _dest_id;
     pass_msg_op _p_op;
     uint32_t _flag; // 是否需要删除p_msg, 0 不需要, 1需要
     normal_msg * p_msg;
@@ -139,6 +139,7 @@ struct pass_msg //内部传递的消息
     virtual ~pass_msg(){
         if (_flag && p_msg) {
             delete p_msg;
+            p_msg = NULL;
         }
     }
 };
@@ -147,14 +148,25 @@ struct recv_msg: public normal_msg
 {
     uint32_t _len;
     char * _ptr;
+    uint32_t _flag; // 是否需要删除, 1 需要, 0 不需要
 
-    recv_msg():_len(0), _ptr(NULL){}
+    recv_msg():_len(0), _ptr(NULL), _flag(1){
+    }
+
+    virtual ~recv_msg() {
+        if (_flag && _ptr) {
+            delete [] _ptr;
+            _ptr = NULL;
+        }
+    }
 };
 
 struct recv_msg_fd: public normal_msg
 {
     int fd;
     recv_msg_fd():fd(0){}
+
+    virtual ~recv_msg_fd(){}
 };
 
 #endif

@@ -80,7 +80,7 @@ class base_connect:public NET_OBJ
             _process->set_para();
         }
 
-        void event_process(const int32_t event)
+        void event_process(int event)
         {
             if ((event & EPOLLERR) == EPOLLERR || (event & EPOLLHUP) == EPOLLHUP)
             {
@@ -109,9 +109,9 @@ class base_connect:public NET_OBJ
             return ret;
         }
 
-        size_t process_s(pass_msg* p_msg)
+        size_t process_recv(pass_msg* p_msg)
         {
-            size_t p_ret =_process->process_s(p_msg);
+            size_t p_ret =_process->process_recv(p_msg);
             return p_ret;
         }
 
@@ -255,7 +255,7 @@ class base_connect:public NET_OBJ
                     {
                         is_break = true;
                     }
-                    //очкы
+
                     if (is_break)
                         break;
                 }
