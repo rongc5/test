@@ -2,48 +2,41 @@
 #define __BASE_NET_THREAD_H__
 
 #include "common_def.h"
-#include "channel_data_process.h"
 #include "base_thread.h"
-#include "common_obj_container.h"
-#include "net_obj.h"
-#include "base_connect.h"
-
 
 class base_net_thread:public base_thread
 {
     public:
-        base_net_thread():_channelid(0), _base_container(NULL){
-            _base_container = new common_obj_container();
+        base_net_thread():_channelid(0){
+            _base = event_base_new()
         };
+
         virtual ~base_net_thread(){
-            if (_base_container){
-                delete _base_container;
-            }
+            close(_channelid);
         };
 
         virtual void *run();
 
         virtual void init();
 
-        virtual void put_msg(pass_msg * msg);
+        virtual void put_msg(int fd);
 
-        pass_msg* get_msg();
+        virtual void routine_msg();
 
-        virtual void deal_msg();
+        static void channel_cb(int fd, short ev, void *arg);
+
+        /************* *****************/
+
+        virtual void handle_new_fd(int fd);
 
     protected:
-        const ObjId & gen_id_str();
-
         void set_channelid(int fd);
 
     protected:
-
+        struct event_base* _base;
         int _channelid;
-        typedef typename deque<pass_msg*>::iterator dItr;
-        base_net_container * _base_container;
-        ObjId _id_str;
-        deque<pass_msg *> _queue;
-        thread_mutex_t _mutex;
+        deque<fd> _queue;
+        thread_mutex_t _base_net_mutex;
 };
 
 #endif

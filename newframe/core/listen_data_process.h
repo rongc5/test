@@ -14,11 +14,8 @@ class listen_data_process
 
         size_t process(int fd);
 
-        void set_thread(base_net_thread * thread);
-
     protected:	
         base_net_obj * _p_connect;
-        base_net_thread * _thread;
 };
 
 #endif

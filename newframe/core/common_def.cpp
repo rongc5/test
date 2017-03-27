@@ -27,17 +27,6 @@ uint64_t GetTickCount()
     return now;
 }
 
-bool operator<(const ObjId & oj1, const ObjId & oj2)
-{
-    if (oj1._id != oj2._id){
-        return oj1._id < oj2._id;
-    } else if (oj1.thread_index != oj2.thread_index) {
-        return oj1.thread_index < oj2.thread_index;
-    }else 
-        return false;
-}
-
-
 void get_proc_name(char buf[], size_t buf_len) {
 
     if (!buf || !buf_len) {
