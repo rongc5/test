@@ -5,7 +5,6 @@
 #include "thread_helper.h"
 
 
-
 class base_thread
 {
     public:

@@ -10,10 +10,11 @@ LIB = -L$(LIB_DIR) -lmyframe -lprotobuf -lpthread
 CPPFLAGS = -g -msse3 -Wall $(INCLUDE) -DDEBUG=1
 CC  = g++ $(CPPFLAGS)
 
-OUTPUT_PATH=./output
 
 OBJ	= $(IDL_DIR)/myframe.pb.o \
 	./test_server.o     \
+	./test_data_process.o     \
+	./test_net_thread.o     \
 
 
 AR=ar
@@ -31,7 +32,6 @@ clean	:
 	/bin/rm -f *.o 
 	/bin/rm -f *~~ 
 	rm -f $(server) $(client);
-	rm -rf $(OUTPUT_PATH);
 
 $(client):client.o
 	$(CC) $(CXXFLAGS) -o $@ $^ $(LIB)

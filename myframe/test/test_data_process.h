@@ -18,19 +18,7 @@ class test_data_process:public base_data_process
         }	
 
 
-        virtual size_t process_recv(pass_msg * p_msg)
-        {
-            REC_OBJ<pass_msg> rec(p_msg);
-
-
-            LOG_DEBUG("_p_connect->get_id thread_index[%d]", _p_connect->get_id()._thread_index);
-            string *str = new string();
-            str->append("hello test");
-
-            process_send(str);
-
-            return 0;
-        }
+        virtual size_t process_recv(pass_msg * p_msg);
 
 };
 

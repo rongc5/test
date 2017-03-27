@@ -38,6 +38,11 @@ bool operator<(const ObjId & oj1, const ObjId & oj2)
 }
 
 
+bool operator==(const ObjId & oj1, const ObjId & oj2)
+{
+    return oj1._thread_index ==  oj2._thread_index && oj1._id == oj2._id;
+}
+
 void get_proc_name(char buf[], size_t buf_len) {
 
     if (!buf || !buf_len) {

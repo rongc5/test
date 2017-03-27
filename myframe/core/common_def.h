@@ -119,6 +119,8 @@ struct ObjId
 
 bool operator < (const ObjId & oj1, const ObjId & oj2);
 
+bool operator==(const ObjId & oj1, const ObjId & oj2);
+
 struct normal_msg 
 {
     normal_msg(){}
