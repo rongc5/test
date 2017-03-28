@@ -32,11 +32,14 @@ class base_net_thread:public base_thread
     protected:
         void set_channelid(int fd);
 
+        virtual int RECV(void *buf, size_t len);
+
     protected:
         struct event_base* _base;
         int _channelid;
         deque<fd> _queue;
         thread_mutex_t _base_net_mutex;
+        map<fd, >
 };
 
 #endif

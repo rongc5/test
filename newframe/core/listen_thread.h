@@ -10,7 +10,7 @@ template<class MSG_PROCESS>
 class listen_thread: public base_net_thread
 {
     public:
-        listen_thread():_listen_connect(NULL), _current_indx(0){
+        listen_thread():_current_indx(0){
         };
         virtual ~listen_thread(){
         };
@@ -19,12 +19,46 @@ class listen_thread: public base_net_thread
         {
             _ip = ip;
             _port = port;
-            _listen_connect = new listen_connect<listen_data_process>();
-            listen_data_process * data_process = new listen_data_process(_listen_connect);
-            _listen_connect->set_id(gen_id_str());
-            _listen_connect->init(ip, port);
-            _listen_connect->set_process(data_process);
-            _listen_connect->set_net_container(_base_container);
+
+            struct sockaddr_in address;
+            int reuse_addr = 1;
+
+            memset((char *) &address, 0, sizeof(address));
+            address.sin_family = AF_INET;
+            address.sin_port = htons(port);
+            int ret = 0;
+
+            if (ip != "")
+            {
+                inet_aton(ip.c_str(), &address.sin_addr);
+            }
+            else
+            {
+                address.sin_addr.s_addr = htonl(INADDR_ANY);
+            }
+
+            _fd = socket(AF_INET, SOCK_STREAM, 0);
+            if (_fd < 0) 
+            {
+                THROW_COMMON_EXCEPT("socket error " << strerror(errno));     
+            }
+            setsockopt(_fd, SOL_SOCKET, SO_REUSEADDR, (void*)(&(reuse_addr)), sizeof(reuse_addr));
+
+            if (::bind(_fd, (struct sockaddr *) &address, sizeof(address)) < 0) 
+            {        
+                THROW_COMMON_EXCEPT("bind error "  << strerror(errno) << " " << ip << ":" << port);
+            }        
+
+            ret = listen(_fd, 250);
+            if (ret == -1)
+            {
+                THROW_COMMON_EXCEPT("listen error "  << strerror(errno));
+            }
+
+            set_unblock(_fd);
+
+            event_set(&ev_accept, listen_fd, EV_READ|EV_PERSIST, on_accept, this);
+            event_dispatch();
         }
 
         int add_worker_thread(base_net_thread * thread)
@@ -34,21 +68,12 @@ class listen_thread: public base_net_thread
             return 0;
         }
 
-        virtual void handle_new_fd(pass_msg * p_msg)
+        static void on_accept(int fd, short ev, void *arg)
         {
-            REC_OBJ<pass_msg> rec(p_msg);
-            if (!p_msg) {
-                return ;
-            }
-
-            recv_msg_fd * r_msg = dynamic_cast<recv_msg_fd *> (p_msg->p_msg);
-
-            NET_OBJ *p_connect = gen_connect(r_msg->fd);
+            listen_thread * l_thread = (listen_thread *)arg;
 
             if (!_worker_thrds.size()) {
                 LOG_DEBUG("recv_fd: %d\n", r_msg->fd);
-                p_connect->set_id(gen_id_str());
-                p_connect->set_net_container(_base_container);
                 return ;
             }
 
@@ -61,15 +86,7 @@ class listen_thread: public base_net_thread
                     _current_indx = 0;
                 }
 
-                pass_msg * p_msg = new pass_msg();
-
-                p_msg->p_msg = p_connect;
-                p_msg->_src_id = _listen_connect->get_id();
-                p_msg->_dest_id._thread_index = _worker_thrds[index]->get_thread_index();
-                p_msg->_flag = 0;
-                p_msg->_p_op = PASS_NEW_CONNECT;
-
-                _worker_thrds[index]->put_msg(p_msg);
+                _worker_thrds[index]->put_msg(fd);
             }
         }
 

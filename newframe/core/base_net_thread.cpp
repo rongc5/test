@@ -73,3 +73,26 @@ void base_net_thread::set_channelid(int fd)
     event_add(ev, NULL);
 }
 
+int RECV(void *buf, size_t len)
+{
+    int ret = recv(_fd, buf, len, MSG_DONTWAIT);
+    if (ret == 0)
+    {
+        _process->peer_close();
+        PDEBUG("the client close the socket [%d]\n", _fd);
+        THROW_COMMON_EXCEPT("the client close the socket(" << _fd << ")");
+    }
+    else if (ret < 0)
+    {
+        if (errno != EAGAIN)
+        {
+            PDEBUG("this socket occur fatal error [%s]\n", strerror(errno));
+            THROW_COMMON_EXCEPT("this socket occur fatal error " << strerror(errno));
+        }
+        ret = 0;
+    }
+
+    return ret;
+}
+
+

@@ -98,5 +98,7 @@ class REC_OBJ
 
 void set_unblock(int fd);
 
+typedef void (*event_fd_callback)(evutil_socket_t, short, void *);
+
 
 #endif
