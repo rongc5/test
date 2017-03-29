@@ -1,0 +1,43 @@
+HOME_DIR=./
+SRC_DIR=${HOME_DIR}newcore
+IDL_DIR=$(HOME_DIR)idl
+
+INCLUDE = -I./${SRC_DIR}/ -I./${IDL_DIR}/
+LIB = -L/usr/lib/ -lpthread \
+	  -lprotobuf
+
+CPPFLAGS = -g -msse3 -Wall $(INCLUDE) -DDEBUG=1
+CC  = g++ $(CPPFLAGS)
+
+OBJ	= ${SRC_DIR}/base_connect.o                        \
+    ${SRC_DIR}/base_thread.o                        \
+    ${SRC_DIR}/base_net_thread.o                        \
+    ${SRC_DIR}/channel_connect.o                        \
+    ${SRC_DIR}/listen_connect.o                        \
+    ${SRC_DIR}/test_connect.o                       \
+    ${SRC_DIR}/common_def.o                        \
+    ${SRC_DIR}/log_thread.o                        \
+    ${SRC_DIR}/thread_helper.o                        \
+    ${IDL_DIR}/myframe.pb.o                        
+
+OBJ_INCLUDE=
+
+AR=ar
+LIBNAME=myframe
+
+
+all	: $(LIBNAME)
+
+clean	:
+	/bin/rm -rf  $(OBJ)
+
+#=================================================
+$(LIBNAME):$(OBJ)
+	$(AR) -ruv $(SRC_DIR)/lib$@.a $(OBJ)
+
+%.o : %.cc
+	$(CC) $(CXXFLAGS) -c $< -o $@ $(LIB) $(INCLUDE)
+
+%.o : %.cpp
+	$(CC) $(CXXFLAGS) -c $< -o $@ $(LIB) $(INCLUDE)
+

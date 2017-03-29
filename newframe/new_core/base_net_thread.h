@@ -29,17 +29,28 @@ class base_net_thread:public base_thread
 
         virtual void handle_new_fd(int fd);
 
+        struct event_base * get_event_base()
+        {
+            return _base;
+        }
+
+        void add_connect_map(base_connect * _conn);
+
+        void destory_connect(int fd);
+
+        base_connect * get_connect(int fd);
+
     protected:
         void set_channelid(int fd);
 
-        virtual int RECV(void *buf, size_t len);
+        static void on_read(int fd, short ev, void *arg);
 
     protected:
         struct event_base* _base;
         int _channelid;
         deque<fd> _queue;
         thread_mutex_t _base_net_mutex;
-        map<fd, >
+        map<fd, base_connect*> _connect_map;
 };
 
 #endif

@@ -1,4 +1,6 @@
 #include "base_net_thread.h"
+#include "channel_connect.h"
+#include "test_connect.h"
 
 
 void * base_net_thread::run()
@@ -24,7 +26,8 @@ void base_net_thread::init()
     }   
 
     _channelid = fd[0];
-    set_channelid(fd[1]);
+    channel_connect::gen_connect(fd[1], this);
+
     LOG_DEBUG("fd[%d] fd[%d]\n", fd[0], fd[1]);
     _base_net_thread_map[get_thread_index()] = this;
 }
@@ -54,45 +57,46 @@ void base_net_thread::routine_msg()
 void base_net_thread::handle_new_fd(int fd)
 {
     LOG_DEBUG("recv: fd [%d]", fd);
+
+    set_unblock(fd);
+
+    test_connect::gen_connect(fd, this);
 }
 
-void base_net_thread::channel_cb(int fd, short ev, void *arg)
+void base_net_threadt::add_connect_map(base_connect * conn)
 {
-    base_net_thread * net_thread = (base_net_thread *)arg;
+    map<fd, base_connect*>::iterator it;
+    it = _connect_map.find(conn->get_sock());
+    if (it == _connect_map.end()){
+        _connect_map[_conn->get_sock()] = conn;
+        return;
+    }
 
-    if (net_thread){
-        net_thread->routine_msg();
+    if (it->second ==  conn) {
+        return;
+    }
+
+    delete conn;
+}
+
+void base_net_thread::destory_connect(int fd)
+{
+    map<fd, base_connect*>::iterator it;
+    it = _connect_map.find(fd);
+    if (it != _connect_map.end()){
+        delete it->second;
+        _connect_map.erase(it);
     }
 }
 
-void base_net_thread::set_channelid(int fd)
+base_connect * base_net_thread::get_connect(int fd)
 {
-    struct event * ev = event_new(_base, fd, EV_TIMEOUT | EV_READ | EV_PERSIST, channel_cb,
-                   this);
-
-    event_add(ev, NULL);
-}
-
-int RECV(void *buf, size_t len)
-{
-    int ret = recv(_fd, buf, len, MSG_DONTWAIT);
-    if (ret == 0)
-    {
-        _process->peer_close();
-        PDEBUG("the client close the socket [%d]\n", _fd);
-        THROW_COMMON_EXCEPT("the client close the socket(" << _fd << ")");
-    }
-    else if (ret < 0)
-    {
-        if (errno != EAGAIN)
-        {
-            PDEBUG("this socket occur fatal error [%s]\n", strerror(errno));
-            THROW_COMMON_EXCEPT("this socket occur fatal error " << strerror(errno));
-        }
-        ret = 0;
+    map<fd, base_connect*>::iterator it;
+    it = _connect_map.find(fd);
+    if (it != _connect_map.end()){
+        return it->second;
     }
 
-    return ret;
+    return NULL;
 }
-
 
