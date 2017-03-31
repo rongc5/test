@@ -8,7 +8,7 @@
 
 void http_request_done(struct evhttp_request *req, void *arg)
 {
-    printf("%d\n", req->evcon->fd);
+    /*printf("%d\n", req->evcon->fd);*/
 
     printf("send request ok...\n");
     size_t len = evbuffer_get_length(req->input_buffer);

@@ -3,6 +3,8 @@
 
 #include "log_helper.h"
 #include "base_net_thread.h"
+#include "common_def.h"
+#include "common_exception.h"
 
 class base_net_thread;
 class base_connect
@@ -37,7 +39,7 @@ class base_connect
     protected:
         int _fd;
         base_net_thread * _thread;
-        struct event * _ev;
+        struct event _event;
 };
 
 

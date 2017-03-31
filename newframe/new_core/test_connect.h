@@ -4,6 +4,7 @@
 #include "log_helper.h"
 #include "base_connect.h"
 #include "base_net_thread.h"
+#include "common_def.h"
 
 
 class base_net_thread;
@@ -11,7 +12,7 @@ class test_connect:public base_connect
 {
     public:
 
-        test_connect(int32_t sock, base_net_thread * thread):_fd(sock), _thread(thread)
+        test_connect(int32_t sock, base_net_thread * thread):base_connect(sock, thread), _recv_buf_len(0)
         {
 
         }
@@ -32,6 +33,7 @@ class test_connect:public base_connect
 
         size_t process_recv_buf(char *buf, size_t len);
 
+        size_t process_s(char *buf, size_t len);
     protected:
         string _recv_buf;
         size_t _recv_buf_len;

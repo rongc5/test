@@ -1,15 +1,21 @@
 HOME_DIR=./
-SRC_DIR=${HOME_DIR}newcore
+SRC_DIR=${HOME_DIR}new_core
 IDL_DIR=$(HOME_DIR)idl
 
-INCLUDE = -I./${SRC_DIR}/ -I./${IDL_DIR}/
+INCLUDE = -I./${SRC_DIR}/ -I./${IDL_DIR} -I/usr/local/include 
 LIB = -L/usr/lib/ -lpthread \
-	  -lprotobuf
+	  -lprotobuf \
+	   -L/usr/local/lib -lrt \
+		-libevent.a  \
+		 -libevent_core.a  \
+		 -lbevent_extra.a  \
+		 -libevent_openssl.a  \
+		 -libevent_pthreads.a 
 
 CPPFLAGS = -g -msse3 -Wall $(INCLUDE) -DDEBUG=1
 CC  = g++ $(CPPFLAGS)
 
-OBJ	= ${SRC_DIR}/base_connect.o                        \
+OBJ	= ${SRC_DIR}/base_connect.o                     \
     ${SRC_DIR}/base_thread.o                        \
     ${SRC_DIR}/base_net_thread.o                        \
     ${SRC_DIR}/channel_connect.o                        \
@@ -17,13 +23,14 @@ OBJ	= ${SRC_DIR}/base_connect.o                        \
     ${SRC_DIR}/test_connect.o                       \
     ${SRC_DIR}/common_def.o                        \
     ${SRC_DIR}/log_thread.o                        \
-    ${SRC_DIR}/thread_helper.o                        \
-    ${IDL_DIR}/myframe.pb.o                        
+    ${SRC_DIR}/listen_thread.o                        \
+    ${SRC_DIR}/thread_helper.o                       \
+    ${IDL_DIR}/idl.pb.o  
 
 OBJ_INCLUDE=
 
 AR=ar
-LIBNAME=myframe
+LIBNAME=newframe
 
 
 all	: $(LIBNAME)
@@ -40,4 +47,3 @@ $(LIBNAME):$(OBJ)
 
 %.o : %.cpp
 	$(CC) $(CXXFLAGS) -c $< -o $@ $(LIB) $(INCLUDE)
-

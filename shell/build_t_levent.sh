@@ -1,0 +1,1 @@
+gcc  -I/usr/local/include -L/usr/local/lib -o app test_libevent.c -lrt /usr/local/lib/libevent.a  /usr/local/lib/libevent_core.a  /usr/local/lib/libevent_core.a  /usr/local/lib/libevent_openssl.a  /usr/local/lib/libevent_pthreads.a

@@ -2,45 +2,53 @@
 
 void base_connect::init_ev(short ev)
 {
-    struct event * ev = event_new(_thread->get_event_base(), _fd, ev, on_cb, this); 
+    event_set(&_event, _fd, ev, on_cb, this);
+    event_base_set(_thread->get_event_base(), &_event);
 
-    event_add(ev, NULL);
+    event_add(&_event, 0);
 }
 
 
-void base_net_thread::close()
+void base_connect::close()
 {
     if (_fd != 0)
     {
+        event_del(&_event);
         ::close(_fd);
         _fd = 0;
-        _recv_buf_len = 0;  
-        event_free(_ev);
     }
 }
 
-int base_net_thread::get_sock()
+int base_connect::get_sock()
 {
     return _fd;
 }
 
-int base_net_thread::destroy()
+int base_connect::destroy()
 {
-    _thread->destroy(); 
+    _thread->destory_connect(_fd); 
     return 0;
 }
 
-void base_net_thread::get_local_addr(sockaddr_in &addr)
+void base_connect::get_local_addr(sockaddr_in &addr)
 {
     socklen_t len = 0;
     getsockname(_fd, (sockaddr*)&addr, &len);
 }
 
 
-void base_net_thread::on_cb(int fd, short ev, void *arg)
+void base_connect::on_cb(int fd, short ev, void *arg)
 {
     base_connect * conn = (base_connect *) arg;
     if (conn) {
+        try {
         conn->call_back(fd, ev, arg);
+        } catch (std::exception & e) {
+            LOG_WARNING("caught exception info:%s", e.what());
+            conn->destroy();
+        }catch (...) {
+            LOG_WARNING("caught unknown exception");
+            conn->destroy();
+        }
     }
 }

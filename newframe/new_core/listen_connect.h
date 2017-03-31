@@ -10,7 +10,7 @@ class listen_connect: public base_connect
 {
     public:
 
-        listen_connect(int32_t sock, base_net_thread * thread):_fd(sock), base_connect(thread)
+        listen_connect(int32_t sock, base_net_thread * thread):base_connect(sock, thread)
         {
 
         }

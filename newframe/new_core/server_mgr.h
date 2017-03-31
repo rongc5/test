@@ -6,7 +6,6 @@
 #include "base_net_thread.h"
 
 
-template<class MSG_PROCESS>
 class server_mgr
 {
     public:
@@ -29,7 +28,7 @@ class server_mgr
             _server_ip = ip;
             _server_port = port;
 
-            _listen_obj_thread = new listen_thread<MSG_PROCESS>();
+            _listen_obj_thread = new listen_thread();
             _listen_obj_thread->init(_server_ip, _server_port);
         }
 
@@ -49,7 +48,7 @@ class server_mgr
         }
 
     private:
-        listen_thread<MSG_PROCESS> * _listen_obj_thread;
+        listen_thread * _listen_obj_thread;
         string _server_ip;
         unsigned short _server_port;
 };

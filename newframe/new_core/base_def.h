@@ -15,6 +15,7 @@
 #include <sys/time.h>
 #include <dirent.h>
 #include <fcntl.h>
+#include <stdlib.h>
 
 
 #include <sys/stat.h>
@@ -44,11 +45,9 @@
 #include <evhttp.h>
 
 
-#include "myframe.pb.h"
+#include "idl.pb.h"
 
 using namespace std;
-
-//using namespace com::mingz::frame;
 
 
 #define DAFAULT_EPOLL_SIZE 1000

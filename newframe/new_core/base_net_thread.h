@@ -4,11 +4,12 @@
 #include "common_def.h"
 #include "base_thread.h"
 
+class base_connect;
 class base_net_thread:public base_thread
 {
     public:
         base_net_thread():_channelid(0){
-            _base = event_base_new()
+            _base = event_base_new();
         };
 
         virtual ~base_net_thread(){
@@ -48,9 +49,9 @@ class base_net_thread:public base_thread
     protected:
         struct event_base* _base;
         int _channelid;
-        deque<fd> _queue;
+        deque<int> _queue;
         thread_mutex_t _base_net_mutex;
-        map<fd, base_connect*> _connect_map;
+        map<int, base_connect*> _connect_map;
 };
 
 #endif
