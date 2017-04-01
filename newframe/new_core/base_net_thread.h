@@ -37,21 +37,19 @@ class base_net_thread:public base_thread
 
         void add_connect_map(base_connect * _conn);
 
-        void destory_connect(int fd);
+        void destory_connect(ObjId id);
 
-        base_connect * get_connect(int fd);
+        base_connect * get_connect(ObjId id);
 
-    protected:
-        void set_channelid(int fd);
-
-        static void on_read(int fd, short ev, void *arg);
+        const ObjId & gen_id_str();
 
     protected:
         struct event_base* _base;
         int _channelid;
+        ObjId _id_str;
         deque<int> _queue;
         thread_mutex_t _base_net_mutex;
-        map<int, base_connect*> _connect_map;
+        map<ObjId, base_connect*> _connect_map;
 };
 
 #endif

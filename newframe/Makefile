@@ -21,6 +21,8 @@ OBJ	= ${SRC_DIR}/base_connect.o                     \
     ${SRC_DIR}/channel_connect.o                        \
     ${SRC_DIR}/listen_connect.o                        \
     ${SRC_DIR}/test_connect.o                       \
+    ${SRC_DIR}/http_client_connect.o                       \
+    ${SRC_DIR}/common_connect.o                       \
     ${SRC_DIR}/common_def.o                        \
     ${SRC_DIR}/log_thread.o                        \
     ${SRC_DIR}/listen_thread.o                        \

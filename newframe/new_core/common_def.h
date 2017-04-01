@@ -101,4 +101,16 @@ void set_unblock(int fd);
 typedef void (*event_fd_callback)(evutil_socket_t, short, void *);
 
 
+struct ObjId
+{
+    uint32_t _id;
+    uint32_t _thread_index;
+
+    ObjId():_id(0), _thread_index(0){}
+};
+
+bool operator < (const ObjId & oj1, const ObjId & oj2);
+
+bool operator==(const ObjId & oj1, const ObjId & oj2);
+
 #endif

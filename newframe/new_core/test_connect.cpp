@@ -1,4 +1,5 @@
 #include "test_connect.h"
+#include "http_client_connect.h"
 
 
 
@@ -119,13 +120,24 @@ size_t test_connect::process_s(char *buf, size_t len)
     string str(buf, len);
     recv_msg.ParseFromString(str);
     
+    string url;
+    url.append("http://open.adview.cn/agent/openRequest.do?n=1&pt=0&at=0&html5=1&w=320&h=50&sw=640&sh=1136&ip=124.193.184.2&os=1&bdr=10.0.2&tp=iPhone+5S&brd=iPhone&pack=com.easou.esbook&appid=SDK20161026100933450xiouxiz91j0i&idfa=F580C676-8270-4FDB-8E5A-0838A79708D3&idfv=2127C7B2-7F2A-4187-9560-0A1D68EC8113&openudid=F580C676-8270-4FDB-8E5A-0838A79708D3&tab=0&sn=F580C676-8270-4FDB-8E5A-0838A79708D3&nop=&mc=&nt=&ua=iPhone__iPhone+5S__10.0.2&tm=0&time=1490776774349&token=9d18f508d30f933732a13d8829efe4dc");
+
+    http_client_connect::gen_connect(url, this, _thread);
 
     LOG_DEBUG("recv_msg:%d, str[%s]", recv_msg.obj_id(), recv_msg.str().c_str());
 
-    write(_fd, "I recived", sizeof("I recived"));
+    //write(_fd, "I recived", sizeof("I recived"));
 
     return len;
 }
 
 
+void test_connect::process_form_http(string * str)
+{
+    REC_OBJ<string> rc(str);
+
+
+    write(_fd, str->c_str(), str->length());
+}
 

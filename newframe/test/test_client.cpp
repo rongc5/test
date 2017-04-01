@@ -22,7 +22,7 @@ int main(int c, char **v)
     }
 
     struct sockaddr_in addr;
-    char buf[4096], tmp[4096];
+    char buf[4096], tmp[8192];
     socklen_t len;
     int sd, ret;
 
@@ -69,6 +69,7 @@ int main(int c, char **v)
         int ret = write(sd, buf, out.size() + sizeof(length));
         //write(sd, "hello", sizeof("hello world"));
         printf("write ret %d, length %d\n", ret, length);
+        memset(tmp, 0, sizeof(tmp));
         read(sd, tmp, sizeof(tmp));
         printf("recv: %s\n", tmp);
         //printf("recv: \n");

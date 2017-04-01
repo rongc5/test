@@ -2,17 +2,17 @@
 #define __TEST_CONNECT_H__
 
 #include "log_helper.h"
-#include "base_connect.h"
+#include "common_connect.h"
 #include "base_net_thread.h"
 #include "common_def.h"
 
 
 class base_net_thread;
-class test_connect:public base_connect
+class test_connect:public common_connect
 {
     public:
 
-        test_connect(int32_t sock, base_net_thread * thread):base_connect(sock, thread), _recv_buf_len(0)
+        test_connect(int32_t sock, base_net_thread * thread):common_connect(sock, thread), _recv_buf_len(0)
         {
 
         }
@@ -30,6 +30,7 @@ class test_connect:public base_connect
 
         static test_connect * gen_connect(int fd, base_net_thread * thread);
 
+        void process_form_http(string * str);
 
         size_t process_recv_buf(char *buf, size_t len);
 

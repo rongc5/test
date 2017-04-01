@@ -67,10 +67,10 @@ void base_net_thread::handle_new_fd(int fd)
 
 void base_net_thread::add_connect_map(base_connect * conn)
 {
-    map<int, base_connect*>::iterator it;
-    it = _connect_map.find(conn->get_sock());
+    map<ObjId, base_connect*>::iterator it;
+    it = _connect_map.find(conn->get_id());
     if (it == _connect_map.end()){
-        _connect_map[conn->get_sock()] = conn;
+        _connect_map[conn->get_id()] = conn;
         return;
     }
 
@@ -79,29 +79,38 @@ void base_net_thread::add_connect_map(base_connect * conn)
     }
 
     delete conn;
-    _connect_map[conn->get_sock()] = conn;
+    _connect_map[conn->get_id()] = conn;
 
     return;
 }
 
-void base_net_thread::destory_connect(int fd)
+void base_net_thread::destory_connect(ObjId id)
 {
-    map<int, base_connect*>::iterator it;
-    it = _connect_map.find(fd);
+    map<ObjId, base_connect*>::iterator it;
+    it = _connect_map.find(id);
     if (it != _connect_map.end()){
+        LOG_DEBUG("will delete");
         delete it->second;
         _connect_map.erase(it);
     }
 }
 
-base_connect * base_net_thread::get_connect(int fd)
+base_connect * base_net_thread::get_connect(ObjId id)
 {
-    map<int, base_connect*>::iterator it;
-    it = _connect_map.find(fd);
+    map<ObjId, base_connect*>::iterator it;
+    it = _connect_map.find(id);
     if (it != _connect_map.end()){
         return it->second;
     }
 
     return NULL;
+}
+
+const ObjId & base_net_thread::gen_id_str()
+{
+    _id_str._thread_index = get_thread_index();
+    _id_str._id++;
+
+    return _id_str;
 }
 

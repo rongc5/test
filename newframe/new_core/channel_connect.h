@@ -3,16 +3,16 @@
 
 #include "log_helper.h"
 #include "base_net_thread.h"
-#include "base_connect.h"
+#include "common_connect.h"
 #include "common_def.h"
 
 
 class base_net_thread;
-class channel_connect:public base_connect
+class channel_connect:public common_connect
 {
     public:
 
-        channel_connect(int32_t sock, base_net_thread * thread):base_connect(sock, thread)
+        channel_connect(int32_t sock, base_net_thread * thread):common_connect(sock, thread)
         {
 
         }
