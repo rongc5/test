@@ -9,10 +9,10 @@ void * base_net_thread::run()
     init();
 
     int i = 0;
-    while (get_run_flag()) {
+    //while (get_run_flag()) {
         event_base_dispatch(_base);
         LOG_DEBUG("event_base_dispatch %d", i);
-    }
+    //}
 
     LOG_DEBUG("obj_process over!");
 
