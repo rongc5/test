@@ -20,7 +20,7 @@ class base_net_thread:public base_thread
 
         virtual void init();
 
-        virtual void put_msg(int fd);
+        virtual void put_msg(base_passing_msg * p_msg);
 
         virtual void routine_msg();
 
@@ -28,7 +28,7 @@ class base_net_thread:public base_thread
 
         /************* *****************/
 
-        virtual void handle_new_fd(int fd);
+        virtual void handle_new_msg(base_passing_msg * p_msg) = 0;
 
         struct event_base * get_event_base()
         {
@@ -37,19 +37,27 @@ class base_net_thread:public base_thread
 
         void add_connect_map(base_connect * _conn);
 
-        void destory_connect(ObjId id);
+        void destory_connect(ObjId & id);
 
-        base_connect * get_connect(ObjId id);
+        base_connect * get_connect(ObjId  & id);
 
         const ObjId & gen_id_str();
+
+
+        static void passing_msg(base_passing_msg * msg, ObjId & id);
+
+        base_net_thread * base_net_thread::get_base_net_thread_obj(uint32_t thread_index);
 
     protected:
         struct event_base* _base;
         int _channelid;
         ObjId _id_str;
-        deque<int> _queue;
+        deque<base_passing_msg *> _queue;
         thread_mutex_t _base_net_mutex;
         map<ObjId, base_connect*> _connect_map;
+
+        typedef typename map<uint32_t, base_net_thread *>::iterator bntMapIter;
+        static map<uint32_t, base_net_thread *> _base_net_thread_map;
 };
 
 #endif

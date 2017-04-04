@@ -113,4 +113,29 @@ bool operator < (const ObjId & oj1, const ObjId & oj2);
 
 bool operator==(const ObjId & oj1, const ObjId & oj2);
 
+struct base_passing_msg  //内部传递的消息
+{
+    ObjId _src_id;
+    passing_msg_op _op;
+    base_passing_msg(){}
+    virtual ~base_passing_msg(){}
+};
+
+enum passing_msg_op
+{
+    PASSING_FD,
+    PASSING_MSG
+};
+
+struct recv_msg_fd: public base_passing_msg
+{
+    int fd;
+    recv_msg_fd():fd(0){}
+
+    virtual ~recv_msg_fd(){}
+};
+
+
+
+
 #endif

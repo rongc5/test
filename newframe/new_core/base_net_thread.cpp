@@ -1,7 +1,6 @@
 #include "base_net_thread.h"
 #include "channel_connect.h"
 #include "base_connect.h"
-#include "test_connect.h"
 
 
 void * base_net_thread::run()
@@ -30,16 +29,21 @@ void base_net_thread::init()
 
     _channelid = fd[0];
     channel_connect::gen_connect(fd[1], this);
+    _base_net_thread_map[get_thread_index()] = this;
 
     LOG_DEBUG("fd[%d] fd[%d]\n", fd[0], fd[1]);
 }
 
 
-void base_net_thread::put_msg(int fd)
+void base_net_thread::put_msg(base_passing_msg * p_msg)
 {
+    if (!p_msg) {
+        return;
+    }
+
     LOG_DEBUG("_channelid[%d]", _channelid);
     thread_lock lock(&_base_net_mutex);
-    _queue.push_back(fd);
+    _queue.push_back(p_msg);
     write(_channelid, "c", sizeof("c"));
     LOG_DEBUG("_channelid[%d]", _channelid);
 }
@@ -47,22 +51,13 @@ void base_net_thread::put_msg(int fd)
 void base_net_thread::routine_msg()
 {
     thread_lock lock(&_base_net_mutex);
-    for (deque<int>::iterator it = _queue.begin(); it != _queue.end(); ){
+    for (deque<base_passing_msg *>::iterator it = _queue.begin(); it != _queue.end(); ){
         handle_new_fd(*it);
 
         it = _queue.erase(it);
     }
 
     _queue.clear();
-}
-
-void base_net_thread::handle_new_fd(int fd)
-{
-    LOG_DEBUG("recv: fd [%d]", fd);
-
-    set_unblock(fd);
-
-    test_connect::gen_connect(fd, this);
 }
 
 void base_net_thread::add_connect_map(base_connect * conn)
@@ -114,3 +109,32 @@ const ObjId & base_net_thread::gen_id_str()
     return _id_str;
 }
 
+base_net_thread * base_net_thread::get_base_net_thread_obj(uint32_t thread_index)
+{
+    bntMapIter it = _base_net_thread_map.find(thread_index);
+    if (it != _base_net_thread_map.end()){
+        return it->second;
+    }
+
+    return NULL;
+}
+
+void base_net_thread::passing_msg(base_passing_msg * p_msg, ObjId & id)
+{
+    if (!p_msg) {
+        return;
+    }
+
+    base_net_thread * net_thread = get_base_net_thread_obj(id._thread_index);
+
+    LOG_DEBUG("_thread_index[%d]", id._thread_index);
+    if (!net_thread) {
+        REC_OBJ<base_passing_msg> rec(p_msg); 
+        return;
+    }
+
+    net_thread->put_msg(p_msg);
+}
+
+
+map<uint32_t, base_net_thread *> base_net_thread::_base_net_thread_map;

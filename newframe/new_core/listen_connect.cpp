@@ -59,7 +59,11 @@ void listen_connect::call_back(int fd, short ev, void *arg)
     while((tmp_sock = accept(_fd, (sockaddr*)&addr, &len)) != -1)
     {               
         LOG_DEBUG("recv fd[%d]\n", tmp_sock);
-        _thread->handle_new_fd(tmp_sock);
+        recv_msg_fd * r_msg = new (std::nothrow)recv_msg_fd();
+        if (r_msg) {
+            r_msg->fd = tmp_sock;
+            _thread->handle_new_msg(r_msg);
+        }
     }
 }
 
