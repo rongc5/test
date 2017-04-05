@@ -1,5 +1,5 @@
 HOME_DIR=./
-SRC_DIR=${HOME_DIR}new_core
+SRC_DIR=${HOME_DIR}core
 IDL_DIR=$(HOME_DIR)idl
 
 INCLUDE = -I./${SRC_DIR}/ -I./${IDL_DIR} -I/usr/local/include 
