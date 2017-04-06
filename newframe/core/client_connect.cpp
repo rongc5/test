@@ -46,18 +46,32 @@ client_connect * client_connect::gen_connect(const string &ip, unsigned short po
 
 void client_connect::call_back(int fd, short ev, void *arg)
 {
-    int tmp_sock = 0;
-    sockaddr_in addr;   
-    socklen_t len = 0;
-    while((tmp_sock = accept(_fd, (sockaddr*)&addr, &len)) != -1)
-    {               
-        LOG_DEBUG("recv fd[%d]\n", tmp_sock);
-        recv_msg_fd * r_msg = new (std::nothrow)recv_msg_fd();
-        if (r_msg) {
-            r_msg->fd = tmp_sock;
-            _thread->handle_new_msg(r_msg);
-        }
-    }
+    memset(tmp, 0, sizeof(tmp));
+    read(sd, tmp, sizeof(tmp));
+
+
+
+    CommonMsg msg;;
+    msg.set_obj_id(1);
+    msg.set_obj_op(1);
+    msg.set_version(1);
+    msg.set_reserved(0);
+
+    sprintf(buf, "%s", "hello, this is test");
+    msg.set_str(buf);
+
+    string out;
+    msg.SerializeToString(&out);
+
+
+    int length = out.size();
+    memset(buf, 0, sizeof(buf));
+
+    memcpy(buf, &length, sizeof(length));
+    memcpy(buf+sizeof(length), out.c_str(), out.size());
+
+
+
 }
 
 

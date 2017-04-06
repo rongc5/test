@@ -1,5 +1,5 @@
-#ifndef __TEST_CONNECT_H__
-#define __TEST_CONNECT_H__
+#ifndef __JOB_CONNECT_H__
+#define __JOB_CONNECT_H__
 
 #include "log_helper.h"
 #include "common_connect.h"
@@ -8,16 +8,16 @@
 
 
 class base_net_thread;
-class test_connect:public common_connect
+class job_connect:public common_connect
 {
     public:
 
-        test_connect(int32_t sock, base_net_thread * thread):common_connect(sock, thread), _recv_buf_len(0)
+        job_connect(int32_t sock, base_net_thread * thread):common_connect(sock, thread), _recv_buf_len(0)
         {
 
         }
 
-        virtual ~test_connect()
+        virtual ~job_connect()
         {
         }
         

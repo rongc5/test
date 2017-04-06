@@ -1,15 +1,15 @@
-#ifndef __TEST_LISTEN_THREAD_H__
-#define __TEST_LISTEN_THREAD_H__
+#ifndef __LISTEN_THREAD_H__
+#define __LISTEN_THREAD_H__
 
-#include "test_net_thread.h"
+#include "job_thread.h"
 #include "common_def.h"
 
-class test_listen_thread: public test_net_thread
+class listen_thread: public job_thread
 {
     public:
-        test_listen_thread():_current_indx(0){
+        listen_thread():_current_indx(0){
         };
-        virtual ~test_listen_thread(){
+        virtual ~listen_thread(){
         };
 
         void init(const string &ip, unsigned short port);

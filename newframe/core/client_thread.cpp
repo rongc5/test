@@ -1,8 +1,8 @@
-#include "test_listen_thread.h"
+#include "listen_thread.h"
 #include "listen_connect.h"
 
 
-void test_listen_thread::init(const string &ip, unsigned short port)
+void listen_thread::init(const string &ip, unsigned short port)
 {
     _ip = ip;
     _port = port;
@@ -10,7 +10,7 @@ void test_listen_thread::init(const string &ip, unsigned short port)
     listen_connect::gen_connect(ip, _port, this);
 }
 
-int test_listen_thread::add_worker_thread(base_net_thread * thread)
+int listen_thread::add_worker_thread(base_net_thread * thread)
 {
     _worker_thrds.push_back(thread);
 
@@ -18,11 +18,11 @@ int test_listen_thread::add_worker_thread(base_net_thread * thread)
 }
 
 
-void test_listen_thread::handle_new_msg(base_passing_msg * p_msg)
+void listen_thread::handle_new_msg(base_passing_msg * p_msg)
 {
 
     if (!_worker_thrds.size()) {
-        test_net_thread::handle_new_msg(p_msg);
+        job_thread::handle_new_msg(p_msg);
         //LOG_DEBUG("recv_fd: %d\n", );
         return ;
     }

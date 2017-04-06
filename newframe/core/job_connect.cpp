@@ -3,12 +3,12 @@
 
 
 
-void test_connect::call_back(int fd, short ev, void *arg)
+void job_connect::call_back(int fd, short ev, void *arg)
 {
     real_recv(); 
 }
 
-void test_connect::real_recv()
+void job_connect::real_recv()
 {   
     size_t tmp_len = max_recv_data - _recv_buf_len;     
     ssize_t ret = 0;
@@ -33,7 +33,7 @@ void test_connect::real_recv()
     }     
 }
 
-int test_connect::RECV(void *buf, size_t len)
+int job_connect::RECV(void *buf, size_t len)
 {
     LOG_DEBUG("begin RECV fd[%d]", _fd);
     int ret = recv(_fd, buf, len, MSG_DONTWAIT);
@@ -57,10 +57,10 @@ int test_connect::RECV(void *buf, size_t len)
 
 
 
-test_connect * test_connect::gen_connect(int fd, base_net_thread * thread)
+job_connect * job_connect::gen_connect(int fd, base_net_thread * thread)
 {
     set_unblock(fd);
-    test_connect * c_conn = new test_connect(fd, thread);
+    job_connect * c_conn = new job_connect(fd, thread);
     c_conn->init_ev(EV_TIMEOUT | EV_READ | EV_PERSIST);
     thread->add_connect_map(c_conn);
 
@@ -68,7 +68,7 @@ test_connect * test_connect::gen_connect(int fd, base_net_thread * thread)
 }
 
 
-size_t test_connect::process_recv_buf(char *buf, size_t len)
+size_t job_connect::process_recv_buf(char *buf, size_t len)
 {
 
 
@@ -112,7 +112,7 @@ size_t test_connect::process_recv_buf(char *buf, size_t len)
 }
 
 
-size_t test_connect::process_s(char *buf, size_t len)
+size_t job_connect::process_s(char *buf, size_t len)
 {
 
     CommonMsg recv_msg;
@@ -133,7 +133,7 @@ size_t test_connect::process_s(char *buf, size_t len)
 }
 
 
-void test_connect::process_form_http(string * str)
+void job_connect::process_form_http(string * str)
 {
     REC_OBJ<string> rc(str);
 

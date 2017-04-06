@@ -18,6 +18,8 @@ class base_connect
 
         virtual int destroy();
 
+        virtual void recv_passing_msg(base_passing_msg * p_msg);
+
         const ObjId & get_id();
 
     protected:

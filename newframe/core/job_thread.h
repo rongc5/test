@@ -1,17 +1,17 @@
-#ifndef __TEST_NET_THREAD_H__
-#define __TEST_NET_THREAD_H__
+#ifndef __JOB_THREAD_H__
+#define __JOB_THREAD_H__
 
 #include "common_def.h"
 #include "base_net_thread.h"
 
 class base_connect;
-class test_net_thread:public base_net_thread
+class job_thread:public base_net_thread
 {
     public:
-        test_net_thread():_channelid(0){
+        job_thread():_channelid(0){
         };
 
-        virtual ~test_net_thread(){
+        virtual ~job_thread(){
         };
 
         virtual void handle_new_msg(base_passing_msg * p_msg);
