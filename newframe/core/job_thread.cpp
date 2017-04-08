@@ -22,9 +22,9 @@ void job_thread::handle_new_msg(base_passing_msg * p_msg)
             job_connect::gen_connect(fd, this);
         }
         break;
-        case PASSING_MSG:
+        default :
         {
-            base_connect * b_con = get_connect(p_msg->_src_id);
+            base_connect * b_con = get_connect(p_msg->_dst_id);
             if (b_con){
                 b_con->recv_passing_msg(p_msg);
             } else {

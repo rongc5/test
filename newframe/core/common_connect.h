@@ -3,7 +3,6 @@
 
 #include "base_net_thread.h"
 #include "common_def.h"
-#include "common_exception.h"
 #include "base_connect.h"
 
 class base_net_thread;

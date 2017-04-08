@@ -4,7 +4,6 @@
 client_connect * client_connect::gen_connect(const string &ip, unsigned short port, base_net_thread * thread)
 {
     struct sockaddr_in address;
-    int reuse_addr = 1;
 
     memset((char *) &address, 0, sizeof(address));
     address.sin_family = AF_INET;
@@ -40,18 +39,17 @@ client_connect * client_connect::gen_connect(const string &ip, unsigned short po
     l_conn->init_ev(EV_TIMEOUT | EV_READ | EV_PERSIST);
     thread->add_connect_map(l_conn);
 
+    l_conn->send_request();
+
     return l_conn;
 }
 
-
-void client_connect::call_back(int fd, short ev, void *arg)
+void client_connect::send_request()
 {
-    memset(tmp, 0, sizeof(tmp));
-    read(sd, tmp, sizeof(tmp));
+    char buf[SIZE_LEN_8192];
 
+    CommonMsg msg;
 
-
-    CommonMsg msg;;
     msg.set_obj_id(1);
     msg.set_obj_op(1);
     msg.set_version(1);
@@ -63,15 +61,27 @@ void client_connect::call_back(int fd, short ev, void *arg)
     string out;
     msg.SerializeToString(&out);
 
-
     int length = out.size();
     memset(buf, 0, sizeof(buf));
 
     memcpy(buf, &length, sizeof(length));
     memcpy(buf+sizeof(length), out.c_str(), out.size());
 
+    write(_fd, buf, sizeof(length) + length);
+}
 
+void client_connect::call_back(int fd, short ev, void *arg)
+{
+    char tmp[SIZE_LEN_8192];
 
+    memset(tmp, 0, sizeof(tmp));
+    read(fd, tmp, sizeof(tmp));
+
+    LOG_DEBUG("recv: %s", tmp);
+    
+    sleep(3);
+
+    send_request();
 }
 
 

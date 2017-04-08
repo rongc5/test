@@ -13,14 +13,14 @@ cd ..
 
 
 if [ $# == 0 ]; then
-    make clean && make
+    make clean && make -j8
     mv core/lib*.a lib
 elif [ $# == 1 ];then
     if [ $1 == "clean" ];then
         make clean
         (cd test && make clean)
     elif [ $1 == "all" ]; then
-        make clean && make
+        make clean && make -j8
         mv core/lib*.a lib
         (cd test && make clean && make)
     fi

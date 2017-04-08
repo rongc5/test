@@ -22,6 +22,8 @@ class client_connect: public common_connect
         static client_connect * gen_connect(const string &ip, unsigned short port, base_net_thread * thread);
 
         virtual void call_back(int fd, short ev, void *arg);
+
+        void send_request();
 };
 
 

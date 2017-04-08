@@ -82,6 +82,9 @@ static const uint32_t SIZE_LEN_1024 = 1024;
 static const uint32_t SIZE_LEN_2048 = 2048;
 static const uint32_t SIZE_LEN_4096 = 4096;
 static const uint32_t SIZE_LEN_8192 = 8192;
+static const uint32_t SIZE_LEN_16384 = 16384;
+static const uint32_t SIZE_LEN_32768 = 32768;
+static const uint32_t SIZE_LEN_65536 = 65536;
 
 
 /***************************/

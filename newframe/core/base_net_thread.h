@@ -37,16 +37,16 @@ class base_net_thread:public base_thread
 
         void add_connect_map(base_connect * _conn);
 
-        void destory_connect(ObjId & id);
+        void destory_connect(ObjId  id);
 
-        base_connect * get_connect(ObjId  & id);
+        base_connect * get_connect(ObjId   id);
 
         const ObjId & gen_id_str();
 
 
-        static void passing_msg(base_passing_msg * msg, ObjId & id);
+        static void passing_msg(base_passing_msg * msg);
 
-        base_net_thread * base_net_thread::get_base_net_thread_obj(uint32_t thread_index);
+        static base_net_thread * get_base_net_thread_obj(uint32_t thread_index);
 
     protected:
         struct event_base* _base;

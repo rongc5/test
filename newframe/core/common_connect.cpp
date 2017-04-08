@@ -35,14 +35,6 @@ void common_connect::on_cb(int fd, short ev, void *arg)
 {
     common_connect * conn = (common_connect *) arg;
     if (conn) {
-        try {
-            conn->call_back(fd, ev, arg);
-        } catch (std::exception & e) {
-            LOG_WARNING("caught exception info:%s", e.what());
-            conn->destroy();
-        }catch (...) {
-            LOG_WARNING("caught unknown exception");
-            conn->destroy();
-        }
+        conn->call_back(fd, ev, arg);
     }
 }

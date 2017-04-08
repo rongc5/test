@@ -1,5 +1,5 @@
 HOME_DIR=../
-INC_DIR=${HOME_DIR}new_core
+INC_DIR=${HOME_DIR}core
 IDL_DIR=$(HOME_DIR)idl
 LIB_DIR=../lib
 

@@ -3,7 +3,6 @@
 
 #include "log_helper.h"
 #include "common_def.h"
-#include "common_exception.h"
 
 class base_net_thread;
 class base_connect

@@ -10,6 +10,7 @@ base_connect::base_connect(base_net_thread * thread):_thread(thread)
 int base_connect::destroy()
 {
     _thread->destory_connect(_id_str); 
+    delete this;
     return 0;
 }
 

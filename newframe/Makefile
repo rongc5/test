@@ -18,9 +18,12 @@ CC  = g++ $(CPPFLAGS)
 OBJ	= ${SRC_DIR}/base_connect.o                     \
     ${SRC_DIR}/base_thread.o                        \
     ${SRC_DIR}/base_net_thread.o                        \
+    ${SRC_DIR}/client_thread.o                        \
+    ${SRC_DIR}/client_connect.o                        \
     ${SRC_DIR}/channel_connect.o                        \
     ${SRC_DIR}/listen_connect.o                        \
     ${SRC_DIR}/job_connect.o                       \
+    ${SRC_DIR}/job_thread.o                       \
     ${SRC_DIR}/http_client_connect.o                       \
     ${SRC_DIR}/common_connect.o                       \
     ${SRC_DIR}/common_def.o                        \

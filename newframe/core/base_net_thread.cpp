@@ -7,11 +7,7 @@ void * base_net_thread::run()
 {
     init();
 
-    int i = 0;
-    //while (get_run_flag()) {
-        event_base_dispatch(_base);
-        LOG_DEBUG("event_base_dispatch %d", i);
-    //}
+    event_base_dispatch(_base);
 
     LOG_DEBUG("obj_process over!");
 
@@ -52,7 +48,7 @@ void base_net_thread::routine_msg()
 {
     thread_lock lock(&_base_net_mutex);
     for (deque<base_passing_msg *>::iterator it = _queue.begin(); it != _queue.end(); ){
-        handle_new_fd(*it);
+        handle_new_msg(*it);
 
         it = _queue.erase(it);
     }
@@ -85,7 +81,6 @@ void base_net_thread::destory_connect(ObjId id)
     it = _connect_map.find(id);
     if (it != _connect_map.end()){
         LOG_DEBUG("will delete");
-        delete it->second;
         _connect_map.erase(it);
     }
 }
@@ -119,15 +114,15 @@ base_net_thread * base_net_thread::get_base_net_thread_obj(uint32_t thread_index
     return NULL;
 }
 
-void base_net_thread::passing_msg(base_passing_msg * p_msg, ObjId & id)
+void base_net_thread::passing_msg(base_passing_msg * p_msg)
 {
     if (!p_msg) {
         return;
     }
 
-    base_net_thread * net_thread = get_base_net_thread_obj(id._thread_index);
+    base_net_thread * net_thread = get_base_net_thread_obj(p_msg->_dst_id._thread_index);
 
-    LOG_DEBUG("_thread_index[%d]", id._thread_index);
+    LOG_DEBUG("_thread_index[%d]", p_msg->_dst_id._thread_index);
     if (!net_thread) {
         REC_OBJ<base_passing_msg> rec(p_msg); 
         return;

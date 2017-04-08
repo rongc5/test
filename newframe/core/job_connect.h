@@ -6,21 +6,18 @@
 #include "base_net_thread.h"
 #include "common_def.h"
 
-
+class http_client_connect;
 class base_net_thread;
 class job_connect:public common_connect
 {
     public:
 
-        job_connect(int32_t sock, base_net_thread * thread):common_connect(sock, thread), _recv_buf_len(0)
+        job_connect(int32_t sock, base_net_thread * thread):common_connect(sock, thread), _recv_buf_len(0), _hc_connect(NULL)
         {
 
         }
 
-        virtual ~job_connect()
-        {
-        }
-        
+        virtual ~job_connect();
 
         virtual void call_back(int fd, short ev, void *arg);
 
@@ -28,9 +25,9 @@ class job_connect:public common_connect
 
         int RECV(void *buf, size_t len);
 
-        static test_connect * gen_connect(int fd, base_net_thread * thread);
+        static job_connect * gen_connect(int fd, base_net_thread * thread);
 
-        void process_form_http(string * str);
+        void process_form_http(char *buf, size_t len);
 
         size_t process_recv_buf(char *buf, size_t len);
 
@@ -38,6 +35,8 @@ class job_connect:public common_connect
     protected:
         string _recv_buf;
         size_t _recv_buf_len;
+
+        http_client_connect * _hc_connect;
 };
 
 

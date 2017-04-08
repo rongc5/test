@@ -1,8 +1,9 @@
 #include "http_client_connect.h"
-#include "test_connect.h"
+#include "job_connect.h"
 
 http_client_connect::http_client_connect(base_net_thread * thread):base_connect(thread), _t_conn(NULL)
-{                                                                                                                                    
+{
+    memset(_res_buf, 0, sizeof(_res_buf));
 } 
 
 
@@ -22,7 +23,7 @@ void http_client_connect::close()
 }
 
 
-http_client_connect * http_client_connect::gen_connect(string & url, test_connect * t_conn, base_net_thread * thread)
+http_client_connect * http_client_connect::gen_connect(string & url, job_connect * t_conn, base_net_thread * thread)
 {
     http_client_connect * c_conn = new http_client_connect(thread);
     c_conn->init(url, t_conn);
@@ -31,7 +32,7 @@ http_client_connect * http_client_connect::gen_connect(string & url, test_connec
     return c_conn;
 }
 
-void http_client_connect::init(const string & url, test_connect * t_conn)
+void http_client_connect::init(const string & url, job_connect * t_conn)
 {
     _url = url;
     _t_conn = t_conn;
@@ -73,10 +74,11 @@ void http_client_connect::call_back(struct evhttp_request *req, void *arg)
                 struct evbuffer* buf = evhttp_request_get_input_buffer(req);
                 size_t len = evbuffer_get_length(buf);
                 unsigned char * str = evbuffer_pullup(req->input_buffer, len);
-                string * sstr = new string((const char *)str, len);
+                //LOG_DEBUG("http_request_done: %s", str);
+                int r_len = snprintf(_res_buf, sizeof(_res_buf), "%s", str);
+                //LOG_DEBUG("http_request_done: %s", _res_buf);
                 if (_t_conn) {
-                    _t_conn->process_form_http(sstr);
-                    destroy();
+                    _t_conn->process_form_http(_res_buf, r_len);
                 }
 
             }

@@ -3,15 +3,6 @@
 
 #include "base_def.h"
 
-
-class to_string {
-    public:
-        to_string(){}
-        virtual ~to_string(){}
-        virtual const char * to_str(char * dst, size_t dst_len)=0;				
-};
-
-
 struct host_str {
     string  _ip;
     uint16_t _port;
@@ -113,19 +104,21 @@ bool operator < (const ObjId & oj1, const ObjId & oj2);
 
 bool operator==(const ObjId & oj1, const ObjId & oj2);
 
+enum passing_msg_op
+{
+    PASSING_FD,
+    PASSING_MSG
+};
+
 struct base_passing_msg  //内部传递的消息
 {
+    ObjId _dst_id;
     ObjId _src_id;
     passing_msg_op _op;
     base_passing_msg(){}
     virtual ~base_passing_msg(){}
 };
 
-enum passing_msg_op
-{
-    PASSING_FD,
-    PASSING_MSG
-};
 
 struct recv_msg_fd: public base_passing_msg
 {

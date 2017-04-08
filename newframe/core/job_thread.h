@@ -8,7 +8,7 @@ class base_connect;
 class job_thread:public base_net_thread
 {
     public:
-        job_thread():_channelid(0){
+        job_thread(){
         };
 
         virtual ~job_thread(){

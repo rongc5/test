@@ -1,5 +1,5 @@
 #include "base_thread.h"
-#include "base_net_thread.h"
+#include "job_thread.h"
 #include "base_singleton.h"
 #include "listen_thread.h"
 #include "log_helper.h"
@@ -18,7 +18,7 @@ int main(int argc, char *argv[])
     _listen_obj_thread->init("", 8888);
 
     for (int i=1; i <= 1; i++){
-        base_net_thread * net_thread = new base_net_thread();
+        job_thread * net_thread = new job_thread();
         _listen_obj_thread->add_worker_thread(net_thread);
         net_thread->start();
     }
