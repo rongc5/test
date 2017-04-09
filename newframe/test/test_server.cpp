@@ -7,11 +7,11 @@
 
 int main(int argc, char *argv[])
 {
-    log_conf conf;
-    conf.deal_mode = 3;
+    //log_conf conf;
+    //conf.deal_mode = 3;
     //strcpy(conf.prefix_file_name, "asp");
 
-    LOG_INIT(conf); 
+    //LOG_INIT(conf); 
 
 
     listen_thread * _listen_obj_thread = new listen_thread();

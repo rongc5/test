@@ -9,7 +9,7 @@ void * base_net_thread::run()
 
     event_base_dispatch(_base);
 
-    LOG_DEBUG("obj_process over!");
+    //LOG_DEBUG("obj_process over!");
 
     return NULL;
 }
@@ -19,7 +19,7 @@ void base_net_thread::init()
     int fd[2];
     int ret = socketpair(AF_UNIX,SOCK_STREAM,0,fd);
     if (ret < 0) {
-        LOG_WARNING("socketpair fail errstr[%s]", strerror(errno));
+        //LOG_WARNING("socketpair fail errstr[%s]", strerror(errno));
         return ;
     }   
 
@@ -27,7 +27,7 @@ void base_net_thread::init()
     channel_connect::gen_connect(fd[1], this);
     _base_net_thread_map[get_thread_index()] = this;
 
-    LOG_DEBUG("fd[%d] fd[%d]\n", fd[0], fd[1]);
+    //LOG_DEBUG("fd[%d] fd[%d]\n", fd[0], fd[1]);
 }
 
 
@@ -37,11 +37,11 @@ void base_net_thread::put_msg(base_passing_msg * p_msg)
         return;
     }
 
-    LOG_DEBUG("_channelid[%d]", _channelid);
+    //LOG_DEBUG("_channelid[%d]", _channelid);
     thread_lock lock(&_base_net_mutex);
     _queue.push_back(p_msg);
     write(_channelid, "c", sizeof("c"));
-    LOG_DEBUG("_channelid[%d]", _channelid);
+    //LOG_DEBUG("_channelid[%d]", _channelid);
 }
 
 void base_net_thread::routine_msg()
@@ -80,7 +80,7 @@ void base_net_thread::destory_connect(ObjId id)
     map<ObjId, base_connect*>::iterator it;
     it = _connect_map.find(id);
     if (it != _connect_map.end()){
-        LOG_DEBUG("will delete");
+        //LOG_DEBUG("will delete");
         _connect_map.erase(it);
     }
 }
@@ -122,7 +122,7 @@ void base_net_thread::passing_msg(base_passing_msg * p_msg)
 
     base_net_thread * net_thread = get_base_net_thread_obj(p_msg->_dst_id._thread_index);
 
-    LOG_DEBUG("_thread_index[%d]", p_msg->_dst_id._thread_index);
+    //LOG_DEBUG("_thread_index[%d]", p_msg->_dst_id._thread_index);
     if (!net_thread) {
         REC_OBJ<base_passing_msg> rec(p_msg); 
         return;

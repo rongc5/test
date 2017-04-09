@@ -40,7 +40,7 @@ void get_proc_name(char buf[], size_t buf_len) {
     int ret = readlink(exec_file, proc_name, sizeof(proc_name));
     if (-1 == ret)
     {
-        LOG_WARNING("readlink for proc_name error, pid:%d", pid);
+        //LOG_WARNING("readlink for proc_name error, pid:%d", pid);
         buf[0] = 0;
         return;
     }

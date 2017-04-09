@@ -44,6 +44,8 @@ class log_thread : public base_thread
 
         void clear();
 
+        const log_conf & get_log_conf();
+
     protected:
         list<log_msg *> * _list;
         thread_mutex_t * _mutex;

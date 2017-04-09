@@ -23,7 +23,7 @@ bool base_thread::start()
     int ret = pthread_create(&_thread_id, NULL, base_thread_proc, this);
     if (ret != 0)
     {
-        LOG_WARNING("start thread fail");
+        //LOG_WARNING("start thread fail");
         return false;
     }
     _thread_vec.push_back(this);

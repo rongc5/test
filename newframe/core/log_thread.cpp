@@ -20,6 +20,8 @@ int log_thread::put_msg(log_msg *msg)
 {
     log_thread * thread = base_singleton<log_thread>::get_instance();
     if (!thread) {
+        REC_OBJ<log_msg> rc(msg);
+        return -1; 
         log_conf conf;
         thread = new log_thread(conf);
         base_singleton<log_thread>::set_instance(thread);
@@ -151,5 +153,8 @@ void log_thread::clear()
 
 }
 
-
+log_conf & log_conf::get_log_conf()
+{
+    return _conf;
+}
 

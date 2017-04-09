@@ -18,11 +18,9 @@
 
 #define LOG_WARNING(fmt, arg...) \
 do { \
-    char tmp[SIZE_LEN_64]; \
+                       lgmsg->type = LOGWARNING; \
+                       char tmp[SIZE_LEN_64]; \
         time_t st = get_date_str(tmp, sizeof(tmp), LOG_DATE_FORMAT); \
-        log_msg * lgmsg =  new log_msg(); \
-        lgmsg->type = LOGWARNING; \
-        lgmsg->st = st; \
         char buf[SIZE_LEN_8192]; \
         snprintf(buf, sizeof(buf), "[WARNING]:[%s]:[%lu]:[%d:%s():%s] "fmt, tmp,pthread_self(), __LINE__, __func__, __FILE__,     ##arg); \
         lgmsg->str.append(buf); \
@@ -87,6 +85,15 @@ do { \
 } while (0)
 
 
+#define LOG_COMMON(TYPE, fmt, ...) \
+    log_thread * thread = base_singleton<log_thread>::get_instance(); \
+    if (!thread) { \
+        break; \
+    } \
+    if (LOGWARNING > thread->get_log_conf.type) { \
+        break; \
+    } \
+    log_msg * lgmsg =  new log_msg(); \
 
 #endif
 

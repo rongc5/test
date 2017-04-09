@@ -22,18 +22,18 @@ client_connect * client_connect::gen_connect(const string &ip, unsigned short po
     int _fd = socket(AF_INET, SOCK_STREAM, 0);
     if (_fd < 0) 
     {
-        LOG_WARNING("socket error %s", strerror(errno));     
+        //LOG_WARNING("socket error %s", strerror(errno));     
         return NULL;
     }
     
     int len =  sizeof(address);
     ret = connect(_fd, (struct sockaddr *)&address, len);
     if (-1 == ret)
-    {   LOG_WARNING("connect"); 
+    {   //LOG_WARNING("connect"); 
         exit(1);
     }   
 
-    set_unblock(_fd);
+    //set_unblock(_fd);
 
     client_connect * l_conn = new client_connect(_fd, thread);    
     l_conn->init_ev(EV_TIMEOUT | EV_READ | EV_PERSIST);
@@ -55,7 +55,7 @@ void client_connect::send_request()
     msg.set_version(1);
     msg.set_reserved(0);
 
-    sprintf(buf, "%s", "hello, this is test");
+    sprintf(buf, "%s", "hello, this is test !!!!!!!!!!!!!!");
     msg.set_str(buf);
 
     string out;
@@ -75,9 +75,10 @@ void client_connect::call_back(int fd, short ev, void *arg)
     char tmp[SIZE_LEN_8192];
 
     memset(tmp, 0, sizeof(tmp));
-    read(fd, tmp, sizeof(tmp));
+    read(_fd, tmp, sizeof(tmp));
 
-    LOG_DEBUG("recv: %s", tmp);
+    //LOG_DEBUG("recv: %s", tmp);
+    printf("recv: %s\n", tmp);
     
     sleep(3);
 

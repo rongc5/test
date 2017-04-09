@@ -23,21 +23,21 @@ listen_connect * listen_connect::gen_connect(const string &ip, unsigned short po
     int _fd = socket(AF_INET, SOCK_STREAM, 0);
     if (_fd < 0) 
     {
-        LOG_WARNING("socket error %s", strerror(errno));     
+        //LOG_WARNING("socket error %s", strerror(errno));     
         return NULL;
     }
     setsockopt(_fd, SOL_SOCKET, SO_REUSEADDR, (void*)(&(reuse_addr)), sizeof(reuse_addr));
 
     if (::bind(_fd, (struct sockaddr *) &address, sizeof(address)) < 0) 
     {        
-        LOG_WARNING("bind error %s ip: %s port: %d", strerror(errno), ip.c_str(), port);
+        //LOG_WARNING("bind error %s ip: %s port: %d", strerror(errno), ip.c_str(), port);
         return NULL;
     }        
 
     ret = listen(_fd, 250);
     if (ret == -1)
     {
-        LOG_WARNING("listen error %s", strerror(errno));
+        //LOG_WARNING("listen error %s", strerror(errno));
         return NULL;
     }
 
@@ -58,7 +58,7 @@ void listen_connect::call_back(int fd, short ev, void *arg)
     socklen_t len = 0;
     while((tmp_sock = accept(_fd, (sockaddr*)&addr, &len)) != -1)
     {               
-        LOG_DEBUG("recv fd[%d]\n", tmp_sock);
+        //LOG_DEBUG("recv fd[%d]\n", tmp_sock);
         recv_msg_fd * r_msg = new (std::nothrow)recv_msg_fd();
         if (r_msg) {
             r_msg->fd = tmp_sock;

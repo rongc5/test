@@ -45,7 +45,7 @@ void http_client_connect::init(const string & url, job_connect * t_conn)
         port = 80;
     }
 
-    LOG_DEBUG("url:%s", _url.c_str());
+    //LOG_DEBUG("url:%s", _url.c_str());
     _cn = evhttp_connection_base_new(_thread->get_event_base(),NULL, evhttp_uri_get_host(_uri), port);
 
     _req = evhttp_request_new(http_request_done, this);
