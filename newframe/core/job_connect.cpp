@@ -1,5 +1,6 @@
 #include "job_connect.h"
 #include "http_client_connect.h"
+#include "log_helper.h"
 
 
 job_connect::~job_connect()
@@ -153,7 +154,7 @@ void job_connect::process_form_http(char *buf, size_t len)
 {
 
     printf("send: %s\n", buf);
-    //LOG_DEBUG("send: %s", buf);
+    LOG_DEBUG("send: %s", buf);
     //write(_fd, "987654321", sizeof("987654321"));
     write(_fd, buf, len);
 }

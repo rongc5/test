@@ -7,10 +7,10 @@
 
 int main(int c, char **v)
 {
-    //log_conf conf;
-    //conf.deal_mode = 3;
+    log_conf conf;
+    conf.deal_mode = 3;
     //strcpy(conf.prefix_file_name, "asp");
-    //LOG_INIT(conf); 
+    LOG_INIT(conf); 
 
 
     client_thread * c_thread = new client_thread();

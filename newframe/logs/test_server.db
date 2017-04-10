@@ -1536,3 +1536,12 @@ x
 [DEBUG]:[2017-04-09 11:09:37]:[3067448176]:[142:process_s():core/job_connect.cpp] recv_msg:1, str[hello, this is test !!!!!!!!!!!!!!]
 [DEBUG]:[2017-04-09 11:09:39]:[3067448176]:[45:RECV():core/job_connect.cpp] begin RECV fd[16]
 [DEBUG]:[2017-04-09 11:09:39]:[3067448176]:[83:destory_connect():core/base_net_thread.cpp] will delete
+[2017-04-10 23:53:12]:[3067534192]:[157:process_form_http():core/job_connect.cpp] send: [2017-04-10 23:53:12]:[3067534192]:[157:process_form_http():core/job_connect.cpp] send: [2017-04-10 2
+[2017-04-10 23:53:15]:[3067534192]:[157:process_form_http():core/job_connect.cpp] send: [2017-04-10 23:53:15]:[3067534192]:[157:process_form_http():core/job_connect.cpp] send: [2017-04-10 23:53
+[2017-04-10 23:53:18]:[3067534192]:[157:process_form_http():core/job_connect.cpp] send: [2017-04-10 23:53:18]:[3067534192]:[157:process_form_http():core/job_connect.cpp] send: [2017-04-10 23:53
+[2017-04-10 23:53:22]:[3067534192]:[157:process_form_http():core/job_connect.cpp] send: [2017-04-10 23:53:22]:[3067534192]:[157:process_form_http():core/job_connect.cpp] send: [2017-04-10 23:53
+[2017-04-10 23:53:25]:[3067534192]:[157:process_form_http():core/job_connect.cpp] send: [2017-04-10 23:53:25]:[3067534192]:[157:process_form_http():core/job_connect.cpp] send: [2017-04-10 23:53
+[2017-04-10 23:53:28]:[3067534192]:[157:process_form_http():core/job_connect.cpp] send: [2017-04-10 23:53:28]:[3067534192]:[157:process_form_http():core/job_connect.cpp] send: [2017-04-10 23:53
+[2017-04-10 23:53:32]:[3067534192]:[157:process_form_http():core/job_connect.cpp] send: [2017-04-10 23:53:32]:[3067534192]:[157:process_form_http():core/job_connect.cpp] send: [2017-04-10 23:53
+[2017-04-10 23:53:35]:[3067534192]:[157:process_form_http():core/job_connect.cpp] send: [2017-04-10 23:53:35]:[3067534192]:[157:process_form_http():core/job_connect.cpp] send: [2017-04-10 23:53
+[2017-04-10 23:53:38]:[3067534192]:[157:process_form_http():core/job_connect.cpp] send: [2017-04-10 23:53:38]:[3067534192]:[157:process_form_http():core/job_connect.cpp] send: [2017-04-10 23:53
