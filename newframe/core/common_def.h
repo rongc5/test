@@ -48,14 +48,9 @@ enum LogType {
 struct log_msg {
     LogType type; 
     time_t st;
-    pthread_t tid;
-    int line;
-    string time_str;
-    string fun_str;
-    string file_str;
-    string orign_str;
+    string str;
 
-    log_msg():type(LOGOFF), st(0), tid(0), line(0){}
+    log_msg():type(LOGOFF), st(0){}
 };
 
 void get_proc_name(char buf[], size_t buf_len);
