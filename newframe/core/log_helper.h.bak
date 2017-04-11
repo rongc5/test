@@ -1,0 +1,132 @@
+#ifndef __LOG_HELPER_H_
+#define __LOG_HELPER_H_
+
+#include "log_thread.h"
+#include "common_def.h"
+#include "base_singleton.h"
+
+
+#define LOG_INIT(log_conf) \
+    do { \
+        log_thread * thread = base_singleton<log_thread>::get_instance(); \
+        if (thread) { \
+            break; \
+        } \
+        thread = new log_thread(conf); \
+        base_singleton<log_thread>::set_instance(thread); \
+        thread->start(); \
+    }  while (0)
+
+#define LOG_WARNING(fmt, arg...) \
+    do { \
+    log_thread * thread = base_singleton<log_thread>::get_instance(); \
+    if (!thread) { \
+        break; \
+    } \
+    if (LOGWARNING > thread->get_log_conf().type) { \
+        break; \
+    } \
+    {\
+        log_msg * lgmsg =  new log_msg(); \
+        char tmp[SIZE_LEN_64]; \
+        lgmsg->st = get_date_str(tmp, sizeof(tmp), LOG_DATE_FORMAT); \
+        lgmsg->type = LOGWARNING; \
+        char buf[SIZE_LEN_8192]; \
+        snprintf(buf, sizeof(buf), "[WARNING]:[%s]:[%lu]:[%d:%s():%s] "fmt, tmp,pthread_self(), __LINE__, __func__, __FILE__,     ##arg); \
+        lgmsg->str.append(buf); \
+        log_thread::put_msg(lgmsg); \
+    }\
+} while (0)
+
+
+#define LOG_FATAL(fmt, arg...) \
+    do { \
+    log_thread * thread = base_singleton<log_thread>::get_instance(); \
+    if (!thread) { \
+        break; \
+    } \
+    if (LOGFATAL > thread->get_log_conf().type) { \
+        break; \
+    } \
+    {\
+        log_msg * lgmsg =  new log_msg(); \
+        char t_tmp[SIZE_LEN_64]; \
+        lgmsg->st = get_date_str(t_tmp, sizeof(t_tmp), LOG_DATE_FORMAT); \
+        lgmsg->type = LOGFATAL; \
+        char t_buf[SIZE_LEN_8192]; \
+        snprintf(t_buf, sizeof(t_buf), "[FATAL]:[%s]:[%lu]:[%d:%s():%s] "fmt, tmp,pthread_self(), __LINE__, __func__, __FILE__,     ##arg); \
+        lgmsg->str.append(t_buf); \
+        log_thread::put_msg(lgmsg); \
+    }\
+} while (0)
+
+
+#define LOG_NOTICE(fmt, arg...) \
+    do { \
+    log_thread * thread = base_singleton<log_thread>::get_instance(); \
+    if (!thread) { \
+        break; \
+    } \
+    if (LOGNOTICE > thread->get_log_conf().type) { \
+        break; \
+    } \
+    {\
+        log_msg * lgmsg =  new log_msg(); \
+        char tmp[SIZE_LEN_64]; \
+        lgmsg->st = get_date_str(tmp, sizeof(tmp), LOG_DATE_FORMAT); \
+        lgmsg->type = LOGNOTICE; \
+        char buf[SIZE_LEN_8192]; \
+        snprintf(buf, sizeof(buf), "[NOTICE]:[%s]:[%lu]:[%d:%s():%s] "fmt, tmp,pthread_self(), __LINE__, __func__, __FILE__,     ##arg); \
+        lgmsg->str.append(buf); \
+        log_thread::put_msg(lgmsg); \
+    }\
+} while (0)
+
+
+#define LOG_TRACE(fmt, arg...) \
+    do { \
+    log_thread * thread = base_singleton<log_thread>::get_instance(); \
+    if (!thread) { \
+        break; \
+    } \
+    if (LOGTRACE > thread->get_log_conf().type) { \
+        break; \
+    } \
+    {\
+        log_msg * lgmsg =  new log_msg(); \
+        char tmp[SIZE_LEN_64]; \
+        lgmsg->st = get_date_str(tmp, sizeof(tmp), LOG_DATE_FORMAT); \
+        lgmsg->type = LOGTRACE; \
+        char buf[SIZE_LEN_8192]; \
+        snprintf(buf, sizeof(buf), "[TRACE]:[%s]:[%lu]:[%d:%s():%s] "fmt, tmp,pthread_self(), __LINE__, __func__, __FILE__,     ##arg); \
+        lgmsg->str.append(buf); \
+        log_thread::put_msg(lgmsg); \
+    }\
+} while (0)
+
+
+#define LOG_DEBUG(fmt, arg...) \
+    do { \
+    log_thread * thread = base_singleton<log_thread>::get_instance(); \
+    if (!thread) { \
+        break; \
+    } \
+    if (LOGDEBUG > thread->get_log_conf().type) { \
+        break; \
+    } \
+    {\
+        log_msg * lgmsg =  new log_msg(); \
+        char tmp[SIZE_LEN_64]; \
+        lgmsg->st = get_date_str(tmp, sizeof(tmp), LOG_DATE_FORMAT); \
+        lgmsg->type = LOGDEBUG; \
+        char buf[SIZE_LEN_8192]; \
+        snprintf(buf, sizeof(buf), "[DEBUG]:[%s]:[%lu]:[%d:%s():%s] "fmt, tmp,pthread_self(), __LINE__, __func__, __FILE__,     ##arg); \
+        lgmsg->str.append(buf); \
+        log_thread::put_msg(lgmsg); \
+    }\
+} while (0)
+
+
+
+#endif
+

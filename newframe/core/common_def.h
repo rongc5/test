@@ -47,10 +47,9 @@ enum LogType {
 
 struct log_msg {
     LogType type; 
-    time_t st;
     string str;
 
-    log_msg():type(LOGOFF), st(0){}
+    log_msg():type(LOGOFF){}
 };
 
 void get_proc_name(char buf[], size_t buf_len);

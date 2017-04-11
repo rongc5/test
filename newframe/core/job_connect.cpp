@@ -82,7 +82,7 @@ size_t job_connect::process_recv_buf(char *buf, size_t len)
 {
 
 
-    //LOG_DEBUG("%s %d\n", "recv msg", len);
+    LOG_DEBUG("%s %d\n", "recv msg", len);
     size_t left_len = len;
     while(left_len > 0)
     {
@@ -95,7 +95,7 @@ size_t job_connect::process_recv_buf(char *buf, size_t len)
             {
                 int *p_len = (int *)buf;
                 msg_body_len = *p_len;
-                //LOG_DEBUG("msg_body_len[%d]", msg_body_len);
+                LOG_DEBUG("msg_body_len[%d]", msg_body_len);
                 status = RECV_MSG_BODY;
             }
             else
@@ -108,7 +108,7 @@ size_t job_connect::process_recv_buf(char *buf, size_t len)
         {
             if (left_len >= _head_len + msg_body_len) {
 
-                //LOG_DEBUG("_head_len[%d] msg_body_len[%d]", _head_len, msg_body_len);
+                LOG_DEBUG("_head_len[%d] msg_body_len[%d]", _head_len, msg_body_len);
                 process_s(buf + _head_len, msg_body_len);
                 left_len -= (_head_len + msg_body_len);
                 buf = buf + _head_len + msg_body_len;
@@ -141,7 +141,7 @@ size_t job_connect::process_s(char *buf, size_t len)
 
     _hc_connect = http_client_connect::gen_connect(url, this, _thread);
     //LOG_DEBUG("recv_msg:%d, str[%s]", recv_msg.obj_id(), recv_msg.str().c_str());
-    printf("recv_msg:%d, str[%s]\n", recv_msg.obj_id(), recv_msg.str().c_str());
+    //printf("recv_msg:%d, str[%s]\n", recv_msg.obj_id(), recv_msg.str().c_str());
 
     //write(_fd, "I recived", sizeof("I recived"));
 
@@ -153,8 +153,8 @@ size_t job_connect::process_s(char *buf, size_t len)
 void job_connect::process_form_http(char *buf, size_t len)
 {
 
-    printf("send: %s\n", buf);
-    LOG_DEBUG("send: %s", buf);
+    //printf("send: %s\n", buf);
+    LOG_DEBUG("len: %d send: %s", len, buf);
     //write(_fd, "987654321", sizeof("987654321"));
     write(_fd, buf, len);
 }

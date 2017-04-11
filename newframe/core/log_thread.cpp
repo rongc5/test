@@ -7,7 +7,7 @@ int log_thread::add(log_msg * msg)
         return -1;
     }
 
-    int index = msg->st % _conf.bucketlen;
+    int index = msg->str.length() % _conf.bucketlen;
 
     thread_lock lock(&_mutex[index]);
 
@@ -45,11 +45,6 @@ void log_thread::log_write(log_msg * msg)
         return;
     }
 
-    int flag = 0;
-    if (msg->str.length() && msg->str[msg->str.length()- 1] == '\n')
-    {
-        flag = 1;
-    }
 
     if (_conf.deal_mode & 1) {
 
@@ -62,18 +57,13 @@ void log_thread::log_write(log_msg * msg)
             return;
         }
 
-        if (flag)
-            fprintf(fp, "%s", msg->str.c_str());
-        else 
-            fprintf(fp, "%s\n", msg->str.c_str());
+        fprintf(fp, "%s\n", msg->str.c_str());
+
         fclose(fp);
     }
 
     if (_conf.deal_mode & 1<<1){
-        if (flag)
-            printf("%s", msg->str.c_str());
-        else 
-            printf("%s\n", msg->str.c_str());
+        printf("%s\n", msg->str.c_str());
     }
 
 }
