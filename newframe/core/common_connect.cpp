@@ -1,13 +1,27 @@
 #include "common_connect.h"
 
-void common_connect::init_ev(short ev)
+bool common_connect::update_event(short ev)
 {
+    if (_ev == ev) {
+        return true;
+    }
+
+    //if (_ev) 
+        //event_del(&_event);
+
     event_set(&_event, _fd, ev, on_cb, this);
     event_base_set(_thread->get_event_base(), &_event);
+    _ev = ev;
+    if (event_add(&_event, 0) == -1) 
+        return false;
 
-    event_add(&_event, 0);
+    return true;
 }
 
+short common_connect::get_ev_flags()
+{
+    return _ev;
+}
 
 void common_connect::close()
 {

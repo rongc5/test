@@ -10,7 +10,7 @@ class common_connect:public base_connect
 {
     public:
 
-        common_connect(int32_t sock, base_net_thread * thread):base_connect(thread), _fd(sock)
+        common_connect(int32_t sock, base_net_thread * thread):base_connect(thread), _fd(sock), _ev(0)
         {
             
         }
@@ -19,8 +19,6 @@ class common_connect:public base_connect
         {
             close();
         }
-
-        void init_ev(short ev);
 
         void close();
 
@@ -32,8 +30,13 @@ class common_connect:public base_connect
 
         static void on_cb(int fd, short ev, void *arg);
 
+        bool update_event(short ev);
+
+        short get_ev_flags();
+
     protected:
         int _fd;
+        short _ev;
         struct event _event;
 };
 

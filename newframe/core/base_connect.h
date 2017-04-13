@@ -13,6 +13,7 @@ class base_connect
 
         virtual ~base_connect()
         {
+
         }
 
         virtual int destroy();

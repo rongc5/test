@@ -71,7 +71,7 @@ job_connect * job_connect::gen_connect(int fd, base_net_thread * thread)
 {
     //set_unblock(fd);
     job_connect * c_conn = new job_connect(fd, thread);
-    c_conn->init_ev(EV_TIMEOUT | EV_READ | EV_PERSIST);
+    c_conn->update_event(EV_TIMEOUT | EV_READ | EV_PERSIST);
     thread->add_connect_map(c_conn);
 
     return c_conn;

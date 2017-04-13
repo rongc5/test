@@ -36,7 +36,7 @@ client_connect * client_connect::gen_connect(const string &ip, unsigned short po
     //set_unblock(_fd);
 
     client_connect * l_conn = new client_connect(_fd, thread);    
-    l_conn->init_ev(EV_TIMEOUT | EV_READ | EV_PERSIST);
+    l_conn->update_event(EV_TIMEOUT | EV_READ | EV_PERSIST);
     thread->add_connect_map(l_conn);
 
     l_conn->send_request();
