@@ -9,7 +9,7 @@
 #ifdef  DEBUG
     #define PDEBUG(format, arg...) printf("QF:"format, ##arg)
 #else
-    #define PDEBUG(format, arg...) do while(0)
+    #define PDEBUG(format, arg...) 
 #endif
 
 typedef enum{

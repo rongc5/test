@@ -7,7 +7,7 @@ int log_thread::add(log_msg * msg)
         return -1;
     }
 
-    int index = msg->str.length() % _conf.bucketlen;
+    int index = pthread_self() % _conf.bucketlen;
 
     thread_lock lock(&_mutex[index]);
 
