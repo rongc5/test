@@ -29,11 +29,19 @@ class tcp_connect:public common_connect
 
         size_t process_recv_buf(char *buf, size_t len);
 
+        size_t process_s(char *buf, size_t len);
+
         size_t process_send_buf(char *buf, size_t len);
+        
+        virtual void peer_close();
+
+        virtual void error_back(string & err_str);
 
     protected:
         string _recv_buf;
         size_t _recv_buf_len;
+
+        string _send_buf;
 };
 
 

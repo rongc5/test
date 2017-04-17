@@ -41,6 +41,14 @@ void tcp_connect::real_recv()
     }     
 }
 
+void tcp_connect::peer_close()
+{
+}
+
+void tcp_connect::error_back(string & err_str)
+{
+}
+
 int tcp_connect::RECV(void *buf, size_t len)
 {
     //LOG_DEBUG("begin RECV fd[%d]", _fd);
@@ -49,6 +57,7 @@ int tcp_connect::RECV(void *buf, size_t len)
     {
         //LOG_DEBUG("the client close the socket %d", _fd);
         //THROW_COMMON_EXCEPT("the client close the socket(" << _fd << ")");
+        peer_close();
         destroy();
     }
     else if (ret < 0)
@@ -56,7 +65,7 @@ int tcp_connect::RECV(void *buf, size_t len)
         if (errno != EAGAIN)
         {
             //LOG_DEBUG("this socket occur fatal error %s", strerror(errno));
-            //THROW_COMMON_EXCEPT("this socket occur fatal error " << strerror(errno));
+            error_back("this socket occur fatal error " << strerror(errno));
             destroy();
         }
         ret = 0;
@@ -106,9 +115,20 @@ size_t tcp_connect::process_recv_buf(char *buf, size_t len)
     return len - left_len;
 }
 
+size_t tcp_connect::process_s(char *buf, size_t len)
+{
+    return len;
+}
+
+
 size_t tcp_connect::process_send_buf(char *buf, size_t len)
 {
-
+    int ret = SEND(buf, len);
+    if (ret == -1 &&  && (errno == EAGAIN || errno == EWOULDBLOCK)) {
+        if (!update_event(EV_READ | EV_WRITE | EV_PERSIST)) {
+            destroy();
+        }
+    }
 }
 
 
@@ -117,7 +137,8 @@ ssize_t tcp_connect::SEND(const void *buf, const size_t len)
 {
     if (len == 0) //上层抛一个长度为0的数据过来 ,直接关闭
     {
-        THROW_COMMON_EXCEPT("close the socket " << _fd);
+        error_back("close the socket " << _fd);
+        destroy();
     }
 
 
@@ -126,10 +147,9 @@ ssize_t tcp_connect::SEND(const void *buf, const size_t len)
     {
         if (errno != EAGAIN && errno != EWOULDBLOCK)
         {
-            THROW_COMMON_EXCEPT("send data error " << strerror(errno));
+            error_back("send data error " << strerror(errno));
+            destroy();
         }
-
-        ret = 0;
     }
 
     return ret;
@@ -145,29 +165,26 @@ void tcp_connect::real_send()
             break;
 
         ii++;
-        if (_p_send_buf == NULL)
-        {
-            _p_send_buf = _process->get_send_buf();
-        }
 
-
-        if (_p_send_buf != NULL)
+        if (_send_buf.length())
         {
             bool is_break = false;
 
-            ssize_t ret = SEND(_p_send_buf->c_str(), _p_send_buf->length());                
+            ssize_t ret = SEND(_send_buf.c_str(), __send_buf.length());                
 
-            if (ret == (ssize_t)_p_send_buf->length())
+            if (ret == (ssize_t)_send_buf.length())
             {
-                delete _p_send_buf;
-                _p_send_buf = NULL;                 
+                _send_buf.clear();
+                if (!update_event(EV_READ | EV_PERSIST)) {
+                    destroy();
+                }
+
             }
             else if (ret >= 0)
             {
-                _p_send_buf->erase(0, ret);
+                _send_buf.erase(0, ret);
 
                 LOG_WARNING("_p_send_buf erase %d", ret);
-
                 is_break = true;
             }
             else //<0

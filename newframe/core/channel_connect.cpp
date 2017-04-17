@@ -2,7 +2,7 @@
 
 
 
-void channel_connect::call_back(int fd, short ev, void *arg)
+size_t channel_connect::process_recv_buf(char *buf, size_t len)
 {
     if (_thread){
         _thread->routine_msg();

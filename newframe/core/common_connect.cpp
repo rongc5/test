@@ -9,6 +9,9 @@ bool common_connect::update_event(short ev)
     //if (_ev) 
         //event_del(&_event);
 
+    if (_ev && event_del(&_event) == -1) 
+        return false;
+
     event_set(&_event, _fd, ev, on_cb, this);
     event_base_set(_thread->get_event_base(), &_event);
     _ev = ev;
