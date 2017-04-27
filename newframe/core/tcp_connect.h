@@ -5,6 +5,7 @@
 #include "common_connect.h"
 #include "base_net_thread.h"
 #include "common_def.h"
+#include "tcp_connect.h"
 
 class base_net_thread;
 class tcp_connect:public common_connect
@@ -35,7 +36,7 @@ class tcp_connect:public common_connect
         
         virtual void peer_close();
 
-        virtual void error_back(string & err_str);
+        virtual void error_back();
 
     protected:
         string _recv_buf;

@@ -83,7 +83,7 @@ class ThreadPoolMixIn(ThreadingMixIn):
 
         self.server_close()
 
-    
+
     def process_request_thread(self):
         '''
         obtain request from queue instead of directly from server socket
@@ -91,7 +91,7 @@ class ThreadPoolMixIn(ThreadingMixIn):
         while True:
             ThreadingMixIn.process_request_thread(self, *self.requests.get())
 
-    
+
     def handle_request(self):
         '''
         simply collect requests and put them on the queue for the workers.
@@ -188,7 +188,7 @@ if __name__ == '__main__':
         pass
 
     def test(HandlerClass = Handler,
-            ServerClass = ThreadedServer, 
+            ServerClass = ThreadedServer,
             protocol="HTTP/1.0"):
         '''
         Test: Run an HTTP server on port 8002

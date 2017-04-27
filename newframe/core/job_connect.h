@@ -2,17 +2,17 @@
 #define __JOB_CONNECT_H__
 
 #include "log_helper.h"
-#include "common_connect.h"
+#include "tcp_connect.h"
 #include "base_net_thread.h"
 #include "common_def.h"
 
 class http_client_connect;
 class base_net_thread;
-class job_connect:public common_connect
+class job_connect:public tcp_connect
 {
     public:
 
-        job_connect(int32_t sock, base_net_thread * thread):common_connect(sock, thread), _recv_buf_len(0), _hc_connect(NULL)
+        job_connect(int32_t sock, base_net_thread * thread):tcp_connect(sock, thread), _hc_connect(NULL)
         {
 
         }

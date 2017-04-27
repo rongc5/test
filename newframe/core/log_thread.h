@@ -2,10 +2,11 @@
 #define __LOG_THREAD_H__
 
 #include "common_def.h"
-#include "base_thread.h"
+#include "base_net_thread.h"
+#include "common_queue.h"
 
 
-class log_thread : public base_thread
+class log_thread : public base_net_thread
 {
     public:
         log_thread(log_conf & conf):_list(NULL), _mutex(NULL), _conf(conf)
@@ -50,6 +51,7 @@ class log_thread : public base_thread
         list<log_msg *> * _list;
         thread_mutex_t * _mutex;
         log_conf _conf;
+        common_queue<ad_head_event> *_queue_arr;
 };
 
 

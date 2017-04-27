@@ -18,9 +18,17 @@ class base_net_thread:public base_thread
 
         virtual void *run();
 
-        virtual void add_msg(base_passing_msg * p_msg) = 0;
+        virtual void init();
 
-        virtual void handle_msg() = 0;
+        virtual void put_msg(base_passing_msg * p_msg);
+
+        virtual void routine_msg();
+
+        static void channel_cb(int fd, short ev, void *arg);
+
+        /************* *****************/
+
+        virtual void handle_new_msg(base_passing_msg * p_msg) = 0;
 
         struct event_base * get_event_base()
         {
@@ -35,22 +43,16 @@ class base_net_thread:public base_thread
 
         const ObjId & gen_id_str();
 
-        static void put_msg(base_passing_msg * msg);
+        static void passing_msg(base_passing_msg * msg);
 
         static base_net_thread * get_base_net_thread_obj(uint32_t thread_index);
-
-    protected:
-
-        void init();
-
-        static void on_cb(int fd, short ev, void *arg);
-
-        virtual void call_back(int fd, short ev, void *arg);
 
     protected:
         struct event_base* _base;
         int _channelid;
         ObjId _id_str;
+        deque<base_passing_msg *> _queue;
+        thread_mutex_t _base_net_mutex;
         map<ObjId, base_connect*> _connect_map;
 
         typedef typename map<uint32_t, base_net_thread *>::iterator bntMapIter;

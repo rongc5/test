@@ -45,7 +45,7 @@ void tcp_connect::peer_close()
 {
 }
 
-void tcp_connect::error_back(string & err_str)
+void tcp_connect::error_back()
 {
 }
 
@@ -65,7 +65,7 @@ int tcp_connect::RECV(void *buf, size_t len)
         if (errno != EAGAIN)
         {
             //LOG_DEBUG("this socket occur fatal error %s", strerror(errno));
-            error_back("this socket occur fatal error " << strerror(errno));
+            error_back();
             destroy();
         }
         ret = 0;
@@ -124,11 +124,13 @@ size_t tcp_connect::process_s(char *buf, size_t len)
 size_t tcp_connect::process_send_buf(char *buf, size_t len)
 {
     int ret = SEND(buf, len);
-    if (ret == -1 &&  && (errno == EAGAIN || errno == EWOULDBLOCK)) {
+    if (ret == -1 && (errno == EAGAIN || errno == EWOULDBLOCK)) {
         if (!update_event(EV_READ | EV_WRITE | EV_PERSIST)) {
             destroy();
         }
     }
+
+    return len;
 }
 
 
@@ -137,7 +139,7 @@ ssize_t tcp_connect::SEND(const void *buf, const size_t len)
 {
     if (len == 0) //上层抛一个长度为0的数据过来 ,直接关闭
     {
-        error_back("close the socket " << _fd);
+        error_back();
         destroy();
     }
 
@@ -147,7 +149,7 @@ ssize_t tcp_connect::SEND(const void *buf, const size_t len)
     {
         if (errno != EAGAIN && errno != EWOULDBLOCK)
         {
-            error_back("send data error " << strerror(errno));
+            error_back();
             destroy();
         }
     }
@@ -170,7 +172,7 @@ void tcp_connect::real_send()
         {
             bool is_break = false;
 
-            ssize_t ret = SEND(_send_buf.c_str(), __send_buf.length());                
+            ssize_t ret = SEND(_send_buf.c_str(), _send_buf.length());             
 
             if (ret == (ssize_t)_send_buf.length())
             {

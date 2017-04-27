@@ -20,7 +20,6 @@ OBJ	= ${SRC_DIR}/base_connect.o                     \
     ${SRC_DIR}/base_net_thread.o                        \
     ${SRC_DIR}/client_thread.o                        \
     ${SRC_DIR}/client_connect.o                        \
-    ${SRC_DIR}/channel_connect.o                        \
     ${SRC_DIR}/listen_connect.o                        \
     ${SRC_DIR}/tcp_connect.o                        \
     ${SRC_DIR}/job_connect.o                       \

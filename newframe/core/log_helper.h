@@ -19,7 +19,7 @@
 
 #define LOG_WARNING(fmt, arg...) \
     do { \
-        LOG_COMMON(LOGFWARNING, "[WARNING]", fmt, arg); \
+        LOG_COMMON(LOGWARNING, "[WARNING]", fmt, arg); \
     } while (0)
 
 

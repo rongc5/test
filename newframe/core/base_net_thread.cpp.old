@@ -1,4 +1,5 @@
 #include "base_net_thread.h"
+#include "channel_connect.h"
 #include "base_connect.h"
 
 
@@ -22,32 +23,37 @@ void base_net_thread::init()
         return ;
     }   
 
-    event_set(&_event, fd[0], EV_TIMEOUT | EV_READ | EV_PERSIST, on_cb, this);
-    event_base_set(get_event_base(), &_event);
-    event_add(&_event, 0);
-
-    _channelid = fd[1];
-
+    _channelid = fd[0];
+    channel_connect::gen_connect(fd[1], this);
     _base_net_thread_map[get_thread_index()] = this;
 
     //LOG_DEBUG("fd[%d] fd[%d]\n", fd[0], fd[1]);
 }
 
-void base_net_thread::on_cb(int fd, short ev, void *arg)
+
+void base_net_thread::put_msg(base_passing_msg * p_msg)
 {
-    base_net_thread * conn = (base_net_thread *) arg;
-    if (conn) {
-        conn->call_back(fd, ev, arg);
-    }   
+    if (!p_msg) {
+        return;
+    }
+
+    //LOG_DEBUG("_channelid[%d]", _channelid);
+    thread_lock lock(&_base_net_mutex);
+    _queue.push_back(p_msg);
+    write(_channelid, "c", sizeof("c"));
+    //LOG_DEBUG("_channelid[%d]", _channelid);
 }
 
-
-void base_net_thread::call_back(int fd, short ev, void *arg)
+void base_net_thread::routine_msg()
 {
-    char buf[SIZE_LEN_2048];
-    recv(fd, buf, sizeof(buf), MSG_DONTWAIT);
+    thread_lock lock(&_base_net_mutex);
+    for (deque<base_passing_msg *>::iterator it = _queue.begin(); it != _queue.end(); ){
+        handle_new_msg(*it);
 
-    handle_msg();
+        it = _queue.erase(it);
+    }
+
+    _queue.clear();
 }
 
 void base_net_thread::add_connect_map(base_connect * conn)
@@ -108,7 +114,7 @@ base_net_thread * base_net_thread::get_base_net_thread_obj(uint32_t thread_index
     return NULL;
 }
 
-void base_net_thread::put_msg(base_passing_msg * p_msg)
+void base_net_thread::passing_msg(base_passing_msg * p_msg)
 {
     if (!p_msg) {
         return;
@@ -122,7 +128,7 @@ void base_net_thread::put_msg(base_passing_msg * p_msg)
         return;
     }
 
-    net_thread->add_msg(p_msg);
+    net_thread->put_msg(p_msg);
 }
 
 
