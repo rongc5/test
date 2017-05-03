@@ -45,12 +45,6 @@ enum LogType {
 };
 
 
-struct log_msg {
-    LogType type; 
-    string str;
-
-    log_msg():type(LOGOFF){}
-};
 
 void get_proc_name(char buf[], size_t buf_len);
 
@@ -90,9 +84,6 @@ class REC_OBJ
 
 void set_unblock(int fd);
 
-typedef void (*event_fd_callback)(evutil_socket_t, short, void *);
-
-
 struct ObjId
 {
     uint32_t _id;
@@ -108,6 +99,7 @@ bool operator==(const ObjId & oj1, const ObjId & oj2);
 enum passing_msg_op
 {
     PASSING_FD,
+    PASSING_LOG,
     PASSING_MSG
 };
 
@@ -117,6 +109,10 @@ struct base_passing_msg  //内部传递的消息
     ObjId _src_id;
     passing_msg_op _op;
     base_passing_msg(){}
+    virtual void release(){
+        delete this;
+    }
+
     virtual ~base_passing_msg(){}
 };
 
@@ -127,6 +123,14 @@ struct recv_msg_fd: public base_passing_msg
     recv_msg_fd():fd(0){}
 
     virtual ~recv_msg_fd(){}
+};
+
+
+struct log_msg : public base_passing_msg {
+    LogType type; 
+    string str;
+
+    log_msg():type(LOGOFF){}
 };
 
 

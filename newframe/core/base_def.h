@@ -98,13 +98,6 @@ typedef int int32_t;
 typedef unsigned int uint32_t;
 
 
-
-/***************************/
-
-#define PASSING_ACCEPT_NONE 0
-#define PASSING_ACCEPT_IN 1
-
-
 /***************************/
 
 
@@ -135,11 +128,13 @@ typedef unsigned int uint32_t;
         printf("tid:[%lu],line:[%d],func:[%s],file:[%s] "format, pthread_self(), __LINE__, __func__, __FILE__, ##arg); \
 } while (0)
 #else
-    #define PDEBUG(format, arg...) do while(0)
+    #define PDEBUG(format, arg...)
 #endif
 
 /*****************************/
 #define DEFAULT_LOG_MAX_SIZE 50*1024*1024
+
+#define LOG_QUEUE_NUM 10
 
 
 #endif

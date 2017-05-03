@@ -1,6 +1,6 @@
 #include "base_net_thread.h"
 #include "base_connect.h"
-
+#include "event_channel_msg.h"
 
 void * base_net_thread::run()
 {
@@ -8,46 +8,52 @@ void * base_net_thread::run()
 
     event_base_dispatch(_base);
 
-    //LOG_DEBUG("obj_process over!");
-
     return NULL;
 }
 
 void base_net_thread::init()
 {
-    int fd[2];
-    int ret = socketpair(AF_UNIX,SOCK_STREAM,0,fd);
-    if (ret < 0) {
-        //LOG_WARNING("socketpair fail errstr[%s]", strerror(errno));
-        return ;
-    }   
-
-    event_set(&_event, fd[0], EV_TIMEOUT | EV_READ | EV_PERSIST, on_cb, this);
-    event_base_set(get_event_base(), &_event);
-    event_add(&_event, 0);
-
-    _channelid = fd[1];
-
     _base_net_thread_map[get_thread_index()] = this;
 
-    //LOG_DEBUG("fd[%d] fd[%d]\n", fd[0], fd[1]);
+    for (int i = 0; i < _channel_num; i++) {
+
+        int fd[2];
+        int ret = socketpair(AF_UNIX,SOCK_STREAM,0,fd);
+        if (ret < 0) {
+            return ;
+        }   
+
+        event_channel_msg * msg = new event_channel_msg();
+        msg->_net_thread = this;
+        common_queue<base_passing_msg> *queue = new common_queue<base_passing_msg>(0, true);
+        msg->_queue = queue;
+        _channel_msg_vec.push_back(msg);
+
+        event_set(&_event, fd[0], EV_TIMEOUT | EV_READ | EV_PERSIST, on_cb, msg);
+        event_base_set(get_event_base(), &_event);
+        event_add(&_event, 0);
+
+        _channel_vec.push_back(fd[1]);
+    }
 }
 
 void base_net_thread::on_cb(int fd, short ev, void *arg)
 {
-    base_net_thread * conn = (base_net_thread *) arg;
-    if (conn) {
-        conn->call_back(fd, ev, arg);
+    char buf[SIZE_LEN_2048];
+    recv(fd, buf, sizeof(buf), MSG_DONTWAIT);
+
+    event_channel_msg * msg = (event_channel_msg *) arg;
+    if (msg && msg->_queue && msg->net_thread) {
+        msg->_queue->check_pop(msg->net_thread);
     }   
 }
 
 
-void base_net_thread::call_back(int fd, short ev, void *arg)
+bool base_net_thread::check(base_passing_msg * msg)
 {
-    char buf[SIZE_LEN_2048];
-    recv(fd, buf, sizeof(buf), MSG_DONTWAIT);
+    handle_msg(msg);
 
-    handle_msg();
+    return true;
 }
 
 void base_net_thread::add_connect_map(base_connect * conn)

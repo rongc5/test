@@ -1,50 +1,43 @@
 #include "log_thread.h"
-#include "base_singleton.h"
 
-int log_thread::add(log_msg * msg)
+int log_thread::add_msg(base_passing_msg * p_msg)
 {
-    if (!msg) {
+    if (!p_msg) {
         return -1;
     }
 
-    int index = pthread_self() % _conf.bucketlen;
+    int index = pthread_self() % _channel_vec.size();
 
-    thread_lock lock(&_mutex[index]);
-
-    _list[index].push_back(msg);
+    event_channel_msg * msg = _channel_msg_vec[index];
+    if (msg && msg->_queue)
+        msg->_queue->push(p_msg);
 
     return 0;
 }
 
-int log_thread::put_msg(log_msg *msg)
+virtual bool handle_msg(base_passing_msg * msg)
 {
-    log_thread * thread = base_singleton<log_thread>::get_instance();
-    if (!thread) {
-        REC_OBJ<log_msg> rc(msg);
-        return -1; 
+    switch (msg->_op) {
+        case PASSING_LOG:
+            {
+                log_msg * lmsg = dynamic_cast<log_msg *>msg;
+                if (lmsg) {
+                    log_write(lmsg);
+                }
+            }
+            break;
+        default:
+            break;
     }
 
-
-    return thread->add(msg);
+    return false;
 }
-
-void* log_thread::run()
-{
-    while (get_run_flag())
-    {
-        clear();
-    }
-
-    return NULL;
-}
-
 
 void log_thread::log_write(log_msg * msg)
 {
     if (!msg || msg->type > _conf.type){
         return;
     }
-
 
     if (_conf.deal_mode & 1) {
 
@@ -65,7 +58,6 @@ void log_thread::log_write(log_msg * msg)
     if (_conf.deal_mode & 1<<1){
         printf("%s\n", msg->str.c_str());
     }
-
 }
 
 
@@ -78,19 +70,19 @@ void log_thread::get_file_name(LogType type, char dest[], size_t dest_len)
     switch (type)
     {   
         case LOGFATAL:
-            snprintf(dest, dest_len, "%s.%s", _conf.prefix_file_name, "ft");
+            snprintf(dest, dest_len, "%s/%s.%s", _conf.log_path, _conf.prefix_file_name, "ft");
             break;
         case LOGWARNING:
-            snprintf(dest, dest_len, "%s.%s", _conf.prefix_file_name, "wn");
+            snprintf(dest, dest_len, "%s/%s.%s", _conf.log_path, _conf.prefix_file_name, "wn");
             break;
         case LOGNOTICE:
-            snprintf(dest, dest_len, "%s.%s", _conf.prefix_file_name, "nt");
+            snprintf(dest, dest_len, "%s/%s.%s", _conf.log_path, _conf.prefix_file_name, "nt");
             break;
         case LOGTRACE:
-            snprintf(dest, dest_len, "%s.%s", _conf.prefix_file_name, "tc");
+            snprintf(dest, dest_len, "%s/%s.%s", _conf.log_path, _conf.prefix_file_name, "tc");
             break;
         case LOGDEBUG:
-            snprintf(dest, dest_len, "%s.%s", _conf.prefix_file_name, "db");
+            snprintf(dest, dest_len, "%s/%s.%s", _conf.log_path, _conf.prefix_file_name, "db");
             break;
         default:
             break;
@@ -98,9 +90,6 @@ void log_thread::get_file_name(LogType type, char dest[], size_t dest_len)
 
     return;
 }
-
-
-
 
 void log_thread::check_to_renmae(const char *filename, int max_size)
 {
@@ -118,25 +107,6 @@ void log_thread::check_to_renmae(const char *filename, int max_size)
         snprintf(path, sizeof(path), "%s.%s", filename, tmp);
         rename(filename, path);
     }
-}
-
-void log_thread::clear()
-{
-    for (int i = 0; i <  _conf.bucketlen; i++) {
-        thread_lock lock(&_mutex[i]);
-
-        list<log_msg *>::iterator it;
-
-        for (it = _list[i].begin(); it != _list[i].end(); it++) {
-            log_write(*it);
-            delete *it;
-            *it = NULL;
-        } 
-
-        _list[i].clear();
-
-    }
-
 }
 
 const log_conf & log_thread::get_log_conf()

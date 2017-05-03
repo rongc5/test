@@ -87,7 +87,5 @@ void http_client_connect::call_back(struct evhttp_request *req, void *arg)
         default:
             break;
    }
-
-
 }
 

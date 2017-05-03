@@ -4,23 +4,21 @@
 #include "common_def.h"
 #include "base_thread.h"
 
+class event_channel_msg;
 class base_connect;
 class base_net_thread:public base_thread
 {
     public:
-        base_net_thread():_channelid(0){
+        base_net_thread(int channel_num = 1):_channel_num(channel_num){
             _base = event_base_new();
         };
 
         virtual ~base_net_thread(){
-            close(_channelid);
         };
 
         virtual void *run();
 
         virtual void add_msg(base_passing_msg * p_msg) = 0;
-
-        virtual void handle_msg() = 0;
 
         struct event_base * get_event_base()
         {
@@ -39,19 +37,22 @@ class base_net_thread:public base_thread
 
         static base_net_thread * get_base_net_thread_obj(uint32_t thread_index);
 
+        virtual bool handle_msg(base_passing_msg * msg) = 0;
+
     protected:
 
         void init();
 
         static void on_cb(int fd, short ev, void *arg);
 
-        virtual void call_back(int fd, short ev, void *arg);
-
     protected:
         struct event_base* _base;
-        int _channelid;
         ObjId _id_str;
         map<ObjId, base_connect*> _connect_map;
+
+        int _channel_num;
+        vector<int> _channel_vec;
+        vector<event_channel_msg *> _channel_msg_vec;
 
         typedef typename map<uint32_t, base_net_thread *>::iterator bntMapIter;
         static map<uint32_t, base_net_thread *> _base_net_thread_map;
