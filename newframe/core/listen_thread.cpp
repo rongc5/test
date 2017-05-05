@@ -18,26 +18,15 @@ int listen_thread::add_worker_thread(base_net_thread * thread)
 }
 
 
-void listen_thread::handle_new_msg(base_passing_msg * p_msg)
+void bool handle_msg(base_passing_msg * msg)
 {
+    uint32_t index = _current_indx;
+    _current_indx++;
 
-    if (!_worker_thrds.size()) {
-        job_thread::handle_new_msg(p_msg);
-        //LOG_DEBUG("recv_fd: %d\n", );
-        return ;
+    if (_current_indx >= _worker_thrds.size()){
+        _current_indx = 0;
     }
 
-
-    {
-        uint32_t index = _current_indx;
-        _current_indx++;
-
-        if (_current_indx >= _worker_thrds.size()){
-            _current_indx = 0;
-        }
-
-        _worker_thrds[index]->put_msg(p_msg);
-    }
-
+    _worker_thrds[index]->put_msg(p_msg);
 }
 
