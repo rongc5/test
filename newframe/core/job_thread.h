@@ -15,12 +15,9 @@ class job_thread:public base_net_thread
         virtual ~job_thread(){
         };
 
-        virtual void handle_new_msg(base_passing_msg * p_msg);
+        virtual bool handle_msg(base_passing_msg * msg);
 
         virtual void add_msg(base_passing_msg * p_msg);
-
-    protected:
-
 
 };
 

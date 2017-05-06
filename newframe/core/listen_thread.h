@@ -7,7 +7,7 @@
 class listen_thread: public base_net_thread
 {
     public:
-        listen_thread():_current_indx(0){
+        listen_thread():base_net_thread(0),_current_indx(0){
         };
         virtual ~listen_thread(){
         };

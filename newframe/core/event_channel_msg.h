@@ -8,8 +8,10 @@ class base_net_thread;
 struct event_channel_msg{
     base_net_thread * _net_thread;
     common_queue<base_passing_msg> * _queue;
+    int _channelid;
+    void after_push();
 
-    event_channel_msg():_net_thread(NULL), _queue(NULL){}
+    event_channel_msg():_net_thread(NULL), _queue(NULL), _channelid(0){}
 };
 
 

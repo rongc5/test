@@ -51,7 +51,6 @@ class base_net_thread:public base_thread
         map<ObjId, base_connect*> _connect_map;
 
         int _channel_num;
-        vector<int> _channel_vec;
         vector<event_channel_msg *> _channel_msg_vec;
 
         typedef typename map<uint32_t, base_net_thread *>::iterator bntMapIter;

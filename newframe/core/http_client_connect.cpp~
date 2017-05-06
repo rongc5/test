@@ -143,3 +143,60 @@ ERR:
 }
 
 
+void http_client_connect::init(const string & url, job_connect * t_conn)
+{
+    _url = url;
+    _t_conn = t_conn;
+
+    _uri = evhttp_uri_parse(url.c_str());
+    
+    int port = evhttp_uri_get_port(_uri); 
+
+    if (port == -1){
+        port = 80;
+    }
+
+    //LOG_DEBUG("url:%s", _url.c_str());
+    _cn = evhttp_connection_base_new(_thread->get_event_base(),NULL, evhttp_uri_get_host(_uri), port);
+
+    _req = evhttp_request_new(http_request_done, this);
+
+    evhttp_add_header(_req->output_headers, "Host", evhttp_uri_get_host(_uri));
+
+    const char *query = evhttp_uri_get_query(_uri); 
+    const char *path = evhttp_uri_get_path(_uri);
+
+    char t_buf[SIZE_LEN_2048];
+
+    snprintf(t_buf, sizeof(t_buf), "%s?%s", path, query);
+    evhttp_make_request(_cn, _req, EVHTTP_REQ_GET, t_buf); 
+    evhttp_connection_set_timeout(_req->evcon, 600);
+
+    //LOG_DEBUG("host:%s, path:%s, query:%s, port:%d", evhttp_uri_get_host(_uri), path, query, port);
+    //LOG_DEBUG("t_buf:%s", t_buf);
+}
+
+void http_client_connect::call_back(struct evhttp_request *req, void *arg)
+{
+   switch(req->response_code)
+   {
+        case HTTP_OK:
+            {
+                struct evbuffer* buf = evhttp_request_get_input_buffer(req);
+                size_t len = evbuffer_get_length(buf);
+                unsigned char * str = evbuffer_pullup(req->input_buffer, len);
+                //LOG_DEBUG("http_request_done: %s", str);
+                int r_len = snprintf(_res_buf, sizeof(_res_buf), "%s", str);
+                //LOG_DEBUG("http_request_done: %s", _res_buf);
+                if (_t_conn) {
+                    _t_conn->process_form_http(_res_buf, r_len);
+                }
+
+            }
+
+            break;
+        default:
+            break;
+   }
+}
+

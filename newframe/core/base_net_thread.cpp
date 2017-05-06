@@ -28,19 +28,18 @@ void base_net_thread::init()
         common_queue<base_passing_msg> *queue = new common_queue<base_passing_msg>(0, true);
         msg->_queue = queue;
         _channel_msg_vec.push_back(msg);
+        msg->_channelid = fd[1];
 
         event_set(&_event, fd[0], EV_TIMEOUT | EV_READ | EV_PERSIST, on_cb, msg);
         event_base_set(get_event_base(), &_event);
         event_add(&_event, 0);
-
-        _channel_vec.push_back(fd[1]);
     }
 }
 
 void base_net_thread::on_cb(int fd, short ev, void *arg)
 {
-    char buf[SIZE_LEN_2048];
-    recv(fd, buf, sizeof(buf), MSG_DONTWAIT);
+    char buf[sizeof(CHANNEL_MSG_TAG)];
+    recv(fd, buf, sizeof(CHANNEL_MSG_TAG), MSG_DONTWAIT);
 
     event_channel_msg * msg = (event_channel_msg *) arg;
     if (msg && msg->_queue && msg->net_thread) {

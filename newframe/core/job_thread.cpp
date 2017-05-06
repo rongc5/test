@@ -2,10 +2,10 @@
 #include "job_connect.h"
 
 
-void job_thread::handle_new_msg(base_passing_msg * p_msg)
+bool job_thread::handle_msg(base_passing_msg * msg)
 {
     if (!p_msg) {
-        return;
+        return true;
     }
 
     switch (p_msg->_op)
@@ -34,6 +34,17 @@ void job_thread::handle_new_msg(base_passing_msg * p_msg)
         break;
     }
 
+    return true;
+}
 
+void job_thread::add_msg(base_passing_msg * p_msg)
+{
+    int index = (unsigned long) p_msg % _channel_vec.size();
+
+    event_channel_msg * msg = _channel_msg_vec[index];
+    if (msg && msg->_queue)
+        msg->_queue->push<event_channel_msg>(p_msg, msg);
+
+    return 0;
 }
 

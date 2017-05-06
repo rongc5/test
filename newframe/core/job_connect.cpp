@@ -66,8 +66,6 @@ size_t job_connect::process_recv_buf(char *buf, size_t len)
 
 size_t job_connect::process_s(char *buf, size_t len)
 {
-
-
     CommonMsg recv_msg;
     
     string str(buf, len);

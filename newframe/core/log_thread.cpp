@@ -6,11 +6,17 @@ int log_thread::add_msg(base_passing_msg * p_msg)
         return -1;
     }
 
-    int index = pthread_self() % _channel_vec.size();
+    log_msg * lmsg = dynamic_cast<log_msg *>p_msg;
+    if (!lmsg){
+       REC_OBJ<log_msg> rc(lmsg);
+       return;
+    }
+
+    int index = lmsg->tid % _channel_vec.size();
 
     event_channel_msg * msg = _channel_msg_vec[index];
     if (msg && msg->_queue)
-        msg->_queue->push(p_msg);
+        msg->_queue->push<event_channel_msg>(p_msg, msg);
 
     return 0;
 }

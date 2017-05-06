@@ -16,12 +16,16 @@ class common_queue
 
         virtual ~common_queue(){}
 
-        bool push(T *);
-        T * pop();
+        T * pop(T2 *);
+        
+        template<class T2>
+        bool push(T*, T2*);
+
+        bool push(T*);
 
         int length();
 
-        template <class T2>
+        template<class T2>
             void check_pop(T2 * t);
 
 
@@ -37,14 +41,45 @@ class common_queue
         size_t _max_size; // > 0 valid;
 };
 
-    template<class T>
+template<class T>
 common_queue<T>::common_queue(size_t num, bool is_lock)
 {
     _is_lock = is_lock;
     _max_size = num;
 }
 
-    template<class T>
+template<class T>
+template<class T2>
+bool common_queue<T>::push<T2>(T * t, T2 * t2)
+{
+    if (!t)
+        return false;
+
+    if (_is_lock) {
+        thread_lock lock(&_mutex);
+
+        if (_max_size > 0 && _queue.size() >=_max_size)
+            return false;
+
+        _queue.push_back(t);
+        if (t2) {
+            t2->after_push();
+        }
+
+    }else {
+        if (_max_size > 0 && _queue.size() >=_max_size)
+            return false;
+
+        _queue.push_back(t);
+        if (t2) {
+            t2->after_push();
+        }
+    }
+
+    return true;
+}
+
+template<class T>
 bool common_queue<T>::push(T * t)
 {
     if (!t)
@@ -57,6 +92,7 @@ bool common_queue<T>::push(T * t)
             return false;
 
         _queue.push_back(t);
+
     }else {
         if (_max_size > 0 && _queue.size() >=_max_size)
             return false;
@@ -64,10 +100,8 @@ bool common_queue<T>::push(T * t)
         _queue.push_back(t);
     }
 
-
     return true;
 }
-
 
     template<class T>
 T * common_queue<T>::pop()

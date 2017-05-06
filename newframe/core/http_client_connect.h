@@ -5,38 +5,24 @@
 #include "common_def.h"
 #include "base_connect.h"
 
-class job_connect;
-class base_net_thread;
-class http_client_connect:public base_connect
+class http_client_connect
 {
     public:
 
-        http_client_connect(base_net_thread * thread);
+        http_client_connect();
 
-        virtual ~http_client_connect()
-        {
-            close();
-        }
+        ~http_client_connect()
+        {   
+            DEBUG_LOG("destory http_client_connect\n");
+        }   
 
-        void close();
+        static void do_request(base_passing_msg * p_msg, struct event_base* base);
 
-        void init(const string & url, job_connect * t_conn);
-
-        void call_back(struct evhttp_request *req, void *arg);
 
         static void http_request_done(struct evhttp_request *req, void *arg);
-
-        static http_client_connect * gen_connect(string & url, job_connect * t_conn, base_net_thread * thread);
-
-    protected:
-        struct evhttp_uri *_uri;
-        struct evhttp_connection *_cn;
-        struct evhttp_request *_req;
-        job_connect * _t_conn;
-        string _url;
-
-        char _res_buf[SIZE_LEN_65536];
 };
+
+
 
 
 #endif

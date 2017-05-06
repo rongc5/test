@@ -61,6 +61,7 @@
             char log_common_tmp[SIZE_LEN_64]; \
             get_date_str(log_common_tmp, sizeof(log_common_tmp), LOG_DATE_FORMAT); \
             lgmsg->type = TYPE; \
+            lgmsg->tid = pthread_self(); \
             char log_common_buf[SIZE_LEN_16384]; \
             snprintf(log_common_buf, sizeof(log_common_buf), TYPESTR":[%s]:[%lu]:[%d:%s():%s] "fmt, log_common_tmp,pthread_self(), __LINE__, __func__, __FILE__,     ##arg); \
             lgmsg->str.append(log_common_buf); \

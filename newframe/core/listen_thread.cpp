@@ -18,7 +18,7 @@ int listen_thread::add_worker_thread(base_net_thread * thread)
 }
 
 
-void bool handle_msg(base_passing_msg * msg)
+bool listen_thread::handle_msg(base_passing_msg * msg)
 {
     uint32_t index = _current_indx;
     _current_indx++;
@@ -28,5 +28,14 @@ void bool handle_msg(base_passing_msg * msg)
     }
 
     _worker_thrds[index]->put_msg(p_msg);
+
+    return true;
+}
+
+void listen_thread::add_msg(base_passing_msg * p_msg)
+{
+    REC_OBJ<base_passing_msg> rc(p_msg);
+
+    return;
 }
 

@@ -3,10 +3,6 @@
 
 #include "base_def.h"
 
-struct host_str {
-    string  _ip;
-    uint16_t _port;
-};
 
 enum CONNECT_STATUS
 {
@@ -129,11 +125,39 @@ struct recv_msg_fd: public base_passing_msg
 struct log_msg : public base_passing_msg {
     LogType type; 
     string str;
+    pthread_t tid;
 
-    log_msg():type(LOGOFF){}
+    log_msg():type(LOGOFF), tid(0){}
 };
 
 
+struct http_req_msg: public base_passing_msg
+{
+    AD_HTTP_MODE http_mode;
+    string  url;
+    string post_data;
+    map<string, string> headers;
+    struct evhttp_uri *uri;
+    struct evhttp_connection *cn;
+    uint64_t _start_time;
+
+    http_req_msg():uri(NULL), cn(NULL), _start_time(0) {
+        DEBUG_LOG("event_dispatch_msg create");
+    }
+    ~http_req_msg() {
+        DEBUG_LOG("event_dispatch_msg destory sid: %s", sid.c_str());
+        if (uri) { 
+            evhttp_uri_free(uri);
+            uri = NULL;
+        }
+
+        if (cn) {
+            evhttp_connection_free(cn);
+            cn = NULL;
+        }
+    }
+
+};
 
 
 #endif
