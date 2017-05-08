@@ -146,22 +146,21 @@ void common_queue<T>::check_pop(T2 * t)
 
         QIT it;
         for (it = _queue.begin(); it != _queue.end();) {
-            if (!t->handle_msg(*it)) {
+            if (!t->check(*it)) {
                 (*it)->release();
             }
+            it = _queue.erase(it);
         }
-        it = _queue.erase(it);
 
     } else {
 
         QIT it;
         for (it = _queue.begin(); it != _queue.end();) {
-            if (!t->handle_msg(*it)) {
+            if (!t->check(*it)) {
                 (*it)->release();
             }
+            it = _queue.erase(it);
         }
-        it = _queue.erase(it);
-
     }
 }
 

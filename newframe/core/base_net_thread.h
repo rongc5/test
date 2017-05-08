@@ -18,7 +18,7 @@ class base_net_thread:public base_thread
 
         virtual void *run();
 
-        virtual void add_msg(base_passing_msg * p_msg) = 0;
+        virtual void add_msg(base_passing_msg * p_msg);
 
         struct event_base * get_event_base()
         {
@@ -32,8 +32,6 @@ class base_net_thread:public base_thread
         base_connect * get_connect(ObjId   id);
 
         const ObjId & gen_id_str();
-
-        static void put_msg(base_passing_msg * msg);
 
         static base_net_thread * get_base_net_thread_obj(uint32_t thread_index);
 

@@ -19,7 +19,7 @@ time_t get_date_str(char dest[], size_t dest_len, const char * format)
 }
 
 
-uint64_t GetTickCount()
+uint64_t GetMilliSecond()
 {
     timeval tm; 
     gettimeofday(&tm, NULL);

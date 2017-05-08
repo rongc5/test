@@ -37,14 +37,9 @@ bool job_thread::handle_msg(base_passing_msg * msg)
     return true;
 }
 
-void job_thread::add_msg(base_passing_msg * p_msg)
+
+static void put_msg(base_passing_msg * msg)
 {
-    int index = (unsigned long) p_msg % _channel_vec.size();
-
-    event_channel_msg * msg = _channel_msg_vec[index];
-    if (msg && msg->_queue)
-        msg->_queue->push<event_channel_msg>(p_msg, msg);
-
-    return 0;
+	int index = (unsigned long)msg  % _http_thread_vec.size();
+	_http_thread_vec[index]->add_msg(msg);
 }
-

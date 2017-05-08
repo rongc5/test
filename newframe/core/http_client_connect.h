@@ -13,7 +13,7 @@ class http_client_connect
 
         ~http_client_connect()
         {   
-            DEBUG_LOG("destory http_client_connect\n");
+            //DEBUG_LOG("destory http_client_connect\n");
         }   
 
         static void do_request(base_passing_msg * p_msg, struct event_base* base);

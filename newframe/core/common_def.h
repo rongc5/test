@@ -27,7 +27,7 @@ enum RECV_MSG_STATUS
 
 time_t get_date_str(char dest[], size_t dest_len, const char * format);
 
-uint64_t GetTickCount();
+uint64_t GetMilliSecond();
 
 
 enum LogType {
@@ -104,7 +104,10 @@ struct base_passing_msg  //内部传递的消息
     ObjId _dst_id;
     ObjId _src_id;
     passing_msg_op _op;
-    base_passing_msg(){}
+    uint64_t _start_time;
+    base_passing_msg(){
+        _start_time = GetMilliSecond();
+    }
     virtual void release(){
         delete this;
     }
@@ -139,13 +142,12 @@ struct http_req_msg: public base_passing_msg
     map<string, string> headers;
     struct evhttp_uri *uri;
     struct evhttp_connection *cn;
-    uint64_t _start_time;
 
-    http_req_msg():uri(NULL), cn(NULL), _start_time(0) {
-        DEBUG_LOG("event_dispatch_msg create");
+    http_req_msg():uri(NULL), cn(NULL) {
+        //DEBUG_LOG("event_dispatch_msg create");
     }
     ~http_req_msg() {
-        DEBUG_LOG("event_dispatch_msg destory sid: %s", sid.c_str());
+        //DEBUG_LOG("event_dispatch_msg destory sid: %s", sid.c_str());
         if (uri) { 
             evhttp_uri_free(uri);
             uri = NULL;

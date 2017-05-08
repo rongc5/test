@@ -11,6 +11,16 @@ void * base_net_thread::run()
     return NULL;
 }
 
+
+void base_net_thread::add_msg(base_passing_msg * p_msg)
+{
+    int index = (unsigned long) p_msg % _channel_vec.size();
+
+    event_channel_msg * msg = _channel_msg_vec[index];
+    if (msg && msg->_queue)
+        msg->_queue->push<event_channel_msg>(p_msg, msg);
+}
+
 void base_net_thread::init()
 {
     _base_net_thread_map[get_thread_index()] = this;
@@ -38,8 +48,6 @@ void base_net_thread::init()
 
 void base_net_thread::on_cb(int fd, short ev, void *arg)
 {
-    char buf[sizeof(CHANNEL_MSG_TAG)];
-    recv(fd, buf, sizeof(CHANNEL_MSG_TAG), MSG_DONTWAIT);
 
     event_channel_msg * msg = (event_channel_msg *) arg;
     if (msg && msg->_queue && msg->net_thread) {
@@ -50,6 +58,8 @@ void base_net_thread::on_cb(int fd, short ev, void *arg)
 
 bool base_net_thread::check(base_passing_msg * msg)
 {
+    char buf[sizeof(CHANNEL_MSG_TAG)];
+    recv(fd, buf, sizeof(CHANNEL_MSG_TAG), MSG_DONTWAIT);
     handle_msg(msg);
 
     return true;
@@ -111,23 +121,6 @@ base_net_thread * base_net_thread::get_base_net_thread_obj(uint32_t thread_index
     }
 
     return NULL;
-}
-
-void base_net_thread::put_msg(base_passing_msg * p_msg)
-{
-    if (!p_msg) {
-        return;
-    }
-
-    base_net_thread * net_thread = get_base_net_thread_obj(p_msg->_dst_id._thread_index);
-
-    //LOG_DEBUG("_thread_index[%d]", p_msg->_dst_id._thread_index);
-    if (!net_thread) {
-        REC_OBJ<base_passing_msg> rec(p_msg); 
-        return;
-    }
-
-    net_thread->add_msg(p_msg);
 }
 
 
