@@ -1,32 +1,32 @@
 #include "log_thread.h"
+#include "event_channel_msg.h"
 
-int log_thread::add_msg(base_passing_msg * p_msg)
+void log_thread::add_msg(base_passing_msg * p_msg)
 {
     if (!p_msg) {
-        return -1;
+        return ;
     }
 
-    log_msg * lmsg = dynamic_cast<log_msg *>p_msg;
+    log_msg * lmsg = dynamic_cast<log_msg *>(p_msg);
     if (!lmsg){
        REC_OBJ<log_msg> rc(lmsg);
        return;
     }
 
-    int index = lmsg->tid % _channel_vec.size();
+    int index = lmsg->tid % _channel_msg_vec.size();
 
     event_channel_msg * msg = _channel_msg_vec[index];
-    if (msg && msg->_queue)
-        msg->_queue->push<event_channel_msg>(p_msg, msg);
+    msg->_queue.push_back(p_msg);
 
-    return 0;
+    return ;
 }
 
-virtual bool handle_msg(base_passing_msg * msg)
+bool log_thread::handle_msg(base_passing_msg * msg)
 {
     switch (msg->_op) {
         case PASSING_LOG:
             {
-                log_msg * lmsg = dynamic_cast<log_msg *>msg;
+                log_msg * lmsg = dynamic_cast<log_msg *>(msg);
                 if (lmsg) {
                     log_write(lmsg);
                 }

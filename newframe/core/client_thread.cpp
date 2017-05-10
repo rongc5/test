@@ -11,10 +11,10 @@ void client_thread::init(const string &ip, unsigned short port)
 }
 
 
-void client_thread::handle_new_msg(base_passing_msg * p_msg)
+bool client_thread::handle_msg(base_passing_msg * p_msg)
 {
     if (!p_msg) {
-        return;
+        return true;
     }
 
     switch (p_msg->_op)
@@ -36,5 +36,6 @@ void client_thread::handle_new_msg(base_passing_msg * p_msg)
             break;
     }
 
+    return true;
 }
 

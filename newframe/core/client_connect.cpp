@@ -33,7 +33,7 @@ client_connect * client_connect::gen_connect(const string &ip, unsigned short po
         exit(1);
     }   
 
-    //set_unblock(_fd);
+    set_unblock(_fd);
 
     client_connect * l_conn = new client_connect(_fd, thread);    
     l_conn->update_event(EV_TIMEOUT | EV_READ | EV_PERSIST);
@@ -68,6 +68,8 @@ void client_connect::send_request()
     memcpy(buf+sizeof(length), out.c_str(), out.size());
 
     write(_fd, buf, sizeof(length) + length);
+
+    PDEBUG("send_request");
 }
 
 void client_connect::call_back(int fd, short ev, void *arg)

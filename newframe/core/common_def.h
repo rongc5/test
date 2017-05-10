@@ -96,6 +96,8 @@ enum passing_msg_op
 {
     PASSING_FD,
     PASSING_LOG,
+    PASSING_REQ_HTTP,
+    PASSING_RES_HTTP,
     PASSING_MSG
 };
 
@@ -134,9 +136,15 @@ struct log_msg : public base_passing_msg {
 };
 
 
+enum HTTP_MODE
+{   
+    HTTP_GET,
+    HTTP_POST
+};
+
 struct http_req_msg: public base_passing_msg
 {
-    AD_HTTP_MODE http_mode;
+    HTTP_MODE http_mode;
     string  url;
     string post_data;
     map<string, string> headers;
@@ -158,7 +166,13 @@ struct http_req_msg: public base_passing_msg
             cn = NULL;
         }
     }
+};
 
+struct http_res_msg:public base_passing_msg
+{
+    int res_code;
+    string res_buf;
+    http_res_msg():res_code(0){}
 };
 
 

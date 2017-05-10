@@ -2,7 +2,7 @@
 #include "job_connect.h"
 
 
-bool job_thread::handle_msg(base_passing_msg * msg)
+bool job_thread::handle_msg(base_passing_msg * p_msg)
 {
     if (!p_msg) {
         return true;
@@ -38,8 +38,10 @@ bool job_thread::handle_msg(base_passing_msg * msg)
 }
 
 
-static void put_msg(base_passing_msg * msg)
+void job_thread::put_msg(base_passing_msg * msg)
 {
-	int index = (unsigned long)msg  % _http_thread_vec.size();
-	_http_thread_vec[index]->add_msg(msg);
+	int index = (unsigned long)msg  % _job_thread_vec.size();
+	_job_thread_vec[index]->add_msg(msg);
 }
+
+vector<job_thread *> job_thread::_job_thread_vec;

@@ -65,7 +65,7 @@
             char log_common_buf[SIZE_LEN_16384]; \
             snprintf(log_common_buf, sizeof(log_common_buf), TYPESTR":[%s]:[%lu]:[%d:%s():%s] "fmt, log_common_tmp,pthread_self(), __LINE__, __func__, __FILE__,     ##arg); \
             lgmsg->str.append(log_common_buf); \
-            log_thread::put_msg(lgmsg); \
+            thread->add_msg(lgmsg); \
         }\
     } while (0)
 

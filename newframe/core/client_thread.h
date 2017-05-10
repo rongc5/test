@@ -14,7 +14,7 @@ class client_thread: public base_net_thread
 
         void init(const string &ip, unsigned short port);
 
-        virtual void handle_new_msg(base_passing_msg * p_msg);
+        virtual bool handle_msg(base_passing_msg * msg);
 
     protected:
 

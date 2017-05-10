@@ -12,7 +12,7 @@ class http_client_thread:public base_net_thread
 
         virtual bool handle_msg(base_passing_msg * msg);
         
-           static void put_msg(base_passing_msg * msg);
+        static void put_msg(base_passing_msg * msg);
 
     protected:
 

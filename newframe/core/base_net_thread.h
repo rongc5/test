@@ -11,6 +11,7 @@ class base_net_thread:public base_thread
     public:
         base_net_thread(int channel_num = 1):_channel_num(channel_num){
             _base = event_base_new();
+            _base_net_thread_map[get_thread_index()] = this;
         };
 
         virtual ~base_net_thread(){
@@ -35,6 +36,8 @@ class base_net_thread:public base_thread
 
         static base_net_thread * get_base_net_thread_obj(uint32_t thread_index);
 
+        static void put_msg_ObjId(base_passing_msg * p_msg);
+
         virtual bool handle_msg(base_passing_msg * msg) = 0;
 
     protected:
@@ -44,6 +47,7 @@ class base_net_thread:public base_thread
         static void on_cb(int fd, short ev, void *arg);
 
     protected:
+
         struct event_base* _base;
         ObjId _id_str;
         map<ObjId, base_connect*> _connect_map;

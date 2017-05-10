@@ -19,7 +19,6 @@ int main(int argc, char *argv[])
 
     for (int i=1; i <= 1; i++){
         job_thread * net_thread = new job_thread();
-        _listen_obj_thread->add_worker_thread(net_thread);
         net_thread->start();
     }
 

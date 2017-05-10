@@ -10,7 +10,7 @@ bool http_client_thread::handle_msg(base_passing_msg * msg)
 {
 
     if (!msg) {
-        return;
+        return true;
     }   
 
     //DEBUG_LOG("sid: %s", msg->sid.c_str());
@@ -19,15 +19,17 @@ bool http_client_thread::handle_msg(base_passing_msg * msg)
         http_client_connect::do_request(msg, get_event_base());
     } catch (...) {
         REC_OBJ<base_passing_msg> rc(msg);
-        WARNING_LOG("do_request exception");
+        //WARNING_LOG("do_request exception");
     }  
 
     return true;
 }
 
 
-static void put_msg(base_passing_msg * msg)
+void http_client_thread::put_msg(base_passing_msg * msg)
 {
 	int index = (unsigned long)msg  % _http_thread_vec.size();
 	_http_thread_vec[index]->add_msg(msg);
 }
+
+vector<http_client_thread *>  http_client_thread::_http_thread_vec;

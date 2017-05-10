@@ -1,14 +1,10 @@
 #include "job_connect.h"
-#include "http_client_connect.h"
+#include "http_client_thread.h"
 #include "log_helper.h"
 
 
 job_connect::~job_connect()
 {
-    if (_hc_connect) {
-        delete _hc_connect;
-        _hc_connect = NULL;
-    }
 }
 
 job_connect * job_connect::gen_connect(int fd, base_net_thread * thread)
@@ -21,6 +17,16 @@ job_connect * job_connect::gen_connect(int fd, base_net_thread * thread)
     return c_conn;
 }
 
+void job_connect::recv_passing_msg(base_passing_msg * p_msg)
+{
+    http_res_msg * rs_http = dynamic_cast<http_res_msg *>(p_msg);
+
+    REC_OBJ<base_passing_msg> rc(p_msg);
+    
+    if (rs_http) {
+        process_send_buf((char *)rs_http->res_buf.c_str(), rs_http->res_buf.length());
+    }
+}
 
 size_t job_connect::process_recv_buf(char *buf, size_t len)
 {
@@ -74,12 +80,15 @@ size_t job_connect::process_s(char *buf, size_t len)
     string url;
     url.append("http://open.adview.cn/agent/openRequest.do?n=1&pt=0&at=0&html5=1&w=320&h=50&sw=640&sh=1136&ip=124.193.184.2&os=1&bdr=10.0.2&tp=iPhone+5S&brd=iPhone&pack=com.easou.esbook&appid=SDK20161026100933450xiouxiz91j0i&idfa=F580C676-8270-4FDB-8E5A-0838A79708D3&idfv=2127C7B2-7F2A-4187-9560-0A1D68EC8113&openudid=F580C676-8270-4FDB-8E5A-0838A79708D3&tab=0&sn=F580C676-8270-4FDB-8E5A-0838A79708D3&nop=&mc=&nt=&ua=iPhone__iPhone+5S__10.0.2&tm=0&time=1490776774349&token=9d18f508d30f933732a13d8829efe4dc");
 
-    if (_hc_connect){
-        delete _hc_connect;
-        _hc_connect = NULL;
-    }
 
-    _hc_connect = http_client_connect::gen_connect(url, this, _thread);
+    http_req_msg * http_msg = new http_req_msg();
+    http_msg->http_mode = HTTP_GET;
+    http_msg->url = url;
+    http_msg->_src_id = get_id(); 
+    http_msg->_op = PASSING_REQ_HTTP;
+    
+    http_client_thread::put_msg(http_msg);
+
     //LOG_DEBUG("recv_msg:%d, str[%s]", recv_msg.obj_id(), recv_msg.str().c_str());
     //printf("recv_msg:%d, str[%s]\n", recv_msg.obj_id(), recv_msg.str().c_str());
 
@@ -87,15 +96,5 @@ size_t job_connect::process_s(char *buf, size_t len)
 
     //write(_fd, "987654321", sizeof("987654321"));
     return len;
-}
-
-
-void job_connect::process_form_http(char *buf, size_t len)
-{
-
-    //printf("send: %s\n", buf);
-    LOG_DEBUG("len: %d send: %s", len, buf);
-    //write(_fd, "987654321", sizeof("987654321"));
-    write(_fd, buf, len);
 }
 

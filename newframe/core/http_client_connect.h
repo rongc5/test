@@ -18,7 +18,6 @@ class http_client_connect
 
         static void do_request(base_passing_msg * p_msg, struct event_base* base);
 
-
         static void http_request_done(struct evhttp_request *req, void *arg);
 };
 

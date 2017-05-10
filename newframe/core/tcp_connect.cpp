@@ -128,6 +128,8 @@ size_t tcp_connect::process_send_buf(char *buf, size_t len)
         if (!update_event(EV_READ | EV_WRITE | EV_PERSIST)) {
             destroy();
         }
+
+        _send_buf.append(buf, len);
     }
 
     return len;

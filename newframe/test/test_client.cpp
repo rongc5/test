@@ -13,10 +13,10 @@ int main(int c, char **v)
     LOG_INIT(conf); 
 
 
+    PDEBUG("aaaaaaaaaaaaaaa");
     client_thread * c_thread = new client_thread();
     c_thread->init("127.0.0.1", 8888);
     c_thread->start();
-
 
     base_thread::join_all_thread();
 
