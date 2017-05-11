@@ -13,7 +13,6 @@ int main(int argc, char *argv[])
 
     LOG_INIT(conf); 
 
-
     listen_thread * _listen_obj_thread = new listen_thread();
     _listen_obj_thread->init("", 8888);
 

@@ -13,6 +13,7 @@ void log_thread::add_msg(base_passing_msg * p_msg)
        return;
     }
 
+    PDEBUG("%lu _channel_msg_vec.size:%d\n", lmsg->tid, _channel_msg_vec.size());
     int index = lmsg->tid % _channel_msg_vec.size();
 
     event_channel_msg * msg = _channel_msg_vec[index];

@@ -23,6 +23,7 @@ void base_net_thread::add_msg(base_passing_msg * p_msg)
 
 void base_net_thread::init()
 {
+    _base_net_thread_map[get_thread_index()] = this;
     for (int i = 0; i < _channel_num; i++) {
 
         int fd[2];

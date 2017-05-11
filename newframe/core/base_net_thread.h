@@ -11,7 +11,6 @@ class base_net_thread:public base_thread
     public:
         base_net_thread(int channel_num = 1):_channel_num(channel_num){
             _base = event_base_new();
-            _base_net_thread_map[get_thread_index()] = this;
         };
 
         virtual ~base_net_thread(){

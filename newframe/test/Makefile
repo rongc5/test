@@ -38,9 +38,9 @@ clean	:
 	/bin/rm -f *~~ 
 	rm -f $(server) $(client);
 
-$(client):test_client.o
-	$(CC) $(CXXFLAGS) -o $@ $^ $(LIB)
 
+$(client):test_client.o $(IDL_DIR)/idl.pb.o
+	$(CC) $(CXXFLAGS) -o $@ $^ $(LIB)
 
 #=================================================
 $(server):$(OBJ)

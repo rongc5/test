@@ -41,7 +41,6 @@ enum LogType {
 };
 
 
-
 void get_proc_name(char buf[], size_t buf_len);
 
 struct log_conf{
@@ -49,7 +48,6 @@ struct log_conf{
     char log_path[SIZE_LEN_256];
     char prefix_file_name[SIZE_LEN_256];
     LogType type;
-    int bucketlen;
     int deal_mode; // 1 write log 2 print log 3 write && print
 
     log_conf()
@@ -58,7 +56,6 @@ struct log_conf{
         strcpy(log_path, "logs");
         get_proc_name(prefix_file_name, sizeof(prefix_file_name));
         type = LOGDEBUG;
-        bucketlen = DEFAULT_LOG_BUCKETLEN;
         deal_mode = 1;
     }
 };

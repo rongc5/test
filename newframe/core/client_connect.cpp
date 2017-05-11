@@ -69,7 +69,7 @@ void client_connect::send_request()
 
     write(_fd, buf, sizeof(length) + length);
 
-    PDEBUG("send_request");
+    LOG_DEBUG("send_request");
 }
 
 void client_connect::call_back(int fd, short ev, void *arg)
