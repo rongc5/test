@@ -6,9 +6,10 @@
 #####################################################
 export PATH=/usr/kerberos/sbin:/usr/kerberos/bin:/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 
-APP_NAME=ad_toutiao
-BASE_HOME=/app/ecom/$APP_NAME
-STDOUT_LOG=/data/ecom/asp/logs/stdout.log
+APP_NAME=test_server
+BASE_HOME=`pwd`
+#STDOUT_LOG=/data/ecom/asp/logs/stdout.log
+STDOUT_LOG=/dev/null
 PROG_NAME=$0
 ACTION=$1
 
@@ -21,7 +22,7 @@ checkuser() {
     fi
 }
 
-checkuser
+#checkuser
 
 usage() {
     echo "Usage: $PROG_NAME {start|stop|restart}"

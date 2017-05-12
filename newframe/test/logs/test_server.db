@@ -1,0 +1,201 @@
+[DEBUG]:[2017-05-12 14:14:53]:[3055545200]:[18:handle_msg:core/job_thread.cpp] recv: fd [60]
+[DEBUG]:[2017-05-12 14:14:53]:[3055545200]:[33:process_recv_buf:core/job_connect.cpp] recv msg 48
+
+[DEBUG]:[2017-05-12 14:14:53]:[3055545200]:[46:process_recv_buf:core/job_connect.cpp] msg_body_len[44]
+[DEBUG]:[2017-05-12 14:14:53]:[3055545200]:[59:process_recv_buf:core/job_connect.cpp] _head_len[4] msg_body_len[44]
+[DEBUG]:[2017-05-12 14:14:53]:[3055545200]:[92:process_s:core/job_connect.cpp] recv_msg:1, str[hello, this is test !!!!!!!!!!!!!!]
+[DEBUG]:[2017-05-12 14:14:53]:[3013585776]:[17:handle_msg:core/http_client_thread.cpp] handle_msg
+[DEBUG]:[2017-05-12 14:14:53]:[3013585776]:[66:do_request:core/http_client_connect.cpp] do_request
+[DEBUG]:[2017-05-12 14:14:53]:[3013585776]:[9:http_request_done:core/http_client_connect.cpp] http_request_done
+[DEBUG]:[2017-05-12 14:14:56]:[3055545200]:[33:process_recv_buf:core/job_connect.cpp] recv msg 48
+
+[DEBUG]:[2017-05-12 14:14:56]:[3055545200]:[46:process_recv_buf:core/job_connect.cpp] msg_body_len[44]
+[DEBUG]:[2017-05-12 14:14:56]:[3055545200]:[59:process_recv_buf:core/job_connect.cpp] _head_len[4] msg_body_len[44]
+[DEBUG]:[2017-05-12 14:14:56]:[3055545200]:[92:process_s:core/job_connect.cpp] recv_msg:1, str[hello, this is test !!!!!!!!!!!!!!]
+[DEBUG]:[2017-05-12 14:14:56]:[3013585776]:[17:handle_msg:core/http_client_thread.cpp] handle_msg
+[DEBUG]:[2017-05-12 14:14:56]:[3013585776]:[66:do_request:core/http_client_connect.cpp] do_request
+[DEBUG]:[2017-05-12 14:14:56]:[3013585776]:[9:http_request_done:core/http_client_connect.cpp] http_request_done
+[DEBUG]:[2017-05-12 14:14:59]:[3055545200]:[33:process_recv_buf:core/job_connect.cpp] recv msg 48
+
+[DEBUG]:[2017-05-12 14:14:59]:[3055545200]:[46:process_recv_buf:core/job_connect.cpp] msg_body_len[44]
+[DEBUG]:[2017-05-12 14:14:59]:[3055545200]:[59:process_recv_buf:core/job_connect.cpp] _head_len[4] msg_body_len[44]
+[DEBUG]:[2017-05-12 14:14:59]:[3055545200]:[92:process_s:core/job_connect.cpp] recv_msg:1, str[hello, this is test !!!!!!!!!!!!!!]
+[DEBUG]:[2017-05-12 14:14:59]:[3013585776]:[17:handle_msg:core/http_client_thread.cpp] handle_msg
+[DEBUG]:[2017-05-12 14:14:59]:[3013585776]:[66:do_request:core/http_client_connect.cpp] do_request
+[DEBUG]:[2017-05-12 14:15:00]:[3013585776]:[9:http_request_done:core/http_client_connect.cpp] http_request_done
+[DEBUG]:[2017-05-12 14:15:03]:[3055545200]:[33:process_recv_buf:core/job_connect.cpp] recv msg 48
+
+[DEBUG]:[2017-05-12 14:15:03]:[3055545200]:[46:process_recv_buf:core/job_connect.cpp] msg_body_len[44]
+[DEBUG]:[2017-05-12 14:15:03]:[3055545200]:[59:process_recv_buf:core/job_connect.cpp] _head_len[4] msg_body_len[44]
+[DEBUG]:[2017-05-12 14:15:03]:[3055545200]:[92:process_s:core/job_connect.cpp] recv_msg:1, str[hello, this is test !!!!!!!!!!!!!!]
+[DEBUG]:[2017-05-12 14:15:03]:[3013585776]:[17:handle_msg:core/http_client_thread.cpp] handle_msg
+[DEBUG]:[2017-05-12 14:15:03]:[3013585776]:[66:do_request:core/http_client_connect.cpp] do_request
+[DEBUG]:[2017-05-12 14:15:03]:[3013585776]:[9:http_request_done:core/http_client_connect.cpp] http_request_done
+[DEBUG]:[2017-05-12 14:15:06]:[3055545200]:[33:process_recv_buf:core/job_connect.cpp] recv msg 48
+
+[DEBUG]:[2017-05-12 14:15:06]:[3055545200]:[46:process_recv_buf:core/job_connect.cpp] msg_body_len[44]
+[DEBUG]:[2017-05-12 14:15:06]:[3055545200]:[59:process_recv_buf:core/job_connect.cpp] _head_len[4] msg_body_len[44]
+[DEBUG]:[2017-05-12 14:15:06]:[3055545200]:[92:process_s:core/job_connect.cpp] recv_msg:1, str[hello, this is test !!!!!!!!!!!!!!]
+[DEBUG]:[2017-05-12 14:15:06]:[3013585776]:[17:handle_msg:core/http_client_thread.cpp] handle_msg
+[DEBUG]:[2017-05-12 14:15:06]:[3013585776]:[66:do_request:core/http_client_connect.cpp] do_request
+[DEBUG]:[2017-05-12 14:15:06]:[3013585776]:[9:http_request_done:core/http_client_connect.cpp] http_request_done
+[DEBUG]:[2017-05-12 14:15:09]:[3055545200]:[33:process_recv_buf:core/job_connect.cpp] recv msg 48
+
+[DEBUG]:[2017-05-12 14:15:09]:[3055545200]:[46:process_recv_buf:core/job_connect.cpp] msg_body_len[44]
+[DEBUG]:[2017-05-12 14:15:09]:[3055545200]:[59:process_recv_buf:core/job_connect.cpp] _head_len[4] msg_body_len[44]
+[DEBUG]:[2017-05-12 14:15:09]:[3055545200]:[92:process_s:core/job_connect.cpp] recv_msg:1, str[hello, this is test !!!!!!!!!!!!!!]
+[DEBUG]:[2017-05-12 14:15:09]:[3013585776]:[17:handle_msg:core/http_client_thread.cpp] handle_msg
+[DEBUG]:[2017-05-12 14:15:09]:[3013585776]:[66:do_request:core/http_client_connect.cpp] do_request
+[DEBUG]:[2017-05-12 14:15:10]:[3013585776]:[9:http_request_done:core/http_client_connect.cpp] http_request_done
+[DEBUG]:[2017-05-12 14:15:13]:[3055545200]:[33:process_recv_buf:core/job_connect.cpp] recv msg 48
+
+[DEBUG]:[2017-05-12 14:15:13]:[3055545200]:[46:process_recv_buf:core/job_connect.cpp] msg_body_len[44]
+[DEBUG]:[2017-05-12 14:15:13]:[3055545200]:[59:process_recv_buf:core/job_connect.cpp] _head_len[4] msg_body_len[44]
+[DEBUG]:[2017-05-12 14:15:13]:[3055545200]:[92:process_s:core/job_connect.cpp] recv_msg:1, str[hello, this is test !!!!!!!!!!!!!!]
+[DEBUG]:[2017-05-12 14:15:13]:[3013585776]:[17:handle_msg:core/http_client_thread.cpp] handle_msg
+[DEBUG]:[2017-05-12 14:15:13]:[3013585776]:[66:do_request:core/http_client_connect.cpp] do_request
+[DEBUG]:[2017-05-12 14:15:13]:[3013585776]:[9:http_request_done:core/http_client_connect.cpp] http_request_done
+[DEBUG]:[2017-05-12 14:15:16]:[3055545200]:[33:process_recv_buf:core/job_connect.cpp] recv msg 48
+
+[DEBUG]:[2017-05-12 14:15:16]:[3055545200]:[46:process_recv_buf:core/job_connect.cpp] msg_body_len[44]
+[DEBUG]:[2017-05-12 14:15:16]:[3055545200]:[59:process_recv_buf:core/job_connect.cpp] _head_len[4] msg_body_len[44]
+[DEBUG]:[2017-05-12 14:15:16]:[3055545200]:[92:process_s:core/job_connect.cpp] recv_msg:1, str[hello, this is test !!!!!!!!!!!!!!]
+[DEBUG]:[2017-05-12 14:15:16]:[3013585776]:[17:handle_msg:core/http_client_thread.cpp] handle_msg
+[DEBUG]:[2017-05-12 14:15:16]:[3013585776]:[66:do_request:core/http_client_connect.cpp] do_request
+[DEBUG]:[2017-05-12 14:15:17]:[3013585776]:[9:http_request_done:core/http_client_connect.cpp] http_request_done
+[DEBUG]:[2017-05-12 14:15:20]:[3055545200]:[33:process_recv_buf:core/job_connect.cpp] recv msg 48
+
+[DEBUG]:[2017-05-12 14:15:20]:[3055545200]:[46:process_recv_buf:core/job_connect.cpp] msg_body_len[44]
+[DEBUG]:[2017-05-12 14:15:20]:[3055545200]:[59:process_recv_buf:core/job_connect.cpp] _head_len[4] msg_body_len[44]
+[DEBUG]:[2017-05-12 14:15:20]:[3055545200]:[92:process_s:core/job_connect.cpp] recv_msg:1, str[hello, this is test !!!!!!!!!!!!!!]
+[DEBUG]:[2017-05-12 14:15:20]:[3013585776]:[17:handle_msg:core/http_client_thread.cpp] handle_msg
+[DEBUG]:[2017-05-12 14:15:20]:[3013585776]:[66:do_request:core/http_client_connect.cpp] do_request
+[DEBUG]:[2017-05-12 14:15:20]:[3013585776]:[9:http_request_done:core/http_client_connect.cpp] http_request_done
+[DEBUG]:[2017-05-12 14:15:23]:[3055545200]:[33:process_recv_buf:core/job_connect.cpp] recv msg 48
+
+[DEBUG]:[2017-05-12 14:15:23]:[3055545200]:[46:process_recv_buf:core/job_connect.cpp] msg_body_len[44]
+[DEBUG]:[2017-05-12 14:15:23]:[3055545200]:[59:process_recv_buf:core/job_connect.cpp] _head_len[4] msg_body_len[44]
+[DEBUG]:[2017-05-12 14:15:23]:[3055545200]:[92:process_s:core/job_connect.cpp] recv_msg:1, str[hello, this is test !!!!!!!!!!!!!!]
+[DEBUG]:[2017-05-12 14:15:23]:[3013585776]:[17:handle_msg:core/http_client_thread.cpp] handle_msg
+[DEBUG]:[2017-05-12 14:15:23]:[3013585776]:[66:do_request:core/http_client_connect.cpp] do_request
+[DEBUG]:[2017-05-12 14:15:23]:[3013585776]:[9:http_request_done:core/http_client_connect.cpp] http_request_done
+[DEBUG]:[2017-05-12 14:15:26]:[3055545200]:[33:process_recv_buf:core/job_connect.cpp] recv msg 48
+
+[DEBUG]:[2017-05-12 14:15:26]:[3055545200]:[46:process_recv_buf:core/job_connect.cpp] msg_body_len[44]
+[DEBUG]:[2017-05-12 14:15:26]:[3055545200]:[59:process_recv_buf:core/job_connect.cpp] _head_len[4] msg_body_len[44]
+[DEBUG]:[2017-05-12 14:15:26]:[3055545200]:[92:process_s:core/job_connect.cpp] recv_msg:1, str[hello, this is test !!!!!!!!!!!!!!]
+[DEBUG]:[2017-05-12 14:15:26]:[3013585776]:[17:handle_msg:core/http_client_thread.cpp] handle_msg
+[DEBUG]:[2017-05-12 14:15:26]:[3013585776]:[66:do_request:core/http_client_connect.cpp] do_request
+[DEBUG]:[2017-05-12 14:15:27]:[3013585776]:[9:http_request_done:core/http_client_connect.cpp] http_request_done
+[DEBUG]:[2017-05-12 14:15:30]:[3055545200]:[33:process_recv_buf:core/job_connect.cpp] recv msg 48
+
+[DEBUG]:[2017-05-12 14:15:30]:[3055545200]:[46:process_recv_buf:core/job_connect.cpp] msg_body_len[44]
+[DEBUG]:[2017-05-12 14:15:30]:[3055545200]:[59:process_recv_buf:core/job_connect.cpp] _head_len[4] msg_body_len[44]
+[DEBUG]:[2017-05-12 14:15:30]:[3055545200]:[92:process_s:core/job_connect.cpp] recv_msg:1, str[hello, this is test !!!!!!!!!!!!!!]
+[DEBUG]:[2017-05-12 14:15:30]:[3013585776]:[17:handle_msg:core/http_client_thread.cpp] handle_msg
+[DEBUG]:[2017-05-12 14:15:30]:[3013585776]:[66:do_request:core/http_client_connect.cpp] do_request
+[DEBUG]:[2017-05-12 14:15:30]:[3013585776]:[9:http_request_done:core/http_client_connect.cpp] http_request_done
+[DEBUG]:[2017-05-12 14:15:33]:[3055545200]:[33:process_recv_buf:core/job_connect.cpp] recv msg 48
+
+[DEBUG]:[2017-05-12 14:15:33]:[3055545200]:[46:process_recv_buf:core/job_connect.cpp] msg_body_len[44]
+[DEBUG]:[2017-05-12 14:15:33]:[3055545200]:[59:process_recv_buf:core/job_connect.cpp] _head_len[4] msg_body_len[44]
+[DEBUG]:[2017-05-12 14:15:33]:[3055545200]:[92:process_s:core/job_connect.cpp] recv_msg:1, str[hello, this is test !!!!!!!!!!!!!!]
+[DEBUG]:[2017-05-12 14:15:33]:[3013585776]:[17:handle_msg:core/http_client_thread.cpp] handle_msg
+[DEBUG]:[2017-05-12 14:15:33]:[3013585776]:[66:do_request:core/http_client_connect.cpp] do_request
+[DEBUG]:[2017-05-12 14:15:33]:[3013585776]:[9:http_request_done:core/http_client_connect.cpp] http_request_done
+[DEBUG]:[2017-05-12 14:15:36]:[3055545200]:[33:process_recv_buf:core/job_connect.cpp] recv msg 48
+
+[DEBUG]:[2017-05-12 14:15:36]:[3055545200]:[46:process_recv_buf:core/job_connect.cpp] msg_body_len[44]
+[DEBUG]:[2017-05-12 14:15:36]:[3055545200]:[59:process_recv_buf:core/job_connect.cpp] _head_len[4] msg_body_len[44]
+[DEBUG]:[2017-05-12 14:15:36]:[3055545200]:[92:process_s:core/job_connect.cpp] recv_msg:1, str[hello, this is test !!!!!!!!!!!!!!]
+[DEBUG]:[2017-05-12 14:15:37]:[3013585776]:[17:handle_msg:core/http_client_thread.cpp] handle_msg
+[DEBUG]:[2017-05-12 14:15:37]:[3013585776]:[66:do_request:core/http_client_connect.cpp] do_request
+[DEBUG]:[2017-05-12 14:15:37]:[3013585776]:[9:http_request_done:core/http_client_connect.cpp] http_request_done
+[DEBUG]:[2017-05-12 14:15:40]:[3055545200]:[33:process_recv_buf:core/job_connect.cpp] recv msg 48
+
+[DEBUG]:[2017-05-12 14:15:40]:[3055545200]:[46:process_recv_buf:core/job_connect.cpp] msg_body_len[44]
+[DEBUG]:[2017-05-12 14:15:40]:[3055545200]:[59:process_recv_buf:core/job_connect.cpp] _head_len[4] msg_body_len[44]
+[DEBUG]:[2017-05-12 14:15:40]:[3055545200]:[92:process_s:core/job_connect.cpp] recv_msg:1, str[hello, this is test !!!!!!!!!!!!!!]
+[DEBUG]:[2017-05-12 14:15:40]:[3013585776]:[17:handle_msg:core/http_client_thread.cpp] handle_msg
+[DEBUG]:[2017-05-12 14:15:40]:[3013585776]:[66:do_request:core/http_client_connect.cpp] do_request
+[DEBUG]:[2017-05-12 14:15:40]:[3013585776]:[9:http_request_done:core/http_client_connect.cpp] http_request_done
+[DEBUG]:[2017-05-12 14:15:43]:[3055545200]:[33:process_recv_buf:core/job_connect.cpp] recv msg 48
+
+[DEBUG]:[2017-05-12 14:15:43]:[3055545200]:[46:process_recv_buf:core/job_connect.cpp] msg_body_len[44]
+[DEBUG]:[2017-05-12 14:15:43]:[3055545200]:[59:process_recv_buf:core/job_connect.cpp] _head_len[4] msg_body_len[44]
+[DEBUG]:[2017-05-12 14:15:43]:[3055545200]:[92:process_s:core/job_connect.cpp] recv_msg:1, str[hello, this is test !!!!!!!!!!!!!!]
+[DEBUG]:[2017-05-12 14:15:43]:[3013585776]:[17:handle_msg:core/http_client_thread.cpp] handle_msg
+[DEBUG]:[2017-05-12 14:15:43]:[3013585776]:[66:do_request:core/http_client_connect.cpp] do_request
+[DEBUG]:[2017-05-12 14:15:44]:[3013585776]:[9:http_request_done:core/http_client_connect.cpp] http_request_done
+[DEBUG]:[2017-05-12 14:15:47]:[3055545200]:[33:process_recv_buf:core/job_connect.cpp] recv msg 48
+
+[DEBUG]:[2017-05-12 14:15:47]:[3055545200]:[46:process_recv_buf:core/job_connect.cpp] msg_body_len[44]
+[DEBUG]:[2017-05-12 14:15:47]:[3055545200]:[59:process_recv_buf:core/job_connect.cpp] _head_len[4] msg_body_len[44]
+[DEBUG]:[2017-05-12 14:15:47]:[3055545200]:[92:process_s:core/job_connect.cpp] recv_msg:1, str[hello, this is test !!!!!!!!!!!!!!]
+[DEBUG]:[2017-05-12 14:15:47]:[3013585776]:[17:handle_msg:core/http_client_thread.cpp] handle_msg
+[DEBUG]:[2017-05-12 14:15:47]:[3013585776]:[66:do_request:core/http_client_connect.cpp] do_request
+[DEBUG]:[2017-05-12 14:15:47]:[3013585776]:[9:http_request_done:core/http_client_connect.cpp] http_request_done
+[DEBUG]:[2017-05-12 14:15:50]:[3055545200]:[33:process_recv_buf:core/job_connect.cpp] recv msg 48
+
+[DEBUG]:[2017-05-12 14:15:50]:[3055545200]:[46:process_recv_buf:core/job_connect.cpp] msg_body_len[44]
+[DEBUG]:[2017-05-12 14:15:50]:[3055545200]:[59:process_recv_buf:core/job_connect.cpp] _head_len[4] msg_body_len[44]
+[DEBUG]:[2017-05-12 14:15:50]:[3055545200]:[92:process_s:core/job_connect.cpp] recv_msg:1, str[hello, this is test !!!!!!!!!!!!!!]
+[DEBUG]:[2017-05-12 14:15:50]:[3013585776]:[17:handle_msg:core/http_client_thread.cpp] handle_msg
+[DEBUG]:[2017-05-12 14:15:50]:[3013585776]:[66:do_request:core/http_client_connect.cpp] do_request
+[DEBUG]:[2017-05-12 14:15:50]:[3013585776]:[9:http_request_done:core/http_client_connect.cpp] http_request_done
+[DEBUG]:[2017-05-12 14:15:53]:[3055545200]:[33:process_recv_buf:core/job_connect.cpp] recv msg 48
+
+[DEBUG]:[2017-05-12 14:15:53]:[3055545200]:[46:process_recv_buf:core/job_connect.cpp] msg_body_len[44]
+[DEBUG]:[2017-05-12 14:15:53]:[3055545200]:[59:process_recv_buf:core/job_connect.cpp] _head_len[4] msg_body_len[44]
+[DEBUG]:[2017-05-12 14:15:53]:[3055545200]:[92:process_s:core/job_connect.cpp] recv_msg:1, str[hello, this is test !!!!!!!!!!!!!!]
+[DEBUG]:[2017-05-12 14:15:53]:[3013585776]:[17:handle_msg:core/http_client_thread.cpp] handle_msg
+[DEBUG]:[2017-05-12 14:15:53]:[3013585776]:[66:do_request:core/http_client_connect.cpp] do_request
+[DEBUG]:[2017-05-12 14:15:54]:[3013585776]:[9:http_request_done:core/http_client_connect.cpp] http_request_done
+[DEBUG]:[2017-05-12 14:15:57]:[3055545200]:[33:process_recv_buf:core/job_connect.cpp] recv msg 48
+
+[DEBUG]:[2017-05-12 14:15:57]:[3055545200]:[46:process_recv_buf:core/job_connect.cpp] msg_body_len[44]
+[DEBUG]:[2017-05-12 14:15:57]:[3055545200]:[59:process_recv_buf:core/job_connect.cpp] _head_len[4] msg_body_len[44]
+[DEBUG]:[2017-05-12 14:15:57]:[3055545200]:[92:process_s:core/job_connect.cpp] recv_msg:1, str[hello, this is test !!!!!!!!!!!!!!]
+[DEBUG]:[2017-05-12 14:15:57]:[3013585776]:[17:handle_msg:core/http_client_thread.cpp] handle_msg
+[DEBUG]:[2017-05-12 14:15:57]:[3013585776]:[66:do_request:core/http_client_connect.cpp] do_request
+[DEBUG]:[2017-05-12 14:15:57]:[3013585776]:[9:http_request_done:core/http_client_connect.cpp] http_request_done
+[DEBUG]:[2017-05-12 14:16:00]:[3055545200]:[33:process_recv_buf:core/job_connect.cpp] recv msg 48
+
+[DEBUG]:[2017-05-12 14:16:00]:[3055545200]:[46:process_recv_buf:core/job_connect.cpp] msg_body_len[44]
+[DEBUG]:[2017-05-12 14:16:00]:[3055545200]:[59:process_recv_buf:core/job_connect.cpp] _head_len[4] msg_body_len[44]
+[DEBUG]:[2017-05-12 14:16:00]:[3055545200]:[92:process_s:core/job_connect.cpp] recv_msg:1, str[hello, this is test !!!!!!!!!!!!!!]
+[DEBUG]:[2017-05-12 14:16:00]:[3013585776]:[17:handle_msg:core/http_client_thread.cpp] handle_msg
+[DEBUG]:[2017-05-12 14:16:00]:[3013585776]:[66:do_request:core/http_client_connect.cpp] do_request
+[DEBUG]:[2017-05-12 14:16:00]:[3013585776]:[9:http_request_done:core/http_client_connect.cpp] http_request_done
+[DEBUG]:[2017-05-12 14:16:03]:[3055545200]:[33:process_recv_buf:core/job_connect.cpp] recv msg 48
+
+[DEBUG]:[2017-05-12 14:16:03]:[3055545200]:[46:process_recv_buf:core/job_connect.cpp] msg_body_len[44]
+[DEBUG]:[2017-05-12 14:16:03]:[3055545200]:[59:process_recv_buf:core/job_connect.cpp] _head_len[4] msg_body_len[44]
+[DEBUG]:[2017-05-12 14:16:03]:[3055545200]:[92:process_s:core/job_connect.cpp] recv_msg:1, str[hello, this is test !!!!!!!!!!!!!!]
+[DEBUG]:[2017-05-12 14:16:03]:[3013585776]:[17:handle_msg:core/http_client_thread.cpp] handle_msg
+[DEBUG]:[2017-05-12 14:16:03]:[3013585776]:[66:do_request:core/http_client_connect.cpp] do_request
+[DEBUG]:[2017-05-12 14:16:04]:[3013585776]:[9:http_request_done:core/http_client_connect.cpp] http_request_done
+[DEBUG]:[2017-05-12 14:16:07]:[3055545200]:[33:process_recv_buf:core/job_connect.cpp] recv msg 48
+
+[DEBUG]:[2017-05-12 14:16:07]:[3055545200]:[46:process_recv_buf:core/job_connect.cpp] msg_body_len[44]
+[DEBUG]:[2017-05-12 14:16:07]:[3055545200]:[59:process_recv_buf:core/job_connect.cpp] _head_len[4] msg_body_len[44]
+[DEBUG]:[2017-05-12 14:16:07]:[3055545200]:[92:process_s:core/job_connect.cpp] recv_msg:1, str[hello, this is test !!!!!!!!!!!!!!]
+[DEBUG]:[2017-05-12 14:16:07]:[3013585776]:[17:handle_msg:core/http_client_thread.cpp] handle_msg
+[DEBUG]:[2017-05-12 14:16:07]:[3013585776]:[66:do_request:core/http_client_connect.cpp] do_request
+[DEBUG]:[2017-05-12 14:16:07]:[3013585776]:[9:http_request_done:core/http_client_connect.cpp] http_request_done
+[DEBUG]:[2017-05-12 14:16:10]:[3055545200]:[33:process_recv_buf:core/job_connect.cpp] recv msg 48
+
+[DEBUG]:[2017-05-12 14:16:10]:[3055545200]:[46:process_recv_buf:core/job_connect.cpp] msg_body_len[44]
+[DEBUG]:[2017-05-12 14:16:10]:[3055545200]:[59:process_recv_buf:core/job_connect.cpp] _head_len[4] msg_body_len[44]
+[DEBUG]:[2017-05-12 14:16:10]:[3055545200]:[92:process_s:core/job_connect.cpp] recv_msg:1, str[hello, this is test !!!!!!!!!!!!!!]
+[DEBUG]:[2017-05-12 14:16:10]:[3013585776]:[17:handle_msg:core/http_client_thread.cpp] handle_msg
+[DEBUG]:[2017-05-12 14:16:10]:[3013585776]:[66:do_request:core/http_client_connect.cpp] do_request
+[DEBUG]:[2017-05-12 14:16:10]:[3013585776]:[9:http_request_done:core/http_client_connect.cpp] http_request_done
+[DEBUG]:[2017-05-12 14:16:13]:[3055545200]:[33:process_recv_buf:core/job_connect.cpp] recv msg 48
+
+[DEBUG]:[2017-05-12 14:16:13]:[3055545200]:[46:process_recv_buf:core/job_connect.cpp] msg_body_len[44]
+[DEBUG]:[2017-05-12 14:16:13]:[3055545200]:[59:process_recv_buf:core/job_connect.cpp] _head_len[4] msg_body_len[44]
+[DEBUG]:[2017-05-12 14:16:13]:[3055545200]:[92:process_s:core/job_connect.cpp] recv_msg:1, str[hello, this is test !!!!!!!!!!!!!!]
+[DEBUG]:[2017-05-12 14:16:13]:[3013585776]:[17:handle_msg:core/http_client_thread.cpp] handle_msg
+[DEBUG]:[2017-05-12 14:16:13]:[3013585776]:[66:do_request:core/http_client_connect.cpp] do_request
+[DEBUG]:[2017-05-12 14:16:14]:[3013585776]:[9:http_request_done:core/http_client_connect.cpp] http_request_done

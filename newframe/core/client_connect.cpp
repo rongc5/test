@@ -79,7 +79,7 @@ void client_connect::call_back(int fd, short ev, void *arg)
     memset(tmp, 0, sizeof(tmp));
     read(_fd, tmp, sizeof(tmp));
 
-    //LOG_DEBUG("recv: %s", tmp);
+    LOG_DEBUG("recv: %s", tmp);
     printf("recv: %s\n", tmp);
     
     sleep(3);

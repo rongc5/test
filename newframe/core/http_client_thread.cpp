@@ -1,5 +1,6 @@
 #include "http_client_thread.h"
 #include "http_client_connect.h"
+#include "log_helper.h"
 
 http_client_thread::http_client_thread()
 {
@@ -12,9 +13,9 @@ bool http_client_thread::handle_msg(base_passing_msg * msg)
     if (!msg) {
         return true;
     }   
-
-    //DEBUG_LOG("sid: %s", msg->sid.c_str());
-
+    
+    LOG_DEBUG("handle_msg");
+    
     try {
         http_client_connect::do_request(msg, get_event_base());
     } catch (...) {

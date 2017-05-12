@@ -1,10 +1,12 @@
 #include "http_client_connect.h"
 #include "base_net_thread.h"
 #include "common_def.h"
+#include "log_helper.h"
 
 
 void http_client_connect::http_request_done(struct evhttp_request *req, void *arg)
 {
+    LOG_DEBUG("http_request_done");
     if (!arg) {
         //WARNING_LOG("arg is NULL");
         return ;    
@@ -34,6 +36,7 @@ void http_client_connect::http_request_done(struct evhttp_request *req, void *ar
     //DEBUG_LOG("sid: %s res_code[%d] res_buf[%s]", msg->sid.c_str(), rs_http.res_code, rs_http.res_buf.c_str());
 
     base_net_thread::put_msg_ObjId(rs_http);
+
 }
 
 
@@ -60,26 +63,26 @@ void http_client_connect::do_request(base_passing_msg * b_msg, struct event_base
         goto ERR;
     }
 
+    LOG_DEBUG("do_request");
     rs_http = new http_res_msg;
     rs_http->_dst_id = msg->_src_id;
     rs_http->_op = PASSING_RES_HTTP;
 
 
-
-    msg->uri = evhttp_uri_parse(msg->url.c_str());
-    if (!msg->uri) {
+    rs_http->uri = evhttp_uri_parse(msg->url.c_str());
+    if (!rs_http->uri) {
         rs_http->res_code = 4;
         rs_http->res_buf.append("evhttp_uri_parse failed");
         goto ERR;
     }
     
-    port = evhttp_uri_get_port(msg->uri); 
+    port = evhttp_uri_get_port(rs_http->uri); 
     if (port == -1){
         port = 80;
     }
 
-    msg->cn = evhttp_connection_base_new(base,NULL, evhttp_uri_get_host(msg->uri), port);
-    if (!msg->cn) {
+    rs_http->cn = evhttp_connection_base_new(base,NULL, evhttp_uri_get_host(rs_http->uri), port);
+    if (!rs_http->cn) {
         rs_http->res_code = 4;
         rs_http->res_buf.append("evhttp_connection_base_new failed");
         goto ERR;
@@ -92,7 +95,7 @@ void http_client_connect::do_request(base_passing_msg * b_msg, struct event_base
         goto ERR;
     }
 
-    evhttp_add_header(req->output_headers, "Host", evhttp_uri_get_host(msg->uri));
+    evhttp_add_header(req->output_headers, "Host", evhttp_uri_get_host(rs_http->uri));
 
     evhttp_add_header(req->output_headers, "Connection", "close");
 
@@ -101,8 +104,8 @@ void http_client_connect::do_request(base_passing_msg * b_msg, struct event_base
         evhttp_add_header(req->output_headers, it->first.c_str(), it->second.c_str());
     }
 
-    path = evhttp_uri_get_path(msg->uri);
-    query = evhttp_uri_get_query(msg->uri); 
+    path = evhttp_uri_get_path(rs_http->uri);
+    query = evhttp_uri_get_query(rs_http->uri); 
 
     if (query != NULL) {
         snprintf(t_buf, sizeof(t_buf), "%s?%s", path, query);
@@ -113,13 +116,13 @@ void http_client_connect::do_request(base_passing_msg * b_msg, struct event_base
 
     if (msg->http_mode == HTTP_GET) {
             
-        ret = evhttp_make_request(msg->cn, req, EVHTTP_REQ_GET, t_buf); 
+        ret = evhttp_make_request(rs_http->cn, req, EVHTTP_REQ_GET, t_buf); 
 
     } else if (msg->http_mode == HTTP_POST) {
         
         evbuffer_add(req->output_buffer, msg->post_data.c_str(), msg->post_data.length());
 
-        ret = evhttp_make_request(msg->cn, req, EVHTTP_REQ_POST, t_buf); 
+        ret = evhttp_make_request(rs_http->cn, req, EVHTTP_REQ_POST, t_buf); 
     }
 
     if (ret) {

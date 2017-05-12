@@ -145,14 +145,17 @@ struct http_req_msg: public base_passing_msg
     string  url;
     string post_data;
     map<string, string> headers;
+};
+
+struct http_res_msg:public base_passing_msg
+{
+    int res_code;
+    string res_buf;
     struct evhttp_uri *uri;
     struct evhttp_connection *cn;
+    http_res_msg():res_code(0), uri(NULL), cn(NULL){}
 
-    http_req_msg():uri(NULL), cn(NULL) {
-        //DEBUG_LOG("event_dispatch_msg create");
-    }
-    ~http_req_msg() {
-        //DEBUG_LOG("event_dispatch_msg destory sid: %s", sid.c_str());
+    virtual ~http_res_msg() {
         if (uri) { 
             evhttp_uri_free(uri);
             uri = NULL;
@@ -162,14 +165,9 @@ struct http_req_msg: public base_passing_msg
             evhttp_connection_free(cn);
             cn = NULL;
         }
-    }
-};
 
-struct http_res_msg:public base_passing_msg
-{
-    int res_code;
-    string res_buf;
-    http_res_msg():res_code(0){}
+
+    }
 };
 
 

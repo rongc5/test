@@ -13,17 +13,19 @@ void log_thread::add_msg(base_passing_msg * p_msg)
        return;
     }
 
-    PDEBUG("%lu _channel_msg_vec.size:%d\n", lmsg->tid, _channel_msg_vec.size());
+    //PDEBUG("%lu _channel_msg_vec.size:%d\n", lmsg->tid, _channel_msg_vec.size());
     int index = lmsg->tid % _channel_msg_vec.size();
 
     event_channel_msg * msg = _channel_msg_vec[index];
     msg->_queue.push_back(p_msg);
+    write(msg->_channelid, CHANNEL_MSG_TAG, sizeof(CHANNEL_MSG_TAG));
 
     return ;
 }
 
 bool log_thread::handle_msg(base_passing_msg * msg)
 {
+    //PDEBUG("handle_msg:\n");
     switch (msg->_op) {
         case PASSING_LOG:
             {

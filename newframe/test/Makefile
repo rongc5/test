@@ -14,7 +14,7 @@ LIB = -L$(LIB_DIR) -lnewframe -lprotobuf -lpthread \
 	  /usr/local/lib/libevent_pthreads.a 
 
 
-CPPFLAGS = -g -msse3 -Wall $(INCLUDE) -DDEBUG=1
+CPPFLAGS = -gdwarf-2 -msse3 -Wall $(INCLUDE) -DDEBUG=1
 CC  = g++ $(CPPFLAGS)
 
 

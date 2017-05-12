@@ -32,6 +32,7 @@
             get_date_str(log_common_tmp, sizeof(log_common_tmp), LOG_DATE_FORMAT); \
             lgmsg->type = LOGWARNING; \
             lgmsg->tid = pthread_self(); \
+            lgmsg->_op = PASSING_LOG; \
             char log_common_buf[SIZE_LEN_16384]; \
             snprintf(log_common_buf, sizeof(log_common_buf), "[WARNING]"":[%s]:[%lu]:[%d:%s:%s] "fmt,log_common_tmp,pthread_self(), __LINE__, __func__, __FILE__, ##arg); \
             lgmsg->str.append(log_common_buf); \
@@ -55,6 +56,7 @@
             get_date_str(log_common_tmp, sizeof(log_common_tmp), LOG_DATE_FORMAT); \
             lgmsg->type = LOGFATAL; \
             lgmsg->tid = pthread_self(); \
+            lgmsg->_op = PASSING_LOG; \
             char log_common_buf[SIZE_LEN_16384]; \
             snprintf(log_common_buf, sizeof(log_common_buf), "[FATAL]"":[%s]:[%lu]:[%d:%s:%s] "fmt, log_common_tmp,pthread_self(), __LINE__, __func__, __FILE__, ##arg); \
             lgmsg->str.append(log_common_buf); \
@@ -78,6 +80,7 @@
             get_date_str(log_common_tmp, sizeof(log_common_tmp), LOG_DATE_FORMAT); \
             lgmsg->type = LOGNOTICE; \
             lgmsg->tid = pthread_self(); \
+            lgmsg->_op = PASSING_LOG; \
             char log_common_buf[SIZE_LEN_16384]; \
             snprintf(log_common_buf, sizeof(log_common_buf), "[NOTICE]"":[%s]:[%lu]:[%d:%s:%s] "fmt,log_common_tmp,pthread_self(), __LINE__, __func__, __FILE__, ##arg); \
             lgmsg->str.append(log_common_buf); \
@@ -101,6 +104,7 @@
             get_date_str(log_common_tmp, sizeof(log_common_tmp), LOG_DATE_FORMAT); \
             lgmsg->type = LOGTRACE; \
             lgmsg->tid = pthread_self(); \
+            lgmsg->_op = PASSING_LOG; \
             char log_common_buf[SIZE_LEN_16384]; \
             snprintf(log_common_buf, sizeof(log_common_buf), "[TRACE]"":[%s]:[%lu]:[%d:%s:%s] "fmt,log_common_tmp,pthread_self(), __LINE__, __func__, __FILE__, ##arg); \
             lgmsg->str.append(log_common_buf); \
@@ -124,6 +128,7 @@
             get_date_str(log_common_tmp, sizeof(log_common_tmp), LOG_DATE_FORMAT); \
             lgmsg->type = LOGDEBUG; \
             lgmsg->tid = pthread_self(); \
+            lgmsg->_op = PASSING_LOG; \
             char log_common_buf[SIZE_LEN_16384]; \
             snprintf(log_common_buf, sizeof(log_common_buf), "[DEBUG]"":[%s]:[%lu]:[%d:%s:%s] "fmt,log_common_tmp,pthread_self(), __LINE__, __func__, __FILE__, ##arg); \
             lgmsg->str.append(log_common_buf); \

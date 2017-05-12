@@ -6,7 +6,8 @@ void * base_net_thread::run()
 {
     init();
 
-    event_base_dispatch(_base);
+    //event_base_dispatch(_base);
+    event_base_loop(_base, EVLOOP_NO_EXIT_ON_EMPTY);
 
     return NULL;
 }

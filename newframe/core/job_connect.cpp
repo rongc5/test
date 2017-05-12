@@ -89,7 +89,7 @@ size_t job_connect::process_s(char *buf, size_t len)
     
     http_client_thread::put_msg(http_msg);
 
-    //LOG_DEBUG("recv_msg:%d, str[%s]", recv_msg.obj_id(), recv_msg.str().c_str());
+    LOG_DEBUG("recv_msg:%d, str[%s]", recv_msg.obj_id(), recv_msg.str().c_str());
     //printf("recv_msg:%d, str[%s]\n", recv_msg.obj_id(), recv_msg.str().c_str());
 
     //write(_fd, "I recived", sizeof("I recived"));

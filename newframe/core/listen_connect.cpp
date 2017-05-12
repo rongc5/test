@@ -62,6 +62,7 @@ void listen_connect::call_back(int fd, short ev, void *arg)
         recv_msg_fd * r_msg = new (std::nothrow)recv_msg_fd();
         if (r_msg) {
             r_msg->fd = tmp_sock;
+            r_msg->_op = PASSING_FD;
             _thread->handle_msg(r_msg);
         }
     }

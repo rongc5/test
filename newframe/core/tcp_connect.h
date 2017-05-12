@@ -28,11 +28,11 @@ class tcp_connect:public common_connect
 
         virtual ssize_t SEND(const void *buf, const size_t len);
 
-        size_t process_recv_buf(char *buf, size_t len);
+        virtual size_t process_recv_buf(char *buf, size_t len);
 
-        size_t process_s(char *buf, size_t len);
+        virtual size_t process_s(char *buf, size_t len);
 
-        size_t process_send_buf(char *buf, size_t len);
+        virtual size_t process_send_buf(char *buf, size_t len);
         
         virtual void peer_close();
 
