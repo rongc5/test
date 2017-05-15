@@ -26,8 +26,9 @@ AR=ar
 
 server=test_server
 client=test_client
+hserver=http_server
 
-all	: $(server) $(client)
+all	: $(server) $(client) $(hserver)
 	
 
 Ctags	: 
@@ -36,8 +37,11 @@ Ctags	:
 clean	:
 	/bin/rm -f *.o 
 	/bin/rm -f *~~ 
-	rm -f $(server) $(client);
+	rm -f $(server) $(client) $(hserver)
+	rm -rf logs
 
+$(hserver):http_server.o
+	$(CC) $(CXXFLAGS) -o $@ $^ $(LIB)
 
 $(client):test_client.o $(IDL_DIR)/idl.pb.o
 	$(CC) $(CXXFLAGS) -o $@ $^ $(LIB)

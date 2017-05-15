@@ -26,6 +26,7 @@ OBJ	= ${SRC_DIR}/base_connect.o                     \
     ${SRC_DIR}/job_thread.o                       \
     ${SRC_DIR}/http_client_connect.o                       \
     ${SRC_DIR}/http_client_thread.o                       \
+    ${SRC_DIR}/http_server_thread.o                       \
     ${SRC_DIR}/common_connect.o                       \
     ${SRC_DIR}/common_def.o                        \
     ${SRC_DIR}/log_thread.o                        \
