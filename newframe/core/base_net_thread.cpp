@@ -18,8 +18,9 @@ void base_net_thread::add_msg(base_passing_msg * p_msg)
     int index = (unsigned long) p_msg % _channel_msg_vec.size();
 
     event_channel_msg * msg = _channel_msg_vec[index];
+    send(msg->_channelid, "c", sizeof("c"), MSG_DONTWAIT);
     msg->_queue.push_back(p_msg);
-    write(msg->_channelid, CHANNEL_MSG_TAG, sizeof(CHANNEL_MSG_TAG));
+    //write(msg->_channelid, CHANNEL_MSG_TAG, sizeof(CHANNEL_MSG_TAG));
 }
 
 void base_net_thread::init()
@@ -54,6 +55,7 @@ void base_net_thread::on_cb(int fd, short ev, void *arg)
     event_channel_msg * msg = (event_channel_msg *) arg;
     if (msg) {
 
+        int i = 0;
         if (msg->_is_lock) {
             thread_lock lock(&_mutex);
 
@@ -64,7 +66,16 @@ void base_net_thread::on_cb(int fd, short ev, void *arg)
                 }
                 it = msg->_queue.erase(it);
                 
-                recv(fd, buf, sizeof(CHANNEL_MSG_TAG), MSG_DONTWAIT);
+                i++;
+            }
+
+            size_t len =  i * sizeof(CHANNEL_MSG_TAG);
+            if (len) {
+                if (len < sizeof(buf)) {
+                    recv(fd, buf, sizeof(CHANNEL_MSG_TAG), MSG_DONTWAIT);
+                }else {
+                    recv(fd, buf, sizeof(CHANNEL_MSG_TAG), MSG_DONTWAIT);
+                }
             }
 
         } else {
@@ -76,7 +87,16 @@ void base_net_thread::on_cb(int fd, short ev, void *arg)
                 }
                 it = msg->_queue.erase(it);
 
-                recv(fd, buf, sizeof(CHANNEL_MSG_TAG), MSG_DONTWAIT);
+                i++;
+            }
+
+            size_t len =  i * sizeof(CHANNEL_MSG_TAG);
+            if (len) {
+                if (len < sizeof(buf)) {
+                    recv(fd, buf, sizeof(CHANNEL_MSG_TAG), MSG_DONTWAIT);
+                }else {
+                    recv(fd, buf, sizeof(CHANNEL_MSG_TAG), MSG_DONTWAIT);
+                }
             }
         }
     }   
