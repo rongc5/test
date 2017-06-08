@@ -1,0 +1,38 @@
+#ifndef __WS_CONNECT_H__
+#define __WS_CONNECT_H__
+
+#include "log_helper.h"
+#include "tcp_connect.h"
+#include "base_net_thread.h"
+#include "common_def.h"
+
+class base_net_thread;
+class ws_connect:public tcp_connect
+{
+    public:
+
+        ws_connect(int32_t sock, base_net_thread * thread):tcp_connect(sock, thread)
+        {
+
+        }
+
+        virtual ~ws_connect();
+
+        static ws_connect * gen_connect(int fd, base_net_thread * thread);
+
+        virtual void recv_passing_msg(base_passing_msg * p_msg);
+
+        size_t process_recv_buf(char *buf, size_t len);
+
+        size_t process_s(char *buf, size_t len);
+        
+           	virtual void on_connect_comming();
+           	void send_ping(const char op_code, const string &ping_data);
+           	string get_web_accept_key(const string &ws_key);
+           	web_socket_frame_header &get_recent_recv_frame_header();
+           	web_socket_frame_header &get_recent_send_frame_header();
+
+};
+
+
+#endif

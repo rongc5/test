@@ -2,15 +2,15 @@
 #define __LISTEN_CONNECT_H__
 
 #include "log_helper.h"
-#include "common_connect.h"
+#include "base_connect.h"
 #include "base_net_thread.h"
 
 class base_net_thread;
-class listen_connect: public common_connect
+class listen_connect: public base_connect
 {
     public:
 
-        listen_connect(int32_t sock, base_net_thread * thread):common_connect(sock, thread)
+        listen_connect(int32_t sock, base_net_thread * thread):base_connect(sock, thread)
         {
 
         }

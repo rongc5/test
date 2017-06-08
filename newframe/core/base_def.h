@@ -136,6 +136,6 @@ typedef unsigned int uint32_t;
 
 #define LOG_QUEUE_NUM 10
 
-#define CHANNEL_MSG_TAG 'c'
+#define CHANNEL_MSG_TAG "c"
 
 #endif

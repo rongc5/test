@@ -18,9 +18,8 @@ void base_net_thread::add_msg(base_passing_msg * p_msg)
     int index = (unsigned long) p_msg % _channel_msg_vec.size();
 
     event_channel_msg * msg = _channel_msg_vec[index];
-    send(msg->_channelid, "c", sizeof("c"), MSG_DONTWAIT);
     msg->_queue.push_back(p_msg);
-    //write(msg->_channelid, CHANNEL_MSG_TAG, sizeof(CHANNEL_MSG_TAG));
+    write(msg->_channelid, CHANNEL_MSG_TAG, sizeof(CHANNEL_MSG_TAG));
 }
 
 void base_net_thread::init()
@@ -38,7 +37,6 @@ void base_net_thread::init()
         msg->_net_thread = this;
         _channel_msg_vec.push_back(msg);
         msg->_channelid = fd[1];
-        msg->_is_lock = true;
 
         struct event *_event = event_new(get_event_base(), fd[0], EV_TIMEOUT | EV_READ | EV_PERSIST, on_cb, msg);
 
@@ -48,7 +46,7 @@ void base_net_thread::init()
 
 void base_net_thread::on_cb(int fd, short ev, void *arg)
 {
-    char buf[sizeof(CHANNEL_MSG_TAG)];
+    char buf[SIZE_LEN_2048];
 
     typedef typename deque<base_passing_msg *>::iterator QIT;
 
@@ -56,47 +54,24 @@ void base_net_thread::on_cb(int fd, short ev, void *arg)
     if (msg) {
 
         int i = 0;
-        if (msg->_is_lock) {
-            thread_lock lock(&_mutex);
+        thread_lock lock(&_mutex);
 
-            QIT it;
-            for (it = msg->_queue.begin(); it != msg->_queue.end();) {
-                if (!msg->_net_thread->handle_msg(*it)) {
-                    (*it)->release();
-                }
-                it = msg->_queue.erase(it);
-                
-                i++;
+        QIT it;
+        for (it = msg->_queue.begin(); it != msg->_queue.end();) {
+            if (!msg->_net_thread->handle_msg(*it)) {
+                (*it)->release();
             }
+            it = msg->_queue.erase(it);
 
-            size_t len =  i * sizeof(CHANNEL_MSG_TAG);
-            if (len) {
-                if (len < sizeof(buf)) {
-                    recv(fd, buf, sizeof(CHANNEL_MSG_TAG), MSG_DONTWAIT);
-                }else {
-                    recv(fd, buf, sizeof(CHANNEL_MSG_TAG), MSG_DONTWAIT);
-                }
-            }
+            i++;
+        }
 
-        } else {
-
-            QIT it;
-            for (it = msg->_queue.begin(); it != msg->_queue.end();) {
-                if (msg->_net_thread->handle_msg(*it)) {
-                    (*it)->release();
-                }
-                it = msg->_queue.erase(it);
-
-                i++;
-            }
-
-            size_t len =  i * sizeof(CHANNEL_MSG_TAG);
-            if (len) {
-                if (len < sizeof(buf)) {
-                    recv(fd, buf, sizeof(CHANNEL_MSG_TAG), MSG_DONTWAIT);
-                }else {
-                    recv(fd, buf, sizeof(CHANNEL_MSG_TAG), MSG_DONTWAIT);
-                }
+        size_t len =  i * sizeof(CHANNEL_MSG_TAG);
+        if (len) {
+            if (len < sizeof(buf)) {
+                read(fd, buf, len);
+            }else {
+                read(fd, buf, sizeof(buf));
             }
         }
     }   
