@@ -1,5 +1,6 @@
 #include "event_ws_msg.h"
 #include "common_def.h"
+#include "log_helper.h"
 
 
 /*
@@ -74,7 +75,7 @@ void web_socket_frame_header::process(char* &buf,   uint32_t &len)
             _more_flag = (_s_header[0] >> 7) & 0x01;
             if (_op_code == 0x08) //客户端关闭
             {
-                THROW_COMMON_EXCEPT(-1, "websocket client close the connection")
+                THROW_COMMON_EXCEPT("websocket client close the connection")
             }					
 
             _mask_flag = (_s_header[1] >> 7) & 0x01;
@@ -188,7 +189,7 @@ string web_socket_frame_header::gen_frame_header(const uint64_t data_len, const 
         char tmp = 127;
         tmp = tmp | (_mask_flag << 7);
         frame_header.append(1, tmp);
-        uint64_t tmp_len = CToolKit::htonl64(data_len);
+        uint64_t tmp_len = htonl64(data_len);
         frame_header.append((char*)&tmp_len, 8);
     }
 
@@ -259,10 +260,10 @@ void web_socket_frame_header::get_payload_length()
     else 
     {
         memcpy(&_payload_len , _s_header.c_str() + 2, 8);
-        _payload_len = CToolKit::ntohl64(_payload_len);
+        _payload_len = ntohl64(_payload_len);
     }
     if (_payload_len >= MAX_PAYLOAD_LEN)
-        THROW_COMMON_EXCEPT(-1,  "PAYLOAD_LEN too long " << _payload_len);
+        THROW_COMMON_EXCEPT("PAYLOAD_LEN too long " << _payload_len);
 }
 
 

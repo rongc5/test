@@ -74,51 +74,6 @@ int tcp_connect::RECV(void *buf, size_t len)
     return ret;
 }
 
-size_t tcp_connect::process_recv_buf(char *buf, size_t len)
-{
-    LOG_DEBUG("%s %d\n", "recv msg", len);
-    size_t left_len = len;
-    while(left_len > 0)
-    {
-        RECV_MSG_STATUS status = RECV_MSG_HEAD;
-        size_t msg_body_len = 0;
-        size_t _head_len = sizeof(int); 
-        if (status == RECV_MSG_HEAD)
-        {
-            if (left_len > _head_len)
-            {
-                int *p_len = (int *)buf;
-                msg_body_len = *p_len;
-                LOG_DEBUG("msg_body_len[%d]", msg_body_len);
-                status = RECV_MSG_BODY;
-            }
-            else
-            {
-                break;
-            }
-        }
-
-        if (status == RECV_MSG_BODY)
-        {
-            if (left_len >= _head_len + msg_body_len) {
-
-                LOG_DEBUG("_head_len[%d] msg_body_len[%d]", _head_len, msg_body_len);
-                process_s(buf + _head_len, msg_body_len);
-                left_len -= (_head_len + msg_body_len);
-                buf = buf + _head_len + msg_body_len;
-            } else {
-                break;
-            } 
-        }               
-    }
-
-    return len - left_len;
-}
-
-size_t tcp_connect::process_s(char *buf, size_t len)
-{
-    return len;
-}
 
 
 size_t tcp_connect::process_send_buf(char *buf, size_t len)

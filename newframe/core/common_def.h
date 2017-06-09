@@ -170,8 +170,10 @@ struct http_res_msg:public base_passing_msg
     }
 };
 
+uint64_t htonl64(uint64_t src);
 
+uint64_t ntohl64(uint64_t src);
 
-
+int GetCaseStringByLabel(const string &sSrc,const string &sLabel1,const string &sLabel2, string &sOut, unsigned int nBeginPos, int nIfRetPos);
 
 #endif

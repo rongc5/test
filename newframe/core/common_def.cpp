@@ -79,3 +79,66 @@ bool operator==(const ObjId & oj1, const ObjId & oj2)
     return oj1._thread_index ==  oj2._thread_index && oj1._id == oj2._id;
 }
 
+uint64_t htonl64(uint64_t src)
+{
+    uint64_t uiRet = src;
+#if __BYTE_ORDER == __LITTLE_ENDIAN
+    uiRet = __bswap_64(src);
+#endif
+    return uiRet;
+}
+
+uint64_t ntohl64(uint64_t src)
+{
+    uint64_t uiRet = src; 
+#if __BYTE_ORDER == __LITTLE_ENDIAN
+    uiRet = __bswap_64(src);
+#endif
+    return uiRet;
+}
+
+int GetCaseStringByLabel(const string &sSrc,const string &sLabel1,const string &sLabel2, string &sOut, unsigned int nBeginPos, int nIfRetPos)
+{
+        if (nBeginPos >= sSrc.length())
+        {
+            return -1;
+        }
+        char *pTmp = (char*)sSrc.c_str() + nBeginPos;
+        char *pTmp0;
+        char *pTmp1;
+        if (sLabel1 == "")
+        {
+            pTmp0 = pTmp;
+        }
+        else
+        {  
+            pTmp0= strcasestr(pTmp, sLabel1.c_str());
+            if (pTmp0 == NULL)
+            { 
+                return -1;
+            }
+        }
+        int ret=pTmp0-sSrc.c_str()+sLabel1.length();
+        if (sLabel2 != "")
+        {   
+            pTmp1 = strcasestr(pTmp0+sLabel1.length(), sLabel2.c_str());if (pTmp1 == NULL)
+            {
+                return -1;
+            }
+            ret=pTmp1+sLabel2.length()-sSrc.c_str();
+            sOut=string(pTmp0+sLabel1.length(), pTmp1-pTmp0-sLabel1.length());
+        }
+        else
+        {
+            sOut = string(pTmp0+sLabel1.length());
+            ret=sSrc.length();
+        }
+        if (nIfRetPos == 0)
+        {
+            ret = 0;
+        }
+        return ret;
+}
+
+
+

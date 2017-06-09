@@ -29,6 +29,28 @@ void ws_connect::recv_passing_msg(base_passing_msg * p_msg)
 }
 
 
+size_t ws_connect::process_recv_buf(const char *buf, const size_t len)
+{
+    size_t ret = 0;
+    if (WB_INIT_STAUTS == _wb_status)
+    {
+        ret = RECV_WB_INIT_STAUTS_PROCESS(buf, len);
+    }
+    else if (WB_HANDSHAKE_OK == _wb_status)
+    {
+        ret = RECV_WB_HANDSHAKE_OK_PROCESS(buf, len);
+    }
+    else if (WB_HEAD_FINISH == _wb_status)
+    {
+        ret = RECV_WB_HEAD_FINISH_PROCESS(buf, len);
+    }
+    else
+    {			
+        THROW_COMMON_EXCEPT(-1, "WB_HANDSHAKE_FAIL status, can't recv and send data")
+    }
+    return len;
+}
+
 void ws_connect::process_s(normal_obj_msg *p_msg)
 {
     if (_p_data_process != NULL)
@@ -74,7 +96,6 @@ void ws_connect::on_connect_comming()
 {
 }
 
-
 void ws_connect::peer_close()
 {
     if (_p_data_process != NULL)
@@ -105,15 +126,37 @@ string ws_connect::get_web_accept_key(const string &ws_key)
 }
 
 
-web_socket_frame_header &ws_connect::get_recent_recv_frame_header()
+web_socket_frame_header & ws_connect::get_recent_recv_frame_header()
 {
     return _recent_recv_web_header;
 }
 
-web_socket_frame_header &ws_connect::get_recent_send_frame_header()
+web_socket_frame_header & ws_connect::get_recent_send_frame_header()
 {
     return _recent_send_web_header;
 }
+
+void ws_connect::notice_send()
+{
+    if (_wb_status == WB_HANDSHAKE_OK)
+        _p_connect->add_event(EPOLLOUT);
+}
+
+const string & ws_connect::get_recv_header()
+{
+    return _recv_header;
+}
+
+const string & ws_connect::get_send_header()
+{
+    return _send_header;
+}		
+
+void ws_connect::handle_timeout(const uint32_t timer_type)
+{
+    _p_data_process->handle_timeout(timer_type);
+}
+
 
 bool ws_connect::check_head_finish()
 {
@@ -133,61 +176,9 @@ bool ws_connect::check_head_finish()
         }
     }			
     return ret;
-}
-
-
-void ws_connect::notice_send()
-{
-    if (_wb_status == WB_HANDSHAKE_OK)
-        _p_connect->add_event(EPOLLOUT);
-}
-
-const string &ws_connect::get_recv_header()
-{
-    return _recv_header;
-}
-
-const string &ws_connect::get_send_header()
-{
-    return _send_header;
 }		
 
-void handle_timeout(const uint32_t timer_type)
-{
-    _p_data_process->handle_timeout(timer_type);
-}		
-
-
-
-size_t ws_connect::process_recv_buf(char *buf, size_t len)
-{
-    LOG_DEBUG("%s %d\n", "recv msg", len);
-    size_t left_len = len;
-
-    size_t ret = 0;
-    if (WB_INIT_STAUTS == _wb_status)
-    {
-        ret = RECV_WB_INIT_STAUTS_PROCESS(buf, len);
-    }
-    else if (WB_HANDSHAKE_OK == _wb_status)
-    {
-        ret = RECV_WB_HANDSHAKE_OK_PROCESS(buf, len);
-    }
-    else if (WB_HEAD_FINISH == _wb_status)
-    {
-        ret = RECV_WB_HEAD_FINISH_PROCESS(buf, len);
-    }
-    else
-    {			
-        THROW_COMMON_EXCEPT("WB_HANDSHAKE_FAIL status, can't recv and send data")
-    }
-
-
-    return ret;
-}
-
-
-string *ws_connect::SEND_WB_HANDSHAKE_OK_PROCESS()
+virtual string * ws_connect::SEND_WB_HANDSHAKE_OK_PROCESS()
 {    
     string *p_str = NULL;   
     if (_p_tmp_str.begin() != _p_tmp_str.end())
@@ -293,35 +284,6 @@ size_t ws_connect::RECV_WB_HANDSHAKE_OK_PROCESS(const char *buf, const size_t le
             }
         }
     }
-    return len;
-}
-
-
-size_t ws_connect::process_s(char *buf, size_t len)
-{
-    CommonMsg recv_msg;
-
-    string str(buf, len);
-    recv_msg.ParseFromString(str);
-
-    string url;
-    url.append("http://open.adview.cn/agent/openRequest.do?n=1&pt=0&at=0&html5=1&w=320&h=50&sw=640&sh=1136&ip=124.193.184.2&os=1&bdr=10.0.2&tp=iPhone+5S&brd=iPhone&pack=com.easou.esbook&appid=SDK20161026100933450xiouxiz91j0i&idfa=F580C676-8270-4FDB-8E5A-0838A79708D3&idfv=2127C7B2-7F2A-4187-9560-0A1D68EC8113&openudid=F580C676-8270-4FDB-8E5A-0838A79708D3&tab=0&sn=F580C676-8270-4FDB-8E5A-0838A79708D3&nop=&mc=&nt=&ua=iPhone__iPhone+5S__10.0.2&tm=0&time=1490776774349&token=9d18f508d30f933732a13d8829efe4dc");
-
-
-    http_req_msg * http_msg = new http_req_msg();
-    http_msg->http_mode = HTTP_GET;
-    http_msg->url = url;
-    http_msg->_src_id = get_id(); 
-    http_msg->_op = PASSING_REQ_HTTP;
-
-    http_client_thread::put_msg(http_msg);
-
-    LOG_DEBUG("recv_msg:%d, str[%s]", recv_msg.obj_id(), recv_msg.str().c_str());
-    //printf("recv_msg:%d, str[%s]\n", recv_msg.obj_id(), recv_msg.str().c_str());
-
-    //write(_fd, "I recived", sizeof("I recived"));
-
-    //write(_fd, "987654321", sizeof("987654321"));
     return len;
 }
 
