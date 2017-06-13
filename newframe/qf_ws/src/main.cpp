@@ -1,7 +1,8 @@
 #include "base_thread.h"
+#include "ws_ser_thread.h"
+#include "base_singleton.h"
+#include "listen_thread.h"
 #include "log_helper.h"
-#include "http_server_thread.h"
-
 
 
 int main(int argc, char *argv[])
@@ -12,18 +13,18 @@ int main(int argc, char *argv[])
 
     LOG_INIT(conf); 
 
-    
-    int nfd = http_server_thread::bind_port(8888);
+    listen_thread * _listen_obj_thread = new listen_thread();
+    _listen_obj_thread->init("", 8888);
 
     for (int i=1; i <= 3; i++){
-        http_server_thread * net_thread = new http_server_thread();
-        net_thread->set_nfd(nfd);
+        ws_ser_thread * net_thread = new ws_ser_thread();
+        _listen_obj_thread->add_worker_thread(net_thread);
         net_thread->start();
     }
 
-
     sleep(1);
 
+    _listen_obj_thread->start();
 
     base_thread::join_all_thread();
     

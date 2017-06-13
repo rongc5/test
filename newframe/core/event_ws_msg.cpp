@@ -1,6 +1,7 @@
 #include "event_ws_msg.h"
 #include "common_def.h"
 #include "log_helper.h"
+#include "common_exception.h"
 
 
 /*
@@ -75,7 +76,7 @@ void web_socket_frame_header::process(char* &buf,   uint32_t &len)
             _more_flag = (_s_header[0] >> 7) & 0x01;
             if (_op_code == 0x08) //客户端关闭
             {
-                THROW_COMMON_EXCEPT("websocket client close the connection")
+                THROW_COMMON_EXCEPT("websocket client close the connection");
             }					
 
             _mask_flag = (_s_header[1] >> 7) & 0x01;
@@ -271,15 +272,15 @@ ws_msg_type::ws_msg_type()
 {   
     init();
 }   
+
 void ws_msg_type::init()
-{   
+{
     _p_msg = NULL;
     _con_type = 0x01;
-}   
+}
 
 ws_req_head_para::ws_req_head_para()
 {
     _version = 13;
 }
 
-#endif

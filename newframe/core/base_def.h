@@ -25,6 +25,14 @@
 #include <arpa/inet.h>
 
 #include <unistd.h>
+#include <openssl/sha.h>
+
+#include <sys/types.h>          /* See NOTES */
+#include <sys/socket.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <netinet/tcp.h>
+
 
 
 #include <vector>
@@ -137,5 +145,7 @@ typedef unsigned int uint32_t;
 #define LOG_QUEUE_NUM 10
 
 #define CHANNEL_MSG_TAG "c"
+
+#define MAX_HTTP_HEAD_LEN 10 * 1024
 
 #endif

@@ -3,9 +3,9 @@ SRC_DIR=${HOME_DIR}core
 IDL_DIR=$(HOME_DIR)idl
 
 INCLUDE = -I./${SRC_DIR}/ -I./${IDL_DIR} -I/usr/local/include 
-LIB = -L/usr/lib/ -lpthread \
+LIB = -L/usr/lib/ -lpthread -lssl\
 	  -lprotobuf \
-	   -L/usr/local/lib -lrt \
+	   -L/usr/local/lib -lrt\
 		-libevent.a  \
 		 -libevent_core.a  \
 		 -lbevent_extra.a  \
@@ -18,16 +18,17 @@ CC  = g++ $(CPPFLAGS)
 OBJ	= ${SRC_DIR}/base_connect.o                     \
     ${SRC_DIR}/base_thread.o                        \
     ${SRC_DIR}/base_net_thread.o                        \
-    ${SRC_DIR}/client_thread.o                        \
-    ${SRC_DIR}/client_connect.o                        \
     ${SRC_DIR}/listen_connect.o                        \
     ${SRC_DIR}/tcp_connect.o                        \
-    ${SRC_DIR}/job_connect.o                       \
-    ${SRC_DIR}/job_thread.o                       \
     ${SRC_DIR}/http_client_connect.o                       \
     ${SRC_DIR}/http_client_thread.o                       \
     ${SRC_DIR}/http_server_thread.o                       \
+    ${SRC_DIR}/ws_connect.o                       \
+    ${SRC_DIR}/ws_req_connect.o                       \
+    ${SRC_DIR}/ws_res_connect.o                       \
+    ${SRC_DIR}/event_ws_msg.o                       \
     ${SRC_DIR}/common_def.o                        \
+    ${SRC_DIR}/mybase64.o                        \
     ${SRC_DIR}/log_thread.o                        \
     ${SRC_DIR}/listen_thread.o                        \
     ${SRC_DIR}/thread_helper.o                       \

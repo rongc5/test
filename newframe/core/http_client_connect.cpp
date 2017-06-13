@@ -40,7 +40,6 @@ void http_client_connect::http_request_done(struct evhttp_request *req, void *ar
 }
 
 
-
 void http_client_connect::do_request(base_passing_msg * b_msg, struct event_base* base)
 {
     int ret = 0;

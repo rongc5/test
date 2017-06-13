@@ -18,10 +18,14 @@ class listen_thread: public base_net_thread
 
         virtual bool handle_msg(base_passing_msg * msg);
 
+        int add_worker_thread(base_net_thread * thread);
+
     protected:
 
         string _ip;
         unsigned short _port;
+
+        vector<base_net_thread * > _listen_thread_vec;
 };
 
 #endif

@@ -1,60 +1,49 @@
 #include "ws_connect.h"
-#include "http_client_thread.h"
 #include "log_helper.h"
-
+#include "mybase64.h"
+#include "common_exception.h"
 
 ws_connect::~ws_connect()
 {
-}
+    for (list<string*>::iterator itr = _p_tmp_str.begin(); itr != _p_tmp_str.end(); ++itr)
+    {
+        if (*itr != NULL)
+            delete *itr;
+    }
 
-ws_connect * ws_connect::gen_connect(int fd, base_net_thread * thread)
-{
-    //set_unblock(fd);
-    ws_connect * c_conn = new ws_connect(fd, thread);
-    c_conn->update_event(EV_TIMEOUT | EV_READ | EV_PERSIST);
-    thread->add_connect_map(c_conn);
-
-    return c_conn;
-}
-
-void ws_connect::recv_passing_msg(base_passing_msg * p_msg)
-{
-    http_res_msg * rs_http = dynamic_cast<http_res_msg *>(p_msg);
-
-    REC_OBJ<base_passing_msg> rc(p_msg);
-
-    if (rs_http) {
-        process_send_buf((char *)rs_http->res_buf.c_str(), rs_http->res_buf.length());
+    for(list<ws_msg_type>::iterator itr = _send_list.begin(); itr != _send_list.end(); ++itr)
+    {
+        delete itr->_p_msg;
     }
 }
 
-
-size_t ws_connect::process_recv_buf(const char *buf, const size_t len)
+size_t ws_connect::process_recv_buf(char *buf, size_t len)
 {
-    size_t ret = 0;
-    if (WB_INIT_STAUTS == _wb_status)
-    {
-        ret = RECV_WB_INIT_STAUTS_PROCESS(buf, len);
-    }
-    else if (WB_HANDSHAKE_OK == _wb_status)
-    {
-        ret = RECV_WB_HANDSHAKE_OK_PROCESS(buf, len);
-    }
-    else if (WB_HEAD_FINISH == _wb_status)
-    {
-        ret = RECV_WB_HEAD_FINISH_PROCESS(buf, len);
-    }
-    else
-    {			
-        THROW_COMMON_EXCEPT(-1, "WB_HANDSHAKE_FAIL status, can't recv and send data")
+    try {
+        if (WB_INIT_STAUTS == _wb_status)
+        {
+            RECV_WB_INIT_STAUTS_PROCESS(buf, len);
+        }
+        else if (WB_HANDSHAKE_OK == _wb_status)
+        {
+            RECV_WB_HANDSHAKE_OK_PROCESS(buf, len);
+        }
+        else if (WB_HEAD_FINISH == _wb_status)
+        {
+            RECV_WB_HEAD_FINISH_PROCESS(buf, len);
+        }
+        else
+        {			
+            THROW_COMMON_EXCEPT("WB_HANDSHAKE_FAIL status, can't recv and send data");
+        }
+    }catch (std::exception & e) {
+        LOG_WARNING("%s", e.what());
+        destroy();
+    } catch (...) {
+        LOG_WARNING("unknown execption");
+        destroy();
     }
     return len;
-}
-
-void ws_connect::process_s(normal_obj_msg *p_msg)
-{
-    if (_p_data_process != NULL)
-        _p_data_process->process_s(p_msg);
 }
 
 string* ws_connect::get_send_buf()
@@ -74,8 +63,10 @@ string* ws_connect::get_send_buf()
     }
     else//WB_HANDSHAKE_FAIL
     {
-        THROW_COMMON_EXCEPT(-1, "WB_HANDSHAKE_FAIL status, can't recv and send data")
+        THROW_COMMON_EXCEPT("WB_HANDSHAKE_FAIL status, can't recv and send data");
     }
+    if (p_str)
+        LOG_DEBUG("str:%s", p_str->c_str());
     return p_str;
 }
 
@@ -83,30 +74,15 @@ void ws_connect::reset()
 {
 }
 
-void ws_connect::routine()
-{
-}
-
-void ws_connect::set_para()
-{	
-    _p_connect->set_timeout_len(_p_data_process->get_timeout_len());
-}
-
 void ws_connect::on_connect_comming()
 {
-}
-
-void ws_connect::peer_close()
-{
-    if (_p_data_process != NULL)
-        _p_data_process->peer_close();
 }
 
 void ws_connect::send_ping(const char op_code, const string &ping_data)
 {
     if (ping_data.length() < 125) //大于125字节的ping包不让发出去了
     {
-        WRITE_TRACE("send  ping to server");
+        LOG_DEBUG("send  ping to server");
         string *p_str = new string;
         *p_str = web_socket_frame_header::gen_ping_header(op_code, ping_data);
         _p_tmp_str.push_back(p_str);
@@ -138,8 +114,22 @@ web_socket_frame_header & ws_connect::get_recent_send_frame_header()
 
 void ws_connect::notice_send()
 {
-    if (_wb_status == WB_HANDSHAKE_OK)
-        _p_connect->add_event(EPOLLOUT);
+    if (_wb_status == WB_HANDSHAKE_OK) {
+        //_p_connect->add_event(EPOLLOUT);
+        try {
+            string * pstr = get_send_buf();
+            REC_OBJ<string> rc(pstr);
+            if (pstr) {
+                tcp_connect::process_send_buf((char *)pstr->c_str(), pstr->length());
+            }
+        }catch (std::exception & e) {
+            LOG_WARNING("%s", e.what());
+            destroy();
+        } catch (...) {
+            LOG_WARNING("unknown execption");
+            destroy();
+        }
+    }
 }
 
 const string & ws_connect::get_recv_header()
@@ -154,7 +144,7 @@ const string & ws_connect::get_send_header()
 
 void ws_connect::handle_timeout(const uint32_t timer_type)
 {
-    _p_data_process->handle_timeout(timer_type);
+    //_p_data_process->handle_timeout(timer_type);
 }
 
 
@@ -172,27 +162,27 @@ bool ws_connect::check_head_finish()
     {
         if (_recv_header.length() > MAX_HTTP_HEAD_LEN) //http头不要超过10k
         {
-            THROW_COMMON_EXCEPT(-1, "http head too long (" << _recv_header.length() << ")")
+            THROW_COMMON_EXCEPT("http head too long (" << _recv_header.length() << ")");
         }
     }			
     return ret;
 }		
 
-virtual string * ws_connect::SEND_WB_HANDSHAKE_OK_PROCESS()
+string * ws_connect::SEND_WB_HANDSHAKE_OK_PROCESS()
 {    
     string *p_str = NULL;   
     if (_p_tmp_str.begin() != _p_tmp_str.end())
     {
         p_str = _p_tmp_str.front();
         _p_tmp_str.pop_front();				
-        WRITE_TRACE("real send ping to peer");
+        LOG_DEBUG("real send ping to peer");
     }
     else
     {
         if (_recent_send_web_header._wb_body_status == WB_FRAME_HEAD_STAUS)
         {
             int8_t content_type = 0;
-            uint64_t len = _p_data_process->get_next_send_len(content_type);
+            uint64_t len = get_next_send_len(content_type);
             if (len > 0)
             {
                 p_str = new string();					
@@ -207,7 +197,7 @@ virtual string * ws_connect::SEND_WB_HANDSHAKE_OK_PROCESS()
         }
         else//WB_FRAME_BODY_STAUS
         {		
-            p_str = _p_data_process->get_send_buf();
+            p_str = get_send_data();
             if (p_str != NULL)
             {               
                 if (_recent_send_web_header._mask_flag == 1)
@@ -228,7 +218,7 @@ virtual string * ws_connect::SEND_WB_HANDSHAKE_OK_PROCESS()
 
 size_t ws_connect::RECV_WB_HANDSHAKE_OK_PROCESS(const char *buf, const size_t len)
 {
-    WRITE_TRACE("RECV_WB_HANDSHAKE_OK_PROCESS %d", len);
+    LOG_DEBUG("RECV_WB_HANDSHAKE_OK_PROCESS %d", len);
     char *left_buf = (char*)buf;
     uint32_t left_len = len;
     while(left_len > 0)
@@ -255,11 +245,11 @@ size_t ws_connect::RECV_WB_HANDSHAKE_OK_PROCESS(const char *buf, const size_t le
                     if (_recent_recv_web_header._mask_flag == 1)
                     {
                         string tmp_ret = _recent_recv_web_header.mask_code(left_buf, left_len - tmp_left);						
-                        _p_data_process->process_recv_body(tmp_ret.c_str(), tmp_ret.length());
+                        process_recv_body(tmp_ret.c_str(), tmp_ret.length());
                     }
                     else
                     {
-                        _p_data_process->process_recv_body(left_buf, left_len - tmp_left);
+                        process_recv_body(left_buf, left_len - tmp_left);
                     }
 
                     left_buf = left_buf + (left_len - tmp_left);
@@ -267,7 +257,7 @@ size_t ws_connect::RECV_WB_HANDSHAKE_OK_PROCESS(const char *buf, const size_t le
 
                     if (_recent_recv_web_header.if_finish())
                     {
-                        _p_data_process->msg_recv_finish();
+                        msg_recv_finish();
                     }	
                 }                                        
             }
@@ -278,7 +268,8 @@ size_t ws_connect::RECV_WB_HANDSHAKE_OK_PROCESS(const char *buf, const size_t le
                 left_len = tmp_left; 
                 if(_recent_recv_web_header.if_finish()) //更新状态,ping包就在底层处理了
                 {				
-                    _p_data_process->on_ping(tmp_code, _ping_data);
+                    //_p_data_process->on_ping(tmp_code, _ping_data);
+                    on_ping(tmp_code, _ping_data);
                     _ping_data.clear();
                 }
             }
@@ -287,3 +278,56 @@ size_t ws_connect::RECV_WB_HANDSHAKE_OK_PROCESS(const char *buf, const size_t le
     return len;
 }
 
+void ws_connect::on_ping(const char op_code, const string &ping_data)
+{
+}
+
+void ws_connect::on_handshake_ok()
+{
+    LOG_DEBUG("handle_ok");
+}
+
+void ws_connect::put_send_msg(ws_msg_type msg)
+{
+    if (_send_list.begin() ==  _send_list.end())
+    {
+        notice_send();
+    }
+    _send_list.push_back(msg);
+}
+
+ws_msg_type ws_connect::get_send_msg()
+{
+    ws_msg_type ret;
+    if (_send_list.begin() !=  _send_list.end())
+    {
+        ret = _send_list.front();
+        _send_list.pop_front();
+    }
+    return ret;
+}
+
+string *ws_connect::get_send_data()
+{
+    string *ret =_p_current_send._p_msg;
+    _p_current_send.init();
+    return ret;
+}
+
+size_t ws_connect::process_recv_body(const char *buf, const size_t len)
+{
+    _recent_msg.append(buf, len);
+    return len;
+}
+
+uint64_t ws_connect::get_next_send_len(int8_t &content_type)
+{
+    uint64_t ret = 0;
+    _p_current_send = get_send_msg();
+    if (_p_current_send._p_msg != NULL)
+    {
+        ret = _p_current_send._p_msg->length();
+        content_type = _p_current_send._con_type;
+    }
+    return ret;
+}

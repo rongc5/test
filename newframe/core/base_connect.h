@@ -31,7 +31,6 @@ class base_connect
 
         short get_ev_flags();
 
-
         virtual int destroy();
 
         virtual void recv_passing_msg(base_passing_msg * p_msg);

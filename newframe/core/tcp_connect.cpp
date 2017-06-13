@@ -74,8 +74,6 @@ int tcp_connect::RECV(void *buf, size_t len)
     return ret;
 }
 
-
-
 size_t tcp_connect::process_send_buf(char *buf, size_t len)
 {
     int ret = SEND(buf, len);
@@ -89,8 +87,6 @@ size_t tcp_connect::process_send_buf(char *buf, size_t len)
 
     return len;
 }
-
-
 
 ssize_t tcp_connect::SEND(const void *buf, const size_t len)
 {

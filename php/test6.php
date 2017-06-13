@@ -1,5 +1,4 @@
 <?php
-
 function myTest() {
     static $x = 1;
     $x++;
@@ -9,5 +8,4 @@ function myTest() {
 myTest();
 myTest();
 myTest();
-
-
+?>

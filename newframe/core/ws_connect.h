@@ -11,7 +11,6 @@ class base_net_thread;
 class ws_connect:public tcp_connect
 {
     public:
-
         ws_connect(int32_t sock, base_net_thread * thread):tcp_connect(sock, thread)
     {
 
@@ -19,52 +18,28 @@ class ws_connect:public tcp_connect
 
         virtual ~ws_connect();
 
-        static ws_connect * gen_connect(int fd, base_net_thread * thread);
-
-        virtual void recv_passing_msg(base_passing_msg * p_msg);
-
     public:
 
-        size_t process_recv_buf(const char *buf, const size_t len);
-
-
-        void process_s(normal_obj_msg *p_msg);
-
+        virtual size_t process_recv_buf(char *buf, size_t len);
 
         string* get_send_buf();
 
-
         virtual void reset();
 
-
-        void routine();
-
-
-        void set_para();
-
         virtual void on_connect_comming();
-
-
-        void peer_close();
-
 
         void send_ping(const char op_code, const string &ping_data);
 
         /************************************************************/
         string get_web_accept_key(const string &ws_key);
 
-
         web_socket_frame_header &get_recent_recv_frame_header();
-
 
         web_socket_frame_header &get_recent_send_frame_header();
 
-
         void notice_send();
 
-
         const string &get_recv_header();
-
 
         const string &get_send_header();
 
@@ -75,7 +50,6 @@ class ws_connect:public tcp_connect
 
         virtual bool check_head_finish();
 
-
         virtual string* SEND_WB_HEAD_FINISH_PROCESS() = 0;
         virtual string* SEND_WB_INIT_STAUTS_PROCESS() = 0;			
 
@@ -85,18 +59,39 @@ class ws_connect:public tcp_connect
 
         virtual size_t RECV_WB_HEAD_FINISH_PROCESS(const char *buf, const size_t len) = 0;
         virtual size_t RECV_WB_INIT_STAUTS_PROCESS(const char *buf, const size_t len) = 0;
+
     protected:		
         web_socket_frame_header _recent_recv_web_header;
         web_socket_frame_header _recent_send_web_header;
         string _recv_header;
         string _send_header;
         WEB_SOCKET_STATUS _wb_status;
-        ws_data_process*  _p_data_process;
-        NET_OBJ *_p_connect;
         bool _if_send_mask;		
 
         string _ping_data;
         list<string*> _p_tmp_str;
+
+    protected:
+        virtual void on_ping(const char op_code, const string &ping_data);        
+
+        virtual void on_handshake_ok();
+
+        virtual void msg_recv_finish() = 0;
+
+        virtual size_t process_recv_body(const char *buf, const size_t len);
+
+        void put_send_msg(ws_msg_type msg);
+
+        virtual uint64_t get_next_send_len(int8_t &content_type);
+
+        ws_msg_type get_send_msg();
+
+        string * get_send_data();
+
+    protected:
+        ws_msg_type _p_current_send;
+        list<ws_msg_type> _send_list;
+        string _recent_msg;
 
 };
 

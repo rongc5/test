@@ -174,6 +174,13 @@ uint64_t htonl64(uint64_t src);
 
 uint64_t ntohl64(uint64_t src);
 
-int GetCaseStringByLabel(const string &sSrc,const string &sLabel1,const string &sLabel2, string &sOut, unsigned int nBeginPos, int nIfRetPos);
+
+int GetCaseStringByLabel(const string &sSrc,const string &sLabel1,const string &sLabel2,
+                    string &sOut, unsigned int nBeginPos=0, int nIfRetPos=0);
+
+int GetStringByLabel(const string &sSrc,const string &sLabel1,const string &sLabel2,
+                    string &sOut, unsigned int nBeginPos=0, int nIfRetPos=0);
+
+void StringTrim(string &sSrc);
 
 #endif

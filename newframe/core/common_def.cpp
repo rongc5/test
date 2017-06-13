@@ -97,6 +97,52 @@ uint64_t ntohl64(uint64_t src)
     return uiRet;
 }
 
+int GetStringByLabel(const string &sSrc,const string &sLabel1,const string &sLabel2, string &sOut, unsigned int nBeginPos, int nIfRetPos)
+{
+    if (nBeginPos >= sSrc.length())
+    {
+        return -1;
+    }
+    char *pTmp = (char*)sSrc.c_str() + nBeginPos;
+    char *pTmp0;
+    char *pTmp1;
+    if (sLabel1 == "")
+    {
+        pTmp0 = pTmp;
+    }
+    else
+    {  
+        pTmp0= strcasestr(pTmp, sLabel1.c_str());
+        if (pTmp0 == NULL)
+        { 
+            return -1;
+        }
+    }
+    int ret=pTmp0-sSrc.c_str()+sLabel1.length();
+    if (sLabel2 != "")
+    {   
+        pTmp1 = strcasestr(pTmp0+sLabel1.length(), sLabel2.c_str());
+        if (pTmp1 == NULL)
+        {
+            return -1;
+        }
+
+        ret=pTmp1+sLabel2.length()-sSrc.c_str();
+        sOut=string(pTmp0+sLabel1.length(), pTmp1-pTmp0-sLabel1.length());
+    }
+    else
+    {
+        sOut = string(pTmp0+sLabel1.length());
+        ret=sSrc.length();
+    }
+    if (nIfRetPos == 0)
+    {
+        ret = 0;
+    }
+    return ret;
+}
+
+
 int GetCaseStringByLabel(const string &sSrc,const string &sLabel1,const string &sLabel2, string &sOut, unsigned int nBeginPos, int nIfRetPos)
 {
         if (nBeginPos >= sSrc.length())
@@ -140,5 +186,20 @@ int GetCaseStringByLabel(const string &sSrc,const string &sLabel1,const string &
         return ret;
 }
 
-
+void StringTrim(string &sSrc)
+{
+    int i = 0;
+    while ((sSrc[i] == ' ' || sSrc[i] == '\t' || sSrc[i] == '\r' || sSrc[i] == '\n') && i < (int)sSrc.length())
+    {
+        i++;
+    }
+    int nBeginPos = i;
+    i = sSrc.length() - 1;
+    while ((sSrc[i] == ' ' || sSrc[i] == '\t' || sSrc[i] == '\r' || sSrc[i] == '\n') && i >=0)
+    {
+        i--;
+    }
+    int nEnd = i;
+    sSrc = sSrc.substr(nBeginPos, nEnd - nBeginPos + 1); 
+}
 
