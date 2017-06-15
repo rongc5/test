@@ -103,7 +103,9 @@ void web_socket_frame_header::process(char* &buf,   uint32_t &len)
                 ret_buf = buf + (len - aa_len);
                 ret_len = aa_len;
                 _mask_key.resize(4);
-                memcpy((char*)_mask_key.c_str(), _s_header.c_str() + 2 + _e_p_len, 4);
+                //memcpy((char*)_mask_key.c_str(), _s_header.c_str() + 2 + _e_p_len, 4);
+                _mask_key.clear();
+                _mask_key.append(_s_header, 2+_e_p_len, 4);
                 //left_str = _s_header.substr(6 + _e_p_len);
                 _s_header = _s_header.substr(0, 6 + _e_p_len);
                 get_payload_length();

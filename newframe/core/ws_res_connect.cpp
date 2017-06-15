@@ -28,8 +28,7 @@ void ws_res_connect::handle_timeout(const uint32_t timer_type)
 
 string* ws_res_connect::SEND_WB_HEAD_FINISH_PROCESS()
 {
-    string *p_str = new string;
-    *p_str = gen_send_http_head();
+    string *p_str = new string(gen_send_http_head());
     _send_header = *p_str;
     if (!_if_upgrade)
     {
@@ -57,6 +56,7 @@ size_t ws_res_connect::RECV_WB_HEAD_FINISH_PROCESS(const char *buf, const size_t
 size_t ws_res_connect::RECV_WB_INIT_STAUTS_PROCESS(const char *buf, const size_t len)
 {
     _recv_header.append(buf, len);
+    LOG_DEBUG("buf:%s _recv_header:%s", buf, _recv_header.c_str());
     check_head_finish();
     return len;
 }	
@@ -113,6 +113,7 @@ bool ws_res_connect::check_head_finish()
         _wb_status = WB_HEAD_FINISH;
         //设置可以发送数据
         //_p_connect->add_event(EPOLLOUT);
+        notice_send();
     }
     return ret;
 }
@@ -136,8 +137,7 @@ void ws_res_connect::on_ping(const char op_code,const string &ping_data)
     setsockopt(get_sock(), SOL_TCP, TCP_KEEPINTVL, ( void * )&ikeepInterval, sizeof( ikeepInterval ) );
     setsockopt(get_sock(), SOL_TCP, TCP_KEEPCNT, ( void * )&ikeepCount, sizeof( ikeepCount ) );
 
-    if (_send_list.begin() != _send_list.end())
-        notice_send();
+    notice_send();
 }
 
 

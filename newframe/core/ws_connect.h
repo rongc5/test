@@ -11,10 +11,7 @@ class base_net_thread;
 class ws_connect:public tcp_connect
 {
     public:
-        ws_connect(int32_t sock, base_net_thread * thread):tcp_connect(sock, thread)
-    {
-
-    }
+        ws_connect(int32_t sock, base_net_thread * thread);
 
         virtual ~ws_connect();
 
@@ -22,7 +19,7 @@ class ws_connect:public tcp_connect
 
         virtual size_t process_recv_buf(char *buf, size_t len);
 
-        string* get_send_buf();
+        virtual string* get_send_buf();
 
         virtual void reset();
 
@@ -36,8 +33,6 @@ class ws_connect:public tcp_connect
         web_socket_frame_header &get_recent_recv_frame_header();
 
         web_socket_frame_header &get_recent_send_frame_header();
-
-        void notice_send();
 
         const string &get_recv_header();
 

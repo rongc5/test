@@ -68,8 +68,8 @@ using namespace std;
 const size_t SEND_BUF_SIZE = 20 * 1024;
 const uint64_t CONNECT_TIME_OUT = 180 * 1000;
 
-const int max_recv_data = 1024*20;
-const int max_send_num = 5;
+const int MAX_RECV_SIZE = 1024*20;
+const int MAX_SEND_NUM = 5;
 
 
 #define MAX_BUF_SIZE 1024 * 10 * 10

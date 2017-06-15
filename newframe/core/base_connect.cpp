@@ -1,17 +1,12 @@
 #include "base_connect.h"
 #include "base_net_thread.h"
+#include "common_exception.h"
+#include "log_helper.h"
 
 
 base_connect::base_connect(int32_t sock, base_net_thread * thread):_fd(sock), _ev(0),_thread(thread)
 {   
     _id_str = thread->gen_id_str();
-}
-
-int base_connect::destroy()
-{
-    _thread->destory_connect(_id_str); 
-    delete this;
-    return 0;
 }
 
 const ObjId & base_connect::get_id()
@@ -52,6 +47,8 @@ short base_connect::get_ev_flags()
 
 void base_connect::close()
 {
+    _thread->destory_connect(_id_str); 
+
     if (_fd != 0)
     {
         event_del(&_event);
@@ -76,6 +73,14 @@ void base_connect::on_cb(int fd, short ev, void *arg)
 {
     base_connect * conn = (base_connect *) arg;
     if (conn) {
-        conn->call_back(fd, ev, arg);
+        try {
+            conn->call_back(fd, ev, arg);
+        }catch (std::exception & e) {
+            LOG_WARNING("destory connect: %s", e.what());
+            delete conn;
+        }catch (...) {
+            LOG_WARNING("unknown destory connect");
+            delete conn;
+        }
     }
 }

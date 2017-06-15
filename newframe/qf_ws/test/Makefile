@@ -6,7 +6,7 @@ LOC_DIR=.
 
 INCLUDE = -I./${INC_DIR}/ -I./${IDL_DIR}/
 
-LIB = -L$(LIB_DIR) -lnewframe -lprotobuf -lpthread -lssl\
+LIB = -L$(LIB_DIR) -lnewframe -lpthread -lssl\
 	  -L/usr/local/lib -lrt \
 	  /usr/local/lib/libevent.a  \
 	  /usr/local/lib/libevent_core.a  \
@@ -35,8 +35,7 @@ Ctags	:
 	ctags *.h *.cpp
 
 clean	:
-	/bin/rm -f *.o 
-	/bin/rm -f *~~ 
+	/bin/rm -f $(OBJ)
 	rm -f $(server)
 	rm -rf logs
 

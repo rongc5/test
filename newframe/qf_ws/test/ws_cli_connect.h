@@ -21,6 +21,8 @@ class ws_cli_connect: public ws_req_connect
 
         static ws_cli_connect * gen_connect(const string &ip, unsigned short port, base_net_thread * thread);
 
+        virtual void on_handshake_ok();
+
         void send_request();
 
         virtual void msg_recv_finish();

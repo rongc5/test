@@ -18,17 +18,23 @@ ws_ser_connect * ws_ser_connect::gen_connect(int fd, base_net_thread * thread)
 
 void ws_ser_connect::recv_passing_msg(base_passing_msg * p_msg)
 {
-    http_res_msg * rs_http = dynamic_cast<http_res_msg *>(p_msg);
-
     REC_OBJ<base_passing_msg> rc(p_msg);
     
-    if (rs_http) {
-        process_send_buf((char *)rs_http->res_buf.c_str(), rs_http->res_buf.length());
-    }
+    //process_send_buf((char *)rs_http->res_buf.c_str(), rs_http->res_buf.length());
 }
 
 void ws_ser_connect::msg_recv_finish()
 {
-    LOG_DEBUG("hello world");
+   LOG_DEBUG("recv: %s", _recent_msg.c_str());
+
+   string *tmp = new string;
+   tmp->append("ok, I have recived !!!!!!!!!!!!!!");
+   ws_msg_type msg;
+   msg._p_msg = tmp;
+   msg._con_type = 0x01;
+
+   put_send_msg(msg);
+
+   LOG_DEBUG("send_response");
 }
 

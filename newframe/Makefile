@@ -4,7 +4,6 @@ IDL_DIR=$(HOME_DIR)idl
 
 INCLUDE = -I./${SRC_DIR}/ -I./${IDL_DIR} -I/usr/local/include 
 LIB = -L/usr/lib/ -lpthread -lssl\
-	  -lprotobuf \
 	   -L/usr/local/lib -lrt\
 		-libevent.a  \
 		 -libevent_core.a  \
@@ -32,7 +31,6 @@ OBJ	= ${SRC_DIR}/base_connect.o                     \
     ${SRC_DIR}/log_thread.o                        \
     ${SRC_DIR}/listen_thread.o                        \
     ${SRC_DIR}/thread_helper.o                       \
-    ${IDL_DIR}/idl.pb.o  
 
 OBJ_INCLUDE=
 

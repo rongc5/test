@@ -31,7 +31,7 @@ do { \
     stringstream ss; \
     ss << errorstr; \
     {\
-        LOG_WARNING("throw exception error %s",  ss.str().c_str());\
+        LOG_WARNING("throw exception error: %s",  ss.str().c_str());\
     }\
     throw CMyCommonException(ss.str());\
 } while (0)

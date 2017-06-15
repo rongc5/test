@@ -3,6 +3,12 @@
 #include "mybase64.h"
 #include "common_exception.h"
 
+ws_connect::ws_connect(int32_t sock, base_net_thread * thread):tcp_connect(sock, thread)
+{
+    _wb_status = WB_INIT_STAUTS;
+    _if_send_mask = true;
+}
+
 ws_connect::~ws_connect()
 {
     for (list<string*>::iterator itr = _p_tmp_str.begin(); itr != _p_tmp_str.end(); ++itr)
@@ -19,29 +25,22 @@ ws_connect::~ws_connect()
 
 size_t ws_connect::process_recv_buf(char *buf, size_t len)
 {
-    try {
-        if (WB_INIT_STAUTS == _wb_status)
-        {
-            RECV_WB_INIT_STAUTS_PROCESS(buf, len);
-        }
-        else if (WB_HANDSHAKE_OK == _wb_status)
-        {
-            RECV_WB_HANDSHAKE_OK_PROCESS(buf, len);
-        }
-        else if (WB_HEAD_FINISH == _wb_status)
-        {
-            RECV_WB_HEAD_FINISH_PROCESS(buf, len);
-        }
-        else
-        {			
-            THROW_COMMON_EXCEPT("WB_HANDSHAKE_FAIL status, can't recv and send data");
-        }
-    }catch (std::exception & e) {
-        LOG_WARNING("%s", e.what());
-        destroy();
-    } catch (...) {
-        LOG_WARNING("unknown execption");
-        destroy();
+    LOG_DEBUG("recv len: %d\n", len);
+    if (WB_INIT_STAUTS == _wb_status)
+    {
+        RECV_WB_INIT_STAUTS_PROCESS(buf, len);
+    }
+    else if (WB_HANDSHAKE_OK == _wb_status)
+    {
+        RECV_WB_HANDSHAKE_OK_PROCESS(buf, len);
+    }
+    else if (WB_HEAD_FINISH == _wb_status)
+    {
+        RECV_WB_HEAD_FINISH_PROCESS(buf, len);
+    }
+    else
+    {			
+        THROW_COMMON_EXCEPT("WB_HANDSHAKE_FAIL status, can't recv and send data");
     }
     return len;
 }
@@ -65,8 +64,7 @@ string* ws_connect::get_send_buf()
     {
         THROW_COMMON_EXCEPT("WB_HANDSHAKE_FAIL status, can't recv and send data");
     }
-    if (p_str)
-        LOG_DEBUG("str:%s", p_str->c_str());
+
     return p_str;
 }
 
@@ -110,26 +108,6 @@ web_socket_frame_header & ws_connect::get_recent_recv_frame_header()
 web_socket_frame_header & ws_connect::get_recent_send_frame_header()
 {
     return _recent_send_web_header;
-}
-
-void ws_connect::notice_send()
-{
-    if (_wb_status == WB_HANDSHAKE_OK) {
-        //_p_connect->add_event(EPOLLOUT);
-        try {
-            string * pstr = get_send_buf();
-            REC_OBJ<string> rc(pstr);
-            if (pstr) {
-                tcp_connect::process_send_buf((char *)pstr->c_str(), pstr->length());
-            }
-        }catch (std::exception & e) {
-            LOG_WARNING("%s", e.what());
-            destroy();
-        } catch (...) {
-            LOG_WARNING("unknown execption");
-            destroy();
-        }
-    }
 }
 
 const string & ws_connect::get_recv_header()
@@ -258,6 +236,8 @@ size_t ws_connect::RECV_WB_HANDSHAKE_OK_PROCESS(const char *buf, const size_t le
                     if (_recent_recv_web_header.if_finish())
                     {
                         msg_recv_finish();
+                        string str("");
+                        str.swap(_recent_msg);
                     }	
                 }                                        
             }
@@ -280,6 +260,7 @@ size_t ws_connect::RECV_WB_HANDSHAKE_OK_PROCESS(const char *buf, const size_t le
 
 void ws_connect::on_ping(const char op_code, const string &ping_data)
 {
+    LOG_DEBUG("recv ping, op_code:%#x", op_code);
 }
 
 void ws_connect::on_handshake_ok()
@@ -289,11 +270,8 @@ void ws_connect::on_handshake_ok()
 
 void ws_connect::put_send_msg(ws_msg_type msg)
 {
-    if (_send_list.begin() ==  _send_list.end())
-    {
-        notice_send();
-    }
     _send_list.push_back(msg);
+    notice_send();
 }
 
 ws_msg_type ws_connect::get_send_msg()

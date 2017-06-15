@@ -44,9 +44,9 @@ ws_cli_connect * ws_cli_connect::gen_connect(const string &ip, unsigned short po
     ws_req_head_para req_para;
 
     req_para._s_path = "/";
-    req_para._s_host = "www.inbilin.com";
+    req_para._s_host = "www.yiyi.com";
     req_para._s_websocket_key = "zEkljJfDq59X6c+8BZx7yw==";
-    req_para._origin = "inbilin.com";
+    req_para._origin = "yiyi.com";
     req_para._version = 13;
 
     l_conn->set_req_para(req_para);
@@ -67,6 +67,11 @@ void ws_cli_connect::send_request()
     put_send_msg(msg);
 
     LOG_DEBUG("send_request");
+}
+
+void ws_cli_connect::on_handshake_ok()
+{
+    send_request();
 }
 
 void ws_cli_connect::msg_recv_finish()

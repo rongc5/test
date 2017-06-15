@@ -61,7 +61,6 @@ string ws_req_connect::gen_send_http_head()
         << "Sec-WebSocket-Protocol: chat, superchat\r\n"
         << "Sec-WebSocket-Version: " << _req_para._version << "\r\n"
         << "\r\n";
-    LOG_DEBUG("head:%s", ss.str().c_str()); 
     return ss.str();
 }
 

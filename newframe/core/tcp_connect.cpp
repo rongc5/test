@@ -1,6 +1,7 @@
 #include "tcp_connect.h"
 #include "http_client_connect.h"
 #include "log_helper.h"
+#include "common_exception.h"
 
 
 tcp_connect::~tcp_connect()
@@ -18,35 +19,39 @@ void tcp_connect::call_back(int fd, short ev, void *arg)
 
 void tcp_connect::real_recv()
 {   
-    size_t tmp_len = max_recv_data - _recv_buf_len;     
+    size_t tmp_len = MAX_RECV_SIZE - _recv_buf.length();     
     ssize_t ret = 0;
     if (tmp_len > 0)
     {
-        ret = RECV((void*)(_recv_buf.c_str() + _recv_buf_len), tmp_len);
-        _recv_buf_len += ret;
+        char t_buf[SIZE_LEN_32768];
+        int r_len = tmp_len <= sizeof(t_buf) ? tmp_len:sizeof(t_buf);
+        //ret = RECV((void*)(_recv_buf.c_str() + _recv_buf_len), tmp_len);
+        ret = RECV(t_buf, r_len);
+        if (ret > 0)
+            _recv_buf.append(t_buf, ret);
     }
 
-    if (_recv_buf_len > 0)
+    if (_recv_buf.length() > 0)
     {
-        //LOG_DEBUG("process_recv_buf _recv_buf_len[%d] fd[%d]\n", _recv_buf_len, _fd);
-        size_t p_ret = process_recv_buf((char*)_recv_buf.c_str(), _recv_buf_len);
-        if (p_ret < _recv_buf_len)
+        //LOG_DEBUG("process_recv_buf _recv_buf_len[%d] fd[%d]\n", _recv_buf.length(), _fd);
+        size_t p_ret = process_recv_buf((char*)_recv_buf.c_str(), _recv_buf.length());
+        if (p_ret <= _recv_buf.length())
         {
-            string tmp_str = _recv_buf.substr(p_ret, _recv_buf_len - p_ret);
-            memcpy((void*)_recv_buf.c_str(), tmp_str.c_str(), tmp_str.length());
+            //string tmp_str = _recv_buf.substr(p_ret, _recv_buf_len - p_ret);
+            //memcpy((void*)_recv_buf.c_str(), tmp_str.c_str(), tmp_str.length());
+            _recv_buf.erase(0, p_ret);
         }
-
-        _recv_buf_len = _recv_buf_len - p_ret;          
-        //PDEBUG("p_ret[%d] _recv_buf_len[%d]\n", p_ret, _recv_buf_len);
-    }     
+    } 
 }
 
 void tcp_connect::peer_close()
 {
+    LOG_DEBUG("peer close");
 }
 
 void tcp_connect::error_back()
 {
+    LOG_DEBUG("err now");
 }
 
 int tcp_connect::RECV(void *buf, size_t len)
@@ -58,7 +63,7 @@ int tcp_connect::RECV(void *buf, size_t len)
         //LOG_DEBUG("the client close the socket %d", _fd);
         //THROW_COMMON_EXCEPT("the client close the socket(" << _fd << ")");
         peer_close();
-        destroy();
+        THROW_COMMON_EXCEPT("peer close");
     }
     else if (ret < 0)
     {
@@ -66,7 +71,7 @@ int tcp_connect::RECV(void *buf, size_t len)
         {
             //LOG_DEBUG("this socket occur fatal error %s", strerror(errno));
             error_back();
-            destroy();
+            THROW_COMMON_EXCEPT("recv errstr");
         }
         ret = 0;
     }
@@ -74,28 +79,13 @@ int tcp_connect::RECV(void *buf, size_t len)
     return ret;
 }
 
-size_t tcp_connect::process_send_buf(char *buf, size_t len)
-{
-    int ret = SEND(buf, len);
-    if (ret == -1 && (errno == EAGAIN || errno == EWOULDBLOCK)) {
-        if (!update_event(EV_READ | EV_WRITE | EV_PERSIST)) {
-            destroy();
-        }
-
-        _send_buf.append(buf, len);
-    }
-
-    return len;
-}
-
 ssize_t tcp_connect::SEND(const void *buf, const size_t len)
 {
     if (len == 0) //上层抛一个长度为0的数据过来 ,直接关闭
     {
         error_back();
-        destroy();
+        THROW_COMMON_EXCEPT("send length 0");
     }
-
 
     ssize_t ret =  send(_fd, buf, len, MSG_DONTWAIT);
     if (ret < 0)
@@ -103,7 +93,7 @@ ssize_t tcp_connect::SEND(const void *buf, const size_t len)
         if (errno != EAGAIN && errno != EWOULDBLOCK)
         {
             error_back();
-            destroy();
+            THROW_COMMON_EXCEPT("send errstr");
         }
     }
 
@@ -116,41 +106,43 @@ void tcp_connect::real_send()
 
     while (1)
     {
-        if (ii >= max_send_num)
+        if (ii >= MAX_SEND_NUM)
             break;
 
         ii++;
 
-        if (_send_buf.length())
+        if (!_send_buf) {
+            _send_buf = get_send_buf();
+        }
+
+        if (!_send_buf) {
+            if (!update_event(_ev &~EV_WRITE)) {
+                THROW_COMMON_EXCEPT("update_event(_ev &~EV_WRITE)");
+            }
+
+            break;
+        }
+
+        if (_send_buf && _send_buf->length())
         {
-            bool is_break = false;
-
-            ssize_t ret = SEND(_send_buf.c_str(), _send_buf.length());             
-
-            if (ret == (ssize_t)_send_buf.length())
+            ssize_t ret = SEND(_send_buf->c_str(), _send_buf->length());             
+            if (ret == (ssize_t)_send_buf->length())
             {
-                _send_buf.clear();
-                if (!update_event(EV_READ | EV_PERSIST)) {
-                    destroy();
-                }
-
+                delete _send_buf;
+                _send_buf = NULL;
             }
             else if (ret >= 0)
             {
-                _send_buf.erase(0, ret);
+                _send_buf->erase(0, ret);
 
                 LOG_WARNING("_p_send_buf erase %d", ret);
-                is_break = true;
             }
-            else //<0
-            {
-                is_break = true;
-            }
-
-            if (is_break)
-                break;
         }
     }
 }
 
-
+void tcp_connect::notice_send()
+{
+    if (!(_ev & EV_WRITE))
+        update_event(_ev | EV_WRITE);
+}

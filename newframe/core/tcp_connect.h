@@ -11,11 +11,23 @@ class tcp_connect:public base_connect
 {
     public:
 
-        tcp_connect(int32_t sock, base_net_thread * thread):base_connect(sock, thread), _recv_buf_len(0)
+        tcp_connect(int32_t sock, base_net_thread * thread):base_connect(sock, thread), _send_buf(NULL)
         {
         }
 
         virtual ~tcp_connect();
+
+        virtual size_t process_recv_buf(char *buf, size_t len) = 0;
+
+        virtual string * get_send_buf() = 0;
+
+        virtual void notice_send();
+        
+        virtual void peer_close();
+
+        virtual void error_back();
+
+    protected:
 
         virtual void call_back(int fd, short ev, void *arg);
 
@@ -27,19 +39,10 @@ class tcp_connect:public base_connect
 
         virtual ssize_t SEND(const void *buf, const size_t len);
 
-        virtual size_t process_recv_buf(char *buf, size_t len) = 0;
-
-        virtual size_t process_send_buf(char *buf, size_t len);
-        
-        virtual void peer_close();
-
-        virtual void error_back();
-
     protected:
         string _recv_buf;
-        size_t _recv_buf_len;
 
-        string _send_buf;
+        string * _send_buf;
 };
 
 
