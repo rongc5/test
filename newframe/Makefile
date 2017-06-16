@@ -22,9 +22,10 @@ OBJ	= ${SRC_DIR}/base_connect.o                     \
     ${SRC_DIR}/http_client_connect.o                       \
     ${SRC_DIR}/http_client_thread.o                       \
     ${SRC_DIR}/http_server_thread.o                       \
-    ${SRC_DIR}/ws_connect.o                       \
-    ${SRC_DIR}/ws_req_connect.o                       \
-    ${SRC_DIR}/ws_res_connect.o                       \
+    ${SRC_DIR}/base_data_process.o                       \
+    ${SRC_DIR}/ws_data_process.o                       \
+    ${SRC_DIR}/ws_req_data_process.o                      \
+    ${SRC_DIR}/ws_res_data_process.o                       \
     ${SRC_DIR}/event_ws_msg.o                       \
     ${SRC_DIR}/common_def.o                        \
     ${SRC_DIR}/mybase64.o                        \

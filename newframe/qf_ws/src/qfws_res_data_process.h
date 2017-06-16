@@ -1,20 +1,17 @@
-#ifndef __WS_SER_CONNECT_H_
-#define __WS_SER_CONNECT_H_
+#ifndef __QFWS_RES_DATA_PROCESS_H__
+#define __QFWS_RES_DATA_PROCESS_H__
 
 #include "log_helper.h"
-#include "ws_res_connect.h"
+#include "ws_res_data_process.h"
 #include "base_net_thread.h"
 #include "common_def.h"
 
-class base_net_thread;
-class ws_ser_connect:public ws_res_connect
+class tcp_connect;
+class qfws_res_data_process:public ws_res_data_process
 {
     public:
 
-        ws_ser_connect(int32_t sock, base_net_thread * thread):ws_res_connect(sock, thread)
-        {
-
-        }
+        ws_ser_connect(tcp_connect * t_cn);
 
         virtual ~ws_ser_connect();
 

@@ -5,6 +5,7 @@
 #include "common_def.h"
 #include "base_net_thread.h"
 
+class base_data_process;
 class base_net_thread;
 class base_connect
 {
@@ -29,9 +30,11 @@ class base_connect
 
         short get_ev_flags();
 
-        virtual void recv_passing_msg(base_passing_msg * p_msg);
+        virtual size_t process_recv_msg(base_passing_msg* p_msg);;
 
         const ObjId & get_id();
+
+        void set_process(base_data_process *p);
 
     protected:
 
@@ -44,6 +47,8 @@ class base_connect
 
         base_net_thread * _thread;
         ObjId _id_str;
+
+        base_data_process *_process;
 };
 
 

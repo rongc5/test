@@ -1,18 +1,16 @@
-#ifndef __WS_REQ_CONNECT__H__
-#define __WS_REQ_CONNECT__H__
+#ifndef __WS_REQ_DATA_PROCESS_H__
+#define __WS_REQ_DATA_PROCESS_H__
 
 #include "common_def.h"
 #include "log_helper.h"
-#include "ws_connect.h"
+#include "ws_data_process.h"
 #include "event_ws_msg.h"
 
-class base_net_thread;
-class ws_req_connect:public ws_connect
+class tcp_connect;
+class ws_req_data_process:public ws_data_process
 {
 	public:
-		ws_req_connect(int32_t sock, base_net_thread * thread):ws_connect(sock, thread)
-	{			
-	}
+		ws_req_data_process(tcp_connect * t_cn);
 
 		ws_req_head_para &get_req_para();
 

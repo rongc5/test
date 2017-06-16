@@ -1,29 +1,20 @@
-#ifndef __WS_RES_CONNECT_H__
-#define __WS_RES_CONNECT_H__
+#ifndef __WS_RES_DATA_PROCESS_H__
+#define __WS_RES_DATA_PROCESS_H__
 
-#include "ws_connect.h"
+#include "ws_data_process.h"
 #include "event_ws_msg.h"
 #include "common_def.h"
 #include "log_helper.h"
 
-
-class base_net_thread;
-class ws_res_connect:public ws_connect
+class tcp_connect;
+class ws_res_data_process:public ws_data_process
 {
     public:		
-        ws_res_connect(int32_t sock, base_net_thread * thread):ws_connect(sock, thread)
-    {
-        _wb_version = 0;		
-        _if_send_mask = false;
-        _if_upgrade = false;
-    }
+        ws_res_data_process(tcp_connect * t_cn);
 
-        virtual ~ws_res_connect()
+        virtual ~ws_res_data_process()
         {			
         }
-
-
-        void on_connect_comming();
 
         virtual void handle_timeout(const uint32_t timer_type);
 

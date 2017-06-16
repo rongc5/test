@@ -1,13 +1,15 @@
-#include "ws_res_connect.h"
+#include "ws_res_data_process.h"
 #include "common_exception.h"
+#include "tcp_connect.h"
 
-void ws_res_connect::on_connect_comming()
+ws_res_data_process::ws_res_data_process(tcp_connect * t_cn):ws_data_process(t_cn)
 {
-    //_p_connect->set_timer(WEB_SOCKET_HANDSHAKE_OK_TIMER_TYPE, 
-    //WEB_SOCKET_HANDSHAKE_OK_TIMER_LENGTH);
+    _wb_version = 0;
+    _if_send_mask = false;
+    _if_upgrade = false;
 }
 
-void ws_res_connect::handle_timeout(const uint32_t timer_type)
+void ws_res_data_process::handle_timeout(const uint32_t timer_type)
 {
     //if (timer_type == WEB_SOCKET_HANDSHAKE_OK_TIMER_TYPE)
     //{
@@ -26,7 +28,7 @@ void ws_res_connect::handle_timeout(const uint32_t timer_type)
     //}
 }
 
-string* ws_res_connect::SEND_WB_HEAD_FINISH_PROCESS()
+string* ws_res_data_process::SEND_WB_HEAD_FINISH_PROCESS()
 {
     string *p_str = new string(gen_send_http_head());
     _send_header = *p_str;
@@ -43,17 +45,17 @@ string* ws_res_connect::SEND_WB_HEAD_FINISH_PROCESS()
     return p_str;
 }
 
-string* ws_res_connect::SEND_WB_INIT_STAUTS_PROCESS()
+string* ws_res_data_process::SEND_WB_INIT_STAUTS_PROCESS()
 {
     THROW_COMMON_EXCEPT("web_socket_process_res can't send data in WB_INIT_STATUS)");
 }
 
-size_t ws_res_connect::RECV_WB_HEAD_FINISH_PROCESS(const char *buf, const size_t len)
+size_t ws_res_data_process::RECV_WB_HEAD_FINISH_PROCESS(const char *buf, const size_t len)
 {
     THROW_COMMON_EXCEPT("web_socket_process_res can't recv data in WB_HEAD_FINISH)");	
 }
 
-size_t ws_res_connect::RECV_WB_INIT_STAUTS_PROCESS(const char *buf, const size_t len)
+size_t ws_res_data_process::RECV_WB_INIT_STAUTS_PROCESS(const char *buf, const size_t len)
 {
     _recv_header.append(buf, len);
     LOG_DEBUG("buf:%s _recv_header:%s", buf, _recv_header.c_str());
@@ -68,7 +70,7 @@ Connection: Upgrade
 Sec-WebSocket-Accept: s3pPLMBiTxaQ9kYGzzhZRbK+xOo=
 Sec-WebSocket-Protocol: chat
 */
-string ws_res_connect::gen_send_http_head()
+string ws_res_data_process::gen_send_http_head()
 {		
     stringstream ss;
     if (!_if_upgrade)
@@ -91,7 +93,7 @@ string ws_res_connect::gen_send_http_head()
     return ss.str();
 }
 
-void  ws_res_connect::parse_header()
+void  ws_res_data_process::parse_header()
 {    		
     GetCaseStringByLabel(_recv_header, "Sec-WebSocket-Key:", "\r\n", _s_websocket_key);
     StringTrim(_s_websocket_key);
@@ -105,9 +107,9 @@ void  ws_res_connect::parse_header()
     }
 }
 
-bool ws_res_connect::check_head_finish()
+bool ws_res_data_process::check_head_finish()
 {
-    bool ret = ws_connect::check_head_finish();
+    bool ret = ws_data_process::check_head_finish();
     if (ret)
     {			    
         _wb_status = WB_HEAD_FINISH;
@@ -119,23 +121,23 @@ bool ws_res_connect::check_head_finish()
 }
 
 
-void ws_res_connect::on_ping(const char op_code,const string &ping_data)
+void ws_res_data_process::on_ping(const char op_code,const string &ping_data)
 {
     if (op_code == 0x09)
         send_ping(0x0a, "");
 }
 
- void ws_res_connect::on_handshake_ok()
+ void ws_res_data_process::on_handshake_ok()
 {
     int ikeepAlive = 1; 
     int ikeepIdle = 2*60*60; 
     int ikeepInterval = 20; 
     int ikeepCount = 3; 
 
-    setsockopt(get_sock(), SOL_SOCKET, SO_KEEPALIVE, ( void * )&ikeepAlive, sizeof( ikeepAlive ) );
-    setsockopt(get_sock(), SOL_TCP, TCP_KEEPIDLE, ( void* )&ikeepIdle, sizeof( ikeepIdle ) );
-    setsockopt(get_sock(), SOL_TCP, TCP_KEEPINTVL, ( void * )&ikeepInterval, sizeof( ikeepInterval ) );
-    setsockopt(get_sock(), SOL_TCP, TCP_KEEPCNT, ( void * )&ikeepCount, sizeof( ikeepCount ) );
+    setsockopt(_cnn->get_sock(), SOL_SOCKET, SO_KEEPALIVE, ( void * )&ikeepAlive, sizeof( ikeepAlive ) );
+    setsockopt(_cnn->get_sock(), SOL_TCP, TCP_KEEPIDLE, ( void* )&ikeepIdle, sizeof( ikeepIdle ) );
+    setsockopt(_cnn->get_sock(), SOL_TCP, TCP_KEEPINTVL, ( void * )&ikeepInterval, sizeof( ikeepInterval ) );
+    setsockopt(_cnn->get_sock(), SOL_TCP, TCP_KEEPCNT, ( void * )&ikeepCount, sizeof( ikeepCount ) );
 
     notice_send();
 }

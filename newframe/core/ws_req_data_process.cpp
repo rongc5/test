@@ -1,24 +1,29 @@
-#include "ws_req_connect.h"
+#include "ws_req_data_process.h"
 #include "base_net_thread.h"
 #include "common_exception.h"
 #include "log_helper.h"
+#include "tcp_connect.h"
 
-void ws_req_connect::set_req_para(ws_req_head_para & req_para)
+ws_req_data_process::ws_req_data_process(tcp_connect * t_cn):ws_data_process(t_cn) 
+{
+}
+
+void ws_req_data_process::set_req_para(ws_req_head_para & req_para)
 {
     _req_para = req_para;
 }
 
-ws_req_head_para &ws_req_connect::get_req_para()
+ws_req_head_para &ws_req_data_process::get_req_para()
 {
     return _req_para;
 }		
 
-string* ws_req_connect::SEND_WB_HEAD_FINISH_PROCESS()
+string* ws_req_data_process::SEND_WB_HEAD_FINISH_PROCESS()
 {
     return NULL;
 }
 
-string* ws_req_connect::SEND_WB_INIT_STAUTS_PROCESS()
+string* ws_req_data_process::SEND_WB_INIT_STAUTS_PROCESS()
 {
     string *p_str = new string();
     *p_str = gen_send_http_head();
@@ -27,14 +32,14 @@ string* ws_req_connect::SEND_WB_INIT_STAUTS_PROCESS()
     return p_str;
 }
 
-size_t ws_req_connect::RECV_WB_HEAD_FINISH_PROCESS(const char *buf, const size_t len)
+size_t ws_req_data_process::RECV_WB_HEAD_FINISH_PROCESS(const char *buf, const size_t len)
 {
     _recv_header.append(buf, len);
     check_head_finish();
     return len; 
 }
 
-size_t ws_req_connect::RECV_WB_INIT_STAUTS_PROCESS(const char *buf, const size_t len)
+size_t ws_req_data_process::RECV_WB_INIT_STAUTS_PROCESS(const char *buf, const size_t len)
 {
     THROW_COMMON_EXCEPT("web_socket_process_res can't recv data in WB_INIT_STAUTS");
 }
@@ -49,7 +54,7 @@ Origin: http://example.com
 Sec-WebSocket-Protocol: chat, superchat
 Sec-WebSocket-Version: 13
 */      
-string ws_req_connect::gen_send_http_head()
+string ws_req_data_process::gen_send_http_head()
 {
     stringstream ss;
     ss << "GET "<< _req_para._s_path <<" HTTP/1.1\r\n"
@@ -64,7 +69,7 @@ string ws_req_connect::gen_send_http_head()
     return ss.str();
 }
 
-void  ws_req_connect::parse_header()
+void  ws_req_data_process::parse_header()
 {
     string ret_code;
     GetCaseStringByLabel(_recv_header, "HTTP/1.1 ", " ", ret_code);
@@ -85,9 +90,9 @@ void  ws_req_connect::parse_header()
 }
 
 
-bool ws_req_connect::check_head_finish()
+bool ws_req_data_process::check_head_finish()
 {
-    bool ret = ws_connect::check_head_finish();
+    bool ret = ws_data_process::check_head_finish();
     if (ret)
     {
         //设置可以发送数据			    

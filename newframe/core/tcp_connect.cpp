@@ -1,7 +1,7 @@
 #include "tcp_connect.h"
-#include "http_client_connect.h"
 #include "log_helper.h"
 #include "common_exception.h"
+#include "base_data_process.h"
 
 
 tcp_connect::~tcp_connect()
@@ -34,7 +34,7 @@ void tcp_connect::real_recv()
     if (_recv_buf.length() > 0)
     {
         //LOG_DEBUG("process_recv_buf _recv_buf_len[%d] fd[%d]\n", _recv_buf.length(), _fd);
-        size_t p_ret = process_recv_buf((char*)_recv_buf.c_str(), _recv_buf.length());
+        size_t p_ret = _process->process_recv_buf((char*)_recv_buf.c_str(), _recv_buf.length());
         if (p_ret <= _recv_buf.length())
         {
             //string tmp_str = _recv_buf.substr(p_ret, _recv_buf_len - p_ret);
@@ -44,15 +44,6 @@ void tcp_connect::real_recv()
     } 
 }
 
-void tcp_connect::peer_close()
-{
-    LOG_DEBUG("peer close");
-}
-
-void tcp_connect::error_back()
-{
-    LOG_DEBUG("err now");
-}
 
 int tcp_connect::RECV(void *buf, size_t len)
 {
@@ -62,7 +53,7 @@ int tcp_connect::RECV(void *buf, size_t len)
     {
         //LOG_DEBUG("the client close the socket %d", _fd);
         //THROW_COMMON_EXCEPT("the client close the socket(" << _fd << ")");
-        peer_close();
+        _process->err_close();
         THROW_COMMON_EXCEPT("peer close");
     }
     else if (ret < 0)
@@ -70,7 +61,7 @@ int tcp_connect::RECV(void *buf, size_t len)
         if (errno != EAGAIN)
         {
             //LOG_DEBUG("this socket occur fatal error %s", strerror(errno));
-            error_back();
+            _process->err_close();
             THROW_COMMON_EXCEPT("recv errstr");
         }
         ret = 0;
@@ -83,7 +74,7 @@ ssize_t tcp_connect::SEND(const void *buf, const size_t len)
 {
     if (len == 0) //上层抛一个长度为0的数据过来 ,直接关闭
     {
-        error_back();
+        _process->err_close();
         THROW_COMMON_EXCEPT("send length 0");
     }
 
@@ -92,7 +83,7 @@ ssize_t tcp_connect::SEND(const void *buf, const size_t len)
     {
         if (errno != EAGAIN && errno != EWOULDBLOCK)
         {
-            error_back();
+            _process->err_close();
             THROW_COMMON_EXCEPT("send errstr");
         }
     }
@@ -112,7 +103,7 @@ void tcp_connect::real_send()
         ii++;
 
         if (!_send_buf) {
-            _send_buf = get_send_buf();
+            _send_buf = _process->get_send_buf();
         }
 
         if (!_send_buf) {

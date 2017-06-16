@@ -2,6 +2,7 @@
 #include "base_net_thread.h"
 #include "common_exception.h"
 #include "log_helper.h"
+#include "base_data_process.h"
 
 
 base_connect::base_connect(int32_t sock, base_net_thread * thread):_fd(sock), _ev(0),_thread(thread)
@@ -14,9 +15,24 @@ const ObjId & base_connect::get_id()
     return _id_str;
 }
 
-void base_connect::recv_passing_msg(base_passing_msg * p_msg)
+void base_connect::set_process(base_data_process *p)
 {
-    REC_OBJ<base_passing_msg> rc(p_msg); 
+    if (_process != NULL)
+        delete _process;
+
+    _process = p;
+    _process->set_para();
+}
+
+size_t base_connect::process_recv_msg(base_passing_msg* p_msg)
+{
+    if (_process) {
+        _process->process_recv_msg(p_msg);
+    }else {
+        REC_OBJ<base_passing_msg> rc(p_msg);
+    }
+
+    return 0;
 }
 
 bool base_connect::update_event(short ev)
@@ -67,7 +83,6 @@ void base_connect::get_local_addr(sockaddr_in &addr)
     socklen_t len = 0;
     getsockname(_fd, (sockaddr*)&addr, &len);
 }
-
 
 void base_connect::on_cb(int fd, short ev, void *arg)
 {

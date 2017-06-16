@@ -1,15 +1,15 @@
-#include "ws_connect.h"
+#include "ws_data_process.h"
 #include "log_helper.h"
 #include "mybase64.h"
 #include "common_exception.h"
 
-ws_connect::ws_connect(int32_t sock, base_net_thread * thread):tcp_connect(sock, thread)
+ws_data_process::ws_data_process(tcp_connect * t_cn):_cnn(t_cn)
 {
     _wb_status = WB_INIT_STAUTS;
     _if_send_mask = true;
 }
 
-ws_connect::~ws_connect()
+ws_data_process::~ws_data_process()
 {
     for (list<string*>::iterator itr = _p_tmp_str.begin(); itr != _p_tmp_str.end(); ++itr)
     {
@@ -23,7 +23,7 @@ ws_connect::~ws_connect()
     }
 }
 
-size_t ws_connect::process_recv_buf(char *buf, size_t len)
+size_t ws_data_process::process_recv_buf(char *buf, size_t len)
 {
     LOG_DEBUG("recv len: %d\n", len);
     if (WB_INIT_STAUTS == _wb_status)
@@ -45,7 +45,7 @@ size_t ws_connect::process_recv_buf(char *buf, size_t len)
     return len;
 }
 
-string* ws_connect::get_send_buf()
+string* ws_data_process::get_send_buf()
 {
     string *p_str = NULL;
     if (WB_HEAD_FINISH == _wb_status) //发送头
@@ -68,15 +68,15 @@ string* ws_connect::get_send_buf()
     return p_str;
 }
 
-void ws_connect::reset()
+void ws_data_process::reset()
 {
 }
 
-void ws_connect::on_connect_comming()
+void ws_data_process::on_connect_comming()
 {
 }
 
-void ws_connect::send_ping(const char op_code, const string &ping_data)
+void ws_data_process::send_ping(const char op_code, const string &ping_data)
 {
     if (ping_data.length() < 125) //大于125字节的ping包不让发出去了
     {
@@ -88,7 +88,7 @@ void ws_connect::send_ping(const char op_code, const string &ping_data)
     }
 }
 /************************************************************/
-string ws_connect::get_web_accept_key(const string &ws_key)
+string ws_data_process::get_web_accept_key(const string &ws_key)
 {
     string accept_key;
     string tmp_key = ws_key + WEB_SOCKET_GUID;			
@@ -100,33 +100,33 @@ string ws_connect::get_web_accept_key(const string &ws_key)
 }
 
 
-web_socket_frame_header & ws_connect::get_recent_recv_frame_header()
+web_socket_frame_header & ws_data_process::get_recent_recv_frame_header()
 {
     return _recent_recv_web_header;
 }
 
-web_socket_frame_header & ws_connect::get_recent_send_frame_header()
+web_socket_frame_header & ws_data_process::get_recent_send_frame_header()
 {
     return _recent_send_web_header;
 }
 
-const string & ws_connect::get_recv_header()
+const string & ws_data_process::get_recv_header()
 {
     return _recv_header;
 }
 
-const string & ws_connect::get_send_header()
+const string & ws_data_process::get_send_header()
 {
     return _send_header;
 }		
 
-void ws_connect::handle_timeout(const uint32_t timer_type)
+void ws_data_process::handle_timeout(const uint32_t timer_type)
 {
     //_p_data_process->handle_timeout(timer_type);
 }
 
 
-bool ws_connect::check_head_finish()
+bool ws_data_process::check_head_finish()
 {
     bool ret = false;
     size_t pos =  _recv_header.find("\r\n\r\n");
@@ -146,7 +146,7 @@ bool ws_connect::check_head_finish()
     return ret;
 }		
 
-string * ws_connect::SEND_WB_HANDSHAKE_OK_PROCESS()
+string * ws_data_process::SEND_WB_HANDSHAKE_OK_PROCESS()
 {    
     string *p_str = NULL;   
     if (_p_tmp_str.begin() != _p_tmp_str.end())
@@ -194,7 +194,7 @@ string * ws_connect::SEND_WB_HANDSHAKE_OK_PROCESS()
 }
 
 
-size_t ws_connect::RECV_WB_HANDSHAKE_OK_PROCESS(const char *buf, const size_t len)
+size_t ws_data_process::RECV_WB_HANDSHAKE_OK_PROCESS(const char *buf, const size_t len)
 {
     LOG_DEBUG("RECV_WB_HANDSHAKE_OK_PROCESS %d", len);
     char *left_buf = (char*)buf;
@@ -258,23 +258,23 @@ size_t ws_connect::RECV_WB_HANDSHAKE_OK_PROCESS(const char *buf, const size_t le
     return len;
 }
 
-void ws_connect::on_ping(const char op_code, const string &ping_data)
+void ws_data_process::on_ping(const char op_code, const string &ping_data)
 {
     LOG_DEBUG("recv ping, op_code:%#x", op_code);
 }
 
-void ws_connect::on_handshake_ok()
+void ws_data_process::on_handshake_ok()
 {
     LOG_DEBUG("handle_ok");
 }
 
-void ws_connect::put_send_msg(ws_msg_type msg)
+void ws_data_process::put_send_msg(ws_msg_type msg)
 {
     _send_list.push_back(msg);
     notice_send();
 }
 
-ws_msg_type ws_connect::get_send_msg()
+ws_msg_type ws_data_process::get_send_msg()
 {
     ws_msg_type ret;
     if (_send_list.begin() !=  _send_list.end())
@@ -285,20 +285,20 @@ ws_msg_type ws_connect::get_send_msg()
     return ret;
 }
 
-string *ws_connect::get_send_data()
+string *ws_data_process::get_send_data()
 {
     string *ret =_p_current_send._p_msg;
     _p_current_send.init();
     return ret;
 }
 
-size_t ws_connect::process_recv_body(const char *buf, const size_t len)
+size_t ws_data_process::process_recv_body(const char *buf, const size_t len)
 {
     _recent_msg.append(buf, len);
     return len;
 }
 
-uint64_t ws_connect::get_next_send_len(int8_t &content_type)
+uint64_t ws_data_process::get_next_send_len(int8_t &content_type)
 {
     uint64_t ret = 0;
     _p_current_send = get_send_msg();
@@ -308,4 +308,11 @@ uint64_t ws_connect::get_next_send_len(int8_t &content_type)
         content_type = _p_current_send._con_type;
     }
     return ret;
+}
+
+void ws_data_process::notice_send()
+{
+    if (_cnn) {
+        _cnn->notice_send();
+    }
 }

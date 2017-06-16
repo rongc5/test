@@ -1,19 +1,16 @@
-#ifndef __WS_CONNECT_H__
-#define __WS_CONNECT_H__
+#ifndef __WS_DATA_PROCESS_H__
+#define __WS_DATA_PROCESS_H__
 
-#include "log_helper.h"
 #include "tcp_connect.h"
-#include "base_net_thread.h"
 #include "common_def.h"
 #include "event_ws_msg.h"
 
-class base_net_thread;
-class ws_connect:public tcp_connect
+class ws_data_process:public base_data_process
 {
     public:
-        ws_connect(int32_t sock, base_net_thread * thread);
+        ws_data_process(tcp_connect * t_cn);
 
-        virtual ~ws_connect();
+        virtual ~ws_data_process();
 
     public:
 
@@ -40,6 +37,8 @@ class ws_connect:public tcp_connect
 
         virtual void handle_timeout(const uint32_t timer_type);
 
+        virtual void notice_send();
+
     protected:
         virtual void  parse_header() = 0;        
 
@@ -65,6 +64,8 @@ class ws_connect:public tcp_connect
 
         string _ping_data;
         list<string*> _p_tmp_str;
+
+        tcp_connect * _cnn;
 
     protected:
         virtual void on_ping(const char op_code, const string &ping_data);        

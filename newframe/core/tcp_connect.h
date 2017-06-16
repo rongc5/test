@@ -19,13 +19,7 @@ class tcp_connect:public base_connect
 
         virtual size_t process_recv_buf(char *buf, size_t len) = 0;
 
-        virtual string * get_send_buf() = 0;
-
         virtual void notice_send();
-        
-        virtual void peer_close();
-
-        virtual void error_back();
 
     protected:
 
