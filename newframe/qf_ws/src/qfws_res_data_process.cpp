@@ -1,29 +1,17 @@
-#include "ws_ser_connect.h"
+#include "qfws_res_data_process.h"
 #include "log_helper.h"
+#include "tcp_connect.h"
+#include "ws_res_data_process.h"
 
-
-ws_ser_connect::~ws_ser_connect()
+qfws_res_data_process::qfws_res_data_process(tcp_connect * t_cn):ws_res_data_process(t_cn)
 {
 }
 
-ws_ser_connect * ws_ser_connect::gen_connect(int fd, base_net_thread * thread)
+qfws_res_data_process::~qfws_res_data_process()
 {
-    //set_unblock(fd);
-    ws_ser_connect * c_conn = new ws_ser_connect(fd, thread);
-    c_conn->update_event(EV_TIMEOUT | EV_READ | EV_PERSIST);
-    thread->add_connect_map(c_conn);
-
-    return c_conn;
 }
 
-void ws_ser_connect::recv_passing_msg(base_passing_msg * p_msg)
-{
-    REC_OBJ<base_passing_msg> rc(p_msg);
-    
-    //process_send_buf((char *)rs_http->res_buf.c_str(), rs_http->res_buf.length());
-}
-
-void ws_ser_connect::msg_recv_finish()
+void qfws_res_data_process::msg_recv_finish()
 {
    LOG_DEBUG("recv: %s", _recent_msg.c_str());
 

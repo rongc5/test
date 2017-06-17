@@ -1,5 +1,6 @@
 #include "ws_ser_thread.h"
-#include "ws_ser_connect.h"
+#include "qfws_res_data_process.h"
+#include "tcp_connect.h"
 
 bool ws_ser_thread::handle_msg(base_passing_msg * p_msg)
 {
@@ -18,14 +19,18 @@ bool ws_ser_thread::handle_msg(base_passing_msg * p_msg)
 
             set_unblock(fd);
 
-            ws_ser_connect::gen_connect(fd, this);
+            tcp_connect * t_cn = new tcp_connect(fd, this);
+            qfws_res_data_process * qf_process = new qfws_res_data_process(t_cn);
+            t_cn->set_process(qf_process);
+            t_cn->update_event(EV_TIMEOUT | EV_READ | EV_PERSIST);
+            this->add_connect_map(t_cn);
         }
         break;
         default :
         {
             base_connect * b_con = get_connect(p_msg->_dst_id);
             if (b_con){
-                b_con->recv_passing_msg(p_msg);
+                b_con->process_recv_msg(p_msg);
             } else {
                 REC_OBJ<base_passing_msg> rc(p_msg);
             }

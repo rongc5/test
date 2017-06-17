@@ -1,9 +1,9 @@
-#include "ws_cli_connect.h"
+#include "ws_client_data_process.h"
 #include "base_net_thread.h"
 #include "log_helper.h"
 
 
-ws_cli_connect * ws_cli_connect::gen_connect(const string &ip, unsigned short port, base_net_thread * thread)
+ws_client_data_process * ws_client_data_process::gen_connect(const string &ip, unsigned short port, base_net_thread * thread)
 {
     struct sockaddr_in address;
 
@@ -37,7 +37,7 @@ ws_cli_connect * ws_cli_connect::gen_connect(const string &ip, unsigned short po
 
     set_unblock(_fd);
 
-    ws_cli_connect * l_conn = new ws_cli_connect(_fd, thread);    
+    ws_client_data_process * l_conn = new ws_client_data_process(_fd, thread);    
     l_conn->update_event(EV_TIMEOUT | EV_READ | EV_PERSIST);
     thread->add_connect_map(l_conn);
     
@@ -56,7 +56,7 @@ ws_cli_connect * ws_cli_connect::gen_connect(const string &ip, unsigned short po
     return l_conn;
 }
 
-void ws_cli_connect::send_request()
+void ws_client_data_process::send_request()
 {
     string *tmp = new string;
     tmp->append("hello, this is test !!!!!!!!!!!!!!");
@@ -69,12 +69,12 @@ void ws_cli_connect::send_request()
     LOG_DEBUG("send_request");
 }
 
-void ws_cli_connect::on_handshake_ok()
+void ws_client_data_process::on_handshake_ok()
 {
     send_request();
 }
 
-void ws_cli_connect::msg_recv_finish()
+void ws_client_data_process::msg_recv_finish()
 {
     LOG_DEBUG("recv: %s", _recent_msg.c_str());
     

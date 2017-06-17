@@ -20,7 +20,7 @@ CC  = g++ $(CPPFLAGS)
 
 
 OBJ	= $(LOC_DIR)/main.o     \
-	$(LOC_DIR)/ws_ser_connect.o     \
+	$(LOC_DIR)/qfws_res_data_process.o     \
 	$(LOC_DIR)/ws_ser_thread.o     \
 
 

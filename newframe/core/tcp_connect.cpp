@@ -44,6 +44,10 @@ void tcp_connect::real_recv()
     } 
 }
 
+size_t tcp_connect::process_recv_buf(char *buf, size_t len)
+{
+    return _process->process_recv_buf(buf, len);
+}
 
 int tcp_connect::RECV(void *buf, size_t len)
 {

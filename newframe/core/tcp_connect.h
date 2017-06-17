@@ -17,7 +17,7 @@ class tcp_connect:public base_connect
 
         virtual ~tcp_connect();
 
-        virtual size_t process_recv_buf(char *buf, size_t len) = 0;
+        virtual size_t process_recv_buf(char *buf, size_t len);
 
         virtual void notice_send();
 

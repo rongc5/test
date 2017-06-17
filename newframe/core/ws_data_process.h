@@ -4,6 +4,7 @@
 #include "tcp_connect.h"
 #include "common_def.h"
 #include "event_ws_msg.h"
+#include "base_data_process.h"
 
 class ws_data_process:public base_data_process
 {
