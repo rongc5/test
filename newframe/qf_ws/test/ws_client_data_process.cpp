@@ -1,9 +1,13 @@
 #include "ws_client_data_process.h"
 #include "base_net_thread.h"
 #include "log_helper.h"
+#include "tcp_connect.h"
 
+ws_client_data_process::ws_client_data_process(tcp_connect * t_cn):ws_req_data_process(t_cn)
+{
+}
 
-ws_client_data_process * ws_client_data_process::gen_connect(const string &ip, unsigned short port, base_net_thread * thread)
+void ws_client_data_process::gen_connect(const string &ip, unsigned short port, base_net_thread * thread)
 {
     struct sockaddr_in address;
 
@@ -25,7 +29,7 @@ ws_client_data_process * ws_client_data_process::gen_connect(const string &ip, u
     if (_fd < 0) 
     {
         //LOG_WARNING("socket error %s", strerror(errno));     
-        return NULL;
+        return ;
     }
     
     int len =  sizeof(address);
@@ -37,9 +41,11 @@ ws_client_data_process * ws_client_data_process::gen_connect(const string &ip, u
 
     set_unblock(_fd);
 
-    ws_client_data_process * l_conn = new ws_client_data_process(_fd, thread);    
-    l_conn->update_event(EV_TIMEOUT | EV_READ | EV_PERSIST);
-    thread->add_connect_map(l_conn);
+    tcp_connect * t_cn = new tcp_connect(_fd, thread);
+    ws_client_data_process * qf_process = new ws_client_data_process(t_cn);
+    t_cn->set_process(qf_process);
+    t_cn->update_event(EV_TIMEOUT | EV_READ | EV_PERSIST);
+    thread->add_connect_map(t_cn);
     
     ws_req_head_para req_para;
 
@@ -49,11 +55,9 @@ ws_client_data_process * ws_client_data_process::gen_connect(const string &ip, u
     req_para._origin = "yiyi.com";
     req_para._version = 13;
 
-    l_conn->set_req_para(req_para);
+    qf_process->set_req_para(req_para);
 
-    l_conn->notice_send();
-
-    return l_conn;
+    qf_process->notice_send();
 }
 
 void ws_client_data_process::send_request()

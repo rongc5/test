@@ -12,7 +12,7 @@ class base_data_process
 
         virtual void err_close();
 
-        string *get_send_buf();
+        virtual string *get_send_buf();
 
         virtual void reset();
 

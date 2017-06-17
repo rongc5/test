@@ -34,6 +34,7 @@ void tcp_connect::real_recv()
     if (_recv_buf.length() > 0)
     {
         //LOG_DEBUG("process_recv_buf _recv_buf_len[%d] fd[%d]\n", _recv_buf.length(), _fd);
+        LOG_DEBUG("recv:%s", _recv_buf.c_str());
         size_t p_ret = _process->process_recv_buf((char*)_recv_buf.c_str(), _recv_buf.length());
         if (p_ret <= _recv_buf.length())
         {
@@ -120,6 +121,7 @@ void tcp_connect::real_send()
 
         if (_send_buf && _send_buf->length())
         {
+            LOG_DEBUG("send:%s", _send_buf->c_str());
             ssize_t ret = SEND(_send_buf->c_str(), _send_buf->length());             
             if (ret == (ssize_t)_send_buf->length())
             {

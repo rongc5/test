@@ -5,7 +5,7 @@
 #include "base_data_process.h"
 
 
-base_connect::base_connect(int32_t sock, base_net_thread * thread):_fd(sock), _ev(0),_thread(thread)
+base_connect::base_connect(int32_t sock, base_net_thread * thread):_fd(sock), _ev(0),_thread(thread), _process(NULL)
 {   
     _id_str = thread->gen_id_str();
 }

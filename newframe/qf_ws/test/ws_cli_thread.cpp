@@ -1,5 +1,5 @@
 #include "ws_cli_thread.h"
-#include "ws_cli_connect.h"
+#include "ws_client_data_process.h"
 
 
 void ws_cli_thread::init(const string &ip, unsigned short port)
@@ -7,7 +7,7 @@ void ws_cli_thread::init(const string &ip, unsigned short port)
     _ip = ip;
     _port = port;
 
-    ws_cli_connect::gen_connect(ip, _port, this);
+    ws_client_data_process::gen_connect(ip, _port, this);
 }
 
 

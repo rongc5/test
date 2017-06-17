@@ -20,7 +20,7 @@ CC  = g++ $(CPPFLAGS)
 
 
 OBJ	= $(LOC_DIR)/main.o     \
-	$(LOC_DIR)/ws_cli_connect.o     \
+	  $(LOC_DIR)/ws_client_data_process.o     \
 	$(LOC_DIR)/ws_cli_thread.o     \
 
 
