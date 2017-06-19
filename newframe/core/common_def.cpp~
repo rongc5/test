@@ -226,31 +226,3 @@ int UrlEncode(const string &sSrc, string &sDest)
     return 0;
 }
 
-int UrlDecode(const string &sSrc, string &sDest)
-{
-	int nLen = sSrc.length();
-	for (int i = 0; i < nLen; )
-	{
-		unsigned char chTmp =  (unsigned char)sSrc[i];
-		if (chTmp == '%')
-		{
-			if (i + 2 >= nLen)
-				return -1;
-			
-		        ++i;
-		        char szBuf[3] = {0};
-		        szBuf[0] = sSrc[i++];
-		        szBuf[1] = sSrc[i++];
-		        int nTmp = strtoul(szBuf, 0, 16);
-			 chTmp = nTmp;
-		        sDest.append(1, chTmp);
-		}
-		else
-		{
-			sDest.append(1, sSrc[i]);
-			++i;
-		}
-	}
-	return 0;
-}
-

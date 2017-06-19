@@ -3,9 +3,7 @@ SRC_DIR=${HOME_DIR}core
 IDL_DIR=$(HOME_DIR)idl
 
 INCLUDE = -I./${SRC_DIR}/ -I./${IDL_DIR} -I/usr/local/include 
-LIB = -L/usr/lib/ -lpthread -lssl\
-	   -L/usr/local/lib -lrt\
-		-libevent.a  \
+LIB =  -libevent.a  \
 		 -libevent_core.a  \
 		 -lbevent_extra.a  \
 		 -libevent_openssl.a  \

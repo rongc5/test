@@ -72,7 +72,6 @@ const int MAX_RECV_SIZE = 1024*20;
 const int MAX_SEND_NUM = 5;
 
 const uint32_t MAX_HTTP_HEAD_LEN = 10*1024;
-const uint32_t BOUNDARY_EXTRA_LEN = 8;
 
 
 #define MAX_BUF_SIZE 1024 * 10 * 10

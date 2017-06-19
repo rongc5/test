@@ -6,8 +6,10 @@ LOC_DIR=.
 
 INCLUDE = -I./${INC_DIR}/ -I./${IDL_DIR}/
 
-LIB = -L$(LIB_DIR) -lnewframe -lpthread -lssl\
-	  -L/usr/local/lib -lrt \
+LIB = -L$(LIB_DIR) -lrt -lnewframe -lpthread \
+	  /usr/lib/libssl.a  \
+	  /usr/lib/libcrypt.a  \
+	  /usr/lib/libcrypto.a  \
 	  /usr/local/lib/libevent.a  \
 	  /usr/local/lib/libevent_core.a  \
 	  /usr/local/lib/libevent_extra.a  \

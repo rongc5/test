@@ -14,7 +14,7 @@ int main(int c, char **v)
 
     LOG_DEBUG("c_thread");
     ws_cli_thread * c_thread = new ws_cli_thread();
-    c_thread->init("127.0.0.1", 8888);
+    c_thread->init("10.135.136.80", 8080);
     c_thread->start();
 
     base_thread::join_all_thread();

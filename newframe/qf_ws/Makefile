@@ -6,13 +6,15 @@ LOC_DIR=./src
 
 INCLUDE = -I./${INC_DIR}/ -I./${IDL_DIR}/
 
-LIB = -L$(LIB_DIR) -lnewframe -lpthread -lssl\
-	  -L/usr/local/lib -lrt \
+LIB = -L$(LIB_DIR) -lrt -lnewframe -lpthread \
+	  /usr/lib/libcrypt.a \
+	  /usr/lib/libcrypto.a \
+	  /usr/lib/libssl.a \
 	  /usr/local/lib/libevent.a  \
 	  /usr/local/lib/libevent_core.a  \
 	  /usr/local/lib/libevent_extra.a  \
 	  /usr/local/lib/libevent_openssl.a  \
-	  /usr/local/lib/libevent_pthreads.a 
+	  /usr/local/lib/libevent_pthreads.a  \
 
 
 CPPFLAGS = -gdwarf-2 -msse3 -Wall $(INCLUDE) -DDEBUG=1

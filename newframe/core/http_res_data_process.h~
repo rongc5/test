@@ -1,0 +1,360 @@
+#ifndef __HTTP_RES_DATA_PROCESS_H__
+#define __HTTP_RES_DATA_PROCESS_H__
+
+class http_res_process:public http_base_process<DATA_PROCESS>
+{
+    public:
+        http_res_process(NET_OBJ *p):http_base_process<DATA_PROCESS>(p)
+	    {
+	        http_base_process<DATA_PROCESS>::change_http_status(RECV_HEAD);
+			_recv_body_length = 0;
+			_recv_boundary_status = BOUNDARY_RECV_HEAD;
+			http_base_process<DATA_PROCESS>::_data_process = DATA_PROCESS::gen_process(this);
+	    }
+
+        ~http_res_process()
+        {		
+        }
+
+        http_head_para &get_req_head_para()
+        {
+            return _req_head_para;
+        }
+
+        http_res_head_para &get_res_head_para()
+        {
+            return _res_head_para;
+        }
+
+		void set_res_head_para(const http_res_head_para &para)
+		{
+			_res_head_para = para;
+		}
+
+		void reset()
+        {
+            http_base_process<DATA_PROCESS>::reset();        
+            http_base_process<DATA_PROCESS>::change_http_status(RECV_HEAD);
+            _req_head_para.init();
+            _res_head_para.init();
+			
+			_boundary_para.init();
+			_recv_body_length = 0;
+			_recv_boundary_status = BOUNDARY_RECV_HEAD;
+
+					
+			http_base_process<DATA_PROCESS>::_data_process = DATA_PROCESS::gen_process(this);
+        }
+
+		connect_info *gen_connect_info()
+		{
+			return NULL;
+		}
+
+		void peer_close() //被动端对端关了， 啥也不用干
+		{			
+		}
+
+		
+		string gen_res_head()
+		{
+			stringstream ss;
+            //返回状态码
+           	string response_str = response_code::_s_response_code.get_response_str(_res_head_para._response_code);
+			
+            ss << "HTTP/1.1 " << _res_head_para._response_code << " " << response_str << "\r\n";          			
+            //返回服务器名称
+            ss << "Server: KWS1.0\r\n";
+			ss << "Connection: close\r\n";  //暂时不支持keep_alive
+
+            //cookie
+            if (_res_head_para._cookie_list.size() > 0)
+            {
+                for (map<string, set_cookie_item>::iterator itr = _res_head_para._cookie_list.begin(); 
+                        itr != _res_head_para._cookie_list.end(); ++itr)
+                {
+	                ss << "Set-Cookie: ";
+					ss << itr->first << "=" << itr->second._value;
+					if (itr->second._expire != 0)
+					{
+						ss << ";expires=" << CToolKit::SecToHttpTime(itr->second._expire);
+					}
+					
+					if (itr->second._path != "")
+					{
+						ss << ";path=" << itr->second._path;
+					}
+					
+					if (itr->second._domain != "")
+					{
+						ss << ";domain=" << itr->second._domain;
+					}
+					ss << "\r\n";
+                }
+            }
+
+            //content_length
+            if (_res_head_para._content_length != (uint64_t)-1)
+            {
+                ss << "Content-Length: " << _res_head_para._content_length << "\r\n";
+            }
+
+            //other para
+            for (map<string, string>::iterator itr = _res_head_para._other_res_list.begin(); 
+                    itr != _res_head_para._other_res_list.end(); ++itr)
+            {
+                ss << itr->first << ": " << itr->second << "\r\n";
+            }
+            //最后一个分隔符
+            ss << "\r\n";
+			return ss.str();
+		}
+    protected:
+		virtual size_t process_recv_body(char *buf, size_t len, int &result)
+		{
+			int ret = 0;
+			if (strcasecmp(_req_head_para._method.c_str(), "GET") == 0 || strcasecmp(_req_head_para._method.c_str(), "HEAD") == 0)
+			{
+				result = 1;
+				ret = len;
+			}
+			else
+			{
+				if (_boundary_para._boundary_str.length() == 0)
+				{
+					ret = http_base_process<DATA_PROCESS>::_data_process->process_recv_body(buf, len, result);
+					_recv_body_length += ret;
+					if (_recv_body_length == _req_head_para._content_length)
+					{
+						result = 1;
+					}				
+				}
+				else //parse boundary
+				{
+					ret = get_boundary(buf, len, result);
+				}
+			}
+			return ret;
+		}
+		
+        void parse_header()
+        {
+            string &head_str = http_base_process<DATA_PROCESS>::_recv_head;
+            //parse method
+            int ret = CToolKit::GetStringByLabel(head_str, "", " ", _req_head_para._method);
+            if (ret != 0)
+            {            	
+                THROW_COMMON_EXCEPT(-1, "http get method fail")
+            }
+			
+            //parse url
+            string s_path;
+            ret = CToolKit::GetStringByLabel(head_str, " ", " ", s_path);
+            if (ret != 0)
+            {
+                THROW_COMMON_EXCEPT(-1, "http get url fail")
+            }
+
+            size_t pos = s_path.find("?");
+            if (pos == string::npos)
+            {
+                _req_head_para._url_path = s_path;
+            }
+            else
+            {
+                _req_head_para._url_path = s_path.substr(0, pos);       
+				string para_str = s_path.substr(pos + 1);
+				http_base_process<DATA_PROCESS>::parse_url_para(para_str, _req_head_para._url_para_list);
+            }
+            //parse cookie			
+            string cookie_str;
+            ret = CToolKit::GetCaseStringByLabel(head_str, "Cookie:", "\r\n", cookie_str);
+            if (ret == 0)
+            {
+                vector<string> cookie_vec;
+                CToolKit::SplitString(cookie_str, ";", cookie_vec);
+                size_t c_num = cookie_vec.size();
+                for (size_t ii = 0; ii < c_num; ii++)
+                {
+                    vector<string> c_tmp_vec;
+                    CToolKit::SplitString(cookie_vec[ii], "=", c_tmp_vec);
+                    if (c_tmp_vec.size() == 2)
+                    {
+                        CToolKit::StringTrim(c_tmp_vec[0]);
+                        CToolKit::StringTrim(c_tmp_vec[1]);
+                        _req_head_para._cookie_list.insert(make_pair(c_tmp_vec[0], c_tmp_vec[1]));
+                    }
+                }
+            }
+
+			
+			string s_tmp;
+			if (_req_head_para._method == "POST" || _req_head_para._method == "PUT")
+			{
+	            //parse content_length
+	            ret = CToolKit::GetCaseStringByLabel(head_str, "Content-length:", "\r\n", s_tmp);
+	            if (ret == 0)
+	            {
+	                _req_head_para._content_length = strtoull(s_tmp.c_str(), 0, 10);
+	            }
+
+				//parse content_type
+				ret = CToolKit::GetCaseStringByLabel(head_str, "Content-Type:", "\r\n", s_tmp);
+				if (ret == 0)
+				{
+					CToolKit::StringTrim(s_tmp);
+					_req_head_para._content_type = s_tmp;
+
+				    if (CToolKit::strncasestr(s_tmp.c_str(), s_tmp.length(),  "multipart/form-data") != NULL)
+				    {
+					   	ret = CToolKit::GetCaseStringByLabel(s_tmp, "boundary=", "", _boundary_para._boundary_str);						
+				    }
+				}
+		    }
+
+			//parse connection			
+			ret = CToolKit::GetCaseStringByLabel(head_str, "Connection:", "\r\n", s_tmp);
+			if (ret == 0)
+			{
+				_req_head_para._connect_type = strtoull(s_tmp.c_str(), 0, 10);
+				CToolKit::StringTrim(_req_head_para._connect_type);
+			}
+            //parse host
+            ret = CToolKit::GetCaseStringByLabel(head_str, "Host:", "\r\n", s_tmp);
+            if (ret == 0)
+            {
+                CToolKit::StringTrim(s_tmp);
+                _req_head_para._host = s_tmp;
+            }            
+        }
+
+		
+        void gen_send_head()
+        {       				
+            http_base_process<DATA_PROCESS>::_send_head = http_base_process<DATA_PROCESS>::_data_process->gen_send_head();
+        }
+
+        void recv_finish()
+        {
+            //http_base_process<DATA_PROCESS>::_http_status = SEND_HEAD;
+            http_base_process<DATA_PROCESS>::_data_process->recv_finish();
+            http_base_process<DATA_PROCESS>::change_http_status(SEND_HEAD);
+        }
+
+        void send_finish()
+        {        	
+        	if (strcasecmp(_req_head_para._connect_type.c_str(), "Close") == 0)
+    		{    			
+    		}
+			else
+			{
+				reset();
+			}
+        }
+
+
+		size_t get_boundary(char *buf, size_t len, int &result)
+		{	
+			if (_req_head_para._content_length == (uint32_t)-1)
+			{
+				THROW_COMMON_EXCEPT(-1, "get boundary but content_len not found")
+			}
+			size_t ret = len;
+			size_t p_len = 0;
+			result = 0;
+			_recv_body_length += len;
+			//首先要找第一个boundary
+			if (_recv_boundary_status == BOUNDARY_RECV_HEAD)
+			{				
+				_recv_boundary_head.append(buf, len);
+				size_t pos = _recv_boundary_head.find("\r\n\r\n");
+				if (pos != string::npos)
+				{					
+					_boundary_para._boundary_content_length = _req_head_para._content_length - (_boundary_para._boundary_str.length() + BOUNDARY_EXTRA_LEN)
+							- (pos+4);	
+					string left_str;
+					if (_recv_body_length == _req_head_para._content_length)
+					{											
+						left_str = _recv_boundary_head.substr(pos+4, _boundary_para._boundary_content_length);
+					}
+					else if (_recv_body_length >= _req_head_para._content_length - (_boundary_para._boundary_str.length() + BOUNDARY_EXTRA_LEN)) 
+					{
+						left_str = _recv_boundary_head.substr(pos+4, _boundary_para._boundary_content_length);
+						_recv_boundary_status = BOUNDARY_RECV_TAIL;
+					}
+					else
+					{
+						left_str = _recv_boundary_head.substr(pos+4);
+						_recv_boundary_status = BOUNDARY_RECV_BODY;
+					}
+
+					if (left_str.length() > 0)
+					{
+						p_len = http_base_process<DATA_PROCESS>::_data_process->process_recv_body(left_str.c_str(), 
+							left_str.length(), result);
+						if (_recv_body_length == _req_head_para._content_length)
+							result = 1;
+						p_len = left_str.length() - p_len;
+					}
+					else //什么也不干
+					{
+					}
+				}
+				else //还要继续收头
+				{
+					if (_recv_boundary_head.length() >= MAX_HTTP_HEAD_LEN)
+						THROW_COMMON_EXCEPT(-1, "http boundary head too long (" << _recv_boundary_head.length() << ")")
+				}
+			}
+			else if (_recv_boundary_status == BOUNDARY_RECV_BODY)//recv_body
+			{		
+				int tmp_len = len;
+				if (_recv_body_length == _req_head_para._content_length)
+				{
+					tmp_len = len - (_boundary_para._boundary_str.length() + BOUNDARY_EXTRA_LEN);
+					
+				}
+				else if (_recv_body_length >= _req_head_para._content_length - (_boundary_para._boundary_str.length() + BOUNDARY_EXTRA_LEN))
+				{
+					tmp_len = len - (_recv_body_length - (_req_head_para._content_length - (_boundary_para._boundary_str.length() + BOUNDARY_EXTRA_LEN)));
+					_recv_boundary_status = BOUNDARY_RECV_TAIL;
+				}
+				else //还要收body
+				{
+				}
+				
+				p_len = http_base_process<DATA_PROCESS>::_data_process->process_recv_body(buf, tmp_len, result);
+				p_len = tmp_len - p_len;
+				
+				if (_recv_body_length == _req_head_para._content_length)
+					result = 1; //结束了
+			}
+			else //recv tail
+			{	
+				//什么也不干，只等收完
+				if (_recv_body_length == _req_head_para._content_length)
+					result = 1;				
+			}
+			_recv_body_length = _recv_body_length - p_len;
+			return ret - p_len;
+		}
+      
+    protected:
+		enum BOUNDARY_STATUS
+		{
+			BOUNDARY_RECV_HEAD = 0,
+			BOUNDARY_RECV_BODY = 1,
+			BOUNDARY_RECV_TAIL = 2
+		};
+		string _recv_boundary_head;
+		boundary_para _boundary_para;		
+		BOUNDARY_STATUS _recv_boundary_status;
+		uint32_t _recv_body_length;
+		
+        http_head_para _req_head_para;
+        http_res_head_para _res_head_para;
+};
+
+
+
+#endif

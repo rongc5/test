@@ -14,7 +14,7 @@ int main(int argc, char *argv[])
     LOG_INIT(conf); 
 
     listen_thread * _listen_obj_thread = new listen_thread();
-    _listen_obj_thread->init("", 8888);
+    _listen_obj_thread->init("10.135.136.80", 8080);
 
     for (int i=1; i <= 3; i++){
         ws_ser_thread * net_thread = new ws_ser_thread();
