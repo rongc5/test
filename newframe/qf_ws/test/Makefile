@@ -50,5 +50,5 @@ $(server):$(OBJ)
 	$(CC) $(CXXFLAGS) -c $<
 
 %.o : %.cpp *.h
-	$(CC) $(CXXFLAGS) -c $< -o $@ $(LIB)
+	$(CC) $(CXXFLAGS) -c $< -o $@
 

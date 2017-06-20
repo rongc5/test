@@ -1,0 +1,13 @@
+
+message Ad
+{
+    required string ad_id=1;
+    required string desc = 2;
+}
+
+message BidResponse
+{
+    required string request_id=1;
+    repeated Ad ads=2;
+}
+

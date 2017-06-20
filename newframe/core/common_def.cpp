@@ -187,7 +187,7 @@ int GetCaseStringByLabel(const string &sSrc,const string &sLabel1,const string &
 }
 
 void StringTrim(string &sSrc)
-{
+{       
     int i = 0;
     while ((sSrc[i] == ' ' || sSrc[i] == '\t' || sSrc[i] == '\r' || sSrc[i] == '\n') && i < (int)sSrc.length())
     {
@@ -200,57 +200,41 @@ void StringTrim(string &sSrc)
         i--;
     }
     int nEnd = i;
-    sSrc = sSrc.substr(nBeginPos, nEnd - nBeginPos + 1); 
+    sSrc = sSrc.substr(nBeginPos, nEnd - nBeginPos + 1);        
 }
 
-int UrlEncode(const string &sSrc, string &sDest)
+int SplitString(const char *srcStr, string &delim, vector<string>& strList)
 {
-    int nLen = sSrc.length();
-    int i=0;
-    while (i < nLen)
+    char *sTmpBuf = new char[strlen(srcStr) + 1];
+    char *tt = sTmpBuf;
+    char *sToken = strtok_r((char*)srcStr, delim.c_str(), &tt);
+    while (sToken)
     {
-        unsigned char tmpc = (unsigned char)sSrc[i];
-        if (URLESCAPE[tmpc] == 1)
-        {
-            char sBuf[10] = {0};
-            //sprintf(sBuf, "%c%02X", '%', tmpc);
-			snprintf(sBuf, sizeof(sBuf),"%c%02X", '%', tmpc);
-            sDest.append(sBuf);
-        }
-        else
-        {
-            sDest.append(1, sSrc[i]);
-        }
-        i++;
+        strList.push_back(sToken);
+        sToken = strtok_r(NULL, delim.c_str(),  &tt);
     }
+    delete []sTmpBuf;
     return 0;
 }
 
-int UrlDecode(const string &sSrc, string &sDest)
+int SplitString(const string &srcStr,const string &delim, vector<string>& strList)
 {
-	int nLen = sSrc.length();
-	for (int i = 0; i < nLen; )
-	{
-		unsigned char chTmp =  (unsigned char)sSrc[i];
-		if (chTmp == '%')
-		{
-			if (i + 2 >= nLen)
-				return -1;
-			
-		        ++i;
-		        char szBuf[3] = {0};
-		        szBuf[0] = sSrc[i++];
-		        szBuf[1] = sSrc[i++];
-		        int nTmp = strtoul(szBuf, 0, 16);
-			 chTmp = nTmp;
-		        sDest.append(1, chTmp);
-		}
-		else
-		{
-			sDest.append(1, sSrc[i]);
-			++i;
-		}
-	}
-	return 0;
-}
+    char *sBuf = new char[srcStr.length() + 1];
+    char *sTmpBuf = new char[srcStr.length() + 1];
 
+    strncpy(sBuf, srcStr.c_str(), srcStr.length());
+    sBuf[srcStr.length()] = 0;
+
+    char *tmpSrc = sBuf;
+    char *tt = sTmpBuf;
+
+    char *sToken = strtok_r(tmpSrc, delim.c_str(), &tt);
+    while (sToken)
+    {
+        strList.push_back(string(sToken));
+        sToken = strtok_r(NULL, delim.c_str(), &tt);
+    }
+    delete [] sBuf;
+    delete [] sTmpBuf;
+    return 0;
+}

@@ -3,11 +3,12 @@ SRC_DIR=${HOME_DIR}core
 IDL_DIR=$(HOME_DIR)idl
 
 INCLUDE = -I./${SRC_DIR}/ -I./${IDL_DIR} -I/usr/local/include 
-LIB =  -libevent.a  \
-		 -libevent_core.a  \
-		 -lbevent_extra.a  \
-		 -libevent_openssl.a  \
-		 -libevent_pthreads.a 
+LIB = 
+#LIB =  -libevent.a  \
+		 #-libevent_core.a  \
+		 #-lbevent_extra.a  \
+		 #-libevent_openssl.a  \
+		 #-libevent_pthreads.a 
 
 CPPFLAGS = -gdwarf-2 -msse3 -Wall $(INCLUDE) -DDEBUG=1
 CC  = g++ $(CPPFLAGS)

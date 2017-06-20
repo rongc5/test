@@ -183,9 +183,10 @@ int GetStringByLabel(const string &sSrc,const string &sLabel1,const string &sLab
 
 void StringTrim(string &sSrc);
 
-int UrlEncode(const string &sSrc, string &sDest);
+void StringTrim(string &sSrc);
 
-int UrlDecode(const string &sSrc, string &sDest);
+int SplitString(const char *srcStr, string &delim, vector<string>& strList);
 
+int SplitString(const string &srcStr,const string &delim, vector<string>& strList);
 
 #endif
