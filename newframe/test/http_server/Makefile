@@ -19,6 +19,7 @@ CC  = g++ $(CPPFLAGS)
 
 
 OBJ	= ./http_server.o     \
+	 ./http_server_thread.o     \
 
 
 AR=ar
@@ -37,6 +38,6 @@ clean	:
 	rm -f $(server) $(client) $(hserver)
 	rm -rf logs
 
-$(hserver):http_server.o
+$(hserver):$(OBJ)
 	$(CC) $(CXXFLAGS) -o $@ $^ $(LIB)
 

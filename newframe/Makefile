@@ -20,7 +20,6 @@ OBJ	= ${SRC_DIR}/base_connect.o                     \
     ${SRC_DIR}/tcp_connect.o                        \
     ${SRC_DIR}/http_client_connect.o                       \
     ${SRC_DIR}/http_client_thread.o                       \
-    ${SRC_DIR}/http_server_thread.o                       \
     ${SRC_DIR}/base_data_process.o                       \
     ${SRC_DIR}/ws_data_process.o                       \
     ${SRC_DIR}/ws_req_data_process.o                      \
