@@ -2,7 +2,7 @@ HOME_DIR=../../
 INC_DIR=${HOME_DIR}core
 IDL_DIR=$(HOME_DIR)idl
 LIB_DIR=$(HOME_DIR)/lib
-LOC_DIR=.
+LOC_DIR=./src
 
 INCLUDE = -I./${INC_DIR}/ -I./${IDL_DIR}/
 

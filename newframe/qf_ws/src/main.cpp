@@ -48,7 +48,7 @@ int main(int argc, char *argv[])
     load_config(ws_c);
 
     listen_thread * _listen_obj_thread = new listen_thread();
-    _listen_obj_thread->init("", ws_c.webs_port());
+    _listen_obj_thread->init("0.0.0.0", ws_c.webs_port());
 
     for (int i=1; i <= ws_c.webs_thread_num(); i++){
         ws_ser_thread * net_thread = new ws_ser_thread();

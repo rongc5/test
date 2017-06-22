@@ -37,7 +37,6 @@ Ctags	:
 clean	:
 	/bin/rm -f *.o 
 	/bin/rm -f *~~ 
-	rm -f $(server) $(client) $(hserver)
 	rm -rf logs
 
 $(hserver):http_server.o
