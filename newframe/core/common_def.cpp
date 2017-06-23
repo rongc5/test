@@ -238,3 +238,21 @@ int SplitString(const string &srcStr,const string &delim, vector<string>& strLis
     delete [] sTmpBuf;
     return 0;
 }
+
+int get_prime_num(int num)
+{
+    const int prime_num = sizeof(m_prime_list)/sizeof(int);
+    int turn = 0;
+    for(turn = 0; turn < prime_num; ++turn){
+        if(m_prime_list[turn] >= num){
+            break;
+        }
+    }
+
+    if(turn >= prime_num){
+        return m_prime_list[prime_num - 1];
+    }else{
+        return m_prime_list[turn];
+    }
+}
+

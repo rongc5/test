@@ -2,9 +2,10 @@ HOME_DIR=../../
 INC_DIR=${HOME_DIR}core
 IDL_DIR=$(HOME_DIR)idl
 LIB_DIR=$(HOME_DIR)/lib
+JSON_DIR=${HOME_DIR}json
 LOC_DIR=./src
 
-INCLUDE = -I./${INC_DIR}/ -I./${IDL_DIR}/
+INCLUDE = -I./${INC_DIR}/ -I./${IDL_DIR}/ -I./$(JSON_DIR)/
 
 LIB = -L$(LIB_DIR) -lrt -lnewframe -lpthread \
 	  /usr/lib/libssl.a  \

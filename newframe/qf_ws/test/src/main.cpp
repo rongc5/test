@@ -16,10 +16,13 @@ void do_prepare()
 
     printf("请输入公司id\n:");
     scanf("%s", user->groupid);
-    printf("请输入用化id\n:");
+    printf("请输入用户id\n:");
     scanf("%s", user->userid);
 
     if (op == 1){
+        printf("请输入密码id\n:");
+        scanf("%s", user->passwd);
+
         printf("登录中请等待\n");
     }
 

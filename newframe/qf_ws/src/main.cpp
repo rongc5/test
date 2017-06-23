@@ -7,6 +7,7 @@
 #include <google/protobuf/text_format.h>
 #include <google/protobuf/io/zero_copy_stream_impl.h>
 #include "ws_ser.pb.h"
+#include "qfws_msg_process.h"
 
 void load_config(WsConf & ws_c)
 {
@@ -46,6 +47,10 @@ int main(int argc, char *argv[])
 
     WsConf ws_c;
     load_config(ws_c);
+
+    login_groupid_userid_mgr * login_groupid_mgr = new login_groupid_userid_mgr();
+    login_groupid_mgr->init();
+    base_singleton<login_groupid_userid_mgr>::set_instance(login_groupid_mgr);
 
     listen_thread * _listen_obj_thread = new listen_thread();
     _listen_obj_thread->init("0.0.0.0", ws_c.webs_port());

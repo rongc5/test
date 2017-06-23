@@ -8,6 +8,7 @@ struct user_info
     int op;
     char groupid[SIZE_LEN_512];
     char userid[SIZE_LEN_512];
+    char passwd[SIZE_LEN_512];
 };
 
 

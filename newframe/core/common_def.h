@@ -24,6 +24,32 @@ enum RECV_MSG_STATUS
     RECV_MSG_BODY 
 };
 
+#ifdef DEBUG
+#define PDEBUG(format, arg...) \
+    do { \
+        printf("tid:[%lu],line:[%d],func:[%s],file:[%s] "format, pthread_self(), __LINE__, __func__, __FILE__, ##arg); \
+    } while (0)
+#else
+#define PDEBUG(format, arg...)
+#endif
+
+
+#define ASSERT_DO(valid, PRINT) \
+    do{ \
+        if (!(valid)) { \
+            (PRINT); \
+            return -1; \
+        } \
+    }while(0)
+
+#define ASSERT(valid) \
+    do { \
+        if (!(valid)) { \
+            return -1; \
+        } \
+    }while(0)
+
+
 
 time_t get_date_str(char dest[], size_t dest_len, const char * format);
 
@@ -188,5 +214,7 @@ void StringTrim(string &sSrc);
 int SplitString(const char *srcStr, string &delim, vector<string>& strList);
 
 int SplitString(const string &srcStr,const string &delim, vector<string>& strList);
+
+int get_prime_num(int num);
 
 #endif

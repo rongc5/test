@@ -3,7 +3,11 @@
 #include "log_helper.h"
 #include "tcp_connect.h"
 #include "base_singleton.h"
+#include "rapidjson/writer.h"
+#include "rapidjson/stringbuffer.h"
 #include "user_info.h"
+
+using namespace rapidjson;
 
 ws_client_data_process::ws_client_data_process(tcp_connect * t_cn):ws_req_data_process(t_cn)
 {
@@ -80,16 +84,32 @@ void ws_client_data_process::send_request(const char * buf)
     LOG_DEBUG("send_request");
 }
 
-void ws_client_data_process::on_handshake_ok()
+void ws_client_data_process::login_request()
 {
     user_info * user = base_singleton<user_info>::get_instance();
-    if (!user) {
-        LOG_WARNING("user_info is NULL");
-        exit(1);
-    }
+    
+    StringBuffer s;
+    Writer<StringBuffer> writer(s);
 
+    writer.StartObject();
+    writer.Key("groupid");
+    writer.String(user->groupid);
+    writer.Key("userid");
+    writer.String(user->userid);
+    writer.Key("passwd");
+    writer.String(user->passwd);
+    writer.EndObject();
+   
+    LOG_DEBUG("login info:%s", s.GetString());
+    send_request(s.GetString());
+}
+
+void ws_client_data_process::on_handshake_ok()
+{
+
+    user_info * user = base_singleton<user_info>::get_instance();
     if (user->op == 1) {
-        printf("登录成功， 等待用户到来吧\n");
+        login_request();
     }else {
         char buf[SIZE_LEN_1024] = {'\0'};
         printf("你好， 有什么能帮你的吗?\n");

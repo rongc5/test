@@ -21,6 +21,8 @@ class ws_client_data_process: public ws_req_data_process
 
         virtual void on_handshake_ok();
 
+        void login_request();
+
         void send_request(const char * buf);
 
         virtual void msg_recv_finish();
