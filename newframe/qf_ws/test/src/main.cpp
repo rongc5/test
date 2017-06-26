@@ -15,9 +15,9 @@ void do_prepare()
     scanf("%d", &user->op);
 
     printf("请输入公司id\n:");
-    scanf("%s", user->groupid);
+    scanf("%d", &user->groupid);
     printf("请输入用户id\n:");
-    scanf("%s", user->userid);
+    scanf("%d", &user->userid);
 
     if (op == 1){
         printf("请输入密码id\n:");

@@ -1,0 +1,1457 @@
+[DEBUG]:[2017-06-26 18:23:20]:[3078506192]:[37:load_config:src/main.cpp] parse ./conf//ws_ser.conf ok:
+webs_port:8088 
+webs_thread_num:6
+http_port:9090
+http_thread_num:6
+
+[DEBUG]:[2017-06-26 18:23:20]:[3078506192]:[71:init:src/qfws_msg_process.cpp] _bucket:2000003
+[DEBUG]:[2017-06-26 18:23:34]:[2962033520]:[18:handle_msg:src/ws_ser_thread.cpp] recv: fd [91]
+[DEBUG]:[2017-06-26 18:23:34]:[2962033520]:[7:base_data_process:core/base_data_process.cpp] 0xacb01e08
+[DEBUG]:[2017-06-26 18:23:34]:[2962033520]:[34:set_para:core/base_data_process.cpp] 0xacb01e08
+[DEBUG]:[2017-06-26 18:23:34]:[2962033520]:[37:real_recv:core/tcp_connect.cpp] recv:GET / HTTP/1.1
+Host:www.yiyi.com
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Key:zEkljJfDq59X6c+8BZx7yw==
+Origin:yiyi.com
+Sec-WebSocket-Protocol: chat, superchat
+Sec-WebSocket-Version: 13
+
+
+[DEBUG]:[2017-06-26 18:23:34]:[2962033520]:[28:process_recv_buf:core/ws_data_process.cpp] recv len: 207
+
+[DEBUG]:[2017-06-26 18:23:34]:[2962033520]:[61:RECV_WB_INIT_STAUTS_PROCESS:core/ws_res_data_process.cpp] buf:GET / HTTP/1.1
+Host:www.yiyi.com
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Key:zEkljJfDq59X6c+8BZx7yw==
+Origin:yiyi.com
+Sec-WebSocket-Protocol: chat, superchat
+Sec-WebSocket-Version: 13
+
+ _recv_header:GET / HTTP/1.1
+Host:www.yiyi.com
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Key:zEkljJfDq59X6c+8BZx7yw==
+Origin:yiyi.com
+Sec-WebSocket-Protocol: chat, superchat
+Sec-WebSocket-Version: 13
+
+
+[DEBUG]:[2017-06-26 18:23:34]:[2962033520]:[124:real_send:core/tcp_connect.cpp] send:HTTP/1.1 101 Switching Protocols
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Accept: GMWN4x1E4zAk8tMrFDeqx+yxQVA=
+Sec-WebSocket-Protocol: chat
+
+
+[DEBUG]:[2017-06-26 18:23:34]:[2962033520]:[37:real_recv:core/tcp_connect.cpp] recv:Å¢gEãk
+[DEBUG]:[2017-06-26 18:23:34]:[2962033520]:[28:process_recv_buf:core/ws_data_process.cpp] recv len: 6
+
+[DEBUG]:[2017-06-26 18:23:34]:[2962033520]:[199:RECV_WB_HANDSHAKE_OK_PROCESS:core/ws_data_process.cpp] RECV_WB_HANDSHAKE_OK_PROCESS 6
+[DEBUG]:[2017-06-26 18:23:34]:[2962033520]:[37:real_recv:core/tcp_connect.cpp] recv: Ái´,¯K6´6ˇKFd™JFd™JFd™JFd
+[DEBUG]:[2017-06-26 18:23:34]:[2962033520]:[28:process_recv_buf:core/ws_data_process.cpp] recv len: 34
+
+[DEBUG]:[2017-06-26 18:23:34]:[2962033520]:[199:RECV_WB_HANDSHAKE_OK_PROCESS:core/ws_data_process.cpp] RECV_WB_HANDSHAKE_OK_PROCESS 34
+[DEBUG]:[2017-06-26 18:23:34]:[2962033520]:[78:msg_recv_finish:src/qfws_res_data_process.cpp] recv: hello, this is test !!!!!!!!!!!!!!
+[DEBUG]:[2017-06-26 18:24:07]:[2962033520]:[17:err_close:core/base_data_process.cpp] 0xacb01e08
+[DEBUG]:[2017-06-26 18:25:39]:[2962033520]:[18:handle_msg:src/ws_ser_thread.cpp] recv: fd [91]
+[DEBUG]:[2017-06-26 18:25:39]:[2962033520]:[7:base_data_process:core/base_data_process.cpp] 0xacb01eb0
+[DEBUG]:[2017-06-26 18:25:39]:[2962033520]:[34:set_para:core/base_data_process.cpp] 0xacb01eb0
+[DEBUG]:[2017-06-26 18:25:39]:[2962033520]:[37:real_recv:core/tcp_connect.cpp] recv:GET / HTTP/1.1
+Host:www.yiyi.com
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Key:zEkljJfDq59X6c+8BZx7yw==
+Origin:yiyi.com
+Sec-WebSocket-Protocol: chat, superchat
+Sec-WebSocket-Version: 13
+
+
+[DEBUG]:[2017-06-26 18:25:39]:[2962033520]:[28:process_recv_buf:core/ws_data_process.cpp] recv len: 207
+
+[DEBUG]:[2017-06-26 18:25:39]:[2962033520]:[61:RECV_WB_INIT_STAUTS_PROCESS:core/ws_res_data_process.cpp] buf:GET / HTTP/1.1
+Host:www.yiyi.com
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Key:zEkljJfDq59X6c+8BZx7yw==
+Origin:yiyi.com
+Sec-WebSocket-Protocol: chat, superchat
+Sec-WebSocket-Version: 13
+
+ _recv_header:GET / HTTP/1.1
+Host:www.yiyi.com
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Key:zEkljJfDq59X6c+8BZx7yw==
+Origin:yiyi.com
+Sec-WebSocket-Protocol: chat, superchat
+Sec-WebSocket-Version: 13
+
+
+[DEBUG]:[2017-06-26 18:25:39]:[2962033520]:[124:real_send:core/tcp_connect.cpp] send:HTTP/1.1 101 Switching Protocols
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Accept: GMWN4x1E4zAk8tMrFDeqx+yxQVA=
+Sec-WebSocket-Protocol: chat
+
+
+[DEBUG]:[2017-06-26 18:25:39]:[2962033520]:[37:real_recv:core/tcp_connect.cpp] recv:Å»gEãk
+[DEBUG]:[2017-06-26 18:25:39]:[2962033520]:[28:process_recv_buf:core/ws_data_process.cpp] recv len: 6
+
+[DEBUG]:[2017-06-26 18:25:39]:[2962033520]:[199:RECV_WB_HANDSHAKE_OK_PROCESS:core/ws_data_process.cpp] RECV_WB_HANDSHAKE_OK_PROCESS 6
+[DEBUG]:[2017-06-26 18:25:39]:[2962033520]:[37:real_recv:core/tcp_connect.cpp] recv:gÏ0˚g±IVw∏IKg˛7‚E©ZUv©GE5Í2ÔI]g©GE*˚I]g∫IKgÊ
+[DEBUG]:[2017-06-26 18:25:39]:[2962033520]:[28:process_recv_buf:core/ws_data_process.cpp] recv len: 72
+
+[DEBUG]:[2017-06-26 18:25:39]:[2962033520]:[199:RECV_WB_HANDSHAKE_OK_PROCESS:core/ws_data_process.cpp] RECV_WB_HANDSHAKE_OK_PROCESS 72
+[DEBUG]:[2017-06-26 18:25:39]:[2962033520]:[78:msg_recv_finish:src/qfws_res_data_process.cpp] recv: {"groupid":"123","userid":"123","passwd":"","op":"1","msg":"I am login"}
+[DEBUG]:[2017-06-26 18:25:39]:[2962033520]:[127:parse_from_json:src/qfws_msg_process.cpp] op:1
+[DEBUG]:[2017-06-26 18:25:39]:[2962033520]:[132:parse_from_json:src/qfws_msg_process.cpp] groupid:123
+[DEBUG]:[2017-06-26 18:25:39]:[2962033520]:[137:parse_from_json:src/qfws_msg_process.cpp] userid:123
+[DEBUG]:[2017-06-26 18:25:39]:[2962033520]:[142:parse_from_json:src/qfws_msg_process.cpp] passwd:
+[DEBUG]:[2017-06-26 18:25:39]:[2962033520]:[147:parse_from_json:src/qfws_msg_process.cpp] msg:I am login
+[DEBUG]:[2017-06-26 18:25:39]:[2962033520]:[56:get_userid:src/qfws_msg_process.cpp] _groupid:123 groupid:123
+[DEBUG]:[2017-06-26 18:25:39]:[2962033520]:[63:do_login:src/qfws_res_data_process.cpp] send_response:{"op":"1","res_code":"1000","groupid":"ws_msg._groupid","online_userid":[123],"msg":"login ok"}
+[DEBUG]:[2017-06-26 18:25:39]:[2962033520]:[124:real_send:core/tcp_connect.cpp] send:Å_
+[DEBUG]:[2017-06-26 18:25:39]:[2962033520]:[124:real_send:core/tcp_connect.cpp] send:{"op":"1","res_code":"1000","groupid":"ws_msg._groupid","online_userid":[123],"msg":"login ok"}
+[DEBUG]:[2017-06-26 18:26:12]:[2962033520]:[18:handle_msg:src/ws_ser_thread.cpp] recv: fd [92]
+[DEBUG]:[2017-06-26 18:26:12]:[2962033520]:[7:base_data_process:core/base_data_process.cpp] 0xacb02960
+[DEBUG]:[2017-06-26 18:26:12]:[2962033520]:[34:set_para:core/base_data_process.cpp] 0xacb02960
+[DEBUG]:[2017-06-26 18:26:12]:[2962033520]:[37:real_recv:core/tcp_connect.cpp] recv:GET / HTTP/1.1
+Host:www.yiyi.com
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Key:zEkljJfDq59X6c+8BZx7yw==
+Origin:yiyi.com
+Sec-WebSocket-Protocol: chat, superchat
+Sec-WebSocket-Version: 13
+
+
+[DEBUG]:[2017-06-26 18:26:12]:[2962033520]:[28:process_recv_buf:core/ws_data_process.cpp] recv len: 207
+
+[DEBUG]:[2017-06-26 18:26:12]:[2962033520]:[61:RECV_WB_INIT_STAUTS_PROCESS:core/ws_res_data_process.cpp] buf:GET / HTTP/1.1
+Host:www.yiyi.com
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Key:zEkljJfDq59X6c+8BZx7yw==
+Origin:yiyi.com
+Sec-WebSocket-Protocol: chat, superchat
+Sec-WebSocket-Version: 13
+
+ _recv_header:GET / HTTP/1.1
+Host:www.yiyi.com
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Key:zEkljJfDq59X6c+8BZx7yw==
+Origin:yiyi.com
+Sec-WebSocket-Protocol: chat, superchat
+Sec-WebSocket-Version: 13
+
+
+[DEBUG]:[2017-06-26 18:26:12]:[2962033520]:[124:real_send:core/tcp_connect.cpp] send:HTTP/1.1 101 Switching Protocols
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Accept: GMWN4x1E4zAk8tMrFDeqx+yxQVA=
+Sec-WebSocket-Protocol: chat
+
+
+[DEBUG]:[2017-06-26 18:26:12]:[2962033520]:[37:real_recv:core/tcp_connect.cpp] recv:Å»gEãk
+[DEBUG]:[2017-06-26 18:26:12]:[2962033520]:[28:process_recv_buf:core/ws_data_process.cpp] recv len: 6
+
+[DEBUG]:[2017-06-26 18:26:12]:[2962033520]:[199:RECV_WB_HANDSHAKE_OK_PROCESS:core/ws_data_process.cpp] RECV_WB_HANDSHAKE_OK_PROCESS 6
+[DEBUG]:[2017-06-26 18:26:12]:[2962033520]:[37:real_recv:core/tcp_connect.cpp] recv:gÏ0˚g±IUqæIKg˛7‚E©ZUv©GE5Í2ÔI]g©GE*˚I]g∫IKgÊ
+[DEBUG]:[2017-06-26 18:26:12]:[2962033520]:[28:process_recv_buf:core/ws_data_process.cpp] recv len: 72
+
+[DEBUG]:[2017-06-26 18:26:12]:[2962033520]:[199:RECV_WB_HANDSHAKE_OK_PROCESS:core/ws_data_process.cpp] RECV_WB_HANDSHAKE_OK_PROCESS 72
+[DEBUG]:[2017-06-26 18:26:12]:[2962033520]:[78:msg_recv_finish:src/qfws_res_data_process.cpp] recv: {"groupid":"245","userid":"123","passwd":"","op":"1","msg":"I am login"}
+[DEBUG]:[2017-06-26 18:26:12]:[2962033520]:[127:parse_from_json:src/qfws_msg_process.cpp] op:1
+[DEBUG]:[2017-06-26 18:26:12]:[2962033520]:[132:parse_from_json:src/qfws_msg_process.cpp] groupid:245
+[DEBUG]:[2017-06-26 18:26:12]:[2962033520]:[137:parse_from_json:src/qfws_msg_process.cpp] userid:123
+[DEBUG]:[2017-06-26 18:26:12]:[2962033520]:[142:parse_from_json:src/qfws_msg_process.cpp] passwd:
+[DEBUG]:[2017-06-26 18:26:12]:[2962033520]:[147:parse_from_json:src/qfws_msg_process.cpp] msg:I am login
+[DEBUG]:[2017-06-26 18:26:12]:[2962033520]:[56:get_userid:src/qfws_msg_process.cpp] _groupid:245 groupid:245
+[DEBUG]:[2017-06-26 18:26:12]:[2962033520]:[63:do_login:src/qfws_res_data_process.cpp] send_response:{"op":"1","res_code":"1000","groupid":"ws_msg._groupid","online_userid":[123],"msg":"login ok"}
+[DEBUG]:[2017-06-26 18:26:12]:[2962033520]:[124:real_send:core/tcp_connect.cpp] send:Å_
+[DEBUG]:[2017-06-26 18:26:12]:[2962033520]:[124:real_send:core/tcp_connect.cpp] send:{"op":"1","res_code":"1000","groupid":"ws_msg._groupid","online_userid":[123],"msg":"login ok"}
+[DEBUG]:[2017-06-26 18:26:41]:[2962033520]:[17:err_close:core/base_data_process.cpp] 0xacb02960
+[DEBUG]:[2017-06-26 18:26:51]:[2962033520]:[18:handle_msg:src/ws_ser_thread.cpp] recv: fd [92]
+[DEBUG]:[2017-06-26 18:26:51]:[2962033520]:[7:base_data_process:core/base_data_process.cpp] 0xacb02468
+[DEBUG]:[2017-06-26 18:26:51]:[2962033520]:[34:set_para:core/base_data_process.cpp] 0xacb02468
+[DEBUG]:[2017-06-26 18:26:51]:[2962033520]:[37:real_recv:core/tcp_connect.cpp] recv:GET / HTTP/1.1
+Host:www.yiyi.com
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Key:zEkljJfDq59X6c+8BZx7yw==
+Origin:yiyi.com
+Sec-WebSocket-Protocol: chat, superchat
+Sec-WebSocket-Version: 13
+
+
+[DEBUG]:[2017-06-26 18:26:51]:[2962033520]:[28:process_recv_buf:core/ws_data_process.cpp] recv len: 207
+
+[DEBUG]:[2017-06-26 18:26:51]:[2962033520]:[61:RECV_WB_INIT_STAUTS_PROCESS:core/ws_res_data_process.cpp] buf:GET / HTTP/1.1
+Host:www.yiyi.com
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Key:zEkljJfDq59X6c+8BZx7yw==
+Origin:yiyi.com
+Sec-WebSocket-Protocol: chat, superchat
+Sec-WebSocket-Version: 13
+
+ _recv_header:GET / HTTP/1.1
+Host:www.yiyi.com
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Key:zEkljJfDq59X6c+8BZx7yw==
+Origin:yiyi.com
+Sec-WebSocket-Protocol: chat, superchat
+Sec-WebSocket-Version: 13
+
+
+[DEBUG]:[2017-06-26 18:26:51]:[2962033520]:[124:real_send:core/tcp_connect.cpp] send:HTTP/1.1 101 Switching Protocols
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Accept: GMWN4x1E4zAk8tMrFDeqx+yxQVA=
+Sec-WebSocket-Protocol: chat
+
+
+[DEBUG]:[2017-06-26 18:26:51]:[2962033520]:[37:real_recv:core/tcp_connect.cpp] recv:Å»gEãk
+[DEBUG]:[2017-06-26 18:26:51]:[2962033520]:[28:process_recv_buf:core/ws_data_process.cpp] recv len: 6
+
+[DEBUG]:[2017-06-26 18:26:51]:[2962033520]:[199:RECV_WB_HANDSHAKE_OK_PROCESS:core/ws_data_process.cpp] RECV_WB_HANDSHAKE_OK_PROCESS 6
+[DEBUG]:[2017-06-26 18:26:51]:[2962033520]:[37:real_recv:core/tcp_connect.cpp] recv:gÏ0˚g±IVw∏IKg˛7‚E©_Rs©GE5Í2ÔI]g©GE*˚I]g∫IKgÊ
+[DEBUG]:[2017-06-26 18:26:51]:[2962033520]:[28:process_recv_buf:core/ws_data_process.cpp] recv len: 72
+
+[DEBUG]:[2017-06-26 18:26:51]:[2962033520]:[199:RECV_WB_HANDSHAKE_OK_PROCESS:core/ws_data_process.cpp] RECV_WB_HANDSHAKE_OK_PROCESS 72
+[DEBUG]:[2017-06-26 18:26:51]:[2962033520]:[78:msg_recv_finish:src/qfws_res_data_process.cpp] recv: {"groupid":"123","userid":"456","passwd":"","op":"1","msg":"I am login"}
+[DEBUG]:[2017-06-26 18:26:51]:[2962033520]:[127:parse_from_json:src/qfws_msg_process.cpp] op:1
+[DEBUG]:[2017-06-26 18:26:51]:[2962033520]:[132:parse_from_json:src/qfws_msg_process.cpp] groupid:123
+[DEBUG]:[2017-06-26 18:26:51]:[2962033520]:[137:parse_from_json:src/qfws_msg_process.cpp] userid:456
+[DEBUG]:[2017-06-26 18:26:51]:[2962033520]:[142:parse_from_json:src/qfws_msg_process.cpp] passwd:
+[DEBUG]:[2017-06-26 18:26:51]:[2962033520]:[147:parse_from_json:src/qfws_msg_process.cpp] msg:I am login
+[DEBUG]:[2017-06-26 18:26:51]:[2962033520]:[56:get_userid:src/qfws_msg_process.cpp] _groupid:123 groupid:123
+[DEBUG]:[2017-06-26 18:26:51]:[2962033520]:[63:do_login:src/qfws_res_data_process.cpp] send_response:{"op":"1","res_code":"1000","groupid":"ws_msg._groupid","online_userid":[123,456],"msg":"login ok"}
+[DEBUG]:[2017-06-26 18:26:51]:[2962033520]:[124:real_send:core/tcp_connect.cpp] send:Åc
+[DEBUG]:[2017-06-26 18:26:51]:[2962033520]:[124:real_send:core/tcp_connect.cpp] send:{"op":"1","res_code":"1000","groupid":"ws_msg._groupid","online_userid":[123,456],"msg":"login ok"}
+[DEBUG]:[2017-06-26 18:27:12]:[2962033520]:[17:err_close:core/base_data_process.cpp] 0xacb01eb0
+[DEBUG]:[2017-06-26 18:33:44]:[3078235856]:[37:load_config:src/main.cpp] parse ./conf//ws_ser.conf ok:
+webs_port:8088 
+webs_thread_num:6
+http_port:9090
+http_thread_num:6
+
+[DEBUG]:[2017-06-26 18:33:44]:[3078235856]:[71:init:src/qfws_msg_process.cpp] _bucket:2000003
+[DEBUG]:[2017-06-26 18:34:17]:[2962033520]:[18:handle_msg:src/ws_ser_thread.cpp] recv: fd [91]
+[DEBUG]:[2017-06-26 18:34:17]:[2962033520]:[7:base_data_process:core/base_data_process.cpp] 0xacb01e08
+[DEBUG]:[2017-06-26 18:34:17]:[2962033520]:[34:set_para:core/base_data_process.cpp] 0xacb01e08
+[DEBUG]:[2017-06-26 18:34:17]:[2962033520]:[37:real_recv:core/tcp_connect.cpp] recv:GET / HTTP/1.1
+Host:www.yiyi.com
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Key:zEkljJfDq59X6c+8BZx7yw==
+Origin:yiyi.com
+Sec-WebSocket-Protocol: chat, superchat
+Sec-WebSocket-Version: 13
+
+
+[DEBUG]:[2017-06-26 18:34:17]:[2962033520]:[28:process_recv_buf:core/ws_data_process.cpp] recv len: 207
+
+[DEBUG]:[2017-06-26 18:34:17]:[2962033520]:[61:RECV_WB_INIT_STAUTS_PROCESS:core/ws_res_data_process.cpp] buf:GET / HTTP/1.1
+Host:www.yiyi.com
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Key:zEkljJfDq59X6c+8BZx7yw==
+Origin:yiyi.com
+Sec-WebSocket-Protocol: chat, superchat
+Sec-WebSocket-Version: 13
+
+ _recv_header:GET / HTTP/1.1
+Host:www.yiyi.com
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Key:zEkljJfDq59X6c+8BZx7yw==
+Origin:yiyi.com
+Sec-WebSocket-Protocol: chat, superchat
+Sec-WebSocket-Version: 13
+
+
+[DEBUG]:[2017-06-26 18:34:17]:[2962033520]:[124:real_send:core/tcp_connect.cpp] send:HTTP/1.1 101 Switching Protocols
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Accept: GMWN4x1E4zAk8tMrFDeqx+yxQVA=
+Sec-WebSocket-Protocol: chat
+
+
+[DEBUG]:[2017-06-26 18:34:17]:[2962033520]:[37:real_recv:core/tcp_connect.cpp] recv:Å«gEãk
+[DEBUG]:[2017-06-26 18:34:17]:[2962033520]:[28:process_recv_buf:core/ws_data_process.cpp] recv len: 6
+
+[DEBUG]:[2017-06-26 18:34:17]:[2962033520]:[199:RECV_WB_HANDSHAKE_OK_PROCESS:core/ws_data_process.cpp] RECV_WB_HANDSHAKE_OK_PROCESS 6
+[DEBUG]:[2017-06-26 18:34:17]:[2962033520]:[37:real_recv:core/tcp_connect.cpp] recv:gÏ0˚g±IVw∏IKg˛7‚E©ZUgßI$¯!©QEgßI5©QEt©GE(¯E©"G$ÊK*Ï	gˆ
+[DEBUG]:[2017-06-26 18:34:17]:[2962033520]:[28:process_recv_buf:core/ws_data_process.cpp] recv len: 71
+
+[DEBUG]:[2017-06-26 18:34:17]:[2962033520]:[199:RECV_WB_HANDSHAKE_OK_PROCESS:core/ws_data_process.cpp] RECV_WB_HANDSHAKE_OK_PROCESS 71
+[DEBUG]:[2017-06-26 18:34:17]:[2962033520]:[92:msg_recv_finish:src/qfws_res_data_process.cpp] recv: {"groupid":"123","userid":"12","passwd":"","op":"1","msg":"I am login"}
+[DEBUG]:[2017-06-26 18:34:17]:[2962033520]:[127:parse_from_json:src/qfws_msg_process.cpp] op:1
+[DEBUG]:[2017-06-26 18:34:17]:[2962033520]:[132:parse_from_json:src/qfws_msg_process.cpp] groupid:123
+[DEBUG]:[2017-06-26 18:34:17]:[2962033520]:[137:parse_from_json:src/qfws_msg_process.cpp] userid:12
+[DEBUG]:[2017-06-26 18:34:17]:[2962033520]:[142:parse_from_json:src/qfws_msg_process.cpp] passwd:
+[DEBUG]:[2017-06-26 18:34:17]:[2962033520]:[147:parse_from_json:src/qfws_msg_process.cpp] msg:I am login
+[DEBUG]:[2017-06-26 18:34:17]:[2962033520]:[56:get_userid:src/qfws_msg_process.cpp] _groupid:123 groupid:123
+[DEBUG]:[2017-06-26 18:34:17]:[2962033520]:[77:do_login:src/qfws_res_data_process.cpp] send_response:{"op":"1","res_code":"1000","groupid":"123","userid":"12","online_userid":[12],"msg":"login ok"}
+[DEBUG]:[2017-06-26 18:34:17]:[2962033520]:[124:real_send:core/tcp_connect.cpp] send:Å`
+[DEBUG]:[2017-06-26 18:34:17]:[2962033520]:[124:real_send:core/tcp_connect.cpp] send:{"op":"1","res_code":"1000","groupid":"123","userid":"12","online_userid":[12],"msg":"login ok"}
+[DEBUG]:[2017-06-26 18:34:29]:[2962033520]:[18:handle_msg:src/ws_ser_thread.cpp] recv: fd [92]
+[DEBUG]:[2017-06-26 18:34:29]:[2962033520]:[7:base_data_process:core/base_data_process.cpp] 0xacb02588
+[DEBUG]:[2017-06-26 18:34:29]:[2962033520]:[34:set_para:core/base_data_process.cpp] 0xacb02588
+[DEBUG]:[2017-06-26 18:34:29]:[2962033520]:[37:real_recv:core/tcp_connect.cpp] recv:GET / HTTP/1.1
+Host:www.yiyi.com
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Key:zEkljJfDq59X6c+8BZx7yw==
+Origin:yiyi.com
+Sec-WebSocket-Protocol: chat, superchat
+Sec-WebSocket-Version: 13
+
+
+[DEBUG]:[2017-06-26 18:34:29]:[2962033520]:[28:process_recv_buf:core/ws_data_process.cpp] recv len: 207
+
+[DEBUG]:[2017-06-26 18:34:29]:[2962033520]:[61:RECV_WB_INIT_STAUTS_PROCESS:core/ws_res_data_process.cpp] buf:GET / HTTP/1.1
+Host:www.yiyi.com
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Key:zEkljJfDq59X6c+8BZx7yw==
+Origin:yiyi.com
+Sec-WebSocket-Protocol: chat, superchat
+Sec-WebSocket-Version: 13
+
+ _recv_header:GET / HTTP/1.1
+Host:www.yiyi.com
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Key:zEkljJfDq59X6c+8BZx7yw==
+Origin:yiyi.com
+Sec-WebSocket-Protocol: chat, superchat
+Sec-WebSocket-Version: 13
+
+
+[DEBUG]:[2017-06-26 18:34:29]:[2962033520]:[124:real_send:core/tcp_connect.cpp] send:HTTP/1.1 101 Switching Protocols
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Accept: GMWN4x1E4zAk8tMrFDeqx+yxQVA=
+Sec-WebSocket-Protocol: chat
+
+
+[DEBUG]:[2017-06-26 18:34:29]:[2962033520]:[37:real_recv:core/tcp_connect.cpp] recv:Å»gEãk
+[DEBUG]:[2017-06-26 18:34:29]:[2962033520]:[28:process_recv_buf:core/ws_data_process.cpp] recv len: 6
+
+[DEBUG]:[2017-06-26 18:34:29]:[2962033520]:[199:RECV_WB_HANDSHAKE_OK_PROCESS:core/ws_data_process.cpp] RECV_WB_HANDSHAKE_OK_PROCESS 6
+[DEBUG]:[2017-06-26 18:34:29]:[2962033520]:[37:real_recv:core/tcp_connect.cpp] recv:gÏ0˚g±IVw∏IKg˛7‚E©YQ}©GE5Í2ÔI]g©GE*˚I]g∫IKgÊ
+[DEBUG]:[2017-06-26 18:34:29]:[2962033520]:[28:process_recv_buf:core/ws_data_process.cpp] recv len: 72
+
+[DEBUG]:[2017-06-26 18:34:29]:[2962033520]:[199:RECV_WB_HANDSHAKE_OK_PROCESS:core/ws_data_process.cpp] RECV_WB_HANDSHAKE_OK_PROCESS 72
+[DEBUG]:[2017-06-26 18:34:29]:[2962033520]:[92:msg_recv_finish:src/qfws_res_data_process.cpp] recv: {"groupid":"123","userid":"268","passwd":"","op":"1","msg":"I am login"}
+[DEBUG]:[2017-06-26 18:34:29]:[2962033520]:[127:parse_from_json:src/qfws_msg_process.cpp] op:1
+[DEBUG]:[2017-06-26 18:34:29]:[2962033520]:[132:parse_from_json:src/qfws_msg_process.cpp] groupid:123
+[DEBUG]:[2017-06-26 18:34:29]:[2962033520]:[137:parse_from_json:src/qfws_msg_process.cpp] userid:268
+[DEBUG]:[2017-06-26 18:34:29]:[2962033520]:[142:parse_from_json:src/qfws_msg_process.cpp] passwd:
+[DEBUG]:[2017-06-26 18:34:29]:[2962033520]:[147:parse_from_json:src/qfws_msg_process.cpp] msg:I am login
+[DEBUG]:[2017-06-26 18:34:29]:[2962033520]:[56:get_userid:src/qfws_msg_process.cpp] _groupid:123 groupid:123
+[DEBUG]:[2017-06-26 18:34:29]:[2962033520]:[77:do_login:src/qfws_res_data_process.cpp] send_response:{"op":"1","res_code":"1000","groupid":"123","userid":"268","online_userid":[12,268],"msg":"login ok"}
+[DEBUG]:[2017-06-26 18:34:29]:[2962033520]:[124:real_send:core/tcp_connect.cpp] send:Åe
+[DEBUG]:[2017-06-26 18:34:29]:[2962033520]:[124:real_send:core/tcp_connect.cpp] send:{"op":"1","res_code":"1000","groupid":"123","userid":"268","online_userid":[12,268],"msg":"login ok"}
+[DEBUG]:[2017-06-26 18:35:15]:[2962033520]:[17:err_close:core/base_data_process.cpp] 0xacb02588
+[DEBUG]:[2017-06-26 18:36:07]:[2962033520]:[17:err_close:core/base_data_process.cpp] 0xacb01e08
+[DEBUG]:[2017-06-26 18:36:18]:[2962033520]:[18:handle_msg:src/ws_ser_thread.cpp] recv: fd [91]
+[DEBUG]:[2017-06-26 18:36:18]:[2962033520]:[7:base_data_process:core/base_data_process.cpp] 0xacb02768
+[DEBUG]:[2017-06-26 18:36:18]:[2962033520]:[34:set_para:core/base_data_process.cpp] 0xacb02768
+[DEBUG]:[2017-06-26 18:36:18]:[2962033520]:[37:real_recv:core/tcp_connect.cpp] recv:GET / HTTP/1.1
+Host:www.yiyi.com
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Key:zEkljJfDq59X6c+8BZx7yw==
+Origin:yiyi.com
+Sec-WebSocket-Protocol: chat, superchat
+Sec-WebSocket-Version: 13
+
+
+[DEBUG]:[2017-06-26 18:36:18]:[2962033520]:[28:process_recv_buf:core/ws_data_process.cpp] recv len: 207
+
+[DEBUG]:[2017-06-26 18:36:18]:[2962033520]:[61:RECV_WB_INIT_STAUTS_PROCESS:core/ws_res_data_process.cpp] buf:GET / HTTP/1.1
+Host:www.yiyi.com
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Key:zEkljJfDq59X6c+8BZx7yw==
+Origin:yiyi.com
+Sec-WebSocket-Protocol: chat, superchat
+Sec-WebSocket-Version: 13
+
+ _recv_header:GET / HTTP/1.1
+Host:www.yiyi.com
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Key:zEkljJfDq59X6c+8BZx7yw==
+Origin:yiyi.com
+Sec-WebSocket-Protocol: chat, superchat
+Sec-WebSocket-Version: 13
+
+
+[DEBUG]:[2017-06-26 18:36:18]:[2962033520]:[124:real_send:core/tcp_connect.cpp] send:HTTP/1.1 101 Switching Protocols
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Accept: GMWN4x1E4zAk8tMrFDeqx+yxQVA=
+Sec-WebSocket-Protocol: chat
+
+
+[DEBUG]:[2017-06-26 18:36:18]:[2962033520]:[37:real_recv:core/tcp_connect.cpp] recv:Å∆gEãk
+[DEBUG]:[2017-06-26 18:36:18]:[2962033520]:[28:process_recv_buf:core/ws_data_process.cpp] recv len: 6
+
+[DEBUG]:[2017-06-26 18:36:18]:[2962033520]:[199:RECV_WB_HANDSHAKE_OK_PROCESS:core/ws_data_process.cpp] RECV_WB_HANDSHAKE_OK_PROCESS 6
+[DEBUG]:[2017-06-26 18:36:18]:[2962033520]:[37:real_recv:core/tcp_connect.cpp] recv:gÏ0˚g±IVw∏IKg˛7‚E©ZEi©6¯g±IEi©g±IVgßI
+6ÏI]g¬K(´"‚E8
+[DEBUG]:[2017-06-26 18:36:18]:[2962033520]:[28:process_recv_buf:core/ws_data_process.cpp] recv len: 70
+
+[DEBUG]:[2017-06-26 18:36:18]:[2962033520]:[199:RECV_WB_HANDSHAKE_OK_PROCESS:core/ws_data_process.cpp] RECV_WB_HANDSHAKE_OK_PROCESS 70
+[DEBUG]:[2017-06-26 18:36:18]:[2962033520]:[92:msg_recv_finish:src/qfws_res_data_process.cpp] recv: {"groupid":"123","userid":"1","passwd":"","op":"1","msg":"I am login"}
+[DEBUG]:[2017-06-26 18:36:18]:[2962033520]:[127:parse_from_json:src/qfws_msg_process.cpp] op:1
+[DEBUG]:[2017-06-26 18:36:18]:[2962033520]:[132:parse_from_json:src/qfws_msg_process.cpp] groupid:123
+[DEBUG]:[2017-06-26 18:36:18]:[2962033520]:[137:parse_from_json:src/qfws_msg_process.cpp] userid:1
+[DEBUG]:[2017-06-26 18:36:18]:[2962033520]:[142:parse_from_json:src/qfws_msg_process.cpp] passwd:
+[DEBUG]:[2017-06-26 18:36:18]:[2962033520]:[147:parse_from_json:src/qfws_msg_process.cpp] msg:I am login
+[DEBUG]:[2017-06-26 18:36:18]:[2962033520]:[56:get_userid:src/qfws_msg_process.cpp] _groupid:123 groupid:123
+[DEBUG]:[2017-06-26 18:36:18]:[2962033520]:[77:do_login:src/qfws_res_data_process.cpp] send_response:{"op":"1","res_code":"1000","groupid":"123","userid":"1","online_userid":[1,12,268],"msg":"login ok"}
+[DEBUG]:[2017-06-26 18:36:18]:[2962033520]:[124:real_send:core/tcp_connect.cpp] send:Åe
+[DEBUG]:[2017-06-26 18:36:18]:[2962033520]:[124:real_send:core/tcp_connect.cpp] send:{"op":"1","res_code":"1000","groupid":"123","userid":"1","online_userid":[1,12,268],"msg":"login ok"}
+[DEBUG]:[2017-06-26 18:38:57]:[2962033520]:[17:err_close:core/base_data_process.cpp] 0xacb02768
+[DEBUG]:[2017-06-26 18:40:12]:[2962033520]:[18:handle_msg:src/ws_ser_thread.cpp] recv: fd [91]
+[DEBUG]:[2017-06-26 18:40:12]:[2962033520]:[7:base_data_process:core/base_data_process.cpp] 0xacb02688
+[DEBUG]:[2017-06-26 18:40:12]:[2962033520]:[34:set_para:core/base_data_process.cpp] 0xacb02688
+[DEBUG]:[2017-06-26 18:40:12]:[2962033520]:[37:real_recv:core/tcp_connect.cpp] recv:GET / HTTP/1.1
+Host:www.yiyi.com
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Key:zEkljJfDq59X6c+8BZx7yw==
+Origin:yiyi.com
+Sec-WebSocket-Protocol: chat, superchat
+Sec-WebSocket-Version: 13
+
+
+[DEBUG]:[2017-06-26 18:40:12]:[2962033520]:[28:process_recv_buf:core/ws_data_process.cpp] recv len: 207
+
+[DEBUG]:[2017-06-26 18:40:12]:[2962033520]:[61:RECV_WB_INIT_STAUTS_PROCESS:core/ws_res_data_process.cpp] buf:GET / HTTP/1.1
+Host:www.yiyi.com
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Key:zEkljJfDq59X6c+8BZx7yw==
+Origin:yiyi.com
+Sec-WebSocket-Protocol: chat, superchat
+Sec-WebSocket-Version: 13
+
+ _recv_header:GET / HTTP/1.1
+Host:www.yiyi.com
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Key:zEkljJfDq59X6c+8BZx7yw==
+Origin:yiyi.com
+Sec-WebSocket-Protocol: chat, superchat
+Sec-WebSocket-Version: 13
+
+
+[DEBUG]:[2017-06-26 18:40:12]:[2962033520]:[124:real_send:core/tcp_connect.cpp] send:HTTP/1.1 101 Switching Protocols
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Accept: GMWN4x1E4zAk8tMrFDeqx+yxQVA=
+Sec-WebSocket-Protocol: chat
+
+
+[DEBUG]:[2017-06-26 18:40:12]:[2962033520]:[37:real_recv:core/tcp_connect.cpp] recv:Å«gEãk
+[DEBUG]:[2017-06-26 18:40:12]:[2962033520]:[28:process_recv_buf:core/ws_data_process.cpp] recv len: 6
+
+[DEBUG]:[2017-06-26 18:40:12]:[2962033520]:[199:RECV_WB_HANDSHAKE_OK_PROCESS:core/ws_data_process.cpp] RECV_WB_HANDSHAKE_OK_PROCESS 6
+[DEBUG]:[2017-06-26 18:40:12]:[2962033520]:[37:real_recv:core/tcp_connect.cpp] recv:gÏ0˚g±IVw∏IKg˛7‚E©ZUgßI$¯!©QEgßI5©QEt©GE(¯E©"G$ÊK*Ï	gˆ
+[DEBUG]:[2017-06-26 18:40:12]:[2962033520]:[28:process_recv_buf:core/ws_data_process.cpp] recv len: 71
+
+[DEBUG]:[2017-06-26 18:40:12]:[2962033520]:[199:RECV_WB_HANDSHAKE_OK_PROCESS:core/ws_data_process.cpp] RECV_WB_HANDSHAKE_OK_PROCESS 71
+[DEBUG]:[2017-06-26 18:40:12]:[2962033520]:[92:msg_recv_finish:src/qfws_res_data_process.cpp] recv: {"groupid":"123","userid":"12","passwd":"","op":"1","msg":"I am login"}
+[DEBUG]:[2017-06-26 18:40:12]:[2962033520]:[127:parse_from_json:src/qfws_msg_process.cpp] op:1
+[DEBUG]:[2017-06-26 18:40:12]:[2962033520]:[132:parse_from_json:src/qfws_msg_process.cpp] groupid:123
+[DEBUG]:[2017-06-26 18:40:12]:[2962033520]:[137:parse_from_json:src/qfws_msg_process.cpp] userid:12
+[DEBUG]:[2017-06-26 18:40:12]:[2962033520]:[142:parse_from_json:src/qfws_msg_process.cpp] passwd:
+[DEBUG]:[2017-06-26 18:40:12]:[2962033520]:[147:parse_from_json:src/qfws_msg_process.cpp] msg:I am login
+[DEBUG]:[2017-06-26 18:40:12]:[2962033520]:[56:get_userid:src/qfws_msg_process.cpp] _groupid:123 groupid:123
+[DEBUG]:[2017-06-26 18:40:12]:[2962033520]:[77:do_login:src/qfws_res_data_process.cpp] send_response:{"op":"1","res_code":"1000","groupid":"123","userid":"12","online_userid":[1,12,268],"msg":"login ok"}
+[DEBUG]:[2017-06-26 18:40:12]:[2962033520]:[124:real_send:core/tcp_connect.cpp] send:Åf
+[DEBUG]:[2017-06-26 18:40:12]:[2962033520]:[124:real_send:core/tcp_connect.cpp] send:{"op":"1","res_code":"1000","groupid":"123","userid":"12","online_userid":[1,12,268],"msg":"login ok"}
+[DEBUG]:[2017-06-26 18:41:01]:[2962033520]:[18:handle_msg:src/ws_ser_thread.cpp] recv: fd [92]
+[DEBUG]:[2017-06-26 18:41:01]:[2962033520]:[7:base_data_process:core/base_data_process.cpp] 0xacb033c0
+[DEBUG]:[2017-06-26 18:41:01]:[2962033520]:[34:set_para:core/base_data_process.cpp] 0xacb033c0
+[DEBUG]:[2017-06-26 18:41:01]:[2962033520]:[37:real_recv:core/tcp_connect.cpp] recv:GET / HTTP/1.1
+Host:www.yiyi.com
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Key:zEkljJfDq59X6c+8BZx7yw==
+Origin:yiyi.com
+Sec-WebSocket-Protocol: chat, superchat
+Sec-WebSocket-Version: 13
+
+
+[DEBUG]:[2017-06-26 18:41:01]:[2962033520]:[28:process_recv_buf:core/ws_data_process.cpp] recv len: 207
+
+[DEBUG]:[2017-06-26 18:41:01]:[2962033520]:[61:RECV_WB_INIT_STAUTS_PROCESS:core/ws_res_data_process.cpp] buf:GET / HTTP/1.1
+Host:www.yiyi.com
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Key:zEkljJfDq59X6c+8BZx7yw==
+Origin:yiyi.com
+Sec-WebSocket-Protocol: chat, superchat
+Sec-WebSocket-Version: 13
+
+ _recv_header:GET / HTTP/1.1
+Host:www.yiyi.com
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Key:zEkljJfDq59X6c+8BZx7yw==
+Origin:yiyi.com
+Sec-WebSocket-Protocol: chat, superchat
+Sec-WebSocket-Version: 13
+
+
+[DEBUG]:[2017-06-26 18:41:01]:[2962033520]:[124:real_send:core/tcp_connect.cpp] send:HTTP/1.1 101 Switching Protocols
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Accept: GMWN4x1E4zAk8tMrFDeqx+yxQVA=
+Sec-WebSocket-Protocol: chat
+
+
+[DEBUG]:[2017-06-26 18:41:01]:[2962033520]:[37:real_recv:core/tcp_connect.cpp] recv:Å»gEãk
+[DEBUG]:[2017-06-26 18:41:01]:[2962033520]:[28:process_recv_buf:core/ws_data_process.cpp] recv len: 6
+
+[DEBUG]:[2017-06-26 18:41:01]:[2962033520]:[199:RECV_WB_HANDSHAKE_OK_PROCESS:core/ws_data_process.cpp] RECV_WB_HANDSHAKE_OK_PROCESS 6
+[DEBUG]:[2017-06-26 18:41:01]:[2962033520]:[37:real_recv:core/tcp_connect.cpp] recv:gÏ0˚g±IVw∏IKg˛7‚E©R^|©GE5Í2ÔI]g©GE*˚I]g∫IKgÊ
+[DEBUG]:[2017-06-26 18:41:01]:[2962033520]:[28:process_recv_buf:core/ws_data_process.cpp] recv len: 72
+
+[DEBUG]:[2017-06-26 18:41:01]:[2962033520]:[199:RECV_WB_HANDSHAKE_OK_PROCESS:core/ws_data_process.cpp] RECV_WB_HANDSHAKE_OK_PROCESS 72
+[DEBUG]:[2017-06-26 18:41:01]:[2962033520]:[92:msg_recv_finish:src/qfws_res_data_process.cpp] recv: {"groupid":"123","userid":"999","passwd":"","op":"1","msg":"I am login"}
+[DEBUG]:[2017-06-26 18:41:01]:[2962033520]:[127:parse_from_json:src/qfws_msg_process.cpp] op:1
+[DEBUG]:[2017-06-26 18:41:01]:[2962033520]:[132:parse_from_json:src/qfws_msg_process.cpp] groupid:123
+[DEBUG]:[2017-06-26 18:41:01]:[2962033520]:[137:parse_from_json:src/qfws_msg_process.cpp] userid:999
+[DEBUG]:[2017-06-26 18:41:01]:[2962033520]:[142:parse_from_json:src/qfws_msg_process.cpp] passwd:
+[DEBUG]:[2017-06-26 18:41:01]:[2962033520]:[147:parse_from_json:src/qfws_msg_process.cpp] msg:I am login
+[DEBUG]:[2017-06-26 18:41:01]:[2962033520]:[56:get_userid:src/qfws_msg_process.cpp] _groupid:123 groupid:123
+[DEBUG]:[2017-06-26 18:41:01]:[2962033520]:[77:do_login:src/qfws_res_data_process.cpp] send_response:{"op":"1","res_code":"1000","groupid":"123","userid":"999","online_userid":[1,12,268,999],"msg":"login ok"}
+[DEBUG]:[2017-06-26 18:41:01]:[2962033520]:[124:real_send:core/tcp_connect.cpp] send:Åk
+[DEBUG]:[2017-06-26 18:41:01]:[2962033520]:[124:real_send:core/tcp_connect.cpp] send:{"op":"1","res_code":"1000","groupid":"123","userid":"999","online_userid":[1,12,268,999],"msg":"login ok"}
+[DEBUG]:[2017-06-26 18:41:14]:[2962033520]:[17:err_close:core/base_data_process.cpp] 0xacb02688
+[DEBUG]:[2017-06-26 18:56:49]:[3078416080]:[37:load_config:src/main.cpp] parse ./conf//ws_ser.conf ok:
+webs_port:8088 
+webs_thread_num:6
+http_port:9090
+http_thread_num:6
+
+[DEBUG]:[2017-06-26 18:56:49]:[3078416080]:[71:init:src/qfws_msg_process.cpp] _bucket:2000003
+[DEBUG]:[2017-06-26 18:56:59]:[2962033520]:[18:handle_msg:src/ws_ser_thread.cpp] recv: fd [91]
+[DEBUG]:[2017-06-26 18:56:59]:[2962033520]:[7:base_data_process:core/base_data_process.cpp] 0xacb01e08
+[DEBUG]:[2017-06-26 18:56:59]:[2962033520]:[34:set_para:core/base_data_process.cpp] 0xacb01e08
+[DEBUG]:[2017-06-26 18:56:59]:[2962033520]:[37:real_recv:core/tcp_connect.cpp] recv:GET / HTTP/1.1
+Host:www.yiyi.com
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Key:zEkljJfDq59X6c+8BZx7yw==
+Origin:yiyi.com
+Sec-WebSocket-Protocol: chat, superchat
+Sec-WebSocket-Version: 13
+
+
+[DEBUG]:[2017-06-26 18:56:59]:[2962033520]:[28:process_recv_buf:core/ws_data_process.cpp] recv len: 207
+
+[DEBUG]:[2017-06-26 18:56:59]:[2962033520]:[61:RECV_WB_INIT_STAUTS_PROCESS:core/ws_res_data_process.cpp] buf:GET / HTTP/1.1
+Host:www.yiyi.com
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Key:zEkljJfDq59X6c+8BZx7yw==
+Origin:yiyi.com
+Sec-WebSocket-Protocol: chat, superchat
+Sec-WebSocket-Version: 13
+
+ _recv_header:GET / HTTP/1.1
+Host:www.yiyi.com
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Key:zEkljJfDq59X6c+8BZx7yw==
+Origin:yiyi.com
+Sec-WebSocket-Protocol: chat, superchat
+Sec-WebSocket-Version: 13
+
+
+[DEBUG]:[2017-06-26 18:56:59]:[2962033520]:[124:real_send:core/tcp_connect.cpp] send:HTTP/1.1 101 Switching Protocols
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Accept: GMWN4x1E4zAk8tMrFDeqx+yxQVA=
+Sec-WebSocket-Protocol: chat
+
+
+[DEBUG]:[2017-06-26 18:56:59]:[2962033520]:[37:real_recv:core/tcp_connect.cpp] recv:Å¿gEãk
+[DEBUG]:[2017-06-26 18:56:59]:[2962033520]:[28:process_recv_buf:core/ws_data_process.cpp] recv len: 6
+
+[DEBUG]:[2017-06-26 18:56:59]:[2962033520]:[199:RECV_WB_HANDSHAKE_OK_PROCESS:core/ws_data_process.cpp] RECV_WB_HANDSHAKE_OK_PROCESS 6
+[DEBUG]:[2017-06-26 18:57:00]:[2962033520]:[37:real_recv:core/tcp_connect.cpp] recv:gÏ0˚g±ZUvßI6Ó!©QWi©6¯g±IEi©g±ZKgÊ
+[DEBUG]:[2017-06-26 18:57:00]:[2962033520]:[28:process_recv_buf:core/ws_data_process.cpp] recv len: 64
+
+[DEBUG]:[2017-06-26 18:57:00]:[2962033520]:[199:RECV_WB_HANDSHAKE_OK_PROCESS:core/ws_data_process.cpp] RECV_WB_HANDSHAKE_OK_PROCESS 64
+[DEBUG]:[2017-06-26 18:57:00]:[2962033520]:[82:msg_recv_finish:src/qfws_res_data_process.cpp] recv: {"groupid":123,"userid":0,"passwd":"","op":1,"msg":"I am login"}
+[DEBUG]:[2017-06-26 18:57:00]:[2962033520]:[127:parse_from_json:src/qfws_msg_process.cpp] op:1
+[DEBUG]:[2017-06-26 18:57:00]:[2962033520]:[132:parse_from_json:src/qfws_msg_process.cpp] groupid:123
+[DEBUG]:[2017-06-26 18:57:00]:[2962033520]:[137:parse_from_json:src/qfws_msg_process.cpp] userid:0
+[DEBUG]:[2017-06-26 18:57:00]:[2962033520]:[142:parse_from_json:src/qfws_msg_process.cpp] passwd:
+[DEBUG]:[2017-06-26 18:57:00]:[2962033520]:[147:parse_from_json:src/qfws_msg_process.cpp] msg:I am login
+[DEBUG]:[2017-06-26 18:57:00]:[2962033520]:[56:get_userid:src/qfws_msg_process.cpp] _groupid:123 groupid:123
+[DEBUG]:[2017-06-26 18:57:00]:[2962033520]:[67:do_login:src/qfws_res_data_process.cpp] send_response:{"op":1,"res_code":1000,"groupid":123,"userid":0,"online_userid":[0],"msg":"login ok"}
+[DEBUG]:[2017-06-26 18:57:00]:[2962033520]:[124:real_send:core/tcp_connect.cpp] send:ÅV
+[DEBUG]:[2017-06-26 18:57:00]:[2962033520]:[124:real_send:core/tcp_connect.cpp] send:{"op":1,"res_code":1000,"groupid":123,"userid":0,"online_userid":[0],"msg":"login ok"}
+[DEBUG]:[2017-06-26 18:57:42]:[2962033520]:[18:handle_msg:src/ws_ser_thread.cpp] recv: fd [92]
+[DEBUG]:[2017-06-26 18:57:42]:[2962033520]:[7:base_data_process:core/base_data_process.cpp] 0xacb02468
+[DEBUG]:[2017-06-26 18:57:42]:[2962033520]:[34:set_para:core/base_data_process.cpp] 0xacb02468
+[DEBUG]:[2017-06-26 18:57:42]:[2962033520]:[37:real_recv:core/tcp_connect.cpp] recv:GET / HTTP/1.1
+Host:www.yiyi.com
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Key:zEkljJfDq59X6c+8BZx7yw==
+Origin:yiyi.com
+Sec-WebSocket-Protocol: chat, superchat
+Sec-WebSocket-Version: 13
+
+
+[DEBUG]:[2017-06-26 18:57:42]:[2962033520]:[28:process_recv_buf:core/ws_data_process.cpp] recv len: 207
+
+[DEBUG]:[2017-06-26 18:57:42]:[2962033520]:[61:RECV_WB_INIT_STAUTS_PROCESS:core/ws_res_data_process.cpp] buf:GET / HTTP/1.1
+Host:www.yiyi.com
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Key:zEkljJfDq59X6c+8BZx7yw==
+Origin:yiyi.com
+Sec-WebSocket-Protocol: chat, superchat
+Sec-WebSocket-Version: 13
+
+ _recv_header:GET / HTTP/1.1
+Host:www.yiyi.com
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Key:zEkljJfDq59X6c+8BZx7yw==
+Origin:yiyi.com
+Sec-WebSocket-Protocol: chat, superchat
+Sec-WebSocket-Version: 13
+
+
+[DEBUG]:[2017-06-26 18:57:42]:[2962033520]:[124:real_send:core/tcp_connect.cpp] send:HTTP/1.1 101 Switching Protocols
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Accept: GMWN4x1E4zAk8tMrFDeqx+yxQVA=
+Sec-WebSocket-Protocol: chat
+
+
+[DEBUG]:[2017-06-26 18:57:42]:[2962033520]:[37:real_recv:core/tcp_connect.cpp] recv:Å¿gEãk
+[DEBUG]:[2017-06-26 18:57:42]:[2962033520]:[28:process_recv_buf:core/ws_data_process.cpp] recv len: 6
+
+[DEBUG]:[2017-06-26 18:57:42]:[2962033520]:[199:RECV_WB_HANDSHAKE_OK_PROCESS:core/ws_data_process.cpp] RECV_WB_HANDSHAKE_OK_PROCESS 6
+[DEBUG]:[2017-06-26 18:57:42]:[2962033520]:[37:real_recv:core/tcp_connect.cpp] recv:gÏ0˚g±ZUvßI6Ó!©QWi©6¯g±IEi©g±ZKgÊ
+[DEBUG]:[2017-06-26 18:57:42]:[2962033520]:[28:process_recv_buf:core/ws_data_process.cpp] recv len: 64
+
+[DEBUG]:[2017-06-26 18:57:42]:[2962033520]:[199:RECV_WB_HANDSHAKE_OK_PROCESS:core/ws_data_process.cpp] RECV_WB_HANDSHAKE_OK_PROCESS 64
+[DEBUG]:[2017-06-26 18:57:42]:[2962033520]:[82:msg_recv_finish:src/qfws_res_data_process.cpp] recv: {"groupid":123,"userid":0,"passwd":"","op":1,"msg":"I am login"}
+[DEBUG]:[2017-06-26 18:57:42]:[2962033520]:[127:parse_from_json:src/qfws_msg_process.cpp] op:1
+[DEBUG]:[2017-06-26 18:57:42]:[2962033520]:[132:parse_from_json:src/qfws_msg_process.cpp] groupid:123
+[DEBUG]:[2017-06-26 18:57:42]:[2962033520]:[137:parse_from_json:src/qfws_msg_process.cpp] userid:0
+[DEBUG]:[2017-06-26 18:57:42]:[2962033520]:[142:parse_from_json:src/qfws_msg_process.cpp] passwd:
+[DEBUG]:[2017-06-26 18:57:42]:[2962033520]:[147:parse_from_json:src/qfws_msg_process.cpp] msg:I am login
+[DEBUG]:[2017-06-26 18:57:42]:[2962033520]:[56:get_userid:src/qfws_msg_process.cpp] _groupid:123 groupid:123
+[DEBUG]:[2017-06-26 18:57:42]:[2962033520]:[67:do_login:src/qfws_res_data_process.cpp] send_response:{"op":1,"res_code":1000,"groupid":123,"userid":0,"online_userid":[0],"msg":"login ok"}
+[DEBUG]:[2017-06-26 18:57:42]:[2962033520]:[124:real_send:core/tcp_connect.cpp] send:ÅV
+[DEBUG]:[2017-06-26 18:57:42]:[2962033520]:[124:real_send:core/tcp_connect.cpp] send:{"op":1,"res_code":1000,"groupid":123,"userid":0,"online_userid":[0],"msg":"login ok"}
+[DEBUG]:[2017-06-26 18:57:55]:[2962033520]:[17:err_close:core/base_data_process.cpp] 0xacb01e08
+[DEBUG]:[2017-06-26 19:04:07]:[3078182608]:[37:load_config:src/main.cpp] parse ./conf//ws_ser.conf ok:
+webs_port:8088 
+webs_thread_num:6
+http_port:9090
+http_thread_num:6
+
+[DEBUG]:[2017-06-26 19:04:07]:[3078182608]:[71:init:src/qfws_msg_process.cpp] _bucket:2000003
+[DEBUG]:[2017-06-26 19:08:19]:[2962033520]:[18:handle_msg:src/ws_ser_thread.cpp] recv: fd [91]
+[DEBUG]:[2017-06-26 19:08:19]:[2962033520]:[7:base_data_process:core/base_data_process.cpp] 0xacb01e08
+[DEBUG]:[2017-06-26 19:08:19]:[2962033520]:[34:set_para:core/base_data_process.cpp] 0xacb01e08
+[DEBUG]:[2017-06-26 19:08:19]:[2962033520]:[37:real_recv:core/tcp_connect.cpp] recv:GET / HTTP/1.1
+Host:www.yiyi.com
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Key:zEkljJfDq59X6c+8BZx7yw==
+Origin:yiyi.com
+Sec-WebSocket-Protocol: chat, superchat
+Sec-WebSocket-Version: 13
+
+
+[DEBUG]:[2017-06-26 19:08:19]:[2962033520]:[28:process_recv_buf:core/ws_data_process.cpp] recv len: 207
+
+[DEBUG]:[2017-06-26 19:08:19]:[2962033520]:[61:RECV_WB_INIT_STAUTS_PROCESS:core/ws_res_data_process.cpp] buf:GET / HTTP/1.1
+Host:www.yiyi.com
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Key:zEkljJfDq59X6c+8BZx7yw==
+Origin:yiyi.com
+Sec-WebSocket-Protocol: chat, superchat
+Sec-WebSocket-Version: 13
+
+ _recv_header:GET / HTTP/1.1
+Host:www.yiyi.com
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Key:zEkljJfDq59X6c+8BZx7yw==
+Origin:yiyi.com
+Sec-WebSocket-Protocol: chat, superchat
+Sec-WebSocket-Version: 13
+
+
+[DEBUG]:[2017-06-26 19:08:19]:[2962033520]:[124:real_send:core/tcp_connect.cpp] send:HTTP/1.1 101 Switching Protocols
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Accept: GMWN4x1E4zAk8tMrFDeqx+yxQVA=
+Sec-WebSocket-Protocol: chat
+
+
+[DEBUG]:[2017-06-26 19:08:19]:[2962033520]:[37:real_recv:core/tcp_connect.cpp] recv:Å¿gEãk
+[DEBUG]:[2017-06-26 19:08:19]:[2962033520]:[28:process_recv_buf:core/ws_data_process.cpp] recv len: 6
+
+[DEBUG]:[2017-06-26 19:08:19]:[2962033520]:[199:RECV_WB_HANDSHAKE_OK_PROCESS:core/ws_data_process.cpp] RECV_WB_HANDSHAKE_OK_PROCESS 6
+[DEBUG]:[2017-06-26 19:08:19]:[2962033520]:[37:real_recv:core/tcp_connect.cpp] recv:gÏ0˚g±ZKg˛7‚E∫YTi©6¯g±IEi©g±ZKgÊ
+[DEBUG]:[2017-06-26 19:08:19]:[2962033520]:[28:process_recv_buf:core/ws_data_process.cpp] recv len: 64
+
+[DEBUG]:[2017-06-26 19:08:19]:[2962033520]:[199:RECV_WB_HANDSHAKE_OK_PROCESS:core/ws_data_process.cpp] RECV_WB_HANDSHAKE_OK_PROCESS 64
+[DEBUG]:[2017-06-26 19:08:19]:[2962033520]:[82:msg_recv_finish:src/qfws_res_data_process.cpp] recv: {"groupid":1,"userid":123,"passwd":"","op":1,"msg":"I am login"}
+[DEBUG]:[2017-06-26 19:08:19]:[2962033520]:[127:parse_from_json:src/qfws_msg_process.cpp] op:1
+[DEBUG]:[2017-06-26 19:08:19]:[2962033520]:[132:parse_from_json:src/qfws_msg_process.cpp] groupid:1
+[DEBUG]:[2017-06-26 19:08:19]:[2962033520]:[137:parse_from_json:src/qfws_msg_process.cpp] userid:123
+[DEBUG]:[2017-06-26 19:08:19]:[2962033520]:[142:parse_from_json:src/qfws_msg_process.cpp] passwd:
+[DEBUG]:[2017-06-26 19:08:19]:[2962033520]:[147:parse_from_json:src/qfws_msg_process.cpp] msg:I am login
+[DEBUG]:[2017-06-26 19:08:19]:[2962033520]:[56:get_userid:src/qfws_msg_process.cpp] _groupid:1 groupid:1
+[DEBUG]:[2017-06-26 19:08:19]:[2962033520]:[67:do_login:src/qfws_res_data_process.cpp] send_response:{"op":1,"res_code":1000,"groupid":1,"userid":123,"online_userid":[123],"msg":"login ok"}
+[DEBUG]:[2017-06-26 19:08:19]:[2962033520]:[124:real_send:core/tcp_connect.cpp] send:ÅX
+[DEBUG]:[2017-06-26 19:08:19]:[2962033520]:[124:real_send:core/tcp_connect.cpp] send:{"op":1,"res_code":1000,"groupid":1,"userid":123,"online_userid":[123],"msg":"login ok"}
+[DEBUG]:[2017-06-26 19:09:11]:[2962033520]:[17:err_close:core/base_data_process.cpp] 0xacb01e08
+[DEBUG]:[2017-06-26 19:10:11]:[2962033520]:[18:handle_msg:src/ws_ser_thread.cpp] recv: fd [91]
+[DEBUG]:[2017-06-26 19:10:11]:[2962033520]:[7:base_data_process:core/base_data_process.cpp] 0xacb00fa0
+[DEBUG]:[2017-06-26 19:10:11]:[2962033520]:[34:set_para:core/base_data_process.cpp] 0xacb00fa0
+[DEBUG]:[2017-06-26 19:10:11]:[2962033520]:[37:real_recv:core/tcp_connect.cpp] recv:GET / HTTP/1.1
+Host:www.yiyi.com
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Key:zEkljJfDq59X6c+8BZx7yw==
+Origin:yiyi.com
+Sec-WebSocket-Protocol: chat, superchat
+Sec-WebSocket-Version: 13
+
+
+[DEBUG]:[2017-06-26 19:10:11]:[2962033520]:[28:process_recv_buf:core/ws_data_process.cpp] recv len: 207
+
+[DEBUG]:[2017-06-26 19:10:11]:[2962033520]:[61:RECV_WB_INIT_STAUTS_PROCESS:core/ws_res_data_process.cpp] buf:GET / HTTP/1.1
+Host:www.yiyi.com
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Key:zEkljJfDq59X6c+8BZx7yw==
+Origin:yiyi.com
+Sec-WebSocket-Protocol: chat, superchat
+Sec-WebSocket-Version: 13
+
+ _recv_header:GET / HTTP/1.1
+Host:www.yiyi.com
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Key:zEkljJfDq59X6c+8BZx7yw==
+Origin:yiyi.com
+Sec-WebSocket-Protocol: chat, superchat
+Sec-WebSocket-Version: 13
+
+
+[DEBUG]:[2017-06-26 19:10:11]:[2962033520]:[124:real_send:core/tcp_connect.cpp] send:HTTP/1.1 101 Switching Protocols
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Accept: GMWN4x1E4zAk8tMrFDeqx+yxQVA=
+Sec-WebSocket-Protocol: chat
+
+
+[DEBUG]:[2017-06-26 19:10:11]:[2962033520]:[37:real_recv:core/tcp_connect.cpp] recv:Å¿gEãk
+[DEBUG]:[2017-06-26 19:10:11]:[2962033520]:[28:process_recv_buf:core/ws_data_process.cpp] recv len: 6
+
+[DEBUG]:[2017-06-26 19:10:11]:[2962033520]:[199:RECV_WB_HANDSHAKE_OK_PROCESS:core/ws_data_process.cpp] RECV_WB_HANDSHAKE_OK_PROCESS 6
+[DEBUG]:[2017-06-26 19:10:11]:[2962033520]:[37:real_recv:core/tcp_connect.cpp] recv:gÏ0˚g±ZUvßI6Ó!©QVi©6¯g±IEi©g±ZKgÊ
+[DEBUG]:[2017-06-26 19:10:11]:[2962033520]:[28:process_recv_buf:core/ws_data_process.cpp] recv len: 64
+
+[DEBUG]:[2017-06-26 19:10:11]:[2962033520]:[199:RECV_WB_HANDSHAKE_OK_PROCESS:core/ws_data_process.cpp] RECV_WB_HANDSHAKE_OK_PROCESS 64
+[DEBUG]:[2017-06-26 19:10:11]:[2962033520]:[82:msg_recv_finish:src/qfws_res_data_process.cpp] recv: {"groupid":123,"userid":1,"passwd":"","op":1,"msg":"I am login"}
+[DEBUG]:[2017-06-26 19:10:11]:[2962033520]:[127:parse_from_json:src/qfws_msg_process.cpp] op:1
+[DEBUG]:[2017-06-26 19:10:11]:[2962033520]:[132:parse_from_json:src/qfws_msg_process.cpp] groupid:123
+[DEBUG]:[2017-06-26 19:10:11]:[2962033520]:[137:parse_from_json:src/qfws_msg_process.cpp] userid:1
+[DEBUG]:[2017-06-26 19:10:11]:[2962033520]:[142:parse_from_json:src/qfws_msg_process.cpp] passwd:
+[DEBUG]:[2017-06-26 19:10:11]:[2962033520]:[147:parse_from_json:src/qfws_msg_process.cpp] msg:I am login
+[DEBUG]:[2017-06-26 19:10:11]:[2962033520]:[56:get_userid:src/qfws_msg_process.cpp] _groupid:123 groupid:123
+[DEBUG]:[2017-06-26 19:10:11]:[2962033520]:[67:do_login:src/qfws_res_data_process.cpp] send_response:{"op":1,"res_code":1000,"groupid":123,"userid":1,"online_userid":[1],"msg":"login ok"}
+[DEBUG]:[2017-06-26 19:10:11]:[2962033520]:[124:real_send:core/tcp_connect.cpp] send:ÅV
+[DEBUG]:[2017-06-26 19:10:11]:[2962033520]:[124:real_send:core/tcp_connect.cpp] send:{"op":1,"res_code":1000,"groupid":123,"userid":1,"online_userid":[1],"msg":"login ok"}
+[DEBUG]:[2017-06-26 19:10:26]:[2962033520]:[18:handle_msg:src/ws_ser_thread.cpp] recv: fd [92]
+[DEBUG]:[2017-06-26 19:10:26]:[2962033520]:[7:base_data_process:core/base_data_process.cpp] 0xacb02a90
+[DEBUG]:[2017-06-26 19:10:26]:[2962033520]:[34:set_para:core/base_data_process.cpp] 0xacb02a90
+[DEBUG]:[2017-06-26 19:10:26]:[2962033520]:[37:real_recv:core/tcp_connect.cpp] recv:GET / HTTP/1.1
+Host:www.yiyi.com
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Key:zEkljJfDq59X6c+8BZx7yw==
+Origin:yiyi.com
+Sec-WebSocket-Protocol: chat, superchat
+Sec-WebSocket-Version: 13
+
+
+[DEBUG]:[2017-06-26 19:10:26]:[2962033520]:[28:process_recv_buf:core/ws_data_process.cpp] recv len: 207
+
+[DEBUG]:[2017-06-26 19:10:26]:[2962033520]:[61:RECV_WB_INIT_STAUTS_PROCESS:core/ws_res_data_process.cpp] buf:GET / HTTP/1.1
+Host:www.yiyi.com
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Key:zEkljJfDq59X6c+8BZx7yw==
+Origin:yiyi.com
+Sec-WebSocket-Protocol: chat, superchat
+Sec-WebSocket-Version: 13
+
+ _recv_header:GET / HTTP/1.1
+Host:www.yiyi.com
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Key:zEkljJfDq59X6c+8BZx7yw==
+Origin:yiyi.com
+Sec-WebSocket-Protocol: chat, superchat
+Sec-WebSocket-Version: 13
+
+
+[DEBUG]:[2017-06-26 19:10:26]:[2962033520]:[124:real_send:core/tcp_connect.cpp] send:HTTP/1.1 101 Switching Protocols
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Accept: GMWN4x1E4zAk8tMrFDeqx+yxQVA=
+Sec-WebSocket-Protocol: chat
+
+
+[DEBUG]:[2017-06-26 19:10:26]:[2962033520]:[37:real_recv:core/tcp_connect.cpp] recv:Å¿gEãk
+[DEBUG]:[2017-06-26 19:10:26]:[2962033520]:[28:process_recv_buf:core/ws_data_process.cpp] recv len: 6
+
+[DEBUG]:[2017-06-26 19:10:26]:[2962033520]:[199:RECV_WB_HANDSHAKE_OK_PROCESS:core/ws_data_process.cpp] RECV_WB_HANDSHAKE_OK_PROCESS 6
+[DEBUG]:[2017-06-26 19:10:26]:[2962033520]:[37:real_recv:core/tcp_connect.cpp] recv:gÏ0˚g±ZUvßI6Ó!©QUi©6¯g±IEi©g±ZKgÊ
+[DEBUG]:[2017-06-26 19:10:26]:[2962033520]:[28:process_recv_buf:core/ws_data_process.cpp] recv len: 64
+
+[DEBUG]:[2017-06-26 19:10:26]:[2962033520]:[199:RECV_WB_HANDSHAKE_OK_PROCESS:core/ws_data_process.cpp] RECV_WB_HANDSHAKE_OK_PROCESS 64
+[DEBUG]:[2017-06-26 19:10:26]:[2962033520]:[82:msg_recv_finish:src/qfws_res_data_process.cpp] recv: {"groupid":123,"userid":2,"passwd":"","op":1,"msg":"I am login"}
+[DEBUG]:[2017-06-26 19:10:26]:[2962033520]:[127:parse_from_json:src/qfws_msg_process.cpp] op:1
+[DEBUG]:[2017-06-26 19:10:26]:[2962033520]:[132:parse_from_json:src/qfws_msg_process.cpp] groupid:123
+[DEBUG]:[2017-06-26 19:10:26]:[2962033520]:[137:parse_from_json:src/qfws_msg_process.cpp] userid:2
+[DEBUG]:[2017-06-26 19:10:26]:[2962033520]:[142:parse_from_json:src/qfws_msg_process.cpp] passwd:
+[DEBUG]:[2017-06-26 19:10:26]:[2962033520]:[147:parse_from_json:src/qfws_msg_process.cpp] msg:I am login
+[DEBUG]:[2017-06-26 19:10:26]:[2962033520]:[56:get_userid:src/qfws_msg_process.cpp] _groupid:123 groupid:123
+[DEBUG]:[2017-06-26 19:10:26]:[2962033520]:[67:do_login:src/qfws_res_data_process.cpp] send_response:{"op":1,"res_code":1000,"groupid":123,"userid":2,"online_userid":[1,2],"msg":"login ok"}
+[DEBUG]:[2017-06-26 19:10:26]:[2962033520]:[124:real_send:core/tcp_connect.cpp] send:ÅX
+[DEBUG]:[2017-06-26 19:10:26]:[2962033520]:[124:real_send:core/tcp_connect.cpp] send:{"op":1,"res_code":1000,"groupid":123,"userid":2,"online_userid":[1,2],"msg":"login ok"}
+[DEBUG]:[2017-06-26 19:10:37]:[2962033520]:[17:err_close:core/base_data_process.cpp] 0xacb00fa0
+[DEBUG]:[2017-06-26 19:17:47]:[3078301392]:[37:load_config:src/main.cpp] parse ./conf//ws_ser.conf ok:
+webs_port:8088 
+webs_thread_num:6
+http_port:9090
+http_thread_num:6
+
+[DEBUG]:[2017-06-26 19:17:47]:[3078301392]:[71:init:../src/qfws_msg_process.cpp] _bucket:2000003
+[DEBUG]:[2017-06-26 19:17:59]:[2962033520]:[18:handle_msg:src/ws_ser_thread.cpp] recv: fd [91]
+[DEBUG]:[2017-06-26 19:17:59]:[2962033520]:[7:base_data_process:core/base_data_process.cpp] 0xacb01e08
+[DEBUG]:[2017-06-26 19:17:59]:[2962033520]:[34:set_para:core/base_data_process.cpp] 0xacb01e08
+[DEBUG]:[2017-06-26 19:17:59]:[2962033520]:[37:real_recv:core/tcp_connect.cpp] recv:GET / HTTP/1.1
+Host:www.yiyi.com
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Key:zEkljJfDq59X6c+8BZx7yw==
+Origin:yiyi.com
+Sec-WebSocket-Protocol: chat, superchat
+Sec-WebSocket-Version: 13
+
+
+[DEBUG]:[2017-06-26 19:17:59]:[2962033520]:[28:process_recv_buf:core/ws_data_process.cpp] recv len: 207
+
+[DEBUG]:[2017-06-26 19:17:59]:[2962033520]:[61:RECV_WB_INIT_STAUTS_PROCESS:core/ws_res_data_process.cpp] buf:GET / HTTP/1.1
+Host:www.yiyi.com
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Key:zEkljJfDq59X6c+8BZx7yw==
+Origin:yiyi.com
+Sec-WebSocket-Protocol: chat, superchat
+Sec-WebSocket-Version: 13
+
+ _recv_header:GET / HTTP/1.1
+Host:www.yiyi.com
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Key:zEkljJfDq59X6c+8BZx7yw==
+Origin:yiyi.com
+Sec-WebSocket-Protocol: chat, superchat
+Sec-WebSocket-Version: 13
+
+
+[DEBUG]:[2017-06-26 19:17:59]:[2962033520]:[124:real_send:core/tcp_connect.cpp] send:HTTP/1.1 101 Switching Protocols
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Accept: GMWN4x1E4zAk8tMrFDeqx+yxQVA=
+Sec-WebSocket-Protocol: chat
+
+
+[DEBUG]:[2017-06-26 19:17:59]:[2962033520]:[37:real_recv:core/tcp_connect.cpp] recv:Å¿gEãk
+[DEBUG]:[2017-06-26 19:17:59]:[2962033520]:[28:process_recv_buf:core/ws_data_process.cpp] recv len: 6
+
+[DEBUG]:[2017-06-26 19:17:59]:[2962033520]:[199:RECV_WB_HANDSHAKE_OK_PROCESS:core/ws_data_process.cpp] RECV_WB_HANDSHAKE_OK_PROCESS 6
+[DEBUG]:[2017-06-26 19:17:59]:[2962033520]:[37:real_recv:core/tcp_connect.cpp] recv:gÏ0˚g±ZUvßI6Ó!©QVi©6¯g±IEi©g±ZKgÊ
+[DEBUG]:[2017-06-26 19:17:59]:[2962033520]:[28:process_recv_buf:core/ws_data_process.cpp] recv len: 64
+
+[DEBUG]:[2017-06-26 19:17:59]:[2962033520]:[199:RECV_WB_HANDSHAKE_OK_PROCESS:core/ws_data_process.cpp] RECV_WB_HANDSHAKE_OK_PROCESS 64
+[DEBUG]:[2017-06-26 19:17:59]:[2962033520]:[83:msg_recv_finish:src/qfws_res_data_process.cpp] recv: {"groupid":123,"userid":1,"passwd":"","op":1,"msg":"I am login"}
+[DEBUG]:[2017-06-26 19:17:59]:[2962033520]:[127:parse_from_json:../src/qfws_msg_process.cpp] op:1
+[DEBUG]:[2017-06-26 19:17:59]:[2962033520]:[132:parse_from_json:../src/qfws_msg_process.cpp] groupid:123
+[DEBUG]:[2017-06-26 19:17:59]:[2962033520]:[137:parse_from_json:../src/qfws_msg_process.cpp] userid:1
+[DEBUG]:[2017-06-26 19:17:59]:[2962033520]:[142:parse_from_json:../src/qfws_msg_process.cpp] passwd:
+[DEBUG]:[2017-06-26 19:17:59]:[2962033520]:[147:parse_from_json:../src/qfws_msg_process.cpp] msg:I am login
+[DEBUG]:[2017-06-26 19:17:59]:[2962033520]:[56:get_userid:../src/qfws_msg_process.cpp] _groupid:123 groupid:123
+[DEBUG]:[2017-06-26 19:17:59]:[2962033520]:[68:do_login:src/qfws_res_data_process.cpp] send_response:{"op":1,"res_code":1000,"groupid":123,"userid":1,"online_userid":[1],"msg":"login ok"}
+[DEBUG]:[2017-06-26 19:17:59]:[2962033520]:[124:real_send:core/tcp_connect.cpp] send:ÅV
+[DEBUG]:[2017-06-26 19:17:59]:[2962033520]:[124:real_send:core/tcp_connect.cpp] send:{"op":1,"res_code":1000,"groupid":123,"userid":1,"online_userid":[1],"msg":"login ok"}
+[DEBUG]:[2017-06-26 19:18:18]:[2962033520]:[18:handle_msg:src/ws_ser_thread.cpp] recv: fd [92]
+[DEBUG]:[2017-06-26 19:18:18]:[2962033520]:[7:base_data_process:core/base_data_process.cpp] 0xacb02ad8
+[DEBUG]:[2017-06-26 19:18:18]:[2962033520]:[34:set_para:core/base_data_process.cpp] 0xacb02ad8
+[DEBUG]:[2017-06-26 19:18:18]:[2962033520]:[37:real_recv:core/tcp_connect.cpp] recv:GET / HTTP/1.1
+Host:www.yiyi.com
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Key:zEkljJfDq59X6c+8BZx7yw==
+Origin:yiyi.com
+Sec-WebSocket-Protocol: chat, superchat
+Sec-WebSocket-Version: 13
+
+
+[DEBUG]:[2017-06-26 19:18:18]:[2962033520]:[28:process_recv_buf:core/ws_data_process.cpp] recv len: 207
+
+[DEBUG]:[2017-06-26 19:18:18]:[2962033520]:[61:RECV_WB_INIT_STAUTS_PROCESS:core/ws_res_data_process.cpp] buf:GET / HTTP/1.1
+Host:www.yiyi.com
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Key:zEkljJfDq59X6c+8BZx7yw==
+Origin:yiyi.com
+Sec-WebSocket-Protocol: chat, superchat
+Sec-WebSocket-Version: 13
+
+ _recv_header:GET / HTTP/1.1
+Host:www.yiyi.com
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Key:zEkljJfDq59X6c+8BZx7yw==
+Origin:yiyi.com
+Sec-WebSocket-Protocol: chat, superchat
+Sec-WebSocket-Version: 13
+
+
+[DEBUG]:[2017-06-26 19:18:18]:[2962033520]:[124:real_send:core/tcp_connect.cpp] send:HTTP/1.1 101 Switching Protocols
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Accept: GMWN4x1E4zAk8tMrFDeqx+yxQVA=
+Sec-WebSocket-Protocol: chat
+
+
+[DEBUG]:[2017-06-26 19:18:18]:[2962033520]:[37:real_recv:core/tcp_connect.cpp] recv:Å¿gEãk
+[DEBUG]:[2017-06-26 19:18:18]:[2962033520]:[28:process_recv_buf:core/ws_data_process.cpp] recv len: 6
+
+[DEBUG]:[2017-06-26 19:18:18]:[2962033520]:[199:RECV_WB_HANDSHAKE_OK_PROCESS:core/ws_data_process.cpp] RECV_WB_HANDSHAKE_OK_PROCESS 6
+[DEBUG]:[2017-06-26 19:18:18]:[2962033520]:[37:real_recv:core/tcp_connect.cpp] recv:gÏ0˚g±ZUvßI6Ó!©QUi©6¯g±IEi©g±ZKgÊ
+[DEBUG]:[2017-06-26 19:18:18]:[2962033520]:[28:process_recv_buf:core/ws_data_process.cpp] recv len: 64
+
+[DEBUG]:[2017-06-26 19:18:18]:[2962033520]:[199:RECV_WB_HANDSHAKE_OK_PROCESS:core/ws_data_process.cpp] RECV_WB_HANDSHAKE_OK_PROCESS 64
+[DEBUG]:[2017-06-26 19:18:18]:[2962033520]:[83:msg_recv_finish:src/qfws_res_data_process.cpp] recv: {"groupid":123,"userid":2,"passwd":"","op":1,"msg":"I am login"}
+[DEBUG]:[2017-06-26 19:18:18]:[2962033520]:[127:parse_from_json:../src/qfws_msg_process.cpp] op:1
+[DEBUG]:[2017-06-26 19:18:18]:[2962033520]:[132:parse_from_json:../src/qfws_msg_process.cpp] groupid:123
+[DEBUG]:[2017-06-26 19:18:18]:[2962033520]:[137:parse_from_json:../src/qfws_msg_process.cpp] userid:2
+[DEBUG]:[2017-06-26 19:18:18]:[2962033520]:[142:parse_from_json:../src/qfws_msg_process.cpp] passwd:
+[DEBUG]:[2017-06-26 19:18:18]:[2962033520]:[147:parse_from_json:../src/qfws_msg_process.cpp] msg:I am login
+[DEBUG]:[2017-06-26 19:18:18]:[2962033520]:[56:get_userid:../src/qfws_msg_process.cpp] _groupid:123 groupid:123
+[DEBUG]:[2017-06-26 19:18:18]:[2962033520]:[68:do_login:src/qfws_res_data_process.cpp] send_response:{"op":1,"res_code":1000,"groupid":123,"userid":2,"online_userid":[1,2],"msg":"login ok"}
+[DEBUG]:[2017-06-26 19:18:18]:[2962033520]:[124:real_send:core/tcp_connect.cpp] send:ÅX
+[DEBUG]:[2017-06-26 19:18:18]:[2962033520]:[124:real_send:core/tcp_connect.cpp] send:{"op":1,"res_code":1000,"groupid":123,"userid":2,"online_userid":[1,2],"msg":"login ok"}
+[DEBUG]:[2017-06-26 19:18:26]:[2962033520]:[17:err_close:core/base_data_process.cpp] 0xacb01e08
+[DEBUG]:[2017-06-26 19:18:26]:[2962033520]:[20:~qfws_res_data_process:src/qfws_res_data_process.cpp] destory
+[DEBUG]:[2017-06-26 19:18:26]:[2962033520]:[12:~base_data_process:core/base_data_process.cpp] 0xacb01e08
+[DEBUG]:[2017-06-26 19:18:34]:[2962033520]:[18:handle_msg:src/ws_ser_thread.cpp] recv: fd [91]
+[DEBUG]:[2017-06-26 19:18:34]:[2962033520]:[7:base_data_process:core/base_data_process.cpp] 0xacb00fa0
+[DEBUG]:[2017-06-26 19:18:34]:[2962033520]:[34:set_para:core/base_data_process.cpp] 0xacb00fa0
+[DEBUG]:[2017-06-26 19:18:34]:[2962033520]:[37:real_recv:core/tcp_connect.cpp] recv:GET / HTTP/1.1
+Host:www.yiyi.com
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Key:zEkljJfDq59X6c+8BZx7yw==
+Origin:yiyi.com
+Sec-WebSocket-Protocol: chat, superchat
+Sec-WebSocket-Version: 13
+
+
+[DEBUG]:[2017-06-26 19:18:34]:[2962033520]:[28:process_recv_buf:core/ws_data_process.cpp] recv len: 207
+
+[DEBUG]:[2017-06-26 19:18:34]:[2962033520]:[61:RECV_WB_INIT_STAUTS_PROCESS:core/ws_res_data_process.cpp] buf:GET / HTTP/1.1
+Host:www.yiyi.com
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Key:zEkljJfDq59X6c+8BZx7yw==
+Origin:yiyi.com
+Sec-WebSocket-Protocol: chat, superchat
+Sec-WebSocket-Version: 13
+
+ _recv_header:GET / HTTP/1.1
+Host:www.yiyi.com
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Key:zEkljJfDq59X6c+8BZx7yw==
+Origin:yiyi.com
+Sec-WebSocket-Protocol: chat, superchat
+Sec-WebSocket-Version: 13
+
+
+[DEBUG]:[2017-06-26 19:18:34]:[2962033520]:[124:real_send:core/tcp_connect.cpp] send:HTTP/1.1 101 Switching Protocols
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Accept: GMWN4x1E4zAk8tMrFDeqx+yxQVA=
+Sec-WebSocket-Protocol: chat
+
+
+[DEBUG]:[2017-06-26 19:18:34]:[2962033520]:[37:real_recv:core/tcp_connect.cpp] recv:Å¿gEãk
+[DEBUG]:[2017-06-26 19:18:34]:[2962033520]:[28:process_recv_buf:core/ws_data_process.cpp] recv len: 6
+
+[DEBUG]:[2017-06-26 19:18:34]:[2962033520]:[199:RECV_WB_HANDSHAKE_OK_PROCESS:core/ws_data_process.cpp] RECV_WB_HANDSHAKE_OK_PROCESS 6
+[DEBUG]:[2017-06-26 19:18:34]:[2962033520]:[37:real_recv:core/tcp_connect.cpp] recv:gÏ0˚g±ZUvßI6Ó!©QQi©6¯g±IEi©g±ZKgÊ
+[DEBUG]:[2017-06-26 19:18:34]:[2962033520]:[28:process_recv_buf:core/ws_data_process.cpp] recv len: 64
+
+[DEBUG]:[2017-06-26 19:18:34]:[2962033520]:[199:RECV_WB_HANDSHAKE_OK_PROCESS:core/ws_data_process.cpp] RECV_WB_HANDSHAKE_OK_PROCESS 64
+[DEBUG]:[2017-06-26 19:18:34]:[2962033520]:[83:msg_recv_finish:src/qfws_res_data_process.cpp] recv: {"groupid":123,"userid":6,"passwd":"","op":1,"msg":"I am login"}
+[DEBUG]:[2017-06-26 19:18:34]:[2962033520]:[127:parse_from_json:../src/qfws_msg_process.cpp] op:1
+[DEBUG]:[2017-06-26 19:18:34]:[2962033520]:[132:parse_from_json:../src/qfws_msg_process.cpp] groupid:123
+[DEBUG]:[2017-06-26 19:18:34]:[2962033520]:[137:parse_from_json:../src/qfws_msg_process.cpp] userid:6
+[DEBUG]:[2017-06-26 19:18:34]:[2962033520]:[142:parse_from_json:../src/qfws_msg_process.cpp] passwd:
+[DEBUG]:[2017-06-26 19:18:34]:[2962033520]:[147:parse_from_json:../src/qfws_msg_process.cpp] msg:I am login
+[DEBUG]:[2017-06-26 19:18:34]:[2962033520]:[56:get_userid:../src/qfws_msg_process.cpp] _groupid:123 groupid:123
+[DEBUG]:[2017-06-26 19:18:34]:[2962033520]:[68:do_login:src/qfws_res_data_process.cpp] send_response:{"op":1,"res_code":1000,"groupid":123,"userid":6,"online_userid":[1,2,6],"msg":"login ok"}
+[DEBUG]:[2017-06-26 19:18:34]:[2962033520]:[124:real_send:core/tcp_connect.cpp] send:ÅZ
+[DEBUG]:[2017-06-26 19:18:34]:[2962033520]:[124:real_send:core/tcp_connect.cpp] send:{"op":1,"res_code":1000,"groupid":123,"userid":6,"online_userid":[1,2,6],"msg":"login ok"}
+[DEBUG]:[2017-06-26 19:19:52]:[2962033520]:[17:err_close:core/base_data_process.cpp] 0xacb02ad8
+[DEBUG]:[2017-06-26 19:19:52]:[2962033520]:[20:~qfws_res_data_process:src/qfws_res_data_process.cpp] destory
+[DEBUG]:[2017-06-26 19:19:52]:[2962033520]:[12:~base_data_process:core/base_data_process.cpp] 0xacb02ad8
+[DEBUG]:[2017-06-26 19:27:33]:[3077846736]:[37:load_config:src/main.cpp] parse ./conf//ws_ser.conf ok:
+webs_port:8088 
+webs_thread_num:6
+http_port:9090
+http_thread_num:6
+
+[DEBUG]:[2017-06-26 19:27:33]:[3077846736]:[71:init:../src/qfws_msg_process.cpp] _bucket:2000003
+[DEBUG]:[2017-06-26 19:27:44]:[2962033520]:[18:handle_msg:src/ws_ser_thread.cpp] recv: fd [91]
+[DEBUG]:[2017-06-26 19:27:44]:[2962033520]:[7:base_data_process:core/base_data_process.cpp] 0xacb01e08
+[DEBUG]:[2017-06-26 19:27:44]:[2962033520]:[34:set_para:core/base_data_process.cpp] 0xacb01e08
+[DEBUG]:[2017-06-26 19:27:44]:[2962033520]:[37:real_recv:core/tcp_connect.cpp] recv:GET / HTTP/1.1
+Host:www.yiyi.com
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Key:zEkljJfDq59X6c+8BZx7yw==
+Origin:yiyi.com
+Sec-WebSocket-Protocol: chat, superchat
+Sec-WebSocket-Version: 13
+
+
+[DEBUG]:[2017-06-26 19:27:44]:[2962033520]:[28:process_recv_buf:core/ws_data_process.cpp] recv len: 207
+
+[DEBUG]:[2017-06-26 19:27:44]:[2962033520]:[61:RECV_WB_INIT_STAUTS_PROCESS:core/ws_res_data_process.cpp] buf:GET / HTTP/1.1
+Host:www.yiyi.com
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Key:zEkljJfDq59X6c+8BZx7yw==
+Origin:yiyi.com
+Sec-WebSocket-Protocol: chat, superchat
+Sec-WebSocket-Version: 13
+
+ _recv_header:GET / HTTP/1.1
+Host:www.yiyi.com
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Key:zEkljJfDq59X6c+8BZx7yw==
+Origin:yiyi.com
+Sec-WebSocket-Protocol: chat, superchat
+Sec-WebSocket-Version: 13
+
+
+[DEBUG]:[2017-06-26 19:27:44]:[2962033520]:[124:real_send:core/tcp_connect.cpp] send:HTTP/1.1 101 Switching Protocols
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Accept: GMWN4x1E4zAk8tMrFDeqx+yxQVA=
+Sec-WebSocket-Protocol: chat
+
+
+[DEBUG]:[2017-06-26 19:27:44]:[2962033520]:[37:real_recv:core/tcp_connect.cpp] recv:Å¿gEãk
+[DEBUG]:[2017-06-26 19:27:44]:[2962033520]:[28:process_recv_buf:core/ws_data_process.cpp] recv len: 6
+
+[DEBUG]:[2017-06-26 19:27:44]:[2962033520]:[199:RECV_WB_HANDSHAKE_OK_PROCESS:core/ws_data_process.cpp] RECV_WB_HANDSHAKE_OK_PROCESS 6
+[DEBUG]:[2017-06-26 19:27:44]:[2962033520]:[37:real_recv:core/tcp_connect.cpp] recv:gÏ0˚g±ZUvßI6Ó!©QVi©6¯g±IEi©g±ZKgÊ
+[DEBUG]:[2017-06-26 19:27:44]:[2962033520]:[28:process_recv_buf:core/ws_data_process.cpp] recv len: 64
+
+[DEBUG]:[2017-06-26 19:27:44]:[2962033520]:[199:RECV_WB_HANDSHAKE_OK_PROCESS:core/ws_data_process.cpp] RECV_WB_HANDSHAKE_OK_PROCESS 64
+[DEBUG]:[2017-06-26 19:27:44]:[2962033520]:[83:msg_recv_finish:src/qfws_res_data_process.cpp] recv: {"groupid":123,"userid":1,"passwd":"","op":1,"msg":"I am login"}
+[DEBUG]:[2017-06-26 19:27:44]:[2962033520]:[127:parse_from_json:../src/qfws_msg_process.cpp] op:1
+[DEBUG]:[2017-06-26 19:27:44]:[2962033520]:[132:parse_from_json:../src/qfws_msg_process.cpp] groupid:123
+[DEBUG]:[2017-06-26 19:27:44]:[2962033520]:[137:parse_from_json:../src/qfws_msg_process.cpp] userid:1
+[DEBUG]:[2017-06-26 19:27:44]:[2962033520]:[142:parse_from_json:../src/qfws_msg_process.cpp] passwd:
+[DEBUG]:[2017-06-26 19:27:44]:[2962033520]:[147:parse_from_json:../src/qfws_msg_process.cpp] msg:I am login
+[DEBUG]:[2017-06-26 19:27:44]:[2962033520]:[56:get_userid:../src/qfws_msg_process.cpp] _groupid:123 groupid:123
+[DEBUG]:[2017-06-26 19:27:44]:[2962033520]:[68:do_login:src/qfws_res_data_process.cpp] send_response:{"op":1,"res_code":1000,"groupid":123,"userid":1,"online_userid":[1],"msg":"login ok"}
+[DEBUG]:[2017-06-26 19:27:44]:[2962033520]:[124:real_send:core/tcp_connect.cpp] send:ÅV
+[DEBUG]:[2017-06-26 19:27:44]:[2962033520]:[124:real_send:core/tcp_connect.cpp] send:{"op":1,"res_code":1000,"groupid":123,"userid":1,"online_userid":[1],"msg":"login ok"}
+[DEBUG]:[2017-06-26 19:27:47]:[2962033520]:[17:err_close:core/base_data_process.cpp] 0xacb01e08
+[DEBUG]:[2017-06-26 19:27:47]:[2962033520]:[20:~qfws_res_data_process:src/qfws_res_data_process.cpp] destory:_groupid:0 _userid:0
+[DEBUG]:[2017-06-26 19:27:47]:[2962033520]:[12:~base_data_process:core/base_data_process.cpp] 0xacb01e08
+[DEBUG]:[2017-06-26 19:29:50]:[3077560016]:[37:load_config:src/main.cpp] parse ./conf//ws_ser.conf ok:
+webs_port:8088 
+webs_thread_num:6
+http_port:9090
+http_thread_num:6
+
+[DEBUG]:[2017-06-26 19:29:50]:[3077560016]:[71:init:../src/qfws_msg_process.cpp] _bucket:2000003
+[DEBUG]:[2017-06-26 19:29:59]:[2940005232]:[18:handle_msg:src/ws_ser_thread.cpp] recv: fd [91]
+[DEBUG]:[2017-06-26 19:29:59]:[2940005232]:[7:base_data_process:core/base_data_process.cpp] 0xb6b03368
+[DEBUG]:[2017-06-26 19:29:59]:[2940005232]:[34:set_para:core/base_data_process.cpp] 0xb6b03368
+[DEBUG]:[2017-06-26 19:29:59]:[2940005232]:[37:real_recv:core/tcp_connect.cpp] recv:GET / HTTP/1.1
+Host:www.yiyi.com
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Key:zEkljJfDq59X6c+8BZx7yw==
+Origin:yiyi.com
+Sec-WebSocket-Protocol: chat, superchat
+Sec-WebSocket-Version: 13
+
+
+[DEBUG]:[2017-06-26 19:29:59]:[2940005232]:[28:process_recv_buf:core/ws_data_process.cpp] recv len: 207
+
+[DEBUG]:[2017-06-26 19:29:59]:[2940005232]:[61:RECV_WB_INIT_STAUTS_PROCESS:core/ws_res_data_process.cpp] buf:GET / HTTP/1.1
+Host:www.yiyi.com
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Key:zEkljJfDq59X6c+8BZx7yw==
+Origin:yiyi.com
+Sec-WebSocket-Protocol: chat, superchat
+Sec-WebSocket-Version: 13
+
+ _recv_header:GET / HTTP/1.1
+Host:www.yiyi.com
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Key:zEkljJfDq59X6c+8BZx7yw==
+Origin:yiyi.com
+Sec-WebSocket-Protocol: chat, superchat
+Sec-WebSocket-Version: 13
+
+
+[DEBUG]:[2017-06-26 19:29:59]:[2940005232]:[124:real_send:core/tcp_connect.cpp] send:HTTP/1.1 101 Switching Protocols
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Accept: GMWN4x1E4zAk8tMrFDeqx+yxQVA=
+Sec-WebSocket-Protocol: chat
+
+
+[DEBUG]:[2017-06-26 19:29:59]:[2940005232]:[37:real_recv:core/tcp_connect.cpp] recv:Å¿gEãk
+[DEBUG]:[2017-06-26 19:29:59]:[2940005232]:[28:process_recv_buf:core/ws_data_process.cpp] recv len: 6
+
+[DEBUG]:[2017-06-26 19:29:59]:[2940005232]:[199:RECV_WB_HANDSHAKE_OK_PROCESS:core/ws_data_process.cpp] RECV_WB_HANDSHAKE_OK_PROCESS 6
+[DEBUG]:[2017-06-26 19:29:59]:[2940005232]:[37:real_recv:core/tcp_connect.cpp] recv:gÏ0˚g±ZUvßI6Ó!©QVi©6¯g±IEi©g±ZKgÊ
+[DEBUG]:[2017-06-26 19:29:59]:[2940005232]:[28:process_recv_buf:core/ws_data_process.cpp] recv len: 64
+
+[DEBUG]:[2017-06-26 19:29:59]:[2940005232]:[199:RECV_WB_HANDSHAKE_OK_PROCESS:core/ws_data_process.cpp] RECV_WB_HANDSHAKE_OK_PROCESS 64
+[DEBUG]:[2017-06-26 19:29:59]:[2940005232]:[86:msg_recv_finish:src/qfws_res_data_process.cpp] recv: {"groupid":123,"userid":1,"passwd":"","op":1,"msg":"I am login"}
+[DEBUG]:[2017-06-26 19:29:59]:[2940005232]:[127:parse_from_json:../src/qfws_msg_process.cpp] op:1
+[DEBUG]:[2017-06-26 19:29:59]:[2940005232]:[132:parse_from_json:../src/qfws_msg_process.cpp] groupid:123
+[DEBUG]:[2017-06-26 19:29:59]:[2940005232]:[137:parse_from_json:../src/qfws_msg_process.cpp] userid:1
+[DEBUG]:[2017-06-26 19:29:59]:[2940005232]:[142:parse_from_json:../src/qfws_msg_process.cpp] passwd:
+[DEBUG]:[2017-06-26 19:29:59]:[2940005232]:[147:parse_from_json:../src/qfws_msg_process.cpp] msg:I am login
+[DEBUG]:[2017-06-26 19:29:59]:[2940005232]:[56:get_userid:../src/qfws_msg_process.cpp] _groupid:123 groupid:123
+[DEBUG]:[2017-06-26 19:29:59]:[2940005232]:[68:do_login:src/qfws_res_data_process.cpp] send_response:{"op":1,"res_code":1000,"groupid":123,"userid":1,"online_userid":[1],"msg":"login ok"}
+[DEBUG]:[2017-06-26 19:29:59]:[2940005232]:[124:real_send:core/tcp_connect.cpp] send:ÅV
+[DEBUG]:[2017-06-26 19:29:59]:[2940005232]:[124:real_send:core/tcp_connect.cpp] send:{"op":1,"res_code":1000,"groupid":123,"userid":1,"online_userid":[1],"msg":"login ok"}
+[DEBUG]:[2017-06-26 19:30:26]:[2940005232]:[18:handle_msg:src/ws_ser_thread.cpp] recv: fd [92]
+[DEBUG]:[2017-06-26 19:30:26]:[2940005232]:[7:base_data_process:core/base_data_process.cpp] 0xb6b03410
+[DEBUG]:[2017-06-26 19:30:26]:[2940005232]:[34:set_para:core/base_data_process.cpp] 0xb6b03410
+[DEBUG]:[2017-06-26 19:30:26]:[2940005232]:[37:real_recv:core/tcp_connect.cpp] recv:GET / HTTP/1.1
+Host:www.yiyi.com
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Key:zEkljJfDq59X6c+8BZx7yw==
+Origin:yiyi.com
+Sec-WebSocket-Protocol: chat, superchat
+Sec-WebSocket-Version: 13
+
+
+[DEBUG]:[2017-06-26 19:30:26]:[2940005232]:[28:process_recv_buf:core/ws_data_process.cpp] recv len: 207
+
+[DEBUG]:[2017-06-26 19:30:26]:[2940005232]:[61:RECV_WB_INIT_STAUTS_PROCESS:core/ws_res_data_process.cpp] buf:GET / HTTP/1.1
+Host:www.yiyi.com
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Key:zEkljJfDq59X6c+8BZx7yw==
+Origin:yiyi.com
+Sec-WebSocket-Protocol: chat, superchat
+Sec-WebSocket-Version: 13
+
+ _recv_header:GET / HTTP/1.1
+Host:www.yiyi.com
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Key:zEkljJfDq59X6c+8BZx7yw==
+Origin:yiyi.com
+Sec-WebSocket-Protocol: chat, superchat
+Sec-WebSocket-Version: 13
+
+
+[DEBUG]:[2017-06-26 19:30:26]:[2940005232]:[124:real_send:core/tcp_connect.cpp] send:HTTP/1.1 101 Switching Protocols
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Accept: GMWN4x1E4zAk8tMrFDeqx+yxQVA=
+Sec-WebSocket-Protocol: chat
+
+
+[DEBUG]:[2017-06-26 19:30:26]:[2940005232]:[37:real_recv:core/tcp_connect.cpp] recv:Å¿gEãk
+[DEBUG]:[2017-06-26 19:30:26]:[2940005232]:[28:process_recv_buf:core/ws_data_process.cpp] recv len: 6
+
+[DEBUG]:[2017-06-26 19:30:26]:[2940005232]:[199:RECV_WB_HANDSHAKE_OK_PROCESS:core/ws_data_process.cpp] RECV_WB_HANDSHAKE_OK_PROCESS 6
+[DEBUG]:[2017-06-26 19:30:26]:[2940005232]:[37:real_recv:core/tcp_connect.cpp] recv:gÏ0˚g±ZUvßI6Ó!©QUi©6¯g±IEi©g±ZKgÊ
+[DEBUG]:[2017-06-26 19:30:26]:[2940005232]:[28:process_recv_buf:core/ws_data_process.cpp] recv len: 64
+
+[DEBUG]:[2017-06-26 19:30:26]:[2940005232]:[199:RECV_WB_HANDSHAKE_OK_PROCESS:core/ws_data_process.cpp] RECV_WB_HANDSHAKE_OK_PROCESS 64
+[DEBUG]:[2017-06-26 19:30:26]:[2940005232]:[86:msg_recv_finish:src/qfws_res_data_process.cpp] recv: {"groupid":123,"userid":2,"passwd":"","op":1,"msg":"I am login"}
+[DEBUG]:[2017-06-26 19:30:26]:[2940005232]:[127:parse_from_json:../src/qfws_msg_process.cpp] op:1
+[DEBUG]:[2017-06-26 19:30:26]:[2940005232]:[132:parse_from_json:../src/qfws_msg_process.cpp] groupid:123
+[DEBUG]:[2017-06-26 19:30:26]:[2940005232]:[137:parse_from_json:../src/qfws_msg_process.cpp] userid:2
+[DEBUG]:[2017-06-26 19:30:26]:[2940005232]:[142:parse_from_json:../src/qfws_msg_process.cpp] passwd:
+[DEBUG]:[2017-06-26 19:30:26]:[2940005232]:[147:parse_from_json:../src/qfws_msg_process.cpp] msg:I am login
+[DEBUG]:[2017-06-26 19:30:26]:[2940005232]:[56:get_userid:../src/qfws_msg_process.cpp] _groupid:123 groupid:123
+[DEBUG]:[2017-06-26 19:30:26]:[2940005232]:[68:do_login:src/qfws_res_data_process.cpp] send_response:{"op":1,"res_code":1000,"groupid":123,"userid":2,"online_userid":[1,2],"msg":"login ok"}
+[DEBUG]:[2017-06-26 19:30:26]:[2940005232]:[124:real_send:core/tcp_connect.cpp] send:ÅX
+[DEBUG]:[2017-06-26 19:30:26]:[2940005232]:[124:real_send:core/tcp_connect.cpp] send:{"op":1,"res_code":1000,"groupid":123,"userid":2,"online_userid":[1,2],"msg":"login ok"}
+[DEBUG]:[2017-06-26 19:30:30]:[2940005232]:[17:err_close:core/base_data_process.cpp] 0xb6b03368
+[DEBUG]:[2017-06-26 19:30:30]:[2940005232]:[20:~qfws_res_data_process:src/qfws_res_data_process.cpp] destory:_groupid:123 _userid:1
+[DEBUG]:[2017-06-26 19:30:30]:[2940005232]:[12:~base_data_process:core/base_data_process.cpp] 0xb6b03368
+[DEBUG]:[2017-06-26 19:30:38]:[2960984944]:[18:handle_msg:src/ws_ser_thread.cpp] recv: fd [91]
+[DEBUG]:[2017-06-26 19:30:38]:[2960984944]:[7:base_data_process:core/base_data_process.cpp] 0xaca01e08
+[DEBUG]:[2017-06-26 19:30:38]:[2960984944]:[34:set_para:core/base_data_process.cpp] 0xaca01e08
+[DEBUG]:[2017-06-26 19:30:38]:[2960984944]:[37:real_recv:core/tcp_connect.cpp] recv:GET / HTTP/1.1
+Host:www.yiyi.com
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Key:zEkljJfDq59X6c+8BZx7yw==
+Origin:yiyi.com
+Sec-WebSocket-Protocol: chat, superchat
+Sec-WebSocket-Version: 13
+
+
+[DEBUG]:[2017-06-26 19:30:38]:[2960984944]:[28:process_recv_buf:core/ws_data_process.cpp] recv len: 207
+
+[DEBUG]:[2017-06-26 19:30:38]:[2960984944]:[61:RECV_WB_INIT_STAUTS_PROCESS:core/ws_res_data_process.cpp] buf:GET / HTTP/1.1
+Host:www.yiyi.com
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Key:zEkljJfDq59X6c+8BZx7yw==
+Origin:yiyi.com
+Sec-WebSocket-Protocol: chat, superchat
+Sec-WebSocket-Version: 13
+
+ _recv_header:GET / HTTP/1.1
+Host:www.yiyi.com
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Key:zEkljJfDq59X6c+8BZx7yw==
+Origin:yiyi.com
+Sec-WebSocket-Protocol: chat, superchat
+Sec-WebSocket-Version: 13
+
+
+[DEBUG]:[2017-06-26 19:30:38]:[2960984944]:[124:real_send:core/tcp_connect.cpp] send:HTTP/1.1 101 Switching Protocols
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Accept: GMWN4x1E4zAk8tMrFDeqx+yxQVA=
+Sec-WebSocket-Protocol: chat
+
+
+[DEBUG]:[2017-06-26 19:30:38]:[2960984944]:[37:real_recv:core/tcp_connect.cpp] recv:Å¿gEãk
+[DEBUG]:[2017-06-26 19:30:38]:[2960984944]:[28:process_recv_buf:core/ws_data_process.cpp] recv len: 6
+
+[DEBUG]:[2017-06-26 19:30:38]:[2960984944]:[199:RECV_WB_HANDSHAKE_OK_PROCESS:core/ws_data_process.cpp] RECV_WB_HANDSHAKE_OK_PROCESS 6
+[DEBUG]:[2017-06-26 19:30:38]:[2960984944]:[37:real_recv:core/tcp_connect.cpp] recv:gÏ0˚g±ZUvßI6Ó!©QTi©6¯g±IEi©g±ZKgÊ
+[DEBUG]:[2017-06-26 19:30:38]:[2960984944]:[28:process_recv_buf:core/ws_data_process.cpp] recv len: 64
+
+[DEBUG]:[2017-06-26 19:30:38]:[2960984944]:[199:RECV_WB_HANDSHAKE_OK_PROCESS:core/ws_data_process.cpp] RECV_WB_HANDSHAKE_OK_PROCESS 64
+[DEBUG]:[2017-06-26 19:30:38]:[2960984944]:[86:msg_recv_finish:src/qfws_res_data_process.cpp] recv: {"groupid":123,"userid":3,"passwd":"","op":1,"msg":"I am login"}
+[DEBUG]:[2017-06-26 19:30:38]:[2960984944]:[127:parse_from_json:../src/qfws_msg_process.cpp] op:1
+[DEBUG]:[2017-06-26 19:30:38]:[2960984944]:[132:parse_from_json:../src/qfws_msg_process.cpp] groupid:123
+[DEBUG]:[2017-06-26 19:30:38]:[2960984944]:[137:parse_from_json:../src/qfws_msg_process.cpp] userid:3
+[DEBUG]:[2017-06-26 19:30:38]:[2960984944]:[142:parse_from_json:../src/qfws_msg_process.cpp] passwd:
+[DEBUG]:[2017-06-26 19:30:38]:[2960984944]:[147:parse_from_json:../src/qfws_msg_process.cpp] msg:I am login
+[DEBUG]:[2017-06-26 19:30:38]:[2960984944]:[56:get_userid:../src/qfws_msg_process.cpp] _groupid:123 groupid:123
+[DEBUG]:[2017-06-26 19:30:38]:[2960984944]:[68:do_login:src/qfws_res_data_process.cpp] send_response:{"op":1,"res_code":1000,"groupid":123,"userid":3,"online_userid":[2,3],"msg":"login ok"}
+[DEBUG]:[2017-06-26 19:30:38]:[2960984944]:[124:real_send:core/tcp_connect.cpp] send:ÅX
+[DEBUG]:[2017-06-26 19:30:38]:[2960984944]:[124:real_send:core/tcp_connect.cpp] send:{"op":1,"res_code":1000,"groupid":123,"userid":3,"online_userid":[2,3],"msg":"login ok"}
+[DEBUG]:[2017-06-26 19:30:47]:[2960984944]:[17:err_close:core/base_data_process.cpp] 0xaca01e08
+[DEBUG]:[2017-06-26 19:30:47]:[2960984944]:[20:~qfws_res_data_process:src/qfws_res_data_process.cpp] destory:_groupid:123 _userid:3
+[DEBUG]:[2017-06-26 19:30:47]:[2960984944]:[12:~base_data_process:core/base_data_process.cpp] 0xaca01e08
+[DEBUG]:[2017-06-26 19:31:07]:[2940005232]:[17:err_close:core/base_data_process.cpp] 0xb6b03410
+[DEBUG]:[2017-06-26 19:31:07]:[2940005232]:[20:~qfws_res_data_process:src/qfws_res_data_process.cpp] destory:_groupid:123 _userid:2
+[DEBUG]:[2017-06-26 19:31:07]:[2940005232]:[12:~base_data_process:core/base_data_process.cpp] 0xb6b03410
+[DEBUG]:[2017-06-26 19:31:20]:[2940005232]:[18:handle_msg:src/ws_ser_thread.cpp] recv: fd [91]
+[DEBUG]:[2017-06-26 19:31:20]:[2940005232]:[7:base_data_process:core/base_data_process.cpp] 0xb6b024e0
+[DEBUG]:[2017-06-26 19:31:20]:[2940005232]:[34:set_para:core/base_data_process.cpp] 0xb6b024e0
+[DEBUG]:[2017-06-26 19:31:20]:[2940005232]:[37:real_recv:core/tcp_connect.cpp] recv:GET / HTTP/1.1
+Host:www.yiyi.com
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Key:zEkljJfDq59X6c+8BZx7yw==
+Origin:yiyi.com
+Sec-WebSocket-Protocol: chat, superchat
+Sec-WebSocket-Version: 13
+
+
+[DEBUG]:[2017-06-26 19:31:20]:[2940005232]:[28:process_recv_buf:core/ws_data_process.cpp] recv len: 207
+
+[DEBUG]:[2017-06-26 19:31:20]:[2940005232]:[61:RECV_WB_INIT_STAUTS_PROCESS:core/ws_res_data_process.cpp] buf:GET / HTTP/1.1
+Host:www.yiyi.com
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Key:zEkljJfDq59X6c+8BZx7yw==
+Origin:yiyi.com
+Sec-WebSocket-Protocol: chat, superchat
+Sec-WebSocket-Version: 13
+
+ _recv_header:GET / HTTP/1.1
+Host:www.yiyi.com
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Key:zEkljJfDq59X6c+8BZx7yw==
+Origin:yiyi.com
+Sec-WebSocket-Protocol: chat, superchat
+Sec-WebSocket-Version: 13
+
+
+[DEBUG]:[2017-06-26 19:31:20]:[2940005232]:[124:real_send:core/tcp_connect.cpp] send:HTTP/1.1 101 Switching Protocols
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Accept: GMWN4x1E4zAk8tMrFDeqx+yxQVA=
+Sec-WebSocket-Protocol: chat
+
+
+[DEBUG]:[2017-06-26 19:31:20]:[2940005232]:[37:real_recv:core/tcp_connect.cpp] recv:Å¿gEãk
+[DEBUG]:[2017-06-26 19:31:20]:[2940005232]:[28:process_recv_buf:core/ws_data_process.cpp] recv len: 6
+
+[DEBUG]:[2017-06-26 19:31:20]:[2940005232]:[199:RECV_WB_HANDSHAKE_OK_PROCESS:core/ws_data_process.cpp] RECV_WB_HANDSHAKE_OK_PROCESS 6
+[DEBUG]:[2017-06-26 19:31:20]:[2940005232]:[37:real_recv:core/tcp_connect.cpp] recv:gÏ0˚g±ZUvßI6Ó!©QVi©6¯g±IEi©g±ZKgÊ
+[DEBUG]:[2017-06-26 19:31:20]:[2940005232]:[28:process_recv_buf:core/ws_data_process.cpp] recv len: 64
+
+[DEBUG]:[2017-06-26 19:31:20]:[2940005232]:[199:RECV_WB_HANDSHAKE_OK_PROCESS:core/ws_data_process.cpp] RECV_WB_HANDSHAKE_OK_PROCESS 64
+[DEBUG]:[2017-06-26 19:31:20]:[2940005232]:[86:msg_recv_finish:src/qfws_res_data_process.cpp] recv: {"groupid":123,"userid":1,"passwd":"","op":1,"msg":"I am login"}
+[DEBUG]:[2017-06-26 19:31:20]:[2940005232]:[127:parse_from_json:../src/qfws_msg_process.cpp] op:1
+[DEBUG]:[2017-06-26 19:31:20]:[2940005232]:[132:parse_from_json:../src/qfws_msg_process.cpp] groupid:123
+[DEBUG]:[2017-06-26 19:31:20]:[2940005232]:[137:parse_from_json:../src/qfws_msg_process.cpp] userid:1
+[DEBUG]:[2017-06-26 19:31:20]:[2940005232]:[142:parse_from_json:../src/qfws_msg_process.cpp] passwd:
+[DEBUG]:[2017-06-26 19:31:20]:[2940005232]:[147:parse_from_json:../src/qfws_msg_process.cpp] msg:I am login
+[DEBUG]:[2017-06-26 19:31:20]:[2940005232]:[56:get_userid:../src/qfws_msg_process.cpp] _groupid:123 groupid:123
+[DEBUG]:[2017-06-26 19:31:20]:[2940005232]:[68:do_login:src/qfws_res_data_process.cpp] send_response:{"op":1,"res_code":1000,"groupid":123,"userid":1,"online_userid":[1],"msg":"login ok"}
+[DEBUG]:[2017-06-26 19:31:20]:[2940005232]:[124:real_send:core/tcp_connect.cpp] send:ÅV
+[DEBUG]:[2017-06-26 19:31:20]:[2940005232]:[124:real_send:core/tcp_connect.cpp] send:{"op":1,"res_code":1000,"groupid":123,"userid":1,"online_userid":[1],"msg":"login ok"}
+[DEBUG]:[2017-06-26 19:33:11]:[2940005232]:[17:err_close:core/base_data_process.cpp] 0xb6b024e0
+[DEBUG]:[2017-06-26 19:33:11]:[2940005232]:[20:~qfws_res_data_process:src/qfws_res_data_process.cpp] destory:_groupid:123 _userid:1
+[DEBUG]:[2017-06-26 19:33:11]:[2940005232]:[12:~base_data_process:core/base_data_process.cpp] 0xb6b024e0
+[DEBUG]:[2017-06-26 19:48:06]:[3078244048]:[37:load_config:src/main.cpp] parse ./conf//ws_ser.conf ok:
+webs_port:8088 
+webs_thread_num:6
+http_port:9090
+http_thread_num:6
+
+[DEBUG]:[2017-06-26 19:48:06]:[3078244048]:[71:init:../src/qfws_msg_process.cpp] _bucket:2000003
+[DEBUG]:[2017-06-26 19:48:27]:[2962033520]:[18:handle_msg:src/ws_ser_thread.cpp] recv: fd [91]
+[DEBUG]:[2017-06-26 19:48:27]:[2962033520]:[7:base_data_process:core/base_data_process.cpp] 0xacb01e08
+[DEBUG]:[2017-06-26 19:48:27]:[2962033520]:[34:set_para:core/base_data_process.cpp] 0xacb01e08
+[DEBUG]:[2017-06-26 19:48:27]:[2962033520]:[37:real_recv:core/tcp_connect.cpp] recv:GET / HTTP/1.1
+Host:www.yiyi.com
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Key:zEkljJfDq59X6c+8BZx7yw==
+Origin:yiyi.com
+Sec-WebSocket-Protocol: chat, superchat
+Sec-WebSocket-Version: 13
+
+
+[DEBUG]:[2017-06-26 19:48:27]:[2962033520]:[28:process_recv_buf:core/ws_data_process.cpp] recv len: 207
+
+[DEBUG]:[2017-06-26 19:48:27]:[2962033520]:[61:RECV_WB_INIT_STAUTS_PROCESS:core/ws_res_data_process.cpp] buf:GET / HTTP/1.1
+Host:www.yiyi.com
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Key:zEkljJfDq59X6c+8BZx7yw==
+Origin:yiyi.com
+Sec-WebSocket-Protocol: chat, superchat
+Sec-WebSocket-Version: 13
+
+ _recv_header:GET / HTTP/1.1
+Host:www.yiyi.com
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Key:zEkljJfDq59X6c+8BZx7yw==
+Origin:yiyi.com
+Sec-WebSocket-Protocol: chat, superchat
+Sec-WebSocket-Version: 13
+
+
+[DEBUG]:[2017-06-26 19:48:27]:[2962033520]:[124:real_send:core/tcp_connect.cpp] send:HTTP/1.1 101 Switching Protocols
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Accept: GMWN4x1E4zAk8tMrFDeqx+yxQVA=
+Sec-WebSocket-Protocol: chat
+
+
+[DEBUG]:[2017-06-26 19:48:27]:[2962033520]:[37:real_recv:core/tcp_connect.cpp] recv:Å¡gEãk
+[DEBUG]:[2017-06-26 19:48:27]:[2962033520]:[28:process_recv_buf:core/ws_data_process.cpp] recv len: 6
+
+[DEBUG]:[2017-06-26 19:48:27]:[2962033520]:[199:RECV_WB_HANDSHAKE_OK_PROCESS:core/ws_data_process.cpp] RECV_WB_HANDSHAKE_OK_PROCESS 6
+[DEBUG]:[2017-06-26 19:48:27]:[2962033520]:[37:real_recv:core/tcp_connect.cpp] recv:gÏ0˚g±ZUvßI6Ó!©QVwßI$¯!©QEgßI5©QVi©"©QE´
+
+eÁ
+[DEBUG]:[2017-06-26 19:48:27]:[2962033520]:[28:process_recv_buf:core/ws_data_process.cpp] recv len: 65
+
+[DEBUG]:[2017-06-26 19:48:27]:[2962033520]:[199:RECV_WB_HANDSHAKE_OK_PROCESS:core/ws_data_process.cpp] RECV_WB_HANDSHAKE_OK_PROCESS 65
+[DEBUG]:[2017-06-26 19:48:27]:[2962033520]:[129:msg_recv_finish:src/qfws_res_data_process.cpp] recv: {"groupid":123,"userid":12,"passwd":"","op":1,"msg":"I am login"}
+[DEBUG]:[2017-06-26 19:48:27]:[2962033520]:[127:parse_from_json:../src/qfws_msg_process.cpp] op:1
+[DEBUG]:[2017-06-26 19:48:27]:[2962033520]:[132:parse_from_json:../src/qfws_msg_process.cpp] groupid:123
+[DEBUG]:[2017-06-26 19:48:27]:[2962033520]:[137:parse_from_json:../src/qfws_msg_process.cpp] userid:12
+[DEBUG]:[2017-06-26 19:48:27]:[2962033520]:[142:parse_from_json:../src/qfws_msg_process.cpp] passwd:
+[DEBUG]:[2017-06-26 19:48:27]:[2962033520]:[147:parse_from_json:../src/qfws_msg_process.cpp] msg:I am login
+[DEBUG]:[2017-06-26 19:48:27]:[2962033520]:[56:get_userid:../src/qfws_msg_process.cpp] _groupid:123 groupid:123
+[DEBUG]:[2017-06-26 19:48:27]:[2962033520]:[68:do_login:src/qfws_res_data_process.cpp] send_response:{"op":1,"res_code":1000,"groupid":123,"userid":12,"online_userid":[12],"msg":"login ok"}
+[DEBUG]:[2017-06-26 19:48:27]:[2962033520]:[124:real_send:core/tcp_connect.cpp] send:ÅX
+[DEBUG]:[2017-06-26 19:48:27]:[2962033520]:[124:real_send:core/tcp_connect.cpp] send:{"op":1,"res_code":1000,"groupid":123,"userid":12,"online_userid":[12],"msg":"login ok"}
+[DEBUG]:[2017-06-26 19:48:30]:[2962033520]:[37:real_recv:core/tcp_connect.cpp] recv:Å¢∆#{2
+[DEBUG]:[2017-06-26 19:48:30]:[2962033520]:[28:process_recv_buf:core/ws_data_process.cpp] recv len: 6
+
+[DEBUG]:[2017-06-26 19:48:30]:[2962033520]:[199:RECV_WB_HANDSHAKE_OK_PROCESS:core/ws_data_process.cpp] RECV_WB_HANDSHAKE_OK_PROCESS 6
+[DEBUG]:[2017-06-26 19:48:30]:[2962033520]:[37:real_recv:core/tcp_connect.cpp] recv:Ω@©V[¢AÙW≥P@ØGY˜W©SYÙ^
+[DEBUG]:[2017-06-26 19:48:30]:[2962033520]:[28:process_recv_buf:core/ws_data_process.cpp] recv len: 34
+
+[DEBUG]:[2017-06-26 19:48:30]:[2962033520]:[199:RECV_WB_HANDSHAKE_OK_PROCESS:core/ws_data_process.cpp] RECV_WB_HANDSHAKE_OK_PROCESS 34
+[DEBUG]:[2017-06-26 19:48:30]:[2962033520]:[129:msg_recv_finish:src/qfws_res_data_process.cpp] recv: {"groupid":123,"userid":12,"op":2}
+[DEBUG]:[2017-06-26 19:48:30]:[2962033520]:[127:parse_from_json:../src/qfws_msg_process.cpp] op:2
+[DEBUG]:[2017-06-26 19:48:30]:[2962033520]:[132:parse_from_json:../src/qfws_msg_process.cpp] groupid:123
+[DEBUG]:[2017-06-26 19:48:30]:[2962033520]:[137:parse_from_json:../src/qfws_msg_process.cpp] userid:12
+[DEBUG]:[2017-06-26 19:48:30]:[2962033520]:[56:get_userid:../src/qfws_msg_process.cpp] _groupid:123 groupid:123
+[DEBUG]:[2017-06-26 19:48:30]:[2962033520]:[117:do_online:src/qfws_res_data_process.cpp] send_response:{"op":2,"res_code":1000,"groupid":123,"userid":12,"online_userid":[12]}
+[DEBUG]:[2017-06-26 19:48:30]:[2962033520]:[124:real_send:core/tcp_connect.cpp] send:ÅG
+[DEBUG]:[2017-06-26 19:48:30]:[2962033520]:[124:real_send:core/tcp_connect.cpp] send:{"op":2,"res_code":1000,"groupid":123,"userid":12,"online_userid":[12]}
+[DEBUG]:[2017-06-26 19:48:39]:[2962033520]:[17:err_close:core/base_data_process.cpp] 0xacb01e08
+[DEBUG]:[2017-06-26 19:48:39]:[2962033520]:[20:~qfws_res_data_process:src/qfws_res_data_process.cpp] destory:_groupid:123 _userid:12
+[DEBUG]:[2017-06-26 19:48:39]:[2962033520]:[12:~base_data_process:core/base_data_process.cpp] 0xacb01e08

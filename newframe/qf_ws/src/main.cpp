@@ -55,7 +55,7 @@ int main(int argc, char *argv[])
     listen_thread * _listen_obj_thread = new listen_thread();
     _listen_obj_thread->init("0.0.0.0", ws_c.webs_port());
 
-    for (int i=1; i <= ws_c.webs_thread_num(); i++){
+    for (uint32_t i=1; i <= ws_c.webs_thread_num(); i++){
         ws_ser_thread * net_thread = new ws_ser_thread();
         _listen_obj_thread->add_worker_thread(net_thread);
         net_thread->start();
@@ -65,7 +65,7 @@ int main(int argc, char *argv[])
     _listen_obj_thread->start();
 
     int nfd = http_server_thread::bind_port(ws_c.http_port());
-     for (int i=1; i <= ws_c.http_thread_num(); i++){
+     for (uint32_t i=1; i <= ws_c.http_thread_num(); i++){
          http_server_thread * net_thread = new http_server_thread();
          net_thread->set_nfd(nfd);
          net_thread->start();

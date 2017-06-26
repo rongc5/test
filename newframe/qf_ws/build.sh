@@ -10,6 +10,7 @@ protoc  --cpp_out=. ./ws_ser.proto
 cd ..
 
 
+
 path=`pwd`
 base_file=`basename $path`
 

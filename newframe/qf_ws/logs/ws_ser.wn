@@ -1,0 +1,37 @@
+[WARNING]:[2017-06-26 18:23:34]:[2962033520]:[116:parse_from_json:src/qfws_msg_process.cpp] _recent_msg parse error:hello, this is test !!!!!!!!!!!!!!
+[WARNING]:[2017-06-26 18:24:07]:[2962033520]:[62:RECV:core/tcp_connect.cpp] throw exception error: peer close
+[WARNING]:[2017-06-26 18:24:07]:[2962033520]:[94:on_cb:core/base_connect.cpp] destory connect: peer close
+[WARNING]:[2017-06-26 18:26:41]:[2962033520]:[62:RECV:core/tcp_connect.cpp] throw exception error: peer close
+[WARNING]:[2017-06-26 18:26:41]:[2962033520]:[94:on_cb:core/base_connect.cpp] destory connect: peer close
+[WARNING]:[2017-06-26 18:27:12]:[2962033520]:[62:RECV:core/tcp_connect.cpp] throw exception error: peer close
+[WARNING]:[2017-06-26 18:27:12]:[2962033520]:[94:on_cb:core/base_connect.cpp] destory connect: peer close
+[WARNING]:[2017-06-26 18:35:15]:[2962033520]:[62:RECV:core/tcp_connect.cpp] throw exception error: peer close
+[WARNING]:[2017-06-26 18:35:15]:[2962033520]:[94:on_cb:core/base_connect.cpp] destory connect: peer close
+[WARNING]:[2017-06-26 18:36:07]:[2962033520]:[62:RECV:core/tcp_connect.cpp] throw exception error: peer close
+[WARNING]:[2017-06-26 18:36:07]:[2962033520]:[94:on_cb:core/base_connect.cpp] destory connect: peer close
+[WARNING]:[2017-06-26 18:38:57]:[2962033520]:[62:RECV:core/tcp_connect.cpp] throw exception error: peer close
+[WARNING]:[2017-06-26 18:38:57]:[2962033520]:[94:on_cb:core/base_connect.cpp] destory connect: peer close
+[WARNING]:[2017-06-26 18:41:14]:[2962033520]:[62:RECV:core/tcp_connect.cpp] throw exception error: peer close
+[WARNING]:[2017-06-26 18:41:14]:[2962033520]:[94:on_cb:core/base_connect.cpp] destory connect: peer close
+[WARNING]:[2017-06-26 18:57:55]:[2962033520]:[62:RECV:core/tcp_connect.cpp] throw exception error: peer close
+[WARNING]:[2017-06-26 18:57:55]:[2962033520]:[94:on_cb:core/base_connect.cpp] destory connect: peer close
+[WARNING]:[2017-06-26 19:09:11]:[2962033520]:[62:RECV:core/tcp_connect.cpp] throw exception error: peer close
+[WARNING]:[2017-06-26 19:09:11]:[2962033520]:[94:on_cb:core/base_connect.cpp] destory connect: peer close
+[WARNING]:[2017-06-26 19:10:37]:[2962033520]:[62:RECV:core/tcp_connect.cpp] throw exception error: peer close
+[WARNING]:[2017-06-26 19:10:37]:[2962033520]:[94:on_cb:core/base_connect.cpp] destory connect: peer close
+[WARNING]:[2017-06-26 19:18:26]:[2962033520]:[62:RECV:core/tcp_connect.cpp] throw exception error: peer close
+[WARNING]:[2017-06-26 19:18:26]:[2962033520]:[97:on_cb:core/base_connect.cpp] destory connect: peer close
+[WARNING]:[2017-06-26 19:19:52]:[2962033520]:[62:RECV:core/tcp_connect.cpp] throw exception error: peer close
+[WARNING]:[2017-06-26 19:19:52]:[2962033520]:[97:on_cb:core/base_connect.cpp] destory connect: peer close
+[WARNING]:[2017-06-26 19:27:47]:[2962033520]:[62:RECV:core/tcp_connect.cpp] throw exception error: peer close
+[WARNING]:[2017-06-26 19:27:47]:[2962033520]:[97:on_cb:core/base_connect.cpp] destory connect: peer close
+[WARNING]:[2017-06-26 19:30:30]:[2940005232]:[62:RECV:core/tcp_connect.cpp] throw exception error: peer close
+[WARNING]:[2017-06-26 19:30:30]:[2940005232]:[97:on_cb:core/base_connect.cpp] destory connect: peer close
+[WARNING]:[2017-06-26 19:30:47]:[2960984944]:[62:RECV:core/tcp_connect.cpp] throw exception error: peer close
+[WARNING]:[2017-06-26 19:30:47]:[2960984944]:[97:on_cb:core/base_connect.cpp] destory connect: peer close
+[WARNING]:[2017-06-26 19:31:07]:[2940005232]:[62:RECV:core/tcp_connect.cpp] throw exception error: peer close
+[WARNING]:[2017-06-26 19:31:07]:[2940005232]:[97:on_cb:core/base_connect.cpp] destory connect: peer close
+[WARNING]:[2017-06-26 19:33:11]:[2940005232]:[62:RECV:core/tcp_connect.cpp] throw exception error: peer close
+[WARNING]:[2017-06-26 19:33:11]:[2940005232]:[97:on_cb:core/base_connect.cpp] destory connect: peer close
+[WARNING]:[2017-06-26 19:48:39]:[2962033520]:[62:RECV:core/tcp_connect.cpp] throw exception error: peer close
+[WARNING]:[2017-06-26 19:48:39]:[2962033520]:[97:on_cb:core/base_connect.cpp] destory connect: peer close

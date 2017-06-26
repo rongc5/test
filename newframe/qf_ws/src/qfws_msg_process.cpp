@@ -1,7 +1,13 @@
 #include "common_def.h"
 #include "qfws_msg_process.h"
 #include "log_helper.h"
+#include "rapidjson/document.h"
+#include "rapidjson/prettywriter.h"
+#include "base_singleton.h"
+#include "rapidjson/stringbuffer.h"
+#include "rapidjson/writer.h"
 
+using namespace rapidjson;
 
 void groupid_userid_set::add(const uint32_t &groupid, const uint32_t & userid)
 {
@@ -45,18 +51,19 @@ bool groupid_userid_set::check(const uint32_t &groupid, const uint32_t &userid)
     return true;
 }
 
-uint32_t groupid_userid_set::get_userid(const uint32_t &groupid, const set<uint32_t> &deny_userid_set)
+void groupid_userid_set::get_userid(const uint32_t &groupid, vector<uint32_t> & userid_vec)
 {
-    set_difference(_userid_set.begin(), _userid_set.end(), deny_userid_set.begin(), deny_userid_set.end(), inserter(e, e.begin()));
-
-    if (e.begin() != e.end()) {// 此处还需要修改
-        LOG_DEBUG("userid:%d", e.begin());
-        return e.begin();
+    LOG_DEBUG("_groupid:%d groupid:%d", _groupid, groupid);
+    if (_groupid != groupid) {
+        LOG_WARNING("_groupid:%d != groupid:%d some thing wrong", _groupid, groupid);
+        return ;
     }
 
-    return 0;
+    set<uint32_t>::iterator it;
+    for (it = _userid_set.begin(); it != _userid_set.end(); it++) {
+        userid_vec.push_back(*it);
+    }
 }
-
 
 void login_groupid_userid_mgr::init(uint32_t bucket)
 {
@@ -73,32 +80,151 @@ bool login_groupid_userid_mgr::check(const uint32_t &groupid, const uint32_t &us
     thread_lock lock(&_mutex[index]);
     return _groupid_set[index].check(groupid, userid);
 }
-void login_groupid_userid_mgr::add(const string &server_uid)
+
+void login_groupid_userid_mgr::add(const uint32_t & groupid, const uint32_t &userid)
 {
     uint32_t index = groupid % _bucket;
     thread_lock lock(&_mutex[index]);
     return _groupid_set[index].add(groupid, userid);
 }
-void login_groupid_userid_mgr::reduce(const string &server_uid)
+void login_groupid_userid_mgr::reduce(const uint32_t & groupid, const uint32_t & userid)
 {
     uint32_t index = groupid % _bucket;
     thread_lock lock(&_mutex[index]);
     return _groupid_set[index].reduce(groupid, userid);
 }
-uint32_t get_userid(const uint32_t &groupid, const set<uint32_t> &deny_userid_set)
+
+void login_groupid_userid_mgr::get_userid(const uint32_t &groupid, vector<uint32_t> & userid_vec)
 {
     uint32_t index = groupid % _bucket;
     thread_lock lock(&_mutex[index]);
-    return _groupid_set[index].get_userid(groupid, userid);
+    return _groupid_set[index].get_userid(groupid, userid_vec);
 }
 
-void qf_ws_msg::reset()
+
+
+bool qf_req_msg::parse_from_json(qf_req_msg & ws_msg, char * json)
 {
-    _op = OP_NON;
-    _groupid = 0;
-    _userid = 0;
-    _passwd.clear();
-    _msg.clear();
+	if (!json) {
+		   LOG_WARNING("json is NULL");
+        return false;
+    }
+	
+
+    Document d;
+    if (d.ParseInsitu(json).HasParseError()) {
+        LOG_WARNING("_recent_msg parse error:%s", json);
+        return false;
+    }
+
+    if (!d.IsObject()) {
+        LOG_WARNING("_recent_msg parse error:%s", json);
+        return false;
+    }
+
+    if (d.HasMember("op")&& d["op"].IsInt()) {
+        ws_msg._op = (MsgOp)(d["op"].GetInt());
+        LOG_DEBUG("op:%d", ws_msg._op);
+    }
+
+    if (d.HasMember("groupid")&& d["groupid"].IsInt()) {
+        ws_msg._groupid = d["groupid"].GetInt();
+        LOG_DEBUG("groupid:%d", ws_msg._groupid);
+    }
+
+    if (d.HasMember("userid")&& d["userid"].IsInt()) {
+        ws_msg._userid = d["userid"].GetInt();
+        LOG_DEBUG("userid:%d", ws_msg._userid);
+    }
+
+    if (d.HasMember("passwd")&& d["passwd"].IsString()) {
+        ws_msg._passwd = d["passwd"].GetString();
+        LOG_DEBUG("passwd:%s", ws_msg._passwd.c_str());
+    }
+
+    if (d.HasMember("msg")&& d["msg"].IsString()) {
+        ws_msg._msg = d["msg"].GetString();
+        LOG_DEBUG("msg:%s", ws_msg._msg.c_str());
+    }
+
+    if (d.HasMember("dest_userid")) {
+        const Value& a = d["dest_userid"];
+        if (a.IsArray()) {
+            for (Value::ConstValueIterator itr = a.Begin(); itr != a.End(); ++itr) {
+                if (itr->IsInt()) {
+                    ws_msg._dest_userid_vec.push_back(itr->GetInt());
+                    LOG_DEBUG("dest_userid:%d", itr->GetInt());
+                }
+            }
+        }
+    }
+
+    return true;
 }
+
+
+bool qf_res_msg::parse_from_json(qf_res_msg & ws_msg, char * json)
+{
+		if (!json) {
+		   LOG_WARNING("json is NULL");
+        return false;
+    }
+    
+    
+     Document d;
+    if (d.ParseInsitu(json).HasParseError()) {
+        LOG_WARNING("_recent_msg parse error:%s", json);
+        return false;
+    }
+
+    if (!d.IsObject()) {
+        LOG_WARNING("_recent_msg parse error:%s", json);
+        return false;
+    }
+
+    if (d.HasMember("op")&& d["op"].IsInt()) {
+        ws_msg._op = (MsgOp)(d["op"].GetInt());
+        LOG_DEBUG("op:%d", ws_msg._op);
+    }
+    
+    
+     if (d.HasMember("res_code")&& d["res_code"].IsInt()) {
+        ws_msg._res_code = d["res_code"].GetInt();
+        LOG_DEBUG("res_code:%d", ws_msg._groupid);
+    }
+
+    if (d.HasMember("groupid")&& d["groupid"].IsInt()) {
+        ws_msg._groupid = d["groupid"].GetInt();
+        LOG_DEBUG("groupid:%d", ws_msg._groupid);
+    }
+
+    if (d.HasMember("userid")&& d["userid"].IsInt()) {
+        ws_msg._userid = d["userid"].GetInt();
+        LOG_DEBUG("userid:%d", ws_msg._userid);
+    }
+
+
+    if (d.HasMember("msg")&& d["msg"].IsString()) {
+        ws_msg._msg = d["msg"].GetString();
+        LOG_DEBUG("msg:%s", ws_msg._msg.c_str());
+    }
+
+    if (d.HasMember("online_userid")) {
+        const Value& a = d["online_userid"];
+        if (a.IsArray()) {
+            for (Value::ConstValueIterator itr = a.Begin(); itr != a.End(); ++itr) {
+                if (itr->IsInt()) {
+                    ws_msg._online_userid_vec.push_back(itr->GetInt());
+                    LOG_DEBUG("online_userid:%d", itr->GetInt());
+                }
+            }
+        }
+    }
+
+    return true;
+    
+    
+}
+
 
 

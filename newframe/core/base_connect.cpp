@@ -71,6 +71,9 @@ void base_connect::close()
         ::close(_fd);
         _fd = 0;
     }
+
+    if (_process != NULL)
+        delete _process;
 }
 
 int base_connect::get_sock()

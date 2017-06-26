@@ -6,6 +6,8 @@
 #include "rapidjson/writer.h"
 #include "rapidjson/stringbuffer.h"
 #include "user_info.h"
+#include "rapidjson/document.h"
+#include "rapidjson/prettywriter.h"
 
 using namespace rapidjson;
 
@@ -74,7 +76,7 @@ void ws_client_data_process::send_request(const char * buf)
     }
 
     string *tmp = new string;
-    tmp->append("hello, this is test !!!!!!!!!!!!!!");
+    tmp->append(buf);
     ws_msg_type msg;
     msg._p_msg = tmp;
     msg._con_type = 0x01;
@@ -93,13 +95,39 @@ void ws_client_data_process::login_request()
 
     writer.StartObject();
     writer.Key("groupid");
-    writer.String(user->groupid);
+    writer.Uint(user->groupid);
     writer.Key("userid");
-    writer.String(user->userid);
+    writer.Uint(user->userid);
     writer.Key("passwd");
     writer.String(user->passwd);
+    writer.Key("op");
+    writer.Uint(OP_LOGIN);
+    writer.Key("msg");
+    writer.String("I am login");
     writer.EndObject();
    
+    LOG_DEBUG("login info:%s", s.GetString());
+    send_request(s.GetString());
+}
+
+void ws_client_data_process::online_request()
+{
+    user_info * user = base_singleton<user_info>::get_instance();
+    
+    StringBuffer s;
+    Writer<StringBuffer> writer(s);
+
+
+    writer.StartObject();
+    writer.Key("groupid");
+    writer.Uint(user->groupid);
+    writer.Key("userid");
+    writer.Uint(user->userid);
+    writer.Key("op");
+    writer.Uint(OP_ONLINE);
+    writer.EndObject();
+
+
     LOG_DEBUG("login info:%s", s.GetString());
     send_request(s.GetString());
 }
@@ -119,6 +147,33 @@ void ws_client_data_process::on_handshake_ok()
     }
 }
 
+void ws_client_data_process::do_login_response(qf_res_msg & ws_msg)
+{
+    if (ws_msg._res_code == 1000) {
+        printf("登录成功:%s\n", ws_msg._msg.c_str());
+    }else {
+        printf("登录失败:%s\n", ws_msg._msg.c_str());
+    }
+
+    for (uint32_t i = 0; i < ws_msg._online_userid_vec.size(); i++) {
+        printf("online_userid:%d\n", ws_msg._online_userid_vec[i]);
+    }
+}
+
+void ws_client_data_process::do_online_response(qf_res_msg & ws_msg)
+{
+    if (ws_msg._res_code == 1000) {
+        printf("查询成功:%s\n", ws_msg._msg.c_str());
+    }else {
+        printf("查询失败:%s\n", ws_msg._msg.c_str());
+    }
+
+    for (uint32_t i = 0; i < ws_msg._online_userid_vec.size(); i++) {
+        printf("online_userid:%d\n", ws_msg._online_userid_vec[i]);
+    }
+}
+
+
 void ws_client_data_process::msg_recv_finish()
 {
     
@@ -132,13 +187,46 @@ void ws_client_data_process::msg_recv_finish()
     
     printf("新消息到来: %s\n", _recent_msg.c_str());
 
-    //sleep(3);
+    qf_res_msg  ws_msg;
+     bool is_parse = qf_res_msg::parse_from_json(ws_msg, (char *)(_recent_msg.c_str()));
+     if (is_parse) {
+
+         switch (ws_msg._op)
+         {
+
+             case OP_LOGIN:
+                 do_login_response(ws_msg);
+                 break;
+            case OP_ONLINE:
+                 do_online_response(ws_msg);
+             case OP_MSG:
+                 break;
+
+             case OP_DELIVER:
+                 break;
+             default:
+                 break;
+         }
+     }
+
+
+     int d;
+     printf("是否需要查询在线咨询师?1, yes , other no\n:");
+     scanf("%d", &d);
+     if (d == 1) {
+        online_request();
+        return; 
+     }
+
+     //sleep(3);
     //send_request();
 
-    char buf[SIZE_LEN_1024] = {'\0'};
-    printf("输入你想说的话?\n:");
-    scanf("%s", buf);
-    send_request(buf);
+    if (user->op != 1) {
+        char buf[SIZE_LEN_1024] = {'\0'};
+        printf("输入你想说的话?\n:");
+        scanf("%s", buf);
+        send_request(buf);
+    }
 
 }
 
