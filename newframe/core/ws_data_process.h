@@ -36,8 +36,6 @@ class ws_data_process:public base_data_process
 
         const string &get_send_header();
 
-        virtual void handle_timeout(const uint32_t timer_type);
-
         virtual void notice_send();
 
     protected:

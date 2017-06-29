@@ -1,0 +1,13 @@
+[DEBUG]:[2017-06-29 15:08:15]:[3078268624]:[37:load_config:src/main.cpp] parse ./conf//ws_ser.conf ok:
+webs_port:8088 
+webs_thread_num:6
+http_port:9090
+http_thread_num:6
+
+[DEBUG]:[2017-06-29 15:08:15]:[3078268624]:[71:init:src/qfws_msg_process.cpp] _bucket:2000003
+[DEBUG]:[2017-06-29 15:08:37]:[2962033520]:[18:handle_msg:src/ws_ser_thread.cpp] recv: fd [91]
+[DEBUG]:[2017-06-29 15:08:37]:[2962033520]:[7:base_data_process:core/base_data_process.cpp] 0xacb01e08
+[DEBUG]:[2017-06-29 15:08:37]:[2962033520]:[34:set_para:core/base_data_process.cpp] 0xacb01e08
+[DEBUG]:[2017-06-29 15:08:38]:[2962033520]:[17:err_close:core/base_data_process.cpp] 0xacb01e08
+[DEBUG]:[2017-06-29 15:08:39]:[2962033520]:[20:~qfws_res_data_process:src/qfws_res_data_process.cpp] destory:_groupid:0 _userid:0
+[DEBUG]:[2017-06-29 15:08:39]:[2962033520]:[12:~base_data_process:core/base_data_process.cpp] 0xacb01e08

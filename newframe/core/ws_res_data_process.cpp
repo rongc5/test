@@ -123,6 +123,7 @@ bool ws_res_data_process::check_head_finish()
 
 void ws_res_data_process::on_ping(const char op_code,const string &ping_data)
 {
+    LOG_DEBUG("%#x", op_code);
     if (op_code == 0x09)
         send_ping(0x0a, "");
 }

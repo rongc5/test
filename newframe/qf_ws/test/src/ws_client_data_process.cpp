@@ -11,11 +11,11 @@
 
 using namespace rapidjson;
 
-ws_client_data_process::ws_client_data_process(tcp_connect * t_cn):ws_req_data_process(t_cn)
+ws_client_data_process::ws_client_data_process(tcp_connect * t_cn):ws_req_data_process(t_cn), _thread(NULL)
 {
 }
 
-void ws_client_data_process::gen_connect(const string &ip, unsigned short port, base_net_thread * thread)
+ws_client_data_process* ws_client_data_process::gen_connect(const string &ip, unsigned short port, base_net_thread * thread)
 {
     struct sockaddr_in address;
 
@@ -66,6 +66,8 @@ void ws_client_data_process::gen_connect(const string &ip, unsigned short port, 
     qf_process->set_req_para(req_para);
 
     qf_process->notice_send();
+
+    return qf_process;
 }
 
 void ws_client_data_process::send_request(const char * buf)
@@ -231,3 +233,6 @@ void ws_client_data_process::msg_recv_finish()
 }
 
 
+void ws_client_data_process::add_timer(const uint32_t timer_type, const uint64_t time_length)
+{
+}

@@ -127,4 +127,6 @@ const int m_prime_list[] = {
     201326611,  402653189,  805306457,  1610612741
 };
 
+#define DEFAULT_TIMER_INTERVAL 300
+
 #endif

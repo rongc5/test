@@ -37,23 +37,26 @@ size_t base_connect::process_recv_msg(base_passing_msg* p_msg)
 
 bool base_connect::update_event(short ev)
 {
-    if (_ev == ev) {
-        return true;
+    if (_ev != ev) {
+        if (_ev && event_del(&_event) == -1) 
+            return false;
+
+        event_set(&_event, _fd, ev, on_cb, this);
+        event_base_set(_thread->get_event_base(), &_event);
+        _ev = ev;
+
+        if (event_add(&_event, 0) == -1) 
+            return false;
     }
 
-    //if (_ev) 
-        //event_del(&_event);
-
-    if (_ev && event_del(&_event) == -1) 
-        return false;
-
-    event_set(&_event, _fd, ev, on_cb, this);
-    event_base_set(_thread->get_event_base(), &_event);
-    _ev = ev;
-    if (event_add(&_event, 0) == -1) 
-        return false;
-
     return true;
+}
+
+void base_connect::handle_timeout(const uint32_t timer_type)
+{
+    if (_process) {
+        _process->handle_timeout(timer_type);
+    }
 }
 
 short base_connect::get_ev_flags()
@@ -101,4 +104,9 @@ void base_connect::on_cb(int fd, short ev, void *arg)
             delete conn;
         }
     }
+}
+
+base_net_thread * base_connect::get_base_net_thread()
+{
+    return _thread;
 }

@@ -80,7 +80,7 @@ void ws_data_process::send_ping(const char op_code, const string &ping_data)
 {
     if (ping_data.length() < 125) //大于125字节的ping包不让发出去了
     {
-        LOG_DEBUG("send  ping to server");
+        LOG_DEBUG("send  ping to server:%#x", op_code);
         string *p_str = new string;
         *p_str = web_socket_frame_header::gen_ping_header(op_code, ping_data);
         _p_tmp_str.push_back(p_str);
@@ -119,11 +119,6 @@ const string & ws_data_process::get_send_header()
 {
     return _send_header;
 }		
-
-void ws_data_process::handle_timeout(const uint32_t timer_type)
-{
-    //_p_data_process->handle_timeout(timer_type);
-}
 
 
 bool ws_data_process::check_head_finish()

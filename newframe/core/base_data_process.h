@@ -3,6 +3,7 @@
 
 #include "common_def.h"
 
+
 class base_data_process
 {
     public:
@@ -27,6 +28,8 @@ class base_data_process
         virtual void notice_send();
 
         virtual void handle_timeout(const uint32_t timer_type);
+
+        virtual void add_timer(const uint32_t timer_type, const uint64_t time_length);
 };
 
 #endif

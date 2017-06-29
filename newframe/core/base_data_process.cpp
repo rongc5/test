@@ -65,4 +65,7 @@ void base_data_process::handle_timeout(const uint32_t timer_type)
     LOG_DEBUG("%p", this);
 }
 
-
+void base_data_process::add_timer(const uint32_t timer_type, const uint64_t time_length)
+{
+    LOG_DEBUG("%p", this);
+}

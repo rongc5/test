@@ -28,6 +28,8 @@ class base_connect
 
         bool update_event(short ev);
 
+        virtual void handle_timeout(const uint32_t timer_type);
+
         short get_ev_flags();
 
         virtual size_t process_recv_msg(base_passing_msg* p_msg);;
@@ -36,6 +38,7 @@ class base_connect
 
         void set_process(base_data_process *p);
 
+        base_net_thread * get_base_net_thread();
     protected:
 
         virtual void call_back(int fd, short ev, void *arg) = 0;
