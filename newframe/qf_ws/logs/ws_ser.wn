@@ -1,2 +1,2 @@
-[WARNING]:[2017-06-29 15:08:39]:[2962033520]:[64:RECV:core/tcp_connect.cpp] throw exception error: peer close
-[WARNING]:[2017-06-29 15:08:39]:[2962033520]:[100:on_cb:core/base_connect.cpp] destory connect: peer close
+[WARNING]:[2017-06-30 14:54:43]:[2962033520]:[62:RECV:core/tcp_connect.cpp] throw exception error: peer close
+[WARNING]:[2017-06-30 14:54:43]:[2962033520]:[100:on_cb:core/base_connect.cpp] destory connect: peer close

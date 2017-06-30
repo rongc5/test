@@ -3,8 +3,6 @@
 
 #include "common_def.h"
 #include "base_thread.h"
-#include "base_net_obj_timer_process.h"
-#include "base_timer.h"
 
 class event_channel_msg;
 class base_connect;

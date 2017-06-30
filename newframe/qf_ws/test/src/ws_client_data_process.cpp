@@ -11,7 +11,7 @@
 
 using namespace rapidjson;
 
-ws_client_data_process::ws_client_data_process(tcp_connect * t_cn):ws_req_data_process(t_cn), _thread(NULL)
+ws_client_data_process::ws_client_data_process(tcp_connect * t_cn):ws_req_data_process(t_cn)
 {
 }
 
@@ -37,7 +37,7 @@ ws_client_data_process* ws_client_data_process::gen_connect(const string &ip, un
     if (_fd < 0) 
     {
         //LOG_WARNING("socket error %s", strerror(errno));     
-        return ;
+        return NULL;
     }
     
     int len =  sizeof(address);

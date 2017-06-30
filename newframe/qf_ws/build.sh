@@ -9,19 +9,19 @@ cd idl
 protoc  --cpp_out=. ./ws_ser.proto
 cd ..
 
-
+mk=qf.mk
 
 path=`pwd`
 base_file=`basename $path`
 
 if [ $# == 0 ]; then
-    make clean && make -j8
+    make -f $mk clean && make -j8 -f $mk
 elif [ $# == 1 ];then
     if [ $1 == "clean" ];then
-        make clean
+        make -f $mk clean
         (cd test && make clean)
     elif [ $1 == "all" ]; then
-        make clean && make -j8
+        make -f $mk clean && make -j8 -f $mk
         (cd test && make clean && make)
     elif [ $1 == "tar" ]; then
         tar -czvf $base_file.tar.gz $base_file core idl conf ${base_file}ctl.sh

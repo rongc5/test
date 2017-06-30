@@ -5,14 +5,14 @@
 
 
 class base_net_thread;
-class base_net_obj_timer_process
+class base_net_obj_timer_process: public base_timer_process
 {
 	public:
 		base_net_obj_timer_process(ObjId  id, base_net_thread *thread);
 
 		base_net_obj_timer_process();
 		
-		void handle_timeout(const uint32_t timer_type);
+		virtual void handle_timeout(const uint32_t timer_type);
 	private:
 		base_net_thread *_thread;
 		ObjId  _id;
