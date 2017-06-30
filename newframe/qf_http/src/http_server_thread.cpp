@@ -79,7 +79,7 @@ void *http_server_thread::http_server_thread::run()
     int r = evhttp_accept_socket(_httpd, _nfd);
     if (r != 0) return NULL;
 
-    evhttp_set_gencb(_httpd, do_request_cb, NULL);
+    evhttp_set_gencb(_httpd, do_request_cb, this);
     //evhttp_set_cb(_http, "/dump", do_request_cb, NULL);
 
     base_net_thread::run();
@@ -107,30 +107,16 @@ void http_server_thread::do_request_cb(struct evhttp_request *req, void *arg)
     struct evbuffer *evb = NULL;
     char *decoded_path = NULL;
     const char *path = NULL;
+    const char *uri = NULL;
     char t_buf[SIZE_LEN_4096];
     int ret = 0;
-
-	switch (evhttp_request_get_command(req)) {
-        case EVHTTP_REQ_GET: cmdtype = "GET"; break;
-        case EVHTTP_REQ_POST: cmdtype = "POST"; break;
-        case EVHTTP_REQ_HEAD: cmdtype = "HEAD"; break;
-        case EVHTTP_REQ_PUT: cmdtype = "PUT"; break;
-        case EVHTTP_REQ_DELETE: cmdtype = "DELETE"; break;
-        case EVHTTP_REQ_OPTIONS: cmdtype = "OPTIONS"; break;
-        case EVHTTP_REQ_TRACE: cmdtype = "TRACE"; break;
-        case EVHTTP_REQ_CONNECT: cmdtype = "CONNECT"; break;
-        case EVHTTP_REQ_PATCH: cmdtype = "PATCH"; break;
-        default: cmdtype = "unknown"; break;
-	}
-
-    const char *uri = evhttp_request_get_uri(req);
-	LOG_DEBUG("Received a %s request for %s\nHeaders:\n", cmdtype, uri);
     
     if (evhttp_request_get_command(req) != EVHTTP_REQ_GET && evhttp_request_get_command(req) != EVHTTP_REQ_POST) {
         evhttp_send_error(req, HTTP_BADMETHOD, 0);
         goto done;
     }
 
+    uri = evhttp_request_get_uri(req);
     decoded = evhttp_uri_parse(uri);
     if (!decoded) {
         printf("It's not a good URI. Sending BADREQUEST\n");
@@ -143,8 +129,10 @@ void http_server_thread::do_request_cb(struct evhttp_request *req, void *arg)
     printf("path:%s\n", path);
 
     decoded_path = evhttp_uridecode(path, 0, NULL);
-    if (!decoded_path)
-        goto err;
+    if (!decoded_path) {
+        evhttp_send_error(req, 404, "Document was not found");
+        goto done;
+    }
 
     printf("decoded_path:%s\n", decoded_path);
 
@@ -167,8 +155,6 @@ void http_server_thread::do_request_cb(struct evhttp_request *req, void *arg)
 	evhttp_send_reply(req, 200, "OK", evb);
     goto done;
 
-err:
-    evhttp_send_error(req, 404, "Document was not found");
 
 done:
     if (decoded)
