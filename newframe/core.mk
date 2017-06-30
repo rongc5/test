@@ -9,7 +9,7 @@ LIB =
 		 #-libevent_openssl.a  \
 		 #-libevent_pthreads.a 
 
-CPPFLAGS = -gdwarf-2 -msse3 -Wall $(INCLUDE) -DDEBUG=1
+CPPFLAGS = -gdwarf-2 -msse3 -W $(INCLUDE) -DDEBUG=1
 CC  = g++ $(CPPFLAGS)
 
 OBJ	= ${SRC_DIR}/base_connect.o                     \
