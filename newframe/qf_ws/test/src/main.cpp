@@ -15,11 +15,14 @@ void do_prepare()
     scanf("%d", &user->op);
 
     printf("请输入公司id\n:");
-    scanf("%s", user->groupid);
-    printf("请输入用化id\n:");
-    scanf("%s", user->userid);
+    scanf("%d", &user->groupid);
+    printf("请输入用户id\n:");
+    scanf("%d", &user->userid);
 
     if (op == 1){
+        printf("请输入密码id\n:");
+        scanf("%s", user->passwd);
+
         printf("登录中请等待\n");
     }
 
@@ -31,7 +34,7 @@ void do_prepare()
 int main(int c, char **v)
 {
     log_conf conf;
-    conf.deal_mode = 1;
+    conf.deal_mode = 3;
     //strcpy(conf.prefix_file_name, "asp");
     LOG_INIT(conf); 
 

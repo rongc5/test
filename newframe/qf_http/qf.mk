@@ -1,38 +1,33 @@
-HOME_DIR=../../
+HOME_DIR=../
 INC_DIR=${HOME_DIR}core
-IDL_DIR=$(HOME_DIR)idl
 LIB_DIR=$(HOME_DIR)/lib
-JSON_DIR=${HOME_DIR}json
 LOC_DIR=./src
-SER_DEF_INC_DIR=../include
-SER_DEF_SRC_DIR=../src
+JSON_DIR=${HOME_DIR}json 
 
-INCLUDE = -I./${INC_DIR}/ -I./${IDL_DIR}/ -I./$(JSON_DIR)/ -I./$(SER_DEF_INC_DIR)
+INCLUDE = -I./${INC_DIR}/ -I./$(JSON_DIR)
 
 LIB = -L$(LIB_DIR) -lrt -lnewframe -lpthread \
-	  /usr/lib/libssl.a  \
-	  /usr/lib/libcrypt.a  \
-	  /usr/lib/libcrypto.a  \
+	  /usr/lib/libcrypt.a \
+	  /usr/lib/libcrypto.a \
+	  /usr/lib/libssl.a \
 	  /usr/local/lib/libevent.a  \
 	  /usr/local/lib/libevent_core.a  \
 	  /usr/local/lib/libevent_extra.a  \
 	  /usr/local/lib/libevent_openssl.a  \
-	  /usr/local/lib/libevent_pthreads.a \
+	  /usr/local/lib/libevent_pthreads.a  
 
 
-CPPFLAGS = -gdwarf-2 -msse3 -Wall $(INCLUDE) -DDEBUG=1
+CPPFLAGS = -gdwarf-2 -msse3 -W $(INCLUDE) -DDEBUG=1
 CC  = g++ $(CPPFLAGS)
 
 
 OBJ	= $(LOC_DIR)/main.o     \
-	  $(LOC_DIR)/ws_client_data_process.o     \
-	$(LOC_DIR)/ws_cli_thread.o     \
-	$(SER_DEF_SRC_DIR)/qfws_msg_process.o     \
+	$(LOC_DIR)/http_server_thread.o     \
 
 
 AR=ar
 
-server=ws_cli
+server=ws_ser
 
 all	: $(server)
 	
@@ -44,15 +39,18 @@ clean	:
 	/bin/rm -f $(OBJ)
 	rm -f $(server)
 	rm -rf logs
+	rm -rf include/*
 
 
 #=================================================
 $(server):$(OBJ)
 	$(CC) $(CXXFLAGS) -o $@ $^ $(LIB)
+	mkdir -p include
+	cp $(LOC_DIR)/*.h include
 
 %.o : %.cc *.h
 	$(CC) $(CXXFLAGS) -c $<
 
 %.o : %.cpp *.h
-	$(CC) $(CXXFLAGS) -c $< -o $@
+	$(CC) $(CXXFLAGS) -c $< -o $@ $(LIB)
 

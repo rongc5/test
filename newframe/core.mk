@@ -1,8 +1,7 @@
 HOME_DIR=./
 SRC_DIR=${HOME_DIR}core
-IDL_DIR=$(HOME_DIR)idl
 
-INCLUDE = -I./${SRC_DIR}/ -I./${IDL_DIR} -I/usr/local/include 
+INCLUDE = -I./${SRC_DIR}/ -I/usr/local/include 
 LIB = 
 #LIB =  -libevent.a  \
 		 #-libevent_core.a  \
@@ -10,7 +9,7 @@ LIB =
 		 #-libevent_openssl.a  \
 		 #-libevent_pthreads.a 
 
-CPPFLAGS = -gdwarf-2 -msse3 -Wall $(INCLUDE) -DDEBUG=1
+CPPFLAGS = -gdwarf-2 -msse3 -W $(INCLUDE) -DDEBUG=1
 CC  = g++ $(CPPFLAGS)
 
 OBJ	= ${SRC_DIR}/base_connect.o                     \

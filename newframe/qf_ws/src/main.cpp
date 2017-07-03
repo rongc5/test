@@ -7,6 +7,7 @@
 #include <google/protobuf/text_format.h>
 #include <google/protobuf/io/zero_copy_stream_impl.h>
 #include "ws_ser.pb.h"
+#include "qfws_msg_process.h"
 
 void load_config(WsConf & ws_c)
 {
@@ -47,10 +48,14 @@ int main(int argc, char *argv[])
     WsConf ws_c;
     load_config(ws_c);
 
+    login_groupid_userid_mgr * login_groupid_mgr = new login_groupid_userid_mgr();
+    login_groupid_mgr->init();
+    base_singleton<login_groupid_userid_mgr>::set_instance(login_groupid_mgr);
+
     listen_thread * _listen_obj_thread = new listen_thread();
     _listen_obj_thread->init("0.0.0.0", ws_c.webs_port());
 
-    for (int i=1; i <= ws_c.webs_thread_num(); i++){
+    for (uint32_t i=1; i <= ws_c.webs_thread_num(); i++){
         ws_ser_thread * net_thread = new ws_ser_thread();
         _listen_obj_thread->add_worker_thread(net_thread);
         net_thread->start();
@@ -60,7 +65,7 @@ int main(int argc, char *argv[])
     _listen_obj_thread->start();
 
     int nfd = http_server_thread::bind_port(ws_c.http_port());
-     for (int i=1; i <= ws_c.http_thread_num(); i++){
+     for (uint32_t i=1; i <= ws_c.http_thread_num(); i++){
          http_server_thread * net_thread = new http_server_thread();
          net_thread->set_nfd(nfd);
          net_thread->start();

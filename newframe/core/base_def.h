@@ -108,39 +108,6 @@ typedef int int32_t;
 typedef unsigned int uint32_t;
 
 
-/***************************/
-
-
-
-#define ASSERT_DO(valid, PRINT) \
-    do{ \
-        if (!(valid)) { \
-            (PRINT); \
-            return -1; \
-        } \
-    }while(0)
-
-#define ASSERT(valid) \
-    do { \
-        if (!(valid)) { \
-            return -1; \
-        } \
-    }while(0)
-
-
-
-/*****************************/
-
-
-#ifdef DEBUG
-#define PDEBUG(format, arg...) \
-    do { \
-        printf("tid:[%lu],line:[%d],func:[%s],file:[%s] "format, pthread_self(), __LINE__, __func__, __FILE__, ##arg); \
-} while (0)
-#else
-    #define PDEBUG(format, arg...)
-#endif
-
 /*****************************/
 #define DEFAULT_LOG_MAX_SIZE 50*1024*1024
 
@@ -149,5 +116,17 @@ typedef unsigned int uint32_t;
 #define CHANNEL_MSG_TAG "c"
 
 #define MAX_HTTP_HEAD_LEN 10 * 1024
+
+
+const int m_prime_list[] = {
+    1009,   2003,   3001,   4001,   5003,   6007,   7001,   8009,   9001,
+    10007,  20011,  30011,  40009,  50021,  60013,  70001,  80021,  90001,
+    100003, 200003, 300007, 400009, 500009, 600011, 700001, 800011, 900001,
+    1000003,2000003,3000017,4000037,5000011,6000011,7000003,8000009,9000011,
+    12582917,   25165843,   50331653,   100663319,
+    201326611,  402653189,  805306457,  1610612741
+};
+
+#define DEFAULT_TIMER_INTERVAL 300
 
 #endif
