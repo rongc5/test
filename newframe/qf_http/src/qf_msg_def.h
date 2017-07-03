@@ -1,10 +1,10 @@
-#define __QF_MSG_DEF_H_
+#ifndef __QF_MSG_DEF_H_
 #define __QF_MSG_DEF_H_
 
 #include "common_def.h"
 #include "thread_helper.h"
 
-#define SEND_MSG "sendmsg"
+#define SEND_MSG_URL "sendmsg"
 
 struct user_msg
 {
@@ -31,16 +31,16 @@ class qf_msg_mgr
             _bucket = get_prime_num(bucket);
             LOG_DEBUG("_bucket:%d", _bucket);
             _mutex = new thread_mutex_t[_bucket]; 
-            _list = new list[_bucket];
+            _list = new list<T>[_bucket];
         }
 
-        void push(uint32_t id)
+        void push(uint32_t id, T & t)
         {
             uint32_t index = id % _bucket;
             thread_lock lock(&_mutex[index]);
             _list[index].push_back(t);
         }
-        void pop(uint32_t id, list<T *> & msg_list) 
+        void pop(uint32_t id, list<T> & msg_list) 
         {
             uint32_t index = id % _bucket;
             thread_lock lock(&_mutex[index]);
@@ -50,9 +50,9 @@ class qf_msg_mgr
 
     private:
         uint32_t _bucket;
-        list<T *> * _list;
+        list<T> * _list;
         thread_mutex_t * _mutex;
-}
+};
 
 
 

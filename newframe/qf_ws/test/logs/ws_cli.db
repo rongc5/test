@@ -1,0 +1,22 @@
+[DEBUG]:[2017-06-25 14:38:52]:[3077502672]:[41:main:src/main.cpp] c_thread
+[DEBUG]:[2017-06-25 14:38:52]:[3077502672]:[7:base_data_process:core/base_data_process.cpp] 0x86cd220
+[DEBUG]:[2017-06-25 14:38:52]:[3077502672]:[34:set_para:core/base_data_process.cpp] 0x86cd220
+[DEBUG]:[2017-06-25 14:38:52]:[3064986480]:[124:real_send:core/tcp_connect.cpp] send:GET / HTTP/1.1
+Host:www.yiyi.com
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Key:zEkljJfDq59X6c+8BZx7yw==
+Origin:yiyi.com
+Sec-WebSocket-Protocol: chat, superchat
+Sec-WebSocket-Version: 13
+
+
+[DEBUG]:[2017-06-25 14:38:52]:[3064986480]:[37:real_recv:core/tcp_connect.cpp] recv:HTTP/1.1 101 Switching Protocols
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Accept: GMWN4x1E4zAk8tMrFDeqx+yxQVA=
+Sec-WebSocket-Protocol: chat
+
+
+[DEBUG]:[2017-06-25 14:38:52]:[3064986480]:[28:process_recv_buf:core/ws_data_process.cpp] recv len: 159
+

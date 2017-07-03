@@ -1,9 +1,0 @@
-[DEBUG]:[2017-06-30 18:29:23]:[3066035056]:[127:do_request_cb:src/http_server_thread.cpp] Received a GET request for /index?x=1&y=2
-Headers:
-
-[DEBUG]:[2017-06-30 18:29:23]:[3066035056]:[155:do_request_cb:src/http_server_thread.cpp]   User-Agent: curl/7.19.7 (i386-redhat-linux-gnu) libcurl/7.19.7 NSS/3.16.2.3 Basic ECC zlib/1.2.3 libidn/1.18 libssh2/1.4.2
-
-[DEBUG]:[2017-06-30 18:29:23]:[3066035056]:[155:do_request_cb:src/http_server_thread.cpp]   Host: localhost:8888
-
-[DEBUG]:[2017-06-30 18:29:23]:[3066035056]:[155:do_request_cb:src/http_server_thread.cpp]   Accept: */*
-

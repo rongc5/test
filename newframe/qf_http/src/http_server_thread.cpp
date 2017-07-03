@@ -7,6 +7,8 @@
 #include "rapidjson/prettywriter.h"
 #include "rapidjson/document.h"
 
+using namespace rapidjson;
+
 http_server_thread::http_server_thread(): _nfd(0), _httpd(NULL)
 {
     _httpser_thread_vec.push_back(this);
@@ -17,9 +19,9 @@ bool http_server_thread::handle_msg(base_passing_msg * msg)
     if (!msg) {
         return true;
     }   
-    
+
     LOG_DEBUG("handle_msg");
-    
+
     REC_OBJ<base_passing_msg> rc(msg);
     //WARNING_LOG("do_request exception");
 
@@ -28,8 +30,8 @@ bool http_server_thread::handle_msg(base_passing_msg * msg)
 
 void http_server_thread::put_msg(base_passing_msg * msg)
 {
-	int index = (unsigned long)msg  % _httpser_thread_vec.size();
-	_httpser_thread_vec[index]->add_msg(msg);
+    int index = (unsigned long)msg  % _httpser_thread_vec.size();
+    _httpser_thread_vec[index]->add_msg(msg);
 }
 
 int http_server_thread::bind_port(int port)
@@ -41,9 +43,9 @@ int http_server_thread::bind_port(int port)
     address.sin_family = AF_INET;
     address.sin_port = htons(port);
     int ret = 0;
-  
+
     address.sin_addr.s_addr = htonl(INADDR_ANY);
-    
+
 
     int _fd = socket(AF_INET, SOCK_STREAM, 0);
     if (_fd < 0) 
@@ -67,7 +69,7 @@ int http_server_thread::bind_port(int port)
     }
 
     set_unblock(_fd);
-    
+
     return _fd;
 }
 
@@ -89,96 +91,112 @@ void *http_server_thread::http_server_thread::run()
     //evhttp_set_cb(_http, "/dump", do_request_cb, NULL);
 
     base_net_thread::run();
-    
+
     return NULL;
 }
 
 void http_server_thread::do_request_cb(struct evhttp_request *req, void *arg)
 {
-     http_server_thread * h_server = (http_server_thread *) arg;
-     if (h_server) {
-        conn->call_back(fd, ev, arg);
-     } catch (std::exception & e) {
+    http_server_thread * h_server = (http_server_thread *) arg;
+    try {
+        if (h_server) {
+            h_server->do_call_back(req, arg);
+        }
+    } catch (std::exception & e) {
         LOG_WARNING("exception: %s", e.what());
-     } catch (...) {
+    } catch (...) {
         LOG_WARNING("unknown error");
-     }
+    }
 }
 
 //网页 发消息
-void http_server_thread::do_sendmsg(char * query)
+void http_server_thread::do_sendmsg(const char * query)
 {
     if (!query) {
         return;
     }
-    
-    vector<string> tmp_vec
-    SplitString(str, "&", tmp_vec);
+
+    vector<string> tmp_vec;
+    SplitString(query, "&", tmp_vec);
 
     struct evbuffer *evb = NULL;
     user_msg * msg = new user_msg;
     string cmd;
 
-    for (int i = 0; i < tmp_vec.size(); i++) {
+    for (uint32_t i = 0; i < tmp_vec.size(); i++) {
         vector<string> tt_vec;
         SplitString(tmp_vec[i].c_str(), ";", tt_vec);
         if (tt_vec.size() != 2) {
             break;
         }
         if (strstr(tt_vec[0].c_str(), "cmd")) {
-             cmd = tt_vec[1]
+            cmd = tt_vec[1];
         } else if (strstr(tt_vec[0].c_str(), "visitor_id")) {
             msg->visitor_id = tt_vec[1];
         } else if (strstr(tt_vec[0].c_str(), "msg")) {
-            ck->msg = tt_vec[1];
+            msg->msg = tt_vec[1];
         } else if (strstr(tt_vec[0].c_str(), "to_id")) {
-            ck->to_id = tt_vec[1];
+            msg->to_id = tt_vec[1];
         }
     }
 
     int flag = 0;
     if (strstr(cmd.c_str(), "chat_msg")) {
-        qf_msg_mgr<user_msg> * to_sale = base_singleton<qf_msg_mgr<user_msg> >::get_instance();        
-        to_sale->push(atoi(msg->to_id));
+        qf_msg_mgr<user_msg *> * to_sale = base_singleton<qf_msg_mgr<user_msg *> >::get_instance();        
+        to_sale->push(atoi(msg->to_id.c_str()), msg);
         flag = 1;
+
+        char t_buf[SIZE_LEN_256];
+        snprintf(t_buf, sizeof(t_buf), "%ld", time(NULL));
+        msg->stime.append(t_buf);
     }
 
-    qf_msg_mgr<sale_msg> * to_visitor = base_singleton<qf_msg_mgr<sale_msg> >::get_instance();
-    
+    qf_msg_mgr<sale_msg *> * to_visitor = base_singleton<qf_msg_mgr<sale_msg *> >::get_instance();
+
     list<sale_msg *> to_visitor_list;
-    to_visitor->pop(atoi(msg->visitor_id), to_visitor_list);
+    to_visitor->pop(atoi(msg->visitor_id.c_str()), to_visitor_list);
 
     StringBuffer s;
     Writer<StringBuffer> writer(s);
 
     writer.StartArray();
-    list<sale_msg>::iterator it;
+    list<sale_msg *>::iterator it;
     for (it = to_visitor_list.begin() ; it != to_visitor_list.end(); it++) {
         writer.StartObject();
-        
+
         writer.Key("sales_id");
-        writer.String(it->sales_id.c_str());
+        writer.String((*it)->sales_id.c_str());
 
         writer.Key("visitor_id");
-        writer.String(it->to_id.c_str());
+        writer.String((*it)->to_id.c_str());
 
         writer.Key("msg");
-        writer.String(it->msg.c_str());
+        writer.String((*it)->msg.c_str());
+
+        writer.Key("stime");
+        writer.String((*it)->stime.c_str());
+
+        writer.EndArray();
     }
-    
+
+    writer.EndObject();
 
     evb = evbuffer_new();
-    evbuffer_add_printf(evb, "</ul></body></html>\n");
+    evbuffer_add_printf(evb, s.GetString());
 
     if (evb)
         evbuffer_free(evb);
+
+    if (!flag) {
+        delete msg;
+    }
 }
 
 void http_server_thread::do_call_back(struct evhttp_request *req, void *arg)
 {
     const char *cmdtype;
     struct evkeyvalq *headers;
-	struct evkeyval *header;
+    struct evkeyval *header;
     struct evhttp_uri *decoded = NULL;
     struct evbuffer * buf = NULL;
     char *decoded_path = NULL;
@@ -186,7 +204,7 @@ void http_server_thread::do_call_back(struct evhttp_request *req, void *arg)
     const char *uri = NULL;
     char t_buf[SIZE_LEN_4096];
     int ret = 0;
-    
+
     //if (evhttp_request_get_command(req) != EVHTTP_REQ_GET && evhttp_request_get_command(req) != EVHTTP_REQ_POST) {
     if (evhttp_request_get_command(req) != EVHTTP_REQ_GET) {
         evhttp_send_error(req, HTTP_BADMETHOD, 0);

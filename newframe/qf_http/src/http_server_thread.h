@@ -24,7 +24,7 @@ class http_server_thread:public base_net_thread
 
         void do_call_back(struct evhttp_request *req, void *arg);
 
-        void do_sendmsg(char * query);
+        void do_sendmsg(const char * query);
 
     protected:
         int _nfd;
