@@ -1,5 +1,11 @@
 #include "http_server_thread.h"
 #include "log_helper.h"
+#include "qf_msg_def.h"
+#include "base_singleton.h"
+#include "rapidjson/writer.h"
+#include "rapidjson/stringbuffer.h"
+#include "rapidjson/prettywriter.h"
+#include "rapidjson/document.h"
 
 http_server_thread::http_server_thread(): _nfd(0), _httpd(NULL)
 {
@@ -87,31 +93,102 @@ void *http_server_thread::http_server_thread::run()
     return NULL;
 }
 
-void http_server_thread::do_request_visitor(struct evhttp_request *req, void *arg)
-{
-
-}
-
-
-void http_server_thread::do_request_sale(struct evhttp_request *req, void *arg)
-{
-}
-
 void http_server_thread::do_request_cb(struct evhttp_request *req, void *arg)
+{
+     http_server_thread * h_server = (http_server_thread *) arg;
+     if (h_server) {
+        conn->call_back(fd, ev, arg);
+     } catch (std::exception & e) {
+        LOG_WARNING("exception: %s", e.what());
+     } catch (...) {
+        LOG_WARNING("unknown error");
+     }
+}
+
+//网页 发消息
+void http_server_thread::do_sendmsg(char * query)
+{
+    if (!query) {
+        return;
+    }
+    
+    vector<string> tmp_vec
+    SplitString(str, "&", tmp_vec);
+
+    struct evbuffer *evb = NULL;
+    user_msg * msg = new user_msg;
+    string cmd;
+
+    for (int i = 0; i < tmp_vec.size(); i++) {
+        vector<string> tt_vec;
+        SplitString(tmp_vec[i].c_str(), ";", tt_vec);
+        if (tt_vec.size() != 2) {
+            break;
+        }
+        if (strstr(tt_vec[0].c_str(), "cmd")) {
+             cmd = tt_vec[1]
+        } else if (strstr(tt_vec[0].c_str(), "visitor_id")) {
+            msg->visitor_id = tt_vec[1];
+        } else if (strstr(tt_vec[0].c_str(), "msg")) {
+            ck->msg = tt_vec[1];
+        } else if (strstr(tt_vec[0].c_str(), "to_id")) {
+            ck->to_id = tt_vec[1];
+        }
+    }
+
+    int flag = 0;
+    if (strstr(cmd.c_str(), "chat_msg")) {
+        qf_msg_mgr<user_msg> * to_sale = base_singleton<qf_msg_mgr<user_msg> >::get_instance();        
+        to_sale->push(atoi(msg->to_id));
+        flag = 1;
+    }
+
+    qf_msg_mgr<sale_msg> * to_visitor = base_singleton<qf_msg_mgr<sale_msg> >::get_instance();
+    
+    list<sale_msg *> to_visitor_list;
+    to_visitor->pop(atoi(msg->visitor_id), to_visitor_list);
+
+    StringBuffer s;
+    Writer<StringBuffer> writer(s);
+
+    writer.StartArray();
+    list<sale_msg>::iterator it;
+    for (it = to_visitor_list.begin() ; it != to_visitor_list.end(); it++) {
+        writer.StartObject();
+        
+        writer.Key("sales_id");
+        writer.String(it->sales_id.c_str());
+
+        writer.Key("visitor_id");
+        writer.String(it->to_id.c_str());
+
+        writer.Key("msg");
+        writer.String(it->msg.c_str());
+    }
+    
+
+    evb = evbuffer_new();
+    evbuffer_add_printf(evb, "</ul></body></html>\n");
+
+    if (evb)
+        evbuffer_free(evb);
+}
+
+void http_server_thread::do_call_back(struct evhttp_request *req, void *arg)
 {
     const char *cmdtype;
     struct evkeyvalq *headers;
 	struct evkeyval *header;
     struct evhttp_uri *decoded = NULL;
     struct evbuffer * buf = NULL;
-    struct evbuffer *evb = NULL;
     char *decoded_path = NULL;
     const char *path = NULL;
     const char *uri = NULL;
     char t_buf[SIZE_LEN_4096];
     int ret = 0;
     
-    if (evhttp_request_get_command(req) != EVHTTP_REQ_GET && evhttp_request_get_command(req) != EVHTTP_REQ_POST) {
+    //if (evhttp_request_get_command(req) != EVHTTP_REQ_GET && evhttp_request_get_command(req) != EVHTTP_REQ_POST) {
+    if (evhttp_request_get_command(req) != EVHTTP_REQ_GET) {
         evhttp_send_error(req, HTTP_BADMETHOD, 0);
         goto done;
     }
@@ -126,35 +203,20 @@ void http_server_thread::do_request_cb(struct evhttp_request *req, void *arg)
 
     path = evhttp_uri_get_path(decoded);
     if (!path) path = "/";
-    printf("path:%s\n", path);
 
     decoded_path = evhttp_uridecode(path, 0, NULL);
     if (!decoded_path) {
-        evhttp_send_error(req, 404, "Document was not found");
+        evhttp_send_error(req, 404, "bad request");
         goto done;
     }
 
-    printf("decoded_path:%s\n", decoded_path);
+    LOG_DEBUG("query:%s decoded_path:%s\n", evhttp_uri_get_query(decoded), decoded_path);
 
-    printf("query:%s\n", evhttp_uri_get_query(decoded));
-
-	headers = evhttp_request_get_input_headers(req);
-	for (header = headers->tqh_first; header;header = header->next.tqe_next) {
-        LOG_DEBUG("  %s: %s\n", header->key, header->value);
-	}
-
-    buf = evhttp_request_get_input_buffer(req);
-    evbuffer_remove(buf, t_buf, sizeof(t_buf));
-    if (ret > 0) {
-        printf("t_buf:%s", t_buf);
+    if (strstr(decoded_path, SEND_MSG_URL)) {
+        do_sendmsg(evhttp_uri_get_query(decoded));
+    } else {
+        evhttp_send_error(req, 404, "bad request");
     }
-
-    evb = evbuffer_new();
-    evbuffer_add_printf(evb, "</ul></body></html>\n");
-
-	evhttp_send_reply(req, 200, "OK", evb);
-    goto done;
-
 
 done:
     if (decoded)
@@ -162,9 +224,6 @@ done:
 
     if (decoded_path)
         free(decoded_path);
-
-    if (evb)
-        evbuffer_free(evb);
 }
 
 
