@@ -22,7 +22,7 @@ CC  = g++ $(CPPFLAGS)
 
 
 OBJ	= $(LOC_DIR)/main.o     \
-	$(LOC_DIR)/http_server_thread.o     \
+	  $(LOC_DIR)/http_server_thread.o \
 
 
 AR=ar

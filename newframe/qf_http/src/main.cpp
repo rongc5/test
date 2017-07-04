@@ -1,8 +1,8 @@
 #include "base_thread.h"
-#include "base_singleton.h"
-#include "log_helper.h"
-#include "http_server_thread.h"
 #include "qf_msg_def.h"
+#include "log_helper.h"
+#include "base_singleton.h"
+#include "http_server_thread.h"
 
 
 int main(int argc, char *argv[])
@@ -14,12 +14,12 @@ int main(int argc, char *argv[])
     LOG_INIT(conf); 
 
     qf_msg_mgr<sale_msg *> * to_visitor = new qf_msg_mgr<sale_msg *>();
-    to_visitor->init();
+    to_visitor->init(100);
     base_singleton<qf_msg_mgr<sale_msg* > >::set_instance(to_visitor);
 
 
     qf_msg_mgr<user_msg *> * to_sale = new qf_msg_mgr<user_msg *>();
-    to_sale->init(10000);
+    to_sale->init(100);
     base_singleton<qf_msg_mgr<user_msg *> >::set_instance(to_sale);
 
     int nfd = http_server_thread::bind_port(8888);
@@ -31,6 +31,6 @@ int main(int argc, char *argv[])
 
 
     base_thread::join_all_thread();
-    
+
     return 0;
 }

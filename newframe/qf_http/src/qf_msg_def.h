@@ -3,8 +3,10 @@
 
 #include "common_def.h"
 #include "thread_helper.h"
+#include "log_helper.h"
 
 #define SEND_MSG_URL "sendmsg"
+#define SEND_VISITOR_URL "sendVisitor"
 
 struct user_msg
 {
