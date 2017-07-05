@@ -11,7 +11,7 @@ class base_net_thread:public base_thread
 {
     public:
         base_net_thread():_channelid(0), _base_container(NULL){
-            _base_container = new common_obj_container();
+            _base_container = new common_obj_container(this);
         };
         virtual ~base_net_thread(){
             if (_base_container){
@@ -25,9 +25,9 @@ class base_net_thread:public base_thread
 
         virtual void init();
 
-        virtual void put_msg(pass_msg * msg);
+        virtual void put_msg(normal_obj_msg * p_msg);
 
-        static void passing_msg(pass_msg * msg);
+        static void put_obj_msg(normal_obj_msg * p_msg);
 
         virtual void routine_msg();
 

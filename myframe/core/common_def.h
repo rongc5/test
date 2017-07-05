@@ -17,19 +17,6 @@ struct host_str {
     uint16_t _port;
 };
 
-enum CONNECT_STATUS
-{
-    CLOSED = 0,
-    CONNECT_OK = 1,
-    CONNECTING = 2  
-};
-
-enum EPOLL_TYPE
-{
-    EPOLL_LT_TYPE = 0,
-    EPOLL_ET_TYPE 
-};
-
 
 enum RECV_MSG_STATUS
 {
@@ -102,7 +89,7 @@ void set_unblock(int fd);
 
 /**************** ***********************/
 
-enum pass_msg_op
+enum normal_msg_op
 {
     PASS_NEW_FD,
     PASS_NEW_CONNECT = 1,
@@ -127,26 +114,17 @@ struct normal_msg
     virtual ~normal_msg(){}
 };
 
-struct pass_msg //内部传递的消息
+struct normal_obj_msg //内部传递的消息
 {
     ObjId _src_id;
     ObjId _dest_id;
-    pass_msg_op _p_op;
-    uint32_t _flag; // 是否需要删除p_msg, 0 不需要, 1需要
-    normal_msg * p_msg;
+    normal_msg_op _p_op;
 
-
-    pass_msg():_flag(1), p_msg(NULL){}
-
-    virtual ~pass_msg(){
-        if (_flag && p_msg) {
-            delete p_msg;
-            p_msg = NULL;
-        }
+    virtual ~normal_obj_msg(){
     }
 };
 
-struct recv_msg: public normal_msg
+struct recv_msg: public normal_obj_msg
 {
     uint32_t _len;
     char * _ptr;

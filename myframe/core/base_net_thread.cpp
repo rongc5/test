@@ -31,7 +31,7 @@ void base_net_thread::init()
 }
 
 
-void base_net_thread::put_msg(pass_msg * msg)
+void base_net_thread::put_msg(normal_obj_msg * msg)
 {
     LOG_DEBUG("_channelid[%d]", _channelid);
     thread_lock lock(&_base_net_mutex);
@@ -96,16 +96,6 @@ void base_net_thread::handle_new_msg(pass_msg * p_msg)
 }
 
 
-const ObjId & base_net_thread::gen_id_str()
-{
-    uint32_t obj_id = _id_str._id;
-    uint32_t thread_index = get_thread_index();
-    _id_str._thread_index = thread_index;
-    obj_id++;
-    _id_str._id = obj_id;
-    return _id_str;
-}
-
 void base_net_thread::set_channelid(int fd)
 {
     base_connect<channel_data_process> * p_connect = new base_connect< channel_data_process>(fd, EPOLL_LT_TYPE);
@@ -126,7 +116,7 @@ base_net_thread * base_net_thread::get_base_net_thread_obj(uint32_t thread_index
     return NULL;
 }
 
-void base_net_thread::passing_msg(pass_msg * p_msg)
+void base_net_thread::put_obj_msg(normal_obj_msg * p_msg)
 {
     if (!p_msg) {
         return;
@@ -135,7 +125,7 @@ void base_net_thread::passing_msg(pass_msg * p_msg)
     base_net_thread * net_thread = get_base_net_thread_obj(p_msg->_dest_id._thread_index);
     LOG_DEBUG("_thread_index[%d]", p_msg->_dest_id._thread_index);
     if (!net_thread) {
-        REC_OBJ<pass_msg> rec(p_msg); 
+        REC_OBJ<normal_obj_msg> rec(p_msg); 
         return;
     }
 

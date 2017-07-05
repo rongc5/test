@@ -9,7 +9,6 @@
 #include "listen_data_process.h"
 
 
-template<class MSG_PROCESS>
 class listen_thread: public base_net_thread
 {
     public:
@@ -22,10 +21,46 @@ class listen_thread: public base_net_thread
         {
             _ip = ip;
             _port = port;
-            _listen_connect = new listen_connect<listen_data_process>();
+
+
+            struct sockaddr_in address; 
+            int reuse_addr = 1;  
+
+            memset((char *) &address, 0, sizeof(address)); 
+            address.sin_family = AF_INET;
+            address.sin_port = htons(port); 
+            int ret = 0;         
+
+            if (ip != "")        
+            {
+                inet_aton(ip.c_str(), &address.sin_addr);
+            }
+            else
+            {
+                address.sin_addr.s_addr = htonl(INADDR_ANY); 
+            }
+
+            int fd = socket(AF_INET, SOCK_STREAM, 0);
+            if (fd < 0)         
+            {
+                THROW_COMMON_EXCEPT("socket error " << strerror(errno));     
+            }
+            setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, (void*)(&(reuse_addr)), sizeof(reuse_addr)); 
+
+            if (::bind(fd, (struct sockaddr *) &address, sizeof(address)) < 0) 
+            {        
+                THROW_COMMON_EXCEPT("bind error "  << strerror(errno) << " " << ip << ":" << port);
+            }        
+
+            ret = listen(fd, 250);
+            if (ret == -1)
+            {
+                THROW_COMMON_EXCEPT("listen error "  << strerror(errno));
+            }
+
+            set_unblock(fd); 
+            base_listen_connect * listen_connect = new base_listen_connect(fd);
             listen_data_process * data_process = new listen_data_process(_listen_connect);
-            _listen_connect->set_id(gen_id_str());
-            _listen_connect->init(ip, port);
             _listen_connect->set_process(data_process);
             _listen_connect->set_net_container(_base_container);
         }
@@ -77,33 +112,13 @@ class listen_thread: public base_net_thread
         }
 
     protected:
-        const ObjId & gen_id_str()
-        {
-            uint32_t thread_index = get_thread_index();
-            _id_str._thread_index = thread_index;
-            uint32_t  obj_id = _id_str._id;
-            obj_id++;
-            _id_str._id = obj_id;
-            return _id_str;
-        }
-
-        NET_OBJ * gen_connect(int fd)
-        {
-            base_connect<MSG_PROCESS> * p_connect = new base_connect<MSG_PROCESS>(fd, EPOLL_LT_TYPE);
-
-            MSG_PROCESS * process = new MSG_PROCESS(p_connect);
-            p_connect->set_process(process);
-
-            return p_connect;
-        }
 
 
     protected:
 
         string _ip;
         unsigned short _port;
-        listen_connect<listen_data_process> *_listen_connect;
-        ObjId _id_str;
+        base_listen_connect *_listen_connect;
         vector<base_net_thread * > _worker_thrds;
         uint32_t _current_indx;
 };
