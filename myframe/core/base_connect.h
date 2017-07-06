@@ -21,7 +21,7 @@ class base_connect:public base_net_obj
 
         void notice_send();
 
-        virtual size_t process_recv_msg(pass_msg* p_msg);
+        virtual bool process_recv_msg(ObjId & id, normal_msg * p_msg);
 
         base_data_process * get_process();
 

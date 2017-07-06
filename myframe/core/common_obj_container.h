@@ -20,7 +20,7 @@ class common_obj_container:public base_net_container
 
         virtual bool erase(ObjId *obj_id);
 
-        virtual void put_msg(normal_obj_msg* p_msg);
+        virtual void put_msg(ObjId & id, normal_msg * p_msg);
 
         virtual void obj_process();
 

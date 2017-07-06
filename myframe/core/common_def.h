@@ -91,8 +91,7 @@ void set_unblock(int fd);
 
 enum normal_msg_op
 {
-    PASS_NEW_FD,
-    PASS_NEW_CONNECT = 1,
+    MSG_CONNECT = 1,
     PASS_NEW_MSG
 };
 
@@ -108,45 +107,23 @@ bool operator < (const ObjId & oj1, const ObjId & oj2);
 
 bool operator==(const ObjId & oj1, const ObjId & oj2);
 
-struct normal_msg 
+class normal_msg 
 {
-    normal_msg(){}
-    virtual ~normal_msg(){}
+    public:
+        normal_msg(){}
+        virtual ~normal_msg(){}
+        normal_msg_op _msg_op;
 };
 
-struct normal_obj_msg //内部传递的消息
+
+class normal_obj_msg //内部传递的消息
 {
-    ObjId _src_id;
-    ObjId _dest_id;
-    normal_msg_op _p_op;
+    ObjId _id;
+    normal_msg * p_msg;
 
     virtual ~normal_obj_msg(){
     }
 };
 
-struct recv_msg: public normal_obj_msg
-{
-    uint32_t _len;
-    char * _ptr;
-    uint32_t _flag; // 是否需要删除, 1 需要, 0 不需要
-
-    recv_msg():_len(0), _ptr(NULL), _flag(1){
-    }
-
-    virtual ~recv_msg() {
-        if (_flag && _ptr) {
-            delete [] _ptr;
-            _ptr = NULL;
-        }
-    }
-};
-
-struct recv_msg_fd: public normal_msg
-{
-    int fd;
-    recv_msg_fd():fd(0){}
-
-    virtual ~recv_msg_fd(){}
-};
 
 #endif

@@ -26,7 +26,7 @@ class base_net_obj: public normal_msg
         void set_id(const ObjId & id_str);
         const ObjId & get_id();
 
-        virtual size_t process_recv_msg(normal_obj_msg * p_msg) = 0;
+        virtual bool process_recv_msg(ObjId & id, normal_msg * p_msg) = 0;
 
     protected:
         base_net_container *_p_net_container;

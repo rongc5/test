@@ -54,4 +54,9 @@ size_t base_listen_connect::process_recv_msg(normal_obj_msg * p_msg)
     REC_OBJ<normal_obj_msg> rc(p_msg);
 }
 
+base_listen_process * base_listen_connect::get_process()
+{
+    return _process;
+}
+
 

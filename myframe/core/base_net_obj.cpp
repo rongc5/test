@@ -12,6 +12,7 @@ base_net_obj::base_net_obj(const int32_t sock)
     _fd = sock;
     _epoll_event = EPOLLIN | EPOLLERR | EPOLLHUP;
     _p_net_container = NULL;
+    _msg_op = MSG_CONNECT;
 }
 
 base_net_obj::~base_net_obj()

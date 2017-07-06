@@ -21,7 +21,9 @@ class base_listen_connect:public base_net_obj
 
         void set_process(base_listen_process *p);
 
-         virtual size_t process_recv_msg(normal_obj_msg * p_msg);
+        base_listen_process * get_process();
+
+        virtual size_t process_recv_msg(normal_obj_msg * p_msg);
 
 
 	private:

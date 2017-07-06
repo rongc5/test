@@ -50,9 +50,9 @@ bool common_obj_container::erase(ObjId *obj_id)
     return ret;
 }
 
-void common_obj_container::put_msg(normal_obj_msg* p_msg)
+void common_obj_container::put_msg(ObjId & id, normal_msg * p_msg)
 {
-    base_net_obj * net_obj = find(&p_msg->_dest_id);
+    base_net_obj * net_obj = find(&id);
     if (!net_obj) {
         REC_OBJ<pass_msg> rec(p_msg);
         return;

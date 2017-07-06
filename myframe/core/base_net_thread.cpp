@@ -17,93 +17,42 @@ void * base_net_thread::run()
 
 void base_net_thread::init()
 {
-    int fd[2];
-    int ret = socketpair(AF_UNIX,SOCK_STREAM,0,fd);
-    if (ret < 0) {
-        LOG_WARNING("socketpair fail errstr[%s]", strerror(errno));
-        return ;
-    }   
+    for (int i = 0; i < _channel_num; i++) {
 
-    _channelid = fd[0];
-    set_channelid(fd[1]);
-    LOG_DEBUG("fd[%d] fd[%d]\n", fd[0], fd[1]);
+        int fd[2];
+        int ret = socketpair(AF_UNIX,SOCK_STREAM,0,fd);
+        if (ret < 0) {
+            return ;
+        }   
+
+        event_channel_msg * msg = new event_channel_msg();
+        _channel_msg_vec.push_back(msg);
+        msg->_channelid = fd[1];
+
+        base_connect * channel_connect = new base_connect(fd[0]);
+        channel_data_process * data_process = new channel_data_process(channel_connect);
+        channel_connect->set_process(data_process);
+        channel_connect->set_net_container(_base_container);
+
+        msg->_base_obj = channel_connect;
+    }
+
+
     _base_net_thread_map[get_thread_index()] = this;
 }
 
 
-void base_net_thread::put_msg(normal_obj_msg * msg)
+void base_net_thread::put_msg(ObjId & id, normal_msg * p_msg)
 {
-    LOG_DEBUG("_channelid[%d]", _channelid);
-    thread_lock lock(&_base_net_mutex);
-    _queue.push_back(msg);
-    write(_channelid, "c", sizeof("c"));
-    LOG_DEBUG("_channelid[%d]", _channelid);
+    int index = (unsigned long) p_msg % _channel_msg_vec.size();
+    event_channel_msg * msg = _channel_msg_vec[index];
+    msg->_base_obj->process_recv_msg(id, msg);
+    write(msg->_channelid, CHANNEL_MSG_TAG, sizeof(CHANNEL_MSG_TAG));
 }
 
-void base_net_thread::routine_msg()
+void base_net_thread::handle_msg(normal_msg * p_msg)
 {
-    thread_lock lock(&_base_net_mutex);
-    for (dItr it = _queue.begin(); it != _queue.end();){
-        switch ((*it)->_p_op) {
-            case PASS_NEW_CONNECT:
-                {
-                    handle_new_connect(*it);
-                }
-                break;
-            case PASS_NEW_FD:
-                {
-                    LOG_DEBUG("PASS_NEW_FD");
-                    handle_new_fd(*it);
-                }
-                break;
-            case PASS_NEW_MSG:
-                {
-                    handle_new_msg(*it);
-                }
-                break;
-
-            default:
-                REC_OBJ<pass_msg> rec(*it);
-        }
-
-        it = _queue.erase(it);
-    }
-
-    _queue.clear();
-}
-
-void base_net_thread::handle_new_fd(pass_msg * p_msg)
-{
-    REC_OBJ<pass_msg> rec(p_msg);
-}
-
-void base_net_thread::handle_new_connect(pass_msg * p_msg)
-{
-    REC_OBJ<pass_msg> rec(p_msg);
-    if (p_msg->p_msg) 
-    {
-        NET_OBJ * p_connect = dynamic_cast<NET_OBJ *> (p_msg->p_msg);
-        if (p_connect) {
-            p_connect->set_id(gen_id_str());
-            p_connect->set_net_container(_base_container);
-        }
-    }
-}
-
-void base_net_thread::handle_new_msg(pass_msg * p_msg)
-{
-    _base_container->put_msg(p_msg);
-}
-
-
-void base_net_thread::set_channelid(int fd)
-{
-    base_connect<channel_data_process> * p_connect = new base_connect< channel_data_process>(fd, EPOLL_LT_TYPE);
-
-    p_connect->set_id(gen_id_str());
-    channel_data_process * process = new channel_data_process(p_connect);
-    p_connect->set_process(process);
-    p_connect->set_net_container(_base_container);
+    REC_OBJ<normal_msg> rec(p_msg);
 }
 
 base_net_thread * base_net_thread::get_base_net_thread_obj(uint32_t thread_index)
@@ -116,20 +65,20 @@ base_net_thread * base_net_thread::get_base_net_thread_obj(uint32_t thread_index
     return NULL;
 }
 
-void base_net_thread::put_obj_msg(normal_obj_msg * p_msg)
+void base_net_thread::put_obj_msg(ObjId & id, normal_msg * p_msg)
 {
     if (!p_msg) {
         return;
     }
 
-    base_net_thread * net_thread = get_base_net_thread_obj(p_msg->_dest_id._thread_index);
-    LOG_DEBUG("_thread_index[%d]", p_msg->_dest_id._thread_index);
+    base_net_thread * net_thread = get_base_net_thread_obj(id._thread_index);
+    LOG_DEBUG("_thread_index[%d]", id._thread_index);
     if (!net_thread) {
         REC_OBJ<normal_obj_msg> rec(p_msg); 
         return;
     }
 
-    net_thread->put_msg(p_msg);
+    net_thread->put_msg(id, p_msg);
 }
 
 map<uint32_t, base_net_thread *> base_net_thread::_base_net_thread_map;

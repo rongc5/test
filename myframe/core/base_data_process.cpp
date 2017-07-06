@@ -53,7 +53,7 @@ size_t base_data_process::process_recv_buf(char *buf, size_t len)
     LOG_DEBUG("%p", this);
 }
 
-size_t base_data_process::process_recv_msg(pass_msg * p_msg)
+size_t base_data_process::process_recv_msg(ObjId & id, normal_msg * p_msg)
 {
     LOG_DEBUG("%p", this);
 }
