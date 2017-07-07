@@ -15,7 +15,7 @@
 #include <sys/time.h>
 #include <dirent.h>
 #include <fcntl.h>
-
+#include <stdlib.h>
 
 #include <sys/stat.h>
 #include <unistd.h>
@@ -37,7 +37,6 @@
 #include <exception>
 #include <memory>
 
-#include "myframe.pb.h"
 
 using namespace std;
 
@@ -54,8 +53,8 @@ using namespace std;
 const size_t SEND_BUF_SIZE = 20 * 1024;
 const uint64_t CONNECT_TIME_OUT = 180 * 1000;
 
-const int max_recv_data = 1024*20;
-const int max_send_num = 5;
+const int MAX_RECV_SIZE = 1024*20;
+const int MAX_SEND_NUM = 5;
 
 
 #define MAX_BUF_SIZE 1024 * 10 * 10
@@ -93,45 +92,6 @@ typedef unsigned int uint32_t;
 
 
 
-/***************************/
-
-#define PASSING_ACCEPT_NONE 0
-#define PASSING_ACCEPT_IN 1
-
-
-/***************************/
-
-
-
-#define ASSERT_DO(valid, PRINT) \
-    do{ \
-        if (!(valid)) { \
-            (PRINT); \
-            return -1; \
-        } \
-    }while(0)
-
-#define ASSERT(valid) \
-    do { \
-        if (!(valid)) { \
-            return -1; \
-        } \
-    }while(0)
-
-
-
-/*****************************/
-
-
-#ifdef DEBUG
-#define PDEBUG(format, arg...) \
-    do { \
-        printf("tid:[%lu],line:[%d],func:[%s],file:[%s] "format, pthread_self(), __LINE__, __func__, __FILE__, ##arg); \
-} while (0)
-#else
-    #define PDEBUG(format, arg...) do while(0)
-#endif
-
 /*****************************/
 #define DEFAULT_LOG_MAX_SIZE 50*1024*1024
 
@@ -145,5 +105,6 @@ const int m_prime_list[] = {
     201326611,  402653189,  805306457,  1610612741
 };
 
+#define CHANNEL_MSG_TAG "c"
 
 #endif

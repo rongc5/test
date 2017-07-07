@@ -7,7 +7,7 @@ class base_connect;
 class base_data_process
 {
     public:
-        base_data_process(void *p);
+        base_data_process(base_connect *p);
 
         virtual ~base_data_process();
 

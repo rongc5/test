@@ -1,6 +1,6 @@
 #include "common_epoll.h"
 #include "base_net_container.h"
-//#include "net_obj.h"
+#include "base_net_thread.h"
 
 
 

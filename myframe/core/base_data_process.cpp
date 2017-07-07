@@ -3,9 +3,9 @@
 #include "log_helper.h"
 
 
-base_data_process::base_data_process(void *p)
+base_data_process::base_data_process(base_connect *p)
 {
-    _p_connect = (base_connect *)p;
+    _p_connect = p;
     LOG_DEBUG("%p", this);
 }
 
@@ -20,7 +20,7 @@ void base_data_process::peer_close()
     LOG_DEBUG("%p", this);
 }
 
-string base_data_process::*get_send_buf()
+string * base_data_process::get_send_buf()
 {
     LOG_DEBUG("%p", this);
     if (_send_list.begin() == _send_list.end())
@@ -51,11 +51,15 @@ void base_data_process::on_connect_comming()
 size_t base_data_process::process_recv_buf(char *buf, size_t len)
 {
     LOG_DEBUG("%p", this);
+
+    return len;
 }
 
-size_t base_data_process::process_recv_msg(ObjId & id, normal_msg * p_msg)
+bool base_data_process::process_recv_msg(ObjId & id, normal_msg * p_msg)
 {
     LOG_DEBUG("%p", this);
+
+    return true;
 }
 
 void base_data_process::handle_timeout(const uint32_t timer_type)

@@ -1,12 +1,9 @@
 #include "common_epoll.h"
 #include "base_net_container.h"
-#include "net_obj.h"
 #include "log_helper.h"
 #include "common_exception.h"
 #include "base_connect.h"
-#include "base_net_obj.h"
 #include "base_data_process.h"
-
 
 
 base_connect::base_connect(const int32_t sock):base_net_obj(sock)
@@ -167,10 +164,15 @@ void base_connect::notice_send()
     update_event(_epoll_event | EPOLLOUT);
 }
 
-size_t base_connect::process_recv_msg(normal_obj_msg* p_msg)
+bool base_connect::process_recv_msg(normal_obj_msg* p_msg)
 {
     size_t p_ret =_process->process_recv_msg(p_msg);
-    return p_ret;
+    return true;
+}
+
+void  base_connect::handle_timeout(const uint32_t timer_type)
+{
+    _process->handle_timeout(timer_type);
 }
 
 base_data_process * base_connect::get_process()

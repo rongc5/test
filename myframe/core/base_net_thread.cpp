@@ -1,6 +1,19 @@
 #include "base_net_thread.h"
 #include "channel_data_process.h"
+#include "base_net_container.h"
+#include "common_obj_container.h"
+#include "base_net_obj.h"
+#include "base_connect.h"
 
+base_net_thread::base_net_thread(int channel_num = 1):_channel_num(channel_num), _base_container(NULL){
+    _base_container = new common_obj_container(this);
+}
+
+base_net_thread::~base_net_thread(){
+    if (_base_container){
+        delete _base_container;
+    }
+}
 
 void * base_net_thread::run()
 {
@@ -9,8 +22,6 @@ void * base_net_thread::run()
     while (get_run_flag()) {
         _base_container->obj_process();
     }
-
-    LOG_DEBUG("obj_process over!");
 
     return NULL;
 }
@@ -72,14 +83,14 @@ void base_net_thread::put_obj_msg(ObjId & id, normal_msg * p_msg)
     }
 
     base_net_thread * net_thread = get_base_net_thread_obj(id._thread_index);
-    LOG_DEBUG("_thread_index[%d]", id._thread_index);
     if (!net_thread) {
-        REC_OBJ<normal_obj_msg> rec(p_msg); 
+        REC_OBJ<normal_msg> rec(p_msg); 
         return;
     }
 
     net_thread->put_msg(id, p_msg);
 }
+
 
 map<uint32_t, base_net_thread *> base_net_thread::_base_net_thread_map;
 

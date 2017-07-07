@@ -1,56 +1,40 @@
 #include "log_thread.h"
-#include "base_singleton.h"
 
-int log_thread::add(log_msg * msg)
+void log_thread::put_msg(ObjId & id, normal_msg * p_msg)
 {
-    if (!msg) {
-        return -1;
+    if (!p_msg) {
+        return ;
     }
 
-    int index = msg->st % _conf.bucketlen;
-
-    thread_lock lock(&_mutex[index]);
-
-    _list[index].push_back(msg);
-
-    return 0;
-}
-
-int log_thread::put_msg(log_msg *msg)
-{
-    log_thread * thread = base_singleton<log_thread>::get_instance();
-    if (!thread) {
-        log_conf conf;
-        thread = new log_thread(conf);
-        base_singleton<log_thread>::set_instance(thread);
-        thread->start();
+    log_msg * lmsg = dynamic_cast<log_msg *>(p_msg);
+    if (!lmsg){
+       REC_OBJ<log_msg> rc(lmsg);
+       return;
     }
 
+    //PDEBUG("%lu _channel_msg_vec.size:%d\n", lmsg->tid, _channel_msg_vec.size());
+    int index = lmsg->tid % _channel_msg_vec.size();
 
-    return thread->add(msg);
+    event_channel_msg * msg = _channel_msg_vec[index];
+    msg->_base_obj->process_recv_msg(id, msg);
+    write(msg->_channelid, CHANNEL_MSG_TAG, sizeof(CHANNEL_MSG_TAG));
+
+    return ;
 }
 
-void* log_thread::run()
+void log_thread::handle_msg(normal_msg * msg)
 {
-    while (get_run_flag())
-    {
-        clear();
+    REC_OBJ<normal_msg> rec(msg);
+    log_msg * lmsg = dynamic_cast<log_msg *>(msg);
+    if (lmsg) {
+        log_write(lmsg);
     }
-
-    return NULL;
 }
-
 
 void log_thread::log_write(log_msg * msg)
 {
     if (!msg || msg->type > _conf.type){
         return;
-    }
-
-    int flag = 0;
-    if (msg->str.length() && msg->str[msg->str.length()- 1] == '\n')
-    {
-        flag = 1;
     }
 
     if (_conf.deal_mode & 1) {
@@ -64,20 +48,14 @@ void log_thread::log_write(log_msg * msg)
             return;
         }
 
-        if (flag)
-            fprintf(fp, "%s", msg->str.c_str());
-        else 
-            fprintf(fp, "%s\n", msg->str.c_str());
+        fprintf(fp, "%s\n", msg->str.c_str());
+
         fclose(fp);
     }
 
     if (_conf.deal_mode & 1<<1){
-        if (flag)
-            printf("%s", msg->str.c_str());
-        else 
-            printf("%s\n", msg->str.c_str());
+        printf("%s\n", msg->str.c_str());
     }
-
 }
 
 
@@ -90,19 +68,19 @@ void log_thread::get_file_name(LogType type, char dest[], size_t dest_len)
     switch (type)
     {   
         case LOGFATAL:
-            snprintf(dest, dest_len, "%s.%s", _conf.prefix_file_name, "ft");
+            snprintf(dest, dest_len, "%s/%s.%s", _conf.log_path, _conf.prefix_file_name, "ft");
             break;
         case LOGWARNING:
-            snprintf(dest, dest_len, "%s.%s", _conf.prefix_file_name, "wn");
+            snprintf(dest, dest_len, "%s/%s.%s", _conf.log_path, _conf.prefix_file_name, "wn");
             break;
         case LOGNOTICE:
-            snprintf(dest, dest_len, "%s.%s", _conf.prefix_file_name, "nt");
+            snprintf(dest, dest_len, "%s/%s.%s", _conf.log_path, _conf.prefix_file_name, "nt");
             break;
         case LOGTRACE:
-            snprintf(dest, dest_len, "%s.%s", _conf.prefix_file_name, "tc");
+            snprintf(dest, dest_len, "%s/%s.%s", _conf.log_path, _conf.prefix_file_name, "tc");
             break;
         case LOGDEBUG:
-            snprintf(dest, dest_len, "%s.%s", _conf.prefix_file_name, "db");
+            snprintf(dest, dest_len, "%s/%s.%s", _conf.log_path, _conf.prefix_file_name, "db");
             break;
         default:
             break;
@@ -110,9 +88,6 @@ void log_thread::get_file_name(LogType type, char dest[], size_t dest_len)
 
     return;
 }
-
-
-
 
 void log_thread::check_to_renmae(const char *filename, int max_size)
 {
@@ -132,24 +107,8 @@ void log_thread::check_to_renmae(const char *filename, int max_size)
     }
 }
 
-void log_thread::clear()
+const log_conf & log_thread::get_log_conf()
 {
-    for (int i = 0; i <  _conf.bucketlen; i++) {
-        thread_lock lock(&_mutex[i]);
-
-        list<log_msg *>::iterator it;
-
-        for (it = _list[i].begin(); it != _list[i].end(); it++) {
-            log_write(*it);
-            delete *it;
-            *it = NULL;
-        } 
-
-        _list[i].clear();
-
-    }
-
+    return _conf;
 }
-
-
 

@@ -1,6 +1,7 @@
 #include "common_epoll.h"
-#include "net_obj.h"
+#include "base_net_obj.h"
 #include "common_exception.h"
+#include "log_helper.h"
 
 
 void common_epoll::add_to_epoll(base_net_obj *p_obj)

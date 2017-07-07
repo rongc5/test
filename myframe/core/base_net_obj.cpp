@@ -84,3 +84,15 @@ const ObjId & base_net_obj::get_id()
     return _id_str;
 }
 
+bool base_net_obj::process_recv_msg(ObjId & id, normal_msg * p_msg)
+{
+    REC_OBJ<normal_obj_msg> rc(p_msg);
+
+    return true;
+}
+
+void  base_net_obj::handle_timeout(const uint32_t timer_type)
+{
+
+}
+

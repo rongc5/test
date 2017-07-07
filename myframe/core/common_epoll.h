@@ -2,12 +2,9 @@
 #define __COMMON_EPOLL_H_
 
 #include "common_def.h"
-#include "net_obj.h"
 #include "common_exception.h"
 
 class base_net_obj;
-
-
 class common_epoll
 {
     public:

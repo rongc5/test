@@ -4,21 +4,14 @@
 #include "common_def.h"
 #include "base_thread.h"
 #include "common_obj_container.h"
-#include "net_obj.h"
-#include "base_connect.h"
 #include "event_channel_msg.h"
 
+class base_net_container;
 class base_net_thread:public base_thread
 {
     public:
-        base_net_thread(int channel_num = 1)::_channel_num(channel_num), _base_container(NULL){
-            _base_container = new common_obj_container(this);
-        };
-        virtual ~base_net_thread(){
-            if (_base_container){
-                delete _base_container;
-            }
-        };
+        base_net_thread(int channel_num = 1);
+        virtual ~base_net_thread();
 
         virtual void *run();
 

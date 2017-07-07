@@ -54,7 +54,10 @@ void base_listen_thread::init(const string &ip, unsigned short port)
     }
 
     set_unblock(fd); 
-    _listen_connect = gen_listen_obj();
+    _listen_connect = new listen_connect(fd);
+    listen_data_process * process =  new listen_data_process(_listen_connect);
+    process->set_listen_thread(this);
+    _listen_connect->set_process(process);
     _listen_connect->set_net_container(_base_container);
 }
 

@@ -2,8 +2,8 @@
 #define __BASE_CONNECT_H__
 
 #include "common_def.h"
+#include "base_net_obj.h"
 
-class base_net_obj
 class base_data_process; 
 class base_connect:public base_net_obj
 {
@@ -22,6 +22,8 @@ class base_connect:public base_net_obj
         void notice_send();
 
         virtual bool process_recv_msg(ObjId & id, normal_msg * p_msg);
+
+        virtual void  handle_timeout(const uint32_t timer_type);
 
         base_data_process * get_process();
 

@@ -1,10 +1,8 @@
 HOME_DIR=./
 SRC_DIR=${HOME_DIR}core
-IDL_DIR=$(HOME_DIR)idl
 
-INCLUDE = -I./${SRC_DIR}/ -I./${IDL_DIR}/
+INCLUDE = -I./${SRC_DIR}/
 LIB = -L/usr/lib/ -lpthread \
-	  -lprotobuf
 
 CPPFLAGS = -g -msse3 -Wall $(INCLUDE) -DDEBUG=1
 CC  = g++ $(CPPFLAGS)
@@ -18,9 +16,14 @@ OBJ	= ${SRC_DIR}/base_net_container.o                        \
     ${SRC_DIR}/common_def.o                        \
     ${SRC_DIR}/common_epoll.o                        \
     ${SRC_DIR}/log_thread.o                        \
-    ${SRC_DIR}/net_obj.o                        \
+    ${SRC_DIR}/base_net_obj.o                        \
     ${SRC_DIR}/thread_helper.o                        \
-    ${IDL_DIR}/myframe.pb.o                        
+    ${SRC_DIR}/base_connect.o                        \
+    ${SRC_DIR}/listen_connect.o                        \
+    ${SRC_DIR}/base_listen_thread.o                        \
+    ${SRC_DIR}/common_obj_container.o                        \
+    ${SRC_DIR}/channel_data_process.o                        \
+    ${SRC_DIR}/common_util.o                        \
 
 OBJ_INCLUDE=
 

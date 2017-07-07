@@ -2,20 +2,20 @@
 #define _CHANNEL_DATA_PROCESS_H_
 
 #include "common_def.h"
-#include "base_data_process.h"
 #include "thread_helper.h"
 
-
+class base_connect;
+class base_data_process;
 class channel_data_process:public base_data_process
 {
     public:
-        channel_data_process(void *p);
+        channel_data_process(base_connect *p);
 
         virtual ~channel_data_process()
         {
-            deque<normal_obj_msg *>::iterator it;
+            deque<normal_obj_msg >::iterator it;
             for (it = _queue.begin(); it != _queue.end(); it++) {
-                delete *it;
+                delete it->p_msg;
             }
         }	
 
@@ -26,7 +26,7 @@ class channel_data_process:public base_data_process
 
     protected:
         thread_mutex_t _mutex;
-        deque<normal_obj_msg *> _queue;
+        deque<normal_obj_msg > _queue;
 };
 
 #endif

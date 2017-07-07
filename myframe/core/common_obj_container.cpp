@@ -54,11 +54,11 @@ void common_obj_container::put_msg(ObjId & id, normal_msg * p_msg)
 {
     base_net_obj * net_obj = find(&id);
     if (!net_obj) {
-        REC_OBJ<pass_msg> rec(p_msg);
+        REC_OBJ<normal_msg> rec(p_msg);
         return;
     }
 
-    net_obj->process_recv(p_msg);
+    net_obj->process_recv_msg(id, p_msg);
 }
 
 void common_obj_container::obj_process()

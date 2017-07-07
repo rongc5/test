@@ -7,6 +7,7 @@
 class base_net_obj;
 class common_epoll;
 
+class base_net_thread;
 class base_net_container
 {
     public:
