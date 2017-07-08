@@ -13,7 +13,6 @@ class base_net_obj: public normal_msg
         virtual ~base_net_obj();
 
         virtual void event_process(int events) = 0;
-        virtual void close() = 0;
 
         virtual void set_net_container(base_net_container *p_net_container);
         base_net_container * get_net_container();
@@ -28,6 +27,8 @@ class base_net_obj: public normal_msg
 
         virtual bool process_recv_msg(ObjId & id, normal_msg * p_msg);
         virtual void  handle_timeout(const uint32_t timer_type);
+
+        int destroy();
 
     protected:
         base_net_container *_p_net_container;

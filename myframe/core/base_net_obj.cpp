@@ -5,6 +5,7 @@
 #include "common_exception.h"
 #include "log_helper.h"
 #include "base_data_process.h"
+#include "common_util.h"
 
 
 base_net_obj::base_net_obj(const int32_t sock)
@@ -22,7 +23,7 @@ base_net_obj::~base_net_obj()
         _fd = 0;
     }
 
-    common_epoll * p_epoll = p_net_container->get_epoll();
+    common_epoll * p_epoll = _p_net_container->get_epoll();
     if (p_epoll) {
         p_epoll->del_from_epoll(this);
     }
@@ -33,7 +34,7 @@ base_net_obj::~base_net_obj()
 void base_net_obj::set_net_container(base_net_container *p_net_container)
 {
     _p_net_container = p_net_container;
-    common_epoll * p_epoll = p_net_container->get_epoll();
+    common_epoll * p_epoll = _p_net_container->get_epoll();
 
     try {
         p_epoll->add_to_epoll(this);
@@ -57,7 +58,7 @@ base_net_container * base_net_obj::get_net_container()
 
 void base_net_obj::update_event(int event)
 {
-    common_epoll * p_epoll = p_net_container->get_epoll();
+    common_epoll * p_epoll = _p_net_container->get_epoll();
     if (_epoll_event != event && p_epoll) {
         _epoll_event = event;
         p_epoll->mod_from_epoll(this);
@@ -86,7 +87,7 @@ const ObjId & base_net_obj::get_id()
 
 bool base_net_obj::process_recv_msg(ObjId & id, normal_msg * p_msg)
 {
-    REC_OBJ<normal_obj_msg> rc(p_msg);
+    REC_OBJ<normal_msg> rc(p_msg);
 
     return true;
 }
@@ -94,5 +95,12 @@ bool base_net_obj::process_recv_msg(ObjId & id, normal_msg * p_msg)
 void  base_net_obj::handle_timeout(const uint32_t timer_type)
 {
 
+}
+
+int base_net_obj::destroy()
+{
+    delete this;
+
+    return 0;
 }
 

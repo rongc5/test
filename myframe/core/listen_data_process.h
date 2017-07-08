@@ -5,11 +5,10 @@
 
 class base_listen_thread;
 class listen_connect;
-class base_net_obj;
 class listen_data_process
 {
     public:
-        listen_data_process(void *p);
+        listen_data_process(listen_connect *p);
 
         virtual ~listen_data_process(){}
 

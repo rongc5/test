@@ -1,9 +1,10 @@
 #include "listen_data_process.h"
 #include "base_listen_thread.h"
+#include "listen_connect.h"
 
-listen_data_process::listen_data_process(void *p)
+listen_data_process::listen_data_process(listen_connect *p)
 {
-    _p_connect = (base_net_obj*)p;
+    _p_connect = p;
     _listen_thread = NULL;
 }
 

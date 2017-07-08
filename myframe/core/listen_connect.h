@@ -9,13 +9,9 @@ class listen_data_process;
 class listen_connect:public base_net_obj
 {
 	public:
-		listen_connect();
+		listen_connect(int fd);
 
-		virtual ~listen_connect()
-		{	
-            if (_process)
-            delete _process;
-		}
+		virtual ~listen_connect();
 
 		virtual void event_process(int events);
 

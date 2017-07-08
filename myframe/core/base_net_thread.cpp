@@ -5,7 +5,7 @@
 #include "base_net_obj.h"
 #include "base_connect.h"
 
-base_net_thread::base_net_thread(int channel_num = 1):_channel_num(channel_num), _base_container(NULL){
+base_net_thread::base_net_thread(int channel_num):_channel_num(channel_num), _base_container(NULL){
     _base_container = new common_obj_container(this);
 }
 
@@ -57,7 +57,7 @@ void base_net_thread::put_msg(ObjId & id, normal_msg * p_msg)
 {
     int index = (unsigned long) p_msg % _channel_msg_vec.size();
     event_channel_msg * msg = _channel_msg_vec[index];
-    msg->_base_obj->process_recv_msg(id, msg);
+    msg->_base_obj->process_recv_msg(id, p_msg);
     write(msg->_channelid, CHANNEL_MSG_TAG, sizeof(CHANNEL_MSG_TAG));
 }
 

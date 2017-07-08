@@ -2,15 +2,18 @@
 #include "base_net_obj.h"
 #include "listen_connect.h"
 #include "listen_data_process.h"
+#include "log_helper.h"
 
-listen_connect::listen_connect()
+
+listen_connect::listen_connect(int fd):base_net_obj(fd)
 {
-    _port = 0;
     _process = NULL;
 }
 
 listen_connect::~listen_connect()
 {	
+    if (_process)
+        delete _process;
 }
 
 void listen_connect::event_process(int events)

@@ -8,17 +8,11 @@
 
 base_connect::base_connect(const int32_t sock):base_net_obj(sock)
 {
-    _recv_buf.resize(max_recv_data);		
     _p_send_buf = NULL;
     _process = NULL;
 }
 
 base_connect::~base_connect()
-{
-    close();
-}
-
-void base_connect::close()
 {
     if (_p_send_buf != NULL){
         delete _p_send_buf;
@@ -29,8 +23,8 @@ void base_connect::close()
         delete _process;
         _process = NULL;
     }
-
 }
+
 
 void base_connect::event_process(int event)
 {
@@ -99,13 +93,13 @@ void base_connect::real_recv()
         int r_len = tmp_len <= sizeof(t_buf) ? tmp_len:sizeof(t_buf);
         ret = RECV(t_buf, r_len);
         if (ret > 0)
-            recv_buf.append(t_buf, ret);
+            _recv_buf.append(t_buf, ret);
     }
 
     if (_recv_buf.length() > 0)
     {
-        LOG_DEBUG("process_recv_buf _recv_buf_len[%d] fd[%d]\n", _recv_buf_len, _fd);
-        size_t p_ret = _process->process_recv_buf((char*)_recv_buf.c_str(), _recv_buf_len);
+        LOG_DEBUG("process_recv_buf _recv_buf_len[%d] fd[%d]\n", _recv_buf.length(), _fd);
+        size_t p_ret = _process->process_recv_buf((char*)_recv_buf.c_str(), _recv_buf.length());
         if (p_ret <= _recv_buf.length())//表名上层处理能力跟不上,停止接受数据
         {
             _recv_buf.erase(0, p_ret); 
@@ -164,9 +158,9 @@ void base_connect::notice_send()
     update_event(_epoll_event | EPOLLOUT);
 }
 
-bool base_connect::process_recv_msg(normal_obj_msg* p_msg)
+bool base_connect::process_recv_msg(ObjId & id, normal_msg * p_msg)
 {
-    size_t p_ret =_process->process_recv_msg(p_msg);
+    _process->process_recv_msg(id, p_msg);
     return true;
 }
 

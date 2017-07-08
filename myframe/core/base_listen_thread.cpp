@@ -2,15 +2,16 @@
 #include "base_net_thread.h"
 #include "base_net_container.h"
 #include "common_obj_container.h"
-#include "base_listen_connect.h"
+#include "listen_connect.h"
 #include "common_def.h"
+#include "listen_data_process.h"
 
 
 
 base_listen_thread::base_listen_thread():_listen_connect(NULL){
-};
-virtual base_listen_thread::~base_listen_thread(){
-};
+}
+base_listen_thread::~base_listen_thread(){
+}
 
 void base_listen_thread::init(const string &ip, unsigned short port)
 {

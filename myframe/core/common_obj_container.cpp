@@ -69,7 +69,7 @@ void common_obj_container::obj_process()
         int32_t ret = 0;
         try
         {
-            ret = tmp_itr->second->real_net_process();            
+            //ret = tmp_itr->second->real_net_process();            
         }
         catch(CMyCommonException &e)
         {
