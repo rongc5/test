@@ -1,27 +1,23 @@
 #ifndef __LOG_HELPER_H_
 #define __LOG_HELPER_H_
 
-#include "log_thread.h"
-#include "base_def.h"
+#include "log_process.h"
 #include "common_def.h"
 #include "base_singleton.h"
-#include "base_net_thread.h"
 
 #define LOG_INIT(log_conf) \
     do { \
-        log_thread * thread = base_singleton<log_thread>::get_instance(); \
+        log_process * thread = base_singleton<log_process>::get_instance(); \
         if (thread) { \
             break; \
         } \
-        thread = new log_thread(conf); \
-        base_singleton<log_thread>::set_instance(thread); \
-        thread->start(); \
-        sleep(1); \
+        thread = new log_process(conf); \
+        base_singleton<log_process>::set_instance(thread); \
     }  while (0)
 
 #define LOG_WARNING(fmt, arg...) \
     do { \
-        log_thread * thread = base_singleton<log_thread>::get_instance(); \
+        log_process * thread = base_singleton<log_process>::get_instance(); \
         if (!thread) { \
             break; \
         } \
@@ -29,24 +25,19 @@
             break; \
         } \
         {\
-            log_msg * lgmsg =  new log_msg(); \
             char log_common_tmp[SIZE_LEN_64]; \
             get_date_str(log_common_tmp, sizeof(log_common_tmp), LOG_DATE_FORMAT); \
-            lgmsg->type = LOGWARNING; \
-            lgmsg->tid = pthread_self(); \
-            char log_common_buf[SIZE_LEN_16384]; \
-            snprintf(log_common_buf, sizeof(log_common_buf), "[WARNING]"":[%s]:[%lu]:[%d:%s:%s] "fmt,log_common_tmp,pthread_self(), __LINE__, __func__, __FILE__, ##arg); \
-            lgmsg->str.append(log_common_buf); \
-            ObjId  id; \
-            id._thread_index = thread->get_thread_index(); \
-            base_net_thread::put_obj_msg(id, log_msg); \
+            stringstream tmp_ss; \
+            tmp_ss <<"[WARNING]:"<< "["<<log_common_tmp<<"]:" << "[" <<pthread_self()<< "]:" <<"["<< \
+                __LINE__<< ":"<<__func__<<":" << __FILE__<<"]\t"<< fmt; \
+            thread->log_write(LOGWARNING, tmp_ss.str().c_str(), ##arg);\
         }\
     } while (0)
 
 
 #define LOG_FATAL(fmt, arg...) \
-              do { \
-        log_thread * thread = base_singleton<log_thread>::get_instance(); \
+do { \
+        log_process * thread = base_singleton<log_process>::get_instance(); \
         if (!thread) { \
             break; \
         } \
@@ -54,24 +45,19 @@
             break; \
         } \
         {\
-            log_msg * lgmsg =  new log_msg(); \
             char log_common_tmp[SIZE_LEN_64]; \
             get_date_str(log_common_tmp, sizeof(log_common_tmp), LOG_DATE_FORMAT); \
-            lgmsg->type = LOGFATAL; \
-            lgmsg->tid = pthread_self(); \
-            char log_common_buf[SIZE_LEN_16384]; \
-            snprintf(log_common_buf, sizeof(log_common_buf), "[FATAL]"":[%s]:[%lu]:[%d:%s:%s] "fmt, log_common_tmp,pthread_self(), __LINE__, __func__, __FILE__, ##arg); \
-            lgmsg->str.append(log_common_buf); \
-            ObjId  id; \
-            id._thread_index = thread->get_thread_index(); \
-            base_net_thread::put_obj_msg(id, log_msg); \
+            stringstream tmp_ss; \
+            tmp_ss <<"[FATAL]:"<< "["<<log_common_tmp<<"]:" << "[" <<pthread_self()<< "]:" <<"["<< \
+            __LINE__<< ":"<<__func__<<":" << __FILE__<<"]\t"<<fmt; \
+            thread->log_write(LOGFATAL, tmp_ss.str().c_str(), ##arg;\
         }\
-    } while (0)
+} while (0)
 
 
 #define LOG_NOTICE(fmt, arg...) \
             do { \
-        log_thread * thread = base_singleton<log_thread>::get_instance(); \
+        log_process * thread = base_singleton<log_process>::get_instance(); \
         if (!thread) { \
             break; \
         } \
@@ -79,24 +65,19 @@
             break; \
         } \
         {\
-            log_msg * lgmsg =  new log_msg(); \
             char log_common_tmp[SIZE_LEN_64]; \
             get_date_str(log_common_tmp, sizeof(log_common_tmp), LOG_DATE_FORMAT); \
-            lgmsg->type = LOGNOTICE; \
-            lgmsg->tid = pthread_self(); \
-            char log_common_buf[SIZE_LEN_16384]; \
-            snprintf(log_common_buf, sizeof(log_common_buf), "[NOTICE]"":[%s]:[%lu]:[%d:%s:%s] "fmt,log_common_tmp,pthread_self(), __LINE__, __func__, __FILE__, ##arg); \
-            lgmsg->str.append(log_common_buf); \
-            ObjId  id; \
-            id._thread_index = thread->get_thread_index(); \
-            base_net_thread::put_obj_msg(id, log_msg); \
+            stringstream tmp_ss; \
+            tmp_ss <<"[NOTICE]:"<< "["<<log_common_tmp<<"]:" << "[" <<pthread_self()<< "]:" <<"["<< \
+                __LINE__<< ":"<<__func__<<":" << __FILE__<<"]\t"<<fmt; \
+            thread->log_write(LOGNOTICE, tmp_ss.str().c_str(), ##arg);\
         }\
     } while (0)
 
 
 #define LOG_TRACE(fmt, arg...) \
     do { \
-        log_thread * thread = base_singleton<log_thread>::get_instance(); \
+        log_process * thread = base_singleton<log_process>::get_instance(); \
         if (!thread) { \
             break; \
         } \
@@ -104,24 +85,19 @@
             break; \
         } \
         {\
-            log_msg * lgmsg =  new log_msg(); \
             char log_common_tmp[SIZE_LEN_64]; \
             get_date_str(log_common_tmp, sizeof(log_common_tmp), LOG_DATE_FORMAT); \
-            lgmsg->type = LOGTRACE; \
-            lgmsg->tid = pthread_self(); \
-            char log_common_buf[SIZE_LEN_16384]; \
-            snprintf(log_common_buf, sizeof(log_common_buf), "[TRACE]"":[%s]:[%lu]:[%d:%s:%s] "fmt,log_common_tmp,pthread_self(), __LINE__, __func__, __FILE__, ##arg); \
-            lgmsg->str.append(log_common_buf); \
-            ObjId  id; \
-            id._thread_index = thread->get_thread_index(); \
-            base_net_thread::put_obj_msg(id, log_msg); \
+            stringstream tmp_ss; \
+            tmp_ss <<"[TRACE]:"<< "["<<log_common_tmp<<"]:" << "[" <<pthread_self()<< "]:" <<"["<< \
+                __LINE__<< ":"<<__func__<<":" << __FILE__<<"]\t"<<fmt; \
+            thread->log_write(LOGTRACE, tmp_ss.str().c_str(), ##arg);\
         }\
     } while (0)
 
 
 #define LOG_DEBUG(fmt, arg...) \
     do { \
-        log_thread * thread = base_singleton<log_thread>::get_instance(); \
+        log_process * thread = base_singleton<log_process>::get_instance(); \
         if (!thread) { \
             break; \
         } \
@@ -129,17 +105,12 @@
             break; \
         } \
         {\
-            log_msg * lgmsg =  new log_msg(); \
             char log_common_tmp[SIZE_LEN_64]; \
             get_date_str(log_common_tmp, sizeof(log_common_tmp), LOG_DATE_FORMAT); \
-            lgmsg->type = LOGDEBUG; \
-            lgmsg->tid = pthread_self(); \
-            char log_common_buf[SIZE_LEN_16384]; \
-            snprintf(log_common_buf, sizeof(log_common_buf), "[DEBUG]"":[%s]:[%lu]:[%d:%s:%s] "fmt,log_common_tmp,pthread_self(), __LINE__, __func__, __FILE__, ##arg); \
-            lgmsg->str.append(log_common_buf); \
-            ObjId  id; \
-            id._thread_index = thread->get_thread_index(); \
-            base_net_thread::put_obj_msg(id, log_msg); \
+            stringstream tmp_ss; \
+            tmp_ss <<"[DEBUG]:"<< "["<<log_common_tmp<<"]:" << "[" <<pthread_self()<< "]:" <<"["<< \
+                __LINE__<< ":"<<__func__<<":" << __FILE__<<"]\t"<<fmt; \
+            thread->log_write(LOGDEBUG, tmp_ss.str().c_str(), ##arg);\
         }\
     } while (0)
 

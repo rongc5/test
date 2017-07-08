@@ -37,7 +37,7 @@ const ObjId & base_net_container::gen_id_str()
     return _id_str;
 }
 
-base_net_thread * base_net_thread::get_net_thread()
+base_net_thread * base_net_container::get_net_thread()
 {
     return _net_thread;
 }

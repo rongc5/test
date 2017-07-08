@@ -3,9 +3,9 @@
 
 #include "common_def.h"
 #include "thread_helper.h"
+#include "base_data_process.h"
 
 class base_connect;
-class base_data_process;
 class channel_data_process:public base_data_process
 {
     public:

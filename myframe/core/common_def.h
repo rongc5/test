@@ -11,7 +11,6 @@ enum RECV_MSG_STATUS
 };
 
 enum LogType {
-    LOGOFF,
     LOGFATAL,
     LOGWARNING,
     LOGNOTICE,
@@ -76,15 +75,6 @@ class normal_obj_msg //内部传递的消息
         virtual ~normal_obj_msg(){
         }
 };
-
-struct log_msg : public normal_msg {
-    LogType type; 
-    string str;
-    pthread_t tid;
-
-    log_msg():type(LOGOFF), tid(0){}
-};
-
 
 
 #endif
