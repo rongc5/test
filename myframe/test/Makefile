@@ -1,20 +1,16 @@
 HOME_DIR=../
 INC_DIR=${HOME_DIR}core
-IDL_DIR=$(HOME_DIR)idl
 LIB_DIR=../lib
 
-INCLUDE = -I./${INC_DIR}/ -I./${IDL_DIR}/
+INCLUDE = -I./${INC_DIR}/ 
 
-LIB = -L$(LIB_DIR) -lmyframe -lprotobuf -lpthread
+LIB = -L$(LIB_DIR) -lmyframe -lpthread
 
 CPPFLAGS = -g -msse3 -Wall $(INCLUDE) -DDEBUG=1
 CC  = g++ $(CPPFLAGS)
 
 
-OBJ	= $(IDL_DIR)/myframe.pb.o \
-	./test_server.o     \
-	./test_data_process.o     \
-	./test_net_thread.o     \
+OBJ	= ./test_log.o     \
 
 
 AR=ar
@@ -22,7 +18,7 @@ AR=ar
 server=test_server
 client=test_client
 
-all	: $(server) $(client)
+all	: $(server)
 	
 
 Ctags	: 

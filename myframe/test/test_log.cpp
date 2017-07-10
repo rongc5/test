@@ -1,14 +1,13 @@
 #include <stdio.h>
-#include "../src/log_helper.h"
-#include "../src/base_singleton.h"
-#include "../src/base_def.h"
+#include "../core/log_helper.h"
 
-using namespace MZFRAME;
 
 int main(int argc, char *argv[])
 {
-    base_singleton<log_mgr>::set_instance(new log_mgr());
-    base_singleton<log_mgr>::get_instance()->init(LOGDEBUG,"test",0, 1);
+     log_conf conf;
+     conf.deal_mode = 3;
+
+     LOG_INIT(conf);
 
     LOG_DEBUG("hello world");
     LOG_NOTICE("hello world");
@@ -16,7 +15,7 @@ int main(int argc, char *argv[])
     LOG_WARNING("hello world %d", 1);
     LOG_WARNING("hello world");
 
-    LOG_WARNING("socketpair fail errstr[%s]", strerror(errno));
+    LOG_WARNING("socketpair fail errstr[%s]", "hello world test");
 
     return 0;
 }
