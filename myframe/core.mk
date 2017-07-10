@@ -24,6 +24,8 @@ OBJ	= ${SRC_DIR}/base_net_container.o                        \
     ${SRC_DIR}/common_obj_container.o                        \
     ${SRC_DIR}/channel_data_process.o                        \
     ${SRC_DIR}/common_util.o                        \
+    ${SRC_DIR}/base_timer_process.o                        \
+    ${SRC_DIR}/base_timer.o                        \
 
 OBJ_INCLUDE=
 

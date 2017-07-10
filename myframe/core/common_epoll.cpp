@@ -41,9 +41,15 @@ void common_epoll::mod_from_epoll(base_net_obj *p_obj)
         THROW_COMMON_EXCEPT("mod from epoll fail "<< strerror(errno));
 }
 
-int common_epoll::epoll_wait(map<ObjId, base_net_obj*> &expect_list)
+int common_epoll::epoll_wait(map<ObjId, base_net_obj*> &expect_list, uint32_t num)
 {
-    int  nfds = ::epoll_wait(_epoll_fd, _epoll_events, _epoll_size,  _epoll_wait_time);
+    int wait_time = _epoll_wait_time;
+    if (num > 0)
+    {
+        wait_time = 0;
+    }
+
+    int  nfds = ::epoll_wait(_epoll_fd, _epoll_events, _epoll_size, wait_time);
     if (nfds == -1)
     {
         LOG_DEBUG("epoll_wait fail [%s]\n", strerror(errno));          

@@ -3,6 +3,7 @@
 #include "base_net_container.h"
 #include "common_obj_container.h"
 #include "base_net_thread.h"
+#include "base_timer.h"
 
 
 common_obj_container::common_obj_container(base_net_thread * thread):base_net_container(thread)
@@ -64,36 +65,8 @@ void common_obj_container::put_msg(ObjId & id, normal_msg * p_msg)
 void common_obj_container::obj_process()
 {   
     map<ObjId, base_net_obj*> exp_list;
-    for (map<ObjId, base_net_obj*>::iterator tmp_itr = _obj_net_map.begin();tmp_itr != _obj_net_map.end(); )
-    {
-        int32_t ret = 0;
-        try
-        {
-            //ret = tmp_itr->second->real_net_process();            
-        }
-        catch(CMyCommonException &e)
-        {
-            exp_list.insert(make_pair(tmp_itr->first,tmp_itr->second));	
-        }
-        catch(std::exception &e)
-        {
-            exp_list.insert(make_pair(tmp_itr->first,tmp_itr->second));	
-        }
 
-        if (ret == -1) //空的对象删除之
-        {
-            map<ObjId, base_net_obj*>::iterator aa_itr = tmp_itr;
-            ++tmp_itr;
-            _obj_net_map.erase(aa_itr);
-        }
-        else
-        {
-            ++tmp_itr;
-        }
-    }
-
-
-    _p_epoll->epoll_wait(exp_list);
+    _p_epoll->epoll_wait(exp_list, _obj_net_map.size());
     if (exp_list.size() != 0)
     {
         for (map<ObjId, base_net_obj*>::iterator itr = exp_list.begin(); itr != exp_list.end(); ++itr)
@@ -102,7 +75,8 @@ void common_obj_container::obj_process()
             itr->second->destroy();
         }
     }       
-}
 
+    _timer->check_timer();
+}
 
 

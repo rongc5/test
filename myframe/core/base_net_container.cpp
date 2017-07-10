@@ -1,18 +1,23 @@
 #include "common_epoll.h"
 #include "base_net_container.h"
 #include "base_net_thread.h"
-
+#include "base_timer.h"
 
 
 base_net_container::base_net_container(base_net_thread * thread)
 {
     _net_thread = thread;
     _p_epoll = NULL;
+    _timer = NULL;
 }
 base_net_container::~base_net_container()
 {
     if (_p_epoll != NULL)
         delete _p_epoll;
+
+    if (_timer) {
+        delete _timer;
+    }
 }
 
 
@@ -21,10 +26,17 @@ common_epoll * base_net_container::get_epoll()
     return _p_epoll;
 }
 
+base_timer * base_net_container::get_timer()
+{
+    return _timer;
+}
+
 void base_net_container::init(const uint32_t epoll_size)
 {
     _p_epoll = new common_epoll();
     _p_epoll->init(epoll_size);
+
+    _timer = new base_timer();
 }
 
 const ObjId & base_net_container::gen_id_str()

@@ -5,7 +5,6 @@
 #include "common_epoll.h"
 #include "base_net_container.h"
 
-
 class base_net_thread;
 class common_obj_container:public base_net_container
 {
@@ -23,6 +22,7 @@ class common_obj_container:public base_net_container
         virtual void put_msg(ObjId & id, normal_msg * p_msg);
 
         virtual void obj_process();
+
 
     protected:
         map<ObjId, base_net_obj*> _obj_net_map;
