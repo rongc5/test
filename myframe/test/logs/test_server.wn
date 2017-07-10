@@ -1,6 +1,0 @@
-[WARNING]:[2017-07-10 17:30:06]:[3078101216]:[15:main:test_log.cpp]	hello world 1
-[WARNING]:[2017-07-10 17:30:06]:[3078101216]:[16:main:test_log.cpp]	hello world
-[WARNING]:[2017-07-10 17:30:06]:[3078101216]:[18:main:test_log.cpp]	socketpair fail errstr[No such file or directory]
-[WARNING]:[2017-07-10 17:31:11]:[3078408416]:[15:main:test_log.cpp]	hello world 1
-[WARNING]:[2017-07-10 17:31:11]:[3078408416]:[16:main:test_log.cpp]	hello world
-[WARNING]:[2017-07-10 17:31:11]:[3078408416]:[18:main:test_log.cpp]	socketpair fail errstr[hello world test]
