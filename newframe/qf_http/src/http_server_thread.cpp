@@ -130,11 +130,11 @@ void http_server_thread::do_sendmsg(struct evhttp_request *req, const char * que
         }
         if (strstr(tt_vec[0].c_str(), "cmd")) {
             cmd = tt_vec[1];
-        } else if (strstr(tt_vec[0].c_str(), "visitor_id")) {
+        } else if (strstr(tt_vec[0].c_str(), "vid")) {
             msg->visitor_id = tt_vec[1];
         } else if (strstr(tt_vec[0].c_str(), "msg")) {
             msg->msg = tt_vec[1];
-        } else if (strstr(tt_vec[0].c_str(), "to_id")) {
+        } else if (strstr(tt_vec[0].c_str(), "to_sid")) {
             msg->to_id = tt_vec[1];
         }
     }
@@ -283,7 +283,7 @@ void http_server_thread::do_call_back(struct evhttp_request *req, void *arg)
     char t_buf[SIZE_LEN_4096];
     int ret = 0;
 
-    if (evhttp_request_get_command(req) != EVHTTP_REQ_GET) {
+    if (evhttp_request_get_command(req) != EVHTTP_REQ_GET || evhttp_request_get_command(req) != EVHTTP_REQ_POST) {
         evhttp_send_error(req, HTTP_BADMETHOD, 0);
         goto done;
     }

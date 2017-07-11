@@ -14,12 +14,12 @@ int main(int argc, char *argv[])
     LOG_INIT(conf); 
 
     qf_msg_mgr<sale_msg *> * to_visitor = new qf_msg_mgr<sale_msg *>();
-    to_visitor->init(100);
+    to_visitor->init(100000);
     base_singleton<qf_msg_mgr<sale_msg* > >::set_instance(to_visitor);
 
 
     qf_msg_mgr<user_msg *> * to_sale = new qf_msg_mgr<user_msg *>();
-    to_sale->init(100);
+    to_sale->init(100000);
     base_singleton<qf_msg_mgr<user_msg *> >::set_instance(to_sale);
 
     int nfd = http_server_thread::bind_port(8888);

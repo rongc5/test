@@ -57,6 +57,8 @@ const uint64_t CONNECT_TIME_OUT = 180 * 1000;
 const int MAX_RECV_SIZE = 1024*20;
 const int MAX_SEND_NUM = 5;
 
+const uint32_t MAX_HTTP_HEAD_LEN = 100*1024;
+
 
 #define MAX_BUF_SIZE 1024 * 10 * 10
 
