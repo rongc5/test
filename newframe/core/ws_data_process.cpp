@@ -128,6 +128,7 @@ bool ws_data_process::check_head_finish()
     if (pos != string::npos)
     {
         _recv_header.erase(pos + 4);
+        LOG_DEBUG("_recv_header: %s\n", _recv_header.c_str());
         parse_header();                     
         ret = true;
     }

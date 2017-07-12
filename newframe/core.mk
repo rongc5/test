@@ -26,7 +26,7 @@ OBJ	= ${SRC_DIR}/base_connect.o                     \
     ${SRC_DIR}/event_ws_msg.o                       \
     ${SRC_DIR}/common_def.o                        \
     ${SRC_DIR}/mybase64.o                        \
-    ${SRC_DIR}/log_thread.o                        \
+    ${SRC_DIR}/log_process.o                        \
     ${SRC_DIR}/listen_thread.o                        \
     ${SRC_DIR}/thread_helper.o                       \
 

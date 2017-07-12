@@ -126,7 +126,7 @@ void qfws_res_data_process::do_msg(qf_req_msg & ws_msg)
 
 void qfws_res_data_process::msg_recv_finish()
 {
-   LOG_DEBUG("recv: %s", _recent_msg.c_str());
+   LOG_DEBUG("recv str: %s", _recent_msg.c_str());
 
     qf_req_msg  ws_msg;
     bool is_parse = qf_req_msg::parse_from_json(ws_msg, (char *)(_recent_msg.c_str()));

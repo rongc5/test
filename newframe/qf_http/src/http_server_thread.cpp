@@ -110,11 +110,16 @@ void http_server_thread::do_request_cb(struct evhttp_request *req, void *arg)
 }
 
 //网页 发消息
-void http_server_thread::do_sendmsg(struct evhttp_request *req, const char * query)
+void http_server_thread::do_sendmsg(struct evhttp_request *req)
 {
-    if (!query) {
-        return;
-    }
+    string query;
+    struct evbuffer* buf = evhttp_request_get_input_buffer(req);
+    size_t len = evbuffer_get_length(buf);
+    unsigned char * str = evbuffer_pullup(req->input_buffer, len);
+
+    query.append(str, len);
+    evbuffer_drain(buf, len);
+
 
     vector<string> tmp_vec;
     SplitString(query, "&", tmp_vec);
@@ -188,11 +193,15 @@ void http_server_thread::do_sendmsg(struct evhttp_request *req, const char * que
     }
 }
 
-void http_server_thread::do_sendVisitor(struct evhttp_request *req, const char * query)
+void http_server_thread::do_sendVisitor(struct evhttp_request *req)
 {
-    if (!query) {
-        return;
-    }
+    string query;
+    struct evbuffer* buf = evhttp_request_get_input_buffer(req);
+    size_t len = evbuffer_get_length(buf);
+    unsigned char * str = evbuffer_pullup(req->input_buffer, len);
+
+    query.append(str, len);
+    evbuffer_drain(buf, len);
 
     //char *decoded_query = evhttp_uridecode(query, 0, NULL);
 
@@ -283,7 +292,7 @@ void http_server_thread::do_call_back(struct evhttp_request *req, void *arg)
     char t_buf[SIZE_LEN_4096];
     int ret = 0;
 
-    if (evhttp_request_get_command(req) != EVHTTP_REQ_GET || evhttp_request_get_command(req) != EVHTTP_REQ_POST) {
+    if (evhttp_request_get_command(req) != EVHTTP_REQ_POST) {
         evhttp_send_error(req, HTTP_BADMETHOD, 0);
         goto done;
     }
@@ -308,9 +317,9 @@ void http_server_thread::do_call_back(struct evhttp_request *req, void *arg)
     LOG_DEBUG("query:%s decoded_path:%s\n", evhttp_uri_get_query(decoded), decoded_path);
 
     if (strstr(decoded_path, SEND_MSG_URL)) {
-        do_sendmsg(req, evhttp_uri_get_query(decoded));
+        do_sendmsg(req);
     }else if (strstr(decoded_path, SEND_VISITOR_URL)) {
-        do_sendVisitor(req, evhttp_uri_get_query(decoded));
+        do_sendVisitor(req);
     } else {
         evhttp_send_error(req, HTTP_BADREQUEST, "bad request");
     }
