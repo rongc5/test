@@ -280,7 +280,7 @@ int UrlEncode(const string &sSrc, string &sDest)
 }
 
 
-int UrlDecode(const string &sSrc, string &sDest)
+int CToolKit::UrlDecode(const string &sSrc, string &sDest)
 {
 	int nLen = sSrc.length();
 	for (int i = 0; i < nLen; )

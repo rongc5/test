@@ -25,6 +25,8 @@ int SplitString(const string &srcStr,const string &delim, vector<string>& strLis
 
 int SplitString(const char *srcStr, string &delim, vector<string>& strList);
 
+int SplitfirstDelimString(const string &srcStr,const string &delim, vector<string>& strList);
+
 void StringTrim(string &sSrc);
 
 int GetCaseStringByLabel(const string &sSrc,const string &sLabel1,const string &sLabel2, string &sOut, unsigned int nBeginPos, int nIfRetPos);
@@ -41,6 +43,9 @@ uint64_t GetMilliSecond();
 
 time_t get_date_str(char dest[], size_t dest_len, const char * format);
 
+int UrlEncode(const string &sSrc, string &sDest);
+
+int UrlDecode(const string &sSrc, string &sDest);
 
 
 #define ASSERT_DO(valid, PRINT) \

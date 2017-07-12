@@ -4,7 +4,7 @@
 
 int main(void)
 {
-    char buf[120] = "ababcabcdabcdeabcdefgh"; 
+    char buf[120] = "hellozmqianfengzmworld"; 
     char *src = buf;
     char *dst = "ab";
     char *ptmp = NULL;
@@ -13,7 +13,7 @@ int main(void)
     int i = 0;
 
     printf("%s\n", src);
-    ptmp = strtok(src, "bde");
+    ptmp = strtok(src, "zm");
 
     printf("ptmp:%s\n", ptmp);
 

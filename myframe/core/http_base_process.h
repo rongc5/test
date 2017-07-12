@@ -6,6 +6,7 @@
 #include "base_singleton.h"
 #include "base_data_process.h"
 #include "common_exception.h"
+#include "common_def.h"
 
 enum HTTP_STATUS
 {
@@ -13,81 +14,6 @@ enum HTTP_STATUS
     RECV_BODY = 1,
     SEND_HEAD = 2,
     SEND_BODY = 3
-};
-
-
-struct http_head_para
-{
-    http_head_para()
-    {
-        _content_length = (uint64_t)-1;
-		_method = "GET";
-    }
-
-    void init()
-    {
-        _method.clear();
-        _url_para_list.clear();
-        _cookie_list.clear();
-        _content_length = (uint64_t)-1;
-        _url_path.clear();
-        _host.clear();
-        _other_list.clear();
-		
-		_content_type.clear();
-		_connect_type.clear();
-    }
-    string _method;
-    string _url_path;
-    string _host;
-    map<string, string> _url_para_list;
-    map<string, string> _cookie_list;
-    uint64_t _content_length;
-    map<string, string> _other_list;	
-	string _content_type;
-	string _connect_type;
-};
-
-struct set_cookie_item
-{
-	string _value;
-	string _path;
-	string _domain;
-	uint64_t _expire;
-	set_cookie_item()
-	{
-		_expire = 0;
-	}
-};
-
-struct http_res_head_para
-{
-    http_res_head_para()
-    {
-        _response_code = 200;
-        _content_length = (uint64_t)-1;
-    }
-
-    void init()
-    {
-        _response_code = 200;
-        _cookie_list.clear();
-        _content_length = (uint64_t)-1;
-        _other_res_list.clear();
-		_chunked.clear();
-    }
-
-    int _response_code;
-    map<string, set_cookie_item> _cookie_list;
-    uint64_t _content_length;
-    map<string, string> _other_res_list;
-	string _chunked;
-};
-
-class http_connect_info:public connect_info
-{
-	public:
-		http_head_para _head_para;
 };
 
 class response_code
@@ -181,15 +107,7 @@ class http_base_process: public base_data_process
             return ret;
         }
 
-        void handle_timeout(const uint32_t timer_type)
-        {
-        }
-
-		void set_para()
-		{
-		}
-
-        string* get_send_buf()
+        virtual string* get_send_buf()
         {
             if (_http_status < SEND_HEAD)
             {
@@ -229,10 +147,10 @@ class http_base_process: public base_data_process
             return ret_str;
         }
 
-        void process_s(normal_obj_msg *p_msg)
+        virtual bool process_recv_msg(ObjId & id, normal_msg * p_msg)
         {
-            _data_process->process_s(p_msg);
-        }	
+            _data_process->process_recv_msg(id, p_msg);
+        }
         
         virtual void reset()
         {						
@@ -245,10 +163,6 @@ class http_base_process: public base_data_process
             _recv_head.clear();
         }
 
-		void routine()
-		{			
-		}
-		
 		
 		/****************************以上是五个口子，以下是供底层调用********************************************/
         string &get_head()
@@ -277,37 +191,36 @@ class http_base_process: public base_data_process
 			{
 				_send_status = 1;
 
-				_p_connect->add_event(EPOLLOUT);
+				//_p_connect->add_event(EPOLLOUT);
+                _p_connect->notice_send();
 			}
 		}
-
-		virtual void peer_close() = 0;
 
 		DATA_PROCESS *get_process()
 		{
 			return _data_process;
 		}
+
 		static void parse_url_para(const string &url_para, map<string, string> &url_para_map)
 		{
             vector<string> vec_str;
-            CToolKit::SplitString(url_para, "&", vec_str);
+            SplitString(url_para, "&", vec_str);
             size_t num = vec_str.size();
             for (size_t ii = 0; ii < num; ii ++)
             {
                 vector<string> tmp_vec;
-                CToolKit::SplitString(vec_str[ii], "=", tmp_vec);
+                SplitString(vec_str[ii], "=", tmp_vec);
                 if (tmp_vec.size() == 2)
                 {
-                    CToolKit::StringTrim(tmp_vec[0]);
-                    CToolKit::StringTrim(tmp_vec[1]);
+                    StringTrim(tmp_vec[0]);
+                    StringTrim(tmp_vec[1]);
 					string tmp_para;
-					CToolKit::UrlDecode(tmp_vec[1], tmp_para);
+					UrlDecode(tmp_vec[1], tmp_para);
                     url_para_map.insert(make_pair(tmp_vec[0], tmp_para));
                 }
             }				
 		}
 
-              void on_connect_comming(){}
     protected:		
 		virtual size_t process_recv_body(char *buf, size_t len, int &result) = 0;	
 		
@@ -315,6 +228,7 @@ class http_base_process: public base_data_process
         virtual void gen_send_head() = 0;
         virtual void recv_finish() = 0;
         virtual void send_finish() = 0;
+        virtual void parse_first_line(const string & line);
 
         void check_head_finish(string &left_str)
         {
@@ -409,11 +323,6 @@ class http_res_process:public http_base_process<DATA_PROCESS>
 					
 			http_base_process<DATA_PROCESS>::_data_process = DATA_PROCESS::gen_process(this);
         }
-
-		void peer_close() //被动端对端关了， 啥也不用干
-		{			
-		}
-
 		
 		string gen_res_head()
 		{
@@ -496,19 +405,42 @@ class http_res_process:public http_base_process<DATA_PROCESS>
 			return ret;
 		}
 		
+        
+        virtual void parse_first_line(const string & line)
+        {
+            vector<string>& tmp_vec;
+            SplitString(line, " ", tmp_vec);
+            if (tmp_vec.size() != 3) {
+                THROW_COMMON_EXCEPT("http first line");
+            }
+            _req_head_para._method = tmp_vec[0];
+            size_t pos = tmp_vec[1].find("?");
+            if (pos == string::npos)
+            {
+                _req_head_para._url_path = s_path;
+            }
+            else
+            {
+                _req_head_para._url_path = s_path.substr(0, pos);       
+                string para_str = s_path.substr(pos + 1);
+                http_base_process<DATA_PROCESS>::parse_url_para(para_str, _req_head_para._url_para_list);
+            }
+        }
+
         void parse_header()
         {
             vector<string>& strList;
             SplitString(head_str, "\r\n", strList);
             for (int i = 0; i < strList.size(); i++) {
                 if (!i) {
-                    vector<string>& str1List;
-                    SplitString(strList[i], " ", str1List);
-                    if ()
-
+                    parse_first_line(strList[i]);
+                }else {
+                    vector<string>& tmp_vec;
+                    SplitfirstDelimString(strList[i], ":", tmp_vec);
                 }
             }
         }
+
 
         void parse_header()
         {
@@ -807,14 +739,6 @@ class http_req_process:public http_base_process<DATA_PROCESS>
 			http_base_process<DATA_PROCESS>::_data_process = DATA_PROCESS::gen_process(this);
         }
 
-		connect_info* gen_connect_info()
-		{
-			http_connect_info *p_info = new http_connect_info();
-			p_info->_head_para = _req_head_para;
-			_p_http_connect_info = p_info;
-			return p_info;
-		}
-
 		http_connect_info *get_connect_info()
 		{
 			return _p_http_connect_info;
@@ -1046,7 +970,7 @@ class http_req_process:public http_base_process<DATA_PROCESS>
 
 
     protected:
-        http_head_para _req_head_para;
+        http_req_head_para _req_head_para;
         http_res_head_para _res_head_para;
 
 		int64_t _cur_chunked_len;
