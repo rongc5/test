@@ -13,7 +13,7 @@ struct user_msg
     string to_id;
     string visitor_id;
     string msg;
-    string stime;
+    time_t stime;
 };
 
 struct sale_msg
@@ -21,7 +21,7 @@ struct sale_msg
     string to_id;
     string sales_id;
     string msg;
-    string stime;
+    time_t stime;
 };
 
 template<class T>

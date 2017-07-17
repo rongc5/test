@@ -26,6 +26,17 @@ class http_server_thread:public base_net_thread
 
         void do_sendmsg(struct evhttp_request *req);
 
+        void do_sendmsg_begin(struct evhttp_request *req, user_msg * msg);
+
+        void do_sendmsg_close(struct evhttp_request *req, user_msg * msg);
+
+        void do_sendmsg_chat(struct evhttp_request *req, user_msg * msg);
+
+        void do_sendmsg_invite(struct evhttp_request *req, user_msg * msg);
+
+        void do_sendmsg_change(struct evhttp_request *req, user_msg * msg);
+
+
         void do_sendVisitor(struct evhttp_request *req);
 
     protected:

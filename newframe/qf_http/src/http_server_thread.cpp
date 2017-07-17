@@ -109,6 +109,115 @@ void http_server_thread::do_request_cb(struct evhttp_request *req, void *arg)
     }
 }
 
+void http_server_thread::do_sendmsg_begin(struct evhttp_request *req, user_msg * msg)
+{
+    REC_OBJ<user_msg> rc(msg);
+
+    StringBuffer s;
+    Writer<StringBuffer> writer(s);
+
+    writer.StartObject();
+    writer.Key("cmd");
+    writer.String("begin_data");
+
+    writer.Key("sid");
+    writer.String("234234");
+
+    writer.Key("stime");
+    writer.Uint(time(NULL));
+
+    writer.EndObject();
+
+    struct evbuffer *evb = evbuffer_new();
+    evbuffer_add_printf(evb, "%s", s.GetString());
+    evhttp_send_reply(req, HTTP_OK, "OK", evb);
+    evbuffer_free(evb);
+}
+
+void http_server_thread::do_sendmsg_close(struct evhttp_request *req, user_msg * msg)
+{
+    REC_OBJ<user_msg> rc(msg);
+
+    StringBuffer s;
+    Writer<StringBuffer> writer(s);
+
+    writer.StartObject();
+    writer.Key("cmd");
+    writer.String("close_data");
+
+    writer.Key("stime");
+    writer.Uint(time(NULL));
+
+    writer.EndObject();
+
+    struct evbuffer *evb = evbuffer_new();
+    evbuffer_add_printf(evb, "%s", s.GetString());
+    evhttp_send_reply(req, HTTP_OK, "OK", evb);
+    evbuffer_free(evb);
+}
+
+void http_server_thread::do_sendmsg_chat(struct evhttp_request *req, user_msg * msg)
+{
+    qf_msg_mgr<user_msg *> * to_sale = base_singleton<qf_msg_mgr<user_msg *> >::get_instance();        
+    to_sale->push(atoi(msg->to_id.c_str()), msg);
+
+    msg->stime = time(NULL);
+
+    qf_msg_mgr<sale_msg *> * to_visitor = base_singleton<qf_msg_mgr<sale_msg *> >::get_instance();
+
+    list<sale_msg *> to_visitor_list;
+    to_visitor->pop(atoi(msg->visitor_id.c_str()), to_visitor_list);
+
+    StringBuffer s;
+    Writer<StringBuffer> writer(s);
+
+
+    writer.StartObject();
+    writer.Key("cmd");
+    writer.String("chat_data");
+    writer.Key("data");
+
+    writer.StartArray();
+    list<sale_msg *>::iterator it;
+    for (it = to_visitor_list.begin() ; it != to_visitor_list.end(); it++) {
+        writer.StartObject();
+
+        writer.Key("sid");
+        writer.String((*it)->sales_id.c_str());
+
+        writer.Key("vid");
+        writer.String((*it)->to_id.c_str());
+
+        writer.Key("msg");
+        writer.String((*it)->msg.c_str());
+
+        writer.Key("stime");
+        writer.Uint((*it)->stime);
+
+        writer.EndObject();
+
+        delete (*it);
+    }
+    writer.EndArray();
+    writer.EndObject();
+
+    struct evbuffer *evb = evbuffer_new();
+    evbuffer_add_printf(evb, "%s", s.GetString());
+    evhttp_send_reply(req, HTTP_OK, "OK", evb);
+    evbuffer_free(evb);
+}
+
+void http_server_thread::do_sendmsg_invite(struct evhttp_request *req, user_msg * msg)
+{
+
+}
+
+void http_server_thread::do_sendmsg_change(struct evhttp_request *req, user_msg * msg)
+{
+
+}
+
+
 //网页 发消息
 void http_server_thread::do_sendmsg(struct evhttp_request *req)
 {
@@ -119,7 +228,6 @@ void http_server_thread::do_sendmsg(struct evhttp_request *req)
 
     query.append(str, len);
     evbuffer_drain(buf, len);
-
 
     vector<string> tmp_vec;
     SplitString(query, "&", tmp_vec);
@@ -133,6 +241,7 @@ void http_server_thread::do_sendmsg(struct evhttp_request *req)
         if (tt_vec.size() != 2) {
             break;
         }
+
         if (strstr(tt_vec[0].c_str(), "cmd")) {
             cmd = tt_vec[1];
         } else if (strstr(tt_vec[0].c_str(), "vid")) {
@@ -144,53 +253,18 @@ void http_server_thread::do_sendmsg(struct evhttp_request *req)
         }
     }
 
-    int flag = 0;
-    if (strstr(cmd.c_str(), "chat_msg")) {
-        qf_msg_mgr<user_msg *> * to_sale = base_singleton<qf_msg_mgr<user_msg *> >::get_instance();        
-        to_sale->push(atoi(msg->to_id.c_str()), msg);
-        flag = 1;
-
-        char t_buf[SIZE_LEN_256];
-        snprintf(t_buf, sizeof(t_buf), "%ld", time(NULL));
-        msg->stime.append(t_buf);
+    if (strstr(cmd.c_str(), "chat")) {
+        do_sendmsg_chat(req, msg);
+    } else if (strstr(cmd.c_str(), "begin")) {
+        do_sendmsg_begin(req, msg);
+    } else if (strstr(cmd.c_str(), "close")) {
+        do_sendmsg_close(req, msg);
+    } else if (strstr(cmd.c_str(), "invite")) {
+        do_sendmsg_invite(req, msg);
+    } else if (strstr(cmd.c_str(), "change")) {
+        do_sendmsg_change(req, msg);
     }
 
-    qf_msg_mgr<sale_msg *> * to_visitor = base_singleton<qf_msg_mgr<sale_msg *> >::get_instance();
-
-    list<sale_msg *> to_visitor_list;
-    to_visitor->pop(atoi(msg->visitor_id.c_str()), to_visitor_list);
-
-    StringBuffer s;
-    Writer<StringBuffer> writer(s);
-
-    writer.StartArray();
-    list<sale_msg *>::iterator it;
-    for (it = to_visitor_list.begin() ; it != to_visitor_list.end(); it++) {
-        writer.StartObject();
-
-        writer.Key("sales_id");
-        writer.String((*it)->sales_id.c_str());
-
-        writer.Key("msg");
-        writer.String((*it)->msg.c_str());
-
-        writer.Key("stime");
-        writer.String((*it)->stime.c_str());
-
-        writer.EndObject();
-
-        delete (*it);
-    }
-    writer.EndArray();
-
-    struct evbuffer *evb = evbuffer_new();
-    evbuffer_add_printf(evb, "%s", s.GetString());
-    evhttp_send_reply(req, HTTP_OK, "OK", evb);
-    evbuffer_free(evb);
-
-    if (!flag) {
-        delete msg;
-    }
 }
 
 void http_server_thread::do_sendVisitor(struct evhttp_request *req)
