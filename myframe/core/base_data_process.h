@@ -7,7 +7,7 @@ class base_connect;
 class base_data_process
 {
     public:
-        base_data_process(base_connect *p);
+        base_data_process();
 
         virtual ~base_data_process();
 
@@ -28,6 +28,10 @@ class base_data_process
         virtual void handle_timeout(const uint32_t timer_type);
 
         void put_send_buf(string * str);
+
+        base_connect * get_base_connect();
+
+        void set_base_connect(base_connect * p);
 
     protected:
         void clear_send_list();

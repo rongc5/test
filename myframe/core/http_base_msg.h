@@ -7,6 +7,7 @@
 #include "base_data_process.h"
 #include "common_exception.h"
 #include "common_def.h"
+#include "log_helper.h"
 
 enum HTTP_STATUS
 {
@@ -53,14 +54,81 @@ class response_code
         map<int, string> _response_list;
 };
 
-template<class DATA_PROCESS>
+struct http_req_head_para
+{
+    http_req_head_para()
+    {
+        _content_length = (uint64_t)-1;
+        _method = "GET";
+    }
+
+    void init()
+    {
+        _method.clear();
+        _url_para_list.clear();
+        _cookie_list.clear();
+        _content_length = (uint64_t)-1;
+        _url_path.clear();
+        _host.clear();
+        _headers.clear();
+
+        _content_type.clear();
+        _connect_type.clear();
+    }
+    string _method;
+    string _url_path;
+    string _host;
+    map<string, string> _url_para_list;
+    map<string, string> _cookie_list;
+    uint64_t _content_length;
+    map<string, string> _headers;    
+    string _content_type;
+    string _connect_type;
+};
+
+struct set_cookie_item
+{
+    string _value;
+    string _path;
+    string _domain;
+    uint64_t _expire;
+    set_cookie_item()
+    {
+        _expire = 0;
+    }
+};
+
+struct http_res_head_para
+{
+    http_res_head_para()
+    {
+        _response_code = 200;
+        _content_length = (uint64_t)-1;
+    }
+
+    void init()
+    {
+        _response_code = 200;
+        _cookie_list.clear();
+        _content_length = (uint64_t)-1;
+        _headers.clear();
+        _chunked.clear();
+    }
+
+    int _response_code;
+    map<string, set_cookie_item> _cookie_list;
+    uint64_t _content_length;
+    map<string, string> _headers;
+    string _chunked;
+}; 
+
+
 class http_base_process: public base_data_process
 {
     public:
-        http_base_process(base_connect *p):base_data_process(p)
+        http_base_process()
         {
             _send_head_len = 0;
-            //_data_process = NULL;
 			_send_status = 0;			
         }
 
@@ -68,6 +136,15 @@ class http_base_process: public base_data_process
         {
             if (_data_process != NULL)
                 delete _data_process;
+        }
+
+        void set_process(base_data_process * data_process)
+        {
+            if (_data_process != NULL && _data_process != data_process) {
+                delete _data_process;
+                _data_process = NULL;
+            }
+            _data_process = data_process;
         }
 
         virtual size_t process_recv_buf(char *buf, const size_t len)
@@ -111,7 +188,7 @@ class http_base_process: public base_data_process
         {
             if (_http_status < SEND_HEAD)
             {
-                WRITE_WARN("http send status not correct (%d)", _http_status);
+                LOG_WARNING("http send status not correct (%d)", _http_status);
 				_send_status = 0;
 				return NULL;
             }
@@ -168,11 +245,6 @@ class http_base_process: public base_data_process
         string &get_head()
         {
             return _recv_head;
-        }
-
-        NET_OBJ *get_connect()
-        {
-            return _p_connect;
         }
 
 		void change_http_status(HTTP_STATUS status, bool if_change_send = true)
@@ -278,16 +350,14 @@ struct boundary_para
 };
 
 const uint32_t BOUNDARY_EXTRA_LEN = 8;
-template<class DATA_PROCESS>
-class http_res_process:public http_base_process<DATA_PROCESS>
+class http_res_process:public http_base_process
 {
     public:
-        http_res_process(NET_OBJ *p):http_base_process<DATA_PROCESS>(p)
+        http_res_process()
 	    {
-	        http_base_process<DATA_PROCESS>::change_http_status(RECV_HEAD);
+	        http_base_process::change_http_status(RECV_HEAD);
 			_recv_body_length = 0;
 			_recv_boundary_status = BOUNDARY_RECV_HEAD;
-			http_base_process<DATA_PROCESS>::_data_process = DATA_PROCESS::gen_process(this);
 	    }
 
         ~http_res_process()
@@ -311,17 +381,14 @@ class http_res_process:public http_base_process<DATA_PROCESS>
 
 		void reset()
         {
-            http_base_process<DATA_PROCESS>::reset();        
-            http_base_process<DATA_PROCESS>::change_http_status(RECV_HEAD);
+            http_base_process::reset();        
+            http_base_process::change_http_status(RECV_HEAD);
             _req_head_para.init();
             _res_head_para.init();
 			
 			_boundary_para.init();
 			_recv_body_length = 0;
 			_recv_boundary_status = BOUNDARY_RECV_HEAD;
-
-					
-			http_base_process<DATA_PROCESS>::_data_process = DATA_PROCESS::gen_process(this);
         }
 		
 		string gen_res_head()
@@ -680,20 +747,18 @@ enum HTTP_RECV_TYPE
 	OTHER_TYPE = 2
 };
 
-template<class DATA_PROCESS>
-class http_req_process:public http_base_process<DATA_PROCESS>
+class http_req_process:public http_base_process
 {
     public:
-        http_req_process(NET_OBJ *p_connect):http_base_process<DATA_PROCESS>(p_connect)
+        http_req_process()
 	    {
 	        //http_base_process<DATA_PROCESS>::_http_status = SEND_HEAD;
-	         http_base_process<DATA_PROCESS>::change_http_status(SEND_HEAD);
+	         http_base_process::change_http_status(SEND_HEAD);
 			_cur_chunked_len = -1;
 			_cur_chunked_rec_len = -1;
 			_recv_body_length = 0;
 			_p_send_arg = NULL;
 			_recv_type = CONTENT_LENGTH_TYPE;
-			http_base_process<DATA_PROCESS>::_data_process = DATA_PROCESS::gen_process(this);
 	    }
 
         ~http_req_process()
@@ -705,7 +770,7 @@ class http_req_process:public http_base_process<DATA_PROCESS>
 		
 		string* get_send_buf()
 		{			
-			return http_base_process<DATA_PROCESS>::get_send_buf();
+			return http_base_process::get_send_buf();
 		}		
 
         http_head_para & get_req_head_para()
@@ -725,8 +790,8 @@ class http_req_process:public http_base_process<DATA_PROCESS>
 
 	  	void reset()
         {
-            http_base_process<DATA_PROCESS>::reset();
-			http_base_process<DATA_PROCESS>::change_http_status(SEND_HEAD, false);
+            http_base_process::reset();
+			http_base_process::change_http_status(SEND_HEAD, false);
             _req_head_para.init();
             _res_head_para.init();
 
@@ -734,9 +799,6 @@ class http_req_process:public http_base_process<DATA_PROCESS>
 			_cur_chunked_rec_len = -1;
 			_recv_body_length = 0;
 			_chunked_body.clear();
-
-			
-			http_base_process<DATA_PROCESS>::_data_process = DATA_PROCESS::gen_process(this);
         }
 
 		http_connect_info *get_connect_info()
