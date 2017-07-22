@@ -3,7 +3,7 @@
 #include "log_helper.h"
 
 
-base_data_process::base_data_process()
+base_data_process::base_data_process(base_connect *p)
 {
     _p_connect = p;
     LOG_DEBUG("%p", this);
@@ -86,10 +86,5 @@ void base_data_process::put_send_buf(string * str)
 base_connect * base_data_process::get_base_connect()
 {
     return _p_connect;
-}
-
-void base_data_process::set_base_connect(base_connect * p)
-{
-    _p_connect = p;
 }
 
