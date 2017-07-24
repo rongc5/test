@@ -20,6 +20,12 @@ void common_obj_container::push_net_obj(base_net_obj *p_obj)
     p_obj->set_id(gen_id_str());
     _obj_net_map.insert(make_pair(p_obj->get_id(), p_obj));
 }
+
+void common_obj_container::remove_net_obj(base_net_obj *p_obj)
+{
+    _obj_net_map.erase(p_obj->get_id());
+}
+
 base_net_obj* common_obj_container::find(const ObjId * obj_id)
 {
     base_net_obj *p_obj = NULL;
@@ -64,9 +70,40 @@ void common_obj_container::put_msg(ObjId & id, normal_msg * p_msg)
 
 void common_obj_container::obj_process()
 {   
+    uint32_t tmp_num = 0;
     map<ObjId, base_net_obj*> exp_list;
 
-    _p_epoll->epoll_wait(exp_list, _obj_net_map.size());
+    for (map<ObjId, base_net_obj*>::iterator tmp_itr = _obj_net_map.begin();tmp_itr != _obj_net_map.end(); )
+    {
+        int32_t ret = 0;
+        try
+        {
+            ret = tmp_itr->second->real_net_process();            
+        }
+        catch(CMyCommonException &e)
+        {
+            exp_list.insert(make_pair(tmp_itr->first,tmp_itr->second));        
+        }
+        catch(std::exception &e)
+        {
+            exp_list.insert(make_pair(tmp_itr->first,tmp_itr->second));        
+        }
+
+        if (ret == -1) //空的对象删除之
+        {
+            map<ObjId, base_net_obj*>::iterator aa_itr = tmp_itr;
+            ++tmp_itr;
+            _obj_net_map.erase(aa_itr);
+        }
+        else
+        {
+            tmp_num++;
+            ++tmp_itr;
+        }
+    }
+
+
+    _p_epoll->epoll_wait(exp_list, tmp_num);
     if (exp_list.size() != 0)
     {
         for (map<ObjId, base_net_obj*>::iterator itr = exp_list.begin(); itr != exp_list.end(); ++itr)

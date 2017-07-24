@@ -44,6 +44,17 @@ void base_connect::event_process(int event)
     }		
 }	
 
+int base_connect::real_net_process()
+{
+    int32_t ret = 0;
+     
+    real_recv();
+     
+    real_send();
+
+    return ret;
+}
+
 int base_connect::RECV(void *buf, size_t len)
 {
     int ret = recv(_fd, buf, len, MSG_DONTWAIT);
@@ -100,7 +111,7 @@ void base_connect::real_recv()
     {
         LOG_DEBUG("process_recv_buf _recv_buf_len[%d] fd[%d]\n", _recv_buf.length(), _fd);
         size_t p_ret = _process->process_recv_buf((char*)_recv_buf.c_str(), _recv_buf.length());
-        if (p_ret <= _recv_buf.length())//表名上层处理能力跟不上,停止接受数据
+        if (p_ret && p_ret <= _recv_buf.length())
         {
             _recv_buf.erase(0, p_ret); 
         }

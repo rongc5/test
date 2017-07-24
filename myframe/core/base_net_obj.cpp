@@ -51,6 +51,13 @@ void base_net_obj::set_net_container(base_net_container *p_net_container)
     }
 }
 
+void base_net_obj::remove_net_container()
+{
+    common_epoll * p_epoll = _p_net_container->get_epoll();
+    p_epoll->del_from_epoll(this);
+    _p_net_container->remove_net_obj(this);
+}
+
 base_net_container * base_net_obj::get_net_container()
 {
     return _p_net_container;

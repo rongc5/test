@@ -34,6 +34,11 @@ void listen_connect::event_process(int events)
     }
 }		
 
+int listen_connect::real_net_process()
+{
+    return 0;
+}
+
 void listen_connect::set_process(listen_data_process *p)
 {
     if (_process != NULL)

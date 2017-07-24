@@ -1,7 +1,7 @@
 #ifndef __LOG__PROCESS_H__
 #define __LOG__PROCESS_H__
 
-#include "common_def.h"
+#include "base_def.h"
 #include "log_helper.h"
 #include "thread_helper.h"
 

@@ -15,6 +15,8 @@ class common_obj_container:public base_net_container
 
         virtual void push_net_obj(base_net_obj *p_obj);
 
+        virtual void remove_net_obj(base_net_obj *p_obj);
+
         virtual base_net_obj* find(const ObjId * obj_id);
 
         virtual bool erase(ObjId *obj_id);

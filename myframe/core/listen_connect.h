@@ -14,6 +14,7 @@ class listen_connect:public base_net_obj
 		virtual ~listen_connect();
 
 		virtual void event_process(int events);
+        virtual int real_net_process();
 
         void set_process(listen_data_process *p);
 

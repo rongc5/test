@@ -10,6 +10,7 @@ base_net_container::base_net_container(base_net_thread * thread)
     _p_epoll = NULL;
     _timer = NULL;
 }
+
 base_net_container::~base_net_container()
 {
     if (_p_epoll != NULL)
@@ -44,8 +45,11 @@ const ObjId & base_net_container::gen_id_str()
     uint32_t obj_id = _id_str._id;
     uint32_t thread_index = _net_thread->get_thread_index();
     _id_str._thread_index = thread_index;
-    obj_id++;
-    _id_str._id = obj_id;
+    do {
+        obj_id++;
+        _id_str._id = obj_id;
+    } while (!find(&obj_id));
+
     return _id_str;
 }
 
