@@ -3,8 +3,8 @@
 #include "base_timer.h"
 #include "common_util.h"
 
-base_timer::base_timer()
-{		
+base_timer::base_timer():_timer_id(0)
+{
 }
 
 base_timer::~base_timer()
@@ -52,5 +52,22 @@ bool base_timer::is_empty()
     return _timer_list.begin() == _timer_list.end();
 }
 
+base_timer_process * base_timer::find(uint32_t timer_id)
+{
+    map<uint32_t, base_timer_process * >::iterator it;
+    it = _timer_id_process_map.find(timer_id);
+    if (it != _timer_id_process_map.end()) {
+        return it->second;
+    }
 
+    return NULL;
+}
 
+uint32_t base_timer::gen_timer_id()
+{
+   do {
+        _timer_id++;
+   } while (find(timer_id)); 
+
+   return _timer_id;
+}

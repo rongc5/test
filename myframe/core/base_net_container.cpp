@@ -48,7 +48,7 @@ const ObjId & base_net_container::gen_id_str()
     do {
         obj_id++;
         _id_str._id = obj_id;
-    } while (!find(&obj_id));
+    } while (find(&obj_id));
 
     return _id_str;
 }
