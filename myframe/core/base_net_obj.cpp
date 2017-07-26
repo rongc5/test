@@ -101,7 +101,7 @@ bool base_net_obj::process_recv_msg(ObjId & id, normal_msg * p_msg)
 
 void  base_net_obj::handle_timeout(const uint32_t timer_type)
 {
-
+    
 }
 
 int base_net_obj::destroy()

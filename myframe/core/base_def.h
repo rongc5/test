@@ -41,8 +41,6 @@
 
 using namespace std;
 
-//using namespace com::mingz::frame;
-
 
 #define DAFAULT_EPOLL_SIZE 1000
 #define DEFAULT_EPOLL_WAITE 20
@@ -131,7 +129,13 @@ const int URLESCAPE[] =
         1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1//240~255
 };
 
+#define TIMER_SCALE 20
+#define DELAY_CLOSE_TIMER_TYPE 1000
+#define WEB_SOCKET_HANDSHAKE_OK_TIMER_TYPE 1001
 
+
+
+#define WEB_SOCKET_HANDSHAKE_OK_TIMER_LENGTH  30*1000
 
 
 #endif

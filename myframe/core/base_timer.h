@@ -12,21 +12,18 @@ class base_timer
 
 		virtual ~base_timer();
 		
-		uint32_t add_timer(base_timer_process *process);
+		uint64_t add_timer(base_timer_process *process);
+
+        base_timer_process * remove_timer(uint64_t reach_time);
 
 		void check_timer();
 
-        base_timer_process * find(uint32_t timer_id);
+        base_timer_process * find(uint64_t reach_time);
 
         bool is_empty();
 
-    protected:
-        uint32_t gen_timer_id();
-
 	protected:
-        uint32_t _timer_id;
-		map<uint64_t, vector<base_timer_process *> > _timer_list;
-		map<uint32_t, base_timer_process * > _timer_id_process_map;
+		map<uint64_t, base_timer_process *> _timer_list;
 };
 #endif
 

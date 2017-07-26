@@ -2,14 +2,15 @@
 #include "base_connect.h"
 #include "log_helper.h"
 #include "common_exception.h"
+#include "common_timer_process.h"
+#include "common_util.h"
 
 
-web_socket_res_process::web_socket_res_process(base_connect *p)
+web_socket_res_process::web_socket_res_process(base_connect *p):web_socket_process(p)
 {
     _wb_version = 0;		
     _if_send_mask = false;
     _if_upgrade = false;
-    _p_data_process = PROCESS_GENERATOR::gen_ws_data_process(this);		
 }
 
 web_socket_res_process::~web_socket_res_process()
@@ -19,8 +20,11 @@ web_socket_res_process::~web_socket_res_process()
 
 void web_socket_res_process::on_connect_comming()
 {
-    _p_connect->set_timer(WEB_SOCKET_HANDSHAKE_OK_TIMER_TYPE, 
-            WEB_SOCKET_HANDSHAKE_OK_TIMER_LENGTH);
+    base_timer * timer = get_base_connect()->get_net_container()->get_timer();
+    common_timer_process * timer_process = new 
+        common_timer_process(get_base_connect()->get_net_container(), get_base_connect()->get_id());
+    timer_process->init(WEB_SOCKET_HANDSHAKE_OK_TIMER_TYPE, WEB_SOCKET_HANDSHAKE_OK_TIMER_LENGTH);
+    timer->add_timer(timer_process);
 }
 
 void web_socket_res_process::handle_timeout(const uint32_t timer_type)
@@ -33,7 +37,7 @@ void web_socket_res_process::handle_timeout(const uint32_t timer_type)
         }
         else
         {
-            WRITE_TRACE("web socket handshake timer arrive, status ok");
+            LOG_DEBUG("web socket handshake timer arrive, status ok");
         }
     }
     else
@@ -55,7 +59,12 @@ string* web_socket_res_process::SEND_WB_HEAD_FINISH_PROCESS()
     else
     {
         _wb_status  = WB_HANDSHAKE_FAIL;
-        _p_connect->delay_close(3000);//延迟3秒钟关闭
+
+        base_timer * timer = get_base_connect()->get_net_container()->get_timer();
+        common_timer_process * timer_process = new 
+            common_timer_process(get_base_connect()->get_net_container(), get_base_connect()->get_id());
+        timer_process->init(DELAY_CLOSE_TIMER_TYPE, 3000);
+        timer->add_timer(timer_process);//延迟3秒钟关闭
     }
     return p_str;
 }
@@ -109,11 +118,11 @@ string web_socket_res_process::gen_send_http_head()
 
 void  web_socket_res_process::parse_header()
 {    		
-    CToolKit::GetCaseStringByLabel(_recv_header, "Sec-WebSocket-Key:", "\r\n", _s_websocket_key);
-    CToolKit::StringTrim(_s_websocket_key);
-    CToolKit::GetCaseStringByLabel(_recv_header, "Sec-WebSocket-Protocol:", "\r\n", _s_ws_protocol);
+    GetCaseStringByLabel(_recv_header, "Sec-WebSocket-Key:", "\r\n", _s_websocket_key);
+    StringTrim(_s_websocket_key);
+    GetCaseStringByLabel(_recv_header, "Sec-WebSocket-Protocol:", "\r\n", _s_ws_protocol);
     string tmp;
-    CToolKit::GetCaseStringByLabel(_recv_header, "Sec-WebSocket-Version:", "\r\n", tmp);
+    GetCaseStringByLabel(_recv_header, "Sec-WebSocket-Version:", "\r\n", tmp);
     _wb_version = strtoull(tmp.c_str(), 0, 10);
     if (_wb_version != 13)
     {
@@ -128,7 +137,7 @@ bool web_socket_res_process::check_head_finish()
     {			    
         _wb_status = WB_HEAD_FINISH;
         //设置可以发送数据
-        _p_connect->add_event(EPOLLOUT);
+        _p_connect->notice_send();
     }
     return ret;
 }

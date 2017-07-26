@@ -177,7 +177,16 @@ bool base_connect::process_recv_msg(ObjId & id, normal_msg * p_msg)
 
 void  base_connect::handle_timeout(const uint32_t timer_type)
 {
-    _process->handle_timeout(timer_type);
+    switch ()
+    {
+        case DELAY_CLOSE_TIMER_TYPE:
+            {
+                THROW_COMMON_EXCEPT("the connect obj delay close, delete it");
+            }
+            break;
+        default:
+            _process->handle_timeout(timer_type);
+    }
 }
 
 base_data_process * base_connect::get_process()

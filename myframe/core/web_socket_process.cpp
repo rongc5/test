@@ -1,6 +1,7 @@
 #include "web_socket_data_process.h"
 #include "web_socket_process.h"
 #include "base_connect.h"
+#include "log_helper.h"
 
 
 web_socket_process::web_socket_process(base_connect *p):base_data_process(p)
@@ -91,7 +92,7 @@ string* web_socket_process::get_send_buf()
 
 void web_socket_process::set_para()
 {	
-    _p_connect->set_timeout_len(_p_data_process->get_timeout_len());
+    //_p_connect->set_timeout_len(_p_data_process->get_timeout_len());
 }
 
 
@@ -105,7 +106,7 @@ void web_socket_process::send_ping(const char op_code, const string &ping_data)
 {
     if (ping_data.length() < 125) //大于125字节的ping包不让发出去了
     {
-        WRITE_TRACE("send  ping to server");
+        LOG_DEBUG("send  ping to server");
         string *p_str = new string;
         *p_str = web_socket_frame_header::gen_ping_header(op_code, ping_data);
         _p_tmp_str.push_back(p_str);
@@ -138,7 +139,7 @@ web_socket_frame_header &web_socket_process::get_recent_send_frame_header()
 void web_socket_process::notice_send()
 {
     if (_wb_status == WB_HANDSHAKE_OK)
-        _p_connect->add_event(EPOLLOUT);
+        _p_connect->notice_send();
 }
 
 const string &web_socket_process::get_recv_header()
@@ -184,7 +185,7 @@ string *web_socket_process::SEND_WB_HANDSHAKE_OK_PROCESS()
     {
         p_str = _p_tmp_str.front();
         _p_tmp_str.pop_front();				
-        WRITE_TRACE("real send ping to peer");
+        LOG_DEBUG("real send ping to peer");
     }
     else
     {
@@ -227,7 +228,7 @@ string *web_socket_process::SEND_WB_HANDSHAKE_OK_PROCESS()
 
 size_t web_socket_data_process::RECV_WB_HANDSHAKE_OK_PROCESS(const char *buf, const size_t len)
 {
-    WRITE_TRACE("RECV_WB_HANDSHAKE_OK_PROCESS %d", len);
+    LOG_DEBUG("RECV_WB_HANDSHAKE_OK_PROCESS %d", len);
     char *left_buf = (char*)buf;
     uint32_t left_len = len;
     while(left_len > 0)

@@ -113,7 +113,7 @@ void common_obj_container::obj_process()
         }
     }       
 
-    _timer->check_timer();
+    get_timer()->check_timer();
 }
 
 

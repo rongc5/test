@@ -2,11 +2,12 @@
 #include "web_socket_msg.h"
 #include "web_socket_req_process.h"
 #include "common_util.h"
+#include "log_helper.h"
+#include "common_exception.h"
 
 
 web_socket_req_process(base_connect *p):web_socket_process(p)
 {			
-    _p_data_process = PROCESS_GENERATOR::gen_ws_data_process(this);
 }
 
 ws_req_head_para &web_socket_req_process::get_req_para()
@@ -16,7 +17,7 @@ ws_req_head_para &web_socket_req_process::get_req_para()
 
 void web_socket_process_req::ping_process(const int8_t op_code)//客户端不用处理服务器的ping
 {
-    WRITE_TRACE("recv server ping res");
+    LOG_DEBUG("recv server ping res");
 }
 
 string* web_socket_req_process::SEND_WB_HEAD_FINISH_PROCESS()
@@ -73,14 +74,14 @@ string web_socket_req_process::gen_send_http_head()
 void  web_socket_req_process::parse_header()
 {
     string ret_code;
-    CToolKit::GetCaseStringByLabel(_recv_header, "HTTP/1.1 ", " ", ret_code);
+    GetCaseStringByLabel(_recv_header, "HTTP/1.1 ", " ", ret_code);
     if (ret_code != "101")
     {
         THROW_COMMON_EXCEPT("ret_code "<< ret_code << " is not right ");
     }
 
-    CToolKit::GetCaseStringByLabel(_recv_header, "Sec-WebSocket-Accept:", "\r\n", _s_accept_key);			
-    CToolKit::StringTrim(_s_accept_key);
+    GetCaseStringByLabel(_recv_header, "Sec-WebSocket-Accept:", "\r\n", _s_accept_key);			
+    StringTrim(_s_accept_key);
     //校验下
     string tmp = get_web_accept_key(_req_para._s_websocket_key);			
     if (tmp != _s_accept_key)
