@@ -70,6 +70,25 @@ struct http_req_head_para
         _content_type.clear();
         _connect_type.clear();
     }
+
+    const string * get_header(const char * str)
+    {
+        string * ptr = NULL;
+        if (!str) {
+            return ptr;
+        }
+
+        map<string, string>::iterator it;
+        for (it = _headers.begin(); it != _headers.end(); it++) {
+            if (strcasestr(it->first.c_str(), str)) {
+                ptr = &(it->second);
+                break;
+            }
+        }
+
+        return ptr;
+    }
+
     string _method;
     string _url_path;
     string _host;

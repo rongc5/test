@@ -1,5 +1,6 @@
 #include "http_base_process.h"
 #include "base_connect.h"
+#include "common_exception.h"
 
 http_base_process::http_base_process(base_connect *p):base_data_process(p)
 {
@@ -59,6 +60,17 @@ size_t http_base_process::process_recv_buf(char *buf, const size_t len)
     return ret;
 }
 
+void add_header(const char *key, const char *value)
+{
+    if (!key || !value) {
+        return ;
+    }
+
+    _send_head.append(key);
+    _send_head.append(": ");
+    _send_head.append(value);
+    _send_head.append("\r\n");
+}
 
 string* http_base_process::get_send_buf()
 {
@@ -72,10 +84,6 @@ string* http_base_process::get_send_buf()
     string *ret_str = NULL;
     if (_http_status == SEND_HEAD)
     {
-        if (_send_head.empty())
-        {
-            gen_send_head();
-        }
 
         if (_send_head.empty())
             return NULL;
@@ -139,7 +147,6 @@ void http_base_process::change_to_cansend()
     {
         _send_status = 1;
 
-        //_p_connect->add_event(EPOLLOUT);
         _p_connect->notice_send();
     }
 }

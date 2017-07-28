@@ -28,6 +28,10 @@ class http_res_process:public http_base_process
 		
 		string gen_res_head();
 
+        void add_header(const char *key, const char *value);
+
+        void add_send_reply(int http_code);
+
     protected:
 		virtual size_t process_recv_body(char *buf, size_t len, int &result);
         
@@ -57,6 +61,7 @@ class http_res_process:public http_base_process
 		
         http_head_para _req_head_para;
         http_res_head_para _res_head_para;
+        map<string, string> _send_headers;
 };
 
 

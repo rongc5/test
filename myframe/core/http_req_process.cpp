@@ -130,7 +130,7 @@ size_t http_req_process::process_recv_body(char *buf, size_t len, int &result)
     else if (_res_head_para._content_length != (uint64_t)-1)
     {
         _recv_type = CONTENT_LENGTH_TYPE;
-        ret = http_req_process<DATA_PROCESS>::_data_process->process_recv_body(buf, len);
+        ret = _data_process->process_recv_body(buf, len);
         _recv_body_length += ret;
         if (_recv_body_length == _res_head_para._content_length)
         {
@@ -141,7 +141,7 @@ size_t http_req_process::process_recv_body(char *buf, size_t len, int &result)
     {
         _recv_type = OTHER_TYPE;
         //THROW_COMMON_EXCEPT(-1, "recv body fail " << http_base_process<DATA_PROCESS>::_recv_head.c_str());
-        ret = http_req_process<DATA_PROCESS>::_data_process->process_recv_body(buf, len);
+        ret = _data_process->process_recv_body(buf, len);
         _recv_body_length += ret;
     }
     return ret;
@@ -161,7 +161,7 @@ size_t http_req_process::get_chuncked(char *buf, size_t len, int &result)
         if (_cur_chunked_len == -1)
         {   
             string sTmp;
-            int nRet= CToolKit::GetStringByLabel(_chunked_body, "", "\r\n", sTmp, 0, 1);            
+            int nRet= GetStringByLabel(_chunked_body, "", "\r\n", sTmp, 0, 1);            
             if (nRet != -1)
             {
                 _cur_chunked_len=strtoul(sTmp.c_str(), 0, 16);
@@ -178,7 +178,7 @@ size_t http_req_process::get_chuncked(char *buf, size_t len, int &result)
                 }
                 else
                 {
-                    p_len = http_req_process<DATA_PROCESS>::_data_process->process_recv_body((char*)_chunked_body.substr(_cur_chunked_rec_len, _cur_chunked_len).c_str(), _cur_chunked_len);
+                    p_len = _data_process->process_recv_body((char*)_chunked_body.substr(_cur_chunked_rec_len, _cur_chunked_len).c_str(), _cur_chunked_len);
                     p_len = _cur_chunked_len - p_len;
 
                     _chunked_body = _chunked_body.substr(_cur_chunked_rec_len+2+_cur_chunked_len);
@@ -200,7 +200,7 @@ size_t http_req_process::get_chuncked(char *buf, size_t len, int &result)
             }
             else
             {
-                p_len = http_req_process<DATA_PROCESS>::_data_process->process_recv_body((char*)_chunked_body.substr(_cur_chunked_rec_len, _cur_chunked_len).c_str(), _cur_chunked_len); 
+                p_len = _data_process->process_recv_body((char*)_chunked_body.substr(_cur_chunked_rec_len, _cur_chunked_len).c_str(), _cur_chunked_len); 
                 p_len = _cur_chunked_len - p_len;
                 _chunked_body = _chunked_body.substr(_cur_chunked_len+_cur_chunked_rec_len+2);
                 _cur_chunked_len = -1;
@@ -215,21 +215,21 @@ size_t http_req_process::get_chuncked(char *buf, size_t len, int &result)
 
 void http_req_head_para::parse_header()
 {
-    string recv_str = http_base_process<DATA_PROCESS>::_recv_head;		
+    string recv_str = ::_recv_head;
     string s_tmp;
     //parse response code
-    int ret = CToolKit::GetCaseStringByLabel(recv_str, " ", " ", s_tmp);
+    int ret = GetCaseStringByLabel(recv_str, " ", " ", s_tmp);
     if (ret == 0)
     {
         _res_head_para._response_code = strtoull(s_tmp.c_str(), 0, 10);
     }
     else
     {
-        THROW_COMMON_EXCEPT(-1, "get http response code fail ret");
+        THROW_COMMON_EXCEPT("get http response code fail ret");
     }
 
     //parse content_length
-    ret = CToolKit::GetCaseStringByLabel(recv_str, "Content-length:", "\r\n", s_tmp);
+    ret = GetCaseStringByLabel(recv_str, "Content-length:", "\r\n", s_tmp);
     if (ret == 0)
     {
         _res_head_para._content_length = strtoull(s_tmp.c_str(), 0, 10);
@@ -259,28 +259,28 @@ void http_req_head_para::parse_header()
        */
 
     //parse chunked
-    ret = CToolKit::GetCaseStringByLabel(recv_str, "Transfer-Encoding:", "\r\n", _res_head_para._chunked);
+    ret = GetCaseStringByLabel(recv_str, "Transfer-Encoding:", "\r\n", _res_head_para._chunked);
     if (ret == 0)
     {
-        CToolKit::StringTrim(_res_head_para._chunked);	
+        StringTrim(_res_head_para._chunked);	
     }
 }
 
 void http_req_process::gen_send_head()
 {             	
-    http_base_process<DATA_PROCESS>::_send_head = http_base_process<DATA_PROCESS>::_data_process->gen_send_head();
+    _send_head = _data_process->gen_send_head();
 }      
 
 void http_req_process::recv_finish()
 {        	
-    http_base_process<DATA_PROCESS>::_data_process->recv_finish();            
+    _data_process->recv_finish();            
     reset();
 }
 
 void http_req_process::send_finish()
 {
     //http_base_process<DATA_PROCESS>::_http_status = RECV_HEAD;
-    http_base_process<DATA_PROCESS>::change_http_status(RECV_HEAD);
+    change_http_status(RECV_HEAD);
 }
 
 
