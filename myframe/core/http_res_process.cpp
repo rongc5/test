@@ -192,14 +192,14 @@ void http_res_process::parse_header()
     if (_req_head_para._method == "POST" || _req_head_para._method == "PUT")
     {
         //parse content_length
-        tmp_str = get_header("content_length");
+        tmp_str = get_header("Content-Length");
         if (tmp_str)
         {
             _req_head_para._content_length = strtoull(tmp_str->c_str(), 0, 10);
         }
 
         //parse content_type
-        tmp_str = get_header("content_type");
+        tmp_str = get_header("Content-Type");
         ret = GetCaseStringByLabel(head_str, "Content-Type:", "\r\n", s_tmp);
         if (tmp_str)
         {

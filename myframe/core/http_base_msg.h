@@ -4,6 +4,43 @@
 
 #include "base_def.h"
 
+
+enum evhttp_cmd_type {
+    EVHTTP_REQ_GET     = 1 << 0,
+    EVHTTP_REQ_POST    = 1 << 1,
+    EVHTTP_REQ_HEAD    = 1 << 2,
+    EVHTTP_REQ_PUT     = 1 << 3,
+    EVHTTP_REQ_DELETE  = 1 << 4,
+    EVHTTP_REQ_OPTIONS = 1 << 5,
+    EVHTTP_REQ_TRACE   = 1 << 6,
+    EVHTTP_REQ_CONNECT = 1 << 7,
+    EVHTTP_REQ_PATCH   = 1 << 8
+};
+
+enum evhttp_request_kind { EVHTTP_REQUEST, EVHTTP_RESPONSE };
+
+struct evhttp_request{
+    enum evhttp_request_kind kind;
+    enum evhttp_cmd_type type;
+
+    
+    string _host;
+    int port;
+
+    char major;         /* HTTP Major number */
+    char minor;         /* HTTP Minor number */
+
+    int response_code;      /* HTTP Response code */
+    map<string, string> _send_headers;
+    map<string, string> _recv_headers;
+
+};
+
+
+
+
+
+
 enum HTTP_STATUS
 {
     RECV_HEAD = 0,
