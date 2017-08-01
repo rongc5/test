@@ -136,6 +136,7 @@ const int URLESCAPE[] =
 
 
 #define WEB_SOCKET_HANDSHAKE_OK_TIMER_LENGTH  30*1000
+#define CRLF "\r\n\r\n"
 
 
 #endif

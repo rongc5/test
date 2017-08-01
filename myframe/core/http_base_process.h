@@ -32,15 +32,11 @@ class http_base_process: public base_data_process
         string &get_head();
 
 		void change_http_status(HTTP_STATUS status, bool if_change_send = true);
-		
-		void change_to_cansend();
 
 		http_base_data_process *get_process()
 		{
 			return _data_process;
 		}
-
-        void add_header(const char *key, const char *value);
 
 		static void parse_url_para(const string &url_para, map<string, string> &url_para_map);
 
@@ -54,13 +50,10 @@ class http_base_process: public base_data_process
 
         void check_head_finish(string &left_str);
 
-        map<string, string> _send_headers;
         HTTP_STATUS _http_status;
         string _recv_head;
         string _send_head;
-        size_t _send_head_len;
         http_base_data_process *_data_process;
-		int _send_status;	
 };
 
 

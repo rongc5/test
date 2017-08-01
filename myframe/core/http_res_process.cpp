@@ -135,6 +135,7 @@ void http_res_process::parse_first_line(const string & line)
         THROW_COMMON_EXCEPT("http first line");
     }
     _req_head_para._method = tmp_vec[0];
+    _req_head_para._http_version = tmp_vec[2];
     size_t pos = tmp_vec[1].find("?");
     if (pos == string::npos)
     {
@@ -163,7 +164,7 @@ void http_res_process::parse_header()
             if (tmp_vec.size() != 2) {
                 THROW_COMMON_EXCEPT("http headers parms error");
             } else {
-                _headers[StringTrim(tmp_vec[0])] = StringTrim(tmp_vec[1]);
+                _req_head_para._headers.insert(make_pair(tmp_vec[0], tmp_vec[1]));
             }
         }
     }
@@ -226,7 +227,6 @@ void http_res_process::parse_header()
         _req_head_para._host = *tmp_str;
     }            
 }
-
 
 void http_res_process::recv_finish()
 {

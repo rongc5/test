@@ -4,8 +4,6 @@
 
 http_base_process::http_base_process(base_connect *p):base_data_process(p)
 {
-    _send_head_len = 0;
-    _send_status = 0;			
 }
 
 http_base_process::~http_base_process()
@@ -34,11 +32,15 @@ size_t http_base_process::process_recv_buf(char *buf, const size_t len)
     size_t ret = 0;
     bool staus_change = false;
     string left_str;
-    if (_http_status == RECV_HEAD)
+    if (_http_status == RECV_HEAD && strstr(buf, CRLF))
     {
         _recv_head.append(buf, len);
         check_head_finish(left_str);
         staus_change = true;				
+    }
+
+    if (this->_msg_op != MSG_CONNECT) {
+        return ret;
     }
 
     if (_http_status == RECV_BODY) //避免数据不被拷贝多次
@@ -60,30 +62,21 @@ size_t http_base_process::process_recv_buf(char *buf, const size_t len)
     return ret;
 }
 
-void add_header(const char *key, const char *value)
-{
-    if (!key || !value) {
-        return ;
-    }
-
-    _send_head.append(key);
-    _send_head.append(": ");
-    _send_head.append(value);
-    _send_head.append("\r\n");
-}
-
 string* http_base_process::get_send_buf()
 {
     if (_http_status < SEND_HEAD)
     {
         LOG_WARNING("http send status not correct (%d)", _http_status);
-        _send_status = 0;
         return NULL;
     }
 
     string *ret_str = NULL;
     if (_http_status == SEND_HEAD)
     {
+        if (_send_head.empty())
+        {
+            gen_send_head();
+        }
 
         if (_send_head.empty())
             return NULL;
@@ -101,10 +94,6 @@ string* http_base_process::get_send_buf()
             send_finish();
     }
 
-
-    if (ret_str == NULL)
-        _send_status = 0;
-
     return ret_str;
 }
 
@@ -115,12 +104,6 @@ bool http_base_process::process_recv_msg(ObjId & id, normal_msg * p_msg)
 
 void http_base_process::reset()
 {						
-    _send_head_len = 0;
-    if (_data_process != NULL)
-    {
-        delete _data_process;
-        _data_process = NULL;
-    }
     _recv_head.clear();
 }
 
@@ -136,17 +119,6 @@ void http_base_process::change_http_status(HTTP_STATUS status, bool if_change_se
     _http_status = status;
     if (status == SEND_HEAD && if_change_send)
     {
-        change_to_cansend();
-    }
-}
-
-
-void http_base_process::change_to_cansend()
-{
-    if (_send_status == 0)
-    {
-        _send_status = 1;
-
         _p_connect->notice_send();
     }
 }
@@ -178,7 +150,7 @@ void http_base_process::parse_url_para(const string &url_para, map<string, strin
 
 void http_base_process::check_head_finish(string &left_str)
 {
-    size_t pos =  _recv_head.find("\r\n\r\n");
+    size_t pos =  _recv_head.find(CRLF);
     if (pos != string::npos)
     {
         left_str = _recv_head.substr(pos + 4);

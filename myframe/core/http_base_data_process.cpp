@@ -1,9 +1,19 @@
 #include "http_base_data_process.h"
 #include "base_connect.h"
 #include "log_helper.h"
+#include "http_base_process.h"
 
 //result:0 正常返回  1: 结束获取发送包， 一般情况下上层自动会判断
 //return NULL 底层就删除写事件, 正常返回将要发送的包体
+//
+http_base_data_process::http_base_data_process(http_base_process * _p_process):
+    base_data_process(_p_process->get_base_connect())
+{
+    LOG_DEBUG("%p", this);
+    _base_process = _p_process;
+}
+
+
 string *http_base_data_process::get_send_body(int &result)
 {
     LOG_DEBUG("%p", this);

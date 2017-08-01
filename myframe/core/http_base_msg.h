@@ -19,26 +19,14 @@ enum evhttp_cmd_type {
 
 enum evhttp_request_kind { EVHTTP_REQUEST, EVHTTP_RESPONSE };
 
-struct evhttp_request{
+struct evhttp_request {
     enum evhttp_request_kind kind;
     enum evhttp_cmd_type type;
 
-    
-    string _host;
-    int port;
 
-    char major;         /* HTTP Major number */
-    char minor;         /* HTTP Minor number */
-
-    int response_code;      /* HTTP Response code */
     map<string, string> _send_headers;
     map<string, string> _recv_headers;
-
 };
-
-
-
-
 
 
 enum HTTP_STATUS
@@ -96,14 +84,17 @@ struct http_req_head_para
 
     void init()
     {
-        _method.clear();
-        _url_para_list.clear();
-        _cookie_list.clear();
-        _content_length = (uint64_t)-1;
-        _url_path.clear();
-        _host.clear();
-        _headers.clear();
 
+        _method.clear();
+        _host.clear();
+        _url_path.clear();
+        _http_version.clear();
+
+        _url_para_list.clear();
+        _headers.clear();
+        _cookie_list.clear();
+
+        _content_length = (uint64_t)-1;
         _content_type.clear();
         _connect_type.clear();
     }
@@ -127,12 +118,15 @@ struct http_req_head_para
     }
 
     string _method;
-    string _url_path;
     string _host;
+    string _url_path;
+    string _http_version;
+
     map<string, string> _url_para_list;
-    map<string, string> _cookie_list;
-    uint64_t _content_length;
     map<string, string> _headers;    
+    map<string, string> _cookie_list;
+
+    uint64_t _content_length;
     string _content_type;
     string _connect_type;
 };
