@@ -21,6 +21,11 @@ void http_base_process::set_process(base_data_process * data_process)
     _data_process = data_process;
 }
 
+virtual void http_base_process::reset()
+{
+
+}
+
 size_t http_base_process::process_recv_buf(char *buf, const size_t len)
 {	
     if (_http_status > RECV_BODY)
@@ -31,11 +36,11 @@ size_t http_base_process::process_recv_buf(char *buf, const size_t len)
 
     size_t ret = 0;
     bool staus_change = false;
-    string left_str;
-    if (_http_status == RECV_HEAD && strstr(buf, CRLF))
+    string left_str, recv_head;
+    if (_http_status == RECV_HEAD && strstr(buf, CRLF2))
     {
-        _recv_head.append(buf, len);
-        check_head_finish(left_str);
+        recv_head.append(buf, len);
+        check_head_finish(recv_head, left_str);
         staus_change = true;				
     }
 
@@ -73,16 +78,11 @@ string* http_base_process::get_send_buf()
     string *ret_str = NULL;
     if (_http_status == SEND_HEAD)
     {
-        if (_send_head.empty())
-        {
-            gen_send_head();
-        }
+        ret_str = _data_process->get_send_head();
 
-        if (_send_head.empty())
+        if (!ret_str)
             return NULL;
 
-        ret_str = new string();
-        ret_str->append(_send_head);				
         _http_status = SEND_BODY;
         return ret_str;
     }
@@ -102,17 +102,7 @@ bool http_base_process::process_recv_msg(ObjId & id, normal_msg * p_msg)
     _data_process->process_recv_msg(id, p_msg);
 }
 
-void http_base_process::reset()
-{						
-    _recv_head.clear();
-}
-
-
 /****************************以上是五个口子，以下是供底层调用********************************************/
-string &http_base_process::get_head()
-{
-    return _recv_head;
-}
 
 void http_base_process::change_http_status(HTTP_STATUS status, bool if_change_send = true)
 {
@@ -148,24 +138,24 @@ void http_base_process::parse_url_para(const string &url_para, map<string, strin
     }				
 }
 
-void http_base_process::check_head_finish(string &left_str)
+void http_base_process::check_head_finish(string & recv_head, string &left_str)
 {
-    size_t pos =  _recv_head.find(CRLF);
+    size_t pos =  recv_head.find(CRLF2);
     if (pos != string::npos)
     {
-        left_str = _recv_head.substr(pos + 4);
-        _recv_head.erase(pos + 4);				
+        left_str = recv_head.substr(pos + 4);
+        recv_head.erase(pos + 4);				
         //_http_status = RECV_BODY;
         change_http_status(RECV_BODY);
-        parse_header();
+        parse_header(recv_head);
 
         _data_process->header_recv_finish();
     }
     else
     {
-        if (_recv_head.length() > MAX_HTTP_HEAD_LEN) //http头不要超过10k
+        if (recv_head.length() > MAX_HTTP_HEAD_LEN) //http头不要超过10k
         {
-            THROW_COMMON_EXCEPT("http head too long (" << _recv_head.length() << ")")
+            THROW_COMMON_EXCEPT("http head too long (" << recv_head.length() << ")")
         }
     }			
 }

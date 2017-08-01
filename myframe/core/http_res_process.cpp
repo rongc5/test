@@ -154,7 +154,7 @@ void http_res_process::parse_header()
 {
     string &head_str = _recv_head;
     vector<string>& strList;
-    SplitString(head_str, "\r\n", strList);
+    SplitString(head_str, CRLF, strList);
     for (int i = 0; i < strList.size(); i++) {
         if (!i) {
             parse_first_line(strList[i]);
@@ -169,7 +169,7 @@ void http_res_process::parse_header()
         }
     }
 
-    string * cookie_str = get_header("Cookie");
+    string * cookie_str = _req_head_para.get_header("Cookie");
     if (cookie_str)
     {
         vector<string> cookie_vec;
@@ -193,14 +193,14 @@ void http_res_process::parse_header()
     if (_req_head_para._method == "POST" || _req_head_para._method == "PUT")
     {
         //parse content_length
-        tmp_str = get_header("Content-Length");
+        tmp_str = _req_head_para.get_header("Content-Length");
         if (tmp_str)
         {
             _req_head_para._content_length = strtoull(tmp_str->c_str(), 0, 10);
         }
 
         //parse content_type
-        tmp_str = get_header("Content-Type");
+        tmp_str = _req_head_para.get_header("Content-Type");
         ret = GetCaseStringByLabel(head_str, "Content-Type:", "\r\n", s_tmp);
         if (tmp_str)
         {
@@ -215,13 +215,13 @@ void http_res_process::parse_header()
 
     //parse connection		
 
-    tmp_str = get_header("connection");
+    tmp_str = _req_head_para.get_header("connection");
     if (tmp_str)
     {
         _req_head_para._connect_type = *tmp_str;
         StringTrim(_req_head_para._connect_type);
     }
-    tmp_str = get_header("Host");
+    tmp_str = _req_head_para.get_header("Host");
     if (tmp_str)
     {
         _req_head_para._host = *tmp_str;

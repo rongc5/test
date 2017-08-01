@@ -25,11 +25,8 @@ class http_base_process: public base_data_process
         virtual string* get_send_buf();
 
         virtual bool process_recv_msg(ObjId & id, normal_msg * p_msg);
-        
-        virtual void reset();
 		
 		/****************************以上是五个口子，以下是供底层调用********************************************/
-        string &get_head();
 
 		void change_http_status(HTTP_STATUS status, bool if_change_send = true);
 
@@ -40,19 +37,19 @@ class http_base_process: public base_data_process
 
 		static void parse_url_para(const string &url_para, map<string, string> &url_para_map);
 
+        virtual void reset();
+
     protected:		
 		virtual size_t process_recv_body(char *buf, size_t len, int &result) = 0;	
 		
-        virtual void parse_header() = 0;
+        virtual void parse_header(string & recv_head) = 0;
         virtual void recv_finish() = 0;
         virtual void send_finish() = 0;
         virtual void parse_first_line(const string & line) = 0;
 
-        void check_head_finish(string &left_str);
+        void check_head_finish(string & recv_head, string &left_str);
 
         HTTP_STATUS _http_status;
-        string _recv_head;
-        string _send_head;
         http_base_data_process *_data_process;
 };
 

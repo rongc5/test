@@ -34,7 +34,7 @@ void http_base_data_process::msg_recv_finish()
 
 
 //生成发送头
-string http_base_data_process::gen_send_head()
+string http_base_data_process::get_send_head()
 {
     LOG_DEBUG("%p", this);
 }
