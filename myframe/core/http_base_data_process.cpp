@@ -17,6 +17,8 @@ http_base_data_process::http_base_data_process(http_base_process * _p_process):
 string *http_base_data_process::get_send_body(int &result)
 {
     LOG_DEBUG("%p", this);
+    
+    return NULL;
 }
 
 //头部接收完处理
@@ -34,9 +36,11 @@ void http_base_data_process::msg_recv_finish()
 
 
 //生成发送头
-string http_base_data_process::get_send_head()
+string *http_base_data_process::get_send_head()
 {
     LOG_DEBUG("%p", this);
+    
+    return NULL;
 }
 
 
@@ -44,6 +48,10 @@ string http_base_data_process::get_send_head()
 size_t http_base_data_process::process_recv_body(const char *buf, size_t len, int& result)
 {
     LOG_DEBUG("%p", this);
+    
+    result = 1;
+    
+    return len;
 }
 
 

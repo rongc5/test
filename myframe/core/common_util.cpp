@@ -309,4 +309,44 @@ int UrlDecode(const string &sSrc, string &sDest)
 }
 
 
+string GetMonStr(int nMonth)
+{
+        string sMonth;
+        if (nMonth >=1 && nMonth <=12)
+        {
+                sMonth = string(MONTHARRAY[nMonth-1].sMonth);
+        }
+        return sMonth;
+}
+
+string GetWeekStr(int nWeek)
+{
+        string sWeek;
+        if (nWeek >=0 && nWeek <=6)
+        {
+                sWeek = string(WEEKARRAY[nWeek].sWeek);
+        }
+        return sWeek;
+}
+
+
+string SecToHttpTime(time_t tmpTime)
+{
+		struct timeval tm1;
+        struct timezone tz1;        
+        gettimeofday(&tm1, &tz1);
+        tmpTime = tmpTime + tz1.tz_minuteswest*60;
+        tm tmpTm;
+        localtime_r(&tmpTime, &tmpTm);
+        char sTime[128] = {0};
+        //sprintf(sTime, "%s, %d %s %d %02d:%02d:%02d GMT ", GetWeekStr(tmpTm.tm_wday).c_str(),  tmpTm.tm_mday, 
+        //        GetMonStr(tmpTm.tm_mon + 1).c_str(), 
+        //        tmpTm.tm_year+1900, tmpTm.tm_hour, tmpTm.tm_min,   tmpTm.tm_sec);
+		snprintf(sTime, sizeof(sTime),"%s, %d %s %d %02d:%02d:%02d GMT ", GetWeekStr(tmpTm.tm_wday).c_str(),  tmpTm.tm_mday, 
+			GetMonStr(tmpTm.tm_mon + 1).c_str(), 
+			tmpTm.tm_year+1900, tmpTm.tm_hour, tmpTm.tm_min,   tmpTm.tm_sec);
+        return string(sTime);
+}
+
+
 

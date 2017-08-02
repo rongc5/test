@@ -26,7 +26,7 @@ class http_base_data_process: public base_data_process
 
 
         //生成发送头
-        virtual string get_send_head();      	
+        virtual string * get_send_head();      	
 
 
         //处理接收的数据

@@ -177,7 +177,7 @@ bool base_connect::process_recv_msg(ObjId & id, normal_msg * p_msg)
 
 void  base_connect::handle_timeout(const uint32_t timer_type)
 {
-    switch ()
+    switch (timer_type)
     {
         case DELAY_CLOSE_TIMER_TYPE:
             {

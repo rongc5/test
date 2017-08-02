@@ -20,8 +20,8 @@ base_timer::~base_timer()
 
 uint64_t base_timer::add_timer(base_timer_process *process)
 {
-    LOG_DEBUG("set time_length:%lu", time_length);
-    uint64_t reach_time = GetMilliSecond() + time_length;
+    LOG_DEBUG("set time_length:%lu", process->get_time_length());
+    uint64_t reach_time = GetMilliSecond() + process->get_time_length();
 
     while (find(reach_time)) {
         reach_time += TIMER_SCALE;
@@ -58,7 +58,7 @@ bool base_timer::is_empty()
 base_timer_process * base_timer::find(uint64_t reach_time)
 {
     map<uint64_t, base_timer_process * >::iterator it;
-    it = _timer_list.find(timer_id);
+    it = _timer_list.find(reach_time);
     if (it != _timer_list.end()) {
         return it->second;
     }
@@ -74,7 +74,7 @@ base_timer_process * base_timer::remove_timer(uint64_t reach_time)
     it = _timer_list.find(reach_time);
     if (it != _timer_list.end()) {
         p_process = it->second;
-        _timer_list.earse(reach_time);
+        _timer_list.erase(reach_time);
     }
 
     return p_process;

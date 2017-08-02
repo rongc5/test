@@ -7,7 +7,7 @@ base_timer_process::~base_timer_process()
     LOG_DEBUG("destory:%p", this);
 }
 
-void base_timer_process::handle_timeout(const uint32_t timer_type)
+void base_timer_process::handle_timeout()
 {
     LOG_DEBUG("handle_timeout");
 }

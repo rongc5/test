@@ -88,7 +88,7 @@ struct http_req_head_para
         _method.clear();
         _host.clear();
         _url_path.clear();
-        _http_version.clear();
+        _version.clear();
 
         _url_para_list.clear();
         _headers.clear();
@@ -120,7 +120,7 @@ struct http_req_head_para
     string _method;
     string _host;
     string _url_path;
-    string _http_version;
+    string _version;
 
     map<string, string> _url_para_list;
     map<string, string> _headers;    
@@ -154,31 +154,39 @@ struct http_res_head_para
     void init()
     {
         _response_code = 200;
+        _version.clear();
         _cookie_list.clear();
         _content_length = (uint64_t)-1;
         _headers.clear();
         _chunked.clear();
     }
 
+    const string * get_header(const char * str)
+    {
+        string * ptr = NULL;
+        if (!str) {
+            return ptr;
+        }
+
+        map<string, string>::iterator it;
+        for (it = _headers.begin(); it != _headers.end(); it++) {
+            if (strcasestr(it->first.c_str(), str)) {
+                ptr = &(it->second);
+                break;
+            }
+        }
+
+        return ptr;
+    }
+
     int _response_code;
+    string _version;
     map<string, set_cookie_item> _cookie_list;
     uint64_t _content_length;
     map<string, string> _headers;
     string _chunked;
 }; 
 
-
-class http_send_arg
-{
-	public:
-		http_send_arg()
-		{
-		}
-		
-		virtual ~http_send_arg()
-		{
-		}
-};
 
 enum HTTP_RECV_TYPE
 {

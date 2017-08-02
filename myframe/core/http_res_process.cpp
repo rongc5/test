@@ -5,6 +5,7 @@
 #include "common_exception.h"
 #include "common_def.h"
 #include "log_helper.h"
+#include "http_base_process.h"
 
 
 http_res_process::http_res_process(base_connect * p):http_base_process(p)
@@ -18,7 +19,7 @@ http_res_process::~http_res_process()
 {		
 }
 
-http_head_para &http_res_process::get_req_head_para()
+http_req_head_para &http_res_process::get_req_head_para()
 {
     return _req_head_para;
 }
@@ -28,14 +29,9 @@ http_res_head_para &http_res_process::get_res_head_para()
     return _res_head_para;
 }
 
-void http_res_process::set_res_head_para(const http_res_head_para &para)
-{
-    _res_head_para = para;
-}
 
 void http_res_process::reset()
 {
-    http_base_process::reset();        
     change_http_status(RECV_HEAD);
     _req_head_para.init();
     _res_head_para.init();
@@ -45,16 +41,20 @@ void http_res_process::reset()
     _recv_boundary_status = BOUNDARY_RECV_HEAD;
 }
 
-string http_res_process::gen_res_head()
+void http_res_process::gen_res_head(string * head)
 {
-    stringstream ss;
+    if (!head) {
+        return;
+    }
     //返回状态码
     string response_str = response_code::_s_response_code.get_response_str(_res_head_para._response_code);
 
-    ss << "HTTP/1.1 " << _res_head_para._response_code << " " << response_str << "\r\n";          			
-    //返回服务器名称
-    ss << "Server: KWS1.0\r\n";
-    ss << "Connection: close\r\n";  //暂时不支持keep_alive
+    head->append(_req_head_para._version);
+    head->append(" ");
+    head->append(_res_head_para._response_code);
+    head->append(" ");
+    head->append(response_str);
+    head->append(CRLF);
 
     //cookie
     if (_res_head_para._cookie_list.size() > 0)
@@ -62,23 +62,28 @@ string http_res_process::gen_res_head()
         for (map<string, set_cookie_item>::iterator itr = _res_head_para._cookie_list.begin(); 
                 itr != _res_head_para._cookie_list.end(); ++itr)
         {
-            ss << "Set-Cookie: ";
-            ss << itr->first << "=" << itr->second._value;
+            head->append("Set-Cookie: ");
+            head->append(itr->first);
+            head->append("=");
+            head->append(itr->second._value);
             if (itr->second._expire != 0)
             {
-                ss << ";expires=" << CToolKit::SecToHttpTime(itr->second._expire);
+                head->append(";expires=");
+                head->append(SecToHttpTime(itr->second._expire));
             }
 
             if (itr->second._path != "")
             {
-                ss << ";path=" << itr->second._path;
+                head->append(";path=");
+                head->append(itr->second._path);
             }
 
             if (itr->second._domain != "")
             {
-                ss << ";domain=" << itr->second._domain;
+                head->append(";domain=");
+                head->append(itr->second._domain);
             }
-            ss << "\r\n";
+            head->append(CRLF);
         }
     }
 
@@ -86,17 +91,23 @@ string http_res_process::gen_res_head()
     if (_res_head_para._content_length != (uint64_t)-1)
     {
         ss << "Content-Length: " << _res_head_para._content_length << "\r\n";
+
+        head->append("Content-Length: ");
+        head->append(_res_head_para._content_length);
+        head->append(CRLF);
     }
 
     //other para
-    for (map<string, string>::iterator itr = _res_head_para._other_res_list.begin(); 
-            itr != _res_head_para._other_res_list.end(); ++itr)
+    for (map<string, string>::iterator itr = _res_head_para._headers.begin(); 
+            itr != _res_head_para._headers.end(); ++itr)
     {
-        ss << itr->first << ": " << itr->second << "\r\n";
+        head->append(itr->first);
+        head->append(": ");
+        head->append(itr->second);
+        head->append(CRLF);
     }
     //最后一个分隔符
-    ss << "\r\n";
-    return ss.str();
+    head->append(CRLF);
 }
 
 size_t http_res_process::process_recv_body(char *buf, size_t len, int &result)
@@ -129,30 +140,50 @@ size_t http_res_process::process_recv_body(char *buf, size_t len, int &result)
 
 void http_res_process::parse_first_line(const string & line)
 {
-    vector<string>& tmp_vec;
+    vector<string> tmp_vec;
     SplitString(line, " ", tmp_vec);
     if (tmp_vec.size() != 3) {
         THROW_COMMON_EXCEPT("http first line");
     }
     _req_head_para._method = tmp_vec[0];
-    _req_head_para._http_version = tmp_vec[2];
+    _req_head_para._version = tmp_vec[2];
     size_t pos = tmp_vec[1].find("?");
     if (pos == string::npos)
     {
-        _req_head_para._url_path = s_path;
+        _req_head_para._url_path = tmp_vec[1];
     }
     else
     {
-        _req_head_para._url_path = s_path.substr(0, pos);       
-        string para_str = s_path.substr(pos + 1);
+        _req_head_para._url_path = tmp_vec[1].substr(0, pos);       
+        string para_str = tmp_vec[1].substr(pos + 1);
         parse_url_para(para_str, _req_head_para._url_para_list);
     }
 }
 
-
-void http_res_process::parse_header()
+void http_res_process::parse_url_para(const string &url_para, map<string, string> &url_para_map)
 {
-    string &head_str = _recv_head;
+    vector<string> vec_str;
+    SplitString(url_para, "&", vec_str);
+    size_t num = vec_str.size();
+    for (size_t ii = 0; ii < num; ii ++)
+    {
+        vector<string> tmp_vec;
+        CToolKit::SplitString(vec_str[ii], "=", tmp_vec);
+        if (tmp_vec.size() == 2)
+        {
+            StringTrim(tmp_vec[0]);
+            StringTrim(tmp_vec[1]);
+            string tmp_para;
+            UrlDecode(tmp_vec[1], tmp_para);
+            url_para_map.insert(make_pair(tmp_vec[0], tmp_para));
+        }
+    }               
+}
+
+
+void http_res_process::parse_header(string & recv_head)
+{
+    string &head_str = recv_head;
     vector<string>& strList;
     SplitString(head_str, CRLF, strList);
     for (int i = 0; i < strList.size(); i++) {

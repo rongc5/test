@@ -2,13 +2,40 @@
 #define __LOG__PROCESS_H__
 
 #include "base_def.h"
-#include "log_helper.h"
 #include "thread_helper.h"
+#include "common_util.h"
 
 struct log_write_name
 {
     char _name[SIZE_LEN_512];
     thread_mutex_t _mutex;
+};
+
+enum LogType {
+    LOGFATAL,
+    LOGWARNING,
+    LOGNOTICE,
+    LOGTRACE,
+    LOGDEBUG,
+    LOGSIZE
+};
+
+
+struct log_conf{
+    uint32_t file_max_size;
+    char log_path[SIZE_LEN_256];
+    char prefix_file_name[SIZE_LEN_256];
+    LogType type;
+    int deal_mode; // 1 write log 2 print log 3 write && print
+
+    log_conf()
+    {   
+        file_max_size = DEFAULT_LOG_MAX_SIZE;
+        strcpy(log_path, "logs");
+        get_proc_name(prefix_file_name, sizeof(prefix_file_name));
+        type = LOGDEBUG;
+        deal_mode = 1;
+    }   
 };
 
 

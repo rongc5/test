@@ -2,6 +2,7 @@
 #include "web_socket_msg.h"
 #include "web_socket_process.h"
 #include "log_helper.h"
+#include "base_connect.h"
 
 
 
@@ -58,12 +59,12 @@ void web_socket_data_process::put_send_msg(ws_msg_type msg)
 {
     if (_send_list.begin() == _send_list.end())
     {
-        _p_process->get_base_connect()->notice_send();
+        _process->get_base_connect()->notice_send();
     }
     _send_list.push_back(msg);
 }
 
-web_socket_data_process::ws_msg_type get_send_msg()
+ws_msg_type web_socket_data_process::get_send_msg()
 {
     ws_msg_type ret;
     if (_send_list.begin() != _send_list.end())

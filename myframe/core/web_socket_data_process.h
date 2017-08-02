@@ -3,7 +3,7 @@
 
 #include "base_def.h"
 #include "base_data_process.h"
-
+#include "web_socket_msg.h"
 
 class web_socket_process;
 class web_socket_data_process:public base_data_process

@@ -10,7 +10,7 @@
 #include "log_helper.h"
 #include "http_base_msg.h"
 
-
+class http_base_data_process;
 class http_base_process: public base_data_process
 {
     public:
@@ -28,6 +28,8 @@ class http_base_process: public base_data_process
 		
 		/****************************以上是五个口子，以下是供底层调用********************************************/
 
+       
+
 		void change_http_status(HTTP_STATUS status, bool if_change_send = true);
 
 		http_base_data_process *get_process()
@@ -36,8 +38,6 @@ class http_base_process: public base_data_process
 		}
 
 		static void parse_url_para(const string &url_para, map<string, string> &url_para_map);
-
-        virtual void reset();
 
     protected:		
 		virtual size_t process_recv_body(char *buf, size_t len, int &result) = 0;	
@@ -51,6 +51,10 @@ class http_base_process: public base_data_process
 
         HTTP_STATUS _http_status;
         http_base_data_process *_data_process;
+        
+        http_req_head_para _req_head_para;
+        http_res_head_para _res_head_para;
+
 };
 
 

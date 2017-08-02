@@ -6,7 +6,7 @@
 #include "common_exception.h"
 
 
-web_socket_req_process(base_connect *p):web_socket_process(p)
+web_socket_req_process::web_socket_req_process(base_connect *p):web_socket_process(p)
 {			
 }
 
@@ -15,7 +15,7 @@ ws_req_head_para &web_socket_req_process::get_req_para()
     return _req_para;
 }		
 
-void web_socket_process_req::ping_process(const int8_t op_code)//客户端不用处理服务器的ping
+void web_socket_req_process::ping_process(const int8_t op_code)//客户端不用处理服务器的ping
 {
     LOG_DEBUG("recv server ping res");
 }

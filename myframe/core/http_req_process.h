@@ -20,12 +20,6 @@ class http_req_process:public http_base_process
 		
 		string* get_send_buf();
 
-        http_head_para & get_req_head_para();
-
-        http_res_head_para& get_res_head_para();
-
-		void set_req_head_para(const http_head_para &para);
-
 	  	void reset();
 
 		void set_send_arg(http_send_arg *arg);

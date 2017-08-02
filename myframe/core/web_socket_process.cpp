@@ -2,6 +2,8 @@
 #include "web_socket_process.h"
 #include "base_connect.h"
 #include "log_helper.h"
+#include "common_exception.h"
+#include "mybase64.h"
 
 
 web_socket_process::web_socket_process(base_connect *p):base_data_process(p)
@@ -57,7 +59,7 @@ size_t web_socket_process::process_recv_buf(const char *buf, const size_t len)
     return len;
 }
 
-bool web_socket_process::process_recv_msg(ObjId & id, normal_msg * p_msg);
+bool web_socket_process::process_recv_msg(ObjId & id, normal_msg * p_msg)
 {
     if (_p_data_process != NULL) {
         _p_data_process->process_recv_msg(id, p_msg);

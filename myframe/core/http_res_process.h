@@ -18,26 +18,20 @@ class http_res_process:public http_base_process
 
         virtual ~http_res_process();
 
-        http_head_para &get_req_head_para();
+        http_req_head_para &get_req_head_para();
 
         http_res_head_para &get_res_head_para();
 
-		void set_res_head_para(const http_res_head_para &para);
-
 		void reset();
 		
-		string gen_res_head();
-
-        void add_header(const char *key, const char *value);
-
-        void add_send_reply(int http_code);
+		void gen_res_head(string * head);
 
     protected:
 		virtual size_t process_recv_body(char *buf, size_t len, int &result);
         
         virtual void parse_first_line(const string & line);
 
-        void parse_header()
+        void parse_header(string & recv_head)
 		
         void gen_send_head();
 
@@ -59,9 +53,8 @@ class http_res_process:public http_base_process
 		BOUNDARY_STATUS _recv_boundary_status;
 		uint32_t _recv_body_length;
 		
-        http_head_para _req_head_para;
+		 http_req_head_para _req_head_para;
         http_res_head_para _res_head_para;
-        map<string, string> _send_headers;
 };
 
 

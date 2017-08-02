@@ -74,5 +74,50 @@ int UrlDecode(const string &sSrc, string &sDest);
 #endif
 
 
+string SecToHttpTime(time_t tmpTime);
+
+struct TMonth
+{       
+    int nMonth;
+    char sMonth[10];
+};
+
+struct TWeek
+{
+    int nWeek;
+    char sWeek[10];
+};
+
+const TWeek WEEKARRAY[] =  
+{   
+    {0, "Sun"},
+    {1, "Mon"},
+    {2, "Tue"},
+    {3, "Wed"},
+    {4, "Thu"},
+    {5, "Fri"},
+    {6, "Sat"}
+};  
+
+const TMonth MONTHARRAY[]= 
+{ 
+    {1, "Jan"},
+    {2, "Feb"},
+    {3, "Mar"},
+    {4, "Apr"},
+    {5, "May"},
+    {6, "Jun"},
+    {7, "Jul"},
+    {8, "Aug"},
+    {9, "Sep"},     
+    {10, "Oct"},
+    {11, "Nov"},
+    {12, "Dec"}
+}; 
+
+
+string GetMonStr(int nMonth);
+string GetWeekStr(int nWeek);
+
 
 #endif

@@ -1,6 +1,7 @@
 #include "http_base_process.h"
 #include "base_connect.h"
 #include "common_exception.h"
+#include "http_base_data_process.h"
 
 http_base_process::http_base_process(base_connect *p):base_data_process(p)
 {
@@ -12,18 +13,13 @@ http_base_process::~http_base_process()
         delete _data_process;
 }
 
-void http_base_process::set_process(base_data_process * data_process)
+void http_base_process::set_process(http_base_data_process * data_process)
 {
     if (_data_process != NULL && _data_process != data_process) {
         delete _data_process;
         _data_process = NULL;
     }
     _data_process = data_process;
-}
-
-virtual void http_base_process::reset()
-{
-
 }
 
 size_t http_base_process::process_recv_buf(char *buf, const size_t len)
@@ -99,7 +95,7 @@ string* http_base_process::get_send_buf()
 
 bool http_base_process::process_recv_msg(ObjId & id, normal_msg * p_msg)
 {
-    _data_process->process_recv_msg(id, p_msg);
+    return _data_process->process_recv_msg(id, p_msg);
 }
 
 /****************************以上是五个口子，以下是供底层调用********************************************/
@@ -155,7 +151,7 @@ void http_base_process::check_head_finish(string & recv_head, string &left_str)
     {
         if (recv_head.length() > MAX_HTTP_HEAD_LEN) //http头不要超过10k
         {
-            THROW_COMMON_EXCEPT("http head too long (" << recv_head.length() << ")")
+            THROW_COMMON_EXCEPT("http head too long (" << recv_head.length() << ")");
         }
     }			
 }

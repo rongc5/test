@@ -26,6 +26,14 @@ OBJ	= ${SRC_DIR}/base_net_container.o                        \
     ${SRC_DIR}/common_util.o                        \
     ${SRC_DIR}/base_timer_process.o                        \
     ${SRC_DIR}/base_timer.o                        \
+    ${SRC_DIR}/web_socket_data_process.o                        \
+    ${SRC_DIR}/web_socket_msg.o                        \
+    ${SRC_DIR}/web_socket_process.o                        \
+    ${SRC_DIR}/web_socket_req_process.o                        \
+    ${SRC_DIR}/web_socket_res_process.o                        \
+    ${SRC_DIR}/http_base_data_process.o                        \
+    ${SRC_DIR}/http_base_process.o                        \
+    ${SRC_DIR}/http_res_process.o                        \
 
 OBJ_INCLUDE=
 
