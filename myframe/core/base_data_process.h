@@ -21,7 +21,7 @@ class base_data_process
 
         virtual void on_connect_comming();
 
-        virtual size_t process_recv_buf(char *buf, size_t len);
+        virtual size_t process_recv_buf(const char *buf, size_t len);
 
         virtual bool process_recv_msg(ObjId & id, normal_msg * p_msg);
 

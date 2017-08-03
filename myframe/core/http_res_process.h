@@ -9,7 +9,7 @@
 #include "common_def.h"
 #include "log_helper.h"
 #include "http_base_msg.h"
-
+#include "http_base_process.h"
 
 class http_res_process:public http_base_process
 {
@@ -26,12 +26,14 @@ class http_res_process:public http_base_process
 		
 		void gen_res_head(string * head);
 
+        static void parse_url_para(const string &url_para, map<string, string> &url_para_map);
+
     protected:
 		virtual size_t process_recv_body(char *buf, size_t len, int &result);
         
         virtual void parse_first_line(const string & line);
 
-        void parse_header(string & recv_head)
+        virtual void parse_header(string & recv_head);
 		
         void gen_send_head();
 
@@ -53,6 +55,7 @@ class http_res_process:public http_base_process
 		BOUNDARY_STATUS _recv_boundary_status;
 		uint32_t _recv_body_length;
 		
+        response_code _res_code;
 		 http_req_head_para _req_head_para;
         http_res_head_para _res_head_para;
 };

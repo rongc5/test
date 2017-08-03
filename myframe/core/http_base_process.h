@@ -32,12 +32,7 @@ class http_base_process: public base_data_process
 
 		void change_http_status(HTTP_STATUS status, bool if_change_send = true);
 
-		http_base_data_process *get_process()
-		{
-			return _data_process;
-		}
-
-		static void parse_url_para(const string &url_para, map<string, string> &url_para_map);
+		http_base_data_process *get_process();
 
     protected:		
 		virtual size_t process_recv_body(char *buf, size_t len, int &result) = 0;	

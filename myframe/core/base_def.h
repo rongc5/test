@@ -25,6 +25,7 @@
 
 #include <unistd.h>
 
+#include <openssl/sha.h>
 
 
 #include <vector>

@@ -6,6 +6,7 @@
 #include "common_def.h"
 #include "log_helper.h"
 #include "http_base_process.h"
+#include "http_base_data_process.h"
 
 
 http_res_process::http_res_process(base_connect * p):http_base_process(p)
@@ -47,14 +48,18 @@ void http_res_process::gen_res_head(string * head)
         return;
     }
     //·µ»Ø×´Ì¬Âë
-    string response_str = response_code::_s_response_code.get_response_str(_res_head_para._response_code);
+    string response_str = _res_code.get_response_str(_res_head_para._response_code);
 
-    head->append(_req_head_para._version);
-    head->append(" ");
-    head->append(_res_head_para._response_code);
-    head->append(" ");
-    head->append(response_str);
-    head->append(CRLF);
+    {
+        head->append(_req_head_para._version);
+        head->append(" ");
+        char tmp_buf[SIZE_LEN_32];
+        snprintf(tmp_buf, sizeof(tmp_buf), "%d", _res_head_para._response_code);
+        head->append(tmp_buf);
+        head->append(" ");
+        head->append(response_str);
+        head->append(CRLF);
+    }
 
     //cookie
     if (_res_head_para._cookie_list.size() > 0)
@@ -90,10 +95,10 @@ void http_res_process::gen_res_head(string * head)
     //content_length
     if (_res_head_para._content_length != (uint64_t)-1)
     {
-        ss << "Content-Length: " << _res_head_para._content_length << "\r\n";
-
         head->append("Content-Length: ");
-        head->append(_res_head_para._content_length);
+        char tmp_buf[SIZE_LEN_32];
+        snprintf(tmp_buf, sizeof(tmp_buf), "%llu", _res_head_para._content_length);
+        head->append(tmp_buf);
         head->append(CRLF);
     }
 
@@ -168,7 +173,7 @@ void http_res_process::parse_url_para(const string &url_para, map<string, string
     for (size_t ii = 0; ii < num; ii ++)
     {
         vector<string> tmp_vec;
-        CToolKit::SplitString(vec_str[ii], "=", tmp_vec);
+        SplitString(vec_str[ii], "=", tmp_vec);
         if (tmp_vec.size() == 2)
         {
             StringTrim(tmp_vec[0]);
@@ -184,13 +189,13 @@ void http_res_process::parse_url_para(const string &url_para, map<string, string
 void http_res_process::parse_header(string & recv_head)
 {
     string &head_str = recv_head;
-    vector<string>& strList;
+    vector<string> strList;
     SplitString(head_str, CRLF, strList);
-    for (int i = 0; i < strList.size(); i++) {
+    for (uint32_t i = 0; i < strList.size(); i++) {
         if (!i) {
             parse_first_line(strList[i]);
         }else {
-            vector<string>& tmp_vec;
+            vector<string> tmp_vec;
             SplitfirstDelimString(strList[i], ":", tmp_vec);
             if (tmp_vec.size() != 2) {
                 THROW_COMMON_EXCEPT("http headers parms error");
@@ -204,7 +209,7 @@ void http_res_process::parse_header(string & recv_head)
     if (cookie_str)
     {
         vector<string> cookie_vec;
-        SplitString(cookie_str, ";", cookie_vec);
+        SplitString(*cookie_str, ";", cookie_vec);
         size_t c_num = cookie_vec.size();
         for (size_t ii = 0; ii < c_num; ii++)
         {
@@ -232,14 +237,13 @@ void http_res_process::parse_header(string & recv_head)
 
         //parse content_type
         tmp_str = _req_head_para.get_header("Content-Type");
-        ret = GetCaseStringByLabel(head_str, "Content-Type:", "\r\n", s_tmp);
         if (tmp_str)
         {
             _req_head_para._content_type = *tmp_str;
 
             if (strncasestr(tmp_str->c_str(), tmp_str->length(),  "multipart/form-data") != NULL)
             {
-                ret = GetCaseStringByLabel(*tmp_str, "boundary=", "", _boundary_para._boundary_str);
+                GetCaseStringByLabel(*tmp_str, "boundary=", "", _boundary_para._boundary_str);
             }
         }
     }

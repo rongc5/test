@@ -40,7 +40,7 @@ size_t http_base_process::process_recv_buf(char *buf, const size_t len)
         staus_change = true;				
     }
 
-    if (this->_msg_op != MSG_CONNECT) {
+    if (get_base_connect()->_msg_op != MSG_CONNECT) {
         return ret;
     }
 
@@ -100,7 +100,7 @@ bool http_base_process::process_recv_msg(ObjId & id, normal_msg * p_msg)
 
 /****************************以上是五个口子，以下是供底层调用********************************************/
 
-void http_base_process::change_http_status(HTTP_STATUS status, bool if_change_send = true)
+void http_base_process::change_http_status(HTTP_STATUS status, bool if_change_send)
 {
     _http_status = status;
     if (status == SEND_HEAD && if_change_send)
@@ -109,29 +109,9 @@ void http_base_process::change_http_status(HTTP_STATUS status, bool if_change_se
     }
 }
 
-base_data_process *http_base_process::get_process()
+http_base_data_process * http_base_process::get_process()
 {
     return _data_process;
-}
-
-void http_base_process::parse_url_para(const string &url_para, map<string, string> &url_para_map)
-{
-    vector<string> vec_str;
-    SplitString(url_para, "&", vec_str);
-    size_t num = vec_str.size();
-    for (size_t ii = 0; ii < num; ii ++)
-    {
-        vector<string> tmp_vec;
-        SplitString(vec_str[ii], "=", tmp_vec);
-        if (tmp_vec.size() == 2)
-        {
-            StringTrim(tmp_vec[0]);
-            StringTrim(tmp_vec[1]);
-            string tmp_para;
-            UrlDecode(tmp_vec[1], tmp_para);
-            url_para_map.insert(make_pair(tmp_vec[0], tmp_para));
-        }
-    }				
 }
 
 void http_base_process::check_head_finish(string & recv_head, string &left_str)

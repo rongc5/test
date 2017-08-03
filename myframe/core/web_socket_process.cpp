@@ -39,18 +39,17 @@ void web_socket_process::set_data_process(web_socket_data_process * data_process
 //处理接收的数据
 size_t web_socket_process::process_recv_buf(const char *buf, const size_t len)
 {
-    size_t ret = 0;
     if (WB_INIT_STAUTS == _wb_status)
     {
-        ret = RECV_WB_INIT_STAUTS_PROCESS(buf, len);
+        RECV_WB_INIT_STAUTS_PROCESS(buf, len);
     }
     else if (WB_HANDSHAKE_OK == _wb_status)
     {
-        ret = RECV_WB_HANDSHAKE_OK_PROCESS(buf, len);
+        RECV_WB_HANDSHAKE_OK_PROCESS(buf, len);
     }
     else if (WB_HEAD_FINISH == _wb_status)
     {
-        ret = RECV_WB_HEAD_FINISH_PROCESS(buf, len);
+        RECV_WB_HEAD_FINISH_PROCESS(buf, len);
     }
     else
     {			
@@ -228,7 +227,7 @@ string *web_socket_process::SEND_WB_HANDSHAKE_OK_PROCESS()
 }
 
 
-size_t web_socket_data_process::RECV_WB_HANDSHAKE_OK_PROCESS(const char *buf, const size_t len)
+size_t web_socket_process::RECV_WB_HANDSHAKE_OK_PROCESS(const char *buf, const size_t len)
 {
     LOG_DEBUG("RECV_WB_HANDSHAKE_OK_PROCESS %d", len);
     char *left_buf = (char*)buf;
@@ -257,11 +256,11 @@ size_t web_socket_data_process::RECV_WB_HANDSHAKE_OK_PROCESS(const char *buf, co
                     if (_recent_recv_web_header._mask_flag == 1)
                     {
                         string tmp_ret = _recent_recv_web_header.mask_code(left_buf, left_len - tmp_left);						
-                        _p_data_process->process_recv_body(tmp_ret.c_str(), tmp_ret.length());
+                        _p_data_process->process_recv_buf(tmp_ret.c_str(), tmp_ret.length());
                     }
                     else
                     {
-                        _p_data_process->process_recv_body(left_buf, left_len - tmp_left);
+                        _p_data_process->process_recv_buf(left_buf, left_len - tmp_left);
                     }
 
                     left_buf = left_buf + (left_len - tmp_left);

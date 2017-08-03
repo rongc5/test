@@ -4,7 +4,9 @@
 #include "common_exception.h"
 #include "common_timer_process.h"
 #include "common_util.h"
-
+#include "base_timer.h"
+#include "base_net_container.h"
+#include "web_socket_data_process.h"
 
 web_socket_res_process::web_socket_res_process(base_connect *p):web_socket_process(p)
 {

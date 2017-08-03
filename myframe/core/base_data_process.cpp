@@ -48,7 +48,7 @@ void base_data_process::on_connect_comming()
     LOG_DEBUG("%p", this);
 }
 
-size_t base_data_process::process_recv_buf(char *buf, size_t len)
+size_t base_data_process::process_recv_buf(const char *buf, size_t len)
 {
     LOG_DEBUG("%p", this);
 

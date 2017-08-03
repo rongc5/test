@@ -23,13 +23,13 @@ int get_prime_num(int num);
 
 int SplitString(const string &srcStr,const string &delim, vector<string>& strList);
 
-int SplitString(const char *srcStr, string &delim, vector<string>& strList);
+int SplitString(const char *srcStr, const string &delim, vector<string>& strList);
 
 int SplitfirstDelimString(const string &srcStr,const string &delim, vector<string>& strList);
 
 void StringTrim(string &sSrc);
 
-int GetCaseStringByLabel(const string &sSrc,const string &sLabel1,const string &sLabel2, string &sOut, unsigned int nBeginPos, int nIfRetPos);
+int GetCaseStringByLabel(const string &sSrc,const string &sLabel1,const string &sLabel2, string &sOut, unsigned int nBeginPos = 0, int nIfRetPos = 0);
 
 int GetStringByLabel(const string &sSrc,const string &sLabel1,const string &sLabel2, string &sOut, unsigned int nBeginPos, int nIfRetPos);
 
@@ -72,6 +72,8 @@ int UrlDecode(const string &sSrc, string &sDest);
 #else
     #define PDEBUG(format, arg...) 
 #endif
+
+char * strncasestr(const char *p, int nLen, const char *pattern);
 
 
 string SecToHttpTime(time_t tmpTime);

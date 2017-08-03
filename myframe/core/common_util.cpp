@@ -188,7 +188,7 @@ void StringTrim(string &sSrc)
     sSrc = sSrc.substr(nBeginPos, nEnd - nBeginPos + 1);        
 }
 
-int SplitString(const char *srcStr, string &delim, vector<string>& strList)
+int SplitString(const char *srcStr, const string &delim, vector<string>& strList)
 {
     char *sTmpBuf = new char[strlen(srcStr) + 1];
     char *tt = sTmpBuf;
@@ -349,4 +349,18 @@ string SecToHttpTime(time_t tmpTime)
 }
 
 
+char * strncasestr(const char *p, int nLen, const char *pattern)
+{
+    char *ret = NULL;
+    char *pp = new char[nLen + 1];
+    memcpy(pp, p, nLen);
+    pp[nLen] = 0;
+    char *pRet = strcasestr(pp, pattern);
+    if (pRet != NULL)
+    {
+        ret = (char*)p + (pRet - pp);
+    }
+    delete[] pp;
+    return ret;
+}
 

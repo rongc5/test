@@ -99,7 +99,7 @@ struct http_req_head_para
         _connect_type.clear();
     }
 
-    const string * get_header(const char * str)
+    string * get_header(const char * str)
     {
         string * ptr = NULL;
         if (!str) {
@@ -161,7 +161,7 @@ struct http_res_head_para
         _chunked.clear();
     }
 
-    const string * get_header(const char * str)
+    string * get_header(const char * str)
     {
         string * ptr = NULL;
         if (!str) {
