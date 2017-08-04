@@ -20,29 +20,18 @@ http_res_process::~http_res_process()
 {		
 }
 
-http_req_head_para &http_res_process::get_req_head_para()
-{
-    return _req_head_para;
-}
-
-http_res_head_para &http_res_process::get_res_head_para()
-{
-    return _res_head_para;
-}
-
 
 void http_res_process::reset()
 {
+    http_base_process::reset();
     change_http_status(RECV_HEAD);
-    _req_head_para.init();
-    _res_head_para.init();
 
     _boundary_para.init();
     _recv_body_length = 0;
     _recv_boundary_status = BOUNDARY_RECV_HEAD;
 }
 
-void http_res_process::gen_res_head(string * head)
+void http_res_process::gen_send_head(string * head)
 {
     if (!head) {
         return;

@@ -13,6 +13,22 @@ http_base_process::~http_base_process()
         delete _data_process;
 }
 
+http_req_head_para &http_base_process::get_req_head_para()
+{
+        return _req_head_para;
+}
+
+http_res_head_para &http_base_process::get_res_head_para()
+{
+        return _res_head_para;
+}
+
+void http_base_process::reset()
+{
+    _req_head_para.init();
+    _res_head_para.init();
+}
+
 void http_base_process::set_process(http_base_data_process * data_process)
 {
     if (_data_process != NULL && _data_process != data_process) {

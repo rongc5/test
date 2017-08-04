@@ -18,13 +18,9 @@ class http_res_process:public http_base_process
 
         virtual ~http_res_process();
 
-        http_req_head_para &get_req_head_para();
-
-        http_res_head_para &get_res_head_para();
-
-		void reset();
+		virtual void reset();
 		
-		void gen_res_head(string * head);
+		virtual void gen_send_head(string * head);
 
         static void parse_url_para(const string &url_para, map<string, string> &url_para_map);
 
@@ -34,12 +30,10 @@ class http_res_process:public http_base_process
         virtual void parse_first_line(const string & line);
 
         virtual void parse_header(string & recv_head);
-		
-        void gen_send_head();
 
-        void recv_finish();
+        virtual void recv_finish();
 
-        void send_finish();
+        virtual void send_finish();
 
 		size_t get_boundary(char *buf, size_t len, int &result);
       
@@ -56,8 +50,6 @@ class http_res_process:public http_base_process
 		uint32_t _recv_body_length;
 		
         response_code _res_code;
-		 http_req_head_para _req_head_para;
-        http_res_head_para _res_head_para;
 };
 
 
