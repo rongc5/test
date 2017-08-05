@@ -8,7 +8,7 @@ channel_data_process::channel_data_process(base_connect *p):base_data_process(p)
 {
 }
 
-size_t channel_data_process::process_recv_buf(char *buf, size_t len)
+size_t channel_data_process::process_recv_buf(const char *buf, size_t len)
 {
     thread_lock lock(&_mutex);
 

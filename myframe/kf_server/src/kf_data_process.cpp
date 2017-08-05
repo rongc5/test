@@ -27,6 +27,7 @@ void kf_data_process::header_recv_finish()
     
     string * tmp_str = req_head_para.get_header("Upgrade");
     if (tmp_str && strcasestr(tmp_str->c_str(), "websocket")) {
+        get_base_connect()->remove_net_container();
         get_base_connect()->_msg_op = PASS_NEW_MSG;
         base_net_thread * net_thread = get_base_connect()->get_net_container()->get_net_thread();
         ObjId id;
@@ -45,10 +46,11 @@ string * kf_data_process::get_send_head()
     string * str = new string;
     _base_process->gen_send_head(str);
 
+    LOG_DEBUG("%s", str->c_str());
     return str;
 }
 
-size_t process_recv_body(const char *buf, size_t len, int& result)
+size_t kf_data_process::process_recv_body(const char *buf, size_t len, int& result)
 {
     result = 1;
 

@@ -104,7 +104,7 @@ void http_res_process::gen_send_head(string * head)
     head->append(CRLF);
 }
 
-size_t http_res_process::process_recv_body(char *buf, size_t len, int &result)
+size_t http_res_process::process_recv_body(const char *buf, size_t len, int &result)
 {
     int ret = 0;
     if (strcasecmp(_req_head_para._method.c_str(), "GET") == 0 || strcasecmp(_req_head_para._method.c_str(), "HEAD") == 0)
@@ -190,6 +190,7 @@ void http_res_process::parse_header(string & recv_head)
                 THROW_COMMON_EXCEPT("http headers parms error");
             } else {
                 _req_head_para._headers.insert(make_pair(tmp_vec[0], tmp_vec[1]));
+                LOG_DEBUG("%s: %s", tmp_vec[0].c_str(), tmp_vec[1].c_str());
             }
         }
     }
@@ -264,7 +265,7 @@ void http_res_process::send_finish()
 }
 
 
-size_t http_res_process::get_boundary(char *buf, size_t len, int &result)
+size_t http_res_process::get_boundary(const char *buf, size_t len, int &result)
 {	
     if (_req_head_para._content_length == (uint32_t)-1)
     {

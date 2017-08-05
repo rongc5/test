@@ -107,7 +107,6 @@ void  base_net_obj::handle_timeout(const uint32_t timer_type)
 int base_net_obj::destroy()
 {
     delete this;
-
     return 0;
 }
 

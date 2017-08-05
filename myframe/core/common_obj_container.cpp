@@ -71,29 +71,29 @@ void common_obj_container::put_msg(ObjId & id, normal_msg * p_msg)
 void common_obj_container::obj_process()
 {   
     uint32_t tmp_num = 0;
-    map<ObjId, base_net_obj*> exp_list;
 
     for (map<ObjId, base_net_obj*>::iterator tmp_itr = _obj_net_map.begin();tmp_itr != _obj_net_map.end(); )
     {
-        int32_t ret = 0;
+        int32_t flag = 0;
         try
         {
-            ret = tmp_itr->second->real_net_process();            
+            tmp_itr->second->real_net_process();            
         }
         catch(CMyCommonException &e)
         {
-            exp_list.insert(make_pair(tmp_itr->first,tmp_itr->second));        
+            flag = 1;
         }
         catch(std::exception &e)
         {
-            exp_list.insert(make_pair(tmp_itr->first,tmp_itr->second));        
+            flag =1;
         }
 
-        if (ret == -1) //空的对象删除之
+        if (flag) //空的对象删除之
         {
             map<ObjId, base_net_obj*>::iterator aa_itr = tmp_itr;
             ++tmp_itr;
             _obj_net_map.erase(aa_itr);
+            tmp_itr->second->destroy();
         }
         else
         {
@@ -102,6 +102,7 @@ void common_obj_container::obj_process()
         }
     }
 
+    map<ObjId, base_net_obj*> exp_list;
 
     _p_epoll->epoll_wait(exp_list, tmp_num);
     if (exp_list.size() != 0)

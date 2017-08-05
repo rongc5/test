@@ -12,6 +12,7 @@ int main(int argc, char *argv[])
     LOG_INIT(conf);
 
     listen_thread * lthread = new listen_thread();
+    lthread->init("0.0.0.0", 9090);
 
     for (int i = 0; i<= 3; i++) {
         kf_net_thread * net_thread = new kf_net_thread;
@@ -20,6 +21,8 @@ int main(int argc, char *argv[])
     }
 
     lthread->start();
+
+    base_thread::join_all_thread();
 
     return 0;
 }

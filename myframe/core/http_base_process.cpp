@@ -5,6 +5,7 @@
 
 http_base_process::http_base_process(base_connect *p):base_data_process(p)
 {
+    _data_process = NULL;
 }
 
 http_base_process::~http_base_process()
@@ -38,7 +39,7 @@ void http_base_process::set_process(http_base_data_process * data_process)
     _data_process = data_process;
 }
 
-size_t http_base_process::process_recv_buf(char *buf, const size_t len)
+size_t http_base_process::process_recv_buf(const char *buf, size_t len)
 {	
     if (_http_status > RECV_BODY)
     {

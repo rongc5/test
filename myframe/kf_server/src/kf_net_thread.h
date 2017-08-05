@@ -8,19 +8,21 @@
 #include "ws_data_process.h"
 #include "base_connect.h"
 #include "web_socket_process.h"
+#include "web_socket_res_process.h"
+#include "log_helper.h"
 
 class kf_net_thread:public base_net_thread
 {
     public:
         virtual void handle_msg(normal_msg * p_msg)
         {
-           base_connect * connect = dynamic_cast<base_connect *>(p_msg);
-           if (!connect) {
+            base_connect * connect = dynamic_cast<base_connect *>(p_msg);
+            if (!connect) {
                 REC_OBJ<normal_msg> rc(p_msg);
                 return;
-           }
-            
-           connect->get_base_connect()->_msg_op = MSG_CONNECT;
+            }
+
+            connect->_msg_op = MSG_CONNECT;
             web_socket_res_process * ws_process = new web_socket_res_process(connect);
             ws_data_process * data_process = new ws_data_process(ws_process);
             ws_process->set_process(data_process);

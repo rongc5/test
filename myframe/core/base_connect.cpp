@@ -47,10 +47,14 @@ void base_connect::event_process(int event)
 int base_connect::real_net_process()
 {
     int32_t ret = 0;
+    
+    if (get_event() & EPOLLIN) {
+        real_recv();
+    }
      
-    real_recv();
-     
-    real_send();
+    if (get_event() & EPOLLOUT) {
+        real_send();
+    }
 
     return ret;
 }

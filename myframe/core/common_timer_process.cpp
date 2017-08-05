@@ -1,5 +1,6 @@
 #include "common_timer_process.h"
 #include "base_net_container.h"
+#include "base_net_obj.h"
 
 
 common_timer_process::common_timer_process(base_net_container * net_container, ObjId id_str)

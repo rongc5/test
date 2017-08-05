@@ -25,7 +25,7 @@ class http_res_process:public http_base_process
         static void parse_url_para(const string &url_para, map<string, string> &url_para_map);
 
     protected:
-		virtual size_t process_recv_body(char *buf, size_t len, int &result);
+		virtual size_t process_recv_body(const char *buf, size_t len, int &result);
         
         virtual void parse_first_line(const string & line);
 
@@ -35,7 +35,7 @@ class http_res_process:public http_base_process
 
         virtual void send_finish();
 
-		size_t get_boundary(char *buf, size_t len, int &result);
+		size_t get_boundary(const char *buf, size_t len, int &result);
       
     protected:
 		enum BOUNDARY_STATUS

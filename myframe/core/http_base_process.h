@@ -20,7 +20,7 @@ class http_base_process: public base_data_process
 
         void set_process(http_base_data_process * data_process);
 
-        virtual size_t process_recv_buf(char *buf, const size_t len);
+        virtual size_t process_recv_buf(const char *buf, size_t len);
 
         virtual string* get_send_buf();
 
@@ -41,7 +41,7 @@ class http_base_process: public base_data_process
         virtual void reset();
 
     protected:		
-		virtual size_t process_recv_body(char *buf, size_t len, int &result) = 0;	
+		virtual size_t process_recv_body(const char *buf, size_t len, int &result) = 0;	
 		
         virtual void parse_header(string & recv_head) = 0;
 

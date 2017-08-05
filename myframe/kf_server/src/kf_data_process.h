@@ -2,9 +2,11 @@
 #define __KF_DATA_PROCESS_H__
 
 #include "base_def.h"
+#include "http_base_data_process.h"
+#include "http_base_process.h"
 
-class http_base_process;
-class http_base_data_process;
+//class http_base_process;
+//class http_base_data_process;
 class kf_data_process:public http_base_data_process
 {
     public:

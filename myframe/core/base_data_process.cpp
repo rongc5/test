@@ -23,8 +23,10 @@ void base_data_process::peer_close()
 string * base_data_process::get_send_buf()
 {
     LOG_DEBUG("%p", this);
-    if (_send_list.begin() == _send_list.end())
+    if (_send_list.begin() == _send_list.end()) {
+        LOG_DEBUG("_send_list is empty");
         return NULL;
+    }
 
     string *p = *(_send_list.begin());
     _send_list.erase(_send_list.begin());

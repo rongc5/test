@@ -6,7 +6,8 @@ JSON_DIR=${HOME_DIR}json
 
 INCLUDE = -I./${INC_DIR}/ -I./$(JSON_DIR)
 
-LIB = -L$(LIB_DIR) -lrt -libmyframe -lpthread \
+#LIB = -L$(LIB_DIR) -lrt -libmyframe -lpthread 
+LIB = -L$(LIB_DIR)/ -lmyframe -lrt -lpthread \
 	  /usr/lib/libcrypt.a \
 	  /usr/lib/libcrypto.a \
 	  /usr/lib/libssl.a \
@@ -18,11 +19,12 @@ CC  = g++ $(CPPFLAGS)
 
 OBJ	= $(LOC_DIR)/main.o     \
 	  $(LOC_DIR)/kf_data_process.o \
+	  $(LOC_DIR)/ws_data_process.o \
 
 
 AR=ar
 
-server=ws_ser
+server=kf_ser
 
 all	: $(server)
 	

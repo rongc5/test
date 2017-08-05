@@ -26,7 +26,7 @@ web_socket_process::~web_socket_process()
 }
 
 
-void web_socket_process::set_data_process(web_socket_data_process * data_process)
+void web_socket_process::set_process(web_socket_data_process * data_process)
 {
     if (_p_data_process && _p_data_process != data_process) {
         delete _p_data_process;

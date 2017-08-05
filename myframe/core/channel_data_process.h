@@ -19,7 +19,7 @@ class channel_data_process:public base_data_process
             }
         }	
 
-        virtual size_t process_recv_buf(char *buf, size_t len);
+        virtual size_t process_recv_buf(const char *buf, size_t len);
 
         virtual bool process_recv_msg(ObjId & id, normal_msg * p_msg);
     

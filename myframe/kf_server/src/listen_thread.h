@@ -16,8 +16,8 @@ class listen_thread:public base_listen_thread
             base_connect * connect = new base_connect(fd);
             http_res_process * res_process = new http_res_process(connect);
             kf_data_process * kf_process = new kf_data_process(res_process);
-            kf_process->set_process(res_process);
-            connect->set_process(process);
+            res_process->set_process(kf_process);
+            connect->set_process(res_process);
 
             return connect;
          }

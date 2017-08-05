@@ -15,7 +15,7 @@ class web_socket_process: public base_data_process
 
 		virtual ~web_socket_process();
         
-        void set_data_process(web_socket_data_process * data_process);
+        void set_process(web_socket_data_process * data_process);
 
 		//处理接收的数据
 		size_t process_recv_buf(const char *buf, const size_t len);
