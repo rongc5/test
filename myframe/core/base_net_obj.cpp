@@ -18,17 +18,19 @@ base_net_obj::base_net_obj(const int32_t sock)
 
 base_net_obj::~base_net_obj()
 {
-    if (_fd != 0) {
-        ::close(_fd);
-        _fd = 0;
-    }
 
+    LOG_DEBUG("%p", this);
     common_epoll * p_epoll = _p_net_container->get_epoll();
     if (p_epoll) {
         p_epoll->del_from_epoll(this);
     }
 
     _epoll_event = 0;
+
+    if (_fd != 0) {
+        ::close(_fd);
+        _fd = 0;
+    }
 }
 
 void base_net_obj::set_net_container(base_net_container *p_net_container)
@@ -109,4 +111,3 @@ int base_net_obj::destroy()
     delete this;
     return 0;
 }
-

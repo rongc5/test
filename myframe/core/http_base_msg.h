@@ -148,7 +148,7 @@ struct http_res_head_para
     http_res_head_para()
     {
         _response_code = 200;
-        _content_length = (uint64_t)-1;
+        _content_length = 0;
     }
 
     void init()
@@ -156,7 +156,7 @@ struct http_res_head_para
         _response_code = 200;
         _version.clear();
         _cookie_list.clear();
-        _content_length = (uint64_t)-1;
+        _content_length = 0;
         _headers.clear();
         _chunked.clear();
     }

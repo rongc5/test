@@ -100,6 +100,18 @@ void http_res_process::gen_send_head(string * head)
         head->append(itr->second);
         head->append(CRLF);
     }
+
+    if (!_res_head_para.get_header("Connection")) {
+        string * tmp_str =_req_head_para.get_header("Connection");
+        if (tmp_str) {
+            head->append("Connection");
+            head->append(": ");
+            head->append(tmp_str->c_str());
+            head->append(CRLF);
+        }
+
+    }
+
     //最后一个分隔符
     head->append(CRLF);
 }

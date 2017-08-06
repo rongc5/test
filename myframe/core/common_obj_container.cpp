@@ -49,7 +49,7 @@ bool common_obj_container::erase(ObjId *obj_id)
         if (p_obj != NULL)
         {
             _obj_net_map.erase(p_obj->get_id());
-            p_obj->destroy();	    
+            p_obj->destroy();
         }
 
         ret = true;
@@ -93,7 +93,7 @@ void common_obj_container::obj_process()
             map<ObjId, base_net_obj*>::iterator aa_itr = tmp_itr;
             ++tmp_itr;
             _obj_net_map.erase(aa_itr);
-            tmp_itr->second->destroy();
+            aa_itr->second->destroy();
         }
         else
         {

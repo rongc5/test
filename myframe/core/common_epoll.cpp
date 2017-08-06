@@ -26,6 +26,7 @@ void common_epoll::del_from_epoll(base_net_obj *p_obj)
     memset(&tmpEvent, 0, sizeof(epoll_event));
     tmpEvent.data.ptr = p_obj;
     int ret = epoll_ctl(_epoll_fd, tmpOprate, p_obj->get_sfd(), &tmpEvent);
+    LOG_DEBUG("delete to epoll _epoll_fd[%d] _get_sock [%d]\n", _epoll_fd, p_obj->get_sfd());
     if (ret != 0)
         THROW_COMMON_EXCEPT("del from epoll fail " << strerror(errno));
 }
