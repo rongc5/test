@@ -75,5 +75,10 @@ ws_msg_type web_socket_data_process::get_send_msg()
     return ret;
 }
 
+size_t web_socket_data_process::process_recv_buf(const char *buf, size_t len)
+{
+    _recent_msg.append(buf, len); 
 
+    return len;
+}
 

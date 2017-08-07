@@ -21,6 +21,9 @@ class kf_data_process:public http_base_data_process
 
         virtual size_t process_recv_body(const char *buf, size_t len, int& result);
 
+    protected:
+        string _body;
+
 };
 
 

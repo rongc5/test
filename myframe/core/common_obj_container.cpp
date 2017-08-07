@@ -75,9 +75,11 @@ void common_obj_container::obj_process()
     for (map<ObjId, base_net_obj*>::iterator tmp_itr = _obj_net_map.begin();tmp_itr != _obj_net_map.end(); )
     {
         int32_t flag = 0;
+        map<ObjId, base_net_obj*>::iterator aa_itr = tmp_itr;
         try
         {
-            tmp_itr->second->real_net_process();            
+            ++tmp_itr;
+            aa_itr->second->real_net_process();            
         }
         catch(CMyCommonException &e)
         {
@@ -90,15 +92,12 @@ void common_obj_container::obj_process()
 
         if (flag) //空的对象删除之
         {
-            map<ObjId, base_net_obj*>::iterator aa_itr = tmp_itr;
-            ++tmp_itr;
             _obj_net_map.erase(aa_itr);
             aa_itr->second->destroy();
         }
         else
         {
             tmp_num++;
-            ++tmp_itr;
         }
     }
 

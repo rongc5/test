@@ -23,6 +23,8 @@ class web_socket_data_process:public base_data_process
         virtual string *get_send_buf();
         virtual void msg_recv_finish() = 0;
 
+         virtual size_t process_recv_buf(const char *buf, size_t len);
+
     protected:
         void put_send_msg(ws_msg_type msg);
 

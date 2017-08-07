@@ -18,7 +18,11 @@ string * kf_data_process::get_send_body(int &result)
 {
     result = 1;
 
-    return NULL;
+    string * body = new string(_body);
+
+    _body.clear();
+
+    return body;
 }
 
 void kf_data_process::header_recv_finish()
@@ -33,6 +37,9 @@ void kf_data_process::header_recv_finish()
         ObjId id;
         id._thread_index = net_thread->get_thread_index();
         net_thread->put_msg(id, get_base_connect());
+        LOG_DEBUG("this is websocket");
+    } else {
+        _body.append("just a test");
     }
 }
 
@@ -44,6 +51,15 @@ void kf_data_process::msg_recv_finish()
 string * kf_data_process::get_send_head()
 {
     string * str = new string;
+    http_res_head_para & res_head = _base_process->get_res_head_para();
+    
+    char proc_name[SIZE_LEN_256] = {'\0'};
+    get_proc_name(proc_name, sizeof(proc_name));
+
+    res_head._headers.insert(make_pair("Date", SecToHttpTime(time(NULL))));
+    res_head._headers.insert(make_pair("Server", proc_name));
+    res_head._headers.insert(make_pair("Connection", "keep-alive"));
+    res_head._content_length = _body.length();
     _base_process->gen_send_head(str);
 
     LOG_DEBUG("%s", str->c_str());
