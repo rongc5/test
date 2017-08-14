@@ -45,4 +45,5 @@ class normal_obj_msg //内部传递的消息
 
 
 
+
 #endif

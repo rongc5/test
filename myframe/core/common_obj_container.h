@@ -19,6 +19,8 @@ class common_obj_container:public base_net_container
 
         virtual base_net_obj* find(const ObjId * obj_id);
 
+        virtual void insert(base_net_obj *p_obj);
+        virtual void remove(base_net_obj *p_obj);
         virtual bool erase(ObjId *obj_id);
 
         virtual void put_msg(ObjId & id, normal_msg * p_msg);
@@ -28,6 +30,7 @@ class common_obj_container:public base_net_container
 
     protected:
         map<ObjId, base_net_obj*> _obj_net_map;
+        map<ObjId, base_net_obj*> _obj_map;
 };
 
 #endif

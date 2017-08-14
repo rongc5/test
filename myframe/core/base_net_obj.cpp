@@ -14,6 +14,7 @@ base_net_obj::base_net_obj(const int32_t sock)
     _epoll_event = EPOLLIN | EPOLLERR | EPOLLHUP;
     _p_net_container = NULL;
     _msg_op = MSG_CONNECT;
+    _real_net = false;
 }
 
 base_net_obj::~base_net_obj()
@@ -40,7 +41,7 @@ void base_net_obj::set_net_container(base_net_container *p_net_container)
 
     try {
         p_epoll->add_to_epoll(this);
-        _p_net_container->push_net_obj(this);
+        _p_net_container->insert(this);
     }
     catch (std::exception &e)
     {
@@ -50,6 +51,24 @@ void base_net_obj::set_net_container(base_net_container *p_net_container)
     catch (...)
     {
         delete this;
+    }
+}
+
+bool base_net_obj::get_real_net()
+{
+    return _real_net;
+}
+
+void base_net_obj::set_real_net(bool real_net)
+{
+    _p_net_container;
+    
+    if (!_real_net && real_net) {
+        _real_net = real_net;
+        _p_net_container->push_net_obj(this);
+    } else if (_real_net && !real_net) {
+        _real_net = real_net;
+        _p_net_container->remove_net_obj(this); 
     }
 }
 
