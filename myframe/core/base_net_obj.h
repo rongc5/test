@@ -32,7 +32,6 @@ class base_net_obj: public normal_msg
         const ObjId & get_id();
 
         virtual bool process_recv_msg(ObjId & id, normal_msg * p_msg);
-        virtual void  handle_timeout(const uint32_t timer_type);
 
         int destroy();
 

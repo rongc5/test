@@ -6,6 +6,7 @@
 enum normal_msg_op
 {
     MSG_CONNECT = 1,
+    MSG_TIMER,
     PASS_NEW_MSG
 };
 
@@ -40,7 +41,23 @@ class normal_obj_msg //内部传递的消息
         }
 };
 
+class timer_msg:public normal_msg
+{
+    public:
+        timer_msg()
+        {
+            _msg_op = MSG_TIMER;
+            _timer_type = 0;
+            _time_length = 0;
+            _reach_time = 0;
+        };
+        virtual ~timer_msg(){}
 
+        ObjId _id;
+        uint32_t _timer_type;
+        uint64_t _time_length;
+        uint64_t _reach_time;
+};
 
 
 

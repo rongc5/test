@@ -22,8 +22,6 @@ class base_connect:public base_net_obj
 
         virtual bool process_recv_msg(ObjId & id, normal_msg * p_msg);
 
-        virtual void  handle_timeout(const uint32_t timer_type);
-
         base_data_process * get_process();
 
     protected:

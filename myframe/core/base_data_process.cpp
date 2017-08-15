@@ -64,11 +64,6 @@ bool base_data_process::process_recv_msg(ObjId & id, normal_msg * p_msg)
     return true;
 }
 
-void base_data_process::handle_timeout(const uint32_t timer_type)
-{
-    LOG_DEBUG("%p", this);
-}
-
 void base_data_process::clear_send_list()
 {
     for (list<string*>::iterator itr = _send_list.begin(); itr != _send_list.end(); ++itr)

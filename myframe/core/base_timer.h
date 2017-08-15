@@ -3,7 +3,6 @@
 
 #include "common_def.h"
 #include "log_helper.h"
-#include "base_timer_process.h"
 
 class base_timer
 {
@@ -12,18 +11,14 @@ class base_timer
 
 		virtual ~base_timer();
 		
-		uint64_t add_timer(base_timer_process *process);
-
-        base_timer_process * remove_timer(uint64_t reach_time);
+		uint64_t add_timer(timer_msg * t_msg);
 
 		void check_timer();
-
-        base_timer_process * find(uint64_t reach_time);
 
         bool is_empty();
 
 	protected:
-		map<uint64_t, base_timer_process *> _timer_list;
+		map<uint64_t, vector<timer_msg *> > _timer_list;
 };
 #endif
 

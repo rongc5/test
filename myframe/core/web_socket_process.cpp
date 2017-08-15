@@ -153,11 +153,6 @@ const string &web_socket_process::get_send_header()
     return _send_header;
 }		
 
-void web_socket_process::handle_timeout(const uint32_t timer_type)
-{
-    _p_data_process->handle_timeout(timer_type);
-}
-
 bool web_socket_process::check_head_finish()
 {
     bool ret = false;

@@ -15,15 +15,19 @@ size_t channel_data_process::process_recv_buf(const char *buf, size_t len)
     int i = 0;
     deque<normal_obj_msg >::iterator it;
     for (it = _queue.begin(); it != _queue.end();){
-       if (it->_id._id) {
-            _p_connect->get_net_container()->put_msg(it->_id, it->p_msg);
-       }else if (it->p_msg->_msg_op == MSG_CONNECT) {
+       if (it->p_msg->_msg_op == MSG_CONNECT) {
            base_net_obj * p_connect = dynamic_cast<base_net_obj *> (it->p_msg); 
            if (p_connect) {
                 p_connect->set_net_container(_p_connect->get_net_container());
+            } else {
+                REC_OBJ<normal_msg> rc(it->p_msg);
             }
        } else {
-            _p_connect->get_net_container()->get_net_thread()->handle_msg(it->p_msg);
+            if (it->_id._id) {
+                _p_connect->get_net_container()->put_msg(it->_id, it->p_msg);
+            } else {
+                _p_connect->get_net_container()->get_net_thread()->handle_msg(it->p_msg);
+            }
        } 
 
         it = _queue.erase(it);

@@ -16,7 +16,6 @@ class web_socket_res_process:public web_socket_process
 
         virtual void on_connect_comming();
 
-        virtual void handle_timeout(const uint32_t timer_type);
 	protected:				
 		virtual string* SEND_WB_HEAD_FINISH_PROCESS();
 

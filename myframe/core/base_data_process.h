@@ -25,8 +25,6 @@ class base_data_process
 
         virtual bool process_recv_msg(ObjId & id, normal_msg * p_msg);
 
-        virtual void handle_timeout(const uint32_t timer_type);
-
         void put_send_buf(string * str);
 
         base_connect * get_base_connect();

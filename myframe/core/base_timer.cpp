@@ -1,7 +1,7 @@
 #include "log_helper.h"
-#include "base_timer_process.h"
 #include "base_timer.h"
 #include "common_util.h"
+#include "base_net_thread.h"
 
 base_timer::base_timer()
 {
@@ -9,41 +9,51 @@ base_timer::base_timer()
 
 base_timer::~base_timer()
 {
-    map<uint64_t, base_timer_process *>::iterator it;
+    map<uint64_t, vector<timer_msg *> >::iterator it;
     
     for (it = _timer_list.begin(); it != _timer_list.end(); it++) {
-        delete (it->second);
+            vector<timer_msg *>::iterator itvec;
+            for (itvec = it->second.begin(); itvec != it->second.end(); itvec++) {
+                delete (*itvec);
+            }
     }
 
     _timer_list.clear();
 }
 
-uint64_t base_timer::add_timer(base_timer_process *process)
+uint64_t base_timer::add_timer(timer_msg * t_msg)
 {
-    LOG_DEBUG("set time_length:%lu", process->get_time_length());
-    uint64_t reach_time = GetMilliSecond() + process->get_time_length();
+    if (!t_msg->_reach_time) {
+        t_msg->_reach_time = GetMilliSecond() + t_msg->_time_length;
+    }
+    LOG_DEBUG("set time_length:%lu reach_time:%lu", t_msg->_time_length, t_msg->_reach_time);
 
-    while (find(reach_time)) {
-        reach_time += TIMER_SCALE;
+    map<uint64_t, vector<timer_msg *> >::iterator it;
+    it = _timer_list.find(t_msg->_reach_time);
+    if (it != _timer_list.end()) {
+        it->second.push_back(t_msg);
+    }else {
+        vector<timer_msg *> t_vec;
+        t_vec.push_back(t_msg);
+        _timer_list.insert(make_pair(t_msg->_reach_time, t_vec));
     }
 
-    process->set_reach_time(reach_time);
-    _timer_list[reach_time] = process;
-
-    return reach_time;
+    return t_msg->_reach_time;
 }
 
 void base_timer::check_timer()
 {
     uint64_t now = 	GetMilliSecond();
 
-    map<uint64_t, base_timer_process *>::iterator it, itup;
+    map<uint64_t, vector<timer_msg *> >::iterator it, itup;
     itup = _timer_list.upper_bound(now);
 
     if (itup != _timer_list.end()) {
         for (it = _timer_list.begin(); it != itup; it++) {
-            it->second->handle_timeout();
-            delete (it->second);
+            vector<timer_msg *>::iterator itvec;
+            for (itvec = it->second.begin(); itvec != it->second.end(); itvec++) {
+                base_net_thread::put_obj_msg((*itvec)->_id, (*itvec));
+            }
         }
 
         _timer_list.erase(_timer_list.begin(), itup);
@@ -55,27 +65,3 @@ bool base_timer::is_empty()
     return _timer_list.begin() == _timer_list.end();
 }
 
-base_timer_process * base_timer::find(uint64_t reach_time)
-{
-    map<uint64_t, base_timer_process * >::iterator it;
-    it = _timer_list.find(reach_time);
-    if (it != _timer_list.end()) {
-        return it->second;
-    }
-
-    return NULL;
-}
-
-
-base_timer_process * base_timer::remove_timer(uint64_t reach_time)
-{
-    base_timer_process * p_process = NULL;
-    map<uint64_t, base_timer_process * >::iterator it;
-    it = _timer_list.find(reach_time);
-    if (it != _timer_list.end()) {
-        p_process = it->second;
-        _timer_list.erase(reach_time);
-    }
-
-    return p_process;
-}

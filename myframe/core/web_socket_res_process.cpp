@@ -2,7 +2,6 @@
 #include "base_connect.h"
 #include "log_helper.h"
 #include "common_exception.h"
-#include "common_timer_process.h"
 #include "common_util.h"
 #include "base_timer.h"
 #include "base_net_container.h"
@@ -22,30 +21,11 @@ web_socket_res_process::~web_socket_res_process()
 
 void web_socket_res_process::on_connect_comming()
 {
-    base_timer * timer = get_base_connect()->get_net_container()->get_timer();
-    common_timer_process * timer_process = new 
-        common_timer_process(get_base_connect()->get_net_container(), get_base_connect()->get_id());
-    timer_process->init(WEB_SOCKET_HANDSHAKE_OK_TIMER_TYPE, WEB_SOCKET_HANDSHAKE_OK_TIMER_LENGTH);
-    timer->add_timer(timer_process);
-}
-
-void web_socket_res_process::handle_timeout(const uint32_t timer_type)
-{
-    if (timer_type == WEB_SOCKET_HANDSHAKE_OK_TIMER_TYPE)
-    {
-        if (_wb_status != WB_HANDSHAKE_OK)
-        {
-            THROW_COMMON_EXCEPT("the web socket handshake time out, delete it");
-        }
-        else
-        {
-            LOG_DEBUG("web socket handshake timer arrive, status ok");
-        }
-    }
-    else
-    {
-        web_socket_process::handle_timeout(timer_type);
-    }
+    //base_timer * timer = get_base_connect()->get_net_container()->get_timer();
+    //common_timer_process * timer_process = new 
+        //common_timer_process(get_base_connect()->get_net_container(), get_base_connect()->get_id());
+    //timer_process->init(WEB_SOCKET_HANDSHAKE_OK_TIMER_TYPE, WEB_SOCKET_HANDSHAKE_OK_TIMER_LENGTH);
+    //timer->add_timer(timer_process);
 }
 
 string* web_socket_res_process::SEND_WB_HEAD_FINISH_PROCESS()
@@ -62,11 +42,11 @@ string* web_socket_res_process::SEND_WB_HEAD_FINISH_PROCESS()
     {
         _wb_status  = WB_HANDSHAKE_FAIL;
 
-        base_timer * timer = get_base_connect()->get_net_container()->get_timer();
-        common_timer_process * timer_process = new 
-            common_timer_process(get_base_connect()->get_net_container(), get_base_connect()->get_id());
-        timer_process->init(DELAY_CLOSE_TIMER_TYPE, 3000);
-        timer->add_timer(timer_process);//—”≥Ÿ3√Î÷”πÿ±’
+        //base_timer * timer = get_base_connect()->get_net_container()->get_timer();
+        //common_timer_process * timer_process = new 
+            //common_timer_process(get_base_connect()->get_net_container(), get_base_connect()->get_id());
+        //timer_process->init(DELAY_CLOSE_TIMER_TYPE, 3000);
+        //timer->add_timer(timer_process);//—”≥Ÿ3√Î÷”πÿ±’
     }
     return p_str;
 }

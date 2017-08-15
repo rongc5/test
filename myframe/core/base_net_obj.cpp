@@ -61,7 +61,6 @@ bool base_net_obj::get_real_net()
 
 void base_net_obj::set_real_net(bool real_net)
 {
-    _p_net_container;
     
     if (!_real_net && real_net) {
         _real_net = real_net;
@@ -118,11 +117,6 @@ bool base_net_obj::process_recv_msg(ObjId & id, normal_msg * p_msg)
     REC_OBJ<normal_msg> rc(p_msg);
 
     return true;
-}
-
-void  base_net_obj::handle_timeout(const uint32_t timer_type)
-{
-    
 }
 
 int base_net_obj::destroy()

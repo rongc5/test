@@ -24,7 +24,6 @@ OBJ	= ${SRC_DIR}/base_net_container.o                        \
     ${SRC_DIR}/common_obj_container.o                        \
     ${SRC_DIR}/channel_data_process.o                        \
     ${SRC_DIR}/common_util.o                        \
-    ${SRC_DIR}/base_timer_process.o                        \
     ${SRC_DIR}/base_timer.o                        \
     ${SRC_DIR}/web_socket_data_process.o                        \
     ${SRC_DIR}/web_socket_msg.o                        \
@@ -35,7 +34,6 @@ OBJ	= ${SRC_DIR}/base_net_container.o                        \
     ${SRC_DIR}/http_base_process.o                        \
     ${SRC_DIR}/http_res_process.o                        \
     ${SRC_DIR}/mybase64.o                        \
-    ${SRC_DIR}/common_timer_process.o                        \
 
 OBJ_INCLUDE=
 
