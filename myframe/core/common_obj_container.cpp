@@ -16,26 +16,15 @@ common_obj_container::~common_obj_container()
 {
 }
 
-void common_obj_container::push_net_obj(base_net_obj *p_obj)
+void common_obj_container::push_real_net(base_net_obj *p_obj)
 {
     _obj_net_map.insert(make_pair(p_obj->get_id(), p_obj));
-}
-
-void common_obj_container::remove_net_obj(base_net_obj *p_obj)
-{
-    _obj_net_map.erase(p_obj->get_id());
 }
 
 void common_obj_container::insert(base_net_obj *p_obj)
 {
     p_obj->set_id(gen_id_str());
     _obj_map.insert(make_pair(p_obj->get_id(), p_obj));
-}
-
-void common_obj_container::remove(base_net_obj *p_obj)
-{
-    _obj_net_map.erase(p_obj->get_id());
-    _obj_map.erase(p_obj->get_id());
 }
 
 base_net_obj* common_obj_container::find(const ObjId * obj_id)
@@ -92,37 +81,56 @@ void common_obj_container::obj_process()
         try
         {
             ++tmp_itr;
+            LOG_DEBUG("step1: _id:%d, _thread_index:%d", aa_itr->second->get_id()._id, aa_itr->second->get_id()._thread_index);            
             aa_itr->second->real_net_process();            
+            if (!aa_itr->second->get_real_net()) {
+                _obj_net_map.erase(aa_itr);
+            }
+            
+            if (aa_itr->second->is_remove()) {
+                _p_epoll->del_from_epoll(aa_itr->second);
+                aa_itr->second->set_remove(false);
+                _obj_net_map.erase(aa_itr);
+                _obj_map.erase(aa_itr);
+            }
+
             tmp_num++;
         }
         catch(CMyCommonException &e)
         {
-            LOG_DEBUG("step1: _id:%d, _thread_index:%d", aa_itr->second->get_id()._id, aa_itr->second->get_id()._thread_index);            
-            //exp_list.insert(make_pair(aa_itr->first,aa_itr->second));
-            _obj_net_map.erase(aa_itr);
-            _obj_map.erase(aa_itr->second->get_id());
-            aa_itr->second->destroy();
+            exp_list.insert(make_pair(aa_itr->first,aa_itr->second));
+            //_obj_net_map.erase(aa_itr);
+            //_obj_map.erase(aa_itr->second->get_id());
+            //aa_itr->second->destroy();
         }
         catch(std::exception &e)
         {
-            _obj_net_map.erase(aa_itr);
-            _obj_map.erase(aa_itr->second->get_id());
-            aa_itr->second->destroy();
+            exp_list.insert(make_pair(aa_itr->first,aa_itr->second));
+            //_obj_net_map.erase(aa_itr);
+            //_obj_map.erase(aa_itr->second->get_id());
+            //aa_itr->second->destroy();
         }
     }
 
+    map<ObjId, base_net_obj*> remove_list;
 
-    _p_epoll->epoll_wait(exp_list, tmp_num);
-    if (exp_list.size() != 0)
+    _p_epoll->epoll_wait(exp_list, remove_list, tmp_num);
+    for (map<ObjId, base_net_obj*>::iterator itr = exp_list.begin(); itr != exp_list.end(); ++itr)
+    {         	
+        LOG_DEBUG("step2: _id:%d, _thread_index:%d", itr->second->get_id()._id, itr->second->get_id()._thread_index);            
+        _obj_net_map.erase(itr->second->get_id());
+        _obj_map.erase(itr->second->get_id());
+        itr->second->destroy();
+    }
+
+    for (map<ObjId, base_net_obj*>::iterator itr = remove_list.begin(); itr != remove_list.end(); ++itr)
     {
-        for (map<ObjId, base_net_obj*>::iterator itr = exp_list.begin(); itr != exp_list.end(); ++itr)
-        {         	
-            LOG_DEBUG("step2: _id:%d, _thread_index:%d", itr->second->get_id()._id, itr->second->get_id()._thread_index);            
-            _obj_net_map.erase(itr->second->get_id());
-            _obj_map.erase(itr->second->get_id());
-            itr->second->destroy();
-        }
-    }       
+        _p_epoll->del_from_epoll(itr->second);
+        itr->second->set_remove(false);
+        _obj_net_map.erase(itr);
+        _obj_map.erase(itr);
+    }
+
 
     get_timer()->check_timer();
 }

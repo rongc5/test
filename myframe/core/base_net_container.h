@@ -14,12 +14,10 @@ class base_net_container
         base_net_container(base_net_thread * thread);
         virtual ~base_net_container();
 
-        virtual void push_net_obj(base_net_obj *p_obj) = 0;
-        virtual void remove_net_obj(base_net_obj *p_obj) = 0;
+        virtual void push_real_net(base_net_obj *p_obj) = 0;
         virtual base_net_obj* find(const ObjId * obj_id) = 0;
 
         virtual void insert(base_net_obj *p_obj) = 0;
-        virtual void remove(base_net_obj *p_obj) = 0;
         virtual bool erase(ObjId *_obj_id) = 0;
         virtual void obj_process() = 0;
         virtual void put_msg(ObjId & id, normal_msg * p_msg) = 0;

@@ -1,0 +1,55 @@
+[DEBUG]:[2017-08-16 18:29:05]:[3078081344]:[15:add_to_epoll:core/common_epoll.cpp]	add to epoll _epoll_fd[3] _get_sock [4]
+
+[DEBUG]:[2017-08-16 18:29:05]:[3057093488]:[9:base_data_process:core/base_data_process.cpp]	0xb44004b8
+[DEBUG]:[2017-08-16 18:29:05]:[3046603632]:[9:base_data_process:core/base_data_process.cpp]	0xb42004b8
+[DEBUG]:[2017-08-16 18:29:05]:[3067583344]:[9:base_data_process:core/base_data_process.cpp]	0x9e14210
+[DEBUG]:[2017-08-16 18:29:05]:[3036113776]:[9:base_data_process:core/base_data_process.cpp]	0xb4200800
+[DEBUG]:[2017-08-16 18:29:05]:[3078073200]:[9:base_data_process:core/base_data_process.cpp]	0xb4400968
+[DEBUG]:[2017-08-16 18:29:05]:[3046603632]:[45:set_para:core/base_data_process.cpp]	0xb42004b8
+[DEBUG]:[2017-08-16 18:29:05]:[3036113776]:[45:set_para:core/base_data_process.cpp]	0xb4200800
+[DEBUG]:[2017-08-16 18:29:05]:[3067583344]:[45:set_para:core/base_data_process.cpp]	0x9e14210
+[DEBUG]:[2017-08-16 18:29:05]:[3057093488]:[45:set_para:core/base_data_process.cpp]	0xb44004b8
+[DEBUG]:[2017-08-16 18:29:05]:[3057093488]:[15:add_to_epoll:core/common_epoll.cpp]	add to epoll _epoll_fd[7] _get_sock [9]
+
+[DEBUG]:[2017-08-16 18:29:05]:[3046603632]:[15:add_to_epoll:core/common_epoll.cpp]	add to epoll _epoll_fd[8] _get_sock [11]
+
+[DEBUG]:[2017-08-16 18:29:05]:[3078073200]:[45:set_para:core/base_data_process.cpp]	0xb4400968
+[DEBUG]:[2017-08-16 18:29:05]:[3078073200]:[15:add_to_epoll:core/common_epoll.cpp]	add to epoll _epoll_fd[5] _get_sock [17]
+
+[DEBUG]:[2017-08-16 18:29:05]:[3067583344]:[15:add_to_epoll:core/common_epoll.cpp]	add to epoll _epoll_fd[6] _get_sock [13]
+
+[DEBUG]:[2017-08-16 18:29:05]:[3036113776]:[15:add_to_epoll:core/common_epoll.cpp]	add to epoll _epoll_fd[3] _get_sock [15]
+
+[DEBUG]:[2017-08-16 18:29:08]:[3036113776]:[65:epoll_wait:core/common_epoll.cpp]	epoll_fd [3]
+
+[DEBUG]:[2017-08-16 18:29:08]:[3036113776]:[73:epoll_wait:core/common_epoll.cpp]	get_sock[4]
+
+[DEBUG]:[2017-08-16 18:29:08]:[3036113776]:[28:event_process:core/listen_connect.cpp]	recv fd[19]
+
+[DEBUG]:[2017-08-16 18:29:08]:[3036113776]:[9:base_data_process:core/base_data_process.cpp]	0xb4200b08
+[DEBUG]:[2017-08-16 18:29:08]:[3036113776]:[9:base_data_process:core/base_data_process.cpp]	0xb4200ef8
+[DEBUG]:[2017-08-16 18:29:08]:[3036113776]:[12:http_base_data_process:core/http_base_data_process.cpp]	0xb4200ef8
+[DEBUG]:[2017-08-16 18:29:08]:[3036113776]:[45:set_para:core/base_data_process.cpp]	0xb4200b08
+[DEBUG]:[2017-08-16 18:29:08]:[3078073200]:[65:epoll_wait:core/common_epoll.cpp]	epoll_fd [5]
+
+[DEBUG]:[2017-08-16 18:29:08]:[3078073200]:[73:epoll_wait:core/common_epoll.cpp]	get_sock[17]
+
+[DEBUG]:[2017-08-16 18:29:08]:[3078073200]:[116:real_recv:core/base_connect.cpp]	process_recv_buf _recv_buf_len[2] fd[17]
+
+[DEBUG]:[2017-08-16 18:29:08]:[3078073200]:[15:add_to_epoll:core/common_epoll.cpp]	add to epoll _epoll_fd[5] _get_sock [19]
+
+[DEBUG]:[2017-08-16 18:29:08]:[3078073200]:[65:epoll_wait:core/common_epoll.cpp]	epoll_fd [5]
+
+[DEBUG]:[2017-08-16 18:29:08]:[3078073200]:[73:epoll_wait:core/common_epoll.cpp]	get_sock[19]
+
+[DEBUG]:[2017-08-16 18:29:08]:[3078073200]:[116:real_recv:core/base_connect.cpp]	process_recv_buf _recv_buf_len[223] fd[19]
+
+[DEBUG]:[2017-08-16 18:29:08]:[3078073200]:[205:parse_header:core/http_res_process.cpp]	Sec-WebSocket-Version:  13
+[DEBUG]:[2017-08-16 18:29:08]:[3078073200]:[205:parse_header:core/http_res_process.cpp]	Sec-WebSocket-Key:  xU7ZY7nizRhdldqFu8KRAA==
+[DEBUG]:[2017-08-16 18:29:08]:[3078073200]:[205:parse_header:core/http_res_process.cpp]	Connection:  Upgrade
+[DEBUG]:[2017-08-16 18:29:08]:[3078073200]:[205:parse_header:core/http_res_process.cpp]	Upgrade:  websocket
+[DEBUG]:[2017-08-16 18:29:08]:[3078073200]:[205:parse_header:core/http_res_process.cpp]	Sec-WebSocket-Extensions:  permessage-deflate; client_max_window_bits
+[DEBUG]:[2017-08-16 18:29:08]:[3078073200]:[205:parse_header:core/http_res_process.cpp]	Host:  127.0.0.1:9090
+[DEBUG]:[2017-08-16 18:29:08]:[3078073200]:[41:header_recv_finish:src/kf_data_process.cpp]	this is websocket
+[DEBUG]:[2017-08-16 18:29:08]:[3078073200]:[29:del_from_epoll:core/common_epoll.cpp]	delete to epoll _epoll_fd[5] _get_sock [19]
+

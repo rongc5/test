@@ -31,7 +31,7 @@ void kf_data_process::header_recv_finish()
     
     string * tmp_str = req_head_para.get_header("Upgrade");
     if (tmp_str && strcasestr(tmp_str->c_str(), "websocket")) {
-        get_base_connect()->remove_net_container();
+        get_base_connect()->set_remove(true);
         get_base_connect()->_msg_op = PASS_NEW_MSG;
         get_base_connect()->set_real_net(true);
         base_net_thread * net_thread = get_base_connect()->get_net_container()->get_net_thread();

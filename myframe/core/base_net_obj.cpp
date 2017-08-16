@@ -15,6 +15,7 @@ base_net_obj::base_net_obj(const int32_t sock)
     _p_net_container = NULL;
     _msg_op = MSG_CONNECT;
     _real_net = false;
+    _is_remove = false;
 }
 
 base_net_obj::~base_net_obj()
@@ -62,20 +63,21 @@ bool base_net_obj::get_real_net()
 void base_net_obj::set_real_net(bool real_net)
 {
     
-    if (!_real_net && real_net) {
+    _real_net = real_net;
+    if (_real_net) {
         _real_net = real_net;
-        _p_net_container->push_net_obj(this);
-    } else if (_real_net && !real_net) {
-        _real_net = real_net;
-        _p_net_container->remove_net_obj(this); 
+        _p_net_container->push_real_net(this);
     }
 }
 
-void base_net_obj::remove_net_container()
+bool base_net_obj::is_remove()
 {
-    common_epoll * p_epoll = _p_net_container->get_epoll();
-    p_epoll->del_from_epoll(this);
-    _p_net_container->remove(this);
+    return _is_remove;
+}
+
+void base_net_obj::set_remove(bool is_remove)
+{
+    _is_remove = is_remove;
 }
 
 base_net_container * base_net_obj::get_net_container()
