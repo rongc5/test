@@ -130,13 +130,10 @@ const int URLESCAPE[] =
         1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1//240~255
 };
 
-#define TIMER_SCALE 20
-#define DELAY_CLOSE_TIMER_TYPE 1000
-#define WEB_SOCKET_HANDSHAKE_OK_TIMER_TYPE 1001
+
+#define OBJ_ID_BEGIN 100
 
 
-
-#define WEB_SOCKET_HANDSHAKE_OK_TIMER_LENGTH  30*1000
 #define CRLF "\r\n"
 #define CRLF2 "\r\n\r\n"
 

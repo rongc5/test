@@ -75,7 +75,7 @@ void base_net_obj::remove_net_container()
 {
     common_epoll * p_epoll = _p_net_container->get_epoll();
     p_epoll->del_from_epoll(this);
-    _p_net_container->remove_net_obj(this);
+    _p_net_container->remove(this);
 }
 
 base_net_container * base_net_obj::get_net_container()
@@ -122,5 +122,6 @@ bool base_net_obj::process_recv_msg(ObjId & id, normal_msg * p_msg)
 int base_net_obj::destroy()
 {
     delete this;
+
     return 0;
 }

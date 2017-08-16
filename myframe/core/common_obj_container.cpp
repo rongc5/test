@@ -4,6 +4,7 @@
 #include "common_obj_container.h"
 #include "base_net_thread.h"
 #include "base_timer.h"
+#include "log_helper.h"
 
 
 common_obj_container::common_obj_container(base_net_thread * thread):base_net_container(thread)
@@ -96,11 +97,17 @@ void common_obj_container::obj_process()
         }
         catch(CMyCommonException &e)
         {
-            exp_list.insert(make_pair(tmp_itr->first,tmp_itr->second));
+            LOG_DEBUG("step1: _id:%d, _thread_index:%d", aa_itr->second->get_id()._id, aa_itr->second->get_id()._thread_index);            
+            //exp_list.insert(make_pair(aa_itr->first,aa_itr->second));
+            _obj_net_map.erase(aa_itr);
+            _obj_map.erase(aa_itr->second->get_id());
+            aa_itr->second->destroy();
         }
         catch(std::exception &e)
         {
-            exp_list.insert(make_pair(tmp_itr->first,tmp_itr->second));
+            _obj_net_map.erase(aa_itr);
+            _obj_map.erase(aa_itr->second->get_id());
+            aa_itr->second->destroy();
         }
     }
 
@@ -110,6 +117,7 @@ void common_obj_container::obj_process()
     {
         for (map<ObjId, base_net_obj*>::iterator itr = exp_list.begin(); itr != exp_list.end(); ++itr)
         {         	
+            LOG_DEBUG("step2: _id:%d, _thread_index:%d", itr->second->get_id()._id, itr->second->get_id()._thread_index);            
             _obj_net_map.erase(itr->second->get_id());
             _obj_map.erase(itr->second->get_id());
             itr->second->destroy();

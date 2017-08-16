@@ -33,6 +33,7 @@ void kf_data_process::header_recv_finish()
     if (tmp_str && strcasestr(tmp_str->c_str(), "websocket")) {
         get_base_connect()->remove_net_container();
         get_base_connect()->_msg_op = PASS_NEW_MSG;
+        get_base_connect()->set_real_net(true);
         base_net_thread * net_thread = get_base_connect()->get_net_container()->get_net_thread();
         ObjId id;
         id._thread_index = net_thread->get_thread_index();

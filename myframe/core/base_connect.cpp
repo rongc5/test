@@ -175,6 +175,20 @@ void base_connect::notice_send()
 
 bool base_connect::process_recv_msg(ObjId & id, normal_msg * p_msg)
 {
+    if (p_msg->_msg_op == MSG_TIMER) {
+        timer_msg * t_msg = dynamic_cast<timer_msg *> (p_msg);
+        if (!t_msg) {
+            REC_OBJ<normal_msg> rc(p_msg);
+            return true;
+        }
+
+        if (t_msg->_timer_type == DELAY_CLOSE_TIMER_TYPE) {
+            REC_OBJ<normal_msg> rc(p_msg);
+            THROW_COMMON_EXCEPT("the connect obj delay close, delete it");
+            return true;
+        }
+    }
+
     _process->process_recv_msg(id, p_msg);
     return true;
 }

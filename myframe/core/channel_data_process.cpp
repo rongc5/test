@@ -23,7 +23,7 @@ size_t channel_data_process::process_recv_buf(const char *buf, size_t len)
                 REC_OBJ<normal_msg> rc(it->p_msg);
             }
        } else {
-            if (it->_id._id) {
+            if (it->_id._id > OBJ_ID_BEGIN) {
                 _p_connect->get_net_container()->put_msg(it->_id, it->p_msg);
             } else {
                 _p_connect->get_net_container()->get_net_thread()->handle_msg(it->p_msg);

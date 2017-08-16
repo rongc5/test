@@ -38,6 +38,8 @@ void base_net_container::init(const uint32_t epoll_size)
     _p_epoll->init(epoll_size);
 
     _timer = new base_timer();
+
+    _id_str._id = OBJ_ID_BEGIN;
 }
 
 const ObjId & base_net_container::gen_id_str()
@@ -48,7 +50,7 @@ const ObjId & base_net_container::gen_id_str()
     do {
         obj_id++;
         _id_str._id = obj_id;
-    } while (find(&_id_str));
+    } while (find(&_id_str) || obj_id <= OBJ_ID_BEGIN);
 
     return _id_str;
 }

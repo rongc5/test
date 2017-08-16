@@ -7,6 +7,11 @@
 #include "base_net_container.h"
 #include "web_socket_data_process.h"
 
+
+#define WEB_SOCKET_HANDSHAKE_OK_TIMER_LENGTH  30*1000
+
+
+
 web_socket_res_process::web_socket_res_process(base_connect *p):web_socket_process(p)
 {
     _wb_version = 0;		
@@ -21,11 +26,11 @@ web_socket_res_process::~web_socket_res_process()
 
 void web_socket_res_process::on_connect_comming()
 {
-    //base_timer * timer = get_base_connect()->get_net_container()->get_timer();
-    //common_timer_process * timer_process = new 
-        //common_timer_process(get_base_connect()->get_net_container(), get_base_connect()->get_id());
-    //timer_process->init(WEB_SOCKET_HANDSHAKE_OK_TIMER_TYPE, WEB_SOCKET_HANDSHAKE_OK_TIMER_LENGTH);
-    //timer->add_timer(timer_process);
+    base_timer * timer = get_base_connect()->get_net_container()->get_timer();
+    timer_msg * t_msg = new timer_msg();
+    t_msg->_timer_type = WEB_SOCKET_HANDSHAKE_OK_TIMER_TYPE;
+    t_msg->_time_length = WEB_SOCKET_HANDSHAKE_OK_TIMER_LENGTH;
+    timer->add_timer(t_msg);
 }
 
 string* web_socket_res_process::SEND_WB_HEAD_FINISH_PROCESS()
@@ -42,11 +47,11 @@ string* web_socket_res_process::SEND_WB_HEAD_FINISH_PROCESS()
     {
         _wb_status  = WB_HANDSHAKE_FAIL;
 
-        //base_timer * timer = get_base_connect()->get_net_container()->get_timer();
-        //common_timer_process * timer_process = new 
-            //common_timer_process(get_base_connect()->get_net_container(), get_base_connect()->get_id());
-        //timer_process->init(DELAY_CLOSE_TIMER_TYPE, 3000);
-        //timer->add_timer(timer_process);//ÑÓ³Ù3ÃëÖÓ¹Ø±Õ
+        base_timer * timer = get_base_connect()->get_net_container()->get_timer();
+        timer_msg * t_msg = new timer_msg();
+        t_msg->_timer_type = DELAY_CLOSE_TIMER_TYPE;
+        t_msg->_time_length = 3000;
+        timer->add_timer(t_msg);
     }
     return p_str;
 }
