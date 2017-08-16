@@ -28,6 +28,7 @@ class kf_net_thread:public base_net_thread
             ws_process->set_process(data_process);
             connect->set_process(ws_process);
             connect->set_net_container(_base_container);
+            connect->set_real_net(true);
             LOG_DEBUG("set ws_data_process");
         }
 

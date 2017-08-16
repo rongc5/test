@@ -91,7 +91,7 @@ void common_obj_container::obj_process()
                 _p_epoll->del_from_epoll(aa_itr->second);
                 aa_itr->second->set_remove(false);
                 _obj_net_map.erase(aa_itr);
-                _obj_map.erase(aa_itr);
+                _obj_map.erase(aa_itr->second->get_id());
             }
 
             tmp_num++;
@@ -127,8 +127,8 @@ void common_obj_container::obj_process()
     {
         _p_epoll->del_from_epoll(itr->second);
         itr->second->set_remove(false);
-        _obj_net_map.erase(itr);
-        _obj_map.erase(itr);
+        _obj_net_map.erase(itr->second->get_id());
+        _obj_map.erase(itr->second->get_id());
     }
 
 

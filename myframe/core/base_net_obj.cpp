@@ -65,7 +65,6 @@ void base_net_obj::set_real_net(bool real_net)
     
     _real_net = real_net;
     if (_real_net) {
-        _real_net = real_net;
         _p_net_container->push_real_net(this);
     }
 }

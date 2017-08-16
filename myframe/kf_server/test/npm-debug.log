@@ -1,0 +1,320 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/usr/local/node/bin/node',
+1 verbose cli   '/usr/local/node/bin/npm',
+1 verbose cli   'install',
+1 verbose cli   'ws',
+1 verbose cli   '-g' ]
+2 info using npm@3.9.3
+3 info using node@v6.2.1
+4 silly loadCurrentTree Starting
+5 silly install loadCurrentTree
+6 silly install readGlobalPackageData
+7 silly fetchPackageMetaData ws
+8 silly fetchNamedPackageData ws
+9 silly mapToRegistry name ws
+10 silly mapToRegistry using default registry
+11 silly mapToRegistry registry https://registry.npmjs.org/
+12 silly mapToRegistry data Result {
+12 silly mapToRegistry   raw: 'ws',
+12 silly mapToRegistry   scope: null,
+12 silly mapToRegistry   name: 'ws',
+12 silly mapToRegistry   rawSpec: '',
+12 silly mapToRegistry   spec: 'latest',
+12 silly mapToRegistry   type: 'tag' }
+13 silly mapToRegistry uri https://registry.npmjs.org/ws
+14 verbose request uri https://registry.npmjs.org/ws
+15 verbose request no auth needed
+16 info attempt registry request try #1 at 23:20:29
+17 verbose request id 6b226b8cae8ae1c6
+18 verbose etag W/"598226d0-1dd03"
+19 verbose lastModified Wed, 02 Aug 2017 19:24:00 GMT
+20 http request GET https://registry.npmjs.org/ws
+21 http 200 https://registry.npmjs.org/ws
+22 verbose headers { server: 'nginx/1.10.1',
+22 verbose headers   'content-type': 'application/json',
+22 verbose headers   'last-modified': 'Sat, 12 Aug 2017 15:02:57 GMT',
+22 verbose headers   etag: 'W/"598f18a1-1dd25"',
+22 verbose headers   'content-encoding': 'gzip',
+22 verbose headers   'cache-control': 'max-age=300',
+22 verbose headers   'content-length': '14551',
+22 verbose headers   'accept-ranges': 'bytes',
+22 verbose headers   date: 'Wed, 16 Aug 2017 15:01:57 GMT',
+22 verbose headers   via: '1.1 varnish',
+22 verbose headers   age: '91',
+22 verbose headers   connection: 'keep-alive',
+22 verbose headers   'x-served-by': 'cache-nrt6121-NRT',
+22 verbose headers   'x-cache': 'HIT',
+22 verbose headers   'x-cache-hits': '2',
+22 verbose headers   'x-timer': 'S1502895717.325927,VS0,VE0',
+22 verbose headers   vary: 'Accept-Encoding, Accept' }
+23 silly get cb [ 200,
+23 silly get   { server: 'nginx/1.10.1',
+23 silly get     'content-type': 'application/json',
+23 silly get     'last-modified': 'Sat, 12 Aug 2017 15:02:57 GMT',
+23 silly get     etag: 'W/"598f18a1-1dd25"',
+23 silly get     'content-encoding': 'gzip',
+23 silly get     'cache-control': 'max-age=300',
+23 silly get     'content-length': '14551',
+23 silly get     'accept-ranges': 'bytes',
+23 silly get     date: 'Wed, 16 Aug 2017 15:01:57 GMT',
+23 silly get     via: '1.1 varnish',
+23 silly get     age: '91',
+23 silly get     connection: 'keep-alive',
+23 silly get     'x-served-by': 'cache-nrt6121-NRT',
+23 silly get     'x-cache': 'HIT',
+23 silly get     'x-cache-hits': '2',
+23 silly get     'x-timer': 'S1502895717.325927,VS0,VE0',
+23 silly get     vary: 'Accept-Encoding, Accept' } ]
+24 verbose get saving ws to /home/richard/.npm/registry.npmjs.org/ws/.cache.json
+25 verbose correctMkdir /home/richard/.npm correctMkdir not in flight; initializing
+26 silly install normalizeTree
+27 silly loadCurrentTree Finishing
+28 silly loadIdealTree Starting
+29 silly install loadIdealTree
+30 silly cloneCurrentTree Starting
+31 silly install cloneCurrentTreeToIdealTree
+32 silly cloneCurrentTree Finishing
+33 silly loadShrinkwrap Starting
+34 silly install loadShrinkwrap
+35 silly loadShrinkwrap Finishing
+36 silly loadAllDepsIntoIdealTree Starting
+37 silly install loadAllDepsIntoIdealTree
+38 silly resolveWithNewModule ws@3.1.0 checking installable status
+39 silly cache add args [ 'ws', null ]
+40 verbose cache add spec ws
+41 silly cache add parsed spec Result {
+41 silly cache add   raw: 'ws',
+41 silly cache add   scope: null,
+41 silly cache add   name: 'ws',
+41 silly cache add   rawSpec: '',
+41 silly cache add   spec: 'latest',
+41 silly cache add   type: 'tag' }
+42 silly addNamed ws@latest
+43 verbose addNamed "latest" is being treated as a dist-tag for ws
+44 info addNameTag [ 'ws', 'latest' ]
+45 silly mapToRegistry name ws
+46 silly mapToRegistry using default registry
+47 silly mapToRegistry registry https://registry.npmjs.org/
+48 silly mapToRegistry data Result {
+48 silly mapToRegistry   raw: 'ws',
+48 silly mapToRegistry   scope: null,
+48 silly mapToRegistry   name: 'ws',
+48 silly mapToRegistry   rawSpec: '',
+48 silly mapToRegistry   spec: 'latest',
+48 silly mapToRegistry   type: 'tag' }
+49 silly mapToRegistry uri https://registry.npmjs.org/ws
+50 verbose addNameTag registry:https://registry.npmjs.org/ws not in flight; fetching
+51 verbose get https://registry.npmjs.org/ws not expired, no request
+52 silly addNameTag next cb for ws with tag latest
+53 silly addNamed ws@3.1.0
+54 verbose addNamed "3.1.0" is a plain semver version for ws
+55 silly cache afterAdd ws@3.1.0
+56 verbose afterAdd /home/richard/.npm/ws/3.1.0/package/package.json not in flight; writing
+57 verbose correctMkdir /home/richard/.npm correctMkdir not in flight; initializing
+58 verbose afterAdd /home/richard/.npm/ws/3.1.0/package/package.json written
+59 silly fetchNamedPackageData safe-buffer
+60 silly mapToRegistry name safe-buffer
+61 silly mapToRegistry using default registry
+62 silly mapToRegistry registry https://registry.npmjs.org/
+63 silly mapToRegistry data Result {
+63 silly mapToRegistry   raw: 'safe-buffer',
+63 silly mapToRegistry   scope: null,
+63 silly mapToRegistry   name: 'safe-buffer',
+63 silly mapToRegistry   rawSpec: '',
+63 silly mapToRegistry   spec: 'latest',
+63 silly mapToRegistry   type: 'tag' }
+64 silly mapToRegistry uri https://registry.npmjs.org/safe-buffer
+65 silly fetchNamedPackageData ultron
+66 silly mapToRegistry name ultron
+67 silly mapToRegistry using default registry
+68 silly mapToRegistry registry https://registry.npmjs.org/
+69 silly mapToRegistry data Result {
+69 silly mapToRegistry   raw: 'ultron',
+69 silly mapToRegistry   scope: null,
+69 silly mapToRegistry   name: 'ultron',
+69 silly mapToRegistry   rawSpec: '',
+69 silly mapToRegistry   spec: 'latest',
+69 silly mapToRegistry   type: 'tag' }
+70 silly mapToRegistry uri https://registry.npmjs.org/ultron
+71 verbose request uri https://registry.npmjs.org/safe-buffer
+72 verbose request no auth needed
+73 info attempt registry request try #1 at 23:20:39
+74 verbose etag W/"594ad4d0-7a3c"
+75 verbose lastModified Wed, 21 Jun 2017 20:19:28 GMT
+76 http request GET https://registry.npmjs.org/safe-buffer
+77 verbose request uri https://registry.npmjs.org/ultron
+78 verbose request no auth needed
+79 info attempt registry request try #1 at 23:20:39
+80 verbose etag W/"59740a01-2f90"
+81 verbose lastModified Sun, 23 Jul 2017 02:29:21 GMT
+82 http request GET https://registry.npmjs.org/ultron
+83 http 304 https://registry.npmjs.org/ultron
+84 verbose headers { date: 'Wed, 16 Aug 2017 15:01:59 GMT',
+84 verbose headers   via: '1.1 varnish',
+84 verbose headers   'cache-control': 'max-age=300',
+84 verbose headers   etag: 'W/"59740a01-2f90"',
+84 verbose headers   age: '108',
+84 verbose headers   connection: 'keep-alive',
+84 verbose headers   'x-served-by': 'cache-nrt6129-NRT',
+84 verbose headers   'x-cache': 'HIT',
+84 verbose headers   'x-cache-hits': '1',
+84 verbose headers   'x-timer': 'S1502895720.976502,VS0,VE0',
+84 verbose headers   vary: 'Accept-Encoding, Accept' }
+85 silly get cb [ 304,
+85 silly get   { date: 'Wed, 16 Aug 2017 15:01:59 GMT',
+85 silly get     via: '1.1 varnish',
+85 silly get     'cache-control': 'max-age=300',
+85 silly get     etag: 'W/"59740a01-2f90"',
+85 silly get     age: '108',
+85 silly get     connection: 'keep-alive',
+85 silly get     'x-served-by': 'cache-nrt6129-NRT',
+85 silly get     'x-cache': 'HIT',
+85 silly get     'x-cache-hits': '1',
+85 silly get     'x-timer': 'S1502895720.976502,VS0,VE0',
+85 silly get     vary: 'Accept-Encoding, Accept' } ]
+86 verbose etag https://registry.npmjs.org/ultron from cache
+87 verbose get saving ultron to /home/richard/.npm/registry.npmjs.org/ultron/.cache.json
+88 verbose correctMkdir /home/richard/.npm correctMkdir not in flight; initializing
+89 silly resolveWithNewModule ultron@1.1.0 checking installable status
+90 silly cache add args [ 'ultron@~1.1.0', null ]
+91 verbose cache add spec ultron@~1.1.0
+92 silly cache add parsed spec Result {
+92 silly cache add   raw: 'ultron@~1.1.0',
+92 silly cache add   scope: null,
+92 silly cache add   name: 'ultron',
+92 silly cache add   rawSpec: '~1.1.0',
+92 silly cache add   spec: '>=1.1.0 <1.2.0',
+92 silly cache add   type: 'range' }
+93 silly addNamed ultron@>=1.1.0 <1.2.0
+94 verbose addNamed ">=1.1.0 <1.2.0" is a valid semver range for ultron
+95 silly addNameRange { name: 'ultron', range: '>=1.1.0 <1.2.0', hasData: false }
+96 silly mapToRegistry name ultron
+97 silly mapToRegistry using default registry
+98 silly mapToRegistry registry https://registry.npmjs.org/
+99 silly mapToRegistry data Result {
+99 silly mapToRegistry   raw: 'ultron',
+99 silly mapToRegistry   scope: null,
+99 silly mapToRegistry   name: 'ultron',
+99 silly mapToRegistry   rawSpec: '',
+99 silly mapToRegistry   spec: 'latest',
+99 silly mapToRegistry   type: 'tag' }
+100 silly mapToRegistry uri https://registry.npmjs.org/ultron
+101 verbose addNameRange registry:https://registry.npmjs.org/ultron not in flight; fetching
+102 verbose get https://registry.npmjs.org/ultron not expired, no request
+103 silly addNameRange number 2 { name: 'ultron', range: '>=1.1.0 <1.2.0', hasData: true }
+104 silly addNameRange versions [ 'ultron', [ '0.0.0', '1.0.0', '1.0.1', '1.0.2', '1.1.0' ] ]
+105 silly addNamed ultron@1.1.0
+106 verbose addNamed "1.1.0" is a plain semver version for ultron
+107 silly cache afterAdd ultron@1.1.0
+108 verbose afterAdd /home/richard/.npm/ultron/1.1.0/package/package.json not in flight; writing
+109 verbose correctMkdir /home/richard/.npm correctMkdir not in flight; initializing
+110 verbose afterAdd /home/richard/.npm/ultron/1.1.0/package/package.json written
+111 http 304 https://registry.npmjs.org/safe-buffer
+112 verbose headers { date: 'Wed, 16 Aug 2017 15:01:58 GMT',
+112 verbose headers   via: '1.1 varnish',
+112 verbose headers   'cache-control': 'max-age=300',
+112 verbose headers   etag: 'W/"594ad4d0-7a3c"',
+112 verbose headers   age: '266',
+112 verbose headers   connection: 'keep-alive',
+112 verbose headers   'x-served-by': 'cache-nrt6121-NRT',
+112 verbose headers   'x-cache': 'HIT',
+112 verbose headers   'x-cache-hits': '8',
+112 verbose headers   'x-timer': 'S1502895718.294722,VS0,VE0',
+112 verbose headers   vary: 'Accept-Encoding, Accept' }
+113 silly get cb [ 304,
+113 silly get   { date: 'Wed, 16 Aug 2017 15:01:58 GMT',
+113 silly get     via: '1.1 varnish',
+113 silly get     'cache-control': 'max-age=300',
+113 silly get     etag: 'W/"594ad4d0-7a3c"',
+113 silly get     age: '266',
+113 silly get     connection: 'keep-alive',
+113 silly get     'x-served-by': 'cache-nrt6121-NRT',
+113 silly get     'x-cache': 'HIT',
+113 silly get     'x-cache-hits': '8',
+113 silly get     'x-timer': 'S1502895718.294722,VS0,VE0',
+113 silly get     vary: 'Accept-Encoding, Accept' } ]
+114 verbose etag https://registry.npmjs.org/safe-buffer from cache
+115 verbose get saving safe-buffer to /home/richard/.npm/registry.npmjs.org/safe-buffer/.cache.json
+116 verbose correctMkdir /home/richard/.npm correctMkdir not in flight; initializing
+117 silly resolveWithNewModule safe-buffer@5.1.1 checking installable status
+118 silly cache add args [ 'safe-buffer@~5.1.0', null ]
+119 verbose cache add spec safe-buffer@~5.1.0
+120 silly cache add parsed spec Result {
+120 silly cache add   raw: 'safe-buffer@~5.1.0',
+120 silly cache add   scope: null,
+120 silly cache add   name: 'safe-buffer',
+120 silly cache add   rawSpec: '~5.1.0',
+120 silly cache add   spec: '>=5.1.0 <5.2.0',
+120 silly cache add   type: 'range' }
+121 silly addNamed safe-buffer@>=5.1.0 <5.2.0
+122 verbose addNamed ">=5.1.0 <5.2.0" is a valid semver range for safe-buffer
+123 silly addNameRange { name: 'safe-buffer', range: '>=5.1.0 <5.2.0', hasData: false }
+124 silly mapToRegistry name safe-buffer
+125 silly mapToRegistry using default registry
+126 silly mapToRegistry registry https://registry.npmjs.org/
+127 silly mapToRegistry data Result {
+127 silly mapToRegistry   raw: 'safe-buffer',
+127 silly mapToRegistry   scope: null,
+127 silly mapToRegistry   name: 'safe-buffer',
+127 silly mapToRegistry   rawSpec: '',
+127 silly mapToRegistry   spec: 'latest',
+127 silly mapToRegistry   type: 'tag' }
+128 silly mapToRegistry uri https://registry.npmjs.org/safe-buffer
+129 verbose addNameRange registry:https://registry.npmjs.org/safe-buffer not in flight; fetching
+130 verbose get https://registry.npmjs.org/safe-buffer not expired, no request
+131 silly addNameRange number 2 { name: 'safe-buffer', range: '>=5.1.0 <5.2.0', hasData: true }
+132 silly addNameRange versions [ 'safe-buffer',
+132 silly addNameRange   [ '1.0.0',
+132 silly addNameRange     '2.0.0',
+132 silly addNameRange     '3.0.0',
+132 silly addNameRange     '4.0.0',
+132 silly addNameRange     '5.0.0',
+132 silly addNameRange     '5.0.1',
+132 silly addNameRange     '5.1.0',
+132 silly addNameRange     '5.1.1' ] ]
+133 silly addNamed safe-buffer@5.1.1
+134 verbose addNamed "5.1.1" is a plain semver version for safe-buffer
+135 silly cache afterAdd safe-buffer@5.1.1
+136 verbose afterAdd /home/richard/.npm/safe-buffer/5.1.1/package/package.json not in flight; writing
+137 verbose correctMkdir /home/richard/.npm correctMkdir not in flight; initializing
+138 verbose afterAdd /home/richard/.npm/safe-buffer/5.1.1/package/package.json written
+139 silly loadAllDepsIntoIdealTree Finishing
+140 silly idealTree:prePrune lib
+140 silly idealTree:prePrune └─┬ ws@3.1.0
+140 silly idealTree:prePrune   ├── safe-buffer@5.1.1
+140 silly idealTree:prePrune   └── ultron@1.1.0
+141 silly loadIdealTree Finishing
+142 silly currentTree lib
+143 silly idealTree lib
+143 silly idealTree └─┬ ws@3.1.0
+143 silly idealTree   ├── safe-buffer@5.1.1
+143 silly idealTree   └── ultron@1.1.0
+144 silly generateActionsToTake Starting
+145 silly install generateActionsToTake
+146 warn checkPermissions Missing write access to /usr/local/node/lib/node_modules
+147 silly rollbackFailedOptional Starting
+148 silly rollbackFailedOptional Finishing
+149 silly runTopLevelLifecycles Starting
+150 silly runTopLevelLifecycles Finishing
+151 silly install printInstalled
+152 verbose stack Error: EACCES: permission denied, access '/usr/local/node/lib/node_modules'
+152 verbose stack     at Error (native)
+153 verbose cwd /mnt/hgfs/D/work/self/myproj/test/myframe/kf_server/test
+154 error Linux 2.6.32-431.el6.i686
+155 error argv "/usr/local/node/bin/node" "/usr/local/node/bin/npm" "install" "ws" "-g"
+156 error node v6.2.1
+157 error npm  v3.9.3
+158 error path /usr/local/node/lib/node_modules
+159 error code EACCES
+160 error errno -13
+161 error syscall access
+162 error Error: EACCES: permission denied, access '/usr/local/node/lib/node_modules'
+162 error     at Error (native)
+162 error  { Error: EACCES: permission denied, access '/usr/local/node/lib/node_modules'
+162 error     at Error (native)
+162 error   errno: -13,
+162 error   code: 'EACCES',
+162 error   syscall: 'access',
+162 error   path: '/usr/local/node/lib/node_modules' }
+163 error Please try running this command again as root/Administrator.
+164 verbose exit [ -13, true ]
