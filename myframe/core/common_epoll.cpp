@@ -61,8 +61,7 @@ int common_epoll::epoll_wait(map<ObjId, base_net_obj*> &expect_list, map<ObjId, 
 
     for (int i =0; i < nfds; i++)
     {		
-        //PDEBUG("_epoll_fd [%d]\n", _epoll_fd);
-        LOG_DEBUG("epoll_fd [%d]\n", _epoll_fd);
+        //LOG_DEBUG("epoll_fd [%d]\n", _epoll_fd);
         if (_epoll_events[i].data.ptr != NULL) 		
         {
             base_net_obj * p = (base_net_obj*)(_epoll_events[i].data.ptr);
@@ -70,7 +69,7 @@ int common_epoll::epoll_wait(map<ObjId, base_net_obj*> &expect_list, map<ObjId, 
             {
                 try
                 {
-                    LOG_DEBUG("get_sock[%d]\n", p->get_sfd());
+                    //LOG_DEBUG("get_sock[%d]\n", p->get_sfd());
                     p->event_process(_epoll_events[i].events);
                     if (p->is_remove()) {
                         remove_list.insert(make_pair(p->get_id(), p));

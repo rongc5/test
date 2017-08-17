@@ -21,6 +21,7 @@ void common_obj_container::push_real_net(base_net_obj *p_obj)
     _obj_net_map.insert(make_pair(p_obj->get_id(), p_obj));
 }
 
+
 void common_obj_container::insert(base_net_obj *p_obj)
 {
     p_obj->set_id(gen_id_str());
@@ -73,7 +74,6 @@ void common_obj_container::put_msg(ObjId & id, normal_msg * p_msg)
 void common_obj_container::obj_process()
 {   
     uint32_t tmp_num = 0;
-    map<ObjId, base_net_obj*> exp_list;
 
     for (map<ObjId, base_net_obj*>::iterator tmp_itr = _obj_net_map.begin();tmp_itr != _obj_net_map.end(); )
     {
@@ -81,7 +81,7 @@ void common_obj_container::obj_process()
         try
         {
             ++tmp_itr;
-            LOG_DEBUG("step1: _id:%d, _thread_index:%d", aa_itr->second->get_id()._id, aa_itr->second->get_id()._thread_index);            
+            //LOG_DEBUG("step1: _id:%d, _thread_index:%d", aa_itr->second->get_id()._id, aa_itr->second->get_id()._thread_index);            
             aa_itr->second->real_net_process();            
             if (!aa_itr->second->get_real_net()) {
                 _obj_net_map.erase(aa_itr);
@@ -98,20 +98,21 @@ void common_obj_container::obj_process()
         }
         catch(CMyCommonException &e)
         {
-            exp_list.insert(make_pair(aa_itr->first,aa_itr->second));
-            //_obj_net_map.erase(aa_itr);
-            //_obj_map.erase(aa_itr->second->get_id());
-            //aa_itr->second->destroy();
+            //exp_list.insert(make_pair(aa_itr->first,aa_itr->second));
+            _obj_net_map.erase(aa_itr);
+            _obj_map.erase(aa_itr->second->get_id());
+            aa_itr->second->destroy();
         }
         catch(std::exception &e)
         {
-            exp_list.insert(make_pair(aa_itr->first,aa_itr->second));
-            //_obj_net_map.erase(aa_itr);
-            //_obj_map.erase(aa_itr->second->get_id());
-            //aa_itr->second->destroy();
+            //exp_list.insert(make_pair(aa_itr->first,aa_itr->second));
+            _obj_net_map.erase(aa_itr);
+            _obj_map.erase(aa_itr->second->get_id());
+            aa_itr->second->destroy();
         }
     }
 
+    map<ObjId, base_net_obj*> exp_list;
     map<ObjId, base_net_obj*> remove_list;
 
     _p_epoll->epoll_wait(exp_list, remove_list, tmp_num);

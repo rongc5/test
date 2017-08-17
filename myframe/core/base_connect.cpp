@@ -30,7 +30,7 @@ void base_connect::event_process(int event)
 {
     if ((event & EPOLLERR) == EPOLLERR || (event & EPOLLHUP) == EPOLLHUP)
     {
-        THROW_COMMON_EXCEPT("epoll error ");
+        THROW_COMMON_EXCEPT("epoll error "<< strerror(errno));
     }
 
     if ((event & EPOLLIN) == EPOLLIN) //¶Á
@@ -48,11 +48,13 @@ int base_connect::real_net_process()
 {
     int32_t ret = 0;
     
-    if (get_event() & EPOLLIN) {
+    if ((get_event() & EPOLLIN) == EPOLLIN) {
+        LOG_DEBUG("real_net_process real_recv");
         real_recv();
     }
      
-    if (get_event() & EPOLLOUT) {
+    if ((get_event() & EPOLLOUT) == EPOLLOUT) {
+        LOG_DEBUG("real_net_process real_send");
         real_send();
     }
 
@@ -93,6 +95,7 @@ ssize_t base_connect::SEND(const void *buf, const size_t len)
         {
             THROW_COMMON_EXCEPT("send data error " << strerror(errno));
         }
+        LOG_WARNING("send error");
         ret = 0;
     }
     return ret;
@@ -125,35 +128,28 @@ void base_connect::real_recv()
 
 void base_connect::real_send()
 {	
-    int ii = 0; 	
-    while (1)
+    if (!_p_send_buf)
     {
-        if (ii >= MAX_SEND_NUM)
-            break;
-        ii++;
-        if (!_p_send_buf)
-        {
-            _p_send_buf = _process->get_send_buf();
-        }
+        _p_send_buf = _process->get_send_buf();
+    }
 
-        if (!_p_send_buf) {
-            update_event(get_event() & ~EPOLLOUT);
-            break;
-        }
+    if (!_p_send_buf) {
+        update_event(get_event() & ~EPOLLOUT);
+        return;
+    }
 
-        if (_p_send_buf && _p_send_buf->length())
+    if (_p_send_buf && _p_send_buf->length())
+    {
+        ssize_t ret = SEND(_p_send_buf->c_str(), _p_send_buf->length());				
+        if (ret == (ssize_t)_p_send_buf->length())
         {
-            ssize_t ret = SEND(_p_send_buf->c_str(), _p_send_buf->length());				
-            if (ret == (ssize_t)_p_send_buf->length())
-            {
-                delete _p_send_buf;
-                _p_send_buf = NULL; 				
-            }
-            else if (ret > 0)
-            {
-                _p_send_buf->erase(0, ret);
-                LOG_WARNING("_p_send_buf erase %d", ret);
-            }
+            delete _p_send_buf;
+            _p_send_buf = NULL; 				
+        }
+        else if (ret > 0)
+        {
+            _p_send_buf->erase(0, ret);
+            LOG_WARNING("_p_send_buf erase %d", ret);
         }
     }
 }
@@ -171,6 +167,8 @@ void base_connect::set_process(base_data_process *p)
 void base_connect::notice_send()
 {
     update_event(_epoll_event | EPOLLOUT);
+
+    real_send();
 }
 
 bool base_connect::process_recv_msg(ObjId & id, normal_msg * p_msg)

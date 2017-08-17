@@ -57,11 +57,9 @@ uint64_t web_socket_data_process::get_next_send_len(int8_t &content_type)
 
 void web_socket_data_process::put_send_msg(ws_msg_type msg)
 {
-    if (_send_list.begin() == _send_list.end())
-    {
-        _process->get_base_connect()->notice_send();
-    }
     _send_list.push_back(msg);
+
+    _process->get_base_connect()->notice_send();
 }
 
 ws_msg_type web_socket_data_process::get_send_msg()

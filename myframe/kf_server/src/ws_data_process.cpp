@@ -20,9 +20,9 @@ void ws_data_process::msg_recv_finish()
     ws_msg_type msg;
     msg._p_msg = new string("I have recved");
     put_send_msg(msg);
-    //if (get_base_connect()->get_real_net()) {
-        //get_base_connect()->set_real_net(false);
-    //}
+    if (get_base_connect()->get_real_net()) {
+        get_base_connect()->set_real_net(false);
+    }
 }
 
 

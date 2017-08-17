@@ -1,5 +1,5 @@
 HOME_DIR=../
-INC_DIR=${HOME_DIR}core
+INC_DIR=${HOME_DIR}include
 LIB_DIR=$(HOME_DIR)/lib
 LOC_DIR=./src
 JSON_DIR=${HOME_DIR}json 
@@ -13,7 +13,7 @@ LIB = -L$(LIB_DIR)/ -lmyframe -lrt -lpthread \
 	  /usr/lib/libssl.a \
 
 
-CPPFLAGS = -gdwarf-2 -msse3 -W $(INCLUDE) -DDEBUG=1
+CPPFLAGS = -gdwarf-2 -msse3 -W $(INCLUDE) -DDEBUG=1 -O0
 CC  = g++ $(CPPFLAGS)
 
 

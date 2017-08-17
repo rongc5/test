@@ -4,7 +4,7 @@ SRC_DIR=${HOME_DIR}core
 INCLUDE = -I./${SRC_DIR}/
 LIB = -L/usr/lib/ -lpthread \
 
-CPPFLAGS = -gdwarf-2 -msse3 -Wall $(INCLUDE) -DDEBUG=1
+CPPFLAGS = -gdwarf-2 -msse3 -Wall $(INCLUDE) -DDEBUG=1 -O0
 CC  = g++ $(CPPFLAGS)
 
 OBJ	= ${SRC_DIR}/base_net_container.o                        \
