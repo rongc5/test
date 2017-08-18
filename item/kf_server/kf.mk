@@ -1,8 +1,9 @@
-HOME_DIR=../
+HOME_DIR=./
 INC_DIR=${HOME_DIR}include
 LIB_DIR=$(HOME_DIR)/lib
 LOC_DIR=./src
-JSON_DIR=${HOME_DIR}json 
+#JSON_DIR=${HOME_DIR}json 
+JSON_DIR=./
 
 INCLUDE = -I./${INC_DIR}/ -I./$(JSON_DIR)
 
@@ -36,7 +37,6 @@ clean	:
 	/bin/rm -f $(OBJ)
 	rm -f $(server)
 	rm -rf logs
-	rm -rf include/*
 
 
 #=================================================
