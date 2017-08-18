@@ -12,7 +12,7 @@ void common_epoll::add_to_epoll(base_net_obj *p_obj)
     tmpEvent.events = p_obj->get_event();
     tmpEvent.data.ptr = p_obj;
     int ret = epoll_ctl(_epoll_fd, tmpOprate, p_obj->get_sfd(), &tmpEvent);
-    LOG_DEBUG("add to epoll _epoll_fd[%d] _get_sock [%d]\n", _epoll_fd, p_obj->get_sfd());
+    LOG_DEBUG("add to epoll _epoll_fd[%d] _get_sock [%d]", _epoll_fd, p_obj->get_sfd());
     if (ret != 0) {
         LOG_DEBUG("add to epoll fail %s", strerror(errno));
         THROW_COMMON_EXCEPT("add to epoll fail " << strerror(errno));
@@ -26,7 +26,7 @@ void common_epoll::del_from_epoll(base_net_obj *p_obj)
     memset(&tmpEvent, 0, sizeof(epoll_event));
     tmpEvent.data.ptr = p_obj;
     int ret = epoll_ctl(_epoll_fd, tmpOprate, p_obj->get_sfd(), &tmpEvent);
-    LOG_DEBUG("delete to epoll _epoll_fd[%d] _get_sock [%d]\n", _epoll_fd, p_obj->get_sfd());
+    LOG_DEBUG("delete to epoll _epoll_fd[%d] _get_sock [%d]", _epoll_fd, p_obj->get_sfd());
     if (ret != 0)
         THROW_COMMON_EXCEPT("del from epoll fail " << strerror(errno));
 }
@@ -53,7 +53,7 @@ int common_epoll::epoll_wait(map<ObjId, base_net_obj*> &expect_list, map<ObjId, 
     int  nfds = ::epoll_wait(_epoll_fd, _epoll_events, _epoll_size, wait_time);
     if (nfds == -1)
     {
-        LOG_DEBUG("epoll_wait fail [%s]\n", strerror(errno));          
+        LOG_DEBUG("epoll_wait fail [%s]", strerror(errno));          
         if (errno == EINTR)
             return 0;
         THROW_COMMON_EXCEPT("epoll_wait fail "<< strerror(errno));          

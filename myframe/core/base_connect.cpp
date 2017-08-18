@@ -88,7 +88,7 @@ ssize_t base_connect::SEND(const void *buf, const size_t len)
         THROW_COMMON_EXCEPT("close the socket " << _fd);
     }
 
-    ssize_t ret =  send(_fd, buf, len, MSG_DONTWAIT);
+    ssize_t ret =  send(_fd, buf, len, MSG_DONTWAIT | MSG_NOSIGNAL);
     if (ret < 0)
     {
         if (errno != EAGAIN && errno != EWOULDBLOCK)
@@ -116,7 +116,7 @@ void base_connect::real_recv()
 
     if (_recv_buf.length() > 0)
     {
-        LOG_DEBUG("process_recv_buf _recv_buf_len[%d] fd[%d]\n", _recv_buf.length(), _fd);
+        LOG_DEBUG("process_recv_buf _recv_buf_len[%d] fd[%d]", _recv_buf.length(), _fd);
         size_t p_ret = _process->process_recv_buf((char*)_recv_buf.c_str(), _recv_buf.length());
         if (p_ret && p_ret <= _recv_buf.length())
         {
