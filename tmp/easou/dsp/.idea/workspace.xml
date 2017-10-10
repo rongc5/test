@@ -26,7 +26,7 @@
       <file leaf-file-name="__main__.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/dsp_server/__main__.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="101" column="29" selection-start="3740" selection-end="3740" vertical-scroll-proportion="0.0" vertical-offset="1691" max-vertical-offset="3515">
+            <state line="173" column="0" selection-start="6025" selection-end="6056" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3515">
               <folding>
                 <element signature="e#36#85#0" expanded="true" />
               </folding>
@@ -34,13 +34,51 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="thread_pool_http.py" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="find.py" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/../../../python/find.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="9" column="0" selection-start="68" selection-end="68" vertical-scroll-proportion="0.29081634" vertical-offset="0" max-vertical-offset="722">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="__init__.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="jar://D:/Python27/Lib/site-packages/redis-2.8.0-py2.7.egg!/redis/__init__.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="703">
+              <folding>
+                <element signature="e#0#43#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="client.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="jar://D:/Python27/Lib/site-packages/redis-2.8.0-py2.7.egg!/redis/client.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="1382" column="31" selection-start="50260" selection-end="50260" vertical-scroll-proportion="0.0" vertical-offset="25701" max-vertical-offset="40508">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="thread_pool_http.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/../../../python/thread_pool_http.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="120" column="27" selection-start="6414" selection-end="6414" vertical-scroll-proportion="0.6909091" vertical-offset="1900" max-vertical-offset="4047">
+            <state line="120" column="27" selection-start="6406" selection-end="6406" vertical-scroll-proportion="0.0" vertical-offset="2565" max-vertical-offset="4047">
               <folding>
                 <element signature="e#36#75#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="asp_parse.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/../../../python/asp_parse.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="34" column="10" selection-start="1366" selection-end="1389" vertical-scroll-proportion="0.0" vertical-offset="907" max-vertical-offset="1596">
+              <folding />
             </state>
           </provider>
         </entry>
@@ -55,8 +93,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/../dsp_test/dsp_test_server.py" />
-        <option value="$PROJECT_DIR$/dsp_server/__main__.py" />
         <option value="$PROJECT_DIR$/jsp/test.py" />
         <option value="$PROJECT_DIR$/../../../stock/py/get_stock_id.py" />
         <option value="$PROJECT_DIR$/../../../comment/app_snssdk/commit_headline.py" />
@@ -71,6 +107,8 @@
         <option value="$PROJECT_DIR$/../../../stock/py/save_stock_detail.py" />
         <option value="$PROJECT_DIR$/../../../stock/py/inquire_stock.py" />
         <option value="$PROJECT_DIR$/../../../python/thread_pool_http.py" />
+        <option value="$PROJECT_DIR$/dsp_server/__main__.py" />
+        <option value="$PROJECT_DIR$/../../../python/find.py" />
       </list>
     </option>
   </component>
@@ -130,16 +168,6 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="app_snssdk" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="dsp" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
               <option name="myItemId" value="dsp" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -184,12 +212,12 @@
   <component name="PropertiesComponent">
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="recentsLimit" value="5" />
     <property name="options.lastSelected" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="recentsLimit" value="5" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../../python" />
     <property name="FullScreen" value="false" />
-    <property name="options.splitter.details.proportions" value="0.2" />
     <property name="options.searchVisible" value="true" />
+    <property name="options.splitter.details.proportions" value="0.2" />
   </component>
   <component name="PyConsoleOptionsProvider">
     <option name="myPythonConsoleState">
@@ -300,6 +328,9 @@
       <option name="PARAMETERS" value="" />
       <method />
     </configuration>
+    <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug" singleton="true">
+      <method />
+    </configuration>
     <configuration default="true" type="tests" factoryName="Unittests">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -321,9 +352,6 @@
       <option name="PUREUNITTEST" value="true" />
       <option name="PARAMS" value="" />
       <option name="USE_PARAM" value="false" />
-      <method />
-    </configuration>
-    <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug" singleton="true">
       <method />
     </configuration>
     <configuration default="true" type="tests" factoryName="Doctests">
@@ -422,121 +450,107 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/../../../stock/py/mysql.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="60" column="14" selection-start="1743" selection-end="1749" vertical-scroll-proportion="0.31292516" vertical-offset="956" max-vertical-offset="2432">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../../stock/py/save_stock_detail.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="117" column="26" selection-start="3038" selection-end="3038" vertical-scroll-proportion="0.5153061" vertical-offset="1901" max-vertical-offset="2489">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../../stock/py/save_stock_ddx.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="105" column="17" selection-start="2881" selection-end="2883" vertical-scroll-proportion="-0.032312926" vertical-offset="1995" max-vertical-offset="2793">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../../stock/py/get_plate_urls.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="71" column="0" selection-start="1725" selection-end="1933" vertical-scroll-proportion="0.030612245" vertical-offset="1293" max-vertical-offset="1881">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../../../stock/py/save_stock_list.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="100" column="4" selection-start="2741" selection-end="2799" vertical-scroll-proportion="-0.033043478" vertical-offset="1900" max-vertical-offset="3040">
-          <folding />
-        </state>
+        <state line="100" column="4" selection-start="2741" selection-end="2799" vertical-scroll-proportion="-0.033043478" vertical-offset="1900" max-vertical-offset="3040" />
       </provider>
     </entry>
     <entry file="file://D:/Python27/Lib/Queue.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="106" column="8" selection-start="3866" selection-end="3866" vertical-scroll-proportion="-0.15136054" vertical-offset="2103" max-vertical-offset="4750">
-          <folding />
-        </state>
+        <state line="106" column="8" selection-start="3866" selection-end="3866" vertical-scroll-proportion="-0.15136054" vertical-offset="2103" max-vertical-offset="4750" />
       </provider>
     </entry>
     <entry file="file://D:/Python27/Lib/SocketServer.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="127" column="0" selection-start="5266" selection-end="5266" vertical-scroll-proportion="0.1292517" vertical-offset="2337" max-vertical-offset="14003">
           <folding>
-            <element signature="e#5289#5302#0" expanded="true" />
+            <element signature="e#5289#5302#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://D:/Python27/Lib/SimpleHTTPServer.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="41" column="14" selection-start="913" selection-end="919" vertical-scroll-proportion="0.13945578" vertical-offset="564" max-vertical-offset="4237">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/dsp_server/utils.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="3" column="0" selection-start="37" selection-end="50" vertical-scroll-proportion="0.096938774" vertical-offset="0" max-vertical-offset="1235">
-          <folding />
-        </state>
+        <state line="41" column="14" selection-start="913" selection-end="919" vertical-scroll-proportion="0.13945578" vertical-offset="564" max-vertical-offset="4237" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/recharge/dsp/__main__.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="-2.7142856" vertical-offset="1596" max-vertical-offset="2489">
-          <folding />
-        </state>
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="-2.7142856" vertical-offset="1596" max-vertical-offset="2489" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/jsp/test.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="575">
-          <folding />
-        </state>
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="575" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/../../../stock/py/get_stock_id.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="94" column="35" selection-start="2258" selection-end="2258" vertical-scroll-proportion="2.8095238" vertical-offset="96" max-vertical-offset="1995">
-          <folding />
-        </state>
+        <state line="94" column="35" selection-start="2258" selection-end="2258" vertical-scroll-proportion="2.8095238" vertical-offset="96" max-vertical-offset="1995" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/../../../python/asplog_2_json_ok.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="-1.4869565" vertical-offset="855" max-vertical-offset="1463">
-          <folding />
-        </state>
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="-1.4869565" vertical-offset="855" max-vertical-offset="1463" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/../../../python/asplog_2_json.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="-2.3373914" vertical-offset="1344" max-vertical-offset="1919">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="-2.3373914" vertical-offset="1344" max-vertical-offset="1919" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dsp_server/utils.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="13" column="12" selection-start="208" selection-end="208" vertical-scroll-proportion="0.42006803" vertical-offset="0" max-vertical-offset="1235">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/dsp_server/__main__.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="101" column="29" selection-start="3740" selection-end="3740" vertical-scroll-proportion="0.0" vertical-offset="1691" max-vertical-offset="3515">
+        <state line="173" column="0" selection-start="6025" selection-end="6056" vertical-scroll-proportion="0.0" vertical-offset="2927" max-vertical-offset="3515">
           <folding>
             <element signature="e#36#85#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/../../../python/asp_parse.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="34" column="10" selection-start="1366" selection-end="1389" vertical-scroll-proportion="0.0" vertical-offset="451" max-vertical-offset="1596">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/../../../python/thread_pool_http.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="120" column="27" selection-start="6414" selection-end="6414" vertical-scroll-proportion="0.6909091" vertical-offset="1900" max-vertical-offset="4047">
+        <state line="120" column="27" selection-start="6406" selection-end="6406" vertical-scroll-proportion="0.0" vertical-offset="2280" max-vertical-offset="4047">
           <folding>
             <element signature="e#36#75#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://D:/Python27/Lib/site-packages/redis-2.8.0-py2.7.egg!/redis/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="703">
+          <folding>
+            <element signature="e#0#43#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://D:/Python27/Lib/site-packages/redis-2.8.0-py2.7.egg!/redis/client.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="1382" column="31" selection-start="50260" selection-end="50260" vertical-scroll-proportion="0.0" vertical-offset="25701" max-vertical-offset="40508">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../../python/find.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="9" column="0" selection-start="68" selection-end="68" vertical-scroll-proportion="0.29081634" vertical-offset="0" max-vertical-offset="722">
+          <folding />
         </state>
       </provider>
     </entry>
