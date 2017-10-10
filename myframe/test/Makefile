@@ -26,7 +26,7 @@ Ctags	:
 
 clean	:
 	/bin/rm -f *.o 
-	/bin/rm -f *~~ 
+	/bin/rm -f *~
 	rm -f $(server) $(client);
 
 $(client):client.o

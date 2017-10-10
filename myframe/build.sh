@@ -14,9 +14,19 @@ path=`pwd`
 base_file=`basename $path`
 
 if [ $# == 0 ]; then
+    i=0
+    while [ $i -lt ${#arr[@]} ]
+    do
+        cd  ${arr[$i]} && ./build.sh all
+        cp lib/lib*.a ../lib
+        cp core/*.h include
+        let i+=1
+        cd ..
+    done
     make -f $mk clean && make -j8 -f $mk
-    mv core/lib*.a lib
+    cp core/lib*.a lib
     cp core/*.h include
+    (cd test && make clean && make)
 elif [ $# == 1 ];then
     if [ $1 == "clean" ];then
         make -f $mk clean
@@ -26,18 +36,6 @@ elif [ $# == 1 ];then
         while [ $i -lt ${#arr[@]} ]
         do
             cd  ${arr[$i]} && ./build.sh clean
-            let i+=1
-            cd ..
-        done
-    elif [ $1 == "all" ]; then
-        make -f $mk clean && make -j8 -f $mk
-        mv core/lib*.a lib
-        cp core/*.h include
-        (cd test && make clean && make)
-        i=0
-        while [ $i -lt ${#arr[@]} ]
-        do
-            cd  ${arr[$i]} && ./build.sh all
             let i+=1
             cd ..
         done
