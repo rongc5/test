@@ -1,7 +1,7 @@
 #/bin/sh
 
 
-arr=('string2sign')
+arr=('str2sign')
 
 
 rm -rf lib include
