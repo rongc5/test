@@ -79,22 +79,6 @@ bool common_obj_container::push_real_net(base_net_obj *p_obj)
     return true;
 }
 
-bool common_obj_container::remove_real_net(base_net_obj *p_obj)
-{
-    if (obj_id->_thread_index != get_net_thread()->get_thread_index()){
-        return false;
-    }
-
-    uint32_t sign[2];
-    sign[0] = p_obj->get_id()._id;
-    sign[1] = 0;
-
-    _obj_net_map->remove_node(sign);
-
-    return true;
-
-}
-
 
 bool common_obj_container::insert(base_net_obj *p_obj)
 {
@@ -142,6 +126,7 @@ bool common_obj_container::erase(ObjId *obj_id)
 
         _obj_net_map.remove_node(sign);
         _obj_map.remove_node(sign);
+        p_obj->destroy();
         ret = true;
     }
 
@@ -172,9 +157,13 @@ void common_obj_container::obj_process()
             p_data != _obj_net_map->get_end(&m_tranverse);
             p_data = _obj_net_map->get_next(&m_tranverse, sign)) {
 
+        (*p_data)->destroy();
         
+        
+        map<ObjId, base_net_obj*>::iterator aa_itr = tmp_itr;
         try
         {
+            ++tmp_itr;
             //LOG_DEBUG("step1: _id:%d, _thread_index:%d", aa_itr->second->get_id()._id, aa_itr->second->get_id()._thread_index);            
             (*p_data)->real_net_process();            
             if (!(*p_data)->get_real_net()) {
@@ -183,7 +172,7 @@ void common_obj_container::obj_process()
             
             if ((*p_data)->is_remove()) {
                 _p_epoll->del_from_epoll((*p_data)->get_id());
-                (*p_data)->set_remove(false);
+                aa_itr->second->set_remove(false);
                 _obj_net_map.erase(aa_itr);
                 _obj_map.erase(aa_itr->second->get_id());
             }

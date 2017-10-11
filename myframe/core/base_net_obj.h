@@ -17,6 +17,8 @@ class base_net_obj: public normal_msg
         bool get_real_net();
         void set_real_net(bool real_net);
 
+        virtual void remove_ret
+
         bool is_remove();
         void set_remove(bool is_remove);
 

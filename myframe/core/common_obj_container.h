@@ -16,11 +16,12 @@ class common_obj_container:public base_net_container
 
         virtual ~common_obj_container();
 
-        virtual void push_real_net(base_net_obj *p_obj);
+        virtual bool push_real_net(base_net_obj *p_obj);
+        virtual bool remove_real_net(base_net_obj *p_obj);
 
         virtual base_net_obj* find(const ObjId * obj_id);
 
-        virtual void insert(base_net_obj *p_obj);
+        virtual bool insert(base_net_obj *p_obj);
         virtual bool erase(ObjId *obj_id);
 
         virtual void put_msg(ObjId & id, normal_msg * p_msg);
