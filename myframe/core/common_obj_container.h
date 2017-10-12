@@ -22,7 +22,7 @@ class common_obj_container:public base_net_container
         virtual base_net_obj* find(const ObjId * obj_id);
 
         virtual bool insert(base_net_obj *p_obj);
-        virtual bool erase(ObjId *obj_id);
+        virtual bool erase(const ObjId *obj_id);
 
         virtual void put_msg(ObjId & id, normal_msg * p_msg);
 

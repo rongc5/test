@@ -67,7 +67,7 @@ common_obj_container::~common_obj_container()
 
 bool common_obj_container::push_real_net(base_net_obj *p_obj)
 {
-    if (obj_id->_thread_index != get_net_thread()->get_thread_index()){
+    if (p_obj->get_id()._thread_index != get_net_thread()->get_thread_index()){
         return false;
     }
     uint32_t sign[2];
@@ -81,7 +81,7 @@ bool common_obj_container::push_real_net(base_net_obj *p_obj)
 
 bool common_obj_container::remove_real_net(base_net_obj *p_obj)
 {
-    if (obj_id->_thread_index != get_net_thread()->get_thread_index()){
+    if (p_obj->get_id()._thread_index != get_net_thread()->get_thread_index()){
         return false;
     }
 
@@ -98,7 +98,7 @@ bool common_obj_container::remove_real_net(base_net_obj *p_obj)
 
 bool common_obj_container::insert(base_net_obj *p_obj)
 {
-    if (obj_id->_thread_index != get_net_thread()->get_thread_index()){
+    if (p_obj->get_id()._thread_index != get_net_thread()->get_thread_index()){
         return false;
     }
 
@@ -127,7 +127,7 @@ base_net_obj* common_obj_container::find(const ObjId * obj_id)
     }
 }
 
-bool common_obj_container::erase(ObjId *obj_id)
+bool common_obj_container::erase(const ObjId *obj_id)
 {
     base_net_obj *p_obj = NULL;
     bool ret = false;
@@ -140,8 +140,8 @@ bool common_obj_container::erase(ObjId *obj_id)
     {
         uint32_t sign[2] = {obj_id->_id, 0};
 
-        _obj_net_map.remove_node(sign);
-        _obj_map.remove_node(sign);
+        _obj_net_map->remove_node(sign);
+        _obj_map->remove_node(sign);
         ret = true;
     }
 
@@ -196,15 +196,15 @@ void common_obj_container::obj_process()
         }
     }
 
-    for (vector<base_net_obj*>::iterator tmp_itr = remove_real_net.begin(); 
-            tmp_itr != remove_real_net.end(); tmp_itr++) {
+    for (vector<base_net_obj*>::iterator tmp_itr = real_net_vec.begin(); 
+            tmp_itr != real_net_vec.end(); tmp_itr++) {
         (*tmp_itr)->remove_ret_process();
     }
 
     for (vector<base_net_obj*>::iterator tmp_itr = exception_vec.begin(); 
             tmp_itr != exception_vec.end(); tmp_itr++) {
         remove_real_net(*tmp_itr);
-        erase((*tmp_itr)->get_id());
+        erase(&(*tmp_itr)->get_id());
         (*tmp_itr)->destroy();
     }
 
@@ -215,17 +215,15 @@ void common_obj_container::obj_process()
     for (map<ObjId, base_net_obj*>::iterator itr = exp_list.begin(); itr != exp_list.end(); ++itr)
     {         	
         LOG_DEBUG("step2: _id:%d, _thread_index:%d", itr->second->get_id()._id, itr->second->get_id()._thread_index);            
-        _obj_net_map.erase(itr->second->get_id());
-        _obj_map.erase(itr->second->get_id());
+        remove_real_net(itr->second);
+        erase(&itr->first);
         itr->second->destroy();
     }
 
     for (map<ObjId, base_net_obj*>::iterator itr = remove_list.begin(); itr != remove_list.end(); ++itr)
     {
-        _p_epoll->del_from_epoll(itr->second);
-        itr->second->set_remove(false);
-        _obj_net_map.erase(itr->second->get_id());
-        _obj_map.erase(itr->second->get_id());
+        itr->second->set_real_net(false);
+        itr->second->remove_ret_process();
     }
 
 

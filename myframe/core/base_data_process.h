@@ -19,6 +19,8 @@ class base_data_process
 
         virtual void set_para();
 
+        virtual void remove_ret_process();
+
         virtual void on_connect_comming();
 
         virtual size_t process_recv_buf(const char *buf, size_t len);

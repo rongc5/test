@@ -71,7 +71,7 @@ int common_epoll::epoll_wait(map<ObjId, base_net_obj*> &expect_list, map<ObjId, 
                 {
                     //LOG_DEBUG("get_sock[%d]\n", p->get_sfd());
                     p->event_process(_epoll_events[i].events);
-                    if (p->is_remove()) {
+                    if (p->get_real_net()) {
                         remove_list.insert(make_pair(p->get_id(), p));
                     }
                 }

@@ -5,8 +5,8 @@
 #include "base_net_obj.h"
 #include "base_connect.h"
 
-base_net_thread::base_net_thread(int channel_num):_channel_num(channel_num), _base_container(NULL){
-    _base_container = new common_obj_container(this);
+base_net_thread::base_net_thread(int channel_num, uint32_t obj_num):_channel_num(channel_num), _base_container(NULL){
+    _base_container = new common_obj_container(this, obj_num);
 }
 
 base_net_thread::~base_net_thread(){

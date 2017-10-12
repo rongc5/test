@@ -72,23 +72,6 @@ void base_net_obj::set_real_net(bool real_net, uint32_t key)
 
 void base_net_obj::remove_ret_process()
 {
-    switch (_real_net_key)
-    {
-        case REAL_NET_KEY_REMOVE_REAL_NET:
-            {
-                _p_net_container->remove_real_net(this);
-            }
-            break;
-        case REAL_NET_KEY_REMOVE_CONTAINER:
-            {
-                _p_epoll->del_from_epoll(this);
-                _p_net_container->remove_real_net(this);
-                _p_net_container->erase(&get_id());
-            }
-            break;
-        default:
-            LOG_WARNING("no such _real_net_key:%d", _real_net_key);
-    }
 }
 
 base_net_container * base_net_obj::get_net_container()

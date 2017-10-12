@@ -4,6 +4,7 @@
 #include "common_exception.h"
 #include "base_connect.h"
 #include "base_data_process.h"
+#include "common_epoll.h"
 
 
 base_connect::base_connect(const int32_t sock):base_net_obj(sock)
@@ -60,6 +61,37 @@ int base_connect::real_net_process()
 
     return ret;
 }
+
+void base_connect::remove_ret_process()
+{
+    base_net_container * net_container = get_net_container();
+    common_epoll * p_epoll = net_container->get_epoll();
+
+    if (get_real_net()){
+        return;
+    }
+
+    switch (_real_net_key)
+    {
+        case REAL_NET_KEY_REMOVE_REAL_NET:
+            {
+                net_container->remove_real_net(this);
+                _process->remove_ret_process();
+            }
+            break;
+        case REAL_NET_KEY_REMOVE_CONTAINER:
+            {
+                p_epoll->del_from_epoll(this);
+                net_container->remove_real_net(this);
+                net_container->erase(&get_id());
+                _process->remove_ret_process();
+            }
+            break;
+        default:
+            LOG_WARNING("no such _real_net_key:%d", _real_net_key);
+    }
+}
+
 
 int base_connect::RECV(void *buf, size_t len)
 {
@@ -158,6 +190,7 @@ void base_connect::set_process(base_data_process *p)
 {
     if (_process != NULL && _process != p) {
         delete _process;
+        _process = NULL;
     }   
 
     _process = p;
