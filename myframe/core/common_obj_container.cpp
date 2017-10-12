@@ -167,81 +167,45 @@ void common_obj_container::obj_process()
     inc_dict_t<base_net_obj *>::travel_info_t m_tranverse;
     memset(&m_tranverse, 0, sizeof(m_tranverse));
 
+    vector<base_net_obj *> exception_vec;
+    vector<base_net_obj *> real_net_vec;
+
     uint32_t sign[2];
     for(p_data = _obj_net_map->get_begin(&m_tranverse, sign);
             p_data != _obj_net_map->get_end(&m_tranverse);
-            p_data = _obj_net_map->get_next(&m_tranverse, sign)) {
+            p_data = _obj_net_map->get_next(&m_tranverse, sign)) 
+    {
 
-        
         try
         {
             //LOG_DEBUG("step1: _id:%d, _thread_index:%d", aa_itr->second->get_id()._id, aa_itr->second->get_id()._thread_index);            
             (*p_data)->real_net_process();            
             if (!(*p_data)->get_real_net()) {
-                erase(&(*p_data)->get_id());
-                }
-            
-            if ((*p_data)->is_remove()) {
-                _p_epoll->del_from_epoll((*p_data)->get_id());
-                (*p_data)->set_remove(false);
-                _obj_net_map.erase(aa_itr);
-                _obj_map.erase(aa_itr->second->get_id());
+                real_net_vec.push_back(*p_data);
             }
 
             tmp_num++;
         }
         catch(CMyCommonException &e)
         {
-            //exp_list.insert(make_pair(aa_itr->first,aa_itr->second));
-            _obj_net_map.erase(aa_itr);
-            _obj_map.erase(aa_itr->second->get_id());
-            aa_itr->second->destroy();
+            exception_vec.push_back(*p_data);
         }
         catch(std::exception &e)
         {
-            //exp_list.insert(make_pair(aa_itr->first,aa_itr->second));
-            _obj_net_map.erase(aa_itr);
-            _obj_map.erase(aa_itr->second->get_id());
-            aa_itr->second->destroy();
+            exception_vec.push_back(*p_data);
         }
-        
     }
 
-    for (map<ObjId, base_net_obj*>::iterator tmp_itr = _obj_net_map.begin();tmp_itr != _obj_net_map.end(); )
-    {
-        map<ObjId, base_net_obj*>::iterator aa_itr = tmp_itr;
-        try
-        {
-            ++tmp_itr;
-            //LOG_DEBUG("step1: _id:%d, _thread_index:%d", aa_itr->second->get_id()._id, aa_itr->second->get_id()._thread_index);            
-            aa_itr->second->real_net_process();            
-            if (!aa_itr->second->get_real_net()) {
-                _obj_net_map.erase(aa_itr);
-            }
-            
-            if (aa_itr->second->is_remove()) {
-                _p_epoll->del_from_epoll(aa_itr->second);
-                aa_itr->second->set_remove(false);
-                _obj_net_map.erase(aa_itr);
-                _obj_map.erase(aa_itr->second->get_id());
-            }
+    for (vector<base_net_obj*>::iterator tmp_itr = remove_real_net.begin(); 
+            tmp_itr != remove_real_net.end(); tmp_itr++) {
+        (*tmp_itr)->remove_ret_process();
+    }
 
-            tmp_num++;
-        }
-        catch(CMyCommonException &e)
-        {
-            //exp_list.insert(make_pair(aa_itr->first,aa_itr->second));
-            _obj_net_map.erase(aa_itr);
-            _obj_map.erase(aa_itr->second->get_id());
-            aa_itr->second->destroy();
-        }
-        catch(std::exception &e)
-        {
-            //exp_list.insert(make_pair(aa_itr->first,aa_itr->second));
-            _obj_net_map.erase(aa_itr);
-            _obj_map.erase(aa_itr->second->get_id());
-            aa_itr->second->destroy();
-        }
+    for (vector<base_net_obj*>::iterator tmp_itr = exception_vec.begin(); 
+            tmp_itr != exception_vec.end(); tmp_itr++) {
+        remove_real_net(*tmp_itr);
+        erase((*tmp_itr)->get_id());
+        (*tmp_itr)->destroy();
     }
 
     map<ObjId, base_net_obj*> exp_list;

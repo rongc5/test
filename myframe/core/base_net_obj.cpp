@@ -15,7 +15,7 @@ base_net_obj::base_net_obj(const int32_t sock)
     _p_net_container = NULL;
     _msg_op = MSG_CONNECT;
     _real_net = false;
-    _is_remove = false;
+    _real_net_key = 0;
 }
 
 base_net_obj::~base_net_obj()
@@ -60,23 +60,35 @@ bool base_net_obj::get_real_net()
     return _real_net;
 }
 
-void base_net_obj::set_real_net(bool real_net)
+void base_net_obj::set_real_net(bool real_net, uint32_t key)
 {
     
     _real_net = real_net;
+    _real_net_key = key;
     if (_real_net) {
         _p_net_container->push_real_net(this);
     }
 }
 
-bool base_net_obj::is_remove()
+void base_net_obj::remove_ret_process()
 {
-    return _is_remove;
-}
-
-void base_net_obj::set_remove(bool is_remove)
-{
-    _is_remove = is_remove;
+    switch (_real_net_key)
+    {
+        case REAL_NET_KEY_REMOVE_REAL_NET:
+            {
+                _p_net_container->remove_real_net(this);
+            }
+            break;
+        case REAL_NET_KEY_REMOVE_CONTAINER:
+            {
+                _p_epoll->del_from_epoll(this);
+                _p_net_container->remove_real_net(this);
+                _p_net_container->erase(&get_id());
+            }
+            break;
+        default:
+            LOG_WARNING("no such _real_net_key:%d", _real_net_key);
+    }
 }
 
 base_net_container * base_net_obj::get_net_container()
