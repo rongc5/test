@@ -138,8 +138,5 @@ const int URLESCAPE[] =
 #define CRLF2 "\r\n\r\n"
 
 
-#define REAL_NET_KEY_REMOVE_REAL_NET 1
-#define REAL_NET_KEY_REMOVE_CONTAINER 2
-
 
 #endif

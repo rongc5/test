@@ -11,6 +11,10 @@ web_socket_req_process::web_socket_req_process(base_connect *p):web_socket_proce
 {			
 }
 
+web_socket_req_process::~web_socket_req_process()
+{
+}
+
 ws_req_head_para &web_socket_req_process::get_req_para()
 {
     return _req_para;

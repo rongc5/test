@@ -12,6 +12,8 @@ class web_socket_req_process:public web_socket_process
     public:
         web_socket_req_process(base_connect *p);
 
+        virtual ~web_socket_req_process();
+
         ws_req_head_para &get_req_para();
 
     protected:	   

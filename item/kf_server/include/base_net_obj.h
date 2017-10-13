@@ -17,9 +17,6 @@ class base_net_obj: public normal_msg
         bool get_real_net();
         void set_real_net(bool real_net);
 
-        bool is_remove();
-        void set_remove(bool is_remove);
-
         virtual int real_net_process()=0;
 
         virtual void set_net_container(base_net_container *p_net_container);
@@ -44,7 +41,6 @@ class base_net_obj: public normal_msg
         int _fd;	
         ObjId _id_str;
         bool _real_net;
-        bool _is_remove;
 };
 
 

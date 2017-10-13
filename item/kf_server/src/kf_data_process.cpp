@@ -31,20 +31,24 @@ void kf_data_process::header_recv_finish()
     
     string * tmp_str = req_head_para.get_header("Upgrade");
     if (tmp_str && strcasestr(tmp_str->c_str(), "websocket")) {
-        get_base_connect()->set_real_net(true, REAL_NET_KEY_REMOVE_CONTAINER);
+        base_net_container * net_container = get_base_connect()->get_net_container();
+
+        common_epoll *p_epoll = net_container->get_epoll();
+
+        p_epoll->del_from_epoll(get_base_connect());
+        net_container->remove_real_net(get_base_connect());
+        net_container->erase(&(get_base_connect()->get_id()));
+
+        get_base_connect()->_msg_op = PASS_NEW_MSG;
+
+        base_net_thread * net_thread = get_base_connect()->get_net_container()->get_net_thread();
+        ObjId id;
+        id._thread_index = net_thread->get_thread_index();
+        net_thread->put_msg(id, get_base_connect());
         LOG_DEBUG("this is websocket");
     } else {
         _body.append("just a test");
     }
-}
-
-void kf_data_process::remove_ret_process()
-{
-    get_base_connect()->_msg_op = PASS_NEW_MSG;
-    base_net_thread * net_thread = get_base_connect()->get_net_container()->get_net_thread();
-    ObjId id;
-    id._thread_index = net_thread->get_thread_index();
-    net_thread->put_msg(id, get_base_connect());
 }
 
 void kf_data_process::msg_recv_finish()

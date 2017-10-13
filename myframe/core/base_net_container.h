@@ -15,8 +15,8 @@ class base_net_container
         virtual ~base_net_container();
 
         virtual bool push_real_net(base_net_obj *p_obj) = 0;
-        virtual bool remove_real_net(base_net_obj *p_obj) = 0;
         virtual base_net_obj* find(const ObjId * obj_id) = 0;
+        virtual bool remove_real_net(base_net_obj *p_obj) = 0;
 
         virtual bool insert(base_net_obj *p_obj) = 0;
         virtual bool erase(const ObjId *_obj_id) = 0;

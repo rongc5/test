@@ -10,7 +10,11 @@
 class kf_data_process:public http_base_data_process
 {
     public:
+
         kf_data_process(http_base_process * _p_process);
+
+        virtual ~kf_data_process(){}
+
         virtual string *get_send_body(int &result);
 
         virtual void header_recv_finish();

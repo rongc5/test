@@ -13,6 +13,7 @@ class base_connect:public base_net_obj
 
         virtual ~base_connect();
 
+
         virtual void event_process(int event);
         virtual int real_net_process();
 

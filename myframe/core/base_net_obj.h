@@ -15,9 +15,7 @@ class base_net_obj: public normal_msg
         virtual void event_process(int events) = 0;
 
         bool get_real_net();
-        void set_real_net(bool real_net, uint32_t key = 0);
-
-        virtual void remove_ret_process();
+        void set_real_net(bool real_net);
 
         virtual int real_net_process()=0;
 
@@ -43,7 +41,6 @@ class base_net_obj: public normal_msg
         int _fd;	
         ObjId _id_str;
         bool _real_net;
-        uint32_t _real_net_key;
 };
 
 

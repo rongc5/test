@@ -67,12 +67,9 @@ common_obj_container::~common_obj_container()
 
 bool common_obj_container::push_real_net(base_net_obj *p_obj)
 {
-    if (p_obj->get_id()._thread_index != get_net_thread()->get_thread_index()){
-        return false;
-    }
     uint32_t sign[2];
     sign[0] = p_obj->get_id()._id;
-    sign[1] = 0;
+    sign[1] = p_obj->get_id()._thread_index;
 
     _obj_net_map->add_node(sign, &p_obj);
 
@@ -81,13 +78,9 @@ bool common_obj_container::push_real_net(base_net_obj *p_obj)
 
 bool common_obj_container::remove_real_net(base_net_obj *p_obj)
 {
-    if (p_obj->get_id()._thread_index != get_net_thread()->get_thread_index()){
-        return false;
-    }
-
     uint32_t sign[2];
     sign[0] = p_obj->get_id()._id;
-    sign[1] = 0;
+    sign[1] = p_obj->get_id()._thread_index;
 
     _obj_net_map->remove_node(sign);
 
@@ -98,14 +91,10 @@ bool common_obj_container::remove_real_net(base_net_obj *p_obj)
 
 bool common_obj_container::insert(base_net_obj *p_obj)
 {
-    if (p_obj->get_id()._thread_index != get_net_thread()->get_thread_index()){
-        return false;
-    }
-
     p_obj->set_id(gen_id_str());
     uint32_t sign[2];
     sign[0] = p_obj->get_id()._id;
-    sign[1] = 0;
+    sign[1] = p_obj->get_id()._thread_index;
 
     _obj_map->add_node(sign, &p_obj);
 
@@ -114,11 +103,8 @@ bool common_obj_container::insert(base_net_obj *p_obj)
 
 base_net_obj* common_obj_container::find(const ObjId * obj_id)
 {
-    if (obj_id->_thread_index != get_net_thread()->get_thread_index()){
-        return NULL;
-    }
 
-    uint32_t sign[2] = {obj_id->_id, 0};
+    uint32_t sign[2] = {obj_id->_id, obj_id->_thread_index};
     base_net_obj** p_obj = _obj_map->seek_node(sign);
     if (!p_obj){
         return NULL;
@@ -138,7 +124,7 @@ bool common_obj_container::erase(const ObjId *obj_id)
     p_obj = find(obj_id);
     if (p_obj != NULL)
     {
-        uint32_t sign[2] = {obj_id->_id, 0};
+        uint32_t sign[2] = {obj_id->_id, obj_id->_thread_index};
 
         _obj_net_map->remove_node(sign);
         _obj_map->remove_node(sign);
@@ -198,7 +184,7 @@ void common_obj_container::obj_process()
 
     for (vector<base_net_obj*>::iterator tmp_itr = real_net_vec.begin(); 
             tmp_itr != real_net_vec.end(); tmp_itr++) {
-        (*tmp_itr)->remove_ret_process();
+        remove_real_net(*tmp_itr);
     }
 
     for (vector<base_net_obj*>::iterator tmp_itr = exception_vec.begin(); 
@@ -223,7 +209,7 @@ void common_obj_container::obj_process()
     for (map<ObjId, base_net_obj*>::iterator itr = remove_list.begin(); itr != remove_list.end(); ++itr)
     {
         itr->second->set_real_net(false);
-        itr->second->remove_ret_process();
+        remove_real_net(itr->second);
     }
 
 

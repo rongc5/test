@@ -13,6 +13,10 @@ http_base_data_process::http_base_data_process(http_base_process * _p_process):
     _base_process = _p_process;
 }
 
+http_base_data_process::~http_base_data_process()
+{
+}
+
 
 string *http_base_data_process::get_send_body(int &result)
 {

@@ -10,7 +10,7 @@ class base_net_container;
 class base_net_thread:public base_thread
 {
     public:
-        base_net_thread(int channel_num = 1);
+        base_net_thread(int channel_num = 1, uint32_t obj_num=5003);
         virtual ~base_net_thread();
 
         virtual void *run();

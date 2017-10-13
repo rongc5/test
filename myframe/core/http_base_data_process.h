@@ -13,6 +13,8 @@ class http_base_data_process: public base_data_process
 
         http_base_data_process(http_base_process * _p_process);
 
+        virtual ~http_base_data_process();
+
 		//result:0 正常返回  1: 结束获取发送包， 一般情况下上层自动会判断
 		//return NULL 底层就删除写事件, 正常返回将要发送的包体
         virtual string *get_send_body(int &result);

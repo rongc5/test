@@ -44,7 +44,7 @@ LIBNAME=myframe
 all	: $(LIBNAME)
 
 clean	:
-	/bin/rm -rf  $(OBJ) lib$(LIBNAME).a
+	/bin/rm -rf  $(OBJ) $(SRC_DIR)/lib$(LIBNAME).a
 
 #=================================================
 $(LIBNAME):$(OBJ)

@@ -16,7 +16,6 @@ class base_connect:public base_net_obj
 
         virtual void event_process(int event);
         virtual int real_net_process();
-        virtual void remove_ret_process();
 
         void set_process(base_data_process *p);
 
