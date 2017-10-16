@@ -1,87 +1,136 @@
 #!/usr/bin/env python
-#encoding=gbk
+#encoding=utf-8
 
-import urllib2
+
 import json
 import time
+import os
+import pycurl
+import cStringIO
+import gzip, string
+import unicodedata
 
 
 __author__ = 'rong'
 
 
+def httpGetContent(url):
+    str = ''
+    buf = cStringIO.StringIO()
+    header = cStringIO.StringIO()
+    c = pycurl.Curl()
+    c.setopt(c.URL, url)
+    c.setopt(c.WRITEFUNCTION, buf.write)
+    c.setopt(c.CONNECTTIMEOUT, 10)
+    c.setopt(c.TIMEOUT, 10)
+
+    print url
+    c.setopt(pycurl.USERAGENT, 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.113 Safari/537.36')
+    c.setopt(pycurl.ENCODING, 'gzip, deflate')
+    c.setopt(pycurl.TCP_NODELAY, 1)
+
+    c.setopt(c.HTTPHEADER, ['Accept: */*','Connection:keep-alive','Accept-Language:zh-CN,zh;q=0.8,en;q=0.6'])
+    c.setopt(pycurl.HTTPGET, 1)
+    c.setopt(c.HEADERFUNCTION, header.write)
+    try:
+        c.perform()
+        str = '%s' % (buf.getvalue())
+        #print 'hello', str
+    except pycurl.error, error:
+        errno, errstr = error
+        print 'An error occurred: ', errstr
+    c.close()
+    buf.close()
+    header.close()
+    return str
+
+
+
+def GzipStream(streams):
+    "ç”¨äºå¤„ç†å®¹å¯åŠ¨gzipå‹ç¼©"
+    if streams:
+        data = cStringIO.StringIO(streams)
+        g = gzip.GzipFile('', 'rb', 9, data)
+        return g.read()
+
+
+
 
 #
-#³É½»Ã÷Ï¸
+#æˆäº¤æ˜ç»†
 def get_stockid_detail(id, date):
     url = 'http://market.finance.sina.com.cn/downxls.php?date=%s&symbol=%s' % (date, id)
-    res = urllib2.urlopen(url).read()
+    res = httpGetContent(url)
     file_object = open('%s_%s_detail' % (id, date), 'w')
     file_object.write(res)
     file_object.close( )
 
 
-#ÊµÊ±ĞĞÇé
+#å®æ—¶è¡Œæƒ…
 def get_stockid_real_time(id):
-
-    user_agent = '"Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Mobile Safari/537.36"'
-
-    headers = { 'User-Agent' : user_agent }
-
     url = 'http://qt.gtimg.cn/q=%s' % (id)
-    req = urllib2.Request(url, headers = headers)
-    res=urllib2.urlopen(req).read()
-    #res = urllib2.urlopen(url, headers = headers).read()
+    res = httpGetContent(url)
+    print res
     value = res.split('=')[1]
     stocklist = value.split('~')
     stockdict = {}
-    stockdict['id'] = id.decode("unicode_escape").encode("gbk")
-    stockdict['code'] = stocklist[2]                           # ¹ÉÆ±´úÂë
-    #stockdict['name'] = unicode(stocklist[1], 'gbk')  # ¹ÉÆ±Ãû³Æ
-    stockdict['last_closing'] = float(stocklist[4])    # ×òÈÕÊÕÅÌ¼Û¸ñ
-    stockdict['start'] = float(stocklist[5])           # ¿ªÅÌ¼Û¸ñ
-    stockdict['end'] = float(stocklist[3])             # µ±Ç°ÊÕÅÌ¼Û¸ñ£¨¿ÉÒÔÊÇµ±Ç°¼Û¸ñ£©
-    stockdict['high'] = float(stocklist[33])           # ×î¸ß¼Û¸ñ
-    stockdict['low'] = float(stocklist[34])            # ×îµÍ¼Û¸ñ
-    stockdict['buyvol'] = int(stocklist[7])             # ÍâÅÌ todo Êı¾İ¶Ô²»ÉÏ
-    stockdict['sellvol'] = int(stocklist[8])           # ÄÚÅÌ todo Êı¾İ¶Ô²»ÉÏ
+    stockdict['id'] = id
+    stockdict['code'] = stocklist[2]                           # è‚¡ç¥¨ä»£ç 
+    #stockdict['name'] = unicode(stocklist[1], 'gbk')  # è‚¡ç¥¨åç§°
+    stockdict['last_closing'] = float(stocklist[4])    # æ˜¨æ—¥æ”¶ç›˜ä»·æ ¼
+    stockdict['start'] = float(stocklist[5])           # å¼€ç›˜ä»·æ ¼
+    stockdict['end'] = float(stocklist[3])             # å½“å‰æ”¶ç›˜ä»·æ ¼ï¼ˆå¯ä»¥æ˜¯å½“å‰ä»·æ ¼ï¼‰
+    stockdict['high'] = float(stocklist[33])           # æœ€é«˜ä»·æ ¼
+    stockdict['low'] = float(stocklist[34])            # æœ€ä½ä»·æ ¼
+    stockdict['buyvol'] = int(stocklist[7])             # å¤–ç›˜ todo æ•°æ®å¯¹ä¸ä¸Š
+    stockdict['sellvol'] = int(stocklist[8])           # å†…ç›˜ todo æ•°æ®å¯¹ä¸ä¸Š
 
-    stockdict['range_price'] = float(stocklist[31])    # ÕÇµø¼Û¸ñ
-    stockdict['range_percent'] = float(stocklist[32])  # ÕÇµø±È%
+    stockdict['range_price'] = float(stocklist[31])    # æ¶¨è·Œä»·æ ¼
+    stockdict['range_percent'] = float(stocklist[32])  # æ¶¨è·Œæ¯”%
 
-    stockdict['volume'] = int(stocklist[6])            # ³É½»Á¿£¨ÊÖ£©
-    stockdict['total_price'] = int(stocklist[37])      # ³É½»¶î£¨ÍòÔª£©
-    stockdict['change_rate'] = float(stocklist[38]) # »»ÊÖÂÊ
-    stockdict['pe'] = float(stocklist[39])          # ÊĞÓ¯ÂÊ
-    stockdict['swing'] = float(stocklist[43])           # Õñ·ù
+    stockdict['volume'] = int(stocklist[6])            # æˆäº¤é‡ï¼ˆæ‰‹ï¼‰
+    stockdict['total_price'] = int(stocklist[37])      # æˆäº¤é¢ï¼ˆä¸‡å…ƒï¼‰
+    stockdict['change_rate'] = float(stocklist[38]) # æ¢æ‰‹ç‡
+    stockdict['pe'] = float(stocklist[39])          # å¸‚ç›ˆç‡
+    stockdict['swing'] = float(stocklist[43])           # æŒ¯å¹…
 
-    stockdict['pb'] = float(stocklist[46])              # ¹ÉÆ±ÊĞ¾»ÂÊ
-    stockdict['date'] = stocklist[30][:8]               # Ê±¼ä
-    stockdict['block'] = False if stockdict['start'] else True #¹ÉÆ±ÊÇ·ñÍ£ÅÆ
+    stockdict['pb'] = float(stocklist[46])              # è‚¡ç¥¨å¸‚å‡€ç‡
+    stockdict['date'] = stocklist[30][:8]               # æ—¶é—´
+    stockdict['block'] = False if stockdict['start'] else True #è‚¡ç¥¨æ˜¯å¦åœç‰Œ
     stockdict['circulation_market_value '] = float(stocklist[44])
     stockdict['total_value '] = float(stocklist[45])
     stockdict['high_limit'] = float(stocklist[47])
     stockdict['low_limit'] = float(stocklist[48])
     return stockdict
 
-#»ñÈ¡ËùÓĞ¹ÉÆ±ÁĞ±í
+#è·å–æ‰€æœ‰è‚¡ç¥¨åˆ—è¡¨
 def get_stock_list():
     #url = 'http://www.shdjt.com/js/lib/astock.js'
     url = 'http://www.ctxalgo.com/api/stocks'
-    res = urllib2.urlopen(url).read()
+    res = httpGetContent(url)
     #print res
     id_dic= json.loads(res)
+
+    file = open('code_all', "w+")
+    for key in id_dic:
+        file.write(unicodedata.normalize('NFKD', key).encode('ascii','ignore'))
+        file.write('\n')
+
+    file.close()
     return id_dic
 
 
-#È¥µôÍ£ÅÆµÈ
+#å»æ‰åœç‰Œç­‰
 def get_basic_list():
     id_dic = get_stock_list()
-
+    #print id_dic
     selected_dic = {}
+
+    file = open('base_list', "w+")
+
     for key in id_dic:
-        time.sleep(3)
-        res = get_stockid_real_time(key)
-        if res['block']:  #Í£ÅÆ
+        res = get_stockid_real_time(unicodedata.normalize('NFKD', key).encode('ascii','ignore'))
+        if res['block']:  #åœç‰Œ
             continue
 
         if res['circulation_market_value '] > 100:
@@ -96,12 +145,23 @@ def get_basic_list():
         if res['change_rate'] < 1:
             continue
 
-        res['name'] = id_dic[key].decode("unicode_escape")
+        #res['name'] = id_dic[key].encode("utf-8")
+        res['name'] = unicodedata.normalize('NFKD', id_dic[key]).encode('ascii','ignore')
+
+        file.write(res['code'])
+        file.write('\t')
+        file.write(res['id'])
+        file.write('\t')
+        file.write(str(res['end']))
+        file.write('\n')
 
         print res
-
+        time.sleep(3)
+    file.close()
 
 if __name__ == '__main__':
+    #str = get_stock_list()
+    #print str
     #id_dic = get_stock_list()
     get_basic_list()
     #for key in id_dic:

@@ -1,7 +1,7 @@
 var WebSocket = require('/usr/local/node/lib/node_modules/ws/')
   , ws = new WebSocket('ws://127.0.0.1:9090');
   ws.on('open', function() {
-      for(var i=0; i<1000; i++){
+      for(var i=0; i<100000; i++){
           ws.send('hello world =======>');
       }
   });
