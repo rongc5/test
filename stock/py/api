@@ -92,11 +92,14 @@ http://http://www.ctxalgo.com/api/stocks
 http://www.shdjt.com/js/lib/astock.js
 
 
-https://github.com/nooperpudd/chinastock/blob/master/httpGet.py
-http://www.shdjt.com/
-github gtimg.cn stock
-
 BeautifulSoup
+
+
+查看财务指标
+http://comdata.finance.gtimg.cn/data/mgzb/sh603113
+
+查看盈利能力
+http://comdata.finance.gtimg.cn/data/ylnl/sh603113
 
 
 查看解禁api

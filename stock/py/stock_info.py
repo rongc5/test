@@ -10,8 +10,178 @@ import gzip, string
 import unicodedata
 import os
 
+from time import strftime, localtime
+from datetime import timedelta, date
+import calendar
+
 
 __author__ = 'rong'
+
+
+class Day():
+    def __init__(self):
+        self.year = strftime("%Y", localtime())
+        self.mon = strftime("%m", localtime())
+        self.day = strftime("%d", localtime())
+        self.hour = strftime("%H", localtime())
+        self.min = strftime("%M", localtime())
+        self.sec = strftime("%S", localtime())
+
+    def today(self):
+     '''''
+     get today,date format="YYYY-MM-DD"
+     '''''
+     return date.today()
+
+
+    def todaystr(self):
+     '''
+     get date string, date format="YYYYMMDD"
+     '''
+     return self.year + self.mon + self.day
+
+
+    def datetime(self):
+     '''''
+     get datetime,format="YYYY-MM-DD HH:MM:SS"
+     '''
+     return strftime("%Y-%m-%d %H:%M:%S", localtime())
+
+
+    def datetimestr(self):
+     '''''
+     get datetime string
+     date format="YYYYMMDDHHMMSS"
+     '''
+     return self.year + self.mon + self.day + self.hour + self.min + self.sec
+
+
+    def get_day_of_day(self, n=0):
+     '''''
+     if n>=0,date is larger than today
+     if n<0,date is less than today
+     date format = "YYYY-MM-DD"
+     '''
+     if (n < 0):
+      n = abs(n)
+      return date.today() - timedelta(days=n)
+     else:
+      return date.today() + timedelta(days=n)
+
+
+    def get_days_of_month(self, year, mon):
+     '''''
+     get days of month
+     '''
+     return calendar.monthrange(year, mon)[1]
+
+
+    def get_firstday_of_month(self, year, mon):
+     '''''
+     get the first day of month
+     date format = "YYYY-MM-DD"
+     '''
+     days = "01"
+     if (int(mon) < 10):
+      mon = "0" + str(int(mon))
+     arr = (year, mon, days)
+     return "-".join("%s" % i for i in arr)
+
+
+    def get_lastday_of_month(self, year, mon):
+     '''''
+     get the last day of month
+     date format = "YYYY-MM-DD"
+     '''
+     days = calendar.monthrange(year, mon)[1]
+     mon = self.addzero(mon)
+     arr = (year, mon, days)
+     return "-".join("%s" % i for i in arr)
+
+
+    def get_firstday_month(self, n=0):
+     '''''
+     get the first day of month from today
+     n is how many months
+     '''
+     (y, m, d) = self.getyearandmonth(n)
+     d = "01"
+     arr = (y, m, d)
+     return "-".join("%s" % i for i in arr)
+
+
+    def get_lastday_month(self, n=0):
+     '''''
+     get the last day of month from today
+     n is how many months
+     '''
+     return "-".join("%s" % i for i in self.getyearandmonth(n))
+
+
+    def getyearandmonth(self, n=0):
+     '''''
+     get the year,month,days from today
+     befor or after n months
+     '''
+     thisyear = int(self.year)
+     thismon = int(self.mon)
+     totalmon = thismon + n
+     if (n >= 0):
+      if (totalmon <= 12):
+       days = str(self.get_days_of_month(thisyear, totalmon))
+       totalmon = self.addzero(totalmon)
+       return (self.year, totalmon, days)
+      else:
+       i = totalmon / 12
+       j = totalmon % 12
+       if (j == 0):
+        i -= 1
+        j = 12
+       thisyear += i
+       days = str(self.get_days_of_month(thisyear, j))
+       j = self.addzero(j)
+       return (str(thisyear), str(j), days)
+     else:
+      if ((totalmon > 0) and (totalmon < 12)):
+       days = str(self.get_days_of_month(thisyear, totalmon))
+       totalmon = self.addzero(totalmon)
+       return (self.year, totalmon, days)
+      else:
+       i = totalmon / 12
+       j = totalmon % 12
+       if (j == 0):
+        i -= 1
+        j = 12
+       thisyear += i
+       days = str(self.get_days_of_month(thisyear, j))
+       j = self.addzero(j)
+       return (str(thisyear), str(j), days)
+
+
+    def addzero(self, n):
+     '''''
+     add 0 before 0-9
+     return 01-09
+     '''
+     nabs = abs(int(n))
+     if (nabs < 10):
+      return "0" + str(nabs)
+     else:
+      return nabs
+
+
+    def get_today_month(self,n=0):
+     '''''
+     获取当前日期前后N月的日期
+     if n>0, 获取当前日期前N月的日期
+     if n<0, 获取当前日期后N月的日期
+     date format = "YYYY-MM-DD"
+     '''
+     (y, m, d) = self.getyearandmonth(n)
+     arr = (y, m, d)
+     if (int(self.day) < int(d)):
+      arr = (y, m, self.day)
+     return "-".join("%s" % i for i in arr)
 
 
 def httpGetContent(url, req_header=[]):
@@ -32,7 +202,7 @@ def httpGetContent(url, req_header=[]):
     c.setopt(pycurl.TCP_NODELAY, 1)
     add_headers = ['Accept:text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
              'Connection:keep-alive','Accept-Language:zh-CN,zh;q=0.8,en;q=0.6','Cache-Control:max-age=0',
-             'DNT:1','Upgrade-Insecure-Requests:1']
+             'DNT:1','Upgrade-Insecure-Requests:1','Accept-Charset: utf-8']
     if len(req_header):
         add_headers.extend(req_header)
 
@@ -50,7 +220,11 @@ def httpGetContent(url, req_header=[]):
         str_head = '%s' % (response_header.getvalue())
         str_body = '%s' % (buf.getvalue())
         res['head'] = str_head
-        res['body'] = str_body
+        print res['head']
+        if 'Content-Encoding' in str_body and 'gzip' in str_body:
+            res['body'] = GzipStream(str_body)
+        else:
+            res['body'] = str_body
         #print 'hello', str
     except pycurl.error, error:
         errno, errstr = error
@@ -76,6 +250,103 @@ def get_stockid_detail(id, date):
     file_object.write(res)
     file_object.close( )
 
+#查看每股财务指标
+def get_stockid_mgzb(id, req_header=[]):
+    url = 'http://comdata.finance.gtimg.cn/data/mgzb/%s' % (id)
+    refer = 'http://stock.finance.qq.com/corp1/cwfx.html?mgzb-%s' %(id)
+    req_header.extend(['Referer: %s' % (refer)])
+    while 1:
+        res = httpGetContent(url, req_header)
+        if len(res) < 2:
+            print url
+            time.sleep(0.2)
+        else:
+            value = res['body'].split('=')[1]
+            id_dic= json.loads(value.strip(';'))
+            if len(id_dic) < 2:
+                continue
+            break
+
+    return id_dic['data']['mgzb']
+
+#查看每股盈利能力
+def get_stockid_ylnl(id, req_header=[]):
+    url = 'http://comdata.finance.gtimg.cn/data/ylnl/%s' % (id)
+    refer = 'http://stock.finance.qq.com/corp1/cwfx.html?ylnl-%s' %(id)
+    req_header.extend(['Referer: %s' % (refer)])
+    while 1:
+        res = httpGetContent(url, req_header)
+        if len(res) < 2:
+            print url
+            time.sleep(0.2)
+        else:
+            value = res['body'].split('=')[1]
+            id_dic= json.loads(value.strip(';'))
+            if len(id_dic) < 2:
+                continue
+            break
+
+    return id_dic['data']['ylnl']
+
+#查看每股成长能力
+def get_stockid_cznl(id, req_header=[]):
+    url = 'http://comdata.finance.gtimg.cn/data/cznl/%s' % (id)
+    refer = 'http://stock.finance.qq.com/corp1/cwfx.html?cznl-%s' %(id)
+    req_header.extend(['Referer: %s' % (refer)])
+    while 1:
+        res = httpGetContent(url, req_header)
+        if len(res) < 2:
+            print url
+            time.sleep(0.2)
+        else:
+            value = res['body'].split('=')[1]
+            id_dic= json.loads(value.strip(';'))
+            if len(id_dic) < 2:
+                continue
+            break
+
+    return id_dic['data']['cznl']
+
+#偿债及资本结构
+def get_stockid_czzb(id, req_header=[]):
+    url = 'http://comdata.finance.gtimg.cn/data/czzb/%s' % (id)
+    refer = 'http://stock.finance.qq.com/corp1/cwfx.html?czzb-%s' %(id)
+    req_header.extend(['Referer: %s' % (refer)])
+    while 1:
+        res = httpGetContent(url, req_header)
+        if len(res) < 2:
+            print url
+            time.sleep(0.2)
+        else:
+            value = res['body'].split('=')[1]
+            id_dic= json.loads(value.strip(';'))
+            if len(id_dic) < 2:
+                continue
+            break
+
+    return id_dic['data']['czzb']
+
+
+#杜邦分析
+def get_stockid_dbfx(id, req_header=[]):
+    url = 'http://comdata.finance.gtimg.cn/data/dbfx/%s' % (id)
+    refer = 'http://stock.finance.qq.com/corp1/dbfx.html?%s' %(id)
+    req_header.extend(['Referer: %s' % (refer)])
+    while 1:
+        res = httpGetContent(url, req_header)
+        if len(res) < 2:
+            print url
+            time.sleep(0.2)
+        else:
+            value = res['body'].split('=')[1]
+            id_dic= json.loads(value.strip(';'))
+            if len(id_dic) < 2:
+                continue
+            break
+
+    return id_dic['data']['dbfx']
+
+
 
 #实时行情
 def get_stockid_real_time(id, req_header=[]):
@@ -97,7 +368,7 @@ def get_stockid_real_time(id, req_header=[]):
                 continue
             break
     #不知道是不是反爬虫， 先请求吧
-    httpGetContent(favicon, 'Referer: %s' % (url))
+    #httpGetContent(favicon, 'Referer: %s' % (url))
     print stocklist
     stockdict = {}
     stockdict['id'] = id
@@ -163,6 +434,29 @@ def get_stock_list():
     file.close()
     return id_dic
 
+#解禁列表
+def get_outDxf_list(start, end, req_header=[]):
+    url = 'http://stock.finance.qq.com//sstock/list/view/dxf.php?c=0&b=%s&e=%s' % (start, end)
+    refer = 'http://finance.qq.com/stock/dxfcx.htm?t=2&mn=%s&mx=%s' %(start, end)
+    req_header.extend(['Referer: %s' % (refer)])
+    #print url
+    while 1:
+        res = httpGetContent(url, req_header)
+        if len(res) < 2:
+            print url
+            time.sleep(0.2)
+        else:
+            value = res['body'].split('=')[1]
+            print value
+            id_dic= json.loads(value)
+            if len(id_dic) < 2:
+                continue
+            break
+
+    print res['head']
+    print id_dic
+    return id_dic
+
 
 #去掉停牌等
 def get_basic_list(id_dic = {}):
@@ -212,17 +506,13 @@ def get_basic_list(id_dic = {}):
         file.write('\t')
         file.write(str(res['total_value']))
         file.write('\t')
-        file.write(str(res['swing']))
-        file.write('\t')
-        file.write(str(res['range_percent']))
-        file.write('\t')
         file.write(res['date'])
 
         file.write('\n')
         file.flush()
 
         print res
-        time.sleep(1)
+        time.sleep(0.2)
     file.close()
 
 
@@ -242,13 +532,17 @@ def do_search():
 
         get_basic_list(id_dic)
 
+
     id_dic = {}
     file = open("base_list")
     while 1:
         line = file.readline().strip()
         if not line:
             break
-        items = line.split(' ')
+        #print 'hello world'
+        items = line.split('\t')
+        if len(items) < 8:
+            continue
         tmp_dic = {}
         tmp_dic['code'] = items[0]
         tmp_dic['id'] = items[1]
@@ -257,15 +551,16 @@ def do_search():
         tmp_dic['pb'] = float(items[4])
         tmp_dic['circulation_market_value'] = float(items[5])
         tmp_dic['total_value'] = float(items[6])
-        tmp_dic['swing'] = float(items[7])
-        tmp_dic['range_percent'] = float(items[8])
-        tmp_dic['date'] = float(items[9])
+        tmp_dic['date'] = float(items[7])
 
         id_dic[tmp_dic['id']] = tmp_dic
+        id_dic['mgzb'] = get_stockid_mgzb(items[1])
+        break
 
+    file.close()
 
-
-
+    day = Day()
+    get_outDxf_list(day.get_day_of_day(-20), day.get_day_of_day(30))
 
 if __name__ == '__main__':
     do_search()
