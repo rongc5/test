@@ -183,8 +183,8 @@ class Day():
       arr = (y, m, self.day)
      return "-".join("%s" % i for i in arr)
 
-
-def httpGetContent(url, req_header=[]):
+#1.0 版本不必支持chunked,
+def httpGetContent(url, req_header=[], version = '1.1'):
 
     buf = cStringIO.StringIO()
     response_header = cStringIO.StringIO()
@@ -200,9 +200,14 @@ def httpGetContent(url, req_header=[]):
     c.setopt(pycurl.USERAGENT, 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.113 Safari/537.36')
     c.setopt(pycurl.ENCODING, 'gzip, deflate')
     c.setopt(pycurl.TCP_NODELAY, 1)
-    add_headers = ['Accept:text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+    if '1.1' in version:
+        add_headers = ['Accept:text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
              'Connection:keep-alive','Accept-Language:zh-CN,zh;q=0.8,en;q=0.6','Cache-Control:max-age=0',
              'DNT:1','Upgrade-Insecure-Requests:1','Accept-Charset: utf-8']
+    else:
+        add_headers = ['Accept:text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+             'Connection:close','Accept-Language:zh-CN,zh;q=0.8,en;q=0.6','Cache-Control:max-age=0']
+        c.setopt(pycurl.HTTP_VERSION, pycurl.CURL_HTTP_VERSION_1_0)
     if len(req_header):
         add_headers.extend(req_header)
 
@@ -220,18 +225,19 @@ def httpGetContent(url, req_header=[]):
         str_head = '%s' % (response_header.getvalue())
         str_body = '%s' % (buf.getvalue())
         res['head'] = str_head
-        print res['head']
+        #print res['head']
         if 'Content-Encoding' in str_body and 'gzip' in str_body:
             res['body'] = GzipStream(str_body)
         else:
             res['body'] = str_body
-        #print 'hello', str
+        #print str_head, str_body
     except pycurl.error, error:
         errno, errstr = error
         print 'An error occurred: ', errstr
     c.close()
     buf.close()
     response_header.close()
+    #print res
     return res
 
 def GzipStream(streams):
@@ -262,10 +268,16 @@ def get_stockid_mgzb(id, req_header=[]):
             time.sleep(0.2)
         else:
             value = res['body'].split('=')[1]
-            id_dic= json.loads(value.strip(';'))
-            if len(id_dic) < 2:
-                continue
-            break
+
+            try:
+                id_dic= json.loads(value.strip(';\n'),  encoding="GB2312")
+                if len(id_dic) < 2:
+                    continue
+                break
+            except Exception,e:
+                print 'hello', value.strip(';\n'), e
+                time.sleep(0.2)
+
 
     return id_dic['data']['mgzb']
 
@@ -281,7 +293,7 @@ def get_stockid_ylnl(id, req_header=[]):
             time.sleep(0.2)
         else:
             value = res['body'].split('=')[1]
-            id_dic= json.loads(value.strip(';'))
+            id_dic= json.loads(value.strip(';\n'), encoding="GB2312")
             if len(id_dic) < 2:
                 continue
             break
@@ -300,10 +312,14 @@ def get_stockid_cznl(id, req_header=[]):
             time.sleep(0.2)
         else:
             value = res['body'].split('=')[1]
-            id_dic= json.loads(value.strip(';'))
-            if len(id_dic) < 2:
-                continue
-            break
+            try:
+                id_dic= json.loads(value.strip(';\n'), encoding="GB2312")
+                if len(id_dic) < 2:
+                    continue
+                break
+            except Exception,e:
+                print e
+                time.sleep(0.2)
 
     return id_dic['data']['cznl']
 
@@ -319,7 +335,7 @@ def get_stockid_czzb(id, req_header=[]):
             time.sleep(0.2)
         else:
             value = res['body'].split('=')[1]
-            id_dic= json.loads(value.strip(';'))
+            id_dic= json.loads(value.strip(';\n'), encoding="GB2312")
             if len(id_dic) < 2:
                 continue
             break
@@ -339,7 +355,7 @@ def get_stockid_dbfx(id, req_header=[]):
             time.sleep(0.2)
         else:
             value = res['body'].split('=')[1]
-            id_dic= json.loads(value.strip(';'))
+            id_dic= json.loads(value.strip(';\n'))
             if len(id_dic) < 2:
                 continue
             break
@@ -347,6 +363,29 @@ def get_stockid_dbfx(id, req_header=[]):
     return id_dic['data']['dbfx']
 
 
+def get_money_flow(id, req_header=[]):
+    url = 'http://qt.gtimg.cn/q=ff_%s' % (id)
+    refer = 'http://finance.qq.com/stock/sother/test_flow_stock_quotpage.htm'
+    while 1:
+        res = httpGetContent(url, req_header)
+        if len(res) < 2:
+            print url
+            time.sleep(1)
+        else:
+            value = res['body'].split('=')[1]
+            stocklist = value.split('~')
+            if len(stocklist) < 10:
+                print url
+                time.sleep(1)
+                continue
+            break
+
+    print stocklist
+    stockdict = {}
+    stockdict['main_force'] = float(stocklist[3])
+
+    if 'Etag:' in res['head']:
+        stockdict['Etag']  = res['head'].split('Etag:')[1].strip()
 
 #实时行情
 def get_stockid_real_time(id, req_header=[]):
@@ -434,14 +473,20 @@ def get_stock_list():
     file.close()
     return id_dic
 
-#解禁列表
+#解禁列表, http 相应数据不全， 后边再处理吧
+#day = Day()
+#
+#    start_day = '%s' % (day.get_day_of_day(-1))
+#    end_day = '%s' % (day.get_day_of_day(1))
+#    print start_day, end_day
+#    get_outDxf_list(start_day.replace('-', ''), end_day.replace('-', ''))
 def get_outDxf_list(start, end, req_header=[]):
     url = 'http://stock.finance.qq.com//sstock/list/view/dxf.php?c=0&b=%s&e=%s' % (start, end)
     refer = 'http://finance.qq.com/stock/dxfcx.htm?t=2&mn=%s&mx=%s' %(start, end)
     req_header.extend(['Referer: %s' % (refer)])
-    #print url
+    print url
     while 1:
-        res = httpGetContent(url, req_header)
+        res = httpGetContent(url, req_header, '1.0')
         if len(res) < 2:
             print url
             time.sleep(0.2)
@@ -453,22 +498,42 @@ def get_outDxf_list(start, end, req_header=[]):
                 continue
             break
 
-    print res['head']
+    #print res['head']
     print id_dic
     return id_dic
 
 
 #去掉停牌等
-def get_basic_list(id_dic = {}):
+def get_basic_list():
     #print id_dic
-    selected_dic = {}
+    id_dic = []
+    if not os.path.isfile('code_all'):
+        id_dic = get_stock_list()
+    else:
+        file = open("code_all")
+        while 1:
+            line = file.readline().strip()
+            if not line:
+                break
+            id_dic.append(line)
+        file.close()
+
 
     file = open('base_list', "w+")
 
+    basic_dic = {}
     header = []
+    flag = False
     for key in id_dic:
-        print header
+        if 'sz002133' in key:
+            flag = True
+        if not flag:
+            continue
+
+        #print header
+        #time.sleep(0.2)
         res = get_stockid_real_time(key, header)
+
         if len(res) < 1:
             continue
 
@@ -489,8 +554,30 @@ def get_basic_list(id_dic = {}):
         if res['pe'] > 90 or res['pe'] < 0:
             continue
 
-        if res['end'] > 40 or res['end'] <= 2:
+        if res['end'] > 20 or res['end'] <= 2:
             continue
+
+        res['mgzb'] = get_stockid_mgzb(key)
+
+
+        if '--' not in res['mgzb'][0]['tbmgsy'] and  float(res['mgzb'][0]['tbmgsy']) < 0.2:
+            continue
+
+        if '--' not in res['mgzb'][0]['mgxjll'] and float(res['mgzb'][0]['mgxjll']) < 0.1:
+            continue
+
+        res['cznl'] = get_stockid_cznl(key)
+        #if float(res['cznl'][0]['mgsy']) < 30:
+        #    continue
+        #
+        #if float(res['cznl'][0]['zysr']) < 30:
+        #    continue
+        #
+        #if float(res['cznl'][0]['yylr']) < 30:
+        #    continue
+
+
+        basic_dic[res['id']] = res
 
         file.write(res['code'])
         file.write('\t')
@@ -506,32 +593,28 @@ def get_basic_list(id_dic = {}):
         file.write('\t')
         file.write(str(res['total_value']))
         file.write('\t')
+        file.write(res['mgzb'][0]['tbmgsy'])
+        file.write('\t')
+        file.write(res['mgzb'][0]['mgxjll'])
+        file.write('\t')
+        file.write(res['cznl'][0]['mgsy'])
+        file.write('\t')
+        file.write(res['cznl'][0]['zysr'])
+        file.write('\t')
+        file.write(res['cznl'][0]['yylr'])
+        file.write('\t')
         file.write(res['date'])
 
         file.write('\n')
         file.flush()
 
         print res
-        time.sleep(0.2)
     file.close()
 
 
-def do_search():
-
+def load_base_list():
     if not os.path.isfile('base_list'):
-        id_dic = {}
-        if not os.path.isfile('code_all'):
-            id_dic = get_stock_list()
-        else:
-            file = open("code_all")
-            while 1:
-                line = file.readline().strip()
-                if not line:
-                    break
-                id_dic[line] = {}
-
-        get_basic_list(id_dic)
-
+        get_basic_list()
 
     id_dic = {}
     file = open("base_list")
@@ -551,19 +634,28 @@ def do_search():
         tmp_dic['pb'] = float(items[4])
         tmp_dic['circulation_market_value'] = float(items[5])
         tmp_dic['total_value'] = float(items[6])
-        tmp_dic['date'] = float(items[7])
+        tmp_dic['tbmgsy'] = items[7]
+        tmp_dic['mgxjll'] = items[8]
+        tmp_dic['mgsy'] = items[9]
+        tmp_dic['zysr'] = items[9]
+        tmp_dic['yylr'] = items[10]
+        tmp_dic['date'] = items[11]
 
-        id_dic[tmp_dic['id']] = tmp_dic
-        id_dic['mgzb'] = get_stockid_mgzb(items[1])
-        break
+        id_dic[items[1]] = tmp_dic
 
     file.close()
 
-    day = Day()
-    get_outDxf_list(day.get_day_of_day(-20), day.get_day_of_day(30))
 
+
+#A股就是个坑， 技术指标低位了， 仍然可以再砸
+#技术指标高位了， 有资金接盘仍然可以涨, 高位始终是危险
+#压力如铁桶，支撑如窗户纸
+#有连续的大单介入才介入， 低位大资金都不介入， 肯定有猫腻
+#业绩好的，下跌， 大资金不介入， 肯定有什么利空， 业绩可以变脸
+#买二--买五是大单， 而买1是小单， 下跌也不买， 明显还没有跌倒位
+#尾盘再考虑是否介入, 要看下DMA, macd, kdj等
 if __name__ == '__main__':
-    do_search()
+    load_base_list()
     #for key in id_dic:
     #    print key, id_dic[key]
     #get_stockid_real_time('sz002859')
