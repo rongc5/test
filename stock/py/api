@@ -97,6 +97,24 @@ BeautifulSoup
 
 查看财务指标
 http://comdata.finance.gtimg.cn/data/mgzb/sh603113
+var data={"code":0,"data":{"zqdm":"002539","zqjc":"\u4e91\u56fe\u63a7\u80a1","nflb":["2017","2016","2015","2014","2013","2012","2011","2010","2009","2008","2007"],"mgzb":[{"bgrq":"2017-06-30","tbmgsy":"0.07","tbmgsykc":"--","jqmgsy":"0.07","jqmgsykc":"0.06","jbmgsy":"0.07","xsmgsy":"0.07","mgjzc":"--","tzhmgjzc":"--","mgxssr":"3.69","mgxjll":"-0.03"},{"bgrq":"2017-03-31","tbmgsy":"0.07","tbmgsykc":"--","jqmgsy":"0.07","jqmgsykc":"--","jbmgsy":"0.07","xsmgsy":"0.07","mgjzc":"--","tzhmgjzc":"--","mgxssr":"1.91","mgxjll":"0.00"},{"bgrq":"2016-12-31","tbmgsy":"0.14","tbmgsykc":"--","jqmgsy":"0.14","jqmgsykc":"0.08","jbmgsy":"0.14","xsmgsy":"0.14","mgjzc":"--","tzhmgjzc":"--","mgxssr":"6.01","mgxjll":"0.03"},{"bgrq":"2016-09-30","tbmgsy":"0.16","tbmgsykc":"--","jqmgsy":"0.16","jqmgsykc":"--","jbmgsy":"0.16","xsmgsy":"0.16","mgjzc":"--","tzhmgjzc":"--","mgxssr":"4.65","mgxjll":"-0.00"}]}};
+mgxjll 每股现金流量(元)
+tbmgsy 摊薄每股收益(元)
+jqmgsy 每股收益(加权)(元)
+
+
+查看成长能力
+http://comdata.finance.gtimg.cn/data/cznl/sz002539
+var data={"code":0,"data":{"zqdm":"002539","zqjc":"\u4e91\u56fe\u63a7\u80a1","nflb":["2016","2015","2014","2013","2012","2011","2010","2009","2008","2007"],"cznl":[{"bgrq":"2016-12-31","mgsy":"-28.85","mgxj":"-80.06","zysr":"4.01","yylr":"-42.23","lrze":"-32.60","jlr":"-28.85","xsqlr":"-23.49","zzc":"1.77"},{"bgrq":"2015-12-31","mgsy":"-42.08","mgxj":"--","zysr":"25.08","yylr":"10.80","lrze":"30.84","jlr":"76.70","xsqlr":"13.73","zzc":"32.81"},{"bgrq":"2014-12-31","mgsy":"6.39","mgxj":"--","zysr":"21.26","yylr":"47.14","lrze":"24.48","jlr":"6.40","xsqlr":"55.55","zzc":"19.89"},{"bgrq":"2013-12-31","mgsy":"-12.84","mgxj":"--","zysr":"12.38","yylr":"50.63","lrze":"2.11","jlr":"-12.84","xsqlr":"26.56","zzc":"10.47"}]}};
+mgsy每股收益增长率(%)
+mgxj每股现金流增长率(%)
+zysr主营收入增长率(%)
+yylr营业利润增长率(%)
+lrze利润总额增长率(%)
+jlr净利润增长率(%)
+
+
+
 
 查看盈利能力
 http://comdata.finance.gtimg.cn/data/ylnl/sh603113
@@ -104,5 +122,6 @@ http://comdata.finance.gtimg.cn/data/ylnl/sh603113
 
 查看解禁api
 http://stock.finance.qq.com/sstock/list/view/dxf.php?c=0&b=20171001&e=20171101
+
 
 

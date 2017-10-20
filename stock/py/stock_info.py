@@ -6,16 +6,59 @@ import json
 import time
 import pycurl
 import cStringIO
-import gzip, string
+import gzip
 import unicodedata
 import os
+import random
 
 from time import strftime, localtime
 from datetime import timedelta, date
 import calendar
 
 
+
 __author__ = 'rong'
+
+
+
+user_agent_list = [
+        "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.1 "
+        "(KHTML, like Gecko) Chrome/22.0.1207.1 Safari/537.1",
+        "Mozilla/5.0 (X11; CrOS i686 2268.111.0) AppleWebKit/536.11 "
+        "(KHTML, like Gecko) Chrome/20.0.1132.57 Safari/536.11",
+        "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/536.6 "
+        "(KHTML, like Gecko) Chrome/20.0.1092.0 Safari/536.6",
+        "Mozilla/5.0 (Windows NT 6.2) AppleWebKit/536.6 "
+        "(KHTML, like Gecko) Chrome/20.0.1090.0 Safari/536.6",
+        "Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.1 "
+        "(KHTML, like Gecko) Chrome/19.77.34.5 Safari/537.1",
+        "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/536.5 "
+        "(KHTML, like Gecko) Chrome/19.0.1084.9 Safari/536.5",
+        "Mozilla/5.0 (Windows NT 6.0) AppleWebKit/536.5 "
+        "(KHTML, like Gecko) Chrome/19.0.1084.36 Safari/536.5",
+        "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/536.3 "
+        "(KHTML, like Gecko) Chrome/19.0.1063.0 Safari/536.3",
+        "Mozilla/5.0 (Windows NT 5.1) AppleWebKit/536.3 "
+        "(KHTML, like Gecko) Chrome/19.0.1063.0 Safari/536.3",
+        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_0) AppleWebKit/536.3 "
+        "(KHTML, like Gecko) Chrome/19.0.1063.0 Safari/536.3",
+        "Mozilla/5.0 (Windows NT 6.2) AppleWebKit/536.3 "
+        "(KHTML, like Gecko) Chrome/19.0.1062.0 Safari/536.3",
+        "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/536.3 "
+        "(KHTML, like Gecko) Chrome/19.0.1062.0 Safari/536.3",
+        "Mozilla/5.0 (Windows NT 6.2) AppleWebKit/536.3 "
+        "(KHTML, like Gecko) Chrome/19.0.1061.1 Safari/536.3",
+        "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/536.3 "
+        "(KHTML, like Gecko) Chrome/19.0.1061.1 Safari/536.3",
+        "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/536.3 "
+        "(KHTML, like Gecko) Chrome/19.0.1061.1 Safari/536.3",
+        "Mozilla/5.0 (Windows NT 6.2) AppleWebKit/536.3 "
+        "(KHTML, like Gecko) Chrome/19.0.1061.0 Safari/536.3",
+        "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/535.24 "
+        "(KHTML, like Gecko) Chrome/19.0.1055.1 Safari/535.24",
+        "Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/535.24 "
+        "(KHTML, like Gecko) Chrome/19.0.1055.1 Safari/535.24" ]
+
 
 
 class Day():
@@ -183,6 +226,20 @@ class Day():
       arr = (y, m, self.day)
      return "-".join("%s" % i for i in arr)
 
+def log_write(filename, str):
+    file = open(filename, 'a')
+    file.write(str)
+    file.write('\n')
+    file.flush()
+    file.close()
+
+
+#主要是针对chunked 模式，没办法搞
+def curl_cmd_get(url):
+    cmd = "curl '%s'" % (url)
+    res = os.popen(cmd).read()
+    return res
+
 #1.0 版本不必支持chunked,
 def httpGetContent(url, req_header=[], version = '1.1'):
 
@@ -192,18 +249,18 @@ def httpGetContent(url, req_header=[], version = '1.1'):
     c.setopt(c.URL, url)
     c.setopt(c.WRITEFUNCTION, buf.write)
     c.setopt(c.CONNECTTIMEOUT, 10)
-    c.setopt(c.TIMEOUT, 10)
+    c.setopt(c.TIMEOUT, 100)
     c.setopt(pycurl.MAXREDIRS, 5)
     c.setopt(pycurl.FOLLOWLOCATION, 1)
 
     #print url
     c.setopt(pycurl.USERAGENT, 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.113 Safari/537.36')
-    c.setopt(pycurl.ENCODING, 'gzip, deflate')
     c.setopt(pycurl.TCP_NODELAY, 1)
     if '1.1' in version:
         add_headers = ['Accept:text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
              'Connection:keep-alive','Accept-Language:zh-CN,zh;q=0.8,en;q=0.6','Cache-Control:max-age=0',
              'DNT:1','Upgrade-Insecure-Requests:1','Accept-Charset: utf-8']
+        c.setopt(pycurl.ENCODING, 'gzip, deflate')
     else:
         add_headers = ['Accept:text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
              'Connection:close','Accept-Language:zh-CN,zh;q=0.8,en;q=0.6','Cache-Control:max-age=0']
@@ -226,10 +283,11 @@ def httpGetContent(url, req_header=[], version = '1.1'):
         str_body = '%s' % (buf.getvalue())
         res['head'] = str_head
         #print res['head']
-        if 'Content-Encoding' in str_body and 'gzip' in str_body:
-            res['body'] = GzipStream(str_body)
-        else:
-            res['body'] = str_body
+        #if 'Content-Encoding' in str_body and 'gzip' in str_body:
+        #    res['body'] = GzipStream(str_body)
+        #else:
+        #    res['body'] = str_body
+        res['body'] = str_body
         #print str_head, str_body
     except pycurl.error, error:
         errno, errstr = error
@@ -261,23 +319,28 @@ def get_stockid_mgzb(id, req_header=[]):
     url = 'http://comdata.finance.gtimg.cn/data/mgzb/%s' % (id)
     refer = 'http://stock.finance.qq.com/corp1/cwfx.html?mgzb-%s' %(id)
     req_header.extend(['Referer: %s' % (refer)])
+    i = 0
     while 1:
-        res = httpGetContent(url, req_header)
-        if len(res) < 2:
-            print url
-            time.sleep(0.2)
-        else:
-            value = res['body'].split('=')[1]
+        try:
+            if not i:
+                res = httpGetContent(url, req_header)
+                value = res['body'].split('=')[1].strip(';\n')
+            else:
+                res = curl_cmd_get(url)
+                value = res.split('=')[1].strip(';\n')
 
-            try:
-                id_dic= json.loads(value.strip(';\n'),  encoding="GB2312")
-                if len(id_dic) < 2:
-                    continue
+            id_dic= json.loads(value,  encoding="GB2312")
+            break
+        except Exception,e:
+            #print url, value, e
+            i = i+1
+            if i > 3:
+                log_write('errcode', id)
                 break
-            except Exception,e:
-                print 'hello', value.strip(';\n'), e
-                time.sleep(0.2)
+            time.sleep(random.randint(1, 5))
 
+    if i > 3:
+        return  {}
 
     return id_dic['data']['mgzb']
 
@@ -286,17 +349,25 @@ def get_stockid_ylnl(id, req_header=[]):
     url = 'http://comdata.finance.gtimg.cn/data/ylnl/%s' % (id)
     refer = 'http://stock.finance.qq.com/corp1/cwfx.html?ylnl-%s' %(id)
     req_header.extend(['Referer: %s' % (refer)])
+    i = 0
     while 1:
-        res = httpGetContent(url, req_header)
-        if len(res) < 2:
-            print url
-            time.sleep(0.2)
-        else:
-            value = res['body'].split('=')[1]
-            id_dic= json.loads(value.strip(';\n'), encoding="GB2312")
-            if len(id_dic) < 2:
-                continue
+        try:
+            if not i:
+                res = httpGetContent(url, req_header)
+                value = res['body'].split('=')[1].strip(';\n')
+            else:
+                res = curl_cmd_get(url)
+                value = res.split('=')[1].strip(';\n')
+
+            id_dic= json.loads(value,  encoding="GB2312")
             break
+        except Exception,e:
+            #print url, value, e
+            i = i+1
+            if i > 3:
+                log_write('errcode', id)
+                break
+            time.sleep(random.randint(1, 5))
 
     return id_dic['data']['ylnl']
 
@@ -305,21 +376,28 @@ def get_stockid_cznl(id, req_header=[]):
     url = 'http://comdata.finance.gtimg.cn/data/cznl/%s' % (id)
     refer = 'http://stock.finance.qq.com/corp1/cwfx.html?cznl-%s' %(id)
     req_header.extend(['Referer: %s' % (refer)])
+    i = 0
     while 1:
-        res = httpGetContent(url, req_header)
-        if len(res) < 2:
-            print url
-            time.sleep(0.2)
-        else:
-            value = res['body'].split('=')[1]
-            try:
-                id_dic= json.loads(value.strip(';\n'), encoding="GB2312")
-                if len(id_dic) < 2:
-                    continue
+        try:
+            if not i:
+                res = httpGetContent(url, req_header)
+                value = res['body'].split('=')[1].strip(';\n')
+            else:
+                res = curl_cmd_get(url)
+                value = res.split('=')[1].strip(';\n')
+
+            id_dic= json.loads(value,  encoding="GB2312")
+            break
+        except Exception,e:
+            #print url, value, e
+            i = i+1
+            if i > 3:
+                log_write('errcode', id)
                 break
-            except Exception,e:
-                print e
-                time.sleep(0.2)
+            time.sleep(random.randint(1, 5))
+
+    if i > 3:
+        return  {}
 
     return id_dic['data']['cznl']
 
@@ -328,17 +406,25 @@ def get_stockid_czzb(id, req_header=[]):
     url = 'http://comdata.finance.gtimg.cn/data/czzb/%s' % (id)
     refer = 'http://stock.finance.qq.com/corp1/cwfx.html?czzb-%s' %(id)
     req_header.extend(['Referer: %s' % (refer)])
+    i = 0
     while 1:
-        res = httpGetContent(url, req_header)
-        if len(res) < 2:
-            print url
-            time.sleep(0.2)
-        else:
-            value = res['body'].split('=')[1]
-            id_dic= json.loads(value.strip(';\n'), encoding="GB2312")
-            if len(id_dic) < 2:
-                continue
+        try:
+            if not i:
+                res = httpGetContent(url, req_header)
+                value = res['body'].split('=')[1].strip(';\n')
+            else:
+                res = curl_cmd_get(url)
+                value = res.split('=')[1].strip(';\n')
+
+            id_dic= json.loads(value,  encoding="GB2312")
             break
+        except Exception,e:
+            #print url, value, e
+            i = i+1
+            if i > 3:
+                log_write('errcode', id)
+                break
+            time.sleep(random.randint(1, 5))
 
     return id_dic['data']['czzb']
 
@@ -348,17 +434,25 @@ def get_stockid_dbfx(id, req_header=[]):
     url = 'http://comdata.finance.gtimg.cn/data/dbfx/%s' % (id)
     refer = 'http://stock.finance.qq.com/corp1/dbfx.html?%s' %(id)
     req_header.extend(['Referer: %s' % (refer)])
+    i = 0
     while 1:
-        res = httpGetContent(url, req_header)
-        if len(res) < 2:
-            print url
-            time.sleep(0.2)
-        else:
-            value = res['body'].split('=')[1]
-            id_dic= json.loads(value.strip(';\n'))
-            if len(id_dic) < 2:
-                continue
+        try:
+            if not i:
+                res = httpGetContent(url, req_header)
+                value = res['body'].split('=')[1].strip(';\n')
+            else:
+                res = curl_cmd_get(url)
+                value = res.split('=')[1].strip(';\n')
+
+            id_dic= json.loads(value,  encoding="GB2312")
             break
+        except Exception,e:
+            #print url, value, e
+            i = i+1
+            if i > 3:
+                log_write('errcode', id)
+                break
+            time.sleep(random.randint(1, 5))
 
     return id_dic['data']['dbfx']
 
@@ -372,7 +466,7 @@ def get_money_flow(id, req_header=[]):
             print url
             time.sleep(1)
         else:
-            value = res['body'].split('=')[1]
+            value = res['body'].split('=')[1].strip(';\n')
             stocklist = value.split('~')
             if len(stocklist) < 10:
                 print url
@@ -399,7 +493,7 @@ def get_stockid_real_time(id, req_header=[]):
             print url
             time.sleep(1)
         else:
-            value = res['body'].split('=')[1]
+            value = res['body'].split('=')[1].strip(';\n')
             stocklist = value.split('~')
             if len(stocklist) < 48:
                 print url
@@ -408,7 +502,7 @@ def get_stockid_real_time(id, req_header=[]):
             break
     #不知道是不是反爬虫， 先请求吧
     #httpGetContent(favicon, 'Referer: %s' % (url))
-    print stocklist
+    #print stocklist
     stockdict = {}
     stockdict['id'] = id
     stockdict['code'] = stocklist[2]                           # 股票代码
@@ -473,33 +567,19 @@ def get_stock_list():
     file.close()
     return id_dic
 
-#解禁列表, http 相应数据不全， 后边再处理吧
-#day = Day()
-#
-#    start_day = '%s' % (day.get_day_of_day(-1))
-#    end_day = '%s' % (day.get_day_of_day(1))
-#    print start_day, end_day
-#    get_outDxf_list(start_day.replace('-', ''), end_day.replace('-', ''))
+#解禁列表, http 相应数据不全， chunked 的问题， 后边再处理吧
 def get_outDxf_list(start, end, req_header=[]):
     url = 'http://stock.finance.qq.com//sstock/list/view/dxf.php?c=0&b=%s&e=%s' % (start, end)
     refer = 'http://finance.qq.com/stock/dxfcx.htm?t=2&mn=%s&mx=%s' %(start, end)
     req_header.extend(['Referer: %s' % (refer)])
     print url
-    while 1:
-        res = httpGetContent(url, req_header, '1.0')
-        if len(res) < 2:
-            print url
-            time.sleep(0.2)
-        else:
-            value = res['body'].split('=')[1]
-            print value
-            id_dic= json.loads(value)
-            if len(id_dic) < 2:
-                continue
-            break
+    res = curl_cmd_get(url)
+    #print res
+    #value = res.split('=')[1].strip(';\n').decode("utf-8","ignore")
+    value = res.decode("gbk").split('=')[1].strip(';\r\n')
+    print value
+    id_dic= json.loads(value)
 
-    #print res['head']
-    print id_dic
     return id_dic
 
 
@@ -525,10 +605,10 @@ def get_basic_list():
     header = []
     flag = False
     for key in id_dic:
-        if 'sz002133' in key:
-            flag = True
-        if not flag:
-            continue
+        #if 'sh603023' in key:
+        #    flag = True
+        #if not flag:
+        #    continue
 
         #print header
         #time.sleep(0.2)
@@ -558,19 +638,22 @@ def get_basic_list():
             continue
 
         res['mgzb'] = get_stockid_mgzb(key)
-
-
-        if '--' not in res['mgzb'][0]['tbmgsy'] and  float(res['mgzb'][0]['tbmgsy']) < 0.2:
+        if len(res['mgzb']) < 1:
             continue
 
-        if '--' not in res['mgzb'][0]['mgxjll'] and float(res['mgzb'][0]['mgxjll']) < 0.1:
+        if '--' not in res['mgzb'][0]['tbmgsy'] and  float(res['mgzb'][0]['tbmgsy']) < 0.1:
+            continue
+
+        if '--' not in res['mgzb'][0]['mgxjll'] and float(res['mgzb'][0]['mgxjll']) < 0.05:
             continue
 
         res['cznl'] = get_stockid_cznl(key)
-        #if float(res['cznl'][0]['mgsy']) < 30:
+        if len(res['cznl']) < 1:
+            continue
+        #if float(res['cznl'][0]['yylr']) < 0:
         #    continue
         #
-        #if float(res['cznl'][0]['zysr']) < 30:
+        #if float(res['cznl'][0]['jlr']) < 0:
         #    continue
         #
         #if float(res['cznl'][0]['yylr']) < 30:
@@ -599,9 +682,13 @@ def get_basic_list():
         file.write('\t')
         file.write(res['cznl'][0]['mgsy'])
         file.write('\t')
+        file.write(res['cznl'][0]['mgxj'])
+        file.write('\t')
         file.write(res['cznl'][0]['zysr'])
         file.write('\t')
         file.write(res['cznl'][0]['yylr'])
+        file.write('\t')
+        file.write(res['cznl'][0]['jlr'])
         file.write('\t')
         file.write(res['date'])
 
@@ -609,6 +696,7 @@ def get_basic_list():
         file.flush()
 
         print res
+        #break
     file.close()
 
 
@@ -634,16 +722,114 @@ def load_base_list():
         tmp_dic['pb'] = float(items[4])
         tmp_dic['circulation_market_value'] = float(items[5])
         tmp_dic['total_value'] = float(items[6])
-        tmp_dic['tbmgsy'] = items[7]
-        tmp_dic['mgxjll'] = items[8]
-        tmp_dic['mgsy'] = items[9]
-        tmp_dic['zysr'] = items[9]
-        tmp_dic['yylr'] = items[10]
-        tmp_dic['date'] = items[11]
+        tmp_dic['tbmgsy'] = items[7].replace(',', '')
+        tmp_dic['mgxjll'] = items[8].replace(',', '')
+        tmp_dic['mgsy'] = items[9].replace(',', '')
+        tmp_dic['mgxj'] = items[10].replace(',', '')
+        tmp_dic['zysr'] = items[11].replace(',', '')
+        tmp_dic['yylr'] = items[12].replace(',', '')
+        tmp_dic['jlr'] = items[13].replace(',', '')
+        tmp_dic['date'] = items[14]
 
         id_dic[items[1]] = tmp_dic
 
     file.close()
+    return id_dic
+
+def strategy_one(id_dic = {}):
+    pass
+
+
+def do_search_short():
+
+    day = Day()
+
+    start_day = '%s' % (day.get_day_of_day(-20))
+    end_day = '%s' % (day.get_day_of_day(30))
+    print start_day.replace('-', ''), end_day.replace('-', '')
+    ban_list = get_outDxf_list(start_day.replace('-', ''), end_day.replace('-', ''))
+    ban_dic = {}
+    for key in ban_list:
+        idstr = '%s' % key[0]
+        print idstr
+        ban_dic[idstr] = ''
+
+
+    id_dic = load_base_list()
+    remove_ley = []
+    for key in id_dic:
+        #print id_dic[key]['zysr']
+        if '--' not in id_dic[key]['zysr'] and float(id_dic[key]['zysr']) < 0:
+            remove_ley.append(key)
+            continue
+
+        if '--' not in id_dic[key]['jlr'] and float(id_dic[key]['jlr']) < 0:
+            remove_ley.append(key)
+            continue
+
+        if '--' not in id_dic[key]['mgsy'] and float(id_dic[key]['mgsy']) < 0:
+            remove_ley.append(key)
+            continue
+
+        if '--' not in id_dic[key]['mgxj'] and float(id_dic[key]['mgxj'])< 0:
+            remove_ley.append(key)
+            continue
+
+        if '--' not in id_dic[key]['tbmgsy'] and float(id_dic[key]['tbmgsy']) < 0.3:
+            remove_ley.append(key)
+            continue
+
+        if id_dic[key]['code'] in ban_dic:
+            remove_ley.append(key)
+            print 'ban_dic', key
+            continue
+
+
+        #if id_dic[key]['tbmgsy'] > 60:
+        #    remove_ley.append(key)
+        #    continue
+
+
+
+    print 'remove_ley.length',len(remove_ley)
+    for key in remove_ley:
+        id_dic.pop(key)
+
+
+    for key in id_dic:
+        print id_dic[key]
+
+    search_dic = {}
+    header = []
+    while 1:
+        time.sleep(2)
+        for key in id_dic:
+            res = get_stockid_real_time(key, header)
+
+            if len(res) < 1:
+                continue
+
+            if 'Etag' in res:
+                header = ['If-None-Match: %s' % (res['Etag'])]
+
+            if res['range_percent'] < -0.3 or  res['range_percent'] > 0.3:
+                continue
+
+            if res['swing'] < 2.0:
+                continue
+
+            if res['change_rate'] < 1.0:
+                continue
+
+            if res['end'] < res['low']:
+                continue
+
+            if res['end'] > res['low'] and abs(res['end'] - res['low']) > 2* abs(res['end'] - res['start']):
+                print 'secrch ', res
+
+
+
+
 
 
 
@@ -652,12 +838,7 @@ def load_base_list():
 #压力如铁桶，支撑如窗户纸
 #有连续的大单介入才介入， 低位大资金都不介入， 肯定有猫腻
 #业绩好的，下跌， 大资金不介入， 肯定有什么利空， 业绩可以变脸
-#买二--买五是大单， 而买1是小单， 下跌也不买， 明显还没有跌倒位
-#尾盘再考虑是否介入, 要看下DMA, macd, kdj等
+#买二--买五是大单， 而买1是小单， 下跌也不买， 明显还没有??
 if __name__ == '__main__':
-    load_base_list()
-    #for key in id_dic:
-    #    print key, id_dic[key]
-    #get_stockid_real_time('sz002859')
-    #get_stockid_detail('2017-10-13', 'sz002859')
+    do_search_short()
 
