@@ -13,30 +13,30 @@
   <component name="ChangesViewManager" flattened_view="true" show_ignored="false" />
   <component name="CoverageDataManager">
     <SUITE FILE_PATH="coverage/python$win32com1.coverage" NAME="win32com1 Coverage Results" MODIFIED="1385530198454" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/python$str.coverage" NAME="str Coverage Results" MODIFIED="1395217952573" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/python$spider1.coverage" NAME="spider1 Coverage Results" MODIFIED="1393162028934" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/python$win2com.coverage" NAME="win2com Coverage Results" MODIFIED="1385558689291" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/python$test.coverage" NAME="test Coverage Results" MODIFIED="1383186517713" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/python$TopXReport.coverage" NAME="TopXReport Coverage Results" MODIFIED="1392025505657" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/python$readline.coverage" NAME="readline Coverage Results" MODIFIED="1385258667199" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/python$AnalyzeUserEnjoyed.coverage" NAME="AnalyzeUserEnjoyed Coverage Results" MODIFIED="1385107263698" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/python$test3.coverage" NAME="test3 Coverage Results" MODIFIED="1385107406384" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/python$semail1.coverage" NAME="semail1 Coverage Results" MODIFIED="1395196850336" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/python$test2.coverage" NAME="test2 Coverage Results" MODIFIED="1383186299534" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/python$semail3.coverage" NAME="semail3 Coverage Results" MODIFIED="1393569733603" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/python$reportlab1.coverage" NAME="reportlab1 Coverage Results" MODIFIED="1392025800147" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/python$stock_info.coverage" NAME="stock_info Coverage Results" MODIFIED="1508078165713" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/../stock/py" />
+    <SUITE FILE_PATH="coverage/python$reportlab2.coverage" NAME="reportlab2 Coverage Results" MODIFIED="1392093322344" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/python$autoPay.coverage" NAME="autoPay Coverage Results" MODIFIED="1388239717682" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/python$loadconfig.coverage" NAME="loadconfig Coverage Results" MODIFIED="1385261298066" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/python$RwLock.coverage" NAME="RwLock Coverage Results" MODIFIED="1394705924622" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/python$semail.coverage" NAME="semail Coverage Results" MODIFIED="1395218032791" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/python$semail__1_.coverage" NAME="semail (1) Coverage Results" MODIFIED="1395218330442" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="D:/svn/CAS/服务器源码/tv sniffer/script" />
     <SUITE FILE_PATH="coverage/python$autoPay1.coverage" NAME="autoPay1 Coverage Results" MODIFIED="1385554673318" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/python$win32com2.coverage" NAME="win32com2 Coverage Results" MODIFIED="1385539941773" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/python$semail2.coverage" NAME="semail2 Coverage Results" MODIFIED="1385713701937" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/python$spider.coverage" NAME="spider Coverage Results" MODIFIED="1393162491935" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/python$str.coverage" NAME="str Coverage Results" MODIFIED="1395217952573" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/python$spider1.coverage" NAME="spider1 Coverage Results" MODIFIED="1393162028934" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/python$test.coverage" NAME="test Coverage Results" MODIFIED="1383186517713" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/python$readline.coverage" NAME="readline Coverage Results" MODIFIED="1385258667199" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/python$semail3.coverage" NAME="semail3 Coverage Results" MODIFIED="1393569733603" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/python$reportlab1.coverage" NAME="reportlab1 Coverage Results" MODIFIED="1392025800147" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/python$reportlab2.coverage" NAME="reportlab2 Coverage Results" MODIFIED="1392093322344" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/python$RwLock.coverage" NAME="RwLock Coverage Results" MODIFIED="1394705924622" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/python$semail__1_.coverage" NAME="semail (1) Coverage Results" MODIFIED="1395218330442" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="D:/svn/CAS/服务器源码/tv sniffer/script" />
     <SUITE FILE_PATH="coverage/python$excel.coverage" NAME="excel Coverage Results" MODIFIED="1385439648117" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/python$spider.coverage" NAME="spider Coverage Results" MODIFIED="1393162491935" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
   <component name="CreatePatchCommitExecutor">
     <option name="PATCH_PATH" value="" />
@@ -50,51 +50,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="__main__.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../tmp/qf/__main__.py">
+      <file leaf-file-name="stock_info_bak.py" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/../stock/py/stock_info_bak.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="204" column="16" selection-start="5363" selection-end="5363" vertical-scroll-proportion="0.0" vertical-offset="3592" max-vertical-offset="4199">
+            <state line="891" column="40" selection-start="26648" selection-end="26648" vertical-scroll-proportion="0.34595525" vertical-offset="16519" max-vertical-offset="17385">
               <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="test.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../tmp/test/test.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="105" column="31" selection-start="3064" selection-end="3223" vertical-scroll-proportion="-79.8" vertical-offset="0" max-vertical-offset="2888">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="save_stock_list.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../stock/py/save_stock_list.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="97" column="29" selection-start="2734" selection-end="2734" vertical-scroll-proportion="0.0" vertical-offset="1311" max-vertical-offset="3040">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="get_plate_urls.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../stock/py/get_plate_urls.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="1" column="0" selection-start="23" selection-end="36" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1919">
-              <folding>
-                <element signature="e#38#52#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="stock_info.py" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/../stock/py/stock_info.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="98" column="33" selection-start="3100" selection-end="3100" vertical-scroll-proportion="0.08375634" vertical-offset="1829" max-vertical-offset="2223">
-              <folding>
-                <element signature="e#37#51#0" expanded="true" />
-              </folding>
             </state>
           </provider>
         </entry>
@@ -102,16 +62,7 @@
       <file leaf-file-name="api" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/../stock/py/api">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="40" column="7" selection-start="919" selection-end="922" vertical-scroll-proportion="0.0" vertical-offset="1140" max-vertical-offset="1539">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="countX.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/countX.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="89" column="8" selection-start="1864" selection-end="1897" vertical-scroll-proportion="-0.32" vertical-offset="1683" max-vertical-offset="2109">
+            <state line="60" column="13" selection-start="2211" selection-end="2220" vertical-scroll-proportion="0.0" vertical-offset="684" max-vertical-offset="2527">
               <folding />
             </state>
           </provider>
@@ -127,7 +78,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/../tmp/test_qf/test.py" />
         <option value="$PROJECT_DIR$/../tmp/test.py" />
         <option value="$PROJECT_DIR$/../tmp/qf/mysql.py" />
         <option value="$PROJECT_DIR$/../tmp/qf/myLog.py" />
@@ -143,6 +93,7 @@
         <option value="$PROJECT_DIR$/../stock/py/save_stock_list.py" />
         <option value="$PROJECT_DIR$/../stock/py/api" />
         <option value="$PROJECT_DIR$/../stock/py/stock_info.py" />
+        <option value="$PROJECT_DIR$/../stock/py/stock_info_bak.py" />
       </list>
     </option>
   </component>
@@ -221,6 +172,10 @@
               <option name="myItemId" value="stock" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="py" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
           </PATH>
           <PATH>
             <PATH_ELEMENT>
@@ -228,7 +183,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="python" />
+              <option name="myItemId" value="stock" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -242,12 +197,12 @@
   <component name="PropertiesComponent">
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="recentsLimit" value="5" />
     <property name="options.lastSelected" value="project.propVCSSupport.Mappings" />
+    <property name="recentsLimit" value="5" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../stock" />
     <property name="FullScreen" value="false" />
-    <property name="options.searchVisible" value="true" />
     <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="options.searchVisible" value="true" />
   </component>
   <component name="PyConsoleOptionsProvider">
     <option name="myPythonConsoleState">
@@ -439,9 +394,6 @@
       <option name="PARAMETERS" value="" />
       <method />
     </configuration>
-    <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug" singleton="true">
-      <method />
-    </configuration>
     <configuration default="true" type="tests" factoryName="Unittests">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -463,6 +415,9 @@
       <option name="PUREUNITTEST" value="true" />
       <option name="PARAMS" value="" />
       <option name="USE_PARAM" value="false" />
+      <method />
+    </configuration>
+    <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug" singleton="true">
       <method />
     </configuration>
     <configuration default="true" type="tests" factoryName="Doctests">
@@ -618,25 +573,13 @@
           <option name="timeStamp" value="2" />
         </line-breakpoint>
       </breakpoints>
-      <option name="time" value="3" />
+      <option name="time" value="5" />
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/../tmp/qf/mysql.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="23" column="0" selection-start="751" selection-end="751" vertical-scroll-proportion="0.7521515" vertical-offset="0" max-vertical-offset="2204" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/count_pvr.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="-0.20070423" vertical-offset="114" max-vertical-offset="5795" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../tmp/qf/__main__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="204" column="16" selection-start="5363" selection-end="5363" vertical-scroll-proportion="0.0" vertical-offset="3592" max-vertical-offset="4199">
-          <folding />
-        </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/../stock/py/save_stock_detail.py">
@@ -649,86 +592,84 @@
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="-1.2788296" vertical-offset="743" max-vertical-offset="3819" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../tmp/test/test.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="105" column="31" selection-start="3064" selection-end="3223" vertical-scroll-proportion="-79.8" vertical-offset="0" max-vertical-offset="2888">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/asplog_2_json.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="15" column="0" selection-start="1002" selection-end="1002" vertical-scroll-proportion="0.7331461" vertical-offset="24" max-vertical-offset="1919">
-          <folding />
-        </state>
+        <state line="15" column="0" selection-start="1002" selection-end="1002" vertical-scroll-proportion="0.7331461" vertical-offset="24" max-vertical-offset="1919" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/excel.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="-0.029810298" vertical-offset="11" max-vertical-offset="1292">
-          <folding />
-        </state>
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="-0.029810298" vertical-offset="11" max-vertical-offset="1292" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/reportlab2.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="418">
-          <folding />
-        </state>
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="418" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/semail2.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="-11.595506" vertical-offset="4128" max-vertical-offset="4484">
-          <folding />
-        </state>
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="-11.595506" vertical-offset="4128" max-vertical-offset="4484" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/spider1.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="418">
-          <folding>
-            <element signature="e#0#13#0" expanded="false" />
-          </folding>
-        </state>
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="418" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/countX.py">
+    <entry file="file://$PROJECT_DIR$/../stock/py/get_plate_urls.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="89" column="8" selection-start="1864" selection-end="1897" vertical-scroll-proportion="-0.32" vertical-offset="1683" max-vertical-offset="2109">
+        <state line="1" column="0" selection-start="23" selection-end="36" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1919">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/../stock/py/save_stock_list.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="97" column="29" selection-start="2734" selection-end="2734" vertical-scroll-proportion="0.0" vertical-offset="247" max-vertical-offset="3040">
+        <state line="97" column="29" selection-start="2734" selection-end="2734" vertical-scroll-proportion="-0.033450704" vertical-offset="1843" max-vertical-offset="3040">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../stock/py/get_plate_urls.py">
+    <entry file="file://$PROJECT_DIR$/../tmp/test/test.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="1" column="0" selection-start="23" selection-end="36" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1919">
-          <folding>
-            <element signature="e#38#52#0" expanded="true" />
-          </folding>
+        <state line="105" column="31" selection-start="3064" selection-end="3223" vertical-scroll-proportion="0.0" vertical-offset="1995" max-vertical-offset="2888">
+          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../stock/py/api">
+    <entry file="file://$PROJECT_DIR$/../tmp/qf/__main__.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="40" column="7" selection-start="919" selection-end="922" vertical-scroll-proportion="0.0" vertical-offset="456" max-vertical-offset="1539">
+        <state line="204" column="16" selection-start="5363" selection-end="5363" vertical-scroll-proportion="0.5" vertical-offset="3459" max-vertical-offset="4066">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/../stock/py/stock_info.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="98" column="33" selection-start="3100" selection-end="3100" vertical-scroll-proportion="0.08375634" vertical-offset="1829" max-vertical-offset="2223">
-          <folding>
-            <element signature="e#37#51#0" expanded="true" />
-          </folding>
+        <state line="141" column="33" selection-start="4443" selection-end="4443" vertical-scroll-proportion="0.0" vertical-offset="2603" max-vertical-offset="15865">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/countX.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="89" column="8" selection-start="1864" selection-end="1897" vertical-scroll-proportion="0.29316548" vertical-offset="1528" max-vertical-offset="2109">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../stock/py/api">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="60" column="13" selection-start="2211" selection-end="2220" vertical-scroll-proportion="0.0" vertical-offset="684" max-vertical-offset="2527">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../stock/py/stock_info_bak.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="891" column="40" selection-start="26648" selection-end="26648" vertical-scroll-proportion="0.34595525" vertical-offset="16519" max-vertical-offset="17385">
+          <folding />
         </state>
       </provider>
     </entry>
