@@ -971,8 +971,20 @@ def do_search_short():
                     flag = True
 
             big_data = get_single_analysis(key)
-            if len(big_data) and big_data['b'] > big_data['s']:
-                flag = True
+            big_res = 0
+            if len(big_data):
+                big_res = big_data['b'] - big_data['s']
+
+            if not id_dic[key].has_key('big_res'):
+                id_dic[key]['big_res'] = []
+            if len(id_dic[key]['big_res']) and abs(id_dic[key]['big_res'] - id_dic[key]['big_res'][-1]) > 50:
+                id_dic[key]['big_res'].append(money['big_res'])
+            elif not len(id_dic[key]['main_force']):
+                id_dic[key]['big_res'].append(money['big_res'])
+
+            if len(id_dic[key]['big_res']) > 2 and id_dic[key]['big_res'][0] < id_dic[key]['big_res'][-1]:
+                if abs(id_dic[key]['big_res'][-1] - id_dic[key]['big_res'][0]) >= 600:
+                    flag = True
 
             if flag:
                 search_dic[key] = id_dic[key]

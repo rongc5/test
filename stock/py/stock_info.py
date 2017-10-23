@@ -504,6 +504,56 @@ def get_stockid_dbfx(id, req_header=None):
     return id_dic['data']['dbfx']
 
 
+def get_single_analysis(id, req_header=None):
+    if req_header is None:
+        req_header = []
+
+    url = 'http://stock.finance.qq.com/sstock/list/view/dadan.php?t=js&c=%s&max=100&p=1&opt=2&o=0' % (id)
+    refer = 'http://stockhtm.finance.qq.com/sstock/quotpage/dadan.htm?c=%s' % (id)
+
+    stocklist = []
+    req_header.extend(['Referer: %s' % (refer)])
+    tmp_header = req_header
+    i = 0
+    imax = 3
+    while 1:
+        try:
+            if i + 1 < imax:
+                res = httpGetContent(url, req_header)
+                value = res['body'].decode("gbk").split('=')[1].strip(';\r\n')
+            else:
+                res = curl_cmd_get(url)
+                value = res.decode("gbk").split('=')[1].strip(';\r\n')
+            stocklist = value.split(',')[1]
+            break
+        except Exception,e:
+            #print url, value, e
+            req_header = tmp_header
+            req_header.extend(['User-Agent: %s' % (user_agent_list[random.randint(0, len(user_agent_list))])])
+            i = i+1
+            if i >= imax:
+                log_write('errcode', id)
+                break
+            time.sleep(random.randint(1, 3))
+
+    if i > imax:
+        return  {}
+
+    #print stocklist
+    stockdict = {}
+    stockdict['s'] = 0
+    stockdict['s'] = 0
+    items = stocklist.split('^')
+    for item in items:
+        subitems = item.split('~')
+        if len(subitems) >= 6:
+            if 's' in subitems[5] or 'S' in subitems[5]:
+                stockdict['s'] += int(subitems[3])
+            elif 'b' in subitems[5] or 'B' in subitems[5]:
+                stockdict['b'] += int(subitems[3])
+
+    return stockdict
+
 def get_money_flow(id, req_header=None):
     if req_header is None:
         req_header = []
@@ -800,10 +850,6 @@ def load_base_list():
     file.close()
     return id_dic
 
-def strategy_one(id_dic = {}):
-    pass
-
-
 def do_search_short():
 
     day = Day()
@@ -913,14 +959,32 @@ def do_search_short():
 
             if not id_dic[key].has_key('main_force'):
                 id_dic[key]['main_force'] = []
+            if len(id_dic[key]['main_force']) and abs(id_dic[key]['main_force'] - id_dic[key]['main_force'][-1]) > 50:
+                id_dic[key]['main_force'].append(money['main_force'])
+            elif not len(id_dic[key]['main_force']):
+                id_dic[key]['main_force'].append(money['main_force'])
 
-            id_dic[key]['main_force'].append(money['main_force'])
             id_dic[key]['money_tag'] = money['Etag']
 
             if len(id_dic[key]['main_force']) > 2 and id_dic[key]['main_force'][0] < id_dic[key]['main_force'][-1]:
                 if abs(id_dic[key]['main_force'][-1] - id_dic[key]['main_force'][0]) >= 100:
                     flag = True
 
+            big_data = get_single_analysis(key)
+            big_res = 0
+            if len(big_data):
+                big_res = big_data['b'] - big_data['s']
+
+            if not id_dic[key].has_key('big_res'):
+                id_dic[key]['big_res'] = []
+            if len(id_dic[key]['big_res']) and abs(id_dic[key]['big_res'] - id_dic[key]['big_res'][-1]) > 50:
+                id_dic[key]['big_res'].append(money['big_res'])
+            elif not len(id_dic[key]['main_force']):
+                id_dic[key]['big_res'].append(money['big_res'])
+
+            if len(id_dic[key]['big_res']) > 2 and id_dic[key]['big_res'][0] < id_dic[key]['big_res'][-1]:
+                if abs(id_dic[key]['big_res'][-1] - id_dic[key]['big_res'][0]) >= 600:
+                    flag = True
 
             if flag:
                 search_dic[key] = id_dic[key]
