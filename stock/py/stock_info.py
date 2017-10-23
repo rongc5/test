@@ -510,6 +510,7 @@ def get_money_flow(id, req_header=None):
     url = 'http://qt.gtimg.cn/q=ff_%s' % (id)
     refer = 'http://finance.qq.com/stock/sother/test_flow_stock_quotpage.htm'
 
+    stocklist = []
     req_header.extend(['Referer: %s' % (refer)])
     tmp_header = req_header
     i = 0
@@ -650,7 +651,7 @@ def get_outDxf_list(start, end, req_header=None):
     #print res
     #value = res.split('=')[1].strip(';\n').decode("utf-8","ignore")
     value = res.decode("gbk").split('=')[1].strip(';\r\n')
-    print value
+    #print value
     id_dic= json.loads(value)
 
     return id_dic
@@ -677,13 +678,6 @@ def get_basic_list():
     header = []
     flag = False
     for key in id_dic:
-        #if 'sh603023' in key:
-        #    flag = True
-        #if not flag:
-        #    continue
-
-        #print header
-        #time.sleep(0.2)
         res = get_stockid_real_time(key, header)
         if len(res) < 1:
             continue
@@ -844,7 +838,7 @@ def do_search_short():
             remove_ley.append(key)
             continue
 
-        if '--' not in id_dic[key]['tbmgsy'] and float(id_dic[key]['tbmgsy']) < 0.3:
+        if '--' not in id_dic[key]['tbmgsy'] and float(id_dic[key]['tbmgsy']) < 0.2:
             remove_ley.append(key)
             continue
 
@@ -857,20 +851,17 @@ def do_search_short():
         #    remove_ley.append(key)
         #    continue
 
-
-
     print 'remove_ley.length',len(remove_ley)
     for key in remove_ley:
         id_dic.pop(key)
 
 
-    for key in id_dic:
-        print id_dic[key]
+    #for key in id_dic:
+    #    print id_dic[key]
 
     search_dic = {}
     header = []
     while 1:
-        time.sleep(2)
         for key in id_dic:
             if id_dic[key].has_key('real_tag'):
                 res = get_stockid_real_time(key, ['If-None-Match: %s' % (id_dic[key]['real_tag'])])
@@ -886,17 +877,30 @@ def do_search_short():
             if res['range_percent'] < -0.3 or  res['range_percent'] > 0.3:
                 continue
 
+            id_dic[key]['range_percent'] = res['range_percent']
+
             if res['swing'] < 2.0:
                 continue
+
+            id_dic[key]['swing'] = res['swing']
 
             if res['change_rate'] < 1.0:
                 continue
 
+            id_dic[key]['change_rate'] = res['change_rate']
             if res['end'] < res['low']:
                 continue
 
-            if res['end'] > res['low'] and abs(res['end'] - res['low']) > 2* abs(res['end'] - res['start']):
-                print 'secrch ', res
+            id_dic[key]['end'] = res['end']
+
+            flag = False
+            if res['end'] > res['low'] and abs(res['end'] - res['low']) >= 2* abs(res['end'] - res['start']):
+                flag = True
+
+            #if res['end'] > res['low']:
+            #    print 'secrch ', res
+
+            #print res
 
             if id_dic[key].has_key('money_tag'):
                 money = get_money_flow(key, ['If-None-Match: %s' % (id_dic[key]['money_tag'])])
@@ -906,8 +910,26 @@ def do_search_short():
             if not len(money):
                 continue
 
-            id_dic[key]['main_force'] = money['main_force']
+
+            if not id_dic[key].has_key('main_force'):
+                id_dic[key]['main_force'] = []
+
+            id_dic[key]['main_force'].append(money['main_force'])
             id_dic[key]['money_tag'] = money['Etag']
+
+            if len(id_dic[key]['main_force']) > 2 and id_dic[key]['main_force'][0] < id_dic[key]['main_force'][-1]:
+                if abs(id_dic[key]['main_force'][-1] - id_dic[key]['main_force'][0]) >= 100:
+                    flag = True
+
+
+            if flag:
+                search_dic[key] = id_dic[key]
+
+            #print money
+
+        for key in search_dic:
+            print 'search res', search_dic[key]
+        time.sleep(10)
 
 #A股就是个坑， 技术指标低位了， 仍然可以再砸
 #技术指标高位了， 有资金接盘仍然可以涨, 高位始终是危险
