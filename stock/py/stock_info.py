@@ -892,6 +892,11 @@ def do_search_short():
             remove_ley.append(key)
             continue
 
+
+        if float(id_dic[key]['end']) > 20:
+            remove_ley.append(key)
+            continue
+
         if id_dic[key]['code'] in ban_dic:
             remove_ley.append(key)
             continue
