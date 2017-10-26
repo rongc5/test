@@ -9,6 +9,7 @@ import cStringIO
 import gzip
 import unicodedata
 import os
+import sys
 import random
 
 from time import strftime, localtime
@@ -22,6 +23,8 @@ __author__ = 'rong'
 
 
 user_agent_list = [
+        "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 "
+        "(KHTML, like Gecko) Chrome/60.0.3112.113 Safari/537.36",
         "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.1 "
         "(KHTML, like Gecko) Chrome/22.0.1207.1 Safari/537.1",
         "Mozilla/5.0 (X11; CrOS i686 2268.111.0) AppleWebKit/536.11 "
@@ -60,6 +63,7 @@ user_agent_list = [
         "(KHTML, like Gecko) Chrome/19.0.1055.1 Safari/535.24" ]
 
 
+user_agent_dic = {}
 
 class Day():
     def __init__(self):
@@ -256,15 +260,18 @@ def httpGetContent(url, req_header=None, version = '1.1'):
     if req_header is None:
         req_header = []
 
-
     flag = 0
     for key in req_header:
-        if 'User-Agent:' in key or 'user-agent:' in key:
+        if  'User-Agent:' in key or  'user-agent:' in key:
             flag = 1
             break
 
     if not flag:
-        c.setopt(pycurl.USERAGENT, 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.113 Safari/537.36')
+        print 'no User-Agent', req_header, url, sys._getframe().f_lineno
+        return
+
+    #if not flag:
+    #    c.setopt(pycurl.USERAGENT, 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.113 Safari/537.36')
 
     c.setopt(pycurl.TCP_NODELAY, 1)
     if '1.1' in version:
@@ -331,6 +338,9 @@ def get_stockid_mgzb(id, req_header=None):
     while 1:
         try:
             if i + 1 < imax:
+                index = random.randint(0, len(user_agent_list) -1)
+                req_header.extend(['User-Agent: %s' % (user_agent_list[index])])
+
                 res = httpGetContent(url, req_header)
                 value = res['body'].decode("gbk").split('=')[1].strip(';\r\n')
             else:
@@ -342,7 +352,6 @@ def get_stockid_mgzb(id, req_header=None):
         except Exception,e:
             #print url, value, e
             req_header = tmp_header
-            req_header.extend(['User-Agent: %s' % (user_agent_list[random.randint(0, len(user_agent_list)/2)])])
             i = i+1
             if i >= imax:
                 log_write('errcode', id)
@@ -368,6 +377,9 @@ def get_stockid_ylnl(id, req_header=None):
     while 1:
         try:
             if i + 1 < imax:
+                index = random.randint(0, len(user_agent_list) -1)
+                req_header.extend(['User-Agent: %s' % (user_agent_list[index])])
+
                 res = httpGetContent(url, req_header)
                 value = res['body'].decode("gbk").split('=')[1].strip(';\r\n')
             else:
@@ -379,7 +391,6 @@ def get_stockid_ylnl(id, req_header=None):
         except Exception,e:
             #print url, value, e
             req_header = tmp_header
-            req_header.extend(['User-Agent: %s' % (user_agent_list[random.randint(0, len(user_agent_list)/2)])])
             i = i+1
             if i >= imax:
                 log_write('errcode', id)
@@ -405,6 +416,8 @@ def get_stockid_cznl(id, req_header=None):
     while 1:
         try:
             if i + 1 < imax:
+                index = random.randint(0, len(user_agent_list) -1)
+                req_header.extend(['User-Agent: %s' % (user_agent_list[index])])
                 res = httpGetContent(url, req_header)
                 value = res['body'].decode("gbk").split('=')[1].strip(';\r\n')
             else:
@@ -416,7 +429,6 @@ def get_stockid_cznl(id, req_header=None):
         except Exception,e:
             #print url, value, e
             req_header = tmp_header
-            req_header.extend(['User-Agent: %s' % (user_agent_list[random.randint(0, len(user_agent_list)/2)])])
             i = i+1
             if i >= imax:
                 log_write('errcode', id)
@@ -442,6 +454,8 @@ def get_stockid_czzb(id, req_header=None):
     while 1:
         try:
             if i + 1 < imax:
+                index = random.randint(0, len(user_agent_list) -1)
+                req_header.extend(['User-Agent: %s' % (user_agent_list[index])])
                 res = httpGetContent(url, req_header)
                 value = res['body'].decode("gbk").split('=')[1].strip(';\r\n')
             else:
@@ -453,7 +467,6 @@ def get_stockid_czzb(id, req_header=None):
         except Exception,e:
             #print url, value, e
             req_header = tmp_header
-            req_header.extend(['User-Agent: %s' % (user_agent_list[random.randint(0, len(user_agent_list)/2)])])
             i = i+1
             if i >= imax:
                 log_write('errcode', id)
@@ -480,6 +493,8 @@ def get_stockid_dbfx(id, req_header=None):
     while 1:
         try:
             if i + 1 < imax:
+                index = random.randint(0, len(user_agent_list) -1)
+                req_header.extend(['User-Agent: %s' % (user_agent_list[index])])
                 res = httpGetContent(url, req_header)
                 value = res['body'].decode("gbk").split('=')[1].strip(';\r\n')
             else:
@@ -491,7 +506,6 @@ def get_stockid_dbfx(id, req_header=None):
         except Exception,e:
             #print url, value, e
             req_header = tmp_header
-            req_header.extend(['User-Agent: %s' % (user_agent_list[random.randint(0, len(user_agent_list)/2)])])
             i = i+1
             if i >= imax:
                 log_write('errcode', id)
@@ -519,6 +533,9 @@ def get_single_analysis(id, req_header=None):
     while 1:
         try:
             if i + 1 < imax:
+                index = random.randint(0, len(user_agent_list) -1)
+                req_header.extend(['User-Agent: %s' % (user_agent_list[index])])
+
                 res = httpGetContent(url, req_header)
                 value = res['body'].decode("gbk").split('=')[1].strip(';\r\n')
             else:
@@ -529,7 +546,6 @@ def get_single_analysis(id, req_header=None):
         except Exception,e:
             #print url, value, e
             req_header = tmp_header
-            req_header.extend(['User-Agent: %s' % (user_agent_list[random.randint(0, len(user_agent_list)/2)])])
             i = i+1
             if i >= imax:
                 log_write('errcode', id)
@@ -568,6 +584,11 @@ def get_money_flow(id, req_header=None):
     while 1:
         try:
             if i + 1 < imax:
+                index = random.randint(0, len(user_agent_list) -1)
+                req_header.extend(['User-Agent: %s' % (user_agent_list[index])])
+                if user_agent_dic.has_key(index):
+                    req_header.extend(['If-None-Match: %s' % (user_agent_dic[index])])
+
                 res = httpGetContent(url, req_header)
                 value = res['body'].decode("gbk").split('=')[1].strip(';\r\n')
             else:
@@ -583,9 +604,9 @@ def get_money_flow(id, req_header=None):
         except Exception,e:
             #print url, value, e
             req_header = tmp_header
-            index = random.randint(0, len(user_agent_list))
+
             #print len(user_agent_list), index
-            req_header.extend(['User-Agent: %s' % (user_agent_list[index/2])])
+
             i = i+1
             if i >= imax:
                 log_write('errcode', id)
@@ -601,7 +622,7 @@ def get_money_flow(id, req_header=None):
         stockdict['main_force'] = float(stocklist[3])
 
     if res.has_key('head') and 'Etag:' in res['head']:
-        stockdict['Etag']  = res['head'].split('Etag:')[1].strip()
+        user_agent_dic[index]  = res['head'].split('Etag:')[1].strip()
 
     return stockdict
 
@@ -613,16 +634,24 @@ def get_stockid_real_time(id, req_header=None):
         req_header = []
     url = 'http://sqt.gtimg.cn/utf8/q=%s' % (id)
     favicon = 'http://sqt.gtimg.cn/favicon.ico'
+    tmp_header = req_header
     while 1:
+
+        index = random.randint(0, len(user_agent_list) -1)
+        req_header.extend(['User-Agent: %s' % (user_agent_list[index])])
+        #if user_agent_dic.has_key(index):
+        #    req_header.extend(['If-None-Match: %s' % (user_agent_dic[index])])
+
         res = httpGetContent(url, req_header)
         if len(res) < 2:
-            print url
+            req_header = tmp_header
+            print url, sys._getframe().f_lineno
             time.sleep(1)
         else:
             value = res['body'].split('=')[1].strip(';\n')
             stocklist = value.split('~')
             if len(stocklist) < 48:
-                print url
+                print url, sys._getframe().f_lineno
                 time.sleep(1)
                 continue
             break
@@ -660,7 +689,7 @@ def get_stockid_real_time(id, req_header=None):
     #stockdict['high_limit'] = float(stocklist[47])
     #stockdict['low_limit'] = float(stocklist[48])
     if 'Etag:' in res['head']:
-        stockdict['Etag']  = res['head'].split('Etag:')[1].strip()
+        user_agent_dic[index]  = res['head'].split('Etag:')[1].strip()
 
     return stockdict
 
@@ -732,17 +761,13 @@ def get_basic_list():
     header = []
     flag = False
     for key in id_dic:
+        time.sleep(0.01)
         res = get_stockid_real_time(key, header)
         if len(res) < 1:
             continue
 
-        if 'Etag' in res:
-            header = ['If-None-Match: %s' % (res['Etag'])]
-
         if res['block']:  #停牌
             continue
-
-        #res['name'] = unicodedata.normalize('NFKD', id_dic[key]).encode('ascii','ignore')
 
         if res['circulation_market_value'] >= 300:
             continue
@@ -854,21 +879,7 @@ def load_base_list():
     file.close()
     return id_dic
 
-def do_search_short():
-
-    day = Day()
-
-    start_day = '%s' % (day.get_day_of_day(-20))
-    end_day = '%s' % (day.get_day_of_day(30))
-    print start_day.replace('-', ''), end_day.replace('-', '')
-    ban_list = get_outDxf_list(start_day.replace('-', ''), end_day.replace('-', ''))
-    ban_dic = {}
-    for key in ban_list:
-        idstr = '%s' % key[0]
-        #print idstr
-        ban_dic[idstr] = ''
-
-    id_dic = load_base_list()
+def base_select(id_dic):
     remove_ley = []
     for key in id_dic:
         #print id_dic[key]['zysr']
@@ -892,44 +903,53 @@ def do_search_short():
             remove_ley.append(key)
             continue
 
-
-        if float(id_dic[key]['end']) > 20:
+        if float(id_dic[key]['end']) >20:
             remove_ley.append(key)
             continue
 
-        if id_dic[key]['code'] in ban_dic:
-            remove_ley.append(key)
-            continue
-
-
-        #if id_dic[key]['tbmgsy'] > 60:
+        #if id_dic[key]['code'] in ban_dic:
         #    remove_ley.append(key)
         #    continue
 
-    print 'remove_ley.length',len(remove_ley)
     for key in remove_ley:
         id_dic.pop(key)
 
+    return id_dic
 
-    #for key in id_dic:
-    #    print id_dic[key]
+def remove_from_banlist(id_dic, ban_list):
+    remove_ley = []
+
+    for key in id_dic:
+        if id_dic[key]['code'] in ban_list:
+            remove_ley.append(key)
+            continue
+
+    for key in remove_ley:
+        id_dic.pop(key)
+
+    return id_dic
+
+def do_search_short():
+    day = Day()
+    start_day = '%s' % (day.get_day_of_day(-20))
+    end_day = '%s' % (day.get_day_of_day(30))
+    print start_day.replace('-', ''), end_day.replace('-', '')
+    ban_list = get_outDxf_list(start_day.replace('-', ''), end_day.replace('-', ''))
+    ban_dic = {}
+    for key in ban_list:
+        idstr = '%s' % key[0]
+        ban_dic[idstr] = ''
+
+    id_dic = load_base_list()
+    id_dic = base_select(id_dic)
+    id_dic = remove_from_banlist(id_dic, ban_dic)
 
     search_dic = {}
     header = []
     while 1:
         for key in id_dic:
-            if id_dic[key].has_key('tag'):
-                res = get_stockid_real_time(key, ['If-None-Match: %s' % (id_dic[key]['tag'])])
-            else:
-                res = get_stockid_real_time(key)
-
-            if len(res) < 1:
-                continue
-
-            if 'Etag' in res:
-                id_dic[key]['tag'] = res['tag']
-
-            if res['range_percent'] < -0.3 or  res['range_percent'] > 0.3:
+            res = get_stockid_real_time(key)
+            if res['range_percent'] < -0.6 or  res['range_percent'] > 0.3:
                 continue
 
             id_dic[key]['range_percent'] = res['range_percent']
@@ -938,7 +958,6 @@ def do_search_short():
             #    continue
 
             id_dic[key]['swing'] = res['swing']
-
             if res['change_rate'] < 1.0:
                 continue
 
@@ -948,36 +967,17 @@ def do_search_short():
 
             id_dic[key]['end'] = res['end']
 
-            flag = False
-            if res['end'] > res['low'] and abs(res['end'] - res['low']) >= 2* abs(res['end'] - res['start']):
-                flag = True
-
-            #if res['end'] > res['low']:
-            #    print 'secrch ', res
-
-            #print res
-
-            if id_dic[key].has_key('tag'):
-                money = get_money_flow(key, ['If-None-Match: %s' % (id_dic[key]['tag'])])
-            else:
-                money = get_money_flow(key)
-
+            money = get_money_flow(key)
 
             if not id_dic[key].has_key('main_force'):
                     id_dic[key]['main_force'] = []
 
             if money.has_key('main_force'):
-                if len(id_dic[key]['main_force']) and abs(id_dic[key]['main_force'][0] - id_dic[key]['main_force'][-1]) > 50:
+                if len(id_dic[key]['main_force']) and abs(id_dic[key]['main_force'][0] - money['main_force']) >= 50:
                     id_dic[key]['main_force'].append(money['main_force'])
                 elif not len(id_dic[key]['main_force']):
                     id_dic[key]['main_force'].append(money['main_force'])
 
-            if money.has_key('Etag'):
-                id_dic[key]['tag'] = money['Etag']
-
-            if id_dic[key].has_key('main_force') and len(id_dic[key]['main_force']) > 2 and id_dic[key]['main_force'][0] < id_dic[key]['main_force'][-1]:
-                if abs(id_dic[key]['main_force'][-1] - id_dic[key]['main_force'][0]) >= 100:
-                    flag = True
 
             big_data = get_single_analysis(key)
             big_res = 0
@@ -986,19 +986,29 @@ def do_search_short():
 
             if not id_dic[key].has_key('big_res'):
                 id_dic[key]['big_res'] = []
-            if len(id_dic[key]['big_res']) and abs(id_dic[key]['big_res'][0] - id_dic[key]['big_res'][-1]) > 50:
+            if len(id_dic[key]['big_res']) and abs(id_dic[key]['big_res'][0] - big_res) >= 200:
                 id_dic[key]['big_res'].append(big_res)
             elif not len(id_dic[key]['big_res']):
                 id_dic[key]['big_res'].append(big_res)
 
+            flag_one = False
+            if res['end'] > res['low'] and abs(res['end'] - res['low']) >= 2* abs(res['end'] - res['start']):
+                flag_one = True
+
+            flag_two = False
             if len(id_dic[key]['big_res']) > 2 and id_dic[key]['big_res'][0] < id_dic[key]['big_res'][-1]:
-                if abs(id_dic[key]['big_res'][-1] - id_dic[key]['big_res'][0]) >= 600:
-                    flag = True
+                if id_dic[key]['big_res'][-1] - id_dic[key]['big_res'][0] >= 600:
+                    flag_two = True
 
-            if flag:
+            flag_three = False
+            if len(id_dic[key]['main_force']) > 2 and id_dic[key]['main_force'][0] < id_dic[key]['main_force'][-1]:
+                if id_dic[key]['main_force'][-1] - id_dic[key]['main_force'][0] >= 100:
+                    flag_three = True
+
+            if flag_one and flag_two and flag_three:
                 search_dic[key] = id_dic[key]
-
-            #print money
+            elif res['end'] > res['start'] and flag_two and flag_three:
+                search_dic[key] = id_dic[key]
 
         for key in search_dic:
             print 'search res', search_dic[key]
