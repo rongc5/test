@@ -1,131 +1,190 @@
-成交明细
-http://market.finance.sina.com.cn/downxls.php?date=2017-10-13&symbol=sz002859
-
-最新行情
-http://qt.gtimg.cn/q=sz000858
-v_sz000858="51~五 粮 液~000858~27.78~27.60~27.70~417909~190109~227800~27.78~492~27.77~332~27.76~202~27.75~334~27.74~291~27.79~305~27.80~570~27.81~269~27.82~448~27.83~127~15:00:13/27.78/4365/S/12124331/24602|14:56:55/27.80/14/S/38932/24395|14:56:52/27.81/116/B/322585/24392|14:56:49/27.80/131/S/364220/24385|14:56:46/27.81/5/B/13905/24381|14:56:43/27.80/31/B/86199/24375~20121221150355~0.18~0.65~28.11~27.55~27.80/413544/1151265041~417909~116339~1.10~10.14~~28.11~27.55~2.03~1054.39~1054.52~3.64~30.36~24.84~";
-v_sz002859="51~洁美科技~002859~38.83~37.50~37.75~54052~28783~25269~38.83~200~38.82~3~38.81~22~38.80~279~38.79~38~38.84~268~38.85~168~38.86~59~38.87~25~38.88~79~15:00:03/38.83/1127/S/4374200/9633|14:57:00/38.83/48/S/186412/9539|14:56:57/38.83/4/S/15532/9537|14:56:52/38.84/54/B/209667/9533|14:56:49/38.81/94/S/364823/9531|14:56:46/38.82/1/S/3882/9529~20171017150133~1.33~3.55~39.18~37.50~38.83/52925/203594724~54052~20797~9.29~71.89~~39.18~37.50~4.48~22.60~99.29~3.12~41.25~33.75~0.76";
-v_sz002859="51~洁美科技~002859~38.83~37.50~37.75~54052~28783~25269~38.83~200~38.82~3~38.81~22~38.80~279~38.79~38~38.84~268~38.85~168~38.86~59~38.87~25~38.88~79~15:00:03/38.83/1127/S/4374200/9633|14:57:00/38.83/48/S/186412/9539|14:56:57/38.83/4/S/15532/9537|14:56:52/38.84/54/B/209667/9533|14:56:49/38.81/94/S/364823/9531|14:56:46/38.82/1/S/3882/9529~20171017150133~1.33~3.55~39.18~37.50~38.83/52925/203594724~54052~20797~9.29~71.89~~39.18~37.50~4.48~22.60~99.29~3.12~41.25~33.75~0.76"
- 0: 未知
- 1: 名字
- 2: 代码
- 3: 当前价格
- 4: 昨收
- 5: 今开
- 6: 成交量（手）
- 7: 外盘
- 8: 内盘
- 9: 买一
-10: 买一量（手）
-11-18: 买二 买五
-19: 卖一
-20: 卖一量
-21-28: 卖二 卖五
-29: 最近逐笔成交
-30: 时间
-31: 涨跌
-32: 涨跌%
-33: 最高
-34: 最低
-35: 价格/成交量（手）/成交额
-36: 成交量（手）
-37: 成交额（万）
-38: 换手率
-39: 市盈率
-40:
-41: 最高
-42: 最低
-43: 振幅
-44: 流通市值
-45: 总市值
-46: 市净率
-47: 涨停价
-48: 跌停价
-
-这个接口不需要Etag
-http://sqt.gtimg.cn/utf8/q=
+#!/usr/bin/env python
+#encoding=utf-8
 
 
-获取实时资金流向
-http://qt.gtimg.cn/q=ff_sz000858
-v_ff_sz000858="sz000858~41773.67~48096.67~-6322.99~-5.53~10200.89~14351.02~-4150.13~-3.63~114422.25~53015.90~59770.57~五 粮 液~20121221";
- 0: 代码
- 1: 主力流入
- 2: 主力流出
- 3: 主力净流入
- 4: 主力净流入/资金流入流出总和
- 5: 散户流入
- 6: 散户流出
- 7: 散户净流入
- 8: 散户净流入/资金流入流出总和
- 9: 资金流入流出总和1+2+5+6
-10: 未知
-11: 未知
-12: 名字
-13: 日期
+import json
+import time
+import pycurl
+import cStringIO
+import gzip
+import unicodedata
+import os
+import sys
+import random
 
-
-盘口分析
-http://qt.gtimg.cn/q=s_pksz000858
-v_s_pksz000858="0.196~0.258~0.221~0.325";
- 0: 买盘大单
- 1: 买盘小单
- 2: 卖盘大单
- 3: 卖盘小单
-
-获取简要信息
-http://qt.gtimg.cn/q=s_sz002030
-v_s_sz002030="51~达安基因~002030~31.41~-0.11~-0.35~135394~42396~~207.00";
-0:	未知
-1:	名字
-2:	代码
-3:	当前价格
-4:	涨跌
-5:	涨跌%
-6:	成交量（手）
-7:	成交额（万）
-8:
-9:	总市值
-
-所有股票id,name
-http://http://www.ctxalgo.com/api/stocks
-http://www.shdjt.com/js/lib/astock.js
-
-
-BeautifulSoup
-
-
-查看财务指标
-http://comdata.finance.gtimg.cn/data/mgzb/sh603113
-var data={"code":0,"data":{"zqdm":"002539","zqjc":"\u4e91\u56fe\u63a7\u80a1","nflb":["2017","2016","2015","2014","2013","2012","2011","2010","2009","2008","2007"],"mgzb":[{"bgrq":"2017-06-30","tbmgsy":"0.07","tbmgsykc":"--","jqmgsy":"0.07","jqmgsykc":"0.06","jbmgsy":"0.07","xsmgsy":"0.07","mgjzc":"--","tzhmgjzc":"--","mgxssr":"3.69","mgxjll":"-0.03"},{"bgrq":"2017-03-31","tbmgsy":"0.07","tbmgsykc":"--","jqmgsy":"0.07","jqmgsykc":"--","jbmgsy":"0.07","xsmgsy":"0.07","mgjzc":"--","tzhmgjzc":"--","mgxssr":"1.91","mgxjll":"0.00"},{"bgrq":"2016-12-31","tbmgsy":"0.14","tbmgsykc":"--","jqmgsy":"0.14","jqmgsykc":"0.08","jbmgsy":"0.14","xsmgsy":"0.14","mgjzc":"--","tzhmgjzc":"--","mgxssr":"6.01","mgxjll":"0.03"},{"bgrq":"2016-09-30","tbmgsy":"0.16","tbmgsykc":"--","jqmgsy":"0.16","jqmgsykc":"--","jbmgsy":"0.16","xsmgsy":"0.16","mgjzc":"--","tzhmgjzc":"--","mgxssr":"4.65","mgxjll":"-0.00"}]}};
-mgxjll 每股现金流量(元)
-tbmgsy 摊薄每股收益(元)
-jqmgsy 每股收益(加权)(元)
-
-
-查看成长能力
-http://comdata.finance.gtimg.cn/data/cznl/sz002539
-var data={"code":0,"data":{"zqdm":"002539","zqjc":"\u4e91\u56fe\u63a7\u80a1","nflb":["2016","2015","2014","2013","2012","2011","2010","2009","2008","2007"],"cznl":[{"bgrq":"2016-12-31","mgsy":"-28.85","mgxj":"-80.06","zysr":"4.01","yylr":"-42.23","lrze":"-32.60","jlr":"-28.85","xsqlr":"-23.49","zzc":"1.77"},{"bgrq":"2015-12-31","mgsy":"-42.08","mgxj":"--","zysr":"25.08","yylr":"10.80","lrze":"30.84","jlr":"76.70","xsqlr":"13.73","zzc":"32.81"},{"bgrq":"2014-12-31","mgsy":"6.39","mgxj":"--","zysr":"21.26","yylr":"47.14","lrze":"24.48","jlr":"6.40","xsqlr":"55.55","zzc":"19.89"},{"bgrq":"2013-12-31","mgsy":"-12.84","mgxj":"--","zysr":"12.38","yylr":"50.63","lrze":"2.11","jlr":"-12.84","xsqlr":"26.56","zzc":"10.47"}]}};
-mgsy每股收益增长率(%)
-mgxj每股现金流增长率(%)
-zysr主营收入增长率(%)
-yylr营业利润增长率(%)
-lrze利润总额增长率(%)
-jlr净利润增长率(%)
+from time import strftime, localtime
+from datetime import timedelta, date
+import calendar
 
 
 
-
-查看盈利能力
-http://comdata.finance.gtimg.cn/data/ylnl/sh603113
-
-
-查看解禁api
-http://stock.finance.qq.com/sstock/list/view/dxf.php?c=0&b=20171001&e=20171101
-
-
-大单分析
-http://stock.finance.qq.com/sstock/list/view/dadan.php?t=js&c=sh600848&max=80&p=1&opt=2&o=0
+__author__ = 'rong'
 
 
 
+user_agent_list = [
+        "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.1 "
+        "(KHTML, like Gecko) Chrome/22.0.1207.1 Safari/537.1",
+        "Mozilla/5.0 (X11; CrOS i686 2268.111.0) AppleWebKit/536.11 "
+        "(KHTML, like Gecko) Chrome/20.0.1132.57 Safari/536.11",
+        "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/536.6 "
+        "(KHTML, like Gecko) Chrome/20.0.1092.0 Safari/536.6",
+        "Mozilla/5.0 (Windows NT 6.2) AppleWebKit/536.6 "
+        "(KHTML, like Gecko) Chrome/20.0.1090.0 Safari/536.6",
+        "Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.1 "
+        "(KHTML, like Gecko) Chrome/19.77.34.5 Safari/537.1",
+        "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/536.5 "
+        "(KHTML, like Gecko) Chrome/19.0.1084.9 Safari/536.5",
+        "Mozilla/5.0 (Windows NT 6.0) AppleWebKit/536.5 "
+        "(KHTML, like Gecko) Chrome/19.0.1084.36 Safari/536.5",
+        "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/536.3 "
+        "(KHTML, like Gecko) Chrome/19.0.1063.0 Safari/536.3",
+        "Mozilla/5.0 (Windows NT 5.1) AppleWebKit/536.3 "
+        "(KHTML, like Gecko) Chrome/19.0.1063.0 Safari/536.3",
+        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_0) AppleWebKit/536.3 "
+        "(KHTML, like Gecko) Chrome/19.0.1063.0 Safari/536.3",
+        "Mozilla/5.0 (Windows NT 6.2) AppleWebKit/536.3 "
+        "(KHTML, like Gecko) Chrome/19.0.1062.0 Safari/536.3",
+        "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/536.3 "
+        "(KHTML, like Gecko) Chrome/19.0.1062.0 Safari/536.3",
+        "Mozilla/5.0 (Windows NT 6.2) AppleWebKit/536.3 "
+        "(KHTML, like Gecko) Chrome/19.0.1061.1 Safari/536.3",
+        "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/536.3 "
+        "(KHTML, like Gecko) Chrome/19.0.1061.1 Safari/536.3",
+        "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/536.3 "
+        "(KHTML, like Gecko) Chrome/19.0.1061.1 Safari/536.3",
+        "Mozilla/5.0 (Windows NT 6.2) AppleWebKit/536.3 "
+        "(KHTML, like Gecko) Chrome/19.0.1061.0 Safari/536.3",
+        "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/535.24 "
+        "(KHTML, like Gecko) Chrome/19.0.1055.1 Safari/535.24",
+        "Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/535.24 "
+        "(KHTML, like Gecko) Chrome/19.0.1055.1 Safari/535.24" ]
+
+
+
+class Day():
+    def __init__(self):
+        self.year = strftime("%Y", localtime())
+        self.mon = strftime("%m", localtime())
+        self.day = strftime("%d", localtime())
+        self.hour = strftime("%H", localtime())
+        self.min = strftime("%M", localtime())
+        self.sec = strftime("%S", localtime())
+
+    def today(self):
+     '''''
+     get today,date format="YYYY-MM-DD"
+     '''''
+     return date.today()
+
+
+    def todaystr(self):
+     '''
+     get date string, date format="YYYYMMDD"
+     '''
+     return self.year + self.mon + self.day
+
+
+    def datetime(self):
+     '''''
+     get datetime,format="YYYY-MM-DD HH:MM:SS"
+     '''
+     return strftime("%Y-%m-%d %H:%M:%S", localtime())
+
+
+    def datetimestr(self):
+     '''''
+     get datetime string
+     date format="YYYYMMDDHHMMSS"
+     '''
+     return self.year + self.mon + self.day + self.hour + self.min + self.sec
+
+
+    def get_day_of_day(self, n=0):
+     '''''
+     if n>=0,date is larger than today
+     if n<0,date is less than today
+     date format = "YYYY-MM-DD"
+     '''
+     if (n < 0):
+      n = abs(n)
+      return date.today() - timedelta(days=n)
+     else:
+      return date.today() + timedelta(days=n)
+
+
+    def get_days_of_month(self, year, mon):
+     '''''
+     get days of month
+     '''
+     return calendar.monthrange(year, mon)[1]
+
+
+    def get_firstday_of_month(self, year, mon):
+     '''''
+     get the first day of month
+     date format = "YYYY-MM-DD"
+     '''
+     days = "01"
+     if (int(mon) < 10):
+      mon = "0" + str(int(mon))
+     arr = (year, mon, days)
+     return "-".join("%s" % i for i in arr)
+
+
+    def get_lastday_of_month(self, year, mon):
+     '''''
+     get the last day of month
+     date format = "YYYY-MM-DD"
+     '''
+     days = calendar.monthrange(year, mon)[1]
+     mon = self.addzero(mon)
+     arr = (year, mon, days)
+     return "-".join("%s" % i for i in arr)
+
+
+    def get_firstday_month(self, n=0):
+     '''''
+     get the first day of month from today
+     n is how many months
+     '''
+     (y, m, d) = self.getyearandmonth(n)
+     d = "01"
+     arr = (y, m, d)
+     return "-".join("%s" % i for i in arr)
+
+
+    def get_lastday_month(self, n=0):
+     '''''
+     get the last day of month from today
+     n is how many months
+     '''
+     return "-".join("%s" % i for i in self.getyearandmonth(n))
+
+
+    def getyearandmonth(self, n=0):
+     '''''
+     get the year,month,days from today
+     befor or after n months
+     '''
+     thisyear = int(self.year)
+     thismon = int(self.mon)
+     totalmon = thismon + n
+     if (n >= 0):
+      if (totalmon <= 12):
+       days = str(self.get_days_of_month(thisyear, totalmon))
+       totalmon = self.addzero(totalmon)
+       return (self.year, totalmon, days)
+      else:
+       i = totalmon / 12
+       j = totalmon % 12
+       if (j == 0):
+        i -= 1
+        j = 12
+       thisyear += i
+       days = str(self.get_days_of_month(thisyear, j))
+       j = self.addzero(j)
+       return (str(thisyear), str(j), days)
+     else:
+      if ((totalmon > 0) and (totalmon < 12)):
+       days = str(self.get_days_of_month(this

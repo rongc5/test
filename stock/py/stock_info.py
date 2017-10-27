@@ -1005,7 +1005,8 @@ def do_search_short():
                 if id_dic[key]['main_force'][-1] - id_dic[key]['main_force'][0] >= 100:
                     flag_three = True
 
-            if flag_one and flag_two and flag_three:
+            #if flag_one and flag_two and flag_three:
+            if flag_one and flag_three:
                 search_dic[key] = id_dic[key]
             elif res['end'] > res['start'] and flag_two and flag_three:
                 search_dic[key] = id_dic[key]
