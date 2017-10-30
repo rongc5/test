@@ -592,9 +592,10 @@ def get_money_flow(id, req_header=None):
                     key = '%d_%s' % (index, id)
                     req_header.extend(['If-None-Match: %s' % (user_agent_dic[key])])
 
+                httpGetContent(favicon, ['Referer: %s' % (url), 'User-Agent: %s' % (user_agent_list[index])])
                 res = httpGetContent(url, req_header)
                 value = res['body'].decode("gbk").split('=')[1].strip(';\r\n')
-                httpGetContent(favicon, ['Referer: %s' % (url), 'User-Agent: %s' % (user_agent_list[index])])
+
             else:
                 res['head'] = ''
                 res['body'] = curl_cmd_get(url)
