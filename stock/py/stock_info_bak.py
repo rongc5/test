@@ -576,6 +576,8 @@ def get_money_flow(id, req_header=None):
     url = 'http://qt.gtimg.cn/q=ff_%s' % (id)
     refer = 'http://finance.qq.com/stock/sother/test_flow_stock_quotpage.htm'
 
+    favicon = 'http://qt.gtimg.cn/favicon.ico'
+
     stocklist = []
     req_header.extend(['Referer: %s' % (refer)])
     tmp_header = req_header
@@ -587,10 +589,12 @@ def get_money_flow(id, req_header=None):
                 index = random.randint(0, len(user_agent_list) -1)
                 req_header.extend(['User-Agent: %s' % (user_agent_list[index])])
                 if user_agent_dic.has_key(index):
-                    req_header.extend(['If-None-Match: %s' % (user_agent_dic[index])])
+                    key = '%d_%s' % (index, id)
+                    req_header.extend(['If-None-Match: %s' % (user_agent_dic[key])])
 
                 res = httpGetContent(url, req_header)
                 value = res['body'].decode("gbk").split('=')[1].strip(';\r\n')
+                httpGetContent(favicon, ['Referer: %s' % (url), 'User-Agent: %s' % (user_agent_list[index])])
             else:
                 res['head'] = ''
                 res['body'] = curl_cmd_get(url)
@@ -603,6 +607,9 @@ def get_money_flow(id, req_header=None):
             break
         except Exception,e:
             #print url, value, e
+            if res.has_key('head'):
+                print res['head']
+
             req_header = tmp_header
             i = i+1
             if i >= imax:
@@ -619,7 +626,8 @@ def get_money_flow(id, req_header=None):
         stockdict['main_force'] = float(stocklist[3])
 
     if res.has_key('head') and 'Etag:' in res['head']:
-        user_agent_dic[index]  = res['head'].split('Etag:')[1].strip()
+        key = '%d_%s' % (index, id)
+        user_agent_dic[key]  = res['head'].split('Etag:')[1].strip()
 
     return stockdict
 
@@ -686,7 +694,8 @@ def get_stockid_real_time(id, req_header=None):
     #stockdict['high_limit'] = float(stocklist[47])
     #stockdict['low_limit'] = float(stocklist[48])
     if 'Etag:' in res['head']:
-        user_agent_dic[index]  = res['head'].split('Etag:')[1].strip()
+        key = '%d_%s' % (index, id)
+        user_agent_dic[key]  = res['head'].split('Etag:')[1].strip()
 
     return stockdict
 
@@ -933,11 +942,11 @@ def get_data_direction(arr):
 
     length = len(arr)
     count = 0
-    for i in range(length):
-        if (i +1) <= length and arr[length -i] > arr[length -i -1]:
+    for i in range(length - 1):
+        if arr[length -i -1] > arr[length -i -2]:
             count += 1
 
-    if 2 * count > (length -1):
+    if 5 * count > 4 * (length -1):
         return True
 
     return False
@@ -1019,7 +1028,7 @@ def do_search_short():
 
             if flag_one and flag_two and flag_three:
                 search_dic[key] = id_dic[key]
-            elif res['end'] > res['start'] and flag_two and flag_three:
+            elif res['end'] > res['last_closing'] and flag_two and flag_three:
                 search_dic[key] = id_dic[key]
 
         for key in search_dic:
@@ -1028,7 +1037,7 @@ def do_search_short():
 
 #A股就是个坑， 技术指标低位了， 仍然可以再砸
 #技术指标高位了， 有资金接盘仍然可以涨, 高位始终是危险
-#压力如铁桶，支撑如窗户纸
+#压力如铁桶，支撑如窗户纸, 压力位不放量买就是要跌的节奏
 #有连续的大单介入才介入， 低位大资金都不介入， 肯定有猫腻
 #业绩好的，下跌， 大资金不介入， 肯定有什么利空， 业绩可以变脸
 #买二--买五是大单， 而买1是小单， 下跌也不买， 明显还没有跌到位
@@ -1039,6 +1048,7 @@ def do_search_short():
 #高位下引线， 股价快到顶了
 #跟封盘， 毕竟高位跟风盘不少， 再出货
 #macd 鸭子张嘴， 会加速下跌
+#涨是需要理由的， 跌不需要
 if __name__ == '__main__':
     do_search_short()
 
