@@ -623,8 +623,9 @@ def get_money_flow(id, req_header=None):
 
     #print stocklist
     stockdict = {}
-    if len(stocklist) > 3:
+    if len(stocklist) > 10:
         stockdict['main_force'] = float(stocklist[3])
+        stockdict['small_force'] = float(stocklist[7])
 
     if res.has_key('head') and 'Etag:' in res['head']:
         key = '%d_%s' % (index, id)
@@ -938,19 +939,29 @@ def remove_from_banlist(id_dic, ban_list):
 
 #增长 为true, 下降为false
 def get_data_direction(arr):
-    if len(arr) < 2:
+    if len(arr) < 2 :
+        if arr[0] > 0:
+            return True
+        else:
+            return False
+
+    #length = len(arr)
+    #count = 0
+    #sum = 0;
+    #for i in range(length - 1):
+    #    if arr[length -i -1] > arr[length -i -2]:
+    #        count += 1
+    #    sum += arr[length -i -1] - arr[length -i -2]
+
+    if arr[-1] > arr[0] and arr[-1] > 0:
+        return True
+    else:
         return False
 
-    length = len(arr)
-    count = 0
-    for i in range(length - 1):
-        if arr[length -i -1] > arr[length -i -2]:
-            count += 1
-
-    if 5 * count > 4 * (length -1):
-        return True
-
-    return False
+    #if count > 0.6 * (length -1):
+    #    return True
+    #
+    #return False
 
 def load_monitor_list():
     if not os.path.isfile('monitor_list'):
@@ -983,11 +994,20 @@ def do_check_monitor():
             if not id_dic[key].has_key('main_force'):
                     id_dic[key]['main_force'] = []
 
+            if not id_dic[key].has_key('small_force'):
+                    id_dic[key]['small_force'] = []
+
             if money.has_key('main_force'):
                 if len(id_dic[key]['main_force']) and abs(id_dic[key]['main_force'][-1] - money['main_force']) >= 50:
                     id_dic[key]['main_force'].append(money['main_force'])
                 elif not len(id_dic[key]['main_force']):
                     id_dic[key]['main_force'].append(money['main_force'])
+
+            if money.has_key('small_force'):
+                if len(id_dic[key]['small_force']) and abs(id_dic[key]['small_force'][-1] - money['small_force']) >= 50:
+                    id_dic[key]['small_force'].append(money['small_force'])
+                elif not len(id_dic[key]['small_force']):
+                    id_dic[key]['small_force'].append(money['small_force'])
 
             big_data = get_single_analysis(key)
             big_res = 0
@@ -1045,6 +1065,15 @@ def do_search_short():
 
             money = get_money_flow(key)
 
+            if not id_dic[key].has_key('small_force'):
+                    id_dic[key]['small_force'] = []
+
+            if money.has_key('small_force'):
+                if len(id_dic[key]['small_force']) and abs(id_dic[key]['small_force'][-1] - money['small_force']) >= 50:
+                    id_dic[key]['small_force'].append(money['small_force'])
+                elif not len(id_dic[key]['small_force']):
+                    id_dic[key]['small_force'].append(money['small_force'])
+
             if not id_dic[key].has_key('main_force'):
                     id_dic[key]['main_force'] = []
 
@@ -1071,16 +1100,16 @@ def do_search_short():
                 flag_one = True
 
             flag_two = False
-            if get_data_direction(id_dic[key]['big_res']):
+            if len(id_dic[key]['big_res']) and get_data_direction(id_dic[key]['big_res']):
                 flag_two = True
 
             flag_three = False
-            if get_data_direction(id_dic[key]['main_force']):
+            if len(id_dic[key]['main_force']) and get_data_direction(id_dic[key]['main_force']):
                 flag_three = True
 
-            if flag_one and flag_two and flag_three:
+            if flag_one and flag_two:
                 search_dic[key] = id_dic[key]
-            elif res['end'] > res['last_closing'] and flag_two and flag_three:
+            elif res['end'] > res['last_closing'] and get_data_direction(id_dic[key]['big_res']) and get_data_direction(id_dic[key]['main_force']):
                 search_dic[key] = id_dic[key]
 
         for key in search_dic:
