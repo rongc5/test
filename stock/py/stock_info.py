@@ -592,9 +592,10 @@ def get_money_flow(id, req_header=None):
                     key = '%d_%s' % (index, id)
                     req_header.extend(['If-None-Match: %s' % (user_agent_dic[key])])
 
+                httpGetContent(favicon, ['Referer: %s' % (url), 'User-Agent: %s' % (user_agent_list[index])])
                 res = httpGetContent(url, req_header)
                 value = res['body'].decode("gbk").split('=')[1].strip(';\r\n')
-                httpGetContent(favicon, ['Referer: %s' % (url), 'User-Agent: %s' % (user_agent_list[index])])
+
             else:
                 res['head'] = ''
                 res['body'] = curl_cmd_get(url)
@@ -951,6 +952,57 @@ def get_data_direction(arr):
 
     return False
 
+def load_monitor_list():
+    if not os.path.isfile('monitor_list'):
+        get_basic_list()
+
+    id_dic = {}
+    file = open("monitor_list")
+    while 1:
+        line = file.readline().strip('\n')
+        if not line:
+            break
+        id_dic[line] = {}
+
+    file.close()
+
+    return id_dic
+
+def do_check_monitor():
+    id_dic = load_monitor_list()
+    while 1:
+        for key in id_dic:
+            time.sleep(0.05)
+            res = get_stockid_real_time(key)
+            id_dic[key]['range_percent'] = res['range_percent']
+            id_dic[key]['swing'] = res['swing']
+            id_dic[key]['change_rate'] = res['change_rate']
+            id_dic[key]['end'] = res['end']
+            money = get_money_flow(key)
+
+            if not id_dic[key].has_key('main_force'):
+                    id_dic[key]['main_force'] = []
+
+            if money.has_key('main_force'):
+                if len(id_dic[key]['main_force']) and abs(id_dic[key]['main_force'][-1] - money['main_force']) >= 50:
+                    id_dic[key]['main_force'].append(money['main_force'])
+                elif not len(id_dic[key]['main_force']):
+                    id_dic[key]['main_force'].append(money['main_force'])
+
+            big_data = get_single_analysis(key)
+            big_res = 0
+            if len(big_data):
+                big_res = big_data['b'] - big_data['s']
+
+            if not id_dic[key].has_key('big_res'):
+                id_dic[key]['big_res'] = []
+            if len(id_dic[key]['big_res']) and abs(id_dic[key]['big_res'][-1] - big_res) >= 200:
+                id_dic[key]['big_res'].append(big_res)
+            elif not len(id_dic[key]['big_res']):
+                id_dic[key]['big_res'].append(big_res)
+
+        print id_dic
+        time.sleep(30)
 
 def do_search_short():
     day = Day()
@@ -1050,5 +1102,6 @@ def do_search_short():
 #macd 鸭子张嘴， 会加速下跌
 #涨是需要理由的， 跌不需要
 if __name__ == '__main__':
-    do_search_short()
+    do_check_monitor()
+    #do_search_short()
 
