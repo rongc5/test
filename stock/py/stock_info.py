@@ -1102,10 +1102,19 @@ def do_search_short():
         for key in remove_ley:
             id_dic.pop(key)
 
+        count = 0
         remove_ley = []
         print 'after remove_ley', len(id_dic)
         for key in id_dic:
-            time.sleep(0.05)
+            #time.sleep(0.05)
+            count += 1
+
+            if not id_dic[key].has_key('index'):
+                id_dic[key]['index'] = 0
+
+            if id_dic[key]['index'] and (count % id_dic[key]['index']):
+                continue
+
             res = get_stockid_real_time(key)
 
             if res['range_percent'] < -0.6 or  res['range_percent'] > 0.39:
@@ -1118,9 +1127,6 @@ def do_search_short():
             #    continue
 
             id_dic[key]['swing'] = res['swing']
-            if res['change_rate'] < 0.6:
-                remove_ley.append(key)
-                continue
 
             if res['change_rate'] < 1:
                 continue
@@ -1182,8 +1188,12 @@ def do_search_short():
 
             if flag_one and flag_two:
                 search_dic[key] = id_dic[key]
+                id_dic[key]['index'] = 0
             elif res['end'] > res['low'] and flag_two and flag_three:
                 search_dic[key] = id_dic[key]
+                id_dic[key]['index'] = 0
+            else:
+                id_dic[key]['index'] = count % 6
 
         if len(search_dic):
             log_write('res_list', 'begin ==========')
@@ -1194,7 +1204,7 @@ def do_search_short():
         if len(search_dic):
             log_write('res_list', 'serch over ==========')
         do_check_monitor()
-        time.sleep(30)
+        time.sleep(20)
 
 #A股就是个坑， 技术指标低位了， 仍然可以再砸
 #技术指标高位了， 有资金接盘仍然可以涨, 高位始终是危险
