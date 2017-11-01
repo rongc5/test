@@ -64,6 +64,7 @@ user_agent_list = [
 
 
 user_agent_dic = {}
+user_agent_cookie = {}
 
 class Day():
     def __init__(self):
@@ -246,6 +247,8 @@ def curl_cmd_get(url):
 
 #1.0 版本不必支持chunked,
 def httpGetContent(url, req_header=None, version = '1.1'):
+
+    print "==>", req_header, url, "<=="
 
     buf = cStringIO.StringIO()
     response_header = cStringIO.StringIO()
@@ -570,6 +573,75 @@ def get_single_analysis(id, req_header=None):
 
     return stockdict
 
+
+def get_money_flow2(id, req_header=None):
+    if req_header is None:
+        req_header = []
+
+    url = 'https://gupiao.baidu.com/api/stocks/stockfunds?from=pc&os_ver=1&cuid=xxx&vv=100&format=json&stock_code=%s' % (id)
+    favicon = 'https://gupiao.baidu.com/favicon.ico'
+
+    tmp_dic = {}
+    tmp_header = req_header
+    i = 0
+    imax = 5
+    flag =0
+    index = 0
+    while 1:
+        try:
+            if i + 1 < imax:
+                index = random.randint(0, len(user_agent_list) -1)
+                req_header.extend(['User-Agent: %s' % (user_agent_list[index])])
+                if user_agent_cookie.has_key(index):
+                    req_header.extend(['Cookie: %s' % (user_agent_cookie[index])])
+                    flag = 1
+
+                #httpGetContent(favicon, ['Referer: %s' % (url), 'User-Agent: %s' % (user_agent_list[index])])
+                res = httpGetContent(url, req_header)
+                value = res.decode("gbk").strip(';\r\n')
+
+            else:
+                res['head'] = ''
+                res['body'] = curl_cmd_get(url)
+                value = res.decode("gbk").strip(';\r\n')
+            tmp_dic = json.loads(value)
+            if len(tmp_dic) >0:
+                break
+        except Exception,e:
+            #print url, value, e
+            if res.has_key('head'):
+                print res['head']
+
+            req_header = tmp_header
+            i = i+1
+            if i >= imax:
+                log_write('errcode', id)
+                break
+            time.sleep(random.randint(1, 3))
+
+    if i > imax:
+        return  {}
+
+    #print stocklist
+    stockdict = {}
+    if tmp_dic.has_key(''):
+        stockdict['main_force'] = float(stocklist[3])
+        stockdict['small_force'] = float(stocklist[7])
+
+    if res.has_key('head') and 'Set-Cookie:' in res['head']:
+        user_agent_cookie[index]  = res['head'].split('Set-Cookie:')[1].split(';')[0].strip()
+
+    if not flag:
+        req_header = tmp_header
+        req_header.extend(['Referer: %s' % (url)])
+        req_header.extend(['User-Agent: %s' % (user_agent_list[index])])
+        if user_agent_cookie.has_key(index):
+                res = req_header.extend(['Cookie: %s' % (user_agent_cookie[index])])
+        res = httpGetContent(favicon, req_header)
+        if res.has_key('head') and 'Set-Cookie:' in res['head']:
+            user_agent_cookie[index]  = res['head'].split('Set-Cookie:')[1].split(';')[0].strip()
+
+
 def get_money_flow(id, req_header=None):
     if req_header is None:
         req_header = []
@@ -592,7 +664,7 @@ def get_money_flow(id, req_header=None):
                     key = '%d_%s' % (index, id)
                     req_header.extend(['If-None-Match: %s' % (user_agent_dic[key])])
 
-                httpGetContent(favicon, ['Referer: %s' % (url), 'User-Agent: %s' % (user_agent_list[index])])
+                #httpGetContent(favicon, ['Referer: %s' % (url), 'User-Agent: %s' % (user_agent_list[index])])
                 res = httpGetContent(url, req_header)
                 value = res['body'].decode("gbk").split('=')[1].strip(';\r\n')
 
@@ -639,13 +711,18 @@ def get_stockid_real_time(id, req_header=None):
     #favicon = 'http://qt.gtimg.cn/favicon.ico
     if req_header is None:
         req_header = []
-    url = 'http://sqt.gtimg.cn/utf8/q=%s' % (id)
-    favicon = 'http://sqt.gtimg.cn/favicon.ico'
+    url = 'http://web.sqt.gtimg.cn/q=%s' % (id)
+    refer = 'http://gu.qq.com/%s/gp' % (id)
+    #url = 'http://sqt.gtimg.cn/utf8/q=%s' % (id)
+    #favicon = 'http://sqt.gtimg.cn/favicon.ico'
     tmp_header = req_header
+    i = 0
+    imax = 5
     while 1:
-
+        req_header = []
         index = random.randint(0, len(user_agent_list) -1)
         req_header.extend(['User-Agent: %s' % (user_agent_list[index])])
+        req_header.extend(['Referer: %s' % (refer)])
         #if user_agent_dic.has_key(index):
         #    req_header.extend(['If-None-Match: %s' % (user_agent_dic[index])])
 
@@ -657,8 +734,9 @@ def get_stockid_real_time(id, req_header=None):
         else:
             value = res['body'].split('=')[1].strip(';\n')
             stocklist = value.split('~')
-            if len(stocklist) < 48:
-                print url, sys._getframe().f_lineno
+            if len(stocklist) < 20:
+                print url, sys._getframe().f_lineno, len(stocklist), stocklist
+                print value
                 time.sleep(1)
                 continue
             break
@@ -684,7 +762,11 @@ def get_stockid_real_time(id, req_header=None):
 
     #stockdict['volume'] = int(stocklist[6])            # 成交量（手）
     #stockdict['total_price'] = int(stocklist[37])      # 成交额（万元）
-    stockdict['change_rate'] = float(stocklist[38]) # 换手率
+    #print 'change_rate', stocklist
+    if stocklist[38].strip():
+        stockdict['change_rate'] = float(stocklist[38]) # 换手率
+    else:
+        stockdict['change_rate'] = 0
     stockdict['pe'] = float(stocklist[39])          # 市盈率
     stockdict['swing'] = float(stocklist[43])           # 振幅
 
@@ -770,108 +852,4 @@ def get_basic_list():
     flag = False
     for key in id_dic:
         time.sleep(0.01)
-        res = get_stockid_real_time(key, header)
-        if len(res) < 1:
-            continue
-
-        if res['block']:  #停牌
-            continue
-
-        if res['circulation_market_value'] >= 300:
-            continue
-
-        if res['total_value'] >= 500:
-            continue
-
-        if res['pe'] > 90 or res['pe'] < 0:
-            continue
-
-        if res['end'] > 30 or res['end'] <= 2:
-            continue
-
-        res['mgzb'] = get_stockid_mgzb(key)
-        if len(res['mgzb']) < 1:
-            continue
-
-        if '--' not in res['mgzb'][0]['tbmgsy'] and  float(res['mgzb'][0]['tbmgsy']) < 0.1:
-            continue
-
-        if '--' not in res['mgzb'][0]['mgxjll'] and float(res['mgzb'][0]['mgxjll']) < 0.05:
-            continue
-
-        res['cznl'] = get_stockid_cznl(key)
-        if len(res['cznl']) < 1:
-            continue
-        #if float(res['cznl'][0]['yylr']) < 0:
-        #    continue
-        #
-        #if float(res['cznl'][0]['jlr']) < 0:
-        #    continue
-        #
-        #if float(res['cznl'][0]['yylr']) < 30:
-        #    continue
-
-
-        basic_dic[res['id']] = res
-
-        file.write(res['code'])
-        file.write('\t')
-        file.write(res['id'])
-        file.write('\t')
-        file.write(str(res['end']))
-        file.write('\t')
-        file.write(str(res['pe']))
-        file.write('\t')
-        file.write(str(res['pb']))
-        file.write('\t')
-        file.write(str(res['circulation_market_value']))
-        file.write('\t')
-        file.write(str(res['total_value']))
-        file.write('\t')
-        file.write(res['mgzb'][0]['tbmgsy'])
-        file.write('\t')
-        file.write(res['mgzb'][0]['mgxjll'])
-        file.write('\t')
-        file.write(res['cznl'][0]['mgsy'])
-        file.write('\t')
-        file.write(res['cznl'][0]['mgxj'])
-        file.write('\t')
-        file.write(res['cznl'][0]['zysr'])
-        file.write('\t')
-        file.write(res['cznl'][0]['yylr'])
-        file.write('\t')
-        file.write(res['cznl'][0]['jlr'])
-        file.write('\t')
-        file.write(res['date'])
-
-        file.write('\n')
-        file.flush()
-
-        #print res
-        #break
-    file.close()
-
-
-def load_base_list():
-    if not os.path.isfile('base_list'):
-        get_basic_list()
-
-    id_dic = {}
-    file = open("base_list")
-    while 1:
-        line = file.readline().strip()
-        if not line:
-            break
-        items = line.split('\t')
-        if len(items) < 8:
-            continue
-        tmp_dic = {}
-        tmp_dic['code'] = items[0]
-        tmp_dic['id'] = items[1]
-        tmp_dic['end'] = items[2]
-        tmp_dic['pe'] = float(items[3])
-        tmp_dic['pb'] = float(items[4])
-        tmp_dic['circulation_market_value'] = float(items[5])
-        tmp_dic['total_value'] = float(items[6])
-        tmp_dic['tbmgsy'] = items[7].replace(',', '')
-     
+        r

@@ -45,6 +45,7 @@ v_sz002859="51~洁美科技~002859~38.83~37.50~37.75~54052~28783~25269~38.83~200
 这个接口不需要Etag
 http://sqt.gtimg.cn/utf8/q=
 
+http://web.sqt.gtimg.cn/q=sz300699?r=0.08378540160720638
 
 获取实时资金流向
 http://qt.gtimg.cn/q=ff_sz000858
@@ -132,3 +133,8 @@ https://gupiao.baidu.com/api/stocks/stockdaybar?from=pc&os_ver=1&cuid=xxx&vv=100
 
 资金流入流出情况
 https://gupiao.baidu.com/api/stocks/stockfunds?from=pc&os_ver=1&cuid=xxx&vv=100&format=json&stock_code=sh601231&timestamp=1509358848480
+
+
+http://web.ifzq.gtimg.cn/appstock/hs/gszl/get?code=sz002611&type=gsgk_tips&_callback=jQuery1124006293975313828826_1509515397918&_=1509515397919
+http://web.ifzq.gtimg.cn/appstock/hs/hypm/get?code=sz002611&_var=gg_hypm&_=1509515397920
+

@@ -64,6 +64,7 @@ user_agent_list = [
 
 
 user_agent_dic = {}
+user_agent_cookie = {}
 
 class Day():
     def __init__(self):
@@ -247,6 +248,8 @@ def curl_cmd_get(url):
 #1.0 版本不必支持chunked,
 def httpGetContent(url, req_header=None, version = '1.1'):
 
+    #print "==>", req_header, url, "<=="
+
     buf = cStringIO.StringIO()
     response_header = cStringIO.StringIO()
     c = pycurl.Curl()
@@ -324,20 +327,18 @@ def get_stockid_detail(id, date):
     file_object.close( )
 
 #查看每股财务指标
-def get_stockid_mgzb(id, req_header=None):
-    if req_header is None:
-        req_header = []
+def get_stockid_mgzb(id):
 
     url = 'http://comdata.finance.gtimg.cn/data/mgzb/%s' % (id)
     refer = 'http://stock.finance.qq.com/corp1/cwfx.html?mgzb-%s' %(id)
 
-    req_header.extend(['Referer: %s' % (refer)])
-    tmp_header = req_header
     i = 0
     imax = 3
     while 1:
         try:
             if i + 1 < imax:
+                req_header = []
+                req_header.extend(['Referer: %s' % (refer)])
                 index = random.randint(0, len(user_agent_list) -1)
                 req_header.extend(['User-Agent: %s' % (user_agent_list[index])])
 
@@ -351,7 +352,6 @@ def get_stockid_mgzb(id, req_header=None):
             break
         except Exception,e:
             #print url, value, e
-            req_header = tmp_header
             i = i+1
             if i >= imax:
                 log_write('errcode', id)
@@ -364,19 +364,18 @@ def get_stockid_mgzb(id, req_header=None):
     return id_dic['data']['mgzb']
 
 #查看每股盈利能力
-def get_stockid_ylnl(id, req_header=None):
-    if req_header is None:
-        req_header = []
+def get_stockid_ylnl(id):
+
     url = 'http://comdata.finance.gtimg.cn/data/ylnl/%s' % (id)
     refer = 'http://stock.finance.qq.com/corp1/cwfx.html?ylnl-%s' %(id)
 
-    req_header.extend(['Referer: %s' % (refer)])
-    tmp_header = req_header
     i = 0
     imax = 3
     while 1:
         try:
             if i + 1 < imax:
+                req_header = []
+                req_header.extend(['Referer: %s' % (refer)])
                 index = random.randint(0, len(user_agent_list) -1)
                 req_header.extend(['User-Agent: %s' % (user_agent_list[index])])
 
@@ -390,7 +389,6 @@ def get_stockid_ylnl(id, req_header=None):
             break
         except Exception,e:
             #print url, value, e
-            req_header = tmp_header
             i = i+1
             if i >= imax:
                 log_write('errcode', id)
@@ -403,19 +401,18 @@ def get_stockid_ylnl(id, req_header=None):
     return id_dic['data']['ylnl']
 
 #查看每股成长能力
-def get_stockid_cznl(id, req_header=None):
-    if req_header is None:
-        req_header = []
+def get_stockid_cznl(id):
+
     url = 'http://comdata.finance.gtimg.cn/data/cznl/%s' % (id)
     refer = 'http://stock.finance.qq.com/corp1/cwfx.html?cznl-%s' %(id)
 
-    req_header.extend(['Referer: %s' % (refer)])
-    tmp_header = req_header
     i = 0
     imax = 3
     while 1:
         try:
             if i + 1 < imax:
+                req_header = []
+                req_header.extend(['Referer: %s' % (refer)])
                 index = random.randint(0, len(user_agent_list) -1)
                 req_header.extend(['User-Agent: %s' % (user_agent_list[index])])
                 res = httpGetContent(url, req_header)
@@ -428,7 +425,6 @@ def get_stockid_cznl(id, req_header=None):
             break
         except Exception,e:
             #print url, value, e
-            req_header = tmp_header
             i = i+1
             if i >= imax:
                 log_write('errcode', id)
@@ -441,19 +437,18 @@ def get_stockid_cznl(id, req_header=None):
     return id_dic['data']['cznl']
 
 #偿债及资本结构
-def get_stockid_czzb(id, req_header=None):
-    if req_header is None:
-        req_header = []
+def get_stockid_czzb(id):
+
     url = 'http://comdata.finance.gtimg.cn/data/czzb/%s' % (id)
     refer = 'http://stock.finance.qq.com/corp1/cwfx.html?czzb-%s' %(id)
 
-    req_header.extend(['Referer: %s' % (refer)])
-    tmp_header = req_header
     i = 0
     imax = 3
     while 1:
         try:
             if i + 1 < imax:
+                req_header = []
+                req_header.extend(['Referer: %s' % (refer)])
                 index = random.randint(0, len(user_agent_list) -1)
                 req_header.extend(['User-Agent: %s' % (user_agent_list[index])])
                 res = httpGetContent(url, req_header)
@@ -466,7 +461,6 @@ def get_stockid_czzb(id, req_header=None):
             break
         except Exception,e:
             #print url, value, e
-            req_header = tmp_header
             i = i+1
             if i >= imax:
                 log_write('errcode', id)
@@ -480,19 +474,18 @@ def get_stockid_czzb(id, req_header=None):
 
 
 #杜邦分析
-def get_stockid_dbfx(id, req_header=None):
-    if req_header is None:
-        req_header = []
+def get_stockid_dbfx(id):
+
     url = 'http://comdata.finance.gtimg.cn/data/dbfx/%s' % (id)
     refer = 'http://stock.finance.qq.com/corp1/dbfx.html?%s' %(id)
 
-    req_header.extend(['Referer: %s' % (refer)])
-    tmp_header = req_header
     i = 0
     imax = 3
     while 1:
         try:
             if i + 1 < imax:
+                req_header = []
+                req_header.extend(['Referer: %s' % (refer)])
                 index = random.randint(0, len(user_agent_list) -1)
                 req_header.extend(['User-Agent: %s' % (user_agent_list[index])])
                 res = httpGetContent(url, req_header)
@@ -505,7 +498,6 @@ def get_stockid_dbfx(id, req_header=None):
             break
         except Exception,e:
             #print url, value, e
-            req_header = tmp_header
             i = i+1
             if i >= imax:
                 log_write('errcode', id)
@@ -518,21 +510,19 @@ def get_stockid_dbfx(id, req_header=None):
     return id_dic['data']['dbfx']
 
 
-def get_single_analysis(id, req_header=None):
-    if req_header is None:
-        req_header = []
+def get_single_analysis(id):
 
     url = 'http://stock.finance.qq.com/sstock/list/view/dadan.php?t=js&c=%s&max=100&p=1&opt=1&o=0' % (id)
     refer = 'http://stockhtm.finance.qq.com/sstock/quotpage/dadan.htm?c=%s' % (id)
 
     stocklist = []
-    req_header.extend(['Referer: %s' % (refer)])
-    tmp_header = req_header
     i = 0
     imax = 5
     while 1:
         try:
             if i + 1 < imax:
+                req_header = []
+                req_header.extend(['Referer: %s' % (refer)])
                 index = random.randint(0, len(user_agent_list) -1)
                 req_header.extend(['User-Agent: %s' % (user_agent_list[index])])
 
@@ -545,7 +535,6 @@ def get_single_analysis(id, req_header=None):
             break
         except Exception,e:
             #print url, value, e
-            req_header = tmp_header
             i = i+1
             if i >= imax:
                 log_write('errcode', id)
@@ -570,23 +559,86 @@ def get_single_analysis(id, req_header=None):
 
     return stockdict
 
-def get_money_flow(id, req_header=None):
-    if req_header is None:
+
+def get_money_flow2(id):
+    url = 'https://gupiao.baidu.com/api/stocks/stockfunds?from=pc&os_ver=1&cuid=xxx&vv=100&format=json&stock_code=%s' % (id)
+    favicon = 'https://gupiao.baidu.com/favicon.ico'
+
+    tmp_dic = {}
+    i = 0
+    imax = 5
+    flag =0
+    index = 0
+    while 1:
+        try:
+            if i + 1 < imax:
+                req_header = []
+                index = random.randint(0, len(user_agent_list) -1)
+                req_header.extend(['User-Agent: %s' % (user_agent_list[index])])
+                if user_agent_cookie.has_key(index):
+                    req_header.extend(['Cookie: %s' % (user_agent_cookie[index])])
+                    flag = 1
+
+                #httpGetContent(favicon, ['Referer: %s' % (url), 'User-Agent: %s' % (user_agent_list[index])])
+                res = httpGetContent(url, req_header)
+                value = res.decode("gbk").strip(';\r\n')
+
+            else:
+                res['head'] = ''
+                res['body'] = curl_cmd_get(url)
+                value = res.decode("gbk").strip(';\r\n')
+            tmp_dic = json.loads(value)
+            if len(tmp_dic) >0:
+                break
+        except Exception,e:
+            #print url, value, e
+            if res.has_key('head'):
+                print res['head']
+
+            i = i+1
+            if i >= imax:
+                log_write('errcode', id)
+                break
+            time.sleep(random.randint(1, 3))
+
+    if i > imax:
+        return  {}
+
+    #print stocklist
+    #stockdict = {}
+    #if tmp_dic.has_key(''):
+    #    stockdict['main_force'] = float(stocklist[3])
+    #    stockdict['small_force'] = float(stocklist[7])
+
+    if res.has_key('head') and 'Set-Cookie:' in res['head']:
+        user_agent_cookie[index]  = res['head'].split('Set-Cookie:')[1].split(';')[0].strip()
+
+    if not flag:
         req_header = []
+        req_header.extend(['Referer: %s' % (url)])
+        req_header.extend(['User-Agent: %s' % (user_agent_list[index])])
+        if user_agent_cookie.has_key(index):
+                res = req_header.extend(['Cookie: %s' % (user_agent_cookie[index])])
+        res = httpGetContent(favicon, req_header)
+        if res.has_key('head') and 'Set-Cookie:' in res['head']:
+            user_agent_cookie[index]  = res['head'].split('Set-Cookie:')[1].split(';')[0].strip()
+
+
+def get_money_flow(id):
     url = 'http://qt.gtimg.cn/q=ff_%s' % (id)
     refer = 'http://finance.qq.com/stock/sother/test_flow_stock_quotpage.htm'
 
     favicon = 'http://qt.gtimg.cn/favicon.ico'
 
     stocklist = []
-    req_header.extend(['Referer: %s' % (refer)])
-    tmp_header = req_header
     i = 0
     imax = 5
     while 1:
         try:
             if i + 1 < imax:
                 index = random.randint(0, len(user_agent_list) -1)
+                req_header = []
+                req_header.extend(['Referer: %s' % (refer)])
                 req_header.extend(['User-Agent: %s' % (user_agent_list[index])])
                 if user_agent_dic.has_key(index):
                     key = '%d_%s' % (index, id)
@@ -611,7 +663,6 @@ def get_money_flow(id, req_header=None):
             if res.has_key('head'):
                 print res['head']
 
-            req_header = tmp_header
             i = i+1
             if i >= imax:
                 log_write('errcode', id)
@@ -634,37 +685,40 @@ def get_money_flow(id, req_header=None):
     return stockdict
 
 #实时行情
-def get_stockid_real_time(id, req_header=None):
+def get_stockid_real_time(id):
     #url = 'http://qt.gtimg.cn/q=%s' % (id)
     #favicon = 'http://qt.gtimg.cn/favicon.ico
-    if req_header is None:
-        req_header = []
-    url = 'http://sqt.gtimg.cn/utf8/q=%s' % (id)
-    favicon = 'http://sqt.gtimg.cn/favicon.ico'
-    tmp_header = req_header
+    url = 'http://web.sqt.gtimg.cn/q=%s' % (id)
+    refer = 'http://gu.qq.com/%s/gp' % (id)
+    #url = 'http://sqt.gtimg.cn/utf8/q=%s' % (id)
+    #favicon = 'http://sqt.gtimg.cn/favicon.ico'
+    i = 0
+    imax = 5
     while 1:
-
+        req_header = []
         index = random.randint(0, len(user_agent_list) -1)
         req_header.extend(['User-Agent: %s' % (user_agent_list[index])])
+        req_header.extend(['Referer: %s' % (refer)])
         #if user_agent_dic.has_key(index):
         #    req_header.extend(['If-None-Match: %s' % (user_agent_dic[index])])
-
+        i = i + 1
         res = httpGetContent(url, req_header)
         if len(res) < 2:
-            req_header = tmp_header
-            print url, sys._getframe().f_lineno
+            print url, sys._getframe().f_lineno, res
             time.sleep(1)
         else:
             value = res['body'].split('=')[1].strip(';\n')
             stocklist = value.split('~')
-            if len(stocklist) < 48:
-                print url, sys._getframe().f_lineno
+            if len(stocklist) < 20:
+                print url, sys._getframe().f_lineno, res['body'], stocklist
+                print value
                 time.sleep(1)
                 continue
             break
     #不知道是不是反爬虫， 先请求吧
     #httpGetContent(favicon, 'Referer: %s' % (url))
     #print stocklist
+
     stockdict = {}
     stockdict['id'] = id
     stockdict['code'] = stocklist[2]                           # 股票代码
@@ -684,7 +738,11 @@ def get_stockid_real_time(id, req_header=None):
 
     #stockdict['volume'] = int(stocklist[6])            # 成交量（手）
     #stockdict['total_price'] = int(stocklist[37])      # 成交额（万元）
-    stockdict['change_rate'] = float(stocklist[38]) # 换手率
+    #print 'change_rate', stocklist
+    if stocklist[38].strip():
+        stockdict['change_rate'] = float(stocklist[38]) # 换手率
+    else:
+        stockdict['change_rate'] = 0
     stockdict['pe'] = float(stocklist[39])          # 市盈率
     stockdict['swing'] = float(stocklist[43])           # 振幅
 
@@ -731,11 +789,10 @@ def get_stock_list():
     return id_dic
 
 #解禁列表, http 相应数据不全， chunked 的问题， 后边再处理吧
-def get_outDxf_list(start, end, req_header=None):
-    if req_header is None:
-        req_header = []
+def get_outDxf_list(start, end):
     url = 'http://stock.finance.qq.com//sstock/list/view/dxf.php?c=0&b=%s&e=%s' % (start, end)
     refer = 'http://finance.qq.com/stock/dxfcx.htm?t=2&mn=%s&mx=%s' %(start, end)
+    req_header = []
     req_header.extend(['Referer: %s' % (refer)])
     print url
     res = curl_cmd_get(url)
@@ -766,11 +823,10 @@ def get_basic_list():
     file = open('base_list', "w+")
 
     basic_dic = {}
-    header = []
     flag = False
     for key in id_dic:
         time.sleep(0.01)
-        res = get_stockid_real_time(key, header)
+        res = get_stockid_real_time(key)
         if len(res) < 1:
             continue
 
@@ -783,10 +839,10 @@ def get_basic_list():
         if res['total_value'] >= 500:
             continue
 
-        if res['pe'] > 90 or res['pe'] < 0:
+        if res['pe'] > 99 or res['pe'] < 0:
             continue
 
-        if res['end'] > 30 or res['end'] <= 2:
+        if res['end'] > 39 or res['end'] <= 2:
             continue
 
         res['mgzb'] = get_stockid_mgzb(key)
@@ -964,10 +1020,10 @@ def get_data_direction(arr):
     #return False
 
 def load_monitor_list():
-    if not os.path.isfile('monitor_list'):
-        get_basic_list()
-
     id_dic = {}
+    if not os.path.isfile('monitor_list'):
+        return id_dic
+
     file = open("monitor_list")
     while 1:
         line = file.readline().strip('\n')
@@ -981,48 +1037,46 @@ def load_monitor_list():
 
 def do_check_monitor():
     id_dic = load_monitor_list()
-    while 1:
-        for key in id_dic:
-            time.sleep(0.05)
-            res = get_stockid_real_time(key)
-            id_dic[key]['range_percent'] = res['range_percent']
-            id_dic[key]['swing'] = res['swing']
-            id_dic[key]['change_rate'] = res['change_rate']
-            id_dic[key]['end'] = res['end']
-            money = get_money_flow(key)
+    for key in id_dic:
+            #time.sleep(0.05)
+        #res = get_stockid_real_time(key)
+        #id_dic[key]['range_percent'] = res['range_percent']
+        #id_dic[key]['swing'] = res['swing']
+        #id_dic[key]['change_rate'] = res['change_rate']
+        #id_dic[key]['end'] = res['end']
+        money = get_money_flow(key)
 
-            if not id_dic[key].has_key('main_force'):
-                    id_dic[key]['main_force'] = []
+        if not id_dic[key].has_key('main_force'):
+                id_dic[key]['main_force'] = []
 
-            if not id_dic[key].has_key('small_force'):
-                    id_dic[key]['small_force'] = []
+        if not id_dic[key].has_key('small_force'):
+                id_dic[key]['small_force'] = []
 
-            if money.has_key('main_force'):
-                if len(id_dic[key]['main_force']) and abs(id_dic[key]['main_force'][-1] - money['main_force']) >= 50:
-                    id_dic[key]['main_force'].append(money['main_force'])
-                elif not len(id_dic[key]['main_force']):
-                    id_dic[key]['main_force'].append(money['main_force'])
+        if money.has_key('main_force'):
+            if len(id_dic[key]['main_force']) and abs(id_dic[key]['main_force'][-1] - money['main_force']) >= 50:
+                id_dic[key]['main_force'].append(money['main_force'])
+            elif not len(id_dic[key]['main_force']):
+                id_dic[key]['main_force'].append(money['main_force'])
 
-            if money.has_key('small_force'):
-                if len(id_dic[key]['small_force']) and abs(id_dic[key]['small_force'][-1] - money['small_force']) >= 50:
-                    id_dic[key]['small_force'].append(money['small_force'])
-                elif not len(id_dic[key]['small_force']):
-                    id_dic[key]['small_force'].append(money['small_force'])
+        if money.has_key('small_force'):
+            if len(id_dic[key]['small_force']) and abs(id_dic[key]['small_force'][-1] - money['small_force']) >= 50:
+                id_dic[key]['small_force'].append(money['small_force'])
+            elif not len(id_dic[key]['small_force']):
+                id_dic[key]['small_force'].append(money['small_force'])
 
-            big_data = get_single_analysis(key)
-            big_res = 0
-            if len(big_data):
-                big_res = big_data['b'] - big_data['s']
+        big_data = get_single_analysis(key)
+        big_res = 0
+        if len(big_data):
+            big_res = big_data['b'] - big_data['s']
 
-            if not id_dic[key].has_key('big_res'):
-                id_dic[key]['big_res'] = []
-            if len(id_dic[key]['big_res']) and abs(id_dic[key]['big_res'][-1] - big_res) >= 200:
-                id_dic[key]['big_res'].append(big_res)
-            elif not len(id_dic[key]['big_res']):
-                id_dic[key]['big_res'].append(big_res)
+        if not id_dic[key].has_key('big_res'):
+            id_dic[key]['big_res'] = []
+        if len(id_dic[key]['big_res']) and abs(id_dic[key]['big_res'][-1] - big_res) >= 200:
+            id_dic[key]['big_res'].append(big_res)
+        elif not len(id_dic[key]['big_res']):
+            id_dic[key]['big_res'].append(big_res)
 
-        print id_dic
-        time.sleep(30)
+        print 'monitor', id_dic
 
 def do_search_short():
     day = Day()
@@ -1036,11 +1090,13 @@ def do_search_short():
         ban_dic[idstr] = ''
 
     id_dic = load_base_list()
+    print len(id_dic)
     id_dic = base_select(id_dic)
+    print len(id_dic)
     id_dic = remove_from_banlist(id_dic, ban_dic)
+    print len(id_dic)
 
     search_dic = {}
-    header = []
     while 1:
         for key in id_dic:
             time.sleep(0.05)
@@ -1109,11 +1165,18 @@ def do_search_short():
 
             if flag_one and flag_two:
                 search_dic[key] = id_dic[key]
-            elif res['end'] > res['last_closing'] and get_data_direction(id_dic[key]['big_res']) and get_data_direction(id_dic[key]['main_force']):
+            elif res['end'] > res['low'] and flag_two and flag_three:
                 search_dic[key] = id_dic[key]
 
+        if len(search_dic):
+            log_write('res_list', 'begin ==========')
+
         for key in search_dic:
+            log_write('res_list', json.dumps(search_dic[key]))
             print 'search res', search_dic[key]
+        if len(search_dic):
+            log_write('res_list', 'serch over ==========')
+        do_check_monitor()
         time.sleep(30)
 
 #A股就是个坑， 技术指标低位了， 仍然可以再砸
@@ -1131,6 +1194,5 @@ def do_search_short():
 #macd 鸭子张嘴， 会加速下跌
 #涨是需要理由的， 跌不需要
 if __name__ == '__main__':
-    do_check_monitor()
-    #do_search_short()
-
+    #do_check_monitor()
+    do_search_short()
