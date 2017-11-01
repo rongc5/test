@@ -967,7 +967,7 @@ def base_select(id_dic):
             remove_ley.append(key)
             continue
 
-        if float(id_dic[key]['end']) >20:
+        if float(id_dic[key]['end']) >39:
             remove_ley.append(key)
             continue
 
@@ -1090,18 +1090,26 @@ def do_search_short():
         ban_dic[idstr] = ''
 
     id_dic = load_base_list()
-    print len(id_dic)
+    print 'load_base_list', len(id_dic)
     id_dic = base_select(id_dic)
-    print len(id_dic)
+    print 'after base_select', len(id_dic)
     id_dic = remove_from_banlist(id_dic, ban_dic)
-    print len(id_dic)
+    print 'after ban_dic', len(id_dic)
 
     search_dic = {}
+    remove_ley = []
     while 1:
+        for key in remove_ley:
+            id_dic.pop(key)
+
+        remove_ley = []
+        print 'after remove_ley', len(id_dic)
         for key in id_dic:
             time.sleep(0.05)
             res = get_stockid_real_time(key)
-            if res['range_percent'] < -0.6 or  res['range_percent'] > 0.3:
+
+            if res['range_percent'] < -0.6 or  res['range_percent'] > 0.39:
+                remove_ley.append(key)
                 continue
 
             id_dic[key]['range_percent'] = res['range_percent']
@@ -1110,7 +1118,11 @@ def do_search_short():
             #    continue
 
             id_dic[key]['swing'] = res['swing']
-            if res['change_rate'] < 1.0:
+            if res['change_rate'] < 0.6:
+                remove_ley.append(key)
+                continue
+
+            if res['change_rate'] < 1:
                 continue
 
             id_dic[key]['change_rate'] = res['change_rate']
@@ -1158,6 +1170,11 @@ def do_search_short():
             flag_two = False
             if len(id_dic[key]['big_res']) and get_data_direction(id_dic[key]['big_res']):
                 flag_two = True
+
+            if len(id_dic[key]['big_res']) and id_dic[key]['big_res'][-1] < -20000:
+                remove_ley.append(key)
+                continue
+
 
             flag_three = False
             if len(id_dic[key]['main_force']) and get_data_direction(id_dic[key]['main_force']):
