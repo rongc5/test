@@ -1091,17 +1091,19 @@ def do_search_short():
 
     id_dic = load_base_list()
     print 'load_base_list', len(id_dic)
-    id_dic = base_select(id_dic)
+    #id_dic = base_select(id_dic)
     print 'after base_select', len(id_dic)
     id_dic = remove_from_banlist(id_dic, ban_dic)
     print 'after ban_dic', len(id_dic)
 
     search_dic = {}
     remove_ley = []
+    countx = 0
     while 1:
         for key in remove_ley:
             id_dic.pop(key)
 
+        countx += 1
         count = 0
         remove_ley = []
         print 'after remove_ley', len(id_dic)
@@ -1112,12 +1114,12 @@ def do_search_short():
             if not id_dic[key].has_key('index'):
                 id_dic[key]['index'] = 0
 
-            if id_dic[key]['index'] and (count % id_dic[key]['index']):
+            if id_dic[key]['index'] and (countx % id_dic[key]['index']):
                 continue
 
             res = get_stockid_real_time(key)
 
-            if res['range_percent'] < -0.6 or  res['range_percent'] > 0.39:
+            if res['range_percent'] < -0.5 or  res['range_percent'] > 0.3:
                 remove_ley.append(key)
                 continue
 
@@ -1177,9 +1179,9 @@ def do_search_short():
             if len(id_dic[key]['big_res']) and get_data_direction(id_dic[key]['big_res']):
                 flag_two = True
 
-            if len(id_dic[key]['big_res']) and id_dic[key]['big_res'][-1] < -20000:
-                remove_ley.append(key)
-                continue
+            #if len(id_dic[key]['big_res']) and id_dic[key]['big_res'][-1] < -20000:
+                #remove_ley.append(key)
+                #continue
 
 
             flag_three = False
@@ -1193,18 +1195,18 @@ def do_search_short():
                 search_dic[key] = id_dic[key]
                 id_dic[key]['index'] = 0
             else:
-                id_dic[key]['index'] = count % 6
+                id_dic[key]['index'] = count % 3
 
         if len(search_dic):
             log_write('res_list', 'begin ==========')
 
         for key in search_dic:
             log_write('res_list', json.dumps(search_dic[key]))
-            print 'search res', search_dic[key]
+            #print 'search res', search_dic[key]
         if len(search_dic):
             log_write('res_list', 'serch over ==========')
         do_check_monitor()
-        time.sleep(20)
+        time.sleep(10)
 
 #A股就是个坑， 技术指标低位了， 仍然可以再砸
 #技术指标高位了， 有资金接盘仍然可以涨, 高位始终是危险
