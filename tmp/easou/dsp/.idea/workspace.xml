@@ -36,10 +36,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="stock_info_bak.py" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="stock_info_bak.py" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/../../../stock/py/stock_info_bak.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="1112" column="0" selection-start="34207" selection-end="34207" vertical-scroll-proportion="0.0" vertical-offset="21128" max-vertical-offset="22002">
+            <state line="1144" column="54" selection-start="35716" selection-end="35716" vertical-scroll-proportion="0.08768267" vertical-offset="21466" max-vertical-offset="22306">
               <folding />
             </state>
           </provider>
@@ -57,18 +57,7 @@
       <file leaf-file-name="monitor.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/../../../stock/py/monitor.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="128" column="42" selection-start="3794" selection-end="3794" vertical-scroll-proportion="0.0" vertical-offset="4993" max-vertical-offset="5472">
-              <folding>
-                <element signature="e#69#80#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="monitor1.py" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/../../../stock/py/monitor1.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="276" column="0" selection-start="8860" selection-end="8860" vertical-scroll-proportion="0.52400833" vertical-offset="4765" max-vertical-offset="5244">
+            <state line="139" column="0" selection-start="4421" selection-end="4421" vertical-scroll-proportion="0.0" vertical-offset="4708" max-vertical-offset="5472">
               <folding />
             </state>
           </provider>
@@ -135,6 +124,7 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -165,18 +155,17 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="options.lastSelected" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
     <property name="recentsLimit" value="5" />
+    <property name="options.lastSelected" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../../../python" />
     <property name="FullScreen" value="false" />
-    <property name="options.searchVisible" value="true" />
     <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="options.searchVisible" value="true" />
   </component>
   <component name="PyConsoleOptionsProvider">
     <option name="myPythonConsoleState">
@@ -330,9 +319,6 @@
       <option name="PARAMETERS" value="" />
       <method />
     </configuration>
-    <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug" singleton="true">
-      <method />
-    </configuration>
     <configuration default="true" type="tests" factoryName="Unittests">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -354,6 +340,9 @@
       <option name="PUREUNITTEST" value="true" />
       <option name="PARAMS" value="" />
       <option name="USE_PARAM" value="false" />
+      <method />
+    </configuration>
+    <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug" singleton="true">
       <method />
     </configuration>
     <configuration default="true" type="tests" factoryName="Doctests">
@@ -525,25 +514,16 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../../../stock/py/stock_info_bak.py">
+    <entry file="file://$PROJECT_DIR$/../../../stock/py/monitor.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="1112" column="0" selection-start="34207" selection-end="34207" vertical-scroll-proportion="0.0" vertical-offset="15253" max-vertical-offset="15732">
+        <state line="139" column="0" selection-start="4421" selection-end="4421" vertical-scroll-proportion="0.0" vertical-offset="4708" max-vertical-offset="5472">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../../../stock/py/monitor.py">
+    <entry file="file://$PROJECT_DIR$/../../../stock/py/stock_info_bak.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="128" column="42" selection-start="3794" selection-end="3794" vertical-scroll-proportion="0.0" vertical-offset="4993" max-vertical-offset="5472">
-          <folding>
-            <element signature="e#69#80#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../../stock/py/monitor1.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="276" column="0" selection-start="8860" selection-end="8860" vertical-scroll-proportion="0.52400833" vertical-offset="4765" max-vertical-offset="5244">
+        <state line="1144" column="54" selection-start="35716" selection-end="35716" vertical-scroll-proportion="0.08768267" vertical-offset="21466" max-vertical-offset="22306">
           <folding />
         </state>
       </provider>

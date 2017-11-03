@@ -1036,48 +1036,52 @@ def do_search_short():
     search_dic = {}
     remove_ley = []
     countx = 0
+    TIME_DIFF = 10
     while 1:
         for key in remove_ley:
             id_dic.pop(key)
 
         countx += 1
-        count = 0
         remove_ley = []
         print 'after remove_ley', len(id_dic)
         for key in id_dic:
             #time.sleep(0.05)
-            count += 1
 
-            if not id_dic[key].has_key('index'):
-                id_dic[key]['index'] = 0
+            if not id_dic[key].has_key('next_time'):
+                id_dic[key]['next_time'] = 0
 
-            if id_dic[key]['index'] and (countx % id_dic[key]['index']):
-                continue
+            if id_dic[key]['next_time']:
+                diff_time = time.time() - id_dic[key]['next_time']
+                if diff_time < 0:
+                    continue
 
+            flag_one = False
             res = get_stockid_real_time(key)
-            if not res.has_key('range_percent'):
+            if  res.has_key('range_percent'):
                 #remove_ley.append(key)
-                continue
 
-            if res['range_percent'] < -0.5 or  res['range_percent'] > 0.3:
-                remove_ley.append(key)
-                continue
+                if res['range_percent'] < -0.5 or  res['range_percent'] > 0.3:
+                    remove_ley.append(key)
+                    continue
 
-            id_dic[key]['range_percent'] = res['range_percent']
+                id_dic[key]['range_percent'] = res['range_percent']
 
-            #if res['swing'] < 2.0:
-            #    continue
+                #if res['swing'] < 2.0:
+                #    continue
 
-            id_dic[key]['swing'] = res['swing']
+                id_dic[key]['swing'] = res['swing']
 
-            if res['change_rate'] < 1:
-                continue
+                if res['change_rate'] < 1:
+                    continue
 
-            id_dic[key]['change_rate'] = res['change_rate']
-            if res['end'] < res['low']:
-                continue
+                id_dic[key]['change_rate'] = res['change_rate']
+                if res['end'] < res['low']:
+                    continue
 
-            id_dic[key]['end'] = res['end']
+                id_dic[key]['end'] = res['end']
+
+                if res['end'] > res['low'] and abs(res['end'] - res['low']) >= 2* abs(res['end'] - res['start']):
+                    flag_one = True
 
             money = get_money_flow(key)
 
@@ -1111,10 +1115,6 @@ def do_search_short():
             elif not len(id_dic[key]['big_res']):
                 id_dic[key]['big_res'].append(big_res)
 
-            flag_one = False
-            if res['end'] > res['low'] and abs(res['end'] - res['low']) >= 2* abs(res['end'] - res['start']):
-                flag_one = True
-
             flag_two = False
             if len(id_dic[key]['big_res']) and get_data_direction(id_dic[key]['big_res']):
                 flag_two = True
@@ -1129,12 +1129,28 @@ def do_search_short():
 
             if flag_one and flag_two:
                 search_dic[key] = id_dic[key]
-                id_dic[key]['index'] = 0
+                id_dic[key]['next_time'] = 0
             elif res['end'] > res['low'] and flag_two and flag_three:
                 search_dic[key] = id_dic[key]
-                id_dic[key]['index'] = 0
+                id_dic[key]['next_time'] = 0
             else:
-                id_dic[key]['index'] = count % 3
+                if not len(id_dic[key]['big_res']) or not len(id_dic[key]['main_force']):
+                    id_dic[key]['next_time'] = 0
+                elif len(id_dic[key]['big_res']) and len(id_dic[key]['big_res']) == 1:
+                    if id_dic[key]['big_res'][0] > 0:
+                        id_dic[key]['next_time'] = 0
+                    elif id_dic[key]['big_res'][0] < 0:
+                        id_dic[key]['next_time'] = time.time() + TIME_DIFF
+                elif len(id_dic[key]['big_res']) and len(id_dic[key]['big_res']) > 1:
+                    if id_dic[key]['big_res'][-1] > 0:
+                        id_dic[key]['next_time'] = time.time() + TIME_DIFF
+                    elif id_dic[key]['big_res'][-1] < 0:
+                        if id_dic[key]['big_res'][len(id_dic[key]['big_res']) -2] > id_dic[key]['big_res'][-1]:
+                            id_dic[key]['next_time'] = time.time() + 4 *TIME_DIFF
+                        else:
+                            id_dic[key]['next_time'] = time.time() + 2 *TIME_DIFF
+
+
 
         if len(search_dic):
             log_write('res_list', 'begin ==========')
@@ -1144,7 +1160,7 @@ def do_search_short():
             #print 'search res', search_dic[key]
         if len(search_dic):
             log_write('res_list', 'serch over ==========')
-        time.sleep(10)
+        time.sleep(TIME_DIFF)
 
 #A股就是个坑， 技术指标低位了， 仍然可以再砸
 #技术指标高位了， 有资金接盘仍然可以涨, 高位始终是危险
