@@ -16,11 +16,7 @@ from time import strftime, localtime
 from datetime import timedelta, date
 import calendar
 
-
-
 __author__ = 'rong'
-
-
 
 user_agent_list = [
         "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 "
@@ -50,17 +46,7 @@ user_agent_list = [
         "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/536.3 "
         "(KHTML, like Gecko) Chrome/19.0.1062.0 Safari/536.3",
         "Mozilla/5.0 (Windows NT 6.2) AppleWebKit/536.3 "
-        "(KHTML, like Gecko) Chrome/19.0.1061.1 Safari/536.3",
-        "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/536.3 "
-        "(KHTML, like Gecko) Chrome/19.0.1061.1 Safari/536.3",
-        "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/536.3 "
-        "(KHTML, like Gecko) Chrome/19.0.1061.1 Safari/536.3",
-        "Mozilla/5.0 (Windows NT 6.2) AppleWebKit/536.3 "
-        "(KHTML, like Gecko) Chrome/19.0.1061.0 Safari/536.3",
-        "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/535.24 "
-        "(KHTML, like Gecko) Chrome/19.0.1055.1 Safari/535.24",
-        "Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/535.24 "
-        "(KHTML, like Gecko) Chrome/19.0.1055.1 Safari/535.24" ]
+        "(KHTML, like Gecko) Chrome/19.0.1061.1 Safari/536.3"]
 
 
 user_agent_dic = {}
@@ -694,6 +680,8 @@ def get_stockid_real_time(id):
     #favicon = 'http://sqt.gtimg.cn/favicon.ico'
     i = 0
     imax = 5
+    stocklist = []
+    stockdict = {}
     while 1:
         req_header = []
         index = random.randint(0, len(user_agent_list) -1)
@@ -705,13 +693,17 @@ def get_stockid_real_time(id):
         res = httpGetContent(url, req_header)
         if len(res) < 2:
             print url, sys._getframe().f_lineno, res
+            if i > imax:
+                break;
             time.sleep(1)
         else:
             value = res['body'].split('=')[1].strip(';\n')
             stocklist = value.split('~')
-            if len(stocklist) < 20:
+            if len(stocklist) < 45:
                 print url, sys._getframe().f_lineno, res['body'], stocklist
                 print value
+                if i > imax:
+                    break;
                 time.sleep(1)
                 continue
             break
@@ -719,7 +711,9 @@ def get_stockid_real_time(id):
     #httpGetContent(favicon, 'Referer: %s' % (url))
     #print stocklist
 
-    stockdict = {}
+    if len(stocklist) < 45:
+        return stockdict
+
     stockdict['id'] = id
     stockdict['code'] = stocklist[2]                           # 股票代码
     #stockdict['name'] = unicode(stocklist[1], 'gbk')  # 股票名称
@@ -827,7 +821,8 @@ def get_basic_list():
     for key in id_dic:
         time.sleep(0.01)
         res = get_stockid_real_time(key)
-        if len(res) < 1:
+        if not res.has_key('pe'):
+            log_write('err_base_list', id)
             continue
 
         if res['block']:  #停牌
@@ -1019,64 +1014,6 @@ def get_data_direction(arr):
     #
     #return False
 
-def load_monitor_list():
-    id_dic = {}
-    if not os.path.isfile('monitor_list'):
-        return id_dic
-
-    file = open("monitor_list")
-    while 1:
-        line = file.readline().strip('\n')
-        if not line:
-            break
-        id_dic[line] = {}
-
-    file.close()
-
-    return id_dic
-
-def do_check_monitor():
-    id_dic = load_monitor_list()
-    for key in id_dic:
-            #time.sleep(0.05)
-        #res = get_stockid_real_time(key)
-        #id_dic[key]['range_percent'] = res['range_percent']
-        #id_dic[key]['swing'] = res['swing']
-        #id_dic[key]['change_rate'] = res['change_rate']
-        #id_dic[key]['end'] = res['end']
-        money = get_money_flow(key)
-
-        if not id_dic[key].has_key('main_force'):
-                id_dic[key]['main_force'] = []
-
-        if not id_dic[key].has_key('small_force'):
-                id_dic[key]['small_force'] = []
-
-        if money.has_key('main_force'):
-            if len(id_dic[key]['main_force']) and abs(id_dic[key]['main_force'][-1] - money['main_force']) >= 50:
-                id_dic[key]['main_force'].append(money['main_force'])
-            elif not len(id_dic[key]['main_force']):
-                id_dic[key]['main_force'].append(money['main_force'])
-
-        if money.has_key('small_force'):
-            if len(id_dic[key]['small_force']) and abs(id_dic[key]['small_force'][-1] - money['small_force']) >= 50:
-                id_dic[key]['small_force'].append(money['small_force'])
-            elif not len(id_dic[key]['small_force']):
-                id_dic[key]['small_force'].append(money['small_force'])
-
-        big_data = get_single_analysis(key)
-        big_res = 0
-        if len(big_data):
-            big_res = big_data['b'] - big_data['s']
-
-        if not id_dic[key].has_key('big_res'):
-            id_dic[key]['big_res'] = []
-        if len(id_dic[key]['big_res']) and abs(id_dic[key]['big_res'][-1] - big_res) >= 200:
-            id_dic[key]['big_res'].append(big_res)
-        elif not len(id_dic[key]['big_res']):
-            id_dic[key]['big_res'].append(big_res)
-
-        print 'monitor', id_dic
 
 def do_search_short():
     day = Day()
@@ -1091,7 +1028,7 @@ def do_search_short():
 
     id_dic = load_base_list()
     print 'load_base_list', len(id_dic)
-    #id_dic = base_select(id_dic)
+    id_dic = base_select(id_dic)
     print 'after base_select', len(id_dic)
     id_dic = remove_from_banlist(id_dic, ban_dic)
     print 'after ban_dic', len(id_dic)
@@ -1118,6 +1055,9 @@ def do_search_short():
                 continue
 
             res = get_stockid_real_time(key)
+            if not res.has_key('range_percent'):
+                #remove_ley.append(key)
+                continue
 
             if res['range_percent'] < -0.5 or  res['range_percent'] > 0.3:
                 remove_ley.append(key)
@@ -1183,7 +1123,6 @@ def do_search_short():
                 #remove_ley.append(key)
                 #continue
 
-
             flag_three = False
             if len(id_dic[key]['main_force']) and get_data_direction(id_dic[key]['main_force']):
                 flag_three = True
@@ -1205,7 +1144,6 @@ def do_search_short():
             #print 'search res', search_dic[key]
         if len(search_dic):
             log_write('res_list', 'serch over ==========')
-        do_check_monitor()
         time.sleep(10)
 
 #A股就是个坑， 技术指标低位了， 仍然可以再砸
@@ -1223,5 +1161,4 @@ def do_search_short():
 #macd 鸭子张嘴， 会加速下跌
 #涨是需要理由的， 跌不需要
 if __name__ == '__main__':
-    #do_check_monitor()
     do_search_short()
