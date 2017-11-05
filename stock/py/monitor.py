@@ -143,7 +143,9 @@ def get_money_flow(id):
                 res['body'] = curl_cmd_get(url)
                 value = res['body'].decode("gbk").split('=')[1].strip(';\r\n')
             stocklist = value.split('~')
-            if len(stocklist) < 10:
+            if len(stocklist) < 8:
+                if 'must-revalidate' in res['head']:
+                    break
                 print url
                 time.sleep(1)
                 continue
@@ -151,7 +153,9 @@ def get_money_flow(id):
         except Exception,e:
             #print url, value, e
             if res.has_key('head'):
-                print res['head']
+                #print res['head']
+                if 'must-revalidate' in res['head']:
+                    break
 
             i = i+1
             if i >= imax:

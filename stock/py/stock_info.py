@@ -639,8 +639,10 @@ def get_money_flow(id):
                 res['body'] = curl_cmd_get(url)
                 value = res['body'].decode("gbk").split('=')[1].strip(';\r\n')
             stocklist = value.split('~')
-            if len(stocklist) < 10:
-                print url
+            if len(stocklist) < 8:
+                #print url, res['head'], value
+                if 'must-revalidate' in res['head']:
+                    break
                 time.sleep(1)
                 continue
             break
@@ -648,6 +650,8 @@ def get_money_flow(id):
             #print url, value, e
             if res.has_key('head'):
                 print res['head']
+                if 'must-revalidate' in res['head']:
+                    break
 
             i = i+1
             if i >= imax:
@@ -800,21 +804,11 @@ def get_outDxf_list(start, end):
 
 
 #去掉停牌等
-def get_basic_list():
-    id_dic = []
-    if not os.path.isfile('code_all'):
-        id_dic = get_stock_list()
-    else:
-        file = open("code_all")
-        while 1:
-            line = file.readline().strip()
-            if not line:
-                break
-            id_dic.append(line)
-        file.close()
+def get_basic_list(id_dic):
+    if not len(id_dic):
+        return
 
-
-    file = open('base_list', "w+")
+    file = open('base_list', "a+")
 
     basic_dic = {}
     flag = False
@@ -905,7 +899,30 @@ def get_basic_list():
 
 def load_base_list():
     if not os.path.isfile('base_list'):
-        get_basic_list()
+        id_list = []
+        if not os.path.isfile('code_all'):
+            id_list = get_stock_list()
+        else:
+            file = open("code_all")
+            while 1:
+                line = file.readline().strip()
+                if not line:
+                    break
+                id_list.append(line)
+            file.close()
+        get_basic_list(id_list)
+
+    id_list = []
+    if os.path.isfile('err_base_list'):
+        file = open('err_base_list')
+        while 1:
+            line = file.readline().strip()
+            if not line:
+                break
+            id_list.append(line)
+        file.close()
+        os.remove('err_base_list')
+        get_basic_list(id_list)
 
     id_dic = {}
     file = open("base_list")
@@ -1130,7 +1147,7 @@ def do_search_short():
             if flag_one and flag_two:
                 search_dic[key] = id_dic[key]
                 id_dic[key]['next_time'] = 0
-            elif res['end'] > res['low'] and flag_two and flag_three:
+            elif flag_two and flag_three:
                 search_dic[key] = id_dic[key]
                 id_dic[key]['next_time'] = 0
             else:
@@ -1153,7 +1170,7 @@ def do_search_short():
 
 
         if len(search_dic):
-            log_write('res_list', 'begin ==========')
+            log_write('res_list', 'begin ==========:%s' % (day.datetime()))
 
         for key in search_dic:
             log_write('res_list', json.dumps(search_dic[key]))
