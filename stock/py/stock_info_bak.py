@@ -683,7 +683,7 @@ def get_stockid_real_time(id):
     #url = 'http://sqt.gtimg.cn/utf8/q=%s' % (id)
     #favicon = 'http://sqt.gtimg.cn/favicon.ico'
     i = 0
-    imax = 5
+    imax = 10
     stocklist = []
     stockdict = {}
     while 1:
@@ -898,18 +898,18 @@ def get_basic_list(id_dic):
 
 
 def load_base_list():
+    if not os.path.isfile('code_all'):
+        get_stock_list()
+
     if not os.path.isfile('base_list'):
         id_list = []
-        if not os.path.isfile('code_all'):
-            id_list = get_stock_list()
-        else:
-            file = open("code_all")
-            while 1:
-                line = file.readline().strip()
-                if not line:
-                    break
-                id_list.append(line)
-            file.close()
+        file = open("code_all")
+        while 1:
+            line = file.readline().strip()
+            if not line:
+                break
+            id_list.append(line)
+        file.close()
         get_basic_list(id_list)
 
     id_list = []
@@ -1096,9 +1096,20 @@ def do_search_short():
                     continue
 
                 id_dic[key]['end'] = res['end']
+                id_dic[key]['low'] = res['low']
+                id_dic[key]['high'] = res['high']
+                id_dic[key]['start'] = res['start']
+                id_dic[key]['last_closing'] = res['last_closing']
 
-                if res['end'] > res['low'] and abs(res['end'] - res['low']) >= 2* abs(res['end'] - res['start']):
+
+            if id_dic[key].has_key('end') and id_dic[key].has_key('low') and id_dic[key].has_key('start'):
+                if id_dic[key]['end'] > id_dic[key]['low'] and abs(id_dic[key]['end'] - id_dic[key]['low']) >= 2* abs(id_dic[key]['end'] - id_dic[key]['start']):
                     flag_one = True
+
+            #if flag_one:
+            #    print key, 'one'
+            #if not res.has_key('range_percent'):
+            #    print res, key
 
             money = get_money_flow(key)
 
