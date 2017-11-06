@@ -242,7 +242,7 @@ def httpGetContent(url, req_header=None, version = '1.1'):
     c.setopt(c.URL, url)
     c.setopt(c.WRITEFUNCTION, buf.write)
     c.setopt(c.CONNECTTIMEOUT, 10)
-    c.setopt(c.TIMEOUT, 100)
+    c.setopt(c.TIMEOUT, 300)
     c.setopt(pycurl.MAXREDIRS, 5)
     c.setopt(pycurl.FOLLOWLOCATION, 1)
 
@@ -320,6 +320,7 @@ def get_stockid_mgzb(id):
 
     i = 0
     imax = 3
+    id_dic = {}
     while 1:
         try:
             if i + 1 < imax:
@@ -357,6 +358,7 @@ def get_stockid_ylnl(id):
 
     i = 0
     imax = 3
+    id_dic = {}
     while 1:
         try:
             if i + 1 < imax:
@@ -394,6 +396,7 @@ def get_stockid_cznl(id):
 
     i = 0
     imax = 3
+    id_dic = {}
     while 1:
         try:
             if i + 1 < imax:
@@ -430,6 +433,7 @@ def get_stockid_czzb(id):
 
     i = 0
     imax = 3
+    id_dic = {}
     while 1:
         try:
             if i + 1 < imax:
@@ -498,7 +502,7 @@ def get_stockid_dbfx(id):
 
 def get_single_analysis(id):
 
-    url = 'http://stock.finance.qq.com/sstock/list/view/dadan.php?t=js&c=%s&max=100&p=1&opt=1&o=0' % (id)
+    url = 'http://stock.finance.qq.com/sstock/list/view/dadan.php?t=js&c=%s&max=200&p=1&opt=1&o=0' % (id)
     refer = 'http://stockhtm.finance.qq.com/sstock/quotpage/dadan.htm?c=%s' % (id)
 
     stocklist = []
@@ -534,14 +538,20 @@ def get_single_analysis(id):
     stockdict = {}
     stockdict['s'] = 0
     stockdict['b'] = 0
+    stockdict['2s'] = 0
+    stockdict['2b'] = 0
     items = stocklist.split('^')
     for item in items:
         subitems = item.split('~')
         if len(subitems) >= 6:
             if 's' in subitems[5] or 'S' in subitems[5]:
                 stockdict['s'] += int(subitems[3])
+                if abs(int(subitems[3])) >=200:
+                    stockdict['2s'] += int(subitems[3])
             elif 'b' in subitems[5] or 'B' in subitems[5]:
                 stockdict['b'] += int(subitems[3])
+                if abs(int(subitems[3])) >=200:
+                    stockdict['2b'] += int(subitems[3])
 
     return stockdict
 
@@ -683,7 +693,7 @@ def get_stockid_real_time(id):
     #url = 'http://sqt.gtimg.cn/utf8/q=%s' % (id)
     #favicon = 'http://sqt.gtimg.cn/favicon.ico'
     i = 0
-    imax = 10
+    imax = 5
     stocklist = []
     stockdict = {}
     while 1:
@@ -724,7 +734,8 @@ def get_stockid_real_time(id):
     stockdict['last_closing'] = float(stocklist[4])    # 昨日收盘价格
     stockdict['start'] = float(stocklist[5])           # 开盘价格
     if stockdict['start'] <= 1:
-        return {}
+        stockdict['block'] = True
+        return stockdict
     stockdict['end'] = float(stocklist[3])             # 当前收盘价格（可以是当前价格）
     stockdict['high'] = float(stocklist[33])           # 最高价格
     stockdict['low'] = float(stocklist[34])            # 最低价格
@@ -761,18 +772,26 @@ def get_stockid_real_time(id):
 def get_stock_list():
     #url = 'http://www.shdjt.com/js/lib/astock.js'
     url = 'http://www.ctxalgo.com/api/stocks'
-    req_header = ['Cookie:session=eyJfaWQiOnsiIGIiOiJNMkZtTldJME1qSXpNR1UzWWpka01UYzRabUV6TURKbU5qTTJZemcwWWpjPSJ9fQ.DMYGJg.ReVb3XLAerXR30CUrOoeh9kW5ug']
+    req_header = ['Cookie: session=eyJfaWQiOnsiIGIiOiJNMkZtTldJME1qSXpNR1UzWWpka01UYzRabUV6TURKbU5qTTJZemcwWWpjPSJ9fQ.DOGz0g.7bJGQ4DUUtYLJ6OcX7bfvbEUa60']
     #req_header = []
     while 1:
-        res = httpGetContent(url, req_header)
-        if len(res) < 2:
-            print url
-            time.sleep(1)
-        else:
-            print res['head']
-            break
+       index = random.randint(0, len(user_agent_list) -1)
+       req_header.extend(['User-Agent: %s' % (user_agent_list[index])])
+       res = httpGetContent(url, req_header)
+       #res = {}
+       #res['head'] = ''
+       #res['body'] = curl_cmd_get(url)
+       if len(res) < 2:
+           print url
+           time.sleep(1)
+       else:
+           print res['head']
+           break
 
     #print res
+    #res = {}
+    #res['head'] = ''
+    #res['body'] = curl_cmd_get(url)
     id_dic= json.loads(res['body'])
 
     file = open('code_all', "w+")
@@ -815,11 +834,12 @@ def get_basic_list(id_dic):
     for key in id_dic:
         time.sleep(0.01)
         res = get_stockid_real_time(key)
-        if not res.has_key('pe'):
-            log_write('err_base_list', id)
+
+        if res.has_key('block') and res['block']:  #停牌
             continue
 
-        if res['block']:  #停牌
+        if not res.has_key('pe'):
+            log_write('err_base_list', key)
             continue
 
         if res['circulation_market_value'] >= 300:
@@ -1074,6 +1094,12 @@ def do_search_short():
 
             flag_one = False
             res = get_stockid_real_time(key)
+
+            if res.has_key('block') and res['block']:  #停牌
+                print key, 'block'
+                remove_ley.append(key)
+                continue
+
             if  res.has_key('range_percent'):
                 #remove_ley.append(key)
 
@@ -1133,15 +1159,20 @@ def do_search_short():
 
             big_data = get_single_analysis(key)
             big_res = 0
+            big_res2 = 0
             if len(big_data):
                 big_res = big_data['b'] - big_data['s']
+                big_res2 = big_data['2b'] - big_data['2s']
 
             if not id_dic[key].has_key('big_res'):
                 id_dic[key]['big_res'] = []
+                id_dic[key]['big_res2'] = []
             if len(id_dic[key]['big_res']) and abs(id_dic[key]['big_res'][-1] - big_res) >= 200:
                 id_dic[key]['big_res'].append(big_res)
+                id_dic[key]['big_res2'].append(big_res2)
             elif not len(id_dic[key]['big_res']):
                 id_dic[key]['big_res'].append(big_res)
+                id_dic[key]['big_res2'].append(big_res2)
 
             flag_two = False
             if len(id_dic[key]['big_res']) and get_data_direction(id_dic[key]['big_res']):

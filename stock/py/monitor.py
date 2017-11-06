@@ -180,7 +180,7 @@ def get_money_flow(id):
 
 def get_single_analysis(id):
 
-    url = 'http://stock.finance.qq.com/sstock/list/view/dadan.php?t=js&c=%s&max=100&p=1&opt=1&o=0' % (id)
+    url = 'http://stock.finance.qq.com/sstock/list/view/dadan.php?t=js&c=%s&max=300&p=1&opt=1&o=0' % (id)
     refer = 'http://stockhtm.finance.qq.com/sstock/quotpage/dadan.htm?c=%s' % (id)
 
     stocklist = []
