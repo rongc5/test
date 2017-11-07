@@ -1104,6 +1104,7 @@ def do_search_short():
                 #remove_ley.append(key)
 
                 if res['range_percent'] < -0.5 or  res['range_percent'] > 0.3:
+                    id_dic[key]['next_time'] = time.time() + 6 *TIME_DIFF
                     remove_ley.append(key)
                     continue
 
@@ -1115,10 +1116,12 @@ def do_search_short():
                 id_dic[key]['swing'] = res['swing']
 
                 if res['change_rate'] < 1:
+                    id_dic[key]['next_time'] = time.time() + 2 *TIME_DIFF
                     continue
 
                 id_dic[key]['change_rate'] = res['change_rate']
                 if res['end'] < res['low']:
+                    id_dic[key]['next_time'] = time.time() + 2 *TIME_DIFF
                     continue
 
                 id_dic[key]['end'] = res['end']
@@ -1139,14 +1142,14 @@ def do_search_short():
 
             money = get_money_flow(key)
 
-            if not id_dic[key].has_key('small_force'):
-                    id_dic[key]['small_force'] = []
-
-            if money.has_key('small_force'):
-                if len(id_dic[key]['small_force']) and abs(id_dic[key]['small_force'][-1] - money['small_force']) >= 50:
-                    id_dic[key]['small_force'].append(money['small_force'])
-                elif not len(id_dic[key]['small_force']):
-                    id_dic[key]['small_force'].append(money['small_force'])
+            #if not id_dic[key].has_key('small_force'):
+            #        id_dic[key]['small_force'] = []
+            #
+            #if money.has_key('small_force'):
+            #    if len(id_dic[key]['small_force']) and abs(id_dic[key]['small_force'][-1] - money['small_force']) >= 50:
+            #        id_dic[key]['small_force'].append(money['small_force'])
+            #    elif not len(id_dic[key]['small_force']):
+            #        id_dic[key]['small_force'].append(money['small_force'])
 
             if not id_dic[key].has_key('main_force'):
                     id_dic[key]['main_force'] = []
@@ -1186,36 +1189,40 @@ def do_search_short():
             if len(id_dic[key]['main_force']) and get_data_direction(id_dic[key]['main_force']):
                 flag_three = True
 
-            if flag_one and flag_two:
-                search_dic[key] = id_dic[key]
+            if flag_one and flag_two and len(id_dic[key]['main_force']):
+                if id_dic[key]['main_force'][-1] > 0:
+                    search_dic[key] = id_dic[key]
+                elif id_dic[key]['main_force'][-1] < 0:
+                    if len(id_dic[key]['main_force']) >=2 and id_dic[key]['main_force'][-1] > id_dic[key]['main_force'][0]:
+                        search_dic[key] = id_dic[key]
+
                 id_dic[key]['next_time'] = 0
             elif flag_two and flag_three:
                 search_dic[key] = id_dic[key]
                 id_dic[key]['next_time'] = 0
             else:
-                if not len(id_dic[key]['big_res']) or not len(id_dic[key]['main_force']):
-                    id_dic[key]['next_time'] = 0
-                elif len(id_dic[key]['big_res']) and len(id_dic[key]['big_res']) == 1:
-                    if id_dic[key]['big_res'][0] > 0:
-                        id_dic[key]['next_time'] = 0
-                    elif id_dic[key]['big_res'][0] < 0:
-                        id_dic[key]['next_time'] = time.time() + TIME_DIFF
-                elif len(id_dic[key]['big_res']) and len(id_dic[key]['big_res']) > 1:
-                    if id_dic[key]['big_res'][-1] > 0:
-                        id_dic[key]['next_time'] = time.time() + TIME_DIFF
-                    elif id_dic[key]['big_res'][-1] < 0:
-                        if id_dic[key]['big_res'][len(id_dic[key]['big_res']) -2] > id_dic[key]['big_res'][-1]:
-                            id_dic[key]['next_time'] = time.time() + 4 *TIME_DIFF
-                        else:
-                            id_dic[key]['next_time'] = time.time() + 2 *TIME_DIFF
-
+                if  len(id_dic[key]['big_res']) <= 1 or  len(id_dic[key]['main_force']) <= 1:
+                    id_dic[key]['next_time'] = time.time() + TIME_DIFF
+                elif id_dic[key]['big_res'][-1] < 0 and id_dic[key]['main_force'][-1]< 0:
+                    id_dic[key]['next_time'] = time.time() + 6 *TIME_DIFF
+                else:
+                    id_dic[key]['next_time'] = time.time() + 2 *TIME_DIFF
 
 
         if len(search_dic):
             log_write('res_list', 'begin ==========:%s' % (day.datetime()))
 
         for key in search_dic:
+            search_dic[key].pop('date')
+            #search_dic[key].pop('small_force')
+            search_dic[key].pop('high')
+            search_dic[key].pop('last_closing')
+            search_dic[key].pop('start')
+            search_dic[key].pop('low')
+            search_dic[key].pop('swing')
+            search_dic[key].pop('next_time')
             log_write('res_list', json.dumps(search_dic[key]))
+            log_write('res_list', '\n')
             #print 'search res', search_dic[key]
         if len(search_dic):
             log_write('res_list', 'serch over ==========')
