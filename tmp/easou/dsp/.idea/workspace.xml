@@ -39,7 +39,7 @@
       <file leaf-file-name="stock_info_bak.py" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/../../../stock/py/stock_info_bak.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="1107" column="42" selection-start="33630" selection-end="33630" vertical-scroll-proportion="-4.2296453" vertical-offset="22831" max-vertical-offset="23560">
+            <state line="1064" column="20" selection-start="32260" selection-end="32260" vertical-scroll-proportion="-2.0528634" vertical-offset="20920" max-vertical-offset="23617">
               <folding />
             </state>
           </provider>
@@ -160,12 +160,12 @@
   <component name="PropertiesComponent">
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="recentsLimit" value="5" />
     <property name="options.lastSelected" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+    <property name="recentsLimit" value="5" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../../../python" />
     <property name="FullScreen" value="false" />
-    <property name="options.splitter.details.proportions" value="0.2" />
     <property name="options.searchVisible" value="true" />
+    <property name="options.splitter.details.proportions" value="0.2" />
   </component>
   <component name="PyConsoleOptionsProvider">
     <option name="myPythonConsoleState">
@@ -319,6 +319,9 @@
       <option name="PARAMETERS" value="" />
       <method />
     </configuration>
+    <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug" singleton="true">
+      <method />
+    </configuration>
     <configuration default="true" type="tests" factoryName="Unittests">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -340,9 +343,6 @@
       <option name="PUREUNITTEST" value="true" />
       <option name="PARAMS" value="" />
       <option name="USE_PARAM" value="false" />
-      <method />
-    </configuration>
-    <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug" singleton="true">
       <method />
     </configuration>
     <configuration default="true" type="tests" factoryName="Doctests">
@@ -530,7 +530,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/../../../stock/py/stock_info_bak.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="1107" column="42" selection-start="33630" selection-end="33630" vertical-scroll-proportion="-4.2296453" vertical-offset="22831" max-vertical-offset="23560">
+        <state line="1064" column="20" selection-start="32260" selection-end="32260" vertical-scroll-proportion="-2.0528634" vertical-offset="20920" max-vertical-offset="23617">
           <folding />
         </state>
       </provider>

@@ -1028,10 +1028,7 @@ def remove_from_banlist(id_dic, ban_list):
 #增长 为true, 下降为false
 def get_data_direction(arr):
     if len(arr) < 2 :
-        if arr[0] > 0:
-            return True
-        else:
-            return False
+        return False
 
     #length = len(arr)
     #count = 0
@@ -1050,6 +1047,39 @@ def get_data_direction(arr):
     #    return True
     #
     #return False
+
+
+def log_print_res(search_dic):
+    if not len(search_dic):
+        return
+
+    day = Day()
+
+    log_write('res_list', 'begin ==========:%s' % (day.datetime()))
+
+    for key in search_dic:
+            if search_dic[key].has_key('date'):
+                search_dic[key].pop('date')
+            #search_dic[key].pop('small_force')
+            if search_dic[key].has_key('high'):
+                search_dic[key].pop('high')
+            if search_dic[key].has_key('last_closing'):
+                search_dic[key].pop('last_closing')
+            if search_dic[key].has_key('start'):
+                search_dic[key].pop('start')
+            if search_dic[key].has_key('low'):
+                search_dic[key].pop('low')
+            if search_dic[key].has_key('swing'):
+                search_dic[key].pop('swing')
+            if search_dic[key].has_key('next_time'):
+                search_dic[key].pop('next_time')
+            if search_dic[key].has_key('code'):
+                search_dic[key].pop('code')
+            log_write('res_list', json.dumps(search_dic[key]))
+            log_write('res_list', '\n')
+            print 'search res', search_dic[key]
+
+    log_write('res_list', 'serch over ==========')
 
 
 def do_search_short():
@@ -1073,7 +1103,7 @@ def do_search_short():
     search_dic = {}
     remove_ley = []
     countx = 0
-    TIME_DIFF = 10
+    TIME_DIFF = 30
     while 1:
         for key in remove_ley:
             id_dic.pop(key)
@@ -1104,7 +1134,6 @@ def do_search_short():
                 #remove_ley.append(key)
 
                 if res['range_percent'] < -0.5 or  res['range_percent'] > 0.3:
-                    id_dic[key]['next_time'] = time.time() + 6 *TIME_DIFF
                     remove_ley.append(key)
                     continue
 
@@ -1135,21 +1164,8 @@ def do_search_short():
                 if id_dic[key]['end'] > id_dic[key]['low'] and abs(id_dic[key]['end'] - id_dic[key]['low']) >= 2* abs(id_dic[key]['end'] - id_dic[key]['start']):
                     flag_one = True
 
-            #if flag_one:
-            #    print key, 'one'
-            #if not res.has_key('range_percent'):
-            #    print res, key
 
             money = get_money_flow(key)
-
-            #if not id_dic[key].has_key('small_force'):
-            #        id_dic[key]['small_force'] = []
-            #
-            #if money.has_key('small_force'):
-            #    if len(id_dic[key]['small_force']) and abs(id_dic[key]['small_force'][-1] - money['small_force']) >= 50:
-            #        id_dic[key]['small_force'].append(money['small_force'])
-            #    elif not len(id_dic[key]['small_force']):
-            #        id_dic[key]['small_force'].append(money['small_force'])
 
             if not id_dic[key].has_key('main_force'):
                     id_dic[key]['main_force'] = []
@@ -1178,54 +1194,41 @@ def do_search_short():
                 id_dic[key]['big_res2'].append(big_res2)
 
             flag_two = False
-            if len(id_dic[key]['big_res']) and get_data_direction(id_dic[key]['big_res']):
+            if get_data_direction(id_dic[key]['big_res2']):
                 flag_two = True
 
-            #if len(id_dic[key]['big_res']) and id_dic[key]['big_res'][-1] < -20000:
-                #remove_ley.append(key)
-                #continue
+            if len(id_dic[key]['big_res2']) >=2 and id_dic[key]['big_res2'][-1] < -20000 and id_dic[key]['big_res2'][-1] < id_dic[key]['big_res2'][0]:
+                remove_ley.append(key)
+                if key in search_dic.keys():
+                    search_dic.pop(key)
+                continue
+
+            if len(id_dic[key]['main_force']) >=2 and id_dic[key]['main_force'][-1] < -1000 and flag_two and id_dic[key]['main_force'][-1] < \
+                    id_dic[key]['main_force'][0]:
+                remove_ley.append(key)
+                if key in search_dic.keys():
+                    search_dic.pop(key)
+                continue
 
             flag_three = False
-            if len(id_dic[key]['main_force']) and get_data_direction(id_dic[key]['main_force']):
+            if get_data_direction(id_dic[key]['main_force']):
                 flag_three = True
 
-            if flag_one and flag_two and len(id_dic[key]['main_force']):
-                if id_dic[key]['main_force'][-1] > 0:
-                    search_dic[key] = id_dic[key]
-                elif id_dic[key]['main_force'][-1] < 0:
-                    if len(id_dic[key]['main_force']) >=2 and id_dic[key]['main_force'][-1] > id_dic[key]['main_force'][0]:
+            if flag_one and flag_two and len(id_dic[key]['main_force']) >=2:
+                if id_dic[key]['main_force'][-1] > id_dic[key]['main_force'][0]:
                         search_dic[key] = id_dic[key]
-
-                id_dic[key]['next_time'] = 0
+                        id_dic[key]['next_time'] = 0
             elif flag_two and flag_three:
                 search_dic[key] = id_dic[key]
                 id_dic[key]['next_time'] = 0
             else:
                 if  len(id_dic[key]['big_res']) <= 1 or  len(id_dic[key]['main_force']) <= 1:
                     id_dic[key]['next_time'] = time.time() + TIME_DIFF
-                elif id_dic[key]['big_res'][-1] < 0 and id_dic[key]['main_force'][-1]< 0:
-                    id_dic[key]['next_time'] = time.time() + 6 *TIME_DIFF
                 else:
                     id_dic[key]['next_time'] = time.time() + 2 *TIME_DIFF
 
 
-        if len(search_dic):
-            log_write('res_list', 'begin ==========:%s' % (day.datetime()))
-
-        for key in search_dic:
-            search_dic[key].pop('date')
-            #search_dic[key].pop('small_force')
-            search_dic[key].pop('high')
-            search_dic[key].pop('last_closing')
-            search_dic[key].pop('start')
-            search_dic[key].pop('low')
-            search_dic[key].pop('swing')
-            search_dic[key].pop('next_time')
-            log_write('res_list', json.dumps(search_dic[key]))
-            log_write('res_list', '\n')
-            #print 'search res', search_dic[key]
-        if len(search_dic):
-            log_write('res_list', 'serch over ==========')
+        log_print_res(search_dic)
         time.sleep(TIME_DIFF)
 
 #A股就是个坑， 技术指标低位了， 仍然可以再砸
