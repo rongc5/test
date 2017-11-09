@@ -241,7 +241,7 @@ def httpGetContent(url, req_header=None, version = '1.1'):
     c = pycurl.Curl()
     c.setopt(c.URL, url)
     c.setopt(c.WRITEFUNCTION, buf.write)
-    c.setopt(c.CONNECTTIMEOUT, 10)
+    c.setopt(c.CONNECTTIMEOUT, 100)
     c.setopt(c.TIMEOUT, 300)
     c.setopt(pycurl.MAXREDIRS, 5)
     c.setopt(pycurl.FOLLOWLOCATION, 1)
@@ -628,7 +628,7 @@ def get_money_flow(id):
 
     stocklist = []
     i = 0
-    imax = 5
+    imax = 3
     while 1:
         try:
             if i + 1 < imax:
@@ -693,7 +693,7 @@ def get_stockid_real_time(id):
     #url = 'http://sqt.gtimg.cn/utf8/q=%s' % (id)
     #favicon = 'http://sqt.gtimg.cn/favicon.ico'
     i = 0
-    imax = 5
+    imax = 3
     stocklist = []
     stockdict = {}
     while 1:
@@ -856,16 +856,18 @@ def get_basic_list(id_dic):
 
         res['mgzb'] = get_stockid_mgzb(key)
         if len(res['mgzb']) < 1:
+            log_write('err_base_list', key)
             continue
 
         if '--' not in res['mgzb'][0]['tbmgsy'] and  float(res['mgzb'][0]['tbmgsy']) < 0.1:
             continue
 
-        if '--' not in res['mgzb'][0]['mgxjll'] and float(res['mgzb'][0]['mgxjll']) < 0.05:
-            continue
+        #if '--' not in res['mgzb'][0]['mgxjll'] and float(res['mgzb'][0]['mgxjll']) < 0.05:
+            #continue
 
         res['cznl'] = get_stockid_cznl(key)
         if len(res['cznl']) < 1:
+            log_write('err_base_list', key)
             continue
         #if float(res['cznl'][0]['yylr']) < 0:
         #    continue
@@ -1081,6 +1083,23 @@ def log_print_res(search_dic):
 
     log_write('res_list', 'serch over ==========')
 
+def load_monitor_list():
+    id_dic = {}
+    if not os.path.isfile('monitor_list'):
+        return id_dic
+
+    file = open("monitor_list")
+    while 1:
+        line = file.readline().strip('\n')
+        if not line:
+            break
+        id_dic[line] = line
+
+    file.close()
+
+    return id_dic
+
+
 
 def do_search_short():
     day = Day()
@@ -1100,10 +1119,13 @@ def do_search_short():
     id_dic = remove_from_banlist(id_dic, ban_dic)
     print 'after ban_dic', len(id_dic)
 
+    monitor_dic = {}
     search_dic = {}
     remove_ley = []
+    monitor_mtime_first = 0
+    monitor_mtime_second = 0
     countx = 0
-    TIME_DIFF = 30
+    TIME_DIFF = 20
     while 1:
         for key in remove_ley:
             id_dic.pop(key)
@@ -1112,7 +1134,7 @@ def do_search_short():
         remove_ley = []
         print 'after remove_ley', len(id_dic)
         for key in id_dic:
-            #time.sleep(0.05)
+            #time.sleep(0.03)
 
             if not id_dic[key].has_key('next_time'):
                 id_dic[key]['next_time'] = 0
@@ -1133,8 +1155,11 @@ def do_search_short():
             if  res.has_key('range_percent'):
                 #remove_ley.append(key)
 
-                if res['range_percent'] < -0.5 or  res['range_percent'] > 0.3:
+                if res['range_percent'] < -3.9 or  res['range_percent'] > 3:
                     remove_ley.append(key)
+                    if key in search_dic.keys:
+                        search_dic.pop(key)
+                    print 'remove key: ', key, res['range_percent']
                     continue
 
                 id_dic[key]['range_percent'] = res['range_percent']
@@ -1194,21 +1219,8 @@ def do_search_short():
                 id_dic[key]['big_res2'].append(big_res2)
 
             flag_two = False
-            if get_data_direction(id_dic[key]['big_res2']):
+            if get_data_direction(id_dic[key]['big_res']):
                 flag_two = True
-
-            if len(id_dic[key]['big_res2']) >=2 and id_dic[key]['big_res2'][-1] < -20000 and id_dic[key]['big_res2'][-1] < id_dic[key]['big_res2'][0]:
-                remove_ley.append(key)
-                if key in search_dic.keys():
-                    search_dic.pop(key)
-                continue
-
-            if len(id_dic[key]['main_force']) >=2 and id_dic[key]['main_force'][-1] < -1000 and flag_two and id_dic[key]['main_force'][-1] < \
-                    id_dic[key]['main_force'][0]:
-                remove_ley.append(key)
-                if key in search_dic.keys():
-                    search_dic.pop(key)
-                continue
 
             flag_three = False
             if get_data_direction(id_dic[key]['main_force']):
@@ -1223,12 +1235,21 @@ def do_search_short():
                 id_dic[key]['next_time'] = 0
             else:
                 if  len(id_dic[key]['big_res']) <= 1 or  len(id_dic[key]['main_force']) <= 1:
-                    id_dic[key]['next_time'] = time.time() + TIME_DIFF
+                    id_dic[key]['next_time'] = 0
                 else:
                     id_dic[key]['next_time'] = time.time() + 2 *TIME_DIFF
 
-
+        #print 'length: ', len(search_dic)
         log_print_res(search_dic)
+
+        monitor_mtime_second = time.ctime(os.path.getmtime('monitor_list'))
+        if monitor_mtime_first != monitor_mtime_second:
+            monitor_mtime_first = monitor_mtime_second
+            monitor_dic = load_base_list()
+            for key in monitor_dic:
+                if key not in id_dic.keys():
+                    id_dic[key] = {}
+
         time.sleep(TIME_DIFF)
 
 #A股就是个坑， 技术指标低位了， 仍然可以再砸
@@ -1244,6 +1265,6 @@ def do_search_short():
 #高位下引线， 股价快到顶了
 #跟封盘， 毕竟高位跟风盘不少， 再出货
 #macd 鸭子张嘴， 会加速下跌
-#涨是需要理由的， 跌不需要
+#涨是需要理由的， 跌不需要,配股的股就不要进了， 号称散户的周扒皮
 if __name__ == '__main__':
     do_search_short()
