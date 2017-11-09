@@ -1001,7 +1001,7 @@ def base_select(id_dic):
             remove_ley.append(key)
             continue
 
-        if float(id_dic[key]['end']) >39:
+        if float(id_dic[key]['end']) >20:
             remove_ley.append(key)
             continue
 
@@ -1219,7 +1219,7 @@ def do_search_short():
                 id_dic[key]['big_res2'].append(big_res2)
 
             flag_two = False
-            if get_data_direction(id_dic[key]['big_res']):
+            if get_data_direction(id_dic[key]['big_res2']):
                 flag_two = True
 
             flag_three = False

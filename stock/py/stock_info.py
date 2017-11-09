@@ -1219,7 +1219,7 @@ def do_search_short():
                 id_dic[key]['big_res2'].append(big_res2)
 
             flag_two = False
-            if get_data_direction(id_dic[key]['big_res']):
+            if get_data_direction(id_dic[key]['big_res2']):
                 flag_two = True
 
             flag_three = False
