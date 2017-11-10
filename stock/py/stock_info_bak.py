@@ -1247,6 +1247,9 @@ def do_search_short():
             elif flag_two and flag_three:
                 search_dic[key] = id_dic[key]
                 id_dic[key]['next_time'] = 0
+            elif key in search_dic:
+                search_dic[key] = id_dic[key]
+                id_dic[key]['next_time'] = 0
             else:
                 if  len(id_dic[key]['big_res']) <= 1:
                     id_dic[key]['next_time'] = 0
