@@ -2,6 +2,7 @@ package com.voice.dream.api;
 
 import com.voice.dream.model.CityResponse;
 
+import io.reactivex.Observable;
 import io.reactivex.Single;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
@@ -19,6 +20,6 @@ public interface CityService {
      * @param lang     geoname output language
      */
     @GET("citiesJSON")
-    Single<CityResponse> queryGeonames(@Query("north") double north, @Query("south") double south,
+    Observable<CityResponse> queryGeonames(@Query("north") double north, @Query("south") double south,
             @Query("east") double east, @Query("west") double west, @Query("lang") String lang);
 }

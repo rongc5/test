@@ -1001,7 +1001,11 @@ def base_select(id_dic):
             remove_ley.append(key)
             continue
 
-        if float(id_dic[key]['end']) >20:
+        if '--' not in id_dic[key]['mgxjll'] and float(id_dic[key]['mgxjll']) < 0.1:
+            remove_ley.append(key)
+            continue
+
+        if float(id_dic[key]['end']) >39:
             remove_ley.append(key)
             continue
 
@@ -1032,24 +1036,24 @@ def get_data_direction(arr):
     if len(arr) < 2 :
         return False
 
-    #length = len(arr)
-    #count = 0
-    #sum = 0;
-    #for i in range(length - 1):
-    #    if arr[length -i -1] > arr[length -i -2]:
-    #        count += 1
-    #    sum += arr[length -i -1] - arr[length -i -2]
-
     if arr[-1] > arr[0] and arr[-1] > 0:
         return True
     else:
         return False
 
-    #if count > 0.6 * (length -1):
-    #    return True
-    #
-    #return False
 
+def get_positive_ratio(arr):
+    length = len(arr)
+    if length <= 1:
+        return 0
+    count = 0
+    sum = 0;
+    for i in range(length - 1):
+        if arr[length -i -1] > arr[length -i -2]:
+            count += 1
+        sum += 1
+
+    return count *1.0/sum
 
 def log_print_res(search_dic):
     if not len(search_dic):
@@ -1077,6 +1081,26 @@ def log_print_res(search_dic):
                 search_dic[key].pop('next_time')
             if search_dic[key].has_key('code'):
                 search_dic[key].pop('code')
+
+            if search_dic[key].has_key('big_res_ratio') and search_dic[key]['big_res_ratio'] < 0.6:
+                search_dic.pop(key)
+                continue
+
+            if search_dic[key].has_key('big_res2_ratio') and search_dic[key]['big_res2_ratio'] < 0.6:
+                search_dic.pop(key)
+                continue
+
+            money = get_money_flow(key)
+
+            if not search_dic[key].has_key('main_force'):
+                    search_dic[key]['main_force'] = []
+
+            if money.has_key('main_force'):
+                if len(search_dic[key]['main_force']) and abs(search_dic[key]['main_force'][-1] - money['main_force']) >= 50:
+                    search_dic[key]['main_force'].append(money['main_force'])
+                elif not len(search_dic[key]['main_force']):
+                    search_dic[key]['main_force'].append(money['main_force'])
+
             log_write('res_list', json.dumps(search_dic[key]))
             log_write('res_list', '\n')
             print 'search res', search_dic[key]
@@ -1155,9 +1179,9 @@ def do_search_short():
             if  res.has_key('range_percent'):
                 #remove_ley.append(key)
 
-                if res['range_percent'] < -3.9 or  res['range_percent'] > 3:
+                if res['range_percent'] < -3 or  res['range_percent'] > 3.9:
                     remove_ley.append(key)
-                    if key in search_dic.keys:
+                    if key in search_dic:
                         search_dic.pop(key)
                     print 'remove key: ', key, res['range_percent']
                     continue
@@ -1184,22 +1208,9 @@ def do_search_short():
                 id_dic[key]['start'] = res['start']
                 id_dic[key]['last_closing'] = res['last_closing']
 
-
             if id_dic[key].has_key('end') and id_dic[key].has_key('low') and id_dic[key].has_key('start'):
                 if id_dic[key]['end'] > id_dic[key]['low'] and abs(id_dic[key]['end'] - id_dic[key]['low']) >= 2* abs(id_dic[key]['end'] - id_dic[key]['start']):
                     flag_one = True
-
-
-            money = get_money_flow(key)
-
-            if not id_dic[key].has_key('main_force'):
-                    id_dic[key]['main_force'] = []
-
-            if money.has_key('main_force'):
-                if len(id_dic[key]['main_force']) and abs(id_dic[key]['main_force'][-1] - money['main_force']) >= 50:
-                    id_dic[key]['main_force'].append(money['main_force'])
-                elif not len(id_dic[key]['main_force']):
-                    id_dic[key]['main_force'].append(money['main_force'])
 
             big_data = get_single_analysis(key)
             big_res = 0
@@ -1223,18 +1234,21 @@ def do_search_short():
                 flag_two = True
 
             flag_three = False
-            if get_data_direction(id_dic[key]['main_force']):
+            #if get_data_direction(id_dic[key]['main_force']):
+            if get_data_direction(id_dic[key]['big_res']):
                 flag_three = True
 
-            if flag_one and flag_two and len(id_dic[key]['main_force']) >=2:
-                if id_dic[key]['main_force'][-1] > id_dic[key]['main_force'][0]:
+            id_dic[key]['big_res_ratio'] = get_positive_ratio(id_dic[key]['big_res'])
+            id_dic[key]['big_res2_ratio'] = get_positive_ratio(id_dic[key]['big_res2'])
+
+            if flag_one and flag_two:
                         search_dic[key] = id_dic[key]
                         id_dic[key]['next_time'] = 0
             elif flag_two and flag_three:
                 search_dic[key] = id_dic[key]
                 id_dic[key]['next_time'] = 0
             else:
-                if  len(id_dic[key]['big_res']) <= 1 or  len(id_dic[key]['main_force']) <= 1:
+                if  len(id_dic[key]['big_res']) <= 1:
                     id_dic[key]['next_time'] = 0
                 else:
                     id_dic[key]['next_time'] = time.time() + 2 *TIME_DIFF
@@ -1245,10 +1259,11 @@ def do_search_short():
         monitor_mtime_second = time.ctime(os.path.getmtime('monitor_list'))
         if monitor_mtime_first != monitor_mtime_second:
             monitor_mtime_first = monitor_mtime_second
-            monitor_dic = load_base_list()
+            monitor_dic = load_monitor_list()
             for key in monitor_dic:
-                if key not in id_dic.keys():
+                if key not in id_dic:
                     id_dic[key] = {}
+                    id_dic[key]['id'] = key
 
         time.sleep(TIME_DIFF)
 
