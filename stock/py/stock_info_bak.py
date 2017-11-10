@@ -745,7 +745,7 @@ def get_stockid_real_time(id):
     #stockdict['range_price'] = float(stocklist[31])    # 涨跌价格
     stockdict['range_percent'] = float(stocklist[32])  # 涨跌比%
 
-    #stockdict['volume'] = int(stocklist[6])            # 成交量（手）
+    stockdict['vol'] = int(stocklist[36])            # 成交量（手）
     #stockdict['total_price'] = int(stocklist[37])      # 成交额（万元）
     #print 'change_rate', stocklist
     if stocklist[38].strip():
@@ -1207,6 +1207,7 @@ def do_search_short():
                 id_dic[key]['high'] = res['high']
                 id_dic[key]['start'] = res['start']
                 id_dic[key]['last_closing'] = res['last_closing']
+                id_dic[key]['vol'] = res['vol']
 
             if id_dic[key].has_key('end') and id_dic[key].has_key('low') and id_dic[key].has_key('start'):
                 if id_dic[key]['end'] > id_dic[key]['low'] and abs(id_dic[key]['end'] - id_dic[key]['low']) >= 2* abs(id_dic[key]['end'] - id_dic[key]['start']):
@@ -1222,6 +1223,8 @@ def do_search_short():
             if not id_dic[key].has_key('big_res'):
                 id_dic[key]['big_res'] = []
                 id_dic[key]['big_res2'] = []
+                id_dic[key]['res_vol_ratio'] = []
+                id_dic[key]['res2_vol_ratio'] = []
             if len(id_dic[key]['big_res']) and abs(id_dic[key]['big_res'][-1] - big_res) >= 200:
                 id_dic[key]['big_res'].append(big_res)
                 id_dic[key]['big_res2'].append(big_res2)
@@ -1238,12 +1241,16 @@ def do_search_short():
             if get_data_direction(id_dic[key]['big_res']):
                 flag_three = True
 
-            id_dic[key]['big_res_ratio'] = get_positive_ratio(id_dic[key]['big_res'])
-            id_dic[key]['big_res2_ratio'] = get_positive_ratio(id_dic[key]['big_res2'])
+            if len(id_dic[key]['big_res']) and id_dic[key].has_key('vol'):
+                id_dic[key]['res_vol_ratio'].append(id_dic[key]['big_res'][-1] *1.0/id_dic[key]['vol'])
+                id_dic[key]['res2_vol_ratio'].append(id_dic[key]['big_res2'][-1] *1.0/id_dic[key]['vol'])
+
+            id_dic[key]['big_res_ratio'] = get_positive_ratio(id_dic[key]['res_vol_ratio'])
+            id_dic[key]['big_res2_ratio'] = get_positive_ratio(id_dic[key]['res2_vol_ratio'])
 
             if flag_one and flag_two:
-                        search_dic[key] = id_dic[key]
-                        id_dic[key]['next_time'] = 0
+                search_dic[key] = id_dic[key]
+                id_dic[key]['next_time'] = 0
             elif flag_two and flag_three:
                 search_dic[key] = id_dic[key]
                 id_dic[key]['next_time'] = 0
