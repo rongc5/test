@@ -1193,9 +1193,9 @@ def do_search_short():
 
                 id_dic[key]['swing'] = res['swing']
 
-                if res['change_rate'] < 1:
-                    id_dic[key]['next_time'] = time.time() + 2 *TIME_DIFF
-                    continue
+                #if res['change_rate'] < 1:
+                    #id_dic[key]['next_time'] = time.time() + 2 *TIME_DIFF
+                    #continue
 
                 id_dic[key]['change_rate'] = res['change_rate']
                 if res['end'] < res['low']:
@@ -1244,6 +1244,7 @@ def do_search_short():
             if len(id_dic[key]['big_res']) and id_dic[key].has_key('vol'):
                 id_dic[key]['res_vol_ratio'].append(id_dic[key]['big_res'][-1] *1.0/id_dic[key]['vol'])
                 id_dic[key]['res2_vol_ratio'].append(id_dic[key]['big_res2'][-1] *1.0/id_dic[key]['vol'])
+                #print id_dic[key]['res2_vol_ratio'][-1]
 
             id_dic[key]['big_res_ratio'] = get_positive_ratio(id_dic[key]['res_vol_ratio'])
             id_dic[key]['big_res2_ratio'] = get_positive_ratio(id_dic[key]['res2_vol_ratio'])
