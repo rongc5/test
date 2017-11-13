@@ -1060,6 +1060,7 @@ def log_print_res(search_dic):
         return
 
     day = Day()
+    remove_ley = []
 
     log_write('res_list', 'begin ==========:%s' % (day.datetime()))
 
@@ -1083,11 +1084,11 @@ def log_print_res(search_dic):
                 search_dic[key].pop('code')
 
             if search_dic[key].has_key('big_res_ratio') and search_dic[key]['big_res_ratio'] < 0.6:
-                search_dic.pop(key)
+                remove_ley.append(key)
                 continue
 
             if search_dic[key].has_key('big_res2_ratio') and search_dic[key]['big_res2_ratio'] < 0.6:
-                search_dic.pop(key)
+                remove_ley.append(key)
                 continue
 
             money = get_money_flow(key)
@@ -1106,6 +1107,9 @@ def log_print_res(search_dic):
             print 'search res', search_dic[key]
 
     log_write('res_list', 'serch over ==========')
+    for key in remove_ley:
+        search_dic.pop(key)
+
 
 def load_monitor_list():
     id_dic = {}

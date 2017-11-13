@@ -9,10 +9,9 @@ import android.view.MenuItem;
 
 import com.example.voicedream.R;
 import com.voice.dream.api.CityService;
-import com.voice.dream.model.UserInfo;
 import com.voice.dream.net.AppClient;
-import com.voice.dream.util.LogUtil;
-
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
 
 public class MainActivity extends Activity {
 
@@ -48,4 +47,7 @@ public class MainActivity extends Activity {
     	AppClient.create(CityService.class).queryGeonames(44.1, -9.9, -22.4, 55.2, "de")
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<UserIn
+                .subscribe();
+                
+    }
+}

@@ -1042,7 +1042,7 @@ def get_data_direction(arr):
         return False
 
 
-def get_positive_ratio(arr):
+def get_positive_weight(arr):
     length = len(arr)
     if length <= 1:
         return 0
@@ -1060,6 +1060,7 @@ def log_print_res(search_dic):
         return
 
     day = Day()
+    remove_ley = []
 
     log_write('res_list', 'begin ==========:%s' % (day.datetime()))
 
@@ -1082,12 +1083,12 @@ def log_print_res(search_dic):
             if search_dic[key].has_key('code'):
                 search_dic[key].pop('code')
 
-            if search_dic[key].has_key('big_res_ratio') and search_dic[key]['big_res_ratio'] < 0.6:
-                search_dic.pop(key)
+            if search_dic[key].has_key('big_res_weight') and search_dic[key]['big_res_weight'] < 0.6:
+                remove_ley.append(key)
                 continue
 
-            if search_dic[key].has_key('big_res2_ratio') and search_dic[key]['big_res2_ratio'] < 0.6:
-                search_dic.pop(key)
+            if search_dic[key].has_key('big_res2_weight') and search_dic[key]['big_res2_weight'] < 0.6:
+                remove_ley.append(key)
                 continue
 
             money = get_money_flow(key)
@@ -1106,6 +1107,9 @@ def log_print_res(search_dic):
             print 'search res', search_dic[key]
 
     log_write('res_list', 'serch over ==========')
+    for key in remove_ley:
+        search_dic.pop(key)
+
 
 def load_monitor_list():
     id_dic = {}
@@ -1246,8 +1250,8 @@ def do_search_short():
                 id_dic[key]['res2_vol_ratio'].append(id_dic[key]['big_res2'][-1] *1.0/id_dic[key]['vol'])
                 #print id_dic[key]['res2_vol_ratio'][-1]
 
-            id_dic[key]['big_res_ratio'] = get_positive_ratio(id_dic[key]['res_vol_ratio'])
-            id_dic[key]['big_res2_ratio'] = get_positive_ratio(id_dic[key]['res2_vol_ratio'])
+            id_dic[key]['big_res_weight'] = get_positive_weight(id_dic[key]['res_vol_ratio'])
+            id_dic[key]['big_res2_weight'] = get_positive_weight(id_dic[key]['res2_vol_ratio'])
 
             if flag_one and flag_two:
                 search_dic[key] = id_dic[key]

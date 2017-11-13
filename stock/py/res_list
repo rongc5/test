@@ -1,999 +1,125 @@
-begin ==========:2017-11-10 14:23:57
-{"tbmgsy": "0.83", "change_rate": 1.13, "jlr": "199.11", "big_res2": [259, 3864], "zysr": "22.86", "id": "sz002001", "circulation_market_value": 279.31, "end": 25.99, "pb": 3.42, "mgxjll": "0.45", "pe": 22.53, "yylr": "213.11", "mgsy": "199.13", "total_value": 283.45, "big_res": [1562, 5342], "mgxj": "--", "range_percent": -0.15}
+begin ==========:2017-11-13 14:23:35
+{"tbmgsy": "0.33", "change_rate": 0.3, "jlr": "--", "vol": 88461, "big_res2": [12091, 12302], "zysr": "134.54", "id": "sz000959", "circulation_market_value": 192.23, "end": 6.4, "pb": 1.34, "mgxjll": "0.19", "pe": 16.91, "yylr": "--", "res_vol_ratio": [0.13923934169819785, 0.13924780411706855], "mgsy": "135.27", "total_value": 342.75, "big_res2_ratio": 1.0, "big_res": [12107, 12318], "res2_vol_ratio": [0.13905533001345585, 0.13906693345089927], "mgxj": "--", "range_percent": 1.27, "main_force": [990.48], "big_res_ratio": 1.0}
 
 
-{"tbmgsy": "0.50", "change_rate": 1.7, "jlr": "53.03", "big_res2": [3057, 5267], "zysr": "83.70", "id": "sh600856", "circulation_market_value": 84.2, "end": 10.69, "pb": 3.01, "mgxjll": "0.88", "pe": 28.81, "yylr": "52.58", "mgsy": "53.02", "total_value": 149.24, "big_res": [236, 2245], "mgxj": "47.46", "range_percent": -2.11}
+{"tbmgsy": "0.45", "change_rate": 5.02, "jlr": "116.20", "vol": 103853, "big_res2": [7458, 8066], "zysr": "25.85", "id": "sz300327", "circulation_market_value": 73.91, "end": 36.8, "pb": 10.07, "mgxjll": "0.76", "pe": 55.37, "yylr": "90.30", "res_vol_ratio": [0.10789609428985761, 0.11030013576882709], "mgsy": "96.48", "total_value": 75.03, "big_res2_ratio": 1.0, "big_res": [11086, 11455], "res2_vol_ratio": [0.0725860609068878, 0.07766747229256737], "mgxj": "--", "range_percent": 3.4, "main_force": [4767.61], "big_res_ratio": 1.0}
 
 
-serch over ==========
-begin ==========:2017-11-10 14:26:17
-{"tbmgsy": "0.83", "change_rate": 1.16, "jlr": "199.11", "big_res2": [259, 3864, 5941], "zysr": "22.86", "id": "sz002001", "circulation_market_value": 279.31, "end": 26.06, "pb": 3.42, "mgxjll": "0.45", "pe": 22.53, "yylr": "213.11", "mgsy": "199.13", "total_value": 283.45, "big_res": [1562, 5342, 9041], "mgxj": "--", "range_percent": 0.12}
+{"tbmgsy": "0.42", "change_rate": 2.04, "jlr": "--", "vol": 30386, "big_res2": [1462, 2099], "zysr": "227.55", "id": "sz002645", "circulation_market_value": 32.1, "end": 22.12, "pb": 2.76, "mgxjll": "0.86", "pe": 44.54, "yylr": "--", "res_vol_ratio": [0.061903744838388154, 0.09859803857039426], "mgsy": "819.85", "total_value": 45.24, "big_res2_ratio": 1.0, "big_res": [1739, 2996], "res2_vol_ratio": [0.052043286344866865, 0.06907786480616074], "mgxj": "--", "range_percent": 3.46, "main_force": [307.89], "big_res_ratio": 1.0}
 
 
-{"tbmgsy": "1.24", "change_rate": 3.35, "jlr": "157.15", "big_res2": [8786, 10397], "zysr": "12.84", "id": "sz002597", "circulation_market_value": 133.72, "end": 24.65, "pb": 4.55, "mgxjll": "0.43", "pe": 14.99, "yylr": "154.85", "mgsy": "158.92", "total_value": 134.85, "big_res": [12533, 13510], "mgxj": "--", "range_percent": 3.14}
+{"tbmgsy": "0.95", "change_rate": 1.01, "jlr": "23914.89", "vol": 205316, "big_res2": [13906, 15836], "zysr": "53.06", "id": "sz002092", "circulation_market_value": 283.58, "end": 14.08, "pb": 1.65, "mgxjll": "0.62", "pe": 9.42, "yylr": "--", "res_vol_ratio": [0.07761118872833368, 0.08155233883379766], "mgsy": "15514.54", "total_value": 299.22, "big_res2_ratio": 1.0, "big_res": [15721, 16744], "res2_vol_ratio": [0.06865092490657135, 0.07712988758791327], "mgxj": "--", "range_percent": 2.25, "main_force": [923.28], "big_res_ratio": 1.0}
 
 
-{"end": 9.12, "change_rate": 4.22, "big_res2": [11412, 11637], "range_percent": 1.33, "big_res": [13362, 13718]}
+{"tbmgsy": "0.44", "change_rate": 3.13, "jlr": "--", "vol": 141965, "big_res2": [13049, 14165], "zysr": "47.03", "id": "sz002061", "circulation_market_value": 67.31, "end": 15.46, "pb": 3.45, "mgxjll": "0.17", "pe": 30.82, "yylr": "--", "res_vol_ratio": [0.12236223081966269, 0.12305850033458951], "mgsy": "129.49", "total_value": 98.26, "big_res2_ratio": 1.0, "big_res": [16984, 17470], "res2_vol_ratio": [0.09401229097773071, 0.09977811432395309], "mgxj": "--", "range_percent": 3.76, "main_force": [-205.65], "big_res_ratio": 1.0}
 
 
-{"tbmgsy": "0.44", "change_rate": 11.77, "jlr": "1.82", "big_res2": [1600, 1802], "zysr": "28.11", "id": "sh603106", "circulation_market_value": 21.82, "end": 31.01, "pb": 5.6, "mgxjll": "0.89", "pe": 60.65, "yylr": "2.38", "mgsy": "1.82", "total_value": 87.28, "big_res": [1016, 1218], "mgxj": "198.71", "range_percent": -0.51}
+{"tbmgsy": "0.41", "change_rate": 1.23, "jlr": "181.90", "vol": 144113, "big_res2": [4387, 4862], "zysr": "14.79", "id": "sh600308", "circulation_market_value": 81.38, "end": 6.72, "pb": 1.17, "mgxjll": "0.38", "pe": 14.91, "yylr": "--", "res_vol_ratio": [0.0021926535393142067, 0.0041842165522888285], "mgsy": "181.91", "total_value": 81.38, "big_res2_ratio": 1.0, "big_res": [307, 603], "res2_vol_ratio": [0.031332804810981836, 0.033737414390096664], "mgxj": "--", "range_percent": -1.18, "main_force": [603.07], "big_res_ratio": 1.0}
 
 
-{"tbmgsy": "0.50", "change_rate": 1.73, "jlr": "53.03", "big_res2": [3057, 5267, 2857], "zysr": "83.70", "id": "sh600856", "circulation_market_value": 84.2, "end": 10.63, "pb": 3.01, "mgxjll": "0.88", "pe": 28.81, "yylr": "52.58", "mgsy": "53.02", "total_value": 149.24, "big_res": [236, 2245, -341], "mgxj": "47.46", "range_percent": -2.66}
+{"tbmgsy": "0.64", "change_rate": 1.0, "jlr": "732.02", "vol": 298477, "big_res2": [-2518, 1128], "zysr": "27.56", "id": "sh601699", "circulation_market_value": 277.6, "end": 9.34, "pb": 1.35, "mgxjll": "0.35", "pe": 10.41, "yylr": "817.61", "res_vol_ratio": [-0.003886588307469221, 0.006982112524583133], "mgsy": "732.84", "total_value": 277.6, "big_res2_ratio": 1.0, "big_res": [-1115, 2084], "res2_vol_ratio": [-0.008777066688975335, 0.003779185665897205], "mgxj": "--", "range_percent": 2.19, "main_force": [1078.75], "big_res_ratio": 1.0}
 
 
-serch over ==========
-begin ==========:2017-11-10 14:29:21
-{"end": 9.12, "change_rate": 4.24, "big_res2": [11412, 11637, 13191], "range_percent": 1.33, "big_res": [13362, 13718, 15272]}
-
-
-{"tbmgsy": "0.50", "change_rate": 1.73, "jlr": "53.03", "big_res2": [3057, 5267, 2857], "zysr": "83.70", "id": "sh600856", "circulation_market_value": 84.2, "end": 10.67, "pb": 3.01, "mgxjll": "0.88", "pe": 28.81, "yylr": "52.58", "mgsy": "53.02", "total_value": 149.24, "big_res": [236, 2245, -341], "mgxj": "47.46", "range_percent": -2.29}
-
-
-{"tbmgsy": "0.42", "change_rate": 1.39, "jlr": "--", "big_res2": [610, 857], "zysr": "227.55", "id": "sz002645", "circulation_market_value": 32.1, "end": 21.47, "pb": 2.76, "mgxjll": "0.86", "pe": 44.54, "yylr": "--", "mgsy": "819.85", "total_value": 45.24, "big_res": [2, 384], "mgxj": "--", "range_percent": -0.6}
-
-
-{"tbmgsy": "0.83", "change_rate": 1.18, "jlr": "199.11", "big_res2": [259, 3864, 5941, 7145], "zysr": "22.86", "id": "sz002001", "circulation_market_value": 279.31, "end": 26.03, "pb": 3.42, "mgxjll": "0.45", "pe": 22.53, "yylr": "213.11", "mgsy": "199.13", "total_value": 283.45, "big_res": [1562, 5342, 9041, 9962], "mgxj": "--", "range_percent": 0.0}
-
-
-{"tbmgsy": "0.49", "change_rate": 2.67, "jlr": "46.57", "big_res2": [-467, 850, 1251, 3666], "zysr": "6.22", "id": "sz002016", "circulation_market_value": 63.64, "end": 10.0, "pb": 4.25, "mgxjll": "0.15", "pe": 20.16, "yylr": "64.48", "mgsy": "46.45", "total_value": 79.7, "big_res": [-3803, -1820, -1311, 1423], "mgxj": "--", "range_percent": 1.52}
-
-
-{"tbmgsy": "0.39", "change_rate": 1.61, "jlr": "6.88", "big_res2": [5824, 5373, 6445], "zysr": "7.17", "id": "sz002690", "circulation_market_value": 60.69, "end": 19.03, "pb": 6.0, "mgxjll": "0.21", "pe": 35.55, "yylr": "2.91", "mgsy": "6.89", "total_value": 125.53, "big_res": [9147, 8592, 9809], "mgxj": "--", "range_percent": 2.48}
-
-
-{"tbmgsy": "0.75", "change_rate": 4.24, "jlr": "16.94", "big_res2": [445, 717], "zysr": "13.23", "id": "sz002872", "circulation_market_value": 19.25, "end": 36.64, "pb": 2.54, "mgxjll": "1.06", "pe": 34.3, "yylr": "15.33", "mgsy": "16.93", "total_value": 77.0, "big_res": [791, 1063], "mgxj": "378.99", "range_percent": 0.88}
-
-
-{"tbmgsy": "1.24", "change_rate": 3.4, "jlr": "157.15", "big_res2": [8786, 10397], "zysr": "12.84", "id": "sz002597", "circulation_market_value": 133.72, "end": 24.66, "pb": 4.55, "mgxjll": "0.43", "pe": 14.99, "yylr": "154.85", "mgsy": "158.92", "total_value": 134.85, "big_res": [12533, 13510], "mgxj": "--", "range_percent": 3.18}
-
-
-{"end": 13.67, "change_rate": 6.39, "big_res2": [-16988, -12102, 1832], "range_percent": 2.63, "big_res": [-16164, -11234, 3034]}
-
-
-{"tbmgsy": "0.44", "change_rate": 11.95, "jlr": "1.82", "big_res2": [1600, 1802, 1802], "zysr": "28.11", "id": "sh603106", "circulation_market_value": 21.82, "end": 30.98, "pb": 5.6, "mgxjll": "0.89", "pe": 60.65, "yylr": "2.38", "mgsy": "1.82", "total_value": 87.28, "big_res": [1016, 1218, 879], "mgxj": "198.71", "range_percent": -0.61}
+{"tbmgsy": "0.43", "change_rate": 1.03, "jlr": "--", "vol": 242604, "big_res2": [13351, 14856], "zysr": "18.24", "id": "sh601666", "circulation_market_value": 146.39, "end": 6.22, "pb": 1.19, "mgxjll": "0.85", "pe": 10.2, "yylr": "--", "res_vol_ratio": [0.04212543889384105, 0.04974773705297522], "mgsy": "135.23", "total_value": 146.39, "big_res2_ratio": 1.0, "big_res": [10066, 12069], "res2_vol_ratio": [0.05587291224634133, 0.061235593807191964], "mgxj": "52.62", "range_percent": 1.8, "main_force": [525.68], "big_res_ratio": 1.0}
 
 
 serch over ==========
-begin ==========:2017-11-10 14:32:16
-{"end": 9.15, "change_rate": 4.28, "big_res2": [11412, 11637, 13191, 13575], "range_percent": 1.67, "big_res": [13362, 13718, 15272, 15697]}
+begin ==========:2017-11-13 14:27:26
+{"tbmgsy": "0.41", "change_rate": 1.28, "jlr": "181.90", "vol": 149088, "big_res2": [4387, 4862, 9435], "zysr": "14.79", "id": "sh600308", "circulation_market_value": 81.38, "end": 6.71, "pb": 1.17, "mgxjll": "0.38", "pe": 14.91, "yylr": "--", "res_vol_ratio": [0.0021926535393142067, 0.0041842165522888285, 0.030170100880017172], "mgsy": "181.91", "total_value": 81.38, "big_res2_ratio": 1.0, "big_res": [307, 603, 4498], "res2_vol_ratio": [0.031332804810981836, 0.033737414390096664, 0.06328477141017386], "mgxj": "--", "range_percent": -1.32, "main_force": [603.07, 750.15], "big_res_ratio": 1.0}
 
 
-{"tbmgsy": "0.50", "change_rate": 1.73, "jlr": "53.03", "big_res2": [3057, 5267, 2857], "zysr": "83.70", "id": "sh600856", "circulation_market_value": 84.2, "end": 10.65, "pb": 3.01, "mgxjll": "0.88", "pe": 28.81, "yylr": "52.58", "mgsy": "53.02", "total_value": 149.24, "big_res": [236, 2245, -341], "mgxj": "47.46", "range_percent": -2.47}
+{"tbmgsy": "0.41", "change_rate": 0.56, "jlr": "43.84", "vol": 107337, "big_res2": [-2414, -1443, 425], "zysr": "59.41", "id": "sh600325", "circulation_market_value": 138.78, "end": 7.19, "pb": 1.24, "mgxjll": "2.73", "pe": 10.21, "yylr": "100.54", "res_vol_ratio": [0.0036954629002611977, 0.017126264411183173, 0.03393051790156237], "mgsy": "43.84", "total_value": 153.58, "big_res2_ratio": 1.0, "big_res": [382, 1793, 3642], "res2_vol_ratio": [-0.023353003772854795, -0.013783156467003524, 0.003959492067041188], "mgxj": "410.19", "range_percent": 0.14, "main_force": [-613.97], "big_res_ratio": 1.0}
 
 
-{"tbmgsy": "0.42", "change_rate": 1.4, "jlr": "--", "big_res2": [610, 857], "zysr": "227.55", "id": "sz002645", "circulation_market_value": 32.1, "end": 21.45, "pb": 2.76, "mgxjll": "0.86", "pe": 44.54, "yylr": "--", "mgsy": "819.85", "total_value": 45.24, "big_res": [2, 384], "mgxj": "--", "range_percent": -0.69}
-
-
-{"tbmgsy": "0.83", "change_rate": 1.19, "jlr": "199.11", "big_res2": [259, 3864, 5941, 7145], "zysr": "22.86", "id": "sz002001", "circulation_market_value": 279.31, "end": 26.02, "pb": 3.42, "mgxjll": "0.45", "pe": 22.53, "yylr": "213.11", "mgsy": "199.13", "total_value": 283.45, "big_res": [1562, 5342, 9041, 9962], "mgxj": "--", "range_percent": -0.04}
-
-
-{"tbmgsy": "0.40", "change_rate": 2.06, "jlr": "81.89", "big_res2": [1646, 2839], "zysr": "5.01", "id": "sz002088", "circulation_market_value": 29.28, "end": 14.31, "pb": 2.73, "mgxjll": "0.14", "pe": 27.32, "yylr": "73.01", "mgsy": "81.90", "total_value": 49.14, "big_res": [204, 1968], "mgxj": "--", "range_percent": 2.21}
-
-
-{"tbmgsy": "0.49", "change_rate": 2.69, "jlr": "46.57", "big_res2": [-467, 850, 1251, 3666, 7253], "zysr": "6.22", "id": "sz002016", "circulation_market_value": 63.64, "end": 10.01, "pb": 4.25, "mgxjll": "0.15", "pe": 20.16, "yylr": "64.48", "mgsy": "46.45", "total_value": 79.7, "big_res": [-3803, -1820, -1311, 1423, 4725], "mgxj": "--", "range_percent": 1.62}
-
-
-{"tbmgsy": "0.39", "change_rate": 1.66, "jlr": "6.88", "big_res2": [5824, 5373, 6445, 7672], "zysr": "7.17", "id": "sz002690", "circulation_market_value": 60.69, "end": 19.02, "pb": 6.0, "mgxjll": "0.21", "pe": 35.55, "yylr": "2.91", "mgsy": "6.89", "total_value": 125.53, "big_res": [9147, 8592, 9809, 11146], "mgxj": "--", "range_percent": 2.42}
-
-
-{"tbmgsy": "0.75", "change_rate": 4.31, "jlr": "16.94", "big_res2": [445, 717], "zysr": "13.23", "id": "sz002872", "circulation_market_value": 19.25, "end": 36.74, "pb": 2.54, "mgxjll": "1.06", "pe": 34.3, "yylr": "15.33", "mgsy": "16.93", "total_value": 77.0, "big_res": [791, 1063], "mgxj": "378.99", "range_percent": 1.16}
-
-
-{"tbmgsy": "0.54", "change_rate": 1.43, "jlr": "--", "big_res2": [1753, 1953, 2380], "zysr": "9.98", "id": "sh600549", "circulation_market_value": 241.15, "end": 27.34, "pb": 4.31, "mgxjll": "0.13", "pe": 50.83, "yylr": "--", "mgsy": "122.18", "total_value": 295.56, "big_res": [686, 450, 1016], "mgxj": "--", "range_percent": 0.51}
-
-
-{"tbmgsy": "1.24", "change_rate": 3.42, "jlr": "157.15", "big_res2": [8786, 10397, 10558], "zysr": "12.84", "id": "sz002597", "circulation_market_value": 133.72, "end": 24.65, "pb": 4.55, "mgxjll": "0.43", "pe": 14.99, "yylr": "154.85", "mgsy": "158.92", "total_value": 134.85, "big_res": [12533, 13510, 13284], "mgxj": "--", "range_percent": 3.14}
-
-
-{"end": 13.62, "change_rate": 6.47, "big_res2": [-16988, -12102, 1832, 6118], "range_percent": 2.25, "big_res": [-16164, -11234, 3034, 5688]}
-
-
-{"tbmgsy": "0.44", "change_rate": 12.07, "jlr": "1.82", "big_res2": [1600, 1802, 1802], "zysr": "28.11", "id": "sh603106", "circulation_market_value": 21.82, "end": 31.03, "pb": 5.6, "mgxjll": "0.89", "pe": 60.65, "yylr": "2.38", "mgsy": "1.82", "total_value": 87.28, "big_res": [1016, 1218, 879], "mgxj": "198.71", "range_percent": -0.45}
+{"tbmgsy": "0.64", "change_rate": 1.06, "jlr": "732.02", "vol": 316323, "big_res2": [-2518, 1128, 17308], "zysr": "27.56", "id": "sh601699", "circulation_market_value": 277.6, "end": 9.37, "pb": 1.35, "mgxjll": "0.35", "pe": 10.41, "yylr": "817.61", "res_vol_ratio": [-0.003886588307469221, 0.006982112524583133, 0.05936653357485861], "mgsy": "732.84", "total_value": 277.6, "big_res2_ratio": 1.0, "big_res": [-1115, 2084, 18779], "res2_vol_ratio": [-0.008777066688975335, 0.003779185665897205, 0.05471622360688284], "mgxj": "--", "range_percent": 2.52, "main_force": [1078.75, 1444.51], "big_res_ratio": 1.0}
 
 
 serch over ==========
-begin ==========:2017-11-10 14:34:07
-{"end": 9.14, "change_rate": 4.29, "big_res2": [11412, 11637, 13191, 13575, 13239], "range_percent": 1.56, "big_res": [13362, 13718, 15272, 15697, 15236]}
+begin ==========:2017-11-13 14:32:02
+{"tbmgsy": "0.33", "change_rate": 0.32, "jlr": "--", "vol": 93621, "big_res2": [12091, 12302, 12302, 12696], "zysr": "134.54", "id": "sz000959", "circulation_market_value": 192.23, "end": 6.4, "pb": 1.34, "mgxjll": "0.19", "pe": 16.91, "yylr": "--", "res_vol_ratio": [0.13923934169819785, 0.13924780411706855, 0.14066462470770347, 0.1434186774334818], "mgsy": "135.27", "total_value": 342.75, "big_res2_ratio": 0.6666666666666666, "big_res": [12107, 12318, 12813, 13427], "res2_vol_ratio": [0.13905533001345585, 0.13906693345089927, 0.13505472669586888, 0.13561060018585575], "mgxj": "--", "range_percent": 1.27, "main_force": [990.48], "big_res_ratio": 1.0}
 
 
-{"tbmgsy": "0.50", "change_rate": 1.74, "jlr": "53.03", "big_res2": [3057, 5267, 2857], "zysr": "83.70", "id": "sh600856", "circulation_market_value": 84.2, "end": 10.66, "pb": 3.01, "mgxjll": "0.88", "pe": 28.81, "yylr": "52.58", "mgsy": "53.02", "total_value": 149.24, "big_res": [236, 2245, -341], "mgxj": "47.46", "range_percent": -2.38}
+{"tbmgsy": "0.95", "change_rate": 1.07, "jlr": "23914.89", "vol": 217006, "big_res2": [13906, 15836, 15838, 16590], "zysr": "53.06", "id": "sz002092", "circulation_market_value": 283.58, "end": 14.12, "pb": 1.65, "mgxjll": "0.62", "pe": 9.42, "yylr": "--", "res_vol_ratio": [0.07761118872833368, 0.08155233883379766, 0.07759422429745251, 0.08029731896813913], "mgsy": "15514.54", "total_value": 299.22, "big_res2_ratio": 0.6666666666666666, "big_res": [15721, 16744, 16186, 17425], "res2_vol_ratio": [0.06865092490657135, 0.07712988758791327, 0.07592594368114747, 0.076449499092191], "mgxj": "--", "range_percent": 2.54, "main_force": [923.28, 1075.47], "big_res_ratio": 0.6666666666666666}
 
 
-{"tbmgsy": "0.42", "change_rate": 1.41, "jlr": "--", "big_res2": [610, 857], "zysr": "227.55", "id": "sz002645", "circulation_market_value": 32.1, "end": 21.41, "pb": 2.76, "mgxjll": "0.86", "pe": 44.54, "yylr": "--", "mgsy": "819.85", "total_value": 45.24, "big_res": [2, 384], "mgxj": "--", "range_percent": -0.88}
+{"tbmgsy": "0.41", "change_rate": 1.32, "jlr": "181.90", "vol": 153908, "big_res2": [4387, 4862, 9435, 9054], "zysr": "14.79", "id": "sh600308", "circulation_market_value": 81.38, "end": 6.73, "pb": 1.17, "mgxjll": "0.38", "pe": 14.91, "yylr": "--", "res_vol_ratio": [0.0021926535393142067, 0.0041842165522888285, 0.030170100880017172, 0.02405333056111443], "mgsy": "181.91", "total_value": 81.38, "big_res2_ratio": 0.6666666666666666, "big_res": [307, 603, 4498, 3702], "res2_vol_ratio": [0.031332804810981836, 0.033737414390096664, 0.06328477141017386, 0.058827351404735294], "mgxj": "--", "range_percent": -1.03, "main_force": [603.07, 750.15, 827.09], "big_res_ratio": 0.6666666666666666}
 
 
-{"tbmgsy": "0.83", "change_rate": 1.2, "jlr": "199.11", "big_res2": [259, 3864, 5941, 7145, 7607], "zysr": "22.86", "id": "sz002001", "circulation_market_value": 279.31, "end": 25.97, "pb": 3.42, "mgxjll": "0.45", "pe": 22.53, "yylr": "213.11", "mgsy": "199.13", "total_value": 283.45, "big_res": [1562, 5342, 9041, 9962, 10926], "mgxj": "--", "range_percent": -0.23}
+{"tbmgsy": "0.41", "change_rate": 0.57, "jlr": "43.84", "vol": 109708, "big_res2": [-2414, -1443, 425], "zysr": "59.41", "id": "sh600325", "circulation_market_value": 138.78, "end": 7.19, "pb": 1.24, "mgxjll": "2.73", "pe": 10.21, "yylr": "100.54", "res_vol_ratio": [0.0036954629002611977, 0.017126264411183173, 0.03393051790156237, 0.03319721442374303], "mgsy": "43.84", "total_value": 153.58, "big_res2_ratio": 0.6666666666666666, "big_res": [382, 1793, 3642], "res2_vol_ratio": [-0.023353003772854795, -0.013783156467003524, 0.003959492067041188, 0.0038739198599919786], "mgxj": "410.19", "range_percent": 0.14, "main_force": [-613.97], "big_res_ratio": 0.6666666666666666}
 
 
-{"tbmgsy": "0.40", "change_rate": 2.09, "jlr": "81.89", "big_res2": [1646, 2839], "zysr": "5.01", "id": "sz002088", "circulation_market_value": 29.28, "end": 14.34, "pb": 2.73, "mgxjll": "0.14", "pe": 27.32, "yylr": "73.01", "mgsy": "81.90", "total_value": 49.14, "big_res": [204, 1968], "mgxj": "--", "range_percent": 2.43}
+{"tbmgsy": "0.64", "change_rate": 1.09, "jlr": "732.02", "vol": 325115, "big_res2": [-2518, 1128, 17308, 20923], "zysr": "27.56", "id": "sh601699", "circulation_market_value": 277.6, "end": 9.35, "pb": 1.35, "mgxjll": "0.35", "pe": 10.41, "yylr": "817.61", "res_vol_ratio": [-0.003886588307469221, 0.006982112524583133, 0.05936653357485861, 0.06816357288959292], "mgsy": "732.84", "total_value": 277.6, "big_res2_ratio": 1.0, "big_res": [-1115, 2084, 18779, 22161], "res2_vol_ratio": [-0.008777066688975335, 0.003779185665897205, 0.05471622360688284, 0.06435568952524491], "mgxj": "--", "range_percent": 2.3, "main_force": [1078.75, 1444.51, 1608.33], "big_res_ratio": 1.0}
 
 
-{"tbmgsy": "0.99", "change_rate": 1.35, "jlr": "40.97", "big_res2": [309, 109, 364], "zysr": "31.98", "id": "sz002271", "circulation_market_value": 210.75, "end": 37.03, "pb": 5.22, "mgxjll": "1.84", "pe": 27.69, "yylr": "50.61", "mgsy": "32.67", "total_value": 325.84, "big_res": [-1226, -2073, -1617], "mgxj": "--", "range_percent": 0.22}
+{"tbmgsy": "0.39", "change_rate": 0.6, "jlr": "--", "vol": 100629, "big_res2": [-5708, -3422, -2474, 2144], "zysr": "3.69", "id": "sh601001", "circulation_market_value": 104.44, "end": 6.19, "pb": 1.83, "mgxjll": "0.94", "pe": 17.9, "yylr": "--", "res_vol_ratio": [-0.05948287119662212, -0.02608955033078013, -0.013800847991268208, 0.04060459708433951], "mgsy": "110.31", "total_value": 104.44, "big_res2_ratio": 1.0, "big_res": [-5466, -2449, -1315, 4086], "res2_vol_ratio": [-0.062116397510120575, -0.036455059710873663, -0.02596448511817304, 0.02130598535213507], "mgxj": "248.07", "range_percent": 1.31, "main_force": [323.33], "big_res_ratio": 1.0}
 
 
-{"tbmgsy": "0.49", "change_rate": 2.7, "jlr": "46.57", "big_res2": [-467, 850, 1251, 3666, 7253, 8034], "zysr": "6.22", "id": "sz002016", "circulation_market_value": 63.64, "end": 10.02, "pb": 4.25, "mgxjll": "0.15", "pe": 20.16, "yylr": "64.48", "mgsy": "46.45", "total_value": 79.7, "big_res": [-3803, -1820, -1311, 1423, 4725, 5506], "mgxj": "--", "range_percent": 1.73}
-
-
-{"tbmgsy": "0.39", "change_rate": 1.68, "jlr": "6.88", "big_res2": [5824, 5373, 6445, 7672], "zysr": "7.17", "id": "sz002690", "circulation_market_value": 60.69, "end": 19.02, "pb": 6.0, "mgxjll": "0.21", "pe": 35.55, "yylr": "2.91", "mgsy": "6.89", "total_value": 125.53, "big_res": [9147, 8592, 9809, 11146], "mgxj": "--", "range_percent": 2.42}
-
-
-{"tbmgsy": "0.75", "change_rate": 4.34, "jlr": "16.94", "big_res2": [445, 717], "zysr": "13.23", "id": "sz002872", "circulation_market_value": 19.25, "end": 36.67, "pb": 2.54, "mgxjll": "1.06", "pe": 34.3, "yylr": "15.33", "mgsy": "16.93", "total_value": 77.0, "big_res": [791, 1063], "mgxj": "378.99", "range_percent": 0.96}
-
-
-{"tbmgsy": "0.54", "change_rate": 1.45, "jlr": "--", "big_res2": [1753, 1953, 2380], "zysr": "9.98", "id": "sh600549", "circulation_market_value": 241.15, "end": 27.35, "pb": 4.31, "mgxjll": "0.13", "pe": 50.83, "yylr": "--", "mgsy": "122.18", "total_value": 295.56, "big_res": [686, 450, 1016], "mgxj": "--", "range_percent": 0.55}
-
-
-{"tbmgsy": "1.24", "change_rate": 3.43, "jlr": "157.15", "big_res2": [8786, 10397, 10558, 10558], "zysr": "12.84", "id": "sz002597", "circulation_market_value": 133.72, "end": 24.68, "pb": 4.55, "mgxjll": "0.43", "pe": 14.99, "yylr": "154.85", "mgsy": "158.92", "total_value": 134.85, "big_res": [12533, 13510, 13284, 13593], "mgxj": "--", "range_percent": 3.26}
-
-
-{"end": 13.6, "change_rate": 6.54, "big_res2": [-16988, -12102, 1832, 6118, 3990], "range_percent": 2.1, "big_res": [-16164, -11234, 3034, 5688, 3352]}
-
-
-{"tbmgsy": "0.44", "change_rate": 12.15, "jlr": "1.82", "big_res2": [1600, 1802, 1802, 1802], "zysr": "28.11", "id": "sh603106", "circulation_market_value": 21.82, "end": 31.01, "pb": 5.6, "mgxjll": "0.89", "pe": 60.65, "yylr": "2.38", "mgsy": "1.82", "total_value": 87.28, "big_res": [1016, 1218, 879, 577], "mgxj": "198.71", "range_percent": -0.51}
-
-
-{"tbmgsy": "0.35", "change_rate": 1.87, "jlr": "354.73", "big_res2": [5178, 4948, 5405], "zysr": "110.46", "id": "sz002384", "circulation_market_value": 181.45, "end": 33.97, "pb": 4.64, "mgxjll": "0.45", "pe": 97.1, "yylr": "506.87", "mgsy": "355.08", "total_value": 356.98, "big_res": [7713, 7483, 7884], "mgxj": "28.03", "range_percent": 1.92}
+{"tbmgsy": "0.27", "change_rate": 0.33, "jlr": "--", "vol": 10553, "big_res2": [-172, 48], "zysr": "2.48", "id": "sz000798", "circulation_market_value": 28.9, "end": 9.01, "pb": 3.68, "mgxjll": "0.36", "pe": 18.91, "yylr": "--", "res_vol_ratio": [-0.028586553732133403, -0.027835051546391754, -0.027113878288813016, 0.004832748981332322], "mgsy": "114.80", "total_value": 28.91, "big_res2_ratio": 1.0, "big_res": [-270, 51], "res2_vol_ratio": [-0.018210693488618316, -0.017731958762886597, -0.017272544687688293, 0.004548469629489245], "mgxj": "--", "range_percent": 0.22, "main_force": [214.91], "big_res_ratio": 1.0}
 
 
 serch over ==========
-begin ==========:2017-11-10 14:35:38
-{"end": 9.13, "change_rate": 4.3, "big_res2": [11412, 11637, 13191, 13575, 13239, 12275], "range_percent": 1.44, "big_res": [13362, 13718, 15272, 15697, 15236, 14272]}
+begin ==========:2017-11-13 14:36:00
+{"tbmgsy": "0.33", "change_rate": 0.33, "jlr": "--", "vol": 96839, "big_res2": [12091, 12302, 12302, 12696, 14011], "zysr": "134.54", "id": "sz000959", "circulation_market_value": 192.23, "end": 6.41, "pb": 1.34, "mgxjll": "0.19", "pe": 16.91, "yylr": "--", "res_vol_ratio": [0.13923934169819785, 0.13924780411706855, 0.14066462470770347, 0.1434186774334818, 0.15077603031836348], "mgsy": "135.27", "total_value": 342.75, "big_res2_ratio": 0.75, "big_res": [12107, 12318, 12813, 13427, 14601], "res2_vol_ratio": [0.13905533001345585, 0.13906693345089927, 0.13505472669586888, 0.13561060018585575, 0.14468344365389976], "mgxj": "--", "range_percent": 1.42, "main_force": [990.48], "big_res_ratio": 1.0}
 
 
-{"tbmgsy": "0.49", "change_rate": 2.05, "jlr": "730.46", "big_res2": [-7481, -3409, -1601, -5796, -1376, 1837, 7246], "zysr": "20.06", "id": "sh600782", "circulation_market_value": 171.39, "end": 6.09, "pb": 1.73, "mgxjll": "0.29", "pe": 10.7, "yylr": "--", "mgsy": "314.94", "total_value": 171.39, "big_res": [-13756, -10083, -7873, -12118, -7217, -3933, 2435], "mgxj": "--", "range_percent": -0.98}
+{"tbmgsy": "0.95", "change_rate": 1.13, "jlr": "23914.89", "vol": 230105, "big_res2": [13906, 15836, 15838, 16590, 19183], "zysr": "53.06", "id": "sz002092", "circulation_market_value": 283.58, "end": 14.08, "pb": 1.65, "mgxjll": "0.62", "pe": 9.42, "yylr": "--", "res_vol_ratio": [0.07761118872833368, 0.08155233883379766, 0.07759422429745251, 0.08029731896813913, 0.0855000977814476], "mgsy": "15514.54", "total_value": 299.22, "big_res2_ratio": 0.75, "big_res": [15721, 16744, 16186, 17425, 19674], "res2_vol_ratio": [0.06865092490657135, 0.07712988758791327, 0.07592594368114747, 0.076449499092191, 0.08336628930270963], "mgxj": "--", "range_percent": 2.25, "main_force": [923.28, 1075.47], "big_res_ratio": 0.75}
 
 
-{"tbmgsy": "0.50", "change_rate": 1.74, "jlr": "53.03", "big_res2": [3057, 5267, 2857], "zysr": "83.70", "id": "sh600856", "circulation_market_value": 84.2, "end": 10.64, "pb": 3.01, "mgxjll": "0.88", "pe": 28.81, "yylr": "52.58", "mgsy": "53.02", "total_value": 149.24, "big_res": [236, 2245, -341], "mgxj": "47.46", "range_percent": -2.56}
+{"tbmgsy": "0.41", "change_rate": 1.36, "jlr": "181.90", "vol": 158561, "big_res2": [4387, 4862, 9435, 9054, 11172], "zysr": "14.79", "id": "sh600308", "circulation_market_value": 81.38, "end": 6.71, "pb": 1.17, "mgxjll": "0.38", "pe": 14.91, "yylr": "--", "res_vol_ratio": [0.0021926535393142067, 0.0041842165522888285, 0.030170100880017172, 0.02405333056111443, 0.03847099854314743], "mgsy": "181.91", "total_value": 81.38, "big_res2_ratio": 0.75, "big_res": [307, 603, 4498, 3702, 6100], "res2_vol_ratio": [0.031332804810981836, 0.033737414390096664, 0.06328477141017386, 0.058827351404735294, 0.07045868782361363], "mgxj": "--", "range_percent": -1.32, "main_force": [603.07, 750.15, 827.09, 1010.54], "big_res_ratio": 0.75}
 
 
-{"tbmgsy": "0.42", "change_rate": 1.41, "jlr": "--", "big_res2": [610, 857], "zysr": "227.55", "id": "sz002645", "circulation_market_value": 32.1, "end": 21.44, "pb": 2.76, "mgxjll": "0.86", "pe": 44.54, "yylr": "--", "mgsy": "819.85", "total_value": 45.24, "big_res": [2, 384], "mgxj": "--", "range_percent": -0.74}
+{"tbmgsy": "0.64", "change_rate": 1.09, "jlr": "732.02", "vol": 327481, "big_res2": [-2518, 1128, 17308, 20923, 21691], "zysr": "27.56", "id": "sh601699", "circulation_market_value": 277.6, "end": 9.34, "pb": 1.35, "mgxjll": "0.35", "pe": 10.41, "yylr": "817.61", "res_vol_ratio": [-0.003886588307469221, 0.006982112524583133, 0.05936653357485861, 0.06816357288959292, 0.0688833856009967], "mgsy": "732.84", "total_value": 277.6, "big_res2_ratio": 1.0, "big_res": [-1115, 2084, 18779, 22161, 22558], "res2_vol_ratio": [-0.008777066688975335, 0.003779185665897205, 0.05471622360688284, 0.06435568952524491, 0.06623590376235568], "mgxj": "--", "range_percent": 2.19, "main_force": [1078.75, 1444.51, 1608.33, 1519.29], "big_res_ratio": 1.0}
 
 
-{"tbmgsy": "0.83", "change_rate": 1.21, "jlr": "199.11", "big_res2": [259, 3864, 5941, 7145, 7607, 7607], "zysr": "22.86", "id": "sz002001", "circulation_market_value": 279.31, "end": 25.96, "pb": 3.42, "mgxjll": "0.45", "pe": 22.53, "yylr": "213.11", "mgsy": "199.13", "total_value": 283.45, "big_res": [1562, 5342, 9041, 9962, 10926, 11145], "mgxj": "--", "range_percent": -0.27}
+{"tbmgsy": "0.39", "change_rate": 0.61, "jlr": "--", "vol": 102066, "big_res2": [-5708, -3422, -2474, 2144, 1660], "zysr": "3.69", "id": "sh601001", "circulation_market_value": 104.44, "end": 6.16, "pb": 1.83, "mgxjll": "0.94", "pe": 17.9, "yylr": "--", "res_vol_ratio": [-0.05948287119662212, -0.02608955033078013, -0.013800847991268208, 0.04060459708433951, 0.030989751729273214], "mgsy": "110.31", "total_value": 104.44, "big_res2_ratio": 0.75, "big_res": [-5466, -2449, -1315, 4086, 3163], "res2_vol_ratio": [-0.062116397510120575, -0.036455059710873663, -0.02596448511817304, 0.02130598535213507, 0.016263986048243292], "mgxj": "248.07", "range_percent": 0.82, "main_force": [323.33], "big_res_ratio": 0.75}
 
 
-{"tbmgsy": "0.40", "change_rate": 2.15, "jlr": "81.89", "big_res2": [1646, 2839, 3339], "zysr": "5.01", "id": "sz002088", "circulation_market_value": 29.28, "end": 14.38, "pb": 2.73, "mgxjll": "0.14", "pe": 27.32, "yylr": "73.01", "mgsy": "81.90", "total_value": 49.14, "big_res": [204, 1968, 2389], "mgxj": "--", "range_percent": 2.71}
-
-
-{"tbmgsy": "0.99", "change_rate": 1.36, "jlr": "40.97", "big_res2": [309, 109, 364], "zysr": "31.98", "id": "sz002271", "circulation_market_value": 210.75, "end": 37.01, "pb": 5.22, "mgxjll": "1.84", "pe": 27.69, "yylr": "50.61", "mgsy": "32.67", "total_value": 325.84, "big_res": [-1226, -2073, -1617], "mgxj": "--", "range_percent": 0.16}
-
-
-{"tbmgsy": "0.49", "change_rate": 2.72, "jlr": "46.57", "big_res2": [-467, 850, 1251, 3666, 7253, 8034, 9547], "zysr": "6.22", "id": "sz002016", "circulation_market_value": 63.64, "end": 10.02, "pb": 4.25, "mgxjll": "0.15", "pe": 20.16, "yylr": "64.48", "mgsy": "46.45", "total_value": 79.7, "big_res": [-3803, -1820, -1311, 1423, 4725, 5506, 7254], "mgxj": "--", "range_percent": 1.73}
-
-
-{"tbmgsy": "0.39", "change_rate": 1.69, "jlr": "6.88", "big_res2": [5824, 5373, 6445, 7672], "zysr": "7.17", "id": "sz002690", "circulation_market_value": 60.69, "end": 19.02, "pb": 6.0, "mgxjll": "0.21", "pe": 35.55, "yylr": "2.91", "mgsy": "6.89", "total_value": 125.53, "big_res": [9147, 8592, 9809, 11146], "mgxj": "--", "range_percent": 2.42}
-
-
-{"tbmgsy": "0.75", "change_rate": 4.37, "jlr": "16.94", "big_res2": [445, 717], "zysr": "13.23", "id": "sz002872", "circulation_market_value": 19.25, "end": 36.71, "pb": 2.54, "mgxjll": "1.06", "pe": 34.3, "yylr": "15.33", "mgsy": "16.93", "total_value": 77.0, "big_res": [791, 1063], "mgxj": "378.99", "range_percent": 1.07}
-
-
-{"tbmgsy": "0.54", "change_rate": 1.46, "jlr": "--", "big_res2": [1753, 1953, 2380, 1957], "zysr": "9.98", "id": "sh600549", "circulation_market_value": 241.15, "end": 27.4, "pb": 4.31, "mgxjll": "0.13", "pe": 50.83, "yylr": "--", "mgsy": "122.18", "total_value": 295.56, "big_res": [686, 450, 1016, 214], "mgxj": "--", "range_percent": 0.74}
-
-
-{"tbmgsy": "1.24", "change_rate": 3.44, "jlr": "157.15", "big_res2": [8786, 10397, 10558, 10558], "zysr": "12.84", "id": "sz002597", "circulation_market_value": 133.72, "end": 24.67, "pb": 4.55, "mgxjll": "0.43", "pe": 14.99, "yylr": "154.85", "mgsy": "158.92", "total_value": 134.85, "big_res": [12533, 13510, 13284, 13593], "mgxj": "--", "range_percent": 3.22}
-
-
-{"end": 13.57, "change_rate": 6.56, "big_res2": [-16988, -12102, 1832, 6118, 3990, 1440], "range_percent": 1.88, "big_res": [-16164, -11234, 3034, 5688, 3352, -248]}
-
-
-{"tbmgsy": "0.44", "change_rate": 12.2, "jlr": "1.82", "big_res2": [1600, 1802, 1802, 1802], "zysr": "28.11", "id": "sh603106", "circulation_market_value": 21.82, "end": 31.02, "pb": 5.6, "mgxjll": "0.89", "pe": 60.65, "yylr": "2.38", "mgsy": "1.82", "total_value": 87.28, "big_res": [1016, 1218, 879, 577], "mgxj": "198.71", "range_percent": -0.48}
-
-
-{"tbmgsy": "0.35", "change_rate": 1.87, "jlr": "354.73", "big_res2": [5178, 4948, 5405], "zysr": "110.46", "id": "sz002384", "circulation_market_value": 181.45, "end": 33.95, "pb": 4.64, "mgxjll": "0.45", "pe": 97.1, "yylr": "506.87", "mgsy": "355.08", "total_value": 356.98, "big_res": [7713, 7483, 7884], "mgxj": "28.03", "range_percent": 1.86}
+{"tbmgsy": "0.27", "change_rate": 0.38, "jlr": "--", "vol": 12253, "big_res2": [-172, 48, -452], "zysr": "2.48", "id": "sz000798", "circulation_market_value": 28.9, "end": 9.03, "pb": 3.68, "mgxjll": "0.36", "pe": 18.91, "yylr": "--", "res_vol_ratio": [-0.028586553732133403, -0.027835051546391754, -0.027113878288813016, 0.004832748981332322, -0.03941891781604505], "mgsy": "114.80", "total_value": 28.91, "big_res2_ratio": 0.75, "big_res": [-270, 51, -483], "res2_vol_ratio": [-0.018210693488618316, -0.017731958762886597, -0.017272544687688293, 0.004548469629489245, -0.03688892516118501], "mgxj": "--", "range_percent": 0.44, "main_force": [214.91], "big_res_ratio": 0.75}
 
 
 serch over ==========
-begin ==========:2017-11-10 14:37:15
-{"end": 9.12, "change_rate": 4.32, "big_res2": [11412, 11637, 13191, 13575, 13239, 12275, 11304], "range_percent": 1.33, "big_res": [13362, 13718, 15272, 15697, 15236, 14272, 12952]}
+begin ==========:2017-11-13 14:43:52
+{"tbmgsy": "0.95", "change_rate": 1.15, "jlr": "23914.89", "vol": 233780, "big_res2": [13906, 15836, 15838, 16590, 19183, 17713], "zysr": "53.06", "id": "sz002092", "circulation_market_value": 283.58, "end": 14.07, "pb": 1.65, "mgxjll": "0.62", "pe": 9.42, "yylr": "--", "res_vol_ratio": [0.07761118872833368, 0.08155233883379766, 0.07759422429745251, 0.08029731896813913, 0.0855000977814476, 0.07843699204380186], "mgsy": "15514.54", "total_value": 299.22, "big_res2_ratio": 0.6, "big_res": [15721, 16744, 16186, 17425, 19674, 18337], "res2_vol_ratio": [0.06865092490657135, 0.07712988758791327, 0.07592594368114747, 0.076449499092191, 0.08336628930270963, 0.07576781589528617], "mgxj": "--", "range_percent": 2.18, "main_force": [923.28, 1075.47, 865.79], "big_res_ratio": 0.6}
 
 
-{"tbmgsy": "0.49", "change_rate": 2.07, "jlr": "730.46", "big_res2": [-7481, -3409, -1601, -5796, -1376, 1837, 7246, 10197], "zysr": "20.06", "id": "sh600782", "circulation_market_value": 171.39, "end": 6.09, "pb": 1.73, "mgxjll": "0.29", "pe": 10.7, "yylr": "--", "mgsy": "314.94", "total_value": 171.39, "big_res": [-13756, -10083, -7873, -12118, -7217, -3933, 2435, 6035], "mgxj": "--", "range_percent": -0.98}
+{"tbmgsy": "0.22", "change_rate": 3.4, "jlr": "--", "vol": 204196, "big_res2": [-1001, -948, -1781, 3165], "zysr": "87.09", "id": "sz300102", "circulation_market_value": 54.62, "end": 9.34, "pb": 2.42, "mgxjll": "0.28", "pe": 34.76, "yylr": "--", "res_vol_ratio": [-0.0004084336019428193, -0.0004031467236156813, -0.005034307875894988, -0.006673314014478755, -0.006603967519786206, 0.02620521459773943], "mgsy": "153.67", "total_value": 64.04, "big_res2_ratio": 0.8, "big_res": [-74, -945, -1285, 5351], "res2_vol_ratio": [-0.005524892372226515, -0.005453376626206716, -0.005050289805659734, -0.009249161291662773, -0.009153047589680337, 0.015499813904288036], "mgxj": "--", "range_percent": 0.54, "main_force": [-1565.32], "big_res_ratio": 0.6}
 
 
-{"tbmgsy": "0.50", "change_rate": 1.74, "jlr": "53.03", "big_res2": [3057, 5267, 2857, 2853], "zysr": "83.70", "id": "sh600856", "circulation_market_value": 84.2, "end": 10.66, "pb": 3.01, "mgxjll": "0.88", "pe": 28.81, "yylr": "52.58", "mgsy": "53.02", "total_value": 149.24, "big_res": [236, 2245, -341, -609], "mgxj": "47.46", "range_percent": -2.38}
+{"tbmgsy": "0.39", "change_rate": 0.62, "jlr": "--", "vol": 103322, "big_res2": [-5708, -3422, -2474, 2144, 1660, 2310], "zysr": "3.69", "id": "sh601001", "circulation_market_value": 104.44, "end": 6.18, "pb": 1.83, "mgxjll": "0.94", "pe": 17.9, "yylr": "--", "res_vol_ratio": [-0.05948287119662212, -0.02608955033078013, -0.013800847991268208, 0.04060459708433951, 0.030989751729273214, 0.04065929811656762], "mgsy": "110.31", "total_value": 104.44, "big_res2_ratio": 0.8, "big_res": [-5466, -2449, -1315, 4086, 3163, 4201], "res2_vol_ratio": [-0.062116397510120575, -0.036455059710873663, -0.02596448511817304, 0.02130598535213507, 0.016263986048243292, 0.02235729079963609], "mgxj": "248.07", "range_percent": 1.15, "main_force": [323.33], "big_res_ratio": 0.8}
 
 
-{"tbmgsy": "0.42", "change_rate": 1.42, "jlr": "--", "big_res2": [610, 857], "zysr": "227.55", "id": "sz002645", "circulation_market_value": 32.1, "end": 21.42, "pb": 2.76, "mgxjll": "0.86", "pe": 44.54, "yylr": "--", "mgsy": "819.85", "total_value": 45.24, "big_res": [2, 384], "mgxj": "--", "range_percent": -0.83}
+{"tbmgsy": "0.27", "change_rate": 0.4, "jlr": "--", "vol": 12873, "big_res2": [-172, 48, -452], "zysr": "2.48", "id": "sz000798", "circulation_market_value": 28.9, "end": 9.04, "pb": 3.68, "mgxjll": "0.36", "pe": 18.91, "yylr": "--", "res_vol_ratio": [-0.028586553732133403, -0.027835051546391754, -0.027113878288813016, 0.004832748981332322, -0.03941891781604505, -0.037520391517128875], "mgsy": "114.80", "total_value": 28.91, "big_res2_ratio": 0.8, "big_res": [-270, 51, -483], "res2_vol_ratio": [-0.018210693488618316, -0.017731958762886597, -0.017272544687688293, 0.004548469629489245, -0.03688892516118501, -0.03511225044667133], "mgxj": "--", "range_percent": 0.56, "main_force": [214.91], "big_res_ratio": 0.8}
 
 
-{"tbmgsy": "0.83", "change_rate": 1.22, "jlr": "199.11", "big_res2": [259, 3864, 5941, 7145, 7607, 7607, 7924], "zysr": "22.86", "id": "sz002001", "circulation_market_value": 279.31, "end": 25.99, "pb": 3.42, "mgxjll": "0.45", "pe": 22.53, "yylr": "213.11", "mgsy": "199.13", "total_value": 283.45, "big_res": [1562, 5342, 9041, 9962, 10926, 11145, 11929], "mgxj": "--", "range_percent": -0.15}
+{"tbmgsy": "0.33", "change_rate": 0.35, "jlr": "--", "vol": 102997, "big_res2": [12091, 12302, 12302, 12696, 14011, 15307], "zysr": "134.54", "id": "sz000959", "circulation_market_value": 192.23, "end": 6.4, "pb": 1.34, "mgxjll": "0.19", "pe": 16.91, "yylr": "--", "res_vol_ratio": [0.13923934169819785, 0.13924780411706855, 0.14066462470770347, 0.1434186774334818, 0.15077603031836348, 0.1600143693505636], "mgsy": "135.27", "total_value": 342.75, "big_res2_ratio": 0.8, "big_res": [12107, 12318, 12813, 13427, 14601, 16481], "res2_vol_ratio": [0.13905533001345585, 0.13906693345089927, 0.13505472669586888, 0.13561060018585575, 0.14468344365389976, 0.14861597910618757], "mgxj": "--", "range_percent": 1.27, "main_force": [990.48, 1100.34], "big_res_ratio": 1.0}
 
 
-{"tbmgsy": "0.40", "change_rate": 2.19, "jlr": "81.89", "big_res2": [1646, 2839, 3339], "zysr": "5.01", "id": "sz002088", "circulation_market_value": 29.28, "end": 14.42, "pb": 2.73, "mgxjll": "0.14", "pe": 27.32, "yylr": "73.01", "mgsy": "81.90", "total_value": 49.14, "big_res": [204, 1968, 2389], "mgxj": "--", "range_percent": 3.0}
+{"tbmgsy": "0.41", "change_rate": 1.45, "jlr": "181.90", "vol": 169651, "big_res2": [4387, 4862, 9435, 9054, 11172, 16797], "zysr": "14.79", "id": "sh600308", "circulation_market_value": 81.38, "end": 6.75, "pb": 1.17, "mgxjll": "0.38", "pe": 14.91, "yylr": "--", "res_vol_ratio": [0.0021926535393142067, 0.0041842165522888285, 0.030170100880017172, 0.02405333056111443, 0.03847099854314743, 0.07126394775156056], "mgsy": "181.91", "total_value": 81.38, "big_res2_ratio": 0.8, "big_res": [307, 603, 4498, 3702, 6100, 12090], "res2_vol_ratio": [0.031332804810981836, 0.033737414390096664, 0.06328477141017386, 0.058827351404735294, 0.07045868782361363, 0.0990091422980118], "mgxj": "--", "range_percent": -0.74, "main_force": [603.07, 750.15, 827.09, 1010.54, 1260.14], "big_res_ratio": 0.8}
 
 
-{"tbmgsy": "0.99", "change_rate": 1.38, "jlr": "40.97", "big_res2": [309, 109, 364], "zysr": "31.98", "id": "sz002271", "circulation_market_value": 210.75, "end": 37.09, "pb": 5.22, "mgxjll": "1.84", "pe": 27.69, "yylr": "50.61", "mgsy": "32.67", "total_value": 325.84, "big_res": [-1226, -2073, -1617], "mgxj": "--", "range_percent": 0.38}
+{"tbmgsy": "0.68", "change_rate": 0.3, "jlr": "33.80", "vol": 9785, "big_res2": [-306, 277], "zysr": "7.52", "id": "sz002394", "circulation_market_value": 44.48, "end": 13.71, "pb": 1.5, "mgxjll": "0.33", "pe": 11.78, "yylr": "25.21", "res_vol_ratio": [-0.012643129770992367, -0.012277044243687746, -0.012097694590276193, -0.012030416524798547, -0.01174645390070922, 0.0514052120592744], "mgsy": "33.78", "total_value": 44.48, "big_res2_ratio": 1.0, "big_res": [-106, 503], "res2_vol_ratio": [-0.03649809160305344, -0.035441278665740095, -0.03492353343985392, -0.03472931562819203, -0.0339095744680851, 0.028308635666836994], "mgxj": "--", "range_percent": -0.15, "main_force": [-67.08], "big_res_ratio": 1.0}
 
 
-{"tbmgsy": "0.49", "change_rate": 2.73, "jlr": "46.57", "big_res2": [-467, 850, 1251, 3666, 7253, 8034, 9547], "zysr": "6.22", "id": "sz002016", "circulation_market_value": 63.64, "end": 9.99, "pb": 4.25, "mgxjll": "0.15", "pe": 20.16, "yylr": "64.48", "mgsy": "46.45", "total_value": 79.7, "big_res": [-3803, -1820, -1311, 1423, 4725, 5506, 7254], "mgxj": "--", "range_percent": 1.42}
-
-
-{"tbmgsy": "0.39", "change_rate": 1.73, "jlr": "6.88", "big_res2": [5824, 5373, 6445, 7672, 7727], "zysr": "7.17", "id": "sz002690", "circulation_market_value": 60.69, "end": 19.03, "pb": 6.0, "mgxjll": "0.21", "pe": 35.55, "yylr": "2.91", "mgsy": "6.89", "total_value": 125.53, "big_res": [9147, 8592, 9809, 11146, 11360], "mgxj": "--", "range_percent": 2.48}
-
-
-{"tbmgsy": "0.75", "change_rate": 4.38, "jlr": "16.94", "big_res2": [445, 717], "zysr": "13.23", "id": "sz002872", "circulation_market_value": 19.25, "end": 36.69, "pb": 2.54, "mgxjll": "1.06", "pe": 34.3, "yylr": "15.33", "mgsy": "16.93", "total_value": 77.0, "big_res": [791, 1063], "mgxj": "378.99", "range_percent": 1.02}
-
-
-{"tbmgsy": "0.54", "change_rate": 1.46, "jlr": "--", "big_res2": [1753, 1953, 2380, 1957], "zysr": "9.98", "id": "sh600549", "circulation_market_value": 241.15, "end": 27.38, "pb": 4.31, "mgxjll": "0.13", "pe": 50.83, "yylr": "--", "mgsy": "122.18", "total_value": 295.56, "big_res": [686, 450, 1016, 214], "mgxj": "--", "range_percent": 0.66}
-
-
-{"tbmgsy": "1.24", "change_rate": 3.45, "jlr": "157.15", "big_res2": [8786, 10397, 10558, 10558], "zysr": "12.84", "id": "sz002597", "circulation_market_value": 133.72, "end": 24.67, "pb": 4.55, "mgxjll": "0.43", "pe": 14.99, "yylr": "154.85", "mgsy": "158.92", "total_value": 134.85, "big_res": [12533, 13510, 13284, 13593], "mgxj": "--", "range_percent": 3.22}
-
-
-{"end": 13.61, "change_rate": 6.58, "big_res2": [-16988, -12102, 1832, 6118, 3990, 1440, 4299], "range_percent": 2.18, "big_res": [-16164, -11234, 3034, 5688, 3352, -248, 2698]}
-
-
-{"tbmgsy": "0.44", "change_rate": 12.26, "jlr": "1.82", "big_res2": [1600, 1802, 1802, 1802], "zysr": "28.11", "id": "sh603106", "circulation_market_value": 21.82, "end": 31.01, "pb": 5.6, "mgxjll": "0.89", "pe": 60.65, "yylr": "2.38", "mgsy": "1.82", "total_value": 87.28, "big_res": [1016, 1218, 879, 577], "mgxj": "198.71", "range_percent": -0.51}
-
-
-{"tbmgsy": "0.35", "change_rate": 1.88, "jlr": "354.73", "big_res2": [5178, 4948, 5405], "zysr": "110.46", "id": "sz002384", "circulation_market_value": 181.45, "end": 34.01, "pb": 4.64, "mgxjll": "0.45", "pe": 97.1, "yylr": "506.87", "mgsy": "355.08", "total_value": 356.98, "big_res": [7713, 7483, 7884], "mgxj": "28.03", "range_percent": 2.04}
+{"tbmgsy": "0.64", "change_rate": 1.12, "jlr": "732.02", "vol": 334297, "big_res2": [-2518, 1128, 17308, 20923, 21691, 26759], "zysr": "27.56", "id": "sh601699", "circulation_market_value": 277.6, "end": 9.34, "pb": 1.35, "mgxjll": "0.35", "pe": 10.41, "yylr": "817.61", "res_vol_ratio": [-0.003886588307469221, 0.006982112524583133, 0.05936653357485861, 0.06816357288959292, 0.0688833856009967, 0.0857710359351116], "mgsy": "732.84", "total_value": 277.6, "big_res2_ratio": 1.0, "big_res": [-1115, 2084, 18779, 22161, 22558, 28673], "res2_vol_ratio": [-0.008777066688975335, 0.003779185665897205, 0.05471622360688284, 0.06435568952524491, 0.06623590376235568, 0.08004558820450079], "mgxj": "--", "range_percent": 2.19, "main_force": [1078.75, 1444.51, 1608.33, 1519.29, 1784.33], "big_res_ratio": 1.0}
 
 
 serch over ==========
-begin ==========:2017-11-10 14:38:34
-{"end": 9.11, "change_rate": 4.32, "big_res2": [11412, 11637, 13191, 13575, 13239, 12275, 11304], "range_percent": 1.22, "big_res": [13362, 13718, 15272, 15697, 15236, 14272, 12952]}
+begin ==========:2017-11-13 14:50:05
+{"tbmgsy": "0.95", "change_rate": 1.21, "jlr": "23914.89", "vol": 245274, "big_res2": [13906, 15836, 15838, 16590, 19183, 17713, 21380], "zysr": "53.06", "id": "sz002092", "circulation_market_value": 283.58, "end": 14.13, "pb": 1.65, "mgxjll": "0.62", "pe": 9.42, "yylr": "--", "res_vol_ratio": [0.07761118872833368, 0.08155233883379766, 0.07759422429745251, 0.08029731896813913, 0.0855000977814476, 0.07843699204380186, 0.09314073240539152], "mgsy": "15514.54", "total_value": 299.22, "big_res2_ratio": 0.6666666666666666, "big_res": [15721, 16744, 16186, 17425, 19674, 18337, 22845], "res2_vol_ratio": [0.06865092490657135, 0.07712988758791327, 0.07592594368114747, 0.076449499092191, 0.08336628930270963, 0.07576781589528617, 0.08716782047832221], "mgxj": "--", "range_percent": 2.61, "main_force": [923.28, 1075.47, 865.79, 1006.09], "big_res_ratio": 0.6666666666666666}
 
 
-{"tbmgsy": "0.49", "change_rate": 2.08, "jlr": "730.46", "big_res2": [-7481, -3409, -1601, -5796, -1376, 1837, 7246, 10197, 10248], "zysr": "20.06", "id": "sh600782", "circulation_market_value": 171.39, "end": 6.1, "pb": 1.73, "mgxjll": "0.29", "pe": 10.7, "yylr": "--", "mgsy": "314.94", "total_value": 171.39, "big_res": [-13756, -10083, -7873, -12118, -7217, -3933, 2435, 6035, 6841], "mgxj": "--", "range_percent": -0.81}
+{"tbmgsy": "0.22", "change_rate": 3.48, "jlr": "--", "vol": 208926, "big_res2": [-1001, -948, -1781, 3165, 3701], "zysr": "87.09", "id": "sz300102", "circulation_market_value": 54.62, "end": 9.34, "pb": 2.42, "mgxjll": "0.28", "pe": 34.76, "yylr": "--", "res_vol_ratio": [-0.0004084336019428193, -0.0004031467236156813, -0.005034307875894988, -0.006673314014478755, -0.006603967519786206, 0.02620521459773943, 0.027612647540277417], "mgsy": "153.67", "total_value": 64.04, "big_res2_ratio": 0.8333333333333334, "big_res": [-74, -945, -1285, 5351, 5769], "res2_vol_ratio": [-0.005524892372226515, -0.005453376626206716, -0.005050289805659734, -0.009249161291662773, -0.009153047589680337, 0.015499813904288036, 0.017714406057647205], "mgxj": "--", "range_percent": 0.54, "main_force": [-1565.32], "big_res_ratio": 0.6666666666666666}
 
 
-{"tbmgsy": "0.50", "change_rate": 1.75, "jlr": "53.03", "big_res2": [3057, 5267, 2857, 2853, 3814], "zysr": "83.70", "id": "sh600856", "circulation_market_value": 84.2, "end": 10.66, "pb": 3.01, "mgxjll": "0.88", "pe": 28.81, "yylr": "52.58", "mgsy": "53.02", "total_value": 149.24, "big_res": [236, 2245, -341, -609, 247], "mgxj": "47.46", "range_percent": -2.38}
+{"tbmgsy": "0.39", "change_rate": 0.66, "jlr": "--", "vol": 109654, "big_res2": [-5708, -3422, -2474, 2144, 1660, 2310], "zysr": "3.69", "id": "sh601001", "circulation_market_value": 104.44, "end": 6.18, "pb": 1.83, "mgxjll": "0.94", "pe": 17.9, "yylr": "--", "res_vol_ratio": [-0.05948287119662212, -0.02608955033078013, -0.013800847991268208, 0.04060459708433951, 0.030989751729273214, 0.04065929811656762, 0.0383114159082204], "mgsy": "110.31", "total_value": 104.44, "big_res2_ratio": 0.6666666666666666, "big_res": [-5466, -2449, -1315, 4086, 3163, 4201], "res2_vol_ratio": [-0.062116397510120575, -0.036455059710873663, -0.02596448511817304, 0.02130598535213507, 0.016263986048243292, 0.02235729079963609, 0.021066262972622977], "mgxj": "248.07", "range_percent": 1.15, "main_force": [323.33, 436.51], "big_res_ratio": 0.6666666666666666}
 
 
-{"tbmgsy": "0.42", "change_rate": 1.43, "jlr": "--", "big_res2": [610, 857], "zysr": "227.55", "id": "sz002645", "circulation_market_value": 32.1, "end": 21.47, "pb": 2.76, "mgxjll": "0.86", "pe": 44.54, "yylr": "--", "mgsy": "819.85", "total_value": 45.24, "big_res": [2, 384], "mgxj": "--", "range_percent": -0.6}
+{"tbmgsy": "0.27", "change_rate": 0.43, "jlr": "--", "vol": 13667, "big_res2": [-172, 48, -452], "zysr": "2.48", "id": "sz000798", "circulation_market_value": 28.9, "end": 9.03, "pb": 3.68, "mgxjll": "0.36", "pe": 18.91, "yylr": "--", "res_vol_ratio": [-0.028586553732133403, -0.027835051546391754, -0.027113878288813016, 0.004832748981332322, -0.03941891781604505, -0.037520391517128875, -0.03534060144874515], "mgsy": "114.80", "total_value": 28.91, "big_res2_ratio": 0.8333333333333334, "big_res": [-270, 51, -483], "res2_vol_ratio": [-0.018210693488618316, -0.017731958762886597, -0.017272544687688293, 0.004548469629489245, -0.03688892516118501, -0.03511225044667133, -0.033072364088680764], "mgxj": "--", "range_percent": 0.44, "main_force": [214.91], "big_res_ratio": 0.8333333333333334}
 
 
-{"tbmgsy": "0.83", "change_rate": 1.23, "jlr": "199.11", "big_res2": [259, 3864, 5941, 7145, 7607, 7607, 7924, 8580], "zysr": "22.86", "id": "sz002001", "circulation_market_value": 279.31, "end": 25.99, "pb": 3.42, "mgxjll": "0.45", "pe": 22.53, "yylr": "213.11", "mgsy": "199.13", "total_value": 283.45, "big_res": [1562, 5342, 9041, 9962, 10926, 11145, 11929, 12681], "mgxj": "--", "range_percent": -0.15}
+{"tbmgsy": "0.33", "change_rate": 0.36, "jlr": "--", "vol": 108249, "big_res2": [12091, 12302, 12302, 12696, 14011, 15307, 16045], "zysr": "134.54", "id": "sz000959", "circulation_market_value": 192.23, "end": 6.4, "pb": 1.34, "mgxjll": "0.19", "pe": 16.91, "yylr": "--", "res_vol_ratio": [0.13923934169819785, 0.13924780411706855, 0.14066462470770347, 0.1434186774334818, 0.15077603031836348, 0.1600143693505636, 0.15894835056212991], "mgsy": "135.27", "total_value": 342.75, "big_res2_ratio": 0.6666666666666666, "big_res": [12107, 12318, 12813, 13427, 14601, 16481, 17206], "res2_vol_ratio": [0.13905533001345585, 0.13906693345089927, 0.13505472669586888, 0.13561060018585575, 0.14468344365389976, 0.14861597910618757, 0.1482230782732404], "mgxj": "--", "range_percent": 1.27, "main_force": [990.48, 1100.34], "big_res_ratio": 0.8333333333333334}
 
 
-{"tbmgsy": "0.40", "change_rate": 2.21, "jlr": "81.89", "big_res2": [1646, 2839, 3339, 3139], "zysr": "5.01", "id": "sz002088", "circulation_market_value": 29.28, "end": 14.4, "pb": 2.73, "mgxjll": "0.14", "pe": 27.32, "yylr": "73.01", "mgsy": "81.90", "total_value": 49.14, "big_res": [204, 1968, 2389, 2083], "mgxj": "--", "range_percent": 2.86}
+{"tbmgsy": "0.41", "change_rate": 1.51, "jlr": "181.90", "vol": 176643, "big_res2": [4387, 4862, 9435, 9054, 11172, 16797, 16358], "zysr": "14.79", "id": "sh600308", "circulation_market_value": 81.38, "end": 6.78, "pb": 1.17, "mgxjll": "0.38", "pe": 14.91, "yylr": "--", "res_vol_ratio": [0.0021926535393142067, 0.0041842165522888285, 0.030170100880017172, 0.02405333056111443, 0.03847099854314743, 0.07126394775156056, 0.07028300017549521], "mgsy": "181.91", "total_value": 81.38, "big_res2_ratio": 0.6666666666666666, "big_res": [307, 603, 4498, 3702, 6100, 12090, 12415], "res2_vol_ratio": [0.031332804810981836, 0.033737414390096664, 0.06328477141017386, 0.058827351404735294, 0.07045868782361363, 0.0990091422980118, 0.09260485838668954], "mgxj": "--", "range_percent": -0.29, "main_force": [603.07, 750.15, 827.09, 1010.54, 1260.14], "big_res_ratio": 0.6666666666666666}
 
 
-{"tbmgsy": "0.99", "change_rate": 1.38, "jlr": "40.97", "big_res2": [309, 109, 364, 164], "zysr": "31.98", "id": "sz002271", "circulation_market_value": 210.75, "end": 37.1, "pb": 5.22, "mgxjll": "1.84", "pe": 27.69, "yylr": "50.61", "mgsy": "32.67", "total_value": 325.84, "big_res": [-1226, -2073, -1617, -2013], "mgxj": "--", "range_percent": 0.41}
-
-
-{"tbmgsy": "0.49", "change_rate": 2.74, "jlr": "46.57", "big_res2": [-467, 850, 1251, 3666, 7253, 8034, 9547, 9427], "zysr": "6.22", "id": "sz002016", "circulation_market_value": 63.64, "end": 9.97, "pb": 4.25, "mgxjll": "0.15", "pe": 20.16, "yylr": "64.48", "mgsy": "46.45", "total_value": 79.7, "big_res": [-3803, -1820, -1311, 1423, 4725, 5506, 7254, 6834], "mgxj": "--", "range_percent": 1.22}
-
-
-{"tbmgsy": "0.55", "change_rate": 2.71, "jlr": "12.09", "big_res2": [7661, 6624, 6842, 7054, 7104, 8004], "zysr": "17.89", "id": "sh600993", "circulation_market_value": 96.98, "end": 22.7, "pb": 4.6, "mgxjll": "0.18", "pe": 34.81, "yylr": "10.09", "mgsy": "12.08", "total_value": 97.16, "big_res": [4628, 3518, 3792, 4161, 3921, 4821], "mgxj": "--", "range_percent": 0.71}
-
-
-{"tbmgsy": "0.39", "change_rate": 1.73, "jlr": "6.88", "big_res2": [5824, 5373, 6445, 7672, 7727], "zysr": "7.17", "id": "sz002690", "circulation_market_value": 60.69, "end": 19.03, "pb": 6.0, "mgxjll": "0.21", "pe": 35.55, "yylr": "2.91", "mgsy": "6.89", "total_value": 125.53, "big_res": [9147, 8592, 9809, 11146, 11360], "mgxj": "--", "range_percent": 2.48}
-
-
-{"tbmgsy": "0.75", "change_rate": 4.39, "jlr": "16.94", "big_res2": [445, 717], "zysr": "13.23", "id": "sz002872", "circulation_market_value": 19.25, "end": 36.68, "pb": 2.54, "mgxjll": "1.06", "pe": 34.3, "yylr": "15.33", "mgsy": "16.93", "total_value": 77.0, "big_res": [791, 1063], "mgxj": "378.99", "range_percent": 0.99}
-
-
-{"tbmgsy": "0.54", "change_rate": 1.47, "jlr": "--", "big_res2": [1753, 1953, 2380, 1957], "zysr": "9.98", "id": "sh600549", "circulation_market_value": 241.15, "end": 27.39, "pb": 4.31, "mgxjll": "0.13", "pe": 50.83, "yylr": "--", "mgsy": "122.18", "total_value": 295.56, "big_res": [686, 450, 1016, 214], "mgxj": "--", "range_percent": 0.7}
-
-
-{"tbmgsy": "1.24", "change_rate": 3.47, "jlr": "157.15", "big_res2": [8786, 10397, 10558, 10558, 10327], "zysr": "12.84", "id": "sz002597", "circulation_market_value": 133.72, "end": 24.6, "pb": 4.55, "mgxjll": "0.43", "pe": 14.99, "yylr": "154.85", "mgsy": "158.92", "total_value": 134.85, "big_res": [12533, 13510, 13284, 13593, 12779], "mgxj": "--", "range_percent": 2.93}
-
-
-{"end": 13.58, "change_rate": 6.6, "big_res2": [-16988, -12102, 1832, 6118, 3990, 1440, 4299, 3153], "range_percent": 1.95, "big_res": [-16164, -11234, 3034, 5688, 3352, -248, 2698, 1519]}
-
-
-{"tbmgsy": "0.44", "change_rate": 12.28, "jlr": "1.82", "big_res2": [1600, 1802, 1802, 1802], "zysr": "28.11", "id": "sh603106", "circulation_market_value": 21.82, "end": 31.02, "pb": 5.6, "mgxjll": "0.89", "pe": 60.65, "yylr": "2.38", "mgsy": "1.82", "total_value": 87.28, "big_res": [1016, 1218, 879, 577], "mgxj": "198.71", "range_percent": -0.48}
-
-
-{"tbmgsy": "0.35", "change_rate": 1.88, "jlr": "354.73", "big_res2": [5178, 4948, 5405], "zysr": "110.46", "id": "sz002384", "circulation_market_value": 181.45, "end": 33.96, "pb": 4.64, "mgxjll": "0.45", "pe": 97.1, "yylr": "506.87", "mgsy": "355.08", "total_value": 356.98, "big_res": [7713, 7483, 7884], "mgxj": "28.03", "range_percent": 1.89}
-
-
-serch over ==========
-begin ==========:2017-11-10 14:39:51
-{"end": 9.1, "change_rate": 4.36, "big_res2": [11412, 11637, 13191, 13575, 13239, 12275, 11304, 9476], "range_percent": 1.11, "big_res": [13362, 13718, 15272, 15697, 15236, 14272, 12952, 11014]}
-
-
-{"tbmgsy": "0.49", "change_rate": 2.1, "jlr": "730.46", "big_res2": [-7481, -3409, -1601, -5796, -1376, 1837, 7246, 10197, 10248, 14660], "zysr": "20.06", "id": "sh600782", "circulation_market_value": 171.39, "end": 6.14, "pb": 1.73, "mgxjll": "0.29", "pe": 10.7, "yylr": "--", "mgsy": "314.94", "total_value": 171.39, "big_res": [-13756, -10083, -7873, -12118, -7217, -3933, 2435, 6035, 6841, 11344], "mgxj": "--", "range_percent": -0.16}
-
-
-{"tbmgsy": "0.50", "change_rate": 1.75, "jlr": "53.03", "big_res2": [3057, 5267, 2857, 2853, 3814], "zysr": "83.70", "id": "sh600856", "circulation_market_value": 84.2, "end": 10.65, "pb": 3.01, "mgxjll": "0.88", "pe": 28.81, "yylr": "52.58", "mgsy": "53.02", "total_value": 149.24, "big_res": [236, 2245, -341, -609, 247], "mgxj": "47.46", "range_percent": -2.47}
-
-
-{"tbmgsy": "0.42", "change_rate": 1.43, "jlr": "--", "big_res2": [610, 857], "zysr": "227.55", "id": "sz002645", "circulation_market_value": 32.1, "end": 21.44, "pb": 2.76, "mgxjll": "0.86", "pe": 44.54, "yylr": "--", "mgsy": "819.85", "total_value": 45.24, "big_res": [2, 384], "mgxj": "--", "range_percent": -0.74}
-
-
-{"tbmgsy": "0.83", "change_rate": 1.23, "jlr": "199.11", "big_res2": [259, 3864, 5941, 7145, 7607, 7607, 7924, 8580, 8323], "zysr": "22.86", "id": "sz002001", "circulation_market_value": 279.31, "end": 25.99, "pb": 3.42, "mgxjll": "0.45", "pe": 22.53, "yylr": "213.11", "mgsy": "199.13", "total_value": 283.45, "big_res": [1562, 5342, 9041, 9962, 10926, 11145, 11929, 12681, 12162], "mgxj": "--", "range_percent": -0.15}
-
-
-{"tbmgsy": "0.40", "change_rate": 2.25, "jlr": "81.89", "big_res2": [1646, 2839, 3339, 3139, 3341], "zysr": "5.01", "id": "sz002088", "circulation_market_value": 29.28, "end": 14.41, "pb": 2.73, "mgxjll": "0.14", "pe": 27.32, "yylr": "73.01", "mgsy": "81.90", "total_value": 49.14, "big_res": [204, 1968, 2389, 2083, 2293], "mgxj": "--", "range_percent": 2.93}
-
-
-{"tbmgsy": "0.99", "change_rate": 1.39, "jlr": "40.97", "big_res2": [309, 109, 364, 164], "zysr": "31.98", "id": "sz002271", "circulation_market_value": 210.75, "end": 37.18, "pb": 5.22, "mgxjll": "1.84", "pe": 27.69, "yylr": "50.61", "mgsy": "32.67", "total_value": 325.84, "big_res": [-1226, -2073, -1617, -2013], "mgxj": "--", "range_percent": 0.62}
-
-
-{"tbmgsy": "0.41", "change_rate": 24.27, "jlr": "1.44", "big_res2": [393, 173, 607, 569, 910, 2532], "zysr": "2.59", "id": "sh603880", "circulation_market_value": 8.44, "end": 34.6, "pb": 6.43, "mgxjll": "1.64", "pe": 64.95, "yylr": "1.04", "mgsy": "1.44", "total_value": 33.76, "big_res": [-988, -1208, -917, -591, -250, 2099], "mgxj": "194.48", "range_percent": 2.49}
-
-
-{"tbmgsy": "0.49", "change_rate": 2.75, "jlr": "46.57", "big_res2": [-467, 850, 1251, 3666, 7253, 8034, 9547, 9427, 9427], "zysr": "6.22", "id": "sz002016", "circulation_market_value": 63.64, "end": 10.0, "pb": 4.25, "mgxjll": "0.15", "pe": 20.16, "yylr": "64.48", "mgsy": "46.45", "total_value": 79.7, "big_res": [-3803, -1820, -1311, 1423, 4725, 5506, 7254, 6834, 7213], "mgxj": "--", "range_percent": 1.52}
-
-
-{"tbmgsy": "0.55", "change_rate": 2.72, "jlr": "12.09", "big_res2": [7661, 6624, 6842, 7054, 7104, 8004], "zysr": "17.89", "id": "sh600993", "circulation_market_value": 96.98, "end": 22.71, "pb": 4.6, "mgxjll": "0.18", "pe": 34.81, "yylr": "10.09", "mgsy": "12.08", "total_value": 97.16, "big_res": [4628, 3518, 3792, 4161, 3921, 4821], "mgxj": "--", "range_percent": 0.75}
-
-
-{"tbmgsy": "0.39", "change_rate": 1.74, "jlr": "6.88", "big_res2": [5824, 5373, 6445, 7672, 7727], "zysr": "7.17", "id": "sz002690", "circulation_market_value": 60.69, "end": 19.02, "pb": 6.0, "mgxjll": "0.21", "pe": 35.55, "yylr": "2.91", "mgsy": "6.89", "total_value": 125.53, "big_res": [9147, 8592, 9809, 11146, 11360], "mgxj": "--", "range_percent": 2.42}
-
-
-{"tbmgsy": "0.75", "change_rate": 4.45, "jlr": "16.94", "big_res2": [445, 717, 717], "zysr": "13.23", "id": "sz002872", "circulation_market_value": 19.25, "end": 36.73, "pb": 2.54, "mgxjll": "1.06", "pe": 34.3, "yylr": "15.33", "mgsy": "16.93", "total_value": 77.0, "big_res": [791, 1063, 1326], "mgxj": "378.99", "range_percent": 1.13}
-
-
-{"tbmgsy": "0.54", "change_rate": 1.47, "jlr": "--", "big_res2": [1753, 1953, 2380, 1957], "zysr": "9.98", "id": "sh600549", "circulation_market_value": 241.15, "end": 27.38, "pb": 4.31, "mgxjll": "0.13", "pe": 50.83, "yylr": "--", "mgsy": "122.18", "total_value": 295.56, "big_res": [686, 450, 1016, 214], "mgxj": "--", "range_percent": 0.66}
-
-
-{"tbmgsy": "1.24", "change_rate": 3.5, "jlr": "157.15", "big_res2": [8786, 10397, 10558, 10558, 10327, 10560], "zysr": "12.84", "id": "sz002597", "circulation_market_value": 133.72, "end": 24.62, "pb": 4.55, "mgxjll": "0.43", "pe": 14.99, "yylr": "154.85", "mgsy": "158.92", "total_value": 134.85, "big_res": [12533, 13510, 13284, 13593, 12779, 13012], "mgxj": "--", "range_percent": 3.01}
-
-
-{"end": 13.61, "change_rate": 6.63, "big_res2": [-16988, -12102, 1832, 6118, 3990, 1440, 4299, 3153, 3332], "range_percent": 2.18, "big_res": [-16164, -11234, 3034, 5688, 3352, -248, 2698, 1519, 2328]}
-
-
-{"tbmgsy": "0.44", "change_rate": 12.32, "jlr": "1.82", "big_res2": [1600, 1802, 1802, 1802], "zysr": "28.11", "id": "sh603106", "circulation_market_value": 21.82, "end": 31.02, "pb": 5.6, "mgxjll": "0.89", "pe": 60.65, "yylr": "2.38", "mgsy": "1.82", "total_value": 87.28, "big_res": [1016, 1218, 879, 577], "mgxj": "198.71", "range_percent": -0.48}
-
-
-{"tbmgsy": "0.35", "change_rate": 1.88, "jlr": "354.73", "big_res2": [5178, 4948, 5405], "zysr": "110.46", "id": "sz002384", "circulation_market_value": 181.45, "end": 33.96, "pb": 4.64, "mgxjll": "0.45", "pe": 97.1, "yylr": "506.87", "mgsy": "355.08", "total_value": 356.98, "big_res": [7713, 7483, 7884], "mgxj": "28.03", "range_percent": 1.89}
-
-
-serch over ==========
-begin ==========:2017-11-10 14:41:34
-{"end": 9.11, "change_rate": 4.38, "big_res2": [11412, 11637, 13191, 13575, 13239, 12275, 11304, 9476], "range_percent": 1.22, "big_res": [13362, 13718, 15272, 15697, 15236, 14272, 12952, 11014]}
-
-
-{"tbmgsy": "0.49", "change_rate": 2.12, "jlr": "730.46", "big_res2": [-7481, -3409, -1601, -5796, -1376, 1837, 7246, 10197, 10248, 14660, 16804], "zysr": "20.06", "id": "sh600782", "circulation_market_value": 171.39, "end": 6.14, "pb": 1.73, "mgxjll": "0.29", "pe": 10.7, "yylr": "--", "mgsy": "314.94", "total_value": 171.39, "big_res": [-13756, -10083, -7873, -12118, -7217, -3933, 2435, 6035, 6841, 11344, 13496], "mgxj": "--", "range_percent": -0.16}
-
-
-{"tbmgsy": "0.50", "change_rate": 1.75, "jlr": "53.03", "big_res2": [3057, 5267, 2857, 2853, 3814], "zysr": "83.70", "id": "sh600856", "circulation_market_value": 84.2, "end": 10.65, "pb": 3.01, "mgxjll": "0.88", "pe": 28.81, "yylr": "52.58", "mgsy": "53.02", "total_value": 149.24, "big_res": [236, 2245, -341, -609, 247], "mgxj": "47.46", "range_percent": -2.47}
-
-
-{"tbmgsy": "0.42", "change_rate": 1.44, "jlr": "--", "big_res2": [610, 857], "zysr": "227.55", "id": "sz002645", "circulation_market_value": 32.1, "end": 21.44, "pb": 2.76, "mgxjll": "0.86", "pe": 44.54, "yylr": "--", "mgsy": "819.85", "total_value": 45.24, "big_res": [2, 384], "mgxj": "--", "range_percent": -0.74}
-
-
-{"tbmgsy": "0.83", "change_rate": 1.25, "jlr": "199.11", "big_res2": [259, 3864, 5941, 7145, 7607, 7607, 7924, 8580, 8323, 6590], "zysr": "22.86", "id": "sz002001", "circulation_market_value": 279.31, "end": 25.92, "pb": 3.42, "mgxjll": "0.45", "pe": 22.53, "yylr": "213.11", "mgsy": "199.13", "total_value": 283.45, "big_res": [1562, 5342, 9041, 9962, 10926, 11145, 11929, 12681, 12162, 10694], "mgxj": "--", "range_percent": -0.42}
-
-
-{"tbmgsy": "0.40", "change_rate": 2.28, "jlr": "81.89", "big_res2": [1646, 2839, 3339, 3139, 3341, 3631], "zysr": "5.01", "id": "sz002088", "circulation_market_value": 29.28, "end": 14.43, "pb": 2.73, "mgxjll": "0.14", "pe": 27.32, "yylr": "73.01", "mgsy": "81.90", "total_value": 49.14, "big_res": [204, 1968, 2389, 2083, 2293, 2583], "mgxj": "--", "range_percent": 3.07}
-
-
-{"tbmgsy": "0.99", "change_rate": 1.4, "jlr": "40.97", "big_res2": [309, 109, 364, 164], "zysr": "31.98", "id": "sz002271", "circulation_market_value": 210.75, "end": 37.1, "pb": 5.22, "mgxjll": "1.84", "pe": 27.69, "yylr": "50.61", "mgsy": "32.67", "total_value": 325.84, "big_res": [-1226, -2073, -1617, -2013], "mgxj": "--", "range_percent": 0.41}
-
-
-{"tbmgsy": "0.41", "change_rate": 25.55, "jlr": "1.44", "big_res2": [393, 173, 607, 569, 910, 2532, 2407], "zysr": "2.59", "id": "sh603880", "circulation_market_value": 8.44, "end": 34.87, "pb": 6.43, "mgxjll": "1.64", "pe": 64.95, "yylr": "1.04", "mgsy": "1.44", "total_value": 33.76, "big_res": [-988, -1208, -917, -591, -250, 2099, 2848], "mgxj": "194.48", "range_percent": 3.29}
-
-
-{"tbmgsy": "0.49", "change_rate": 2.76, "jlr": "46.57", "big_res2": [-467, 850, 1251, 3666, 7253, 8034, 9547, 9427, 9427, 9650], "zysr": "6.22", "id": "sz002016", "circulation_market_value": 63.64, "end": 10.01, "pb": 4.25, "mgxjll": "0.15", "pe": 20.16, "yylr": "64.48", "mgsy": "46.45", "total_value": 79.7, "big_res": [-3803, -1820, -1311, 1423, 4725, 5506, 7254, 6834, 7213, 7556], "mgxj": "--", "range_percent": 1.62}
-
-
-{"tbmgsy": "0.55", "change_rate": 2.74, "jlr": "12.09", "big_res2": [7661, 6624, 6842, 7054, 7104, 8004, 8507], "zysr": "17.89", "id": "sh600993", "circulation_market_value": 96.98, "end": 22.75, "pb": 4.6, "mgxjll": "0.18", "pe": 34.81, "yylr": "10.09", "mgsy": "12.08", "total_value": 97.16, "big_res": [4628, 3518, 3792, 4161, 3921, 4821, 5821], "mgxj": "--", "range_percent": 0.93}
-
-
-{"tbmgsy": "0.39", "change_rate": 1.75, "jlr": "6.88", "big_res2": [5824, 5373, 6445, 7672, 7727], "zysr": "7.17", "id": "sz002690", "circulation_market_value": 60.69, "end": 19.02, "pb": 6.0, "mgxjll": "0.21", "pe": 35.55, "yylr": "2.91", "mgsy": "6.89", "total_value": 125.53, "big_res": [9147, 8592, 9809, 11146, 11360], "mgxj": "--", "range_percent": 2.42}
-
-
-{"tbmgsy": "0.75", "change_rate": 4.68, "jlr": "16.94", "big_res2": [445, 717, 717, 1201], "zysr": "13.23", "id": "sz002872", "circulation_market_value": 19.25, "end": 36.85, "pb": 2.54, "mgxjll": "1.06", "pe": 34.3, "yylr": "15.33", "mgsy": "16.93", "total_value": 77.0, "big_res": [791, 1063, 1326, 1981], "mgxj": "378.99", "range_percent": 1.46}
-
-
-{"tbmgsy": "0.54", "change_rate": 1.48, "jlr": "--", "big_res2": [1753, 1953, 2380, 1957], "zysr": "9.98", "id": "sh600549", "circulation_market_value": 241.15, "end": 27.38, "pb": 4.31, "mgxjll": "0.13", "pe": 50.83, "yylr": "--", "mgsy": "122.18", "total_value": 295.56, "big_res": [686, 450, 1016, 214], "mgxj": "--", "range_percent": 0.66}
-
-
-{"tbmgsy": "1.24", "change_rate": 3.51, "jlr": "157.15", "big_res2": [8786, 10397, 10558, 10558, 10327, 10560], "zysr": "12.84", "id": "sz002597", "circulation_market_value": 133.72, "end": 24.65, "pb": 4.55, "mgxjll": "0.43", "pe": 14.99, "yylr": "154.85", "mgsy": "158.92", "total_value": 134.85, "big_res": [12533, 13510, 13284, 13593, 12779, 13012], "mgxj": "--", "range_percent": 3.14}
-
-
-{"end": 13.62, "change_rate": 6.65, "big_res2": [-16988, -12102, 1832, 6118, 3990, 1440, 4299, 3153, 3332, 5442], "range_percent": 2.25, "big_res": [-16164, -11234, 3034, 5688, 3352, -248, 2698, 1519, 2328, 3888]}
-
-
-{"tbmgsy": "0.44", "change_rate": 12.44, "jlr": "1.82", "big_res2": [1600, 1802, 1802, 1802, 1242], "zysr": "28.11", "id": "sh603106", "circulation_market_value": 21.82, "end": 31.18, "pb": 5.6, "mgxjll": "0.89", "pe": 60.65, "yylr": "2.38", "mgsy": "1.82", "total_value": 87.28, "big_res": [1016, 1218, 879, 577, 17], "mgxj": "198.71", "range_percent": 0.03}
-
-
-{"tbmgsy": "0.35", "change_rate": 1.88, "jlr": "354.73", "big_res2": [5178, 4948, 5405], "zysr": "110.46", "id": "sz002384", "circulation_market_value": 181.45, "end": 34.0, "pb": 4.64, "mgxjll": "0.45", "pe": 97.1, "yylr": "506.87", "mgsy": "355.08", "total_value": 356.98, "big_res": [7713, 7483, 7884], "mgxj": "28.03", "range_percent": 2.01}
-
-
-serch over ==========
-begin ==========:2017-11-10 14:42:53
-{"end": 9.12, "change_rate": 4.4, "big_res2": [11412, 11637, 13191, 13575, 13239, 12275, 11304, 9476, 6240], "range_percent": 1.33, "big_res": [13362, 13718, 15272, 15697, 15236, 14272, 12952, 11014, 7888]}
-
-
-{"tbmgsy": "0.49", "change_rate": 2.15, "jlr": "730.46", "big_res2": [-7481, -3409, -1601, -5796, -1376, 1837, 7246, 10197, 10248, 14660, 16804, 19246], "zysr": "20.06", "id": "sh600782", "circulation_market_value": 171.39, "end": 6.15, "pb": 1.73, "mgxjll": "0.29", "pe": 10.7, "yylr": "--", "mgsy": "314.94", "total_value": 171.39, "big_res": [-13756, -10083, -7873, -12118, -7217, -3933, 2435, 6035, 6841, 11344, 13496, 17435], "mgxj": "--", "range_percent": 0.0}
-
-
-{"tbmgsy": "0.50", "change_rate": 1.75, "jlr": "53.03", "big_res2": [3057, 5267, 2857, 2853, 3814], "zysr": "83.70", "id": "sh600856", "circulation_market_value": 84.2, "end": 10.64, "pb": 3.01, "mgxjll": "0.88", "pe": 28.81, "yylr": "52.58", "mgsy": "53.02", "total_value": 149.24, "big_res": [236, 2245, -341, -609, 247], "mgxj": "47.46", "range_percent": -2.56}
-
-
-{"tbmgsy": "0.42", "change_rate": 1.46, "jlr": "--", "big_res2": [610, 857], "zysr": "227.55", "id": "sz002645", "circulation_market_value": 32.1, "end": 21.49, "pb": 2.76, "mgxjll": "0.86", "pe": 44.54, "yylr": "--", "mgsy": "819.85", "total_value": 45.24, "big_res": [2, 384], "mgxj": "--", "range_percent": -0.51}
-
-
-{"tbmgsy": "0.83", "change_rate": 1.26, "jlr": "199.11", "big_res2": [259, 3864, 5941, 7145, 7607, 7607, 7924, 8580, 8323, 6590, 7011], "zysr": "22.86", "id": "sz002001", "circulation_market_value": 279.31, "end": 25.93, "pb": 3.42, "mgxjll": "0.45", "pe": 22.53, "yylr": "213.11", "mgsy": "199.13", "total_value": 283.45, "big_res": [1562, 5342, 9041, 9962, 10926, 11145, 11929, 12681, 12162, 10694, 11242], "mgxj": "--", "range_percent": -0.38}
-
-
-{"tbmgsy": "0.40", "change_rate": 2.33, "jlr": "81.89", "big_res2": [1646, 2839, 3339, 3139, 3341, 3631], "zysr": "5.01", "id": "sz002088", "circulation_market_value": 29.28, "end": 14.44, "pb": 2.73, "mgxjll": "0.14", "pe": 27.32, "yylr": "73.01", "mgsy": "81.90", "total_value": 49.14, "big_res": [204, 1968, 2389, 2083, 2293, 2583], "mgxj": "--", "range_percent": 3.14}
-
-
-{"tbmgsy": "0.99", "change_rate": 1.41, "jlr": "40.97", "big_res2": [309, 109, 364, 164], "zysr": "31.98", "id": "sz002271", "circulation_market_value": 210.75, "end": 37.17, "pb": 5.22, "mgxjll": "1.84", "pe": 27.69, "yylr": "50.61", "mgsy": "32.67", "total_value": 325.84, "big_res": [-1226, -2073, -1617, -2013], "mgxj": "--", "range_percent": 0.6}
-
-
-{"tbmgsy": "0.41", "change_rate": 26.12, "jlr": "1.44", "big_res2": [393, 173, 607, 569, 910, 2532, 2407], "zysr": "2.59", "id": "sh603880", "circulation_market_value": 8.44, "end": 34.71, "pb": 6.43, "mgxjll": "1.64", "pe": 64.95, "yylr": "1.04", "mgsy": "1.44", "total_value": 33.76, "big_res": [-988, -1208, -917, -591, -250, 2099, 2848], "mgxj": "194.48", "range_percent": 2.81}
-
-
-{"tbmgsy": "0.49", "change_rate": 2.77, "jlr": "46.57", "big_res2": [-467, 850, 1251, 3666, 7253, 8034, 9547, 9427, 9427, 9650], "zysr": "6.22", "id": "sz002016", "circulation_market_value": 63.64, "end": 9.99, "pb": 4.25, "mgxjll": "0.15", "pe": 20.16, "yylr": "64.48", "mgsy": "46.45", "total_value": 79.7, "big_res": [-3803, -1820, -1311, 1423, 4725, 5506, 7254, 6834, 7213, 7556], "mgxj": "--", "range_percent": 1.42}
-
-
-{"tbmgsy": "0.23", "change_rate": 6.6, "jlr": "31.76", "big_res2": [393, 393, 393, 820], "zysr": "28.14", "id": "sh603825", "circulation_market_value": 15.39, "end": 39.23, "pb": 5.41, "mgxjll": "0.30", "pe": 59.96, "yylr": "27.97", "mgsy": "31.75", "total_value": 61.57, "big_res": [88, 702, 1028, 1507], "mgxj": "--", "range_percent": 1.95}
-
-
-{"tbmgsy": "0.55", "change_rate": 2.75, "jlr": "12.09", "big_res2": [7661, 6624, 6842, 7054, 7104, 8004, 8507], "zysr": "17.89", "id": "sh600993", "circulation_market_value": 96.98, "end": 22.81, "pb": 4.6, "mgxjll": "0.18", "pe": 34.81, "yylr": "10.09", "mgsy": "12.08", "total_value": 97.16, "big_res": [4628, 3518, 3792, 4161, 3921, 4821, 5821], "mgxj": "--", "range_percent": 1.2}
-
-
-{"tbmgsy": "0.39", "change_rate": 1.77, "jlr": "6.88", "big_res2": [5824, 5373, 6445, 7672, 7727], "zysr": "7.17", "id": "sz002690", "circulation_market_value": 60.69, "end": 19.02, "pb": 6.0, "mgxjll": "0.21", "pe": 35.55, "yylr": "2.91", "mgsy": "6.89", "total_value": 125.53, "big_res": [9147, 8592, 9809, 11146, 11360], "mgxj": "--", "range_percent": 2.42}
-
-
-{"tbmgsy": "0.75", "change_rate": 4.84, "jlr": "16.94", "big_res2": [445, 717, 717, 1201], "zysr": "13.23", "id": "sz002872", "circulation_market_value": 19.25, "end": 36.89, "pb": 2.54, "mgxjll": "1.06", "pe": 34.3, "yylr": "15.33", "mgsy": "16.93", "total_value": 77.0, "big_res": [791, 1063, 1326, 1981], "mgxj": "378.99", "range_percent": 1.57}
-
-
-{"tbmgsy": "0.54", "change_rate": 1.51, "jlr": "--", "big_res2": [1753, 1953, 2380, 1957, 4155], "zysr": "9.98", "id": "sh600549", "circulation_market_value": 241.15, "end": 27.46, "pb": 4.31, "mgxjll": "0.13", "pe": 50.83, "yylr": "--", "mgsy": "122.18", "total_value": 295.56, "big_res": [686, 450, 1016, 214, 2498], "mgxj": "--", "range_percent": 0.96}
-
-
-{"tbmgsy": "1.24", "change_rate": 3.52, "jlr": "157.15", "big_res2": [8786, 10397, 10558, 10558, 10327, 10560], "zysr": "12.84", "id": "sz002597", "circulation_market_value": 133.72, "end": 24.63, "pb": 4.55, "mgxjll": "0.43", "pe": 14.99, "yylr": "154.85", "mgsy": "158.92", "total_value": 134.85, "big_res": [12533, 13510, 13284, 13593, 12779, 13012], "mgxj": "--", "range_percent": 3.05}
-
-
-{"end": 13.58, "change_rate": 6.69, "big_res2": [-16988, -12102, 1832, 6118, 3990, 1440, 4299, 3153, 3332, 5442, 5900], "range_percent": 1.95, "big_res": [-16164, -11234, 3034, 5688, 3352, -248, 2698, 1519, 2328, 3888, 3415]}
-
-
-{"tbmgsy": "0.67", "change_rate": 1.73, "jlr": "10642.07", "big_res2": [6446, 5587, 5787, 3625, 4965, 4765, 4765, 6221, 6426, 7474], "zysr": "182.51", "id": "sz000813", "circulation_market_value": 88.0, "end": 8.99, "pb": 4.64, "mgxjll": "0.16", "pe": 26.28, "yylr": "1216.61", "mgsy": "25159.09", "total_value": 203.75, "big_res": [7208, 6320, 6520, 4358, 6381, 6035, 6254, 7456, 7791, 8885], "mgxj": "--", "range_percent": -1.1}
-
-
-{"tbmgsy": "0.44", "change_rate": 12.54, "jlr": "1.82", "big_res2": [1600, 1802, 1802, 1802, 1242], "zysr": "28.11", "id": "sh603106", "circulation_market_value": 21.82, "end": 31.24, "pb": 5.6, "mgxjll": "0.89", "pe": 60.65, "yylr": "2.38", "mgsy": "1.82", "total_value": 87.28, "big_res": [1016, 1218, 879, 577, 17], "mgxj": "198.71", "range_percent": 0.22}
-
-
-{"tbmgsy": "0.35", "change_rate": 1.9, "jlr": "354.73", "big_res2": [5178, 4948, 5405, 6083], "zysr": "110.46", "id": "sz002384", "circulation_market_value": 181.45, "end": 34.0, "pb": 4.64, "mgxjll": "0.45", "pe": 97.1, "yylr": "506.87", "mgsy": "355.08", "total_value": 356.98, "big_res": [7713, 7483, 7884, 8667], "mgxj": "28.03", "range_percent": 2.01}
-
-
-{"tbmgsy": "0.37", "change_rate": 4.28, "jlr": "59.97", "big_res2": [3648, 3648, 3436, 4000], "zysr": "25.70", "id": "sh603728", "circulation_market_value": 18.97, "end": 24.35, "pb": 4.62, "mgxjll": "1.77", "pe": 48.38, "yylr": "80.01", "mgsy": "59.99", "total_value": 75.87, "big_res": [2758, 3101, 2889, 3581], "mgxj": "--", "range_percent": 2.7}
-
-
-serch over ==========
-begin ==========:2017-11-10 14:45:44
-{"tbmgsy": "0.30", "change_rate": 8.34, "jlr": "5.67", "big_res2": [3437, 3652], "zysr": "17.40", "id": "sh603803", "circulation_market_value": 12.35, "end": 22.53, "pb": 3.79, "mgxjll": "0.60", "pe": 36.13, "yylr": "19.39", "mgsy": "5.66", "total_value": 91.54, "big_res": [4954, 5169], "mgxj": "46.82", "range_percent": 3.63}
-
-
-{"tbmgsy": "0.49", "change_rate": 2.18, "jlr": "730.46", "big_res2": [20120, 22208], "zysr": "20.06", "id": "sh600782", "circulation_market_value": 171.39, "end": 6.15, "pb": 1.73, "mgxjll": "0.29", "pe": 10.7, "yylr": "--", "mgsy": "314.94", "total_value": 171.39, "big_res": [18670, 20964], "mgxj": "--", "range_percent": 0.0}
-
-
-{"tbmgsy": "0.23", "change_rate": 9.13, "jlr": "10.63", "big_res2": [1004, 1280], "zysr": "2.43", "id": "sz300647", "circulation_market_value": 6.87, "end": 23.6, "pb": 5.33, "mgxjll": "0.69", "pe": 52.06, "yylr": "3.78", "mgsy": "10.63", "total_value": 27.49, "big_res": [921, 1197], "mgxj": "--", "range_percent": 3.01}
-
-
-{"tbmgsy": "0.54", "change_rate": 1.54, "jlr": "--", "big_res2": [4155, 5221], "zysr": "9.98", "id": "sh600549", "circulation_market_value": 241.15, "end": 27.45, "pb": 4.31, "mgxjll": "0.13", "pe": 50.83, "yylr": "--", "mgsy": "122.18", "total_value": 295.56, "big_res": [2436, 3777], "mgxj": "--", "range_percent": 0.92}
-
-
-serch over ==========
-begin ==========:2017-11-10 14:47:22
-{"tbmgsy": "0.49", "change_rate": 2.2, "jlr": "730.46", "big_res2": [20120, 22208, 25072], "zysr": "20.06", "id": "sh600782", "circulation_market_value": 171.39, "end": 6.13, "pb": 1.73, "mgxjll": "0.29", "pe": 10.7, "yylr": "--", "mgsy": "314.94", "total_value": 171.39, "big_res": [18670, 20964, 24310], "mgxj": "--", "range_percent": -0.33}
-
-
-{"tbmgsy": "0.30", "change_rate": 8.38, "jlr": "5.67", "big_res2": [3437, 3652], "zysr": "17.40", "id": "sh603803", "circulation_market_value": 12.35, "end": 22.46, "pb": 3.79, "mgxjll": "0.60", "pe": 36.13, "yylr": "19.39", "mgsy": "5.66", "total_value": 91.54, "big_res": [4954, 5169], "mgxj": "46.82", "range_percent": 3.31}
-
-
-{"tbmgsy": "0.22", "change_rate": 5.12, "jlr": "--", "big_res2": [4925, 4376, 8626], "zysr": "87.09", "id": "sz300102", "circulation_market_value": 54.62, "end": 9.31, "pb": 2.42, "mgxjll": "0.28", "pe": 34.76, "yylr": "--", "mgsy": "153.67", "total_value": 64.04, "big_res": [7972, 7342, 12000], "mgxj": "--", "range_percent": 2.42}
-
-
-{"tbmgsy": "0.39", "change_rate": 1.85, "jlr": "6.88", "big_res2": [7727, 9372], "zysr": "7.17", "id": "sz002690", "circulation_market_value": 60.69, "end": 19.03, "pb": 6.0, "mgxjll": "0.21", "pe": 35.55, "yylr": "2.91", "mgsy": "6.89", "total_value": 125.53, "big_res": [11238, 12883], "mgxj": "--", "range_percent": 2.48}
-
-
-{"tbmgsy": "0.54", "change_rate": 1.55, "jlr": "--", "big_res2": [4155, 5221, 4113], "zysr": "9.98", "id": "sh600549", "circulation_market_value": 241.15, "end": 27.43, "pb": 4.31, "mgxjll": "0.13", "pe": 50.83, "yylr": "--", "mgsy": "122.18", "total_value": 295.56, "big_res": [2436, 3777, 2669], "mgxj": "--", "range_percent": 0.85}
-
-
-{"tbmgsy": "0.23", "change_rate": 9.18, "jlr": "10.63", "big_res2": [1004, 1280], "zysr": "2.43", "id": "sz300647", "circulation_market_value": 6.87, "end": 23.5, "pb": 5.33, "mgxjll": "0.69", "pe": 52.06, "yylr": "3.78", "mgsy": "10.63", "total_value": 27.49, "big_res": [921, 1197], "mgxj": "--", "range_percent": 2.58}
-
-
-serch over ==========
-begin ==========:2017-11-10 14:48:43
-{"tbmgsy": "0.49", "change_rate": 2.22, "jlr": "730.46", "big_res2": [20120, 22208, 25072, 27906], "zysr": "20.06", "id": "sh600782", "circulation_market_value": 171.39, "end": 6.14, "pb": 1.73, "mgxjll": "0.29", "pe": 10.7, "yylr": "--", "mgsy": "314.94", "total_value": 171.39, "big_res": [18670, 20964, 24310, 26875], "mgxj": "--", "range_percent": -0.16}
-
-
-{"tbmgsy": "0.67", "change_rate": 1.76, "jlr": "10642.07", "big_res2": [7710, 7428, 8428], "zysr": "182.51", "id": "sz000813", "circulation_market_value": 88.0, "end": 8.97, "pb": 4.64, "mgxjll": "0.16", "pe": 26.28, "yylr": "1216.61", "mgsy": "25159.09", "total_value": 203.75, "big_res": [9121, 8844, 9646], "mgxj": "--", "range_percent": -1.32}
-
-
-{"tbmgsy": "0.39", "change_rate": 5.38, "jlr": "47.15", "big_res2": [249, 452], "zysr": "44.66", "id": "sz002849", "circulation_market_value": 8.17, "end": 38.21, "pb": 6.16, "mgxjll": "0.49", "pe": 62.61, "yylr": "47.35", "mgsy": "47.13", "total_value": 32.7, "big_res": [257, 460], "mgxj": "244.49", "range_percent": 1.27}
-
-
-{"tbmgsy": "0.24", "change_rate": 1.82, "jlr": "--", "big_res2": [-518, 448], "zysr": "11.05", "id": "sz000401", "circulation_market_value": 195.48, "end": 14.19, "pb": 1.9, "mgxjll": "0.97", "pe": 23.72, "yylr": "--", "mgsy": "103.07", "total_value": 195.53, "big_res": [-492, 1133], "mgxj": "--", "range_percent": -2.21}
-
-
-{"tbmgsy": "0.83", "change_rate": 1.29, "jlr": "199.11", "big_res2": [6015, 6792], "zysr": "22.86", "id": "sz002001", "circulation_market_value": 279.31, "end": 25.9, "pb": 3.42, "mgxjll": "0.45", "pe": 22.53, "yylr": "213.11", "mgsy": "199.13", "total_value": 283.45, "big_res": [10504, 11226], "mgxj": "--", "range_percent": -0.5}
-
-
-{"tbmgsy": "0.30", "change_rate": 8.45, "jlr": "5.67", "big_res2": [3437, 3652], "zysr": "17.40", "id": "sh603803", "circulation_market_value": 12.35, "end": 22.53, "pb": 3.79, "mgxjll": "0.60", "pe": 36.13, "yylr": "19.39", "mgsy": "5.66", "total_value": 91.54, "big_res": [4954, 5169], "mgxj": "46.82", "range_percent": 3.63}
-
-
-{"tbmgsy": "0.22", "change_rate": 5.14, "jlr": "--", "big_res2": [4925, 4376, 8626, 5048], "zysr": "87.09", "id": "sz300102", "circulation_market_value": 54.62, "end": 9.3, "pb": 2.42, "mgxjll": "0.28", "pe": 34.76, "yylr": "--", "mgsy": "153.67", "total_value": 64.04, "big_res": [7972, 7342, 12000, 8049], "mgxj": "--", "range_percent": 2.31}
-
-
-{"tbmgsy": "0.39", "change_rate": 1.88, "jlr": "6.88", "big_res2": [7727, 9372, 9372], "zysr": "7.17", "id": "sz002690", "circulation_market_value": 60.69, "end": 19.06, "pb": 6.0, "mgxjll": "0.21", "pe": 35.55, "yylr": "2.91", "mgsy": "6.89", "total_value": 125.53, "big_res": [11238, 12883, 12590], "mgxj": "--", "range_percent": 2.64}
-
-
-{"tbmgsy": "0.54", "change_rate": 1.56, "jlr": "--", "big_res2": [4155, 5221, 4113, 4141], "zysr": "9.98", "id": "sh600549", "circulation_market_value": 241.15, "end": 27.41, "pb": 4.31, "mgxjll": "0.13", "pe": 50.83, "yylr": "--", "mgsy": "122.18", "total_value": 295.56, "big_res": [2436, 3777, 2669, 2930], "mgxj": "--", "range_percent": 0.77}
-
-
-{"tbmgsy": "0.40", "change_rate": 2.54, "jlr": "81.89", "big_res2": [2478, 3961], "zysr": "5.01", "id": "sz002088", "circulation_market_value": 29.28, "end": 14.42, "pb": 2.73, "mgxjll": "0.14", "pe": 27.32, "yylr": "73.01", "mgsy": "81.90", "total_value": 49.14, "big_res": [1536, 3246], "mgxj": "--", "range_percent": 3.0}
-
-
-{"tbmgsy": "0.23", "change_rate": 9.2, "jlr": "10.63", "big_res2": [1004, 1280], "zysr": "2.43", "id": "sz300647", "circulation_market_value": 6.87, "end": 23.55, "pb": 5.33, "mgxjll": "0.69", "pe": 52.06, "yylr": "3.78", "mgsy": "10.63", "total_value": 27.49, "big_res": [921, 1197], "mgxj": "--", "range_percent": 2.79}
-
-
-{"tbmgsy": "0.43", "change_rate": 1.1, "jlr": "--", "big_res2": [1432, 2551, 3523], "zysr": "18.24", "id": "sh601666", "circulation_market_value": 146.39, "end": 6.11, "pb": 1.19, "mgxjll": "0.85", "pe": 10.2, "yylr": "--", "mgsy": "135.23", "total_value": 146.39, "big_res": [-1545, -423, 741], "mgxj": "52.62", "range_percent": -1.45}
-
-
-serch over ==========
-begin ==========:2017-11-10 14:50:21
-{"tbmgsy": "0.49", "change_rate": 2.24, "jlr": "730.46", "big_res2": [20120, 22208, 25072, 27906, 30761], "zysr": "20.06", "id": "sh600782", "circulation_market_value": 171.39, "end": 6.14, "pb": 1.73, "mgxjll": "0.29", "pe": 10.7, "yylr": "--", "mgsy": "314.94", "total_value": 171.39, "big_res": [18670, 20964, 24310, 26875, 29645], "mgxj": "--", "range_percent": -0.16}
-
-
-{"tbmgsy": "0.67", "change_rate": 1.77, "jlr": "10642.07", "big_res2": [7710, 7428, 8428, 7995], "zysr": "182.51", "id": "sz000813", "circulation_market_value": 88.0, "end": 8.97, "pb": 4.64, "mgxjll": "0.16", "pe": 26.28, "yylr": "1216.61", "mgsy": "25159.09", "total_value": 203.75, "big_res": [9121, 8844, 9646, 9061], "mgxj": "--", "range_percent": -1.32}
-
-
-{"tbmgsy": "0.39", "change_rate": 5.5, "jlr": "47.15", "big_res2": [249, 452], "zysr": "44.66", "id": "sz002849", "circulation_market_value": 8.17, "end": 38.26, "pb": 6.16, "mgxjll": "0.49", "pe": 62.61, "yylr": "47.35", "mgsy": "47.13", "total_value": 32.7, "big_res": [257, 460], "mgxj": "244.49", "range_percent": 1.4}
-
-
-{"tbmgsy": "0.24", "change_rate": 1.84, "jlr": "--", "big_res2": [-518, 448, 3476], "zysr": "11.05", "id": "sz000401", "circulation_market_value": 195.48, "end": 14.21, "pb": 1.9, "mgxjll": "0.97", "pe": 23.72, "yylr": "--", "mgsy": "103.07", "total_value": 195.53, "big_res": [-492, 1133, 3827], "mgxj": "--", "range_percent": -2.07}
-
-
-{"tbmgsy": "0.83", "change_rate": 1.3, "jlr": "199.11", "big_res2": [6015, 6792, 6345], "zysr": "22.86", "id": "sz002001", "circulation_market_value": 279.31, "end": 25.88, "pb": 3.42, "mgxjll": "0.45", "pe": 22.53, "yylr": "213.11", "mgsy": "199.13", "total_value": 283.45, "big_res": [10504, 11226, 10779], "mgxj": "--", "range_percent": -0.58}
-
-
-{"tbmgsy": "0.30", "change_rate": 8.52, "jlr": "5.67", "big_res2": [3437, 3652], "zysr": "17.40", "id": "sh603803", "circulation_market_value": 12.35, "end": 22.5, "pb": 3.79, "mgxjll": "0.60", "pe": 36.13, "yylr": "19.39", "mgsy": "5.66", "total_value": 91.54, "big_res": [4954, 5169], "mgxj": "46.82", "range_percent": 3.5}
-
-
-{"tbmgsy": "0.22", "change_rate": 5.17, "jlr": "--", "big_res2": [4925, 4376, 8626, 5048, -2018], "zysr": "87.09", "id": "sz300102", "circulation_market_value": 54.62, "end": 9.31, "pb": 2.42, "mgxjll": "0.28", "pe": 34.76, "yylr": "--", "mgsy": "153.67", "total_value": 64.04, "big_res": [7972, 7342, 12000, 8049, 1066], "mgxj": "--", "range_percent": 2.42}
-
-
-{"tbmgsy": "0.35", "change_rate": 1.61, "jlr": "10.25", "big_res2": [-1497, -695, -753, -541, 345], "zysr": "8.87", "id": "sh600295", "circulation_market_value": 80.54, "end": 13.34, "pb": 1.79, "mgxjll": "0.44", "pe": 30.44, "yylr": "101.12", "mgsy": "10.23", "total_value": 135.81, "big_res": [1787, 2472, 2266, 1978, 2898], "mgxj": "--", "range_percent": 1.37}
-
-
-{"tbmgsy": "0.39", "change_rate": 1.89, "jlr": "6.88", "big_res2": [7727, 9372, 9372, 9372], "zysr": "7.17", "id": "sz002690", "circulation_market_value": 60.69, "end": 19.07, "pb": 6.0, "mgxjll": "0.21", "pe": 35.55, "yylr": "2.91", "mgsy": "6.89", "total_value": 125.53, "big_res": [11238, 12883, 12590, 12340], "mgxj": "--", "range_percent": 2.69}
-
-
-{"tbmgsy": "0.54", "change_rate": 1.57, "jlr": "--", "big_res2": [4155, 5221, 4113, 4141, 3376], "zysr": "9.98", "id": "sh600549", "circulation_market_value": 241.15, "end": 27.41, "pb": 4.31, "mgxjll": "0.13", "pe": 50.83, "yylr": "--", "mgsy": "122.18", "total_value": 295.56, "big_res": [2436, 3777, 2669, 2930, 2024], "mgxj": "--", "range_percent": 0.77}
-
-
-{"tbmgsy": "0.40", "change_rate": 2.58, "jlr": "81.89", "big_res2": [2478, 3961, 3685], "zysr": "5.01", "id": "sz002088", "circulation_market_value": 29.28, "end": 14.39, "pb": 2.73, "mgxjll": "0.14", "pe": 27.32, "yylr": "73.01", "mgsy": "81.90", "total_value": 49.14, "big_res": [1536, 3246, 2970], "mgxj": "--", "range_percent": 2.79}
-
-
-{"tbmgsy": "0.23", "change_rate": 9.26, "jlr": "10.63", "big_res2": [1004, 1280], "zysr": "2.43", "id": "sz300647", "circulation_market_value": 6.87, "end": 23.51, "pb": 5.33, "mgxjll": "0.69", "pe": 52.06, "yylr": "3.78", "mgsy": "10.63", "total_value": 27.49, "big_res": [921, 1197], "mgxj": "--", "range_percent": 2.62}
-
-
-{"tbmgsy": "0.43", "change_rate": 1.11, "jlr": "--", "big_res2": [1432, 2551, 3523, 3135], "zysr": "18.24", "id": "sh601666", "circulation_market_value": 146.39, "end": 6.11, "pb": 1.19, "mgxjll": "0.85", "pe": 10.2, "yylr": "--", "mgsy": "135.23", "total_value": 146.39, "big_res": [-1545, -423, 741, 455], "mgxj": "52.62", "range_percent": -1.45}
-
-
-serch over ==========
-begin ==========:2017-11-10 14:52:00
-{"end": 9.1, "change_rate": 4.5, "big_res2": [7006, 6640, 5251, 6660, 7880], "range_percent": 1.11, "big_res": [8897, 8381, 6954, 8247, 9570], "id": "sz002175"}
-
-
-{"tbmgsy": "0.49", "change_rate": 2.27, "jlr": "730.46", "big_res2": [20120, 22208, 25072, 27906, 30761, 29166], "zysr": "20.06", "id": "sh600782", "circulation_market_value": 171.39, "end": 6.17, "pb": 1.73, "mgxjll": "0.29", "pe": 10.7, "yylr": "--", "mgsy": "314.94", "total_value": 171.39, "big_res": [18670, 20964, 24310, 26875, 29645, 27565], "mgxj": "--", "range_percent": 0.33}
-
-
-{"tbmgsy": "0.67", "change_rate": 1.78, "jlr": "10642.07", "big_res2": [7710, 7428, 8428, 7995, 7995], "zysr": "182.51", "id": "sz000813", "circulation_market_value": 88.0, "end": 8.96, "pb": 4.64, "mgxjll": "0.16", "pe": 26.28, "yylr": "1216.61", "mgsy": "25159.09", "total_value": 203.75, "big_res": [9121, 8844, 9646, 9061, 8558], "mgxj": "--", "range_percent": -1.43}
-
-
-{"tbmgsy": "0.39", "change_rate": 5.56, "jlr": "47.15", "big_res2": [249, 452], "zysr": "44.66", "id": "sz002849", "circulation_market_value": 8.17, "end": 38.2, "pb": 6.16, "mgxjll": "0.49", "pe": 62.61, "yylr": "47.35", "mgsy": "47.13", "total_value": 32.7, "big_res": [257, 460], "mgxj": "244.49", "range_percent": 1.25}
-
-
-{"tbmgsy": "0.50", "change_rate": 1.86, "jlr": "53.03", "big_res2": [4907, 5221], "zysr": "83.70", "id": "sh600856", "circulation_market_value": 84.2, "end": 10.66, "pb": 3.01, "mgxjll": "0.88", "pe": 28.81, "yylr": "52.58", "mgsy": "53.02", "total_value": 149.24, "big_res": [1441, 1913], "mgxj": "47.46", "range_percent": -2.38}
-
-
-{"tbmgsy": "0.24", "change_rate": 1.85, "jlr": "--", "big_res2": [-518, 448, 3476, 4693], "zysr": "11.05", "id": "sz000401", "circulation_market_value": 195.48, "end": 14.19, "pb": 1.9, "mgxjll": "0.97", "pe": 23.72, "yylr": "--", "mgsy": "103.07", "total_value": 195.53, "big_res": [-492, 1133, 3827, 5221], "mgxj": "--", "range_percent": -2.21}
-
-
-{"tbmgsy": "0.83", "change_rate": 1.31, "jlr": "199.11", "big_res2": [6015, 6792, 6345, 6766], "zysr": "22.86", "id": "sz002001", "circulation_market_value": 279.31, "end": 25.91, "pb": 3.42, "mgxjll": "0.45", "pe": 22.53, "yylr": "213.11", "mgsy": "199.13", "total_value": 283.45, "big_res": [10504, 11226, 10779, 11164], "mgxj": "--", "range_percent": -0.46}
-
-
-{"tbmgsy": "0.30", "change_rate": 8.71, "jlr": "5.67", "big_res2": [3437, 3652, 3347], "zysr": "17.40", "id": "sh603803", "circulation_market_value": 12.35, "end": 22.51, "pb": 3.79, "mgxjll": "0.60", "pe": 36.13, "yylr": "19.39", "mgsy": "5.66", "total_value": 91.54, "big_res": [4954, 5169, 4846], "mgxj": "46.82", "range_percent": 3.54}
-
-
-{"tbmgsy": "0.22", "change_rate": 5.22, "jlr": "--", "big_res2": [4925, 4376, 8626, 5048, -2018, -653], "zysr": "87.09", "id": "sz300102", "circulation_market_value": 54.62, "end": 9.31, "pb": 2.42, "mgxjll": "0.28", "pe": 34.76, "yylr": "--", "mgsy": "153.67", "total_value": 64.04, "big_res": [7972, 7342, 12000, 8049, 1066, 2065], "mgxj": "--", "range_percent": 2.42}
-
-
-{"tbmgsy": "0.35", "change_rate": 1.62, "jlr": "10.25", "big_res2": [-1497, -695, -753, -541, 345], "zysr": "8.87", "id": "sh600295", "circulation_market_value": 80.54, "end": 13.34, "pb": 1.79, "mgxjll": "0.44", "pe": 30.44, "yylr": "101.12", "mgsy": "10.23", "total_value": 135.81, "big_res": [1787, 2472, 2266, 1978, 2898], "mgxj": "--", "range_percent": 1.37}
-
-
-{"tbmgsy": "0.49", "change_rate": 2.86, "jlr": "46.57", "big_res2": [8236, 8075, 7586, 9196], "zysr": "6.22", "id": "sz002016", "circulation_market_value": 63.64, "end": 9.99, "pb": 4.25, "mgxjll": "0.15", "pe": 20.16, "yylr": "64.48", "mgsy": "46.45", "total_value": 79.7, "big_res": [6346, 5900, 5689, 7070], "mgxj": "--", "range_percent": 1.42}
-
-
-{"tbmgsy": "0.61", "change_rate": 5.36, "jlr": "35.89", "big_res2": [1245, 1445], "zysr": "2.70", "id": "sz300625", "circulation_market_value": 21.55, "end": 31.33, "pb": 3.96, "mgxjll": "0.52", "pe": 34.97, "yylr": "34.33", "mgsy": "35.89", "total_value": 86.21, "big_res": [882, 1082], "mgxj": "11.20", "range_percent": 1.75}
-
-
-{"tbmgsy": "0.39", "change_rate": 1.91, "jlr": "6.88", "big_res2": [7727, 9372, 9372, 9372, 9611], "zysr": "7.17", "id": "sz002690", "circulation_market_value": 60.69, "end": 19.05, "pb": 6.0, "mgxjll": "0.21", "pe": 35.55, "yylr": "2.91", "mgsy": "6.89", "total_value": 125.53, "big_res": [11238, 12883, 12590, 12340, 12763], "mgxj": "--", "range_percent": 2.58}
-
-
-{"tbmgsy": "0.54", "change_rate": 1.59, "jlr": "--", "big_res2": [4155, 5221, 4113, 4141, 3376], "zysr": "9.98", "id": "sh600549", "circulation_market_value": 241.15, "end": 27.44, "pb": 4.31, "mgxjll": "0.13", "pe": 50.83, "yylr": "--", "mgsy": "122.18", "total_value": 295.56, "big_res": [2436, 3777, 2669, 2930, 2024], "mgxj": "--", "range_percent": 0.88}
-
-
-{"tbmgsy": "0.40", "change_rate": 2.6, "jlr": "81.89", "big_res2": [2478, 3961, 3685], "zysr": "5.01", "id": "sz002088", "circulation_market_value": 29.28, "end": 14.39, "pb": 2.73, "mgxjll": "0.14", "pe": 27.32, "yylr": "73.01", "mgsy": "81.90", "total_value": 49.14, "big_res": [1536, 3246, 2970], "mgxj": "--", "range_percent": 2.79}
-
-
-{"tbmgsy": "0.23", "change_rate": 9.34, "jlr": "10.63", "big_res2": [1004, 1280], "zysr": "2.43", "id": "sz300647", "circulation_market_value": 6.87, "end": 23.51, "pb": 5.33, "mgxjll": "0.69", "pe": 52.06, "yylr": "3.78", "mgsy": "10.63", "total_value": 27.49, "big_res": [921, 1197], "mgxj": "--", "range_percent": 2.62}
-
-
-{"tbmgsy": "0.43", "change_rate": 1.11, "jlr": "--", "big_res2": [1432, 2551, 3523, 3135, 3616], "zysr": "18.24", "id": "sh601666", "circulation_market_value": 146.39, "end": 6.12, "pb": 1.19, "mgxjll": "0.85", "pe": 10.2, "yylr": "--", "mgsy": "135.23", "total_value": 146.39, "big_res": [-1545, -423, 741, 455, 936], "mgxj": "52.62", "range_percent": -1.29}
-
-
-serch over ==========
-begin ==========:2017-11-10 14:53:55
-{"end": 9.1, "change_rate": 4.53, "big_res2": [7006, 6640, 5251, 6660, 7880, 8289], "range_percent": 1.11, "big_res": [8897, 8381, 6954, 8247, 9570, 10007], "id": "sz002175"}
-
-
-{"tbmgsy": "0.49", "change_rate": 2.3, "jlr": "730.46", "big_res2": [20120, 22208, 25072, 27906, 30761, 29166, 28650], "zysr": "20.06", "id": "sh600782", "circulation_market_value": 171.39, "end": 6.16, "pb": 1.73, "mgxjll": "0.29", "pe": 10.7, "yylr": "--", "mgsy": "314.94", "total_value": 171.39, "big_res": [18670, 20964, 24310, 26875, 29645, 27565, 26517], "mgxj": "--", "range_percent": 0.16}
-
-
-{"tbmgsy": "0.67", "change_rate": 1.79, "jlr": "10642.07", "big_res2": [7710, 7428, 8428, 7995, 7995, 8674], "zysr": "182.51", "id": "sz000813", "circulation_market_value": 88.0, "end": 8.95, "pb": 4.64, "mgxjll": "0.16", "pe": 26.28, "yylr": "1216.61", "mgsy": "25159.09", "total_value": 203.75, "big_res": [9121, 8844, 9646, 9061, 8558, 8869], "mgxj": "--", "range_percent": -1.54}
-
-
-{"tbmgsy": "0.39", "change_rate": 5.97, "jlr": "47.15", "big_res2": [249, 452, 452], "zysr": "44.66", "id": "sz002849", "circulation_market_value": 8.17, "end": 38.47, "pb": 6.16, "mgxjll": "0.49", "pe": 62.61, "yylr": "47.35", "mgsy": "47.13", "total_value": 32.7, "big_res": [257, 460, 782], "mgxj": "244.49", "range_percent": 1.96}
-
-
-{"tbmgsy": "0.50", "change_rate": 1.89, "jlr": "53.03", "big_res2": [4907, 5221, 9050], "zysr": "83.70", "id": "sh600856", "circulation_market_value": 84.2, "end": 10.65, "pb": 3.01, "mgxjll": "0.88", "pe": 28.81, "yylr": "52.58", "mgsy": "53.02", "total_value": 149.24, "big_res": [1441, 1913, 6107], "mgxj": "47.46", "range_percent": -2.47}
-
-
-{"tbmgsy": "0.24", "change_rate": 1.87, "jlr": "--", "big_res2": [-518, 448, 3476, 4693, 4042], "zysr": "11.05", "id": "sz000401", "circulation_market_value": 195.48, "end": 14.19, "pb": 1.9, "mgxjll": "0.97", "pe": 23.72, "yylr": "--", "mgsy": "103.07", "total_value": 195.53, "big_res": [-492, 1133, 3827, 5221, 4186], "mgxj": "--", "range_percent": -2.21}
-
-
-{"tbmgsy": "0.83", "change_rate": 1.32, "jlr": "199.11", "big_res2": [6015, 6792, 6345, 6766, 6467], "zysr": "22.86", "id": "sz002001", "circulation_market_value": 279.31, "end": 25.91, "pb": 3.42, "mgxjll": "0.45", "pe": 22.53, "yylr": "213.11", "mgsy": "199.13", "total_value": 283.45, "big_res": [10504, 11226, 10779, 11164, 10858], "mgxj": "--", "range_percent": -0.46}
-
-
-{"tbmgsy": "0.30", "change_rate": 8.78, "jlr": "5.67", "big_res2": [3437, 3652, 3347], "zysr": "17.40", "id": "sh603803", "circulation_market_value": 12.35, "end": 22.5, "pb": 3.79, "mgxjll": "0.60", "pe": 36.13, "yylr": "19.39", "mgsy": "5.66", "total_value": 91.54, "big_res": [4954, 5169, 4846], "mgxj": "46.82", "range_percent": 3.5}
-
-
-{"tbmgsy": "0.22", "change_rate": 5.25, "jlr": "--", "big_res2": [4925, 4376, 8626, 5048, -2018, -653, -1390], "zysr": "87.09", "id": "sz300102", "circulation_market_value": 54.62, "end": 9.3, "pb": 2.42, "mgxjll": "0.28", "pe": 34.76, "yylr": "--", "mgsy": "153.67", "total_value": 64.04, "big_res": [7972, 7342, 12000, 8049, 1066, 2065, 986], "mgxj": "--", "range_percent": 2.31}
-
-
-{"tbmgsy": "0.35", "change_rate": 1.63, "jlr": "10.25", "big_res2": [-1497, -695, -753, -541, 345, 1138], "zysr": "8.87", "id": "sh600295", "circulation_market_value": 80.54, "end": 13.34, "pb": 1.79, "mgxjll": "0.44", "pe": 30.44, "yylr": "101.12", "mgsy": "10.23", "total_value": 135.81, "big_res": [1787, 2472, 2266, 1978, 2898, 3963], "mgxj": "--", "range_percent": 1.37}
-
-
-{"tbmgsy": "0.49", "change_rate": 2.88, "jlr": "46.57", "big_res2": [8236, 8075, 7586, 9196, 9522], "zysr": "6.22", "id": "sz002016", "circulation_market_value": 63.64, "end": 9.98, "pb": 4.25, "mgxjll": "0.15", "pe": 20.16, "yylr": "64.48", "mgsy": "46.45", "total_value": 79.7, "big_res": [6346, 5900, 5689, 7070, 7569], "mgxj": "--", "range_percent": 1.32}
-
-
-{"tbmgsy": "0.47", "change_rate": 1.05, "jlr": "14.16", "big_res2": [-1348, -845, 140], "zysr": "7.21", "id": "sz002668", "circulation_market_value": 80.35, "end": 20.59, "pb": 3.89, "mgxjll": "0.40", "pe": 39.23, "yylr": "52.60", "mgsy": "14.15", "total_value": 130.78, "big_res": [-3052, -2549, -1564], "mgxj": "104.90", "range_percent": 0.05}
-
-
-{"tbmgsy": "0.61", "change_rate": 5.41, "jlr": "35.89", "big_res2": [1245, 1445], "zysr": "2.70", "id": "sz300625", "circulation_market_value": 21.55, "end": 31.33, "pb": 3.96, "mgxjll": "0.52", "pe": 34.97, "yylr": "34.33", "mgsy": "35.89", "total_value": 86.21, "big_res": [882, 1082], "mgxj": "11.20", "range_percent": 1.75}
-
-
-{"tbmgsy": "0.39", "change_rate": 1.93, "jlr": "6.88", "big_res2": [7727, 9372, 9372, 9372, 9611, 9911], "zysr": "7.17", "id": "sz002690", "circulation_market_value": 60.69, "end": 19.06, "pb": 6.0, "mgxjll": "0.21", "pe": 35.55, "yylr": "2.91", "mgsy": "6.89", "total_value": 125.53, "big_res": [11238, 12883, 12590, 12340, 12763, 13063], "mgxj": "--", "range_percent": 2.64}
-
-
-{"tbmgsy": "0.54", "change_rate": 1.6, "jlr": "--", "big_res2": [4155, 5221, 4113, 4141, 3376], "zysr": "9.98", "id": "sh600549", "circulation_market_value": 241.15, "end": 27.43, "pb": 4.31, "mgxjll": "0.13", "pe": 50.83, "yylr": "--", "mgsy": "122.18", "total_value": 295.56, "big_res": [2436, 3777, 2669, 2930, 2024], "mgxj": "--", "range_percent": 0.85}
-
-
-{"tbmgsy": "0.40", "change_rate": 2.62, "jlr": "81.89", "big_res2": [2478, 3961, 3685], "zysr": "5.01", "id": "sz002088", "circulation_market_value": 29.28, "end": 14.39, "pb": 2.73, "mgxjll": "0.14", "pe": 27.32, "yylr": "73.01", "mgsy": "81.90", "total_value": 49.14, "big_res": [1536, 3246, 2970], "mgxj": "--", "range_percent": 2.79}
-
-
-{"tbmgsy": "0.23", "change_rate": 9.6, "jlr": "10.63", "big_res2": [1004, 1280, 1280], "zysr": "2.43", "id": "sz300647", "circulation_market_value": 6.87, "end": 23.58, "pb": 5.33, "mgxjll": "0.69", "pe": 52.06, "yylr": "3.78", "mgsy": "10.63", "total_value": 27.49, "big_res": [921, 1197, 1479], "mgxj": "--", "range_percent": 2.92}
-
-
-{"tbmgsy": "0.43", "change_rate": 1.12, "jlr": "--", "big_res2": [1432, 2551, 3523, 3135, 3616, 4746], "zysr": "18.24", "id": "sh601666", "circulation_market_value": 146.39, "end": 6.12, "pb": 1.19, "mgxjll": "0.85", "pe": 10.2, "yylr": "--", "mgsy": "135.23", "total_value": 146.39, "big_res": [-1545, -423, 741, 455, 936, 1965], "mgxj": "52.62", "range_percent": -1.29}
-
-
-serch over ==========
-begin ==========:2017-11-10 14:55:42
-{"tbmgsy": "0.49", "change_rate": 2.34, "jlr": "730.46", "big_res2": [20120, 22208, 25072, 27906, 30761, 29166, 28650, 28790], "zysr": "20.06", "id": "sh600782", "circulation_market_value": 171.39, "end": 6.16, "pb": 1.73, "mgxjll": "0.29", "pe": 10.7, "yylr": "--", "mgsy": "314.94", "total_value": 171.39, "big_res": [18670, 20964, 24310, 26875, 29645, 27565, 26517, 27094], "mgxj": "--", "range_percent": 0.16}
-
-
-{"tbmgsy": "0.39", "change_rate": 6.19, "jlr": "47.15", "big_res2": [249, 452, 452], "zysr": "44.66", "id": "sz002849", "circulation_market_value": 8.17, "end": 38.42, "pb": 6.16, "mgxjll": "0.49", "pe": 62.61, "yylr": "47.35", "mgsy": "47.13", "total_value": 32.7, "big_res": [257, 460, 782], "mgxj": "244.49", "range_percent": 1.83}
-
-
-{"tbmgsy": "0.22", "change_rate": 5.28, "jlr": "--", "big_res2": [4925, 4376, 8626, 5048, -2018, -653, -1390, -2209], "zysr": "87.09", "id": "sz300102", "circulation_market_value": 54.62, "end": 9.3, "pb": 2.42, "mgxjll": "0.28", "pe": 34.76, "yylr": "--", "mgsy": "153.67", "total_value": 64.04, "big_res": [7972, 7342, 12000, 8049, 1066, 2065, 986, -233], "mgxj": "--", "range_percent": 2.31}
-
-
-{"tbmgsy": "0.54", "change_rate": 1.63, "jlr": "--", "big_res2": [4155, 5221, 4113, 4141, 3376, 2854], "zysr": "9.98", "id": "sh600549", "circulation_market_value": 241.15, "end": 27.44, "pb": 4.31, "mgxjll": "0.13", "pe": 50.83, "yylr": "--", "mgsy": "122.18", "total_value": 295.56, "big_res": [2436, 3777, 2669, 2930, 2024, 2923], "mgxj": "--", "range_percent": 0.88}
-
-
-{"tbmgsy": "0.50", "change_rate": 1.9, "jlr": "53.03", "big_res2": [4907, 5221, 9050, 8715], "zysr": "83.70", "id": "sh600856", "circulation_market_value": 84.2, "end": 10.68, "pb": 3.01, "mgxjll": "0.88", "pe": 28.81, "yylr": "52.58", "mgsy": "53.02", "total_value": 149.24, "big_res": [1441, 1913, 6107, 5667], "mgxj": "47.46", "range_percent": -2.2}
-
-
-{"tbmgsy": "0.83", "change_rate": 1.33, "jlr": "199.11", "big_res2": [6015, 6792, 6345, 6766, 6467, 5873], "zysr": "22.86", "id": "sz002001", "circulation_market_value": 279.31, "end": 25.91, "pb": 3.42, "mgxjll": "0.45", "pe": 22.53, "yylr": "213.11", "mgsy": "199.13", "total_value": 283.45, "big_res": [10504, 11226, 10779, 11164, 10858, 10411], "mgxj": "--", "range_percent": -0.46}
-
-
-{"tbmgsy": "0.44", "change_rate": 2.9, "jlr": "--", "big_res2": [-8663, -8335, -8536, -7321, -2520, 612], "zysr": "47.03", "id": "sz002061", "circulation_market_value": 67.31, "end": 14.9, "pb": 3.45, "mgxjll": "0.17", "pe": 30.82, "yylr": "--", "mgsy": "129.49", "total_value": 98.26, "big_res": [-10764, -10466, -11027, -9608, -4494, -1594], "mgxj": "--", "range_percent": 0.34}
-
-
-{"tbmgsy": "0.39", "change_rate": 1.94, "jlr": "6.88", "big_res2": [7727, 9372, 9372, 9372, 9611, 9911], "zysr": "7.17", "id": "sz002690", "circulation_market_value": 60.69, "end": 19.04, "pb": 6.0, "mgxjll": "0.21", "pe": 35.55, "yylr": "2.91", "mgsy": "6.89", "total_value": 125.53, "big_res": [11238, 12883, 12590, 12340, 12763, 13063], "mgxj": "--", "range_percent": 2.53}
-
-
-{"tbmgsy": "0.40", "change_rate": 2.65, "jlr": "81.89", "big_res2": [2478, 3961, 3685, 3413], "zysr": "5.01", "id": "sz002088", "circulation_market_value": 29.28, "end": 14.37, "pb": 2.73, "mgxjll": "0.14", "pe": 27.32, "yylr": "73.01", "mgsy": "81.90", "total_value": 49.14, "big_res": [1536, 3246, 2970, 2698], "mgxj": "--", "range_percent": 2.64}
-
-
-{"tbmgsy": "0.67", "change_rate": 1.81, "jlr": "10642.07", "big_res2": [7710, 7428, 8428, 7995, 7995, 8674, 5737], "zysr": "182.51", "id": "sz000813", "circulation_market_value": 88.0, "end": 8.91, "pb": 4.64, "mgxjll": "0.16", "pe": 26.28, "yylr": "1216.61", "mgsy": "25159.09", "total_value": 203.75, "big_res": [9121, 8844, 9646, 9061, 8558, 8869, 5815], "mgxj": "--", "range_percent": -1.98}
-
-
-{"tbmgsy": "0.44", "change_rate": 13.25, "jlr": "1.82", "big_res2": [1242, 1242, 1553], "zysr": "28.11", "id": "sh603106", "circulation_market_value": 21.82, "end": 31.07, "pb": 5.6, "mgxjll": "0.89", "pe": 60.65, "yylr": "2.38", "mgsy": "1.82", "total_value": 87.28, "big_res": [187, -223, 477], "mgxj": "198.71", "range_percent": -0.32}
-
-
-{"tbmgsy": "0.24", "change_rate": 1.9, "jlr": "--", "big_res2": [-518, 448, 3476, 4693, 4042, 3628], "zysr": "11.05", "id": "sz000401", "circulation_market_value": 195.48, "end": 14.2, "pb": 1.9, "mgxjll": "0.97", "pe": 23.72, "yylr": "--", "mgsy": "103.07", "total_value": 195.53, "big_res": [-492, 1133, 3827, 5221, 4186, 3780], "mgxj": "--", "range_percent": -2.14}
-
-
-{"tbmgsy": "0.30", "change_rate": 8.88, "jlr": "5.67", "big_res2": [3437, 3652, 3347], "zysr": "17.40", "id": "sh603803", "circulation_market_value": 12.35, "end": 22.46, "pb": 3.79, "mgxjll": "0.60", "pe": 36.13, "yylr": "19.39", "mgsy": "5.66", "total_value": 91.54, "big_res": [4954, 5169, 4846], "mgxj": "46.82", "range_percent": 3.31}
-
-
-{"tbmgsy": "0.35", "change_rate": 1.65, "jlr": "10.25", "big_res2": [-1497, -695, -753, -541, 345, 1138, 1138], "zysr": "8.87", "id": "sh600295", "circulation_market_value": 80.54, "end": 13.34, "pb": 1.79, "mgxjll": "0.44", "pe": 30.44, "yylr": "101.12", "mgsy": "10.23", "total_value": 135.81, "big_res": [1787, 2472, 2266, 1978, 2898, 3963, 4289], "mgxj": "--", "range_percent": 1.37}
-
-
-{"tbmgsy": "0.47", "change_rate": 1.06, "jlr": "14.16", "big_res2": [-1348, -845, 140], "zysr": "7.21", "id": "sz002668", "circulation_market_value": 80.35, "end": 20.55, "pb": 3.89, "mgxjll": "0.40", "pe": 39.23, "yylr": "52.60", "mgsy": "14.15", "total_value": 130.78, "big_res": [-3052, -2549, -1564], "mgxj": "104.90", "range_percent": -0.15}
-
-
-{"tbmgsy": "0.23", "change_rate": 10.12, "jlr": "10.63", "big_res2": [1004, 1280, 1280, 1807], "zysr": "2.43", "id": "sz300647", "circulation_market_value": 6.87, "end": 23.63, "pb": 5.33, "mgxjll": "0.69", "pe": 52.06, "yylr": "3.78", "mgsy": "10.63", "total_value": 27.49, "big_res": [921, 1197, 1479, 2634], "mgxj": "--", "range_percent": 3.14}
-
-
-{"tbmgsy": "0.43", "change_rate": 1.12, "jlr": "--", "big_res2": [1432, 2551, 3523, 3135, 3616, 4746], "zysr": "18.24", "id": "sh601666", "circulation_market_value": 146.39, "end": 6.12, "pb": 1.19, "mgxjll": "0.85", "pe": 10.2, "yylr": "--", "mgsy": "135.23", "total_value": 146.39, "big_res": [-1545, -423, 741, 455, 936, 1965], "mgxj": "52.62", "range_percent": -1.29}
-
-
-{"end": 9.1, "change_rate": 4.56, "big_res2": [7006, 6640, 5251, 6660, 7880, 8289, 9568], "range_percent": 1.11, "big_res": [8897, 8381, 6954, 8247, 9570, 10007, 11436], "id": "sz002175"}
-
-
-{"tbmgsy": "0.61", "change_rate": 5.45, "jlr": "35.89", "big_res2": [1245, 1445], "zysr": "2.70", "id": "sz300625", "circulation_market_value": 21.55, "end": 31.3, "pb": 3.96, "mgxjll": "0.52", "pe": 34.97, "yylr": "34.33", "mgsy": "35.89", "total_value": 86.21, "big_res": [882, 1082], "mgxj": "11.20", "range_percent": 1.66}
-
-
-{"tbmgsy": "0.68", "change_rate": 1.64, "jlr": "3589.21", "big_res2": [-853, -618, -1058, 699], "zysr": "646.62", "id": "sh600090", "circulation_market_value": 67.74, "end": 9.67, "pb": 2.43, "mgxjll": "0.63", "pe": 22.13, "yylr": "718.40", "mgsy": "2186.49", "total_value": 138.78, "big_res": [636, 983, 434, 1229], "mgxj": "58.56", "range_percent": 0.31}
-
-
-{"tbmgsy": "0.49", "change_rate": 2.91, "jlr": "46.57", "big_res2": [8236, 8075, 7586, 9196, 9522, 10800], "zysr": "6.22", "id": "sz002016", "circulation_market_value": 63.64, "end": 9.98, "pb": 4.25, "mgxjll": "0.15", "pe": 20.16, "yylr": "64.48", "mgsy": "46.45", "total_value": 79.7, "big_res": [6346, 5900, 5689, 7070, 7569, 8999], "mgxj": "--", "range_percent": 1.32}
-
-
-{"tbmgsy": "0.24", "change_rate": 25.06, "jlr": "46.67", "big_res2": [1059, 1059, 1285], "zysr": "23.46", "id": "sz002881", "circulation_market_value": 9.52, "end": 36.88, "pb": 8.24, "mgxjll": "0.25", "pe": 81.5, "yylr": "45.91", "mgsy": "46.67", "total_value": 38.07, "big_res": [2865, 2612, 3004], "mgxj": "211.54", "range_percent": 3.33}
-
-
-serch over ==========
-begin ==========:2017-11-10 14:57:18
-{"tbmgsy": "0.49", "change_rate": 2.36, "jlr": "730.46", "big_res2": [20120, 22208, 25072, 27906, 30761, 29166, 28650, 28790, 23498], "zysr": "20.06", "id": "sh600782", "circulation_market_value": 171.39, "end": 6.16, "pb": 1.73, "mgxjll": "0.29", "pe": 10.7, "yylr": "--", "mgsy": "314.94", "total_value": 171.39, "big_res": [18670, 20964, 24310, 26875, 29645, 27565, 26517, 27094, 22120], "mgxj": "--", "range_percent": 0.16}
-
-
-{"tbmgsy": "0.39", "change_rate": 6.42, "jlr": "47.15", "big_res2": [249, 452, 452], "zysr": "44.66", "id": "sz002849", "circulation_market_value": 8.17, "end": 38.35, "pb": 6.16, "mgxjll": "0.49", "pe": 62.61, "yylr": "47.35", "mgsy": "47.13", "total_value": 32.7, "big_res": [257, 460, 782], "mgxj": "244.49", "range_percent": 1.64}
-
-
-{"tbmgsy": "1.18", "change_rate": 1.76, "jlr": "18.91", "big_res2": [-579, -579, -784, 1369], "zysr": "11.68", "id": "sz000666", "circulation_market_value": 62.2, "end": 21.3, "pb": 2.03, "mgxjll": "1.54", "pe": 15.64, "yylr": "8.96", "mgsy": "18.91", "total_value": 149.21, "big_res": [-1563, -1268, -1742, 534], "mgxj": "0.41", "range_percent": 0.52}
-
-
-{"tbmgsy": "0.22", "change_rate": 5.31, "jlr": "--", "big_res2": [4925, 4376, 8626, 5048, -2018, -653, -1390, -2209, -2319], "zysr": "87.09", "id": "sz300102", "circulation_market_value": 54.62, "end": 9.29, "pb": 2.42, "mgxjll": "0.28", "pe": 34.76, "yylr": "--", "mgsy": "153.67", "total_value": 64.04, "big_res": [7972, 7342, 12000, 8049, 1066, 2065, 986, -233, -628], "mgxj": "--", "range_percent": 2.2}
-
-
-{"tbmgsy": "0.54", "change_rate": 1.66, "jlr": "--", "big_res2": [4155, 5221, 4113, 4141, 3376, 2854, 3096], "zysr": "9.98", "id": "sh600549", "circulation_market_value": 241.15, "end": 27.45, "pb": 4.31, "mgxjll": "0.13", "pe": 50.83, "yylr": "--", "mgsy": "122.18", "total_value": 295.56, "big_res": [2436, 3777, 2669, 2930, 2024, 2923, 2453], "mgxj": "--", "range_percent": 0.92}
-
-
-{"tbmgsy": "0.29", "change_rate": 2.96, "jlr": "76.97", "big_res2": [-2523, -1533, -949, -1735, -3486, -5654, -4075, -1887, 907], "zysr": "34.09", "id": "sz002087", "circulation_market_value": 50.16, "end": 6.31, "pb": 1.58, "mgxjll": "0.22", "pe": 16.5, "yylr": "348.41", "mgsy": "12.63", "total_value": 50.23, "big_res": [-4320, -2757, -1721, -1978, -3958, -6040, -4318, -1165, 1511], "mgxj": "--", "range_percent": 2.6}
-
-
-{"tbmgsy": "0.50", "change_rate": 1.92, "jlr": "53.03", "big_res2": [4907, 5221, 9050, 8715, 9746], "zysr": "83.70", "id": "sh600856", "circulation_market_value": 84.2, "end": 10.7, "pb": 3.01, "mgxjll": "0.88", "pe": 28.81, "yylr": "52.58", "mgsy": "53.02", "total_value": 149.24, "big_res": [1441, 1913, 6107, 5667, 6698], "mgxj": "47.46", "range_percent": -2.01}
-
-
-{"tbmgsy": "0.56", "change_rate": 1.04, "jlr": "80.16", "big_res2": [187, 546], "zysr": "84.12", "id": "sz300269", "circulation_market_value": 67.98, "end": 19.46, "pb": 2.18, "mgxjll": "0.45", "pe": 23.86, "yylr": "78.57", "mgsy": "48.41", "total_value": 116.87, "big_res": [1745, 1991], "mgxj": "--", "range_percent": 2.15}
-
-
-{"tbmgsy": "0.83", "change_rate": 1.35, "jlr": "199.11", "big_res2": [6015, 6792, 6345, 6766, 6467, 5873, 5581], "zysr": "22.86", "id": "sz002001", "circulation_market_value": 279.31, "end": 25.88, "pb": 3.42, "mgxjll": "0.45", "pe": 22.53, "yylr": "213.11", "mgsy": "199.13", "total_value": 283.45, "big_res": [10504, 11226, 10779, 11164, 10858, 10411, 10196], "mgxj": "--", "range_percent": -0.58}
-
-
-{"tbmgsy": "0.44", "change_rate": 2.92, "jlr": "--", "big_res2": [-8663, -8335, -8536, -7321, -2520, 612, 612], "zysr": "47.03", "id": "sz002061", "circulation_market_value": 67.31, "end": 14.89, "pb": 3.45, "mgxjll": "0.17", "pe": 30.82, "yylr": "--", "mgsy": "129.49", "total_value": 98.26, "big_res": [-10764, -10466, -11027, -9608, -4494, -1594, -1848], "mgxj": "--", "range_percent": 0.27}
-
-
-{"tbmgsy": "0.62", "change_rate": 1.03, "jlr": "44.66", "big_res2": [1909, 3016], "zysr": "41.75", "id": "sz002572", "circulation_market_value": 232.41, "end": 38.3, "pb": 8.36, "mgxjll": "0.19", "pe": 41.64, "yylr": "36.80", "mgsy": "38.16", "total_value": 346.28, "big_res": [2515, 3406], "mgxj": "--", "range_percent": 2.13}
-
-
-{"tbmgsy": "0.39", "change_rate": 1.95, "jlr": "6.88", "big_res2": [7727, 9372, 9372, 9372, 9611, 9911], "zysr": "7.17", "id": "sz002690", "circulation_market_value": 60.69, "end": 19.04, "pb": 6.0, "mgxjll": "0.21", "pe": 35.55, "yylr": "2.91", "mgsy": "6.89", "total_value": 125.53, "big_res": [11238, 12883, 12590, 12340, 12763, 13063], "mgxj": "--", "range_percent": 2.53}
-
-
-{"tbmgsy": "0.40", "change_rate": 2.7, "jlr": "81.89", "big_res2": [2478, 3961, 3685, 3413, 3803], "zysr": "5.01", "id": "sz002088", "circulation_market_value": 29.28, "end": 14.4, "pb": 2.73, "mgxjll": "0.14", "pe": 27.32, "yylr": "73.01", "mgsy": "81.90", "total_value": 49.14, "big_res": [1536, 3246, 2970, 2698, 3191], "mgxj": "--", "range_percent": 2.86}
-
-
-{"tbmgsy": "0.67", "change_rate": 1.83, "jlr": "10642.07", "big_res2": [7710, 7428, 8428, 7995, 7995, 8674, 5737, 4612], "zysr": "182.51", "id": "sz000813", "circulation_market_value": 88.0, "end": 8.92, "pb": 4.64, "mgxjll": "0.16", "pe": 26.28, "yylr": "1216.61", "mgsy": "25159.09", "total_value": 203.75, "big_res": [9121, 8844, 9646, 9061, 8558, 8869, 5815, 5000], "mgxj": "--", "range_percent": -1.87}
-
-
-{"tbmgsy": "0.44", "change_rate": 13.35, "jlr": "1.82", "big_res2": [1242, 1242, 1553], "zysr": "28.11", "id": "sh603106", "circulation_market_value": 21.82, "end": 31.08, "pb": 5.6, "mgxjll": "0.89", "pe": 60.65, "yylr": "2.38", "mgsy": "1.82", "total_value": 87.28, "big_res": [187, -223, 477], "mgxj": "198.71", "range_percent": -0.29}
-
-
-{"tbmgsy": "0.24", "change_rate": 1.92, "jlr": "--", "big_res2": [-518, 448, 3476, 4693, 4042, 3628], "zysr": "11.05", "id": "sz000401", "circulation_market_value": 195.48, "end": 14.19, "pb": 1.9, "mgxjll": "0.97", "pe": 23.72, "yylr": "--", "mgsy": "103.07", "total_value": 195.53, "big_res": [-492, 1133, 3827, 5221, 4186, 3780], "mgxj": "--", "range_percent": -2.21}
-
-
-{"tbmgsy": "0.30", "change_rate": 8.96, "jlr": "5.67", "big_res2": [3437, 3652, 3347], "zysr": "17.40", "id": "sh603803", "circulation_market_value": 12.35, "end": 22.44, "pb": 3.79, "mgxjll": "0.60", "pe": 36.13, "yylr": "19.39", "mgsy": "5.66", "total_value": 91.54, "big_res": [4954, 5169, 4846], "mgxj": "46.82", "range_percent": 3.22}
-
-
-{"tbmgsy": "0.35", "change_rate": 1.67, "jlr": "10.25", "big_res2": [-1497, -695, -753, -541, 345, 1138, 1138, 1159], "zysr": "8.87", "id": "sh600295", "circulation_market_value": 80.54, "end": 13.33, "pb": 1.79, "mgxjll": "0.44", "pe": 30.44, "yylr": "101.12", "mgsy": "10.23", "total_value": 135.81, "big_res": [1787, 2472, 2266, 1978, 2898, 3963, 4289, 4551], "mgxj": "--", "range_percent": 1.29}
-
-
-{"tbmgsy": "0.47", "change_rate": 1.07, "jlr": "14.16", "big_res2": [-1348, -845, 140, 342], "zysr": "7.21", "id": "sz002668", "circulation_market_value": 80.35, "end": 20.53, "pb": 3.89, "mgxjll": "0.40", "pe": 39.23, "yylr": "52.60", "mgsy": "14.15", "total_value": 130.78, "big_res": [-3052, -2549, -1564, -1247], "mgxj": "104.90", "range_percent": -0.24}
-
-
-{"tbmgsy": "0.23", "change_rate": 10.47, "jlr": "10.63", "big_res2": [1004, 1280, 1280, 1807, 2167], "zysr": "2.43", "id": "sz300647", "circulation_market_value": 6.87, "end": 23.57, "pb": 5.33, "mgxjll": "0.69", "pe": 52.06, "yylr": "3.78", "mgsy": "10.63", "total_value": 27.49, "big_res": [921, 1197, 1479, 2634, 2890], "mgxj": "--", "range_percent": 2.88}
-
-
-{"tbmgsy": "0.43", "change_rate": 1.13, "jlr": "--", "big_res2": [1432, 2551, 3523, 3135, 3616, 4746, 6903], "zysr": "18.24", "id": "sh601666", "circulation_market_value": 146.39, "end": 6.11, "pb": 1.19, "mgxjll": "0.85", "pe": 10.2, "yylr": "--", "mgsy": "135.23", "total_value": 146.39, "big_res": [-1545, -423, 741, 455, 936, 1965, 4004], "mgxj": "52.62", "range_percent": -1.45}
-
-
-{"end": 9.09, "change_rate": 4.6, "big_res2": [7006, 6640, 5251, 6660, 7880, 8289, 9568, 7965], "range_percent": 1.0, "big_res": [8897, 8381, 6954, 8247, 9570, 10007, 11436, 9173], "id": "sz002175"}
-
-
-{"tbmgsy": "0.61", "change_rate": 5.57, "jlr": "35.89", "big_res2": [1245, 1445], "zysr": "2.70", "id": "sz300625", "circulation_market_value": 21.55, "end": 31.3, "pb": 3.96, "mgxjll": "0.52", "pe": 34.97, "yylr": "34.33", "mgsy": "35.89", "total_value": 86.21, "big_res": [882, 1082], "mgxj": "11.20", "range_percent": 1.66}
-
-
-{"tbmgsy": "0.68", "change_rate": 1.68, "jlr": "3589.21", "big_res2": [-853, -618, -1058, 699, 1290], "zysr": "646.62", "id": "sh600090", "circulation_market_value": 67.74, "end": 9.68, "pb": 2.43, "mgxjll": "0.63", "pe": 22.13, "yylr": "718.40", "mgsy": "2186.49", "total_value": 138.78, "big_res": [636, 983, 434, 1229, 1737], "mgxj": "58.56", "range_percent": 0.41}
-
-
-{"tbmgsy": "0.49", "change_rate": 2.93, "jlr": "46.57", "big_res2": [8236, 8075, 7586, 9196, 9522, 10800], "zysr": "6.22", "id": "sz002016", "circulation_market_value": 63.64, "end": 9.98, "pb": 4.25, "mgxjll": "0.15", "pe": 20.16, "yylr": "64.48", "mgsy": "46.45", "total_value": 79.7, "big_res": [6346, 5900, 5689, 7070, 7569, 8999], "mgxj": "--", "range_percent": 1.32}
-
-
-{"tbmgsy": "0.24", "change_rate": 25.34, "jlr": "46.67", "big_res2": [1059, 1059, 1285], "zysr": "23.46", "id": "sz002881", "circulation_market_value": 9.52, "end": 36.9, "pb": 8.24, "mgxjll": "0.25", "pe": 81.5, "yylr": "45.91", "mgsy": "46.67", "total_value": 38.07, "big_res": [2865, 2612, 3004], "mgxj": "211.54", "range_percent": 3.39}
-
-
-serch over ==========
-begin ==========:2017-11-10 14:58:48
-{"tbmgsy": "0.49", "change_rate": 2.38, "jlr": "730.46", "big_res2": [20120, 22208, 25072, 27906, 30761, 29166, 28650, 28790, 23498, 15529], "zysr": "20.06", "id": "sh600782", "circulation_market_value": 171.39, "end": 6.16, "pb": 1.73, "mgxjll": "0.29", "pe": 10.7, "yylr": "--", "mgsy": "314.94", "total_value": 171.39, "big_res": [18670, 20964, 24310, 26875, 29645, 27565, 26517, 27094, 22120, 14152], "mgxj": "--", "range_percent": 0.16}
-
-
-{"tbmgsy": "0.39", "change_rate": 6.44, "jlr": "47.15", "big_res2": [249, 452, 452], "zysr": "44.66", "id": "sz002849", "circulation_market_value": 8.17, "end": 38.33, "pb": 6.16, "mgxjll": "0.49", "pe": 62.61, "yylr": "47.35", "mgsy": "47.13", "total_value": 32.7, "big_res": [257, 460, 782], "mgxj": "244.49", "range_percent": 1.59}
-
-
-{"tbmgsy": "1.18", "change_rate": 1.77, "jlr": "18.91", "big_res2": [-579, -579, -784, 1369, 1601], "zysr": "11.68", "id": "sz000666", "circulation_market_value": 62.2, "end": 21.21, "pb": 2.03, "mgxjll": "1.54", "pe": 15.64, "yylr": "8.96", "mgsy": "18.91", "total_value": 149.21, "big_res": [-1563, -1268, -1742, 534, 766], "mgxj": "0.41", "range_percent": 0.09}
-
-
-{"tbmgsy": "0.33", "change_rate": 1.2, "jlr": "16.81", "big_res2": [464, 1565], "zysr": "13.09", "id": "sh600051", "circulation_market_value": 33.5, "end": 10.96, "pb": 1.59, "mgxjll": "0.38", "pe": 21.99, "yylr": "37.16", "mgsy": "16.81", "total_value": 33.92, "big_res": [-658, -402], "mgxj": "--", "range_percent": 0.46}
-
-
-{"tbmgsy": "0.22", "change_rate": 5.31, "jlr": "--", "big_res2": [4925, 4376, 8626, 5048, -2018, -653, -1390, -2209, -2319], "zysr": "87.09", "id": "sz300102", "circulation_market_value": 54.62, "end": 9.29, "pb": 2.42, "mgxjll": "0.28", "pe": 34.76, "yylr": "--", "mgsy": "153.67", "total_value": 64.04, "big_res": [7972, 7342, 12000, 8049, 1066, 2065, 986, -233, -628], "mgxj": "--", "range_percent": 2.2}
-
-
-{"tbmgsy": "0.54", "change_rate": 1.68, "jlr": "--", "big_res2": [4155, 5221, 4113, 4141, 3376, 2854, 3096, 4153], "zysr": "9.98", "id": "sh600549", "circulation_market_value": 241.15, "end": 27.48, "pb": 4.31, "mgxjll": "0.13", "pe": 50.83, "yylr": "--", "mgsy": "122.18", "total_value": 295.56, "big_res": [2436, 3777, 2669, 2930, 2024, 2923, 2453, 3348], "mgxj": "--", "range_percent": 1.03}
-
-
-{"tbmgsy": "0.52", "change_rate": 3.78, "jlr": "14.96", "big_res2": [498, 698], "zysr": "39.97", "id": "sh603421", "circulation_market_value": 13.01, "end": 30.9, "pb": 6.54, "mgxjll": "0.19", "pe": 39.09, "yylr": "2.39", "mgsy": "3.44", "total_value": 132.8, "big_res": [960, 1160], "mgxj": "--", "range_percent": 3.1}
-
-
-{"tbmgsy": "0.29", "change_rate": 2.96, "jlr": "76.97", "big_res2": [-2523, -1533, -949, -1735, -3486, -5654, -4075, -1887, 907, -256], "zysr": "34.09", "id": "sz002087", "circulation_market_value": 50.16, "end": 6.31, "pb": 1.58, "mgxjll": "0.22", "pe": 16.5, "yylr": "348.41", "mgsy": "12.63", "total_value": 50.23, "big_res": [-4320, -2757, -1721, -1978, -3958, -6040, -4318, -1165, 1511, 484], "mgxj": "--", "range_percent": 2.6}
-
-
-{"tbmgsy": "0.50", "change_rate": 1.93, "jlr": "53.03", "big_res2": [4907, 5221, 9050, 8715, 9746, 10951], "zysr": "83.70", "id": "sh600856", "circulation_market_value": 84.2, "end": 10.7, "pb": 3.01, "mgxjll": "0.88", "pe": 28.81, "yylr": "52.58", "mgsy": "53.02", "total_value": 149.24, "big_res": [1441, 1913, 6107, 5667, 6698, 7903], "mgxj": "47.46", "range_percent": -2.01}
-
-
-{"tbmgsy": "0.56", "change_rate": 1.04, "jlr": "80.16", "big_res2": [187, 546], "zysr": "84.12", "id": "sz300269", "circulation_market_value": 67.98, "end": 19.46, "pb": 2.18, "mgxjll": "0.45", "pe": 23.86, "yylr": "78.57", "mgsy": "48.41", "total_value": 116.87, "big_res": [1745, 1991], "mgxj": "--", "range_percent": 2.15}
-
-
-{"tbmgsy": "0.83", "change_rate": 1.36, "jlr": "199.11", "big_res2": [6015, 6792, 6345, 6766, 6467, 5873, 5581, 4531], "zysr": "22.86", "id": "sz002001", "circulation_market_value": 279.31, "end": 25.87, "pb": 3.42, "mgxjll": "0.45", "pe": 22.53, "yylr": "213.11", "mgsy": "199.13", "total_value": 283.45, "big_res": [10504, 11226, 10779, 11164, 10858, 10411, 10196, 9023], "mgxj": "--", "range_percent": -0.61}
-
-
-{"tbmgsy": "0.44", "change_rate": 2.93, "jlr": "--", "big_res2": [-8663, -8335, -8536, -7321, -2520, 612, 612, 307], "zysr": "47.03", "id": "sz002061", "circulation_market_value": 67.31, "end": 14.9, "pb": 3.45, "mgxjll": "0.17", "pe": 30.82, "yylr": "--", "mgsy": "129.49", "total_value": 98.26, "big_res": [-10764, -10466, -11027, -9608, -4494, -1594, -1848, -2249], "mgxj": "--", "range_percent": 0.34}
-
-
-{"tbmgsy": "0.62", "change_rate": 1.03, "jlr": "44.66", "big_res2": [1909, 3016], "zysr": "41.75", "id": "sz002572", "circulation_market_value": 232.41, "end": 38.31, "pb": 8.36, "mgxjll": "0.19", "pe": 41.64, "yylr": "36.80", "mgsy": "38.16", "total_value": 346.28, "big_res": [2515, 3406], "mgxj": "--", "range_percent": 2.16}
-
-
-{"tbmgsy": "0.39", "change_rate": 1.95, "jlr": "6.88", "big_res2": [7727, 9372, 9372, 9372, 9611, 9911], "zysr": "7.17", "id": "sz002690", "circulation_market_value": 60.69, "end": 19.04, "pb": 6.0, "mgxjll": "0.21", "pe": 35.55, "yylr": "2.91", "mgsy": "6.89", "total_value": 125.53, "big_res": [11238, 12883, 12590, 12340, 12763, 13063], "mgxj": "--", "range_percent": 2.53}
-
-
-{"tbmgsy": "0.40", "change_rate": 2.71, "jlr": "81.89", "big_res2": [2478, 3961, 3685, 3413, 3803], "zysr": "5.01", "id": "sz002088", "circulation_market_value": 29.28, "end": 14.4, "pb": 2.73, "mgxjll": "0.14", "pe": 27.32, "yylr": "73.01", "mgsy": "81.90", "total_value": 49.14, "big_res": [1536, 3246, 2970, 2698, 3191], "mgxj": "--", "range_percent": 2.86}
-
-
-{"tbmgsy": "0.67", "change_rate": 1.83, "jlr": "10642.07", "big_res2": [7710, 7428, 8428, 7995, 7995, 8674, 5737, 4612], "zysr": "182.51", "id": "sz000813", "circulation_market_value": 88.0, "end": 8.93, "pb": 4.64, "mgxjll": "0.16", "pe": 26.28, "yylr": "1216.61", "mgsy": "25159.09", "total_value": 203.75, "big_res": [9121, 8844, 9646, 9061, 8558, 8869, 5815, 5000], "mgxj": "--", "range_percent": -1.76}
-
-
-{"tbmgsy": "0.44", "change_rate": 13.51, "jlr": "1.82", "big_res2": [1242, 1242, 1553], "zysr": "28.11", "id": "sh603106", "circulation_market_value": 21.82, "end": 31.18, "pb": 5.6, "mgxjll": "0.89", "pe": 60.65, "yylr": "2.38", "mgsy": "1.82", "total_value": 87.28, "big_res": [187, -223, 477], "mgxj": "198.71", "range_percent": 0.03}
-
-
-{"tbmgsy": "0.24", "change_rate": 1.93, "jlr": "--", "big_res2": [-518, 448, 3476, 4693, 4042, 3628, 4008], "zysr": "11.05", "id": "sz000401", "circulation_market_value": 195.48, "end": 14.19, "pb": 1.9, "mgxjll": "0.97", "pe": 23.72, "yylr": "--", "mgsy": "103.07", "total_value": 195.53, "big_res": [-492, 1133, 3827, 5221, 4186, 3780, 4041], "mgxj": "--", "range_percent": -2.21}
-
-
-{"tbmgsy": "0.30", "change_rate": 9.04, "jlr": "5.67", "big_res2": [3437, 3652, 3347], "zysr": "17.40", "id": "sh603803", "circulation_market_value": 12.35, "end": 22.45, "pb": 3.79, "mgxjll": "0.60", "pe": 36.13, "yylr": "19.39", "mgsy": "5.66", "total_value": 91.54, "big_res": [4954, 5169, 4846], "mgxj": "46.82", "range_percent": 3.27}
-
-
-{"tbmgsy": "0.35", "change_rate": 1.71, "jlr": "10.25", "big_res2": [-1497, -695, -753, -541, 345, 1138, 1138, 1159, 1492], "zysr": "8.87", "id": "sh600295", "circulation_market_value": 80.54, "end": 13.3, "pb": 1.79, "mgxjll": "0.44", "pe": 30.44, "yylr": "101.12", "mgsy": "10.23", "total_value": 135.81, "big_res": [1787, 2472, 2266, 1978, 2898, 3963, 4289, 4551, 4823], "mgxj": "--", "range_percent": 1.06}
-
-
-{"tbmgsy": "0.47", "change_rate": 1.07, "jlr": "14.16", "big_res2": [-1348, -845, 140, 342], "zysr": "7.21", "id": "sz002668", "circulation_market_value": 80.35, "end": 20.54, "pb": 3.89, "mgxjll": "0.40", "pe": 39.23, "yylr": "52.60", "mgsy": "14.15", "total_value": 130.78, "big_res": [-3052, -2549, -1564, -1247], "mgxj": "104.90", "range_percent": -0.19}
-
-
-{"tbmgsy": "0.23", "change_rate": 10.47, "jlr": "10.63", "big_res2": [1004, 1280, 1280, 1807, 2167], "zysr": "2.43", "id": "sz300647", "circulation_market_value": 6.87, "end": 23.57, "pb": 5.33, "mgxjll": "0.69", "pe": 52.06, "yylr": "3.78", "mgsy": "10.63", "total_value": 27.49, "big_res": [921, 1197, 1479, 2634, 2890], "mgxj": "--", "range_percent": 2.88}
-
-
-{"tbmgsy": "0.43", "change_rate": 1.14, "jlr": "--", "big_res2": [1432, 2551, 3523, 3135, 3616, 4746, 6903, 8126], "zysr": "18.24", "id": "sh601666", "circulation_market_value": 146.39, "end": 6.12, "pb": 1.19, "mgxjll": "0.85", "pe": 10.2, "yylr": "--", "mgsy": "135.23", "total_value": 146.39, "big_res": [-1545, -423, 741, 455, 936, 1965, 4004, 5136], "mgxj": "52.62", "range_percent": -1.29}
-
-
-{"end": 9.09, "change_rate": 4.6, "big_res2": [7006, 6640, 5251, 6660, 7880, 8289, 9568, 7965], "range_percent": 1.0, "big_res": [8897, 8381, 6954, 8247, 9570, 10007, 11436, 9173], "id": "sz002175"}
-
-
-{"tbmgsy": "0.61", "change_rate": 5.57, "jlr": "35.89", "big_res2": [1245, 1445], "zysr": "2.70", "id": "sz300625", "circulation_market_value": 21.55, "end": 31.3, "pb": 3.96, "mgxjll": "0.52", "pe": 34.97, "yylr": "34.33", "mgsy": "35.89", "total_value": 86.21, "big_res": [882, 1082], "mgxj": "11.20", "range_percent": 1.66}
-
-
-{"tbmgsy": "0.23", "change_rate": 7.76, "jlr": "31.76", "big_res2": [820, 869, 1069], "zysr": "28.14", "id": "sh603825", "circulation_market_value": 15.39, "end": 39.14, "pb": 5.41, "mgxjll": "0.30", "pe": 59.96, "yylr": "27.97", "mgsy": "31.75", "total_value": 61.57, "big_res": [1348, 1051, 1365], "mgxj": "--", "range_percent": 1.72}
-
-
-{"tbmgsy": "0.68", "change_rate": 1.72, "jlr": "3589.21", "big_res2": [-853, -618, -1058, 699, 1290, 1701], "zysr": "646.62", "id": "sh600090", "circulation_market_value": 67.74, "end": 9.7, "pb": 2.43, "mgxjll": "0.63", "pe": 22.13, "yylr": "718.40", "mgsy": "2186.49", "total_value": 138.78, "big_res": [636, 983, 434, 1229, 1737, 2553], "mgxj": "58.56", "range_percent": 0.62}
-
-
-{"tbmgsy": "0.49", "change_rate": 2.94, "jlr": "46.57", "big_res2": [8236, 8075, 7586, 9196, 9522, 10800], "zysr": "6.22", "id": "sz002016", "circulation_market_value": 63.64, "end": 9.97, "pb": 4.25, "mgxjll": "0.15", "pe": 20.16, "yylr": "64.48", "mgsy": "46.45", "total_value": 79.7, "big_res": [6346, 5900, 5689, 7070, 7569, 8999], "mgxj": "--", "range_percent": 1.22}
-
-
-{"tbmgsy": "0.24", "change_rate": 25.35, "jlr": "46.67", "big_res2": [1059, 1059, 1285], "zysr": "23.46", "id": "sz002881", "circulation_market_value": 9.52, "end": 36.9, "pb": 8.24, "mgxjll": "0.25", "pe": 81.5, "yylr": "45.91", "mgsy": "46.67", "total_value": 38.07, "big_res": [2865, 2612, 3004], "mgxj": "211.54", "range_percent": 3.39}
-
-
-serch over ==========
-begin ==========:2017-11-10 15:00:41
-{"tbmgsy": "0.49", "change_rate": 2.41, "jlr": "730.46", "big_res2": [20120, 22208, 25072, 27906, 30761, 29166, 28650, 28790, 23498, 15529, 13859], "zysr": "20.06", "id": "sh600782", "circulation_market_value": 171.39, "end": 6.16, "pb": 1.73, "mgxjll": "0.29", "pe": 10.7, "yylr": "--", "mgsy": "314.94", "total_value": 171.39, "big_res": [18670, 20964, 24310, 26875, 29645, 27565, 26517, 27094, 22120, 14152, 12439], "mgxj": "--", "range_percent": 0.16}
-
-
-{"tbmgsy": "0.39", "change_rate": 6.44, "jlr": "47.15", "big_res2": [249, 452, 452], "zysr": "44.66", "id": "sz002849", "circulation_market_value": 8.17, "end": 38.33, "pb": 6.16, "mgxjll": "0.49", "pe": 62.61, "yylr": "47.35", "mgsy": "47.13", "total_value": 32.7, "big_res": [257, 460, 782], "mgxj": "244.49", "range_percent": 1.59}
-
-
-{"tbmgsy": "1.18", "change_rate": 1.77, "jlr": "18.91", "big_res2": [-579, -579, -784, 1369, 1601], "zysr": "11.68", "id": "sz000666", "circulation_market_value": 62.2, "end": 21.21, "pb": 2.03, "mgxjll": "1.54", "pe": 15.64, "yylr": "8.96", "mgsy": "18.91", "total_value": 149.21, "big_res": [-1563, -1268, -1742, 534, 766], "mgxj": "0.41", "range_percent": 0.09}
-
-
-{"tbmgsy": "0.33", "change_rate": 1.23, "jlr": "16.81", "big_res2": [464, 1565], "zysr": "13.09", "id": "sh600051", "circulation_market_value": 33.5, "end": 10.96, "pb": 1.59, "mgxjll": "0.38", "pe": 21.99, "yylr": "37.16", "mgsy": "16.81", "total_value": 33.92, "big_res": [-658, -402], "mgxj": "--", "range_percent": 0.46}
-
-
-{"tbmgsy": "0.22", "change_rate": 5.37, "jlr": "--", "big_res2": [4925, 4376, 8626, 5048, -2018, -653, -1390, -2209, -2319, -6298], "zysr": "87.09", "id": "sz300102", "circulation_market_value": 54.62, "end": 9.29, "pb": 2.42, "mgxjll": "0.28", "pe": 34.76, "yylr": "--", "mgsy": "153.67", "total_value": 64.04, "big_res": [7972, 7342, 12000, 8049, 1066, 2065, 986, -233, -628, -4607], "mgxj": "--", "range_percent": 2.2}
-
-
-{"tbmgsy": "0.54", "change_rate": 1.73, "jlr": "--", "big_res2": [4155, 5221, 4113, 4141, 3376, 2854, 3096, 4153, 4772], "zysr": "9.98", "id": "sh600549", "circulation_market_value": 241.15, "end": 27.49, "pb": 4.31, "mgxjll": "0.13", "pe": 50.83, "yylr": "--", "mgsy": "122.18", "total_value": 295.56, "big_res": [2436, 3777, 2669, 2930, 2024, 2923, 2453, 3348, 4542], "mgxj": "--", "range_percent": 1.07}
-
-
-{"tbmgsy": "0.52", "change_rate": 3.83, "jlr": "14.96", "big_res2": [498, 698], "zysr": "39.97", "id": "sh603421", "circulation_market_value": 13.01, "end": 30.92, "pb": 6.54, "mgxjll": "0.19", "pe": 39.09, "yylr": "2.39", "mgsy": "3.44", "total_value": 132.8, "big_res": [960, 1160], "mgxj": "--", "range_percent": 3.17}
-
-
-{"tbmgsy": "0.29", "change_rate": 2.96, "jlr": "76.97", "big_res2": [-2523, -1533, -949, -1735, -3486, -5654, -4075, -1887, 907, -256], "zysr": "34.09", "id": "sz002087", "circulation_market_value": 50.16, "end": 6.31, "pb": 1.58, "mgxjll": "0.22", "pe": 16.5, "yylr": "348.41", "mgsy": "12.63", "total_value": 50.23, "big_res": [-4320, -2757, -1721, -1978, -3958, -6040, -4318, -1165, 1511, 484], "mgxj": "--", "range_percent": 2.6}
-
-
-{"tbmgsy": "0.50", "change_rate": 2.0, "jlr": "53.03", "big_res2": [4907, 5221, 9050, 8715, 9746, 10951, 6864], "zysr": "83.70", "id": "sh600856", "circulation_market_value": 84.2, "end": 10.66, "pb": 3.01, "mgxjll": "0.88", "pe": 28.81, "yylr": "52.58", "mgsy": "53.02", "total_value": 149.24, "big_res": [1441, 1913, 6107, 5667, 6698, 7903, 3640], "mgxj": "47.46", "range_percent": -2.38}
-
-
-{"tbmgsy": "0.56", "change_rate": 1.04, "jlr": "80.16", "big_res2": [187, 546], "zysr": "84.12", "id": "sz300269", "circulation_market_value": 67.98, "end": 19.46, "pb": 2.18, "mgxjll": "0.45", "pe": 23.86, "yylr": "78.57", "mgsy": "48.41", "total_value": 116.87, "big_res": [1745, 1991], "mgxj": "--", "range_percent": 2.15}
-
-
-{"tbmgsy": "0.83", "change_rate": 1.36, "jlr": "199.11", "big_res2": [6015, 6792, 6345, 6766, 6467, 5873, 5581, 4531], "zysr": "22.86", "id": "sz002001", "circulation_market_value": 279.31, "end": 25.87, "pb": 3.42, "mgxjll": "0.45", "pe": 22.53, "yylr": "213.11", "mgsy": "199.13", "total_value": 283.45, "big_res": [10504, 11226, 10779, 11164, 10858, 10411, 10196, 9023], "mgxj": "--", "range_percent": -0.61}
-
-
-{"tbmgsy": "0.44", "change_rate": 2.93, "jlr": "--", "big_res2": [-8663, -8335, -8536, -7321, -2520, 612, 612, 307], "zysr": "47.03", "id": "sz002061", "circulation_market_value": 67.31, "end": 14.9, "pb": 3.45, "mgxjll": "0.17", "pe": 30.82, "yylr": "--", "mgsy": "129.49", "total_value": 98.26, "big_res": [-10764, -10466, -11027, -9608, -4494, -1594, -1848, -2249], "mgxj": "--", "range_percent": 0.34}
-
-
-{"tbmgsy": "0.62", "change_rate": 1.05, "jlr": "44.66", "big_res2": [1909, 3016], "zysr": "41.75", "id": "sz002572", "circulation_market_value": 232.41, "end": 38.25, "pb": 8.36, "mgxjll": "0.19", "pe": 41.64, "yylr": "36.80", "mgsy": "38.16", "total_value": 346.28, "big_res": [2515, 3406], "mgxj": "--", "range_percent": 2.0}
-
-
-{"tbmgsy": "0.39", "change_rate": 1.96, "jlr": "6.88", "big_res2": [7727, 9372, 9372, 9372, 9611, 9911, 9513], "zysr": "7.17", "id": "sz002690", "circulation_market_value": 60.69, "end": 19.04, "pb": 6.0, "mgxjll": "0.21", "pe": 35.55, "yylr": "2.91", "mgsy": "6.89", "total_value": 125.53, "big_res": [11238, 12883, 12590, 12340, 12763, 13063, 12665], "mgxj": "--", "range_percent": 2.53}
-
-
-{"tbmgsy": "0.40", "change_rate": 2.71, "jlr": "81.89", "big_res2": [2478, 3961, 3685, 3413, 3803], "zysr": "5.01", "id": "sz002088", "circulation_market_value": 29.28, "end": 14.4, "pb": 2.73, "mgxjll": "0.14", "pe": 27.32, "yylr": "73.01", "mgsy": "81.90", "total_value": 49.14, "big_res": [1536, 3246, 2970, 2698, 3191], "mgxj": "--", "range_percent": 2.86}
-
-
-{"tbmgsy": "0.67", "change_rate": 1.83, "jlr": "10642.07", "big_res2": [7710, 7428, 8428, 7995, 7995, 8674, 5737, 4612], "zysr": "182.51", "id": "sz000813", "circulation_market_value": 88.0, "end": 8.93, "pb": 4.64, "mgxjll": "0.16", "pe": 26.28, "yylr": "1216.61", "mgsy": "25159.09", "total_value": 203.75, "big_res": [9121, 8844, 9646, 9061, 8558, 8869, 5815, 5000], "mgxj": "--", "range_percent": -1.76}
-
-
-{"tbmgsy": "0.44", "change_rate": 13.75, "jlr": "1.82", "big_res2": [1242, 1242, 1553], "zysr": "28.11", "id": "sh603106", "circulation_market_value": 21.82, "end": 31.11, "pb": 5.6, "mgxjll": "0.89", "pe": 60.65, "yylr": "2.38", "mgsy": "1.82", "total_value": 87.28, "big_res": [187, -223, 477], "mgxj": "198.71", "range_percent": -0.19}
-
-
-{"tbmgsy": "0.24", "change_rate": 1.93, "jlr": "--", "big_res2": [-518, 448, 3476, 4693, 4042, 3628, 4008], "zysr": "11.05", "id": "sz000401", "circulation_market_value": 195.48, "end": 14.19, "pb": 1.9, "mgxjll": "0.97", "pe": 23.72, "yylr": "--", "mgsy": "103.07", "total_value": 195.53, "big_res": [-492, 1133, 3827, 5221, 4186, 3780, 4041], "mgxj": "--", "range_percent": -2.21}
-
-
-{"tbmgsy": "0.30", "change_rate": 9.15, "jlr": "5.67", "big_res2": [3437, 3652, 3347, 3577], "zysr": "17.40", "id": "sh603803", "circulation_market_value": 12.35, "end": 22.41, "pb": 3.79, "mgxjll": "0.60", "pe": 36.13, "yylr": "19.39", "mgsy": "5.66", "total_value": 91.54, "big_res": [4954, 5169, 4846, 5067], "mgxj": "46.82", "range_percent": 3.08}
-
-
-{"tbmgsy": "0.35", "change_rate": 1.72, "jlr": "10.25", "big_res2": [-1497, -695, -753, -541, 345, 1138, 1138, 1159, 1492], "zysr": "8.87", "id": "sh600295", "circulation_market_value": 80.54, "end": 13.32, "pb": 1.79, "mgxjll": "0.44", "pe": 30.44, "yylr": "101.12", "mgsy": "10.23", "total_value": 135.81, "big_res": [1787, 2472, 2266, 1978, 2898, 3963, 4289, 4551, 4823], "mgxj": "--", "range_percent": 1.22}
-
-
-{"tbmgsy": "0.47", "change_rate": 1.07, "jlr": "14.16", "big_res2": [-1348, -845, 140, 342], "zysr": "7.21", "id": "sz002668", "circulation_market_value": 80.35, "end": 20.54, "pb": 3.89, "mgxjll": "0.40", "pe": 39.23, "yylr": "52.60", "mgsy": "14.15", "total_value": 130.78, "big_res": [-3052, -2549, -1564, -1247], "mgxj": "104.90", "range_percent": -0.19}
-
-
-{"tbmgsy": "0.23", "change_rate": 10.68, "jlr": "10.63", "big_res2": [1004, 1280, 1280, 1807, 2167, 1546], "zysr": "2.43", "id": "sz300647", "circulation_market_value": 6.87, "end": 23.6, "pb": 5.33, "mgxjll": "0.69", "pe": 52.06, "yylr": "3.78", "mgsy": "10.63", "total_value": 27.49, "big_res": [921, 1197, 1479, 2634, 2890, 2269], "mgxj": "--", "range_percent": 3.01}
-
-
-{"tbmgsy": "0.43", "change_rate": 1.15, "jlr": "--", "big_res2": [1432, 2551, 3523, 3135, 3616, 4746, 6903, 8126, 8912], "zysr": "18.24", "id": "sh601666", "circulation_market_value": 146.39, "end": 6.11, "pb": 1.19, "mgxjll": "0.85", "pe": 10.2, "yylr": "--", "mgsy": "135.23", "total_value": 146.39, "big_res": [-1545, -423, 741, 455, 936, 1965, 4004, 5136, 5856], "mgxj": "52.62", "range_percent": -1.45}
-
-
-{"end": 9.09, "change_rate": 4.62, "big_res2": [7006, 6640, 5251, 6660, 7880, 8289, 9568, 7965, 7360], "range_percent": 1.0, "big_res": [8897, 8381, 6954, 8247, 9570, 10007, 11436, 9173, 8568], "id": "sz002175"}
-
-
-{"tbmgsy": "0.61", "change_rate": 5.64, "jlr": "35.89", "big_res2": [1245, 1445, 960], "zysr": "2.70", "id": "sz300625", "circulation_market_value": 21.55, "end": 31.3, "pb": 3.96, "mgxjll": "0.52", "pe": 34.97, "yylr": "34.33", "mgsy": "35.89", "total_value": 86.21, "big_res": [882, 1082, 706], "mgxj": "11.20", "range_percent": 1.66}
-
-
-{"tbmgsy": "0.23", "change_rate": 7.95, "jlr": "31.76", "big_res2": [820, 869, 1069, 1281], "zysr": "28.14", "id": "sh603825", "circulation_market_value": 15.39, "end": 39.18, "pb": 5.41, "mgxjll": "0.30", "pe": 59.96, "yylr": "27.97", "mgsy": "31.75", "total_value": 61.57, "big_res": [1348, 1051, 1365, 1686], "mgxj": "--", "range_percent": 1.82}
-
-
-{"tbmgsy": "0.68", "change_rate": 1.76, "jlr": "3589.21", "big_res2": [-853, -618, -1058, 699, 1290, 1701, 2988], "zysr": "646.62", "id": "sh600090", "circulation_market_value": 67.74, "end": 9.71, "pb": 2.43, "mgxjll": "0.63", "pe": 22.13, "yylr": "718.40", "mgsy": "2186.49", "total_value": 138.78, "big_res": [636, 983, 434, 1229, 1737, 2553, 3959], "mgxj": "58.56", "range_percent": 0.73}
-
-
-{"tbmgsy": "0.49", "change_rate": 2.94, "jlr": "46.57", "big_res2": [8236, 8075, 7586, 9196, 9522, 10800], "zysr": "6.22", "id": "sz002016", "circulation_market_value": 63.64, "end": 9.97, "pb": 4.25, "mgxjll": "0.15", "pe": 20.16, "yylr": "64.48", "mgsy": "46.45", "total_value": 79.7, "big_res": [6346, 5900, 5689, 7070, 7569, 8999], "mgxj": "--", "range_percent": 1.22}
-
-
-{"tbmgsy": "0.24", "change_rate": 25.7, "jlr": "46.67", "big_res2": [1059, 1059, 1285, 334], "zysr": "23.46", "id": "sz002881", "circulation_market_value": 9.52, "end": 36.9, "pb": 8.24, "mgxjll": "0.25", "pe": 81.5, "yylr": "45.91", "mgsy": "46.67", "total_value": 38.07, "big_res": [2865, 2612, 3004, 2053], "mgxj": "211.54", "range_percent": 3.39}
-
-
-serch over ==========
