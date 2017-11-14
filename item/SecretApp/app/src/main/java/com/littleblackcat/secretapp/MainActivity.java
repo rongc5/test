@@ -14,13 +14,17 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.littleblackcat.api.APIService;
+import com.littleblackcat.model.CityResponse;
 import com.littleblackcat.net.AppClient;
+import com.littleblackcat.util.LogUtil;
 
+import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+    public static final String TAG = MainActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +50,7 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        requestBySubscribe();
     }
 
     @Override
@@ -109,7 +114,22 @@ public class MainActivity extends AppCompatActivity
         AppClient.create(APIService.class).getSearch("102")
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe();
+                .subscribe(new Subscriber<CityResponse>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        LogUtil.d(TAG, "on err");
+                    }
+
+                    @Override
+                    public void onNext(CityResponse cityResponse) {
+
+                    }
+                });
 
     }
 }

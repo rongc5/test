@@ -30,17 +30,30 @@
       <file leaf-file-name="get_stock_id.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/../../../stock/py/get_stock_id.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="90" column="0" selection-start="2153" selection-end="2153" vertical-scroll-proportion="0.0" vertical-offset="1710" max-vertical-offset="2033">
+            <state line="90" column="0" selection-start="2153" selection-end="2153" vertical-scroll-proportion="0.0" vertical-offset="547" max-vertical-offset="1995">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="stock_info_bak.py" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/../../../stock/py/stock_info_bak.py">
+      <file leaf-file-name="re_test_case.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/../../../python/re_test_case.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="1247" column="74" selection-start="38828" selection-end="38828" vertical-scroll-proportion="0.0" vertical-offset="23465" max-vertical-offset="24586">
-              <folding />
+            <state line="4" column="14" selection-start="66" selection-end="66" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="437">
+              <folding>
+                <element signature="e#37#51#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="spider.py" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/../../../python/spider.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="12" column="43" selection-start="363" selection-end="363" vertical-scroll-proportion="0.47599164" vertical-offset="0" max-vertical-offset="479">
+              <folding>
+                <element signature="e#0#14#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -48,7 +61,7 @@
       <file leaf-file-name="remove_expired.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/../../../python/remove_expired.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="254" column="0" selection-start="6452" selection-end="6452" vertical-scroll-proportion="0.0" vertical-offset="4826" max-vertical-offset="5035">
+            <state line="256" column="0" selection-start="6454" selection-end="6480" vertical-scroll-proportion="0.0" vertical-offset="4518" max-vertical-offset="4997">
               <folding />
             </state>
           </provider>
@@ -57,7 +70,7 @@
       <file leaf-file-name="monitor.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/../../../stock/py/monitor.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="231" column="33" selection-start="7268" selection-end="7280" vertical-scroll-proportion="0.0" vertical-offset="4389" max-vertical-offset="5776">
+            <state line="231" column="33" selection-start="7268" selection-end="7280" vertical-scroll-proportion="0.0" vertical-offset="4389" max-vertical-offset="5548">
               <folding />
             </state>
           </provider>
@@ -73,7 +86,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/../../../stock/py/get_plate_list.py" />
         <option value="$PROJECT_DIR$/../../../stock/py/get_stock_urls.py" />
         <option value="$PROJECT_DIR$/../../../stock/py/mysql.py" />
         <option value="$PROJECT_DIR$/../../../stock/py/get_stock_list.py" />
@@ -89,6 +101,7 @@
         <option value="$PROJECT_DIR$/../../../stock/py/api" />
         <option value="$PROJECT_DIR$/../../../stock/py/monitor.py" />
         <option value="$PROJECT_DIR$/../../../stock/py/stock_info_bak.py" />
+        <option value="$PROJECT_DIR$/../../../python/re_test_case.py" />
       </list>
     </option>
   </component>
@@ -138,7 +151,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="py" />
+              <option name="myItemId" value="python" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -160,12 +173,12 @@
   <component name="PropertiesComponent">
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="options.lastSelected" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
     <property name="recentsLimit" value="5" />
+    <property name="options.lastSelected" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../../../python" />
     <property name="FullScreen" value="false" />
-    <property name="options.searchVisible" value="true" />
     <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="options.searchVisible" value="true" />
   </component>
   <component name="PyConsoleOptionsProvider">
     <option name="myPythonConsoleState">
@@ -319,9 +332,6 @@
       <option name="PARAMETERS" value="" />
       <method />
     </configuration>
-    <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug" singleton="true">
-      <method />
-    </configuration>
     <configuration default="true" type="tests" factoryName="Unittests">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -343,6 +353,9 @@
       <option name="PUREUNITTEST" value="true" />
       <option name="PARAMS" value="" />
       <option name="USE_PARAM" value="false" />
+      <method />
+    </configuration>
+    <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug" singleton="true">
       <method />
     </configuration>
     <configuration default="true" type="tests" factoryName="Doctests">
@@ -416,7 +429,7 @@
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.25" sideWeight="0.68378377" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.25" sideWeight="0.68378377" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.31621623" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
@@ -445,23 +458,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/../../../stock/py/monitor.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="139" column="0" selection-start="4421" selection-end="4421" vertical-scroll-proportion="0.0" vertical-offset="2641" max-vertical-offset="5700">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../../stock/py/save_stock_detail.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="-2.3849373" vertical-offset="1140" max-vertical-offset="2489" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../../python/asp_parse.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="34" column="10" selection-start="1366" selection-end="1389" vertical-scroll-proportion="1.3862661" vertical-offset="0" max-vertical-offset="1596" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../../../python/asplog_2_json.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="89" column="27" selection-start="3508" selection-end="3508" vertical-scroll-proportion="0.0" vertical-offset="1454" max-vertical-offset="1919" />
@@ -502,9 +498,14 @@
         <state line="749" column="44" selection-start="22501" selection-end="22508" vertical-scroll-proportion="-5.1878915" vertical-offset="16716" max-vertical-offset="17594" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../../../stock/py/monitor.py">
+    <entry file="file://$PROJECT_DIR$/../../../stock/py/api">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="231" column="33" selection-start="7268" selection-end="7280" vertical-scroll-proportion="0.0" vertical-offset="4097" max-vertical-offset="5548">
+        <state line="30" column="7" selection-start="1786" selection-end="1789" vertical-scroll-proportion="0.0" vertical-offset="389" max-vertical-offset="2774" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../../stock/py/stock_info_bak.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="1247" column="74" selection-start="38827" selection-end="38827" vertical-scroll-proportion="6.6283927" vertical-offset="20290" max-vertical-offset="24586">
           <folding />
         </state>
       </provider>
@@ -516,22 +517,42 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../../../python/remove_expired.py">
+    <entry file="file://$PROJECT_DIR$/../../../stock/py/monitor.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="254" column="0" selection-start="6452" selection-end="6452" vertical-scroll-proportion="0.0" vertical-offset="3201" max-vertical-offset="4997">
+        <state line="231" column="33" selection-start="7268" selection-end="7280" vertical-scroll-proportion="0.0" vertical-offset="4097" max-vertical-offset="5548">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../../../stock/py/api">
+    <entry file="file://$PROJECT_DIR$/../../../python/test.json">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="30" column="7" selection-start="1786" selection-end="1789" vertical-scroll-proportion="0.0" vertical-offset="389" max-vertical-offset="2774" />
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1900">
+          <folding />
+        </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../../../stock/py/stock_info_bak.py">
+    <entry file="file://$PROJECT_DIR$/../../../python/remove_expired.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="1247" column="74" selection-start="38828" selection-end="38828" vertical-scroll-proportion="0.0" vertical-offset="23465" max-vertical-offset="24586">
+        <state line="256" column="0" selection-start="6454" selection-end="6480" vertical-scroll-proportion="0.0" vertical-offset="4518" max-vertical-offset="4997">
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../../python/re_test_case.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="4" column="14" selection-start="66" selection-end="66" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="437">
+          <folding>
+            <element signature="e#37#51#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../../python/spider.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="12" column="43" selection-start="363" selection-end="363" vertical-scroll-proportion="0.47599164" vertical-offset="0" max-vertical-offset="479">
+          <folding>
+            <element signature="e#0#14#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
