@@ -1042,7 +1042,7 @@ def get_data_direction(arr):
         return False
 
 
-def get_positive_weight(arr):
+def get_positive_ratio(arr):
     length = len(arr)
     if length <= 1:
         return 0
@@ -1250,8 +1250,8 @@ def do_search_short():
                 id_dic[key]['res2_vol_ratio'].append(id_dic[key]['big_res2'][-1] *1.0/id_dic[key]['vol'])
                 #print id_dic[key]['res2_vol_ratio'][-1]
 
-            id_dic[key]['big_res_weight'] = get_positive_weight(id_dic[key]['res_vol_ratio'])
-            id_dic[key]['big_res2_weight'] = get_positive_weight(id_dic[key]['res2_vol_ratio'])
+            id_dic[key]['big_res_weight'] = get_positive_ratio(id_dic[key]['res_vol_ratio'])
+            id_dic[key]['big_res2_weight'] = get_positive_ratio(id_dic[key]['res2_vol_ratio'])
 
             if flag_one and flag_two:
                 search_dic[key] = id_dic[key]

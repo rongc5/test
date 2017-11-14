@@ -1083,11 +1083,11 @@ def log_print_res(search_dic):
             if search_dic[key].has_key('code'):
                 search_dic[key].pop('code')
 
-            if search_dic[key].has_key('big_res_ratio') and search_dic[key]['big_res_ratio'] < 0.6:
+            if search_dic[key].has_key('big_res_weight') and search_dic[key]['big_res_weight'] < 0.6:
                 remove_ley.append(key)
                 continue
 
-            if search_dic[key].has_key('big_res2_ratio') and search_dic[key]['big_res2_ratio'] < 0.6:
+            if search_dic[key].has_key('big_res2_weight') and search_dic[key]['big_res2_weight'] < 0.6:
                 remove_ley.append(key)
                 continue
 
@@ -1250,8 +1250,8 @@ def do_search_short():
                 id_dic[key]['res2_vol_ratio'].append(id_dic[key]['big_res2'][-1] *1.0/id_dic[key]['vol'])
                 #print id_dic[key]['res2_vol_ratio'][-1]
 
-            id_dic[key]['big_res_ratio'] = get_positive_ratio(id_dic[key]['res_vol_ratio'])
-            id_dic[key]['big_res2_ratio'] = get_positive_ratio(id_dic[key]['res2_vol_ratio'])
+            id_dic[key]['big_res_weight'] = get_positive_ratio(id_dic[key]['res_vol_ratio'])
+            id_dic[key]['big_res2_weight'] = get_positive_ratio(id_dic[key]['res2_vol_ratio'])
 
             if flag_one and flag_two:
                 search_dic[key] = id_dic[key]
