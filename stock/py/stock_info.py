@@ -1183,7 +1183,7 @@ def do_search_short():
             if  res.has_key('range_percent'):
                 #remove_ley.append(key)
 
-                if res['range_percent'] < -3 or  res['range_percent'] > 3.9:
+                if res['range_percent'] < -3.9 or  res['range_percent'] > 3.9:
                     remove_ley.append(key)
                     if key in search_dic:
                         search_dic.pop(key)
