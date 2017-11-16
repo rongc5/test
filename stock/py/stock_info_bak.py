@@ -842,7 +842,7 @@ def get_basic_list(id_dic):
             log_write('err_base_list', key)
             continue
 
-        if res['circulation_market_value'] >= 300:
+        if res['circulation_market_value'] >= 390:
             continue
 
         if res['total_value'] >= 500:
@@ -851,7 +851,7 @@ def get_basic_list(id_dic):
         if res['pe'] > 99 or res['pe'] < 0:
             continue
 
-        if res['end'] > 39 or res['end'] <= 2:
+        if res['end'] > 39 or res['end'] <= 3:
             continue
 
         res['mgzb'] = get_stockid_mgzb(key)
@@ -862,8 +862,8 @@ def get_basic_list(id_dic):
         if '--' not in res['mgzb'][0]['tbmgsy'] and  float(res['mgzb'][0]['tbmgsy']) < 0.1:
             continue
 
-        #if '--' not in res['mgzb'][0]['mgxjll'] and float(res['mgzb'][0]['mgxjll']) < 0.05:
-            #continue
+        if '--' not in res['mgzb'][0]['mgxjll'] and float(res['mgzb'][0]['mgxjll']) < 0.05:
+            continue
 
         res['cznl'] = get_stockid_cznl(key)
         if len(res['cznl']) < 1:
@@ -1083,18 +1083,20 @@ def log_print_res(search_dic):
             if search_dic[key].has_key('code'):
                 search_dic[key].pop('code')
 
-            if search_dic[key].has_key('big_res_weight') and search_dic[key]['big_res_weight'] < 0.6:
-                remove_ley.append(key)
-                continue
-
-            if search_dic[key].has_key('big_res2_weight') and search_dic[key]['big_res2_weight'] < 0.6:
-                remove_ley.append(key)
-                continue
-
-            money = get_money_flow(key)
-
             if not search_dic[key].has_key('main_force'):
                     search_dic[key]['main_force'] = []
+
+            if search_dic[key].has_key('big_res_weight') and search_dic[key]['big_res_weight'] < 0.6:
+                if search_dic[key].has_key('main_force') and len(search_dic[key]['main_force']) and search_dic[key]['main_force'][-1] < 500:
+                    remove_ley.append(key)
+                    continue
+
+            if search_dic[key].has_key('big_res2_weight') and search_dic[key]['big_res2_weight'] < 0.6:
+                if search_dic[key].has_key('main_force') and len(search_dic[key]['main_force']) and search_dic[key]['main_force'][-1] < 500:
+                    remove_ley.append(key)
+                    continue
+
+            money = get_money_flow(key)
 
             if money.has_key('main_force'):
                 if len(search_dic[key]['main_force']) and abs(search_dic[key]['main_force'][-1] - money['main_force']) >= 50:
@@ -1104,7 +1106,7 @@ def log_print_res(search_dic):
 
             log_write('res_list', json.dumps(search_dic[key]))
             log_write('res_list', '\n')
-            print 'search res', search_dic[key]
+            print 'search res', search_dic[key], '\n'
 
     log_write('res_list', 'serch over ==========')
     for key in remove_ley:
@@ -1162,7 +1164,7 @@ def do_search_short():
         remove_ley = []
         print 'after remove_ley', len(id_dic)
         for key in id_dic:
-            #time.sleep(0.03)
+            time.sleep(0.01)
 
             if not id_dic[key].has_key('next_time'):
                 id_dic[key]['next_time'] = 0
@@ -1246,8 +1248,11 @@ def do_search_short():
                 flag_three = True
 
             if len(id_dic[key]['big_res']) and id_dic[key].has_key('vol'):
-                id_dic[key]['res_vol_ratio'].append(id_dic[key]['big_res'][-1] *1.0/id_dic[key]['vol'])
-                id_dic[key]['res2_vol_ratio'].append(id_dic[key]['big_res2'][-1] *1.0/id_dic[key]['vol'])
+                res_vol_ratio = id_dic[key]['big_res'][-1] *1.0/id_dic[key]['vol']
+                res2_vol_ratio = id_dic[key]['big_res2'][-1] *1.0/id_dic[key]['vol']
+                if res_vol_ratio not in id_dic[key]['res_vol_ratio']:
+                    id_dic[key]['res_vol_ratio'].append(res_vol_ratio)
+                    id_dic[key]['res2_vol_ratio'].append(res2_vol_ratio)
                 #print id_dic[key]['res2_vol_ratio'][-1]
 
             id_dic[key]['big_res_weight'] = get_positive_ratio(id_dic[key]['res_vol_ratio'])
@@ -1294,7 +1299,9 @@ def do_search_short():
 #不是说长下引线就能买， 高位， 主力先出货， 再用少量资金拉起来吸引
 #高位下引线， 股价快到顶了
 #跟封盘， 毕竟高位跟风盘不少， 再出货
-#macd 鸭子张嘴， 会加速下跌
+#macd 鸭子张嘴， 会加速下跌, 买之前一定要看一下15分钟macd、DMA
 #涨是需要理由的， 跌不需要,配股的股就不要进了， 号称散户的周扒皮
+#次新和业绩差的能不碰还是不要碰了, 选股还是要选强的
+#没有买盘的拉升都是骗人的
 if __name__ == '__main__':
     do_search_short()
