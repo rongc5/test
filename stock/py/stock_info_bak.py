@@ -819,6 +819,12 @@ def get_outDxf_list(start, end):
     #print value
     id_dic= json.loads(value)
 
+    if os.path.isfile('out_dxf_list'):
+        os.remove('out_dxf_list')
+    for key in id_dic:
+        str = '%s %s' % (key[0], key[2])
+        log_write('out_dxf_list', str)
+
     return id_dic
 
 
@@ -1253,6 +1259,10 @@ def do_search_short():
                 if res_vol_ratio not in id_dic[key]['res_vol_ratio']:
                     id_dic[key]['res_vol_ratio'].append(res_vol_ratio)
                     id_dic[key]['res2_vol_ratio'].append(res2_vol_ratio)
+
+                if res_vol_ratio < 0 or res2_vol_ratio < 0:
+                    if key in search_dic:
+                        search_dic.pop(key)
                 #print id_dic[key]['res2_vol_ratio'][-1]
 
             id_dic[key]['big_res_weight'] = get_positive_ratio(id_dic[key]['res_vol_ratio'])
@@ -1303,5 +1313,7 @@ def do_search_short():
 #涨是需要理由的， 跌不需要,配股的股就不要进了， 号称散户的周扒皮
 #次新和业绩差的能不碰还是不要碰了, 选股还是要选强的
 #没有买盘的拉升都是骗人的
+#割肉要坚决， 没有什么后悔的, 不看上证、a50 那是不行的
+#不要做T, 不看好就跑， 看好就买， 做T, 买了， 想跑跑不了
 if __name__ == '__main__':
     do_search_short()
