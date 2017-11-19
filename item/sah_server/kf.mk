@@ -19,13 +19,12 @@ CC  = g++ $(CPPFLAGS)
 
 
 OBJ	= $(LOC_DIR)/main.o     \
-	  $(LOC_DIR)/kf_data_process.o \
-	  $(LOC_DIR)/ws_data_process.o \
+	  $(LOC_DIR)/sah_data_process.o \
 
 
 AR=ar
 
-server=kf_ser
+server=sah_ser
 
 all	: $(server)
 	

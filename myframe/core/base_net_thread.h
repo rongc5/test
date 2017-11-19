@@ -15,7 +15,7 @@ class base_net_thread:public base_thread
 
         virtual void *run();
 
-        virtual void init();
+        virtual void net_thread_init();
 
         virtual void put_msg(ObjId & id, normal_msg * p_msg);
 

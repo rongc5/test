@@ -41,7 +41,9 @@ void set_unblock(int fd);
 
 uint64_t GetMilliSecond();
 
-time_t get_date_str(char dest[], size_t dest_len, const char * format);
+time_t get_timestr(char dest[], size_t dest_len, const char * format);
+
+time_t get_timestr_millSecond(char dest[], size_t dest_len, const char * format);
 
 int UrlEncode(const string &sSrc, string &sDest);
 

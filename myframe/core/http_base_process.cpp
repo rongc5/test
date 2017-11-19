@@ -2,6 +2,7 @@
 #include "base_connect.h"
 #include "common_exception.h"
 #include "http_base_data_process.h"
+#include "log_helper.h"
 
 http_base_process::http_base_process(base_connect *p):base_data_process(p)
 {

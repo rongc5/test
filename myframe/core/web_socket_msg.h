@@ -2,7 +2,6 @@
 #define __WEB_SOCKET_MSG_H__
 
 
-#include "log_helper.h"
 #include "base_def.h"
 
 

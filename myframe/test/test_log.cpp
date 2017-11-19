@@ -5,7 +5,6 @@
 int main(int argc, char *argv[])
 {
      log_conf conf;
-     conf.deal_mode = 3;
 
      LOG_INIT(conf);
 

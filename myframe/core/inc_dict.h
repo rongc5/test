@@ -6,7 +6,7 @@
 #include <new>
 #include "link_pool.h"
 #include "im_vector.h"
-#include "log_helper.h"
+#include "common_util.h"
 
 template <typename Type>
 struct dict_node_t{
@@ -204,7 +204,7 @@ int inc_dict_t<Type>::create(int hash_size, int chunk_size, link_node_pool_t< di
 			m_p_node_pool = new link_node_pool_t< dict_node_t<Type> >(chunk_size);
 		}
 		catch(std::bad_alloc){
-			LOG_WARNING("Failed to allocate memory for inc_dict");
+			PDEBUG("Failed to allocate memory for inc_dict");
 			return -1;
 		}
 		m_is_private_pool = true;
@@ -234,7 +234,7 @@ int inc_dict_t<Type>::build_table(int hash_num)
 
 	hash_entry_t * pp_new_hash = (hash_entry_t *)realloc(m_hash.pp_hash, new_hash_num * sizeof(hash_entry_t));
 	if(NULL == pp_new_hash){
-		LOG_WARNING("Failed to allocate memory for hash table");
+		PDEBUG("Failed to allocate memory for hash table");
 		return -1;
 	}else{
 		m_mem_consume += (new_hash_num - m_hash.hash_num) * sizeof(hash_entry_t);
@@ -383,7 +383,7 @@ Type * inc_dict_t<Type>::add_node(const uint32_t sign_list[2], const Type * p_da
 		mp_node = m_p_node_pool->get_link_node();
 		if(MP_NULL_POINT == mp_node)
 		{
-			LOG_WARNING("Failed to get node from link pool");
+			PDEBUG("Failed to get node from link pool");
 			return NULL;
 		}
 	}
@@ -551,7 +551,7 @@ template <typename Type> uint32_t inc_dict_t<Type>::get_node_num()
 template <typename Type>
 int inc_dict_t<Type>::tranverse_print()
 {
-	printf("\n----------tranverse_print----------\n\n");
+	PDEBUG("\n----------tranverse_print----------\n\n");
 	
 	int hash_num = m_hash.hash_num;
 	hash_entry_t * pp_hash =  m_hash.pp_hash;
@@ -566,13 +566,13 @@ int inc_dict_t<Type>::tranverse_print()
 			continue;
 		}
 		
-		printf("entry:\t%d\n", level_idx);
+		PDEBUG("entry:\t%d\n", level_idx);
 		
 		//new list
 		mp_cur_node = pp_hash[level_idx].new_list_head;
 		if(mp_cur_node != MP_NULL_POINT)
 		{
-			printf("new_list_head\t");
+			PDEBUG("new_list_head\t");
 		}
 		
 		while(MP_NULL_POINT != mp_cur_node)
@@ -583,17 +583,17 @@ int inc_dict_t<Type>::tranverse_print()
 				break;
 			}
 			
-			printf("%u,%u-->", real_node->cu_data.first_sign, real_node->cu_data.second_sign);
+			PDEBUG("%u,%u-->", real_node->cu_data.first_sign, real_node->cu_data.second_sign);
 			mp_cur_node = real_node->p_next;
 		}
 		
-		printf("\n");
+		PDEBUG("\n");
 		
 		//old list
 		mp_cur_node = pp_hash[level_idx].old_list_head;
 		if(mp_cur_node != MP_NULL_POINT)
 		{
-			printf("old_list_head\t");
+			PDEBUG("old_list_head\t");
 		}
 		
 		hash_node_t * cur_head_node = NULL;
@@ -605,17 +605,17 @@ int inc_dict_t<Type>::tranverse_print()
 				break;
 			}
 			
-			printf("%u,%u-->", real_node->cu_data.first_sign, real_node->cu_data.second_sign);
+			PDEBUG("%u,%u-->", real_node->cu_data.first_sign, real_node->cu_data.second_sign);
 			if(mp_cur_node == pp_hash[level_idx].old_list_tail)
 			{
 				cur_head_node = m_p_node_pool->get_real_point(real_node->p_next);
 				if(cur_head_node == NULL)
 				{
-					printf("|||| NULL\n");
+					PDEBUG("|||| NULL\n");
 				}
 				else
 				{
-					printf("||||%u,%u\n", cur_head_node->cu_data.first_sign, cur_head_node->cu_data.second_sign);
+					PDEBUG("||||%u,%u\n", cur_head_node->cu_data.first_sign, cur_head_node->cu_data.second_sign);
 				}
 				
 				break;
@@ -626,7 +626,7 @@ int inc_dict_t<Type>::tranverse_print()
 			}
 		}
 		
-		printf("------------------------------\n");
+		PDEBUG("------------------------------\n");
 	}
 	
 	return 0;

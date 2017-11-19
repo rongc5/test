@@ -7,6 +7,7 @@ enum normal_msg_op
 {
     MSG_CONNECT = 1,
     MSG_TIMER,
+    MSG_LOG,
     PASS_NEW_MSG
 };
 
@@ -67,7 +68,43 @@ class timer_msg:public normal_msg
         uint64_t _reach_time;
 };
 
+enum LogType {
+    LOGFATAL,
+    LOGWARNING,
+    LOGNOTICE,
+    LOGTRACE,
+    LOGDEBUG,
+    LOGSIZE
+};
 
+struct log_conf{
+    uint32_t file_max_size;
+    char log_path[SIZE_LEN_256];
+    char prefix_file_name[SIZE_LEN_256];
+    LogType type;
+
+    log_conf();
+};
+
+class log_msg:public normal_msg
+{
+    public:
+        log_msg()
+        {
+            _msg_op = MSG_LOG;
+            _buf = NULL;
+        }
+        virtual ~log_msg()
+        {
+            if (_buf){
+                delete _buf;
+                _buf = NULL;
+            }
+        }
+
+        LogType _type;
+        vector<char> * _buf;
+};
 
 
 

@@ -1,10 +1,10 @@
 #ifndef __IM_VECTOR_HEADER__
 #define __IM_VECTOR_HEADER__
 	  
-#include "log_helper.h"
 #include <cstdio>
 #include <memory.h>
 #include <cassert>
+#include "common_util.h"
 using namespace std;
 template<typename T>
 class im_vector_t
@@ -68,7 +68,7 @@ public:
 		{
 			return -1;
 		}
-		LOG_WARNING("vector malloc %u", new_cap);
+		PDEBUG("vector malloc %u", new_cap);
 		
 		memcpy(new_array,array,sizeof(T)*tail);
 		delete [] array;

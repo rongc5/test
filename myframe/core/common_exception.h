@@ -2,7 +2,6 @@
 #define  __COMMON_EXCEPTION_H
 
 #include "common_def.h"
-#include "log_helper.h"
 
 
 class CMyCommonException : public std::exception 
@@ -30,9 +29,6 @@ class CMyCommonException : public std::exception
 do { \
     stringstream ss; \
     ss << errorstr; \
-    {\
-        LOG_WARNING("throw exception error %s",  ss.str().c_str());\
-    }\
     throw CMyCommonException(ss.str());\
 } while (0)
 

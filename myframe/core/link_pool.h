@@ -4,7 +4,7 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include "log_helper.h"
+#include "common_util.h"
 
 namespace im {
 namespace lib {
@@ -47,7 +47,7 @@ template <typename Type> class link_node_pool_t {
 			uint32_t node_idx = (mp_point & m_node_mask);
 
 			if (block_idx >= m_alloc_block_num || node_idx >= m_block_size) {
-				LOG_DEBUG("INVALID mp_point %u %u %u %u\n", 
+				PDEBUG("INVALID mp_point %u %u %u %u\n", 
 					block_idx, m_alloc_block_num, node_idx, m_block_size);
 				return NULL;
 			}
@@ -141,7 +141,7 @@ int link_node_pool_t<Type>::add_block() {
 			m_block_array = (node_t**)malloc(sizeof(node_t*) * INIT_BLOCK_NUM);
 
 			if (m_block_array == NULL) {
-			   LOG_WARNING("cannot mallocate memory for m_block_array");
+			   PDEBUG("cannot mallocate memory for m_block_array");
 				return -1;
 			}
 
@@ -150,7 +150,7 @@ int link_node_pool_t<Type>::add_block() {
 		}
 
 		if (m_alloc_block_num >= m_max_block_num) {
-			LOG_WARNING("block_num has reach upper limit[%d], block_size is [%d]", m_max_block_num, m_block_size);
+			PDEBUG("block_num has reach upper limit[%d], block_size is [%d]", m_max_block_num, m_block_size);
 			return -1;
 		}
 
@@ -159,7 +159,7 @@ int link_node_pool_t<Type>::add_block() {
 			node_t **p_new_block_array = (node_t**)realloc(m_block_array, sizeof(node_t*) * new_block_num);
 
 			if (p_new_block_array == NULL) {
-				LOG_WARNING("realloc memory for m_block_array fail");
+				PDEBUG("realloc memory for m_block_array fail");
 				return -1;
 			}
 
@@ -171,7 +171,7 @@ int link_node_pool_t<Type>::add_block() {
 		m_block_array[m_alloc_block_num] = (node_t*)malloc(sizeof(node_t) * m_block_size);
 
 		if (m_block_array[m_alloc_block_num] == NULL) {
-			LOG_WARNING("cannot mallocate memory for block");
+			PDEBUG("cannot mallocate memory for block");
 			return -1;
 		}
 

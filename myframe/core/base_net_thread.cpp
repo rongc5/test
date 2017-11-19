@@ -17,7 +17,7 @@ base_net_thread::~base_net_thread(){
 
 void * base_net_thread::run()
 {
-    init();
+    net_thread_init();
 
     while (get_run_flag()) {
         _base_container->obj_process();
@@ -26,7 +26,7 @@ void * base_net_thread::run()
     return NULL;
 }
 
-void base_net_thread::init()
+void base_net_thread::net_thread_init()
 {
     for (int i = 0; i < _channel_num; i++) {
 

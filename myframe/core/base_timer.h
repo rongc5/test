@@ -2,7 +2,6 @@
 #define __BASE_TIMER_H_
 
 #include "common_def.h"
-#include "log_helper.h"
 
 class base_timer
 {

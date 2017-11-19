@@ -7,7 +7,6 @@
 #include "http_base_process.h"
 #include "common_exception.h"
 #include "common_def.h"
-#include "log_helper.h"
 #include "http_base_msg.h"
 
 

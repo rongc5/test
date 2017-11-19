@@ -1,0 +1,125 @@
+#include "log_thread.h"
+
+log_thread::log_thread(log_conf & conf):_conf(conf)
+{
+}
+
+void log_thread::log_write(log_prefix & prefix, const char *format, ...)
+{
+    if (prefix.type > _conf.type){
+        return;
+    }
+
+    log_thread * thread = base_singleton<log_thread>::get_instance();
+    if (!thread) {
+        return;
+    }
+
+    char log_common_tmp[SIZE_LEN_64];
+    get_timestr_millSecond(log_common_tmp, sizeof(log_common_tmp), LOG_DATE_FORMAT);
+    uint32_t prefix_len = sizeof(prefix.tid) + sizeof(prefix.line) + prefix.fun.length()
+        + prefix.file.length() + prefix.typestr.length() + sizeof(prefix.type)
+    
+    va_list args1, args2;
+    va_start(args1, format);
+    va_copy(args2, args1);
+
+    log_msg * lmsg = new log_msg();
+    if (lmsg) {
+        lmsg->_buf = new vector<char>(SIZE_LEN_32+ prefix_len +std::vsnprintf(NULL, 0, format, args1));
+        va_end(args1);
+
+        uint32_t ret = snprintf(lmsg->buf->data(), buf.size(), "[%s]:[%s]:[%ld]:[%d:%s:%s] ", 
+                prefix.typestr.c_str(), log_common_tmp, prefix.tid, prefix.line, 
+                prefix.fun.c_str(), prefix.file.c_str());
+        std::vsnprintf(lmsg->buf->data() + ret, buf.size() - ret, fmt, args2);
+        va_end(args2);
+        
+        lmsg->_type = prefix.type;
+        ObjId id;
+        id._thread_index = thread->get_thread_index();
+        thread->put_msg(id, lmsg);
+    }
+}
+
+
+void log_thread::handle_msg(normal_msg * p_msg)
+{
+    REC_OBJ<normal_msg> rc(p_msg);
+    log_msg * lmsg = dynamic_cast<log_msg *>(p_msg);
+    if (!lmsg) {
+        return;
+    }
+
+    check_to_renmae(_log_name[type]._name, _conf.file_max_size);
+    if (!fp){
+        return;
+    }   
+
+    fprintf(fp, "%s\n", lmsg->buf->data());
+    fclose(fp);
+}
+
+void log_thread::get_file_name(LogType type, char dest[], size_t dest_len)
+{
+	if (!dest || !dest_len){
+        return;
+    }   
+
+    switch (type)
+    {   
+        case LOGFATAL:
+            snprintf(dest, dest_len, "%s/%s.%s", _conf.log_path, _conf.prefix_file_name, "ft");
+            break;
+        case LOGWARNING:
+            snprintf(dest, dest_len, "%s/%s.%s", _conf.log_path, _conf.prefix_file_name, "wn");
+            break;
+        case LOGNOTICE:
+            snprintf(dest, dest_len, "%s/%s.%s", _conf.log_path, _conf.prefix_file_name, "nt");
+            break;
+        case LOGTRACE:
+            snprintf(dest, dest_len, "%s/%s.%s", _conf.log_path, _conf.prefix_file_name, "tc");
+            break;
+        case LOGDEBUG:
+            snprintf(dest, dest_len, "%s/%s.%s", _conf.log_path, _conf.prefix_file_name, "db");
+            break;
+        default:
+            break;
+    }   
+
+    return;
+}
+
+void log_thread::check_to_renmae(const char *filename, int max_size)
+{
+	  if (!filename){
+        return;
+    }
+
+    char tmp[SIZE_LEN_64];
+    char path[SIZE_LEN_128];
+    struct stat statBuf;
+    stat(filename, &statBuf);
+
+    get_timestr(tmp, sizeof(tmp), "%Y%m%d%H%M%S");
+    if (max_size && statBuf.st_size >= max_size){
+        snprintf(path, sizeof(path), "%s.%s", filename, tmp);
+        rename(filename, path);
+    }
+}
+
+void log_thread::init()
+{
+	 if (_conf.log_path[0] != '0') {
+            char buf[SIZE_LEN_256];
+            snprintf(buf, sizeof(buf), "mkdir -p %s", _conf.log_path);
+            system(buf);         
+     }
+
+
+	int i = LOGFATAL;
+	for (; i<LOGSIZE; i++) {
+		get_file_name((LogType)i, _log_name[i]._name, sizeof(_log_name[i]._name));
+	}
+}
+

@@ -1,6 +1,6 @@
 #include "common_util.h"
 
-time_t get_date_str(char dest[], size_t dest_len, const char * format)
+time_t get_timestr(char dest[], size_t dest_len, const char * format)
 {
     if (!dest || !dest_len || !format){
         return 0;
@@ -16,6 +16,25 @@ time_t get_date_str(char dest[], size_t dest_len, const char * format)
     return now;
 }
 
+ time_t get_timestr_millSecond(char dest[], size_t dest_len, const char * format)
+{
+    if (!dest || !dest_len || !format){
+        return 0;
+    }   
+
+    time_t now;
+    struct tm *tm_now;
+
+    time(&now);
+    tm_now = localtime(&now);
+    size_t s = strftime(dest, dest_len, format, tm_now);
+
+    uint64_t millSecond = GetMilliSecond();
+    
+    snprintf(dest + s, dest_len - s, ".%03d", millSecond %1000);
+
+    return now;
+}
 
 uint64_t GetMilliSecond()
 {

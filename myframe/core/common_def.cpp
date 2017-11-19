@@ -1,6 +1,14 @@
 #include "common_def.h"
 #include "log_helper.h"
+#include "common_util.h"
 
+log_conf::log_conf()
+{
+    file_max_size = DEFAULT_LOG_MAX_SIZE;
+    strcpy(log_path, "logs");
+    get_proc_name(prefix_file_name, sizeof(prefix_file_name));
+    type = LOGDEBUG;
+}
 
 bool operator<(const ObjId & oj1, const ObjId & oj2)
 {
