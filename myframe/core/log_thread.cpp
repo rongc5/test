@@ -1,6 +1,9 @@
 #include "log_thread.h"
 #include "base_singleton.h"
 #include "base_def.h"
+#include "common_util.h"
+#include "common_def.h"
+#include "common_exception.h"
 
 log_thread::log_thread(log_conf & conf):_conf(conf)
 {
@@ -42,14 +45,14 @@ void log_thread::log_write(log_prefix & prefix, const char *format, ...)
 
     log_msg * lmsg = new log_msg();
     if (lmsg) {
-        lmsg->_buf = new vector<char>(SIZE_LEN_64+ prefix_len +std::vsnprintf(NULL, 0, format, args1));
+        lmsg->_buf = new vector<char>(SIZE_LEN_64+ prefix_len + vsnprintf(NULL, 0, format, args1));
         va_end(args1);
 
         uint32_t ret = snprintf(lmsg->_buf->data(), lmsg->_buf->size(), "[%s]:[%s]:[%lu]:[%d:%s:%s] ", 
                 prefix.typestr.c_str(), log_common_tmp, prefix.tid, prefix.line, 
                 prefix.fun.c_str(), prefix.file.c_str());
-        std::vsnprintf(lmsg->_buf->data() + ret, lmsg->_buf->size() - ret, format, args2);
-        printf("11 %s\n", lmsg->_buf->data());
+        vsnprintf(lmsg->_buf->data() + ret, lmsg->_buf->size() - ret, format, args2);
+        //printf("11 %s\n", lmsg->_buf->data());
         va_end(args2);
         
         lmsg->_type = prefix.type;
@@ -61,7 +64,7 @@ void log_thread::put_msg(log_msg * p_msg)
 {
     thread_lock lock(&_mutex);
     _queue.push_back(p_msg);
-    write(msg->_channelid, CHANNEL_MSG_TAG, sizeof(CHANNEL_MSG_TAG));
+    write(_channelid, CHANNEL_MSG_TAG, sizeof(CHANNEL_MSG_TAG));
 }
 
 void log_thread::handle_msg(log_msg * p_msg)
@@ -71,13 +74,13 @@ void log_thread::handle_msg(log_msg * p_msg)
         return;
     }
 
-    check_to_renmae(_log_name[lmsg->_type]._name, _conf.file_max_size);
-    FILE * fp = fopen(_log_name[lmsg->_type]._name, "a+");
+    check_to_renmae(_log_name[p_msg->_type]._name, _conf.file_max_size);
+    FILE * fp = fopen(_log_name[p_msg->_type]._name, "a+");
     if (!fp){
         return;
     }   
 
-    fprintf(fp, "%s\n", lmsg->_buf->data());
+    fprintf(fp, "%s\n", p_msg->_buf->data());
     fclose(fp);
 }
 
@@ -165,7 +168,7 @@ void log_thread::log_thread_init()
     memset(&tmpEvent, 0, sizeof(epoll_event));
     tmpEvent.events = EPOLLIN | EPOLLERR | EPOLLHUP;
     tmpEvent.data.fd = fd[0];
-    int ret = epoll_ctl(_epoll_fd, tmpOprate, fd[0], &tmpEvent);
+    ret = epoll_ctl(_epoll_fd, EPOLL_CTL_ADD, fd[0], &tmpEvent);
     if (ret != 0) {
         THROW_COMMON_EXCEPT("add to epoll fail " << strerror(errno));
     }
@@ -201,9 +204,9 @@ void log_thread::obj_process()
 
             size_t len =  i * sizeof(CHANNEL_MSG_TAG);
             if (len < sizeof(buf)) {
-                int ret = recv(_epoll_events[i].data.fd, buf, len, MSG_DONTWAIT); 
+                recv(_epoll_events[i].data.fd, buf, len, MSG_DONTWAIT); 
             }else {
-                int ret = recv(_epoll_events[i].data.fd, buf, sizeof(buf), MSG_DONTWAIT);
+                recv(_epoll_events[i].data.fd, buf, sizeof(buf), MSG_DONTWAIT);
             }   
         }
     }

@@ -31,7 +31,7 @@ time_t get_timestr(char dest[], size_t dest_len, const char * format)
 
     uint64_t millSecond = GetMilliSecond();
     
-    snprintf(dest + s, dest_len - s, ".%03d", millSecond %1000);
+    snprintf(dest + s, dest_len - s, ".%03d", (int)(millSecond %1000));
 
     return now;
 }

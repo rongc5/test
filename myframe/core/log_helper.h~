@@ -1,7 +1,7 @@
 #ifndef __LOG_HELPER_H_
 #define __LOG_HELPER_H_
 
-#include "log_thread.h"
+#include "log_process.h"
 #include "base_def.h"
 #include "base_singleton.h"
 #include "common_util.h"
@@ -9,7 +9,7 @@
 
 #define LOG_INIT(log_conf) \
     do { \
-        log_thread * thread = base_singleton<log_thread>::get_instance(); \
+        log_process * thread = base_singleton<log_process>::get_instance(); \
         if (thread) { \
             break; \
         } \
@@ -116,4 +116,4 @@
         }\
     } while (0)
 
-#endif
+#end

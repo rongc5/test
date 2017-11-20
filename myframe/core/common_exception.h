@@ -25,6 +25,7 @@ class CMyCommonException : public std::exception
         string			m_sErrStr;		
 };
 
+
 #define THROW_COMMON_EXCEPT(errorstr) \
 do { \
     stringstream ss; \

@@ -27,7 +27,7 @@ class log_thread:public base_thread
 
         static void log_write(log_prefix & prefix, const char *format, ...);
 
-        virtual void handle_msg(normal_msg * p_msg);
+        void handle_msg(log_msg * p_msg);
 
         const log_conf & get_log_conf();
 
