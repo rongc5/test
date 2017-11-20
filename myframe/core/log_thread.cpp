@@ -7,6 +7,18 @@ log_thread::log_thread(log_conf & conf):_conf(conf)
 	log_thread_init();
 }
 
+log_thread::~log_thread()
+{
+    if (_epoll_events != NULL)
+        delete [] _epoll_events;
+
+    deque<log_msg *>::iterator it;
+    for (it = _queue.begin(); it != _queue.end(); it++) {
+        delete *it;
+    }
+
+}
+
 void log_thread::log_write(log_prefix & prefix, const char *format, ...)
 {
 
@@ -30,28 +42,32 @@ void log_thread::log_write(log_prefix & prefix, const char *format, ...)
 
     log_msg * lmsg = new log_msg();
     if (lmsg) {
-        lmsg->_buf = new vector<char>(SIZE_LEN_32+ prefix_len +std::vsnprintf(NULL, 0, format, args1));
+        lmsg->_buf = new vector<char>(SIZE_LEN_64+ prefix_len +std::vsnprintf(NULL, 0, format, args1));
         va_end(args1);
 
-        uint32_t ret = snprintf(lmsg->_buf->data(), lmsg->_buf->size(), "[%s]:[%s]:[%ld]:[%d:%s:%s] ", 
+        uint32_t ret = snprintf(lmsg->_buf->data(), lmsg->_buf->size(), "[%s]:[%s]:[%lu]:[%d:%s:%s] ", 
                 prefix.typestr.c_str(), log_common_tmp, prefix.tid, prefix.line, 
                 prefix.fun.c_str(), prefix.file.c_str());
         std::vsnprintf(lmsg->_buf->data() + ret, lmsg->_buf->size() - ret, format, args2);
+        printf("11 %s\n", lmsg->_buf->data());
         va_end(args2);
         
         lmsg->_type = prefix.type;
-        ObjId id;
-        id._thread_index = thread->get_thread_index();
-        thread->put_msg(id, lmsg);
+        thread->put_msg(lmsg);
     }
 }
 
-
-void log_thread::handle_msg(normal_msg * p_msg)
+void log_thread::put_msg(log_msg * p_msg)
 {
-    REC_OBJ<normal_msg> rc(p_msg);
-    log_msg * lmsg = dynamic_cast<log_msg *>(p_msg);
-    if (!lmsg) {
+    thread_lock lock(&_mutex);
+    _queue.push_back(p_msg);
+    write(msg->_channelid, CHANNEL_MSG_TAG, sizeof(CHANNEL_MSG_TAG));
+}
+
+void log_thread::handle_msg(log_msg * p_msg)
+{
+    REC_OBJ<log_msg> rc(p_msg);
+    if (!p_msg) {
         return;
     }
 
@@ -126,6 +142,71 @@ void log_thread::log_thread_init()
 	for (; i<LOGSIZE; i++) {
 		get_file_name((LogType)i, _log_name[i]._name, sizeof(_log_name[i]._name));
 	}
+
+    _epoll_fd = epoll_create(DAFAULT_EPOLL_SIZE);
+    if (_epoll_fd == -1)
+    {       
+        THROW_COMMON_EXCEPT("epoll_create fail " << strerror(errno));
+    }
+
+    _epoll_events = new epoll_event[SIZE_LEN_16];
+    _epoll_size = SIZE_LEN_16;
+
+    int fd[2];
+    int ret = socketpair(AF_UNIX,SOCK_STREAM,0,fd);
+    if (ret < 0) {
+        return;
+    }
+
+    _channelid = fd[1];
+
+
+    struct epoll_event tmpEvent;
+    memset(&tmpEvent, 0, sizeof(epoll_event));
+    tmpEvent.events = EPOLLIN | EPOLLERR | EPOLLHUP;
+    tmpEvent.data.fd = fd[0];
+    int ret = epoll_ctl(_epoll_fd, tmpOprate, fd[0], &tmpEvent);
+    if (ret != 0) {
+        THROW_COMMON_EXCEPT("add to epoll fail " << strerror(errno));
+    }
+}
+
+void * log_thread::run()
+{
+    while (get_run_flag()) {
+        obj_process();
+    }
+
+    return NULL;
+}
+
+void log_thread::obj_process()
+{
+    int  nfds = ::epoll_wait(_epoll_fd, _epoll_events, _epoll_size, DEFAULT_EPOLL_WAITE);
+    if (-1 == nfds) {
+        return;
+    }
+
+    char buf[SIZE_LEN_2048];
+    
+    deque<log_msg * >::iterator it;
+    for (int i =0; i < nfds; i++) {
+        if (_epoll_events[i].events & EPOLLIN) {
+            thread_lock lock(&_mutex); 
+            for (it = _queue.begin(); it != _queue.end();) {
+                handle_msg(*it);
+                it = _queue.erase(it);
+                i++;
+            }
+
+            size_t len =  i * sizeof(CHANNEL_MSG_TAG);
+            if (len < sizeof(buf)) {
+                int ret = recv(_epoll_events[i].data.fd, buf, len, MSG_DONTWAIT); 
+            }else {
+                int ret = recv(_epoll_events[i].data.fd, buf, sizeof(buf), MSG_DONTWAIT);
+            }   
+        }
+    }
 }
 
 const log_conf & log_thread::get_log_conf()

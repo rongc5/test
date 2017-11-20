@@ -1,7 +1,7 @@
 #ifndef __LOG_THREAD_H__
 #define __LOG_THREAD_H__
 
-#include "base_net_thread.h"
+#include "base_thread.h"
 #include "common_def.h"
 
 struct log_prefix
@@ -19,17 +19,23 @@ struct log_write_name
     char _name[SIZE_LEN_512];
 };
 
-class log_thread:public base_net_thread
+class log_thread:public base_thread
 {
     public:
         log_thread(log_conf & conf);
-        virtual ~log_thread(){}
+        virtual ~log_thread();
 
         static void log_write(log_prefix & prefix, const char *format, ...);
 
         virtual void handle_msg(normal_msg * p_msg);
 
         const log_conf & get_log_conf();
+
+        virtual void *run();
+
+        void obj_process();
+
+        void put_msg(log_msg * p_msg);
         
      private:
         
@@ -42,6 +48,12 @@ class log_thread:public base_net_thread
     private:
         log_write_name _log_name[LOGSIZE];
         log_conf _conf;
+        int _epoll_fd; 
+        thread_mutex_t _mutex;
+        deque<log_msg *> _queue;
+        int _channelid;
+        struct epoll_event *_epoll_events;
+        uint32_t _epoll_size;
 };
 
 

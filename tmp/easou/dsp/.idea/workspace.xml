@@ -37,21 +37,19 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="re_test_case.py" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="re_test_case.py" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/../../../python/re_test_case.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="3" column="0" selection-start="39" selection-end="39" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3724">
-              <folding>
-                <element signature="e#40#54#0" expanded="true" />
-              </folding>
+            <state line="3" column="0" selection-start="39" selection-end="39" vertical-scroll-proportion="-3.4822547" vertical-offset="1725" max-vertical-offset="3686">
+              <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="stock_info_bak.py" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="stock_info_bak.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/../../../stock/py/stock_info_bak.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="18" column="0" selection-start="253" selection-end="272" vertical-scroll-proportion="0.25110132" vertical-offset="0" max-vertical-offset="24947">
+            <state line="18" column="0" selection-start="253" selection-end="272" vertical-scroll-proportion="0.0" vertical-offset="114" max-vertical-offset="24947">
               <folding />
             </state>
           </provider>
@@ -136,6 +134,7 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -166,18 +165,17 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="options.lastSelected" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
     <property name="recentsLimit" value="5" />
+    <property name="options.lastSelected" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../../../python" />
     <property name="FullScreen" value="false" />
-    <property name="options.searchVisible" value="true" />
     <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="options.searchVisible" value="true" />
   </component>
   <component name="PyConsoleOptionsProvider">
     <option name="myPythonConsoleState">
@@ -350,9 +348,6 @@
       <option name="PARAMETERS" value="" />
       <method />
     </configuration>
-    <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug" singleton="true">
-      <method />
-    </configuration>
     <configuration default="true" type="tests" factoryName="Unittests">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -374,6 +369,9 @@
       <option name="PUREUNITTEST" value="true" />
       <option name="PARAMS" value="" />
       <option name="USE_PARAM" value="false" />
+      <method />
+    </configuration>
+    <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug" singleton="true">
       <method />
     </configuration>
     <configuration default="true" type="tests" factoryName="Doctests">
@@ -546,30 +544,24 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/../../../python/spider.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="14" column="20" selection-start="418" selection-end="418" vertical-scroll-proportion="0.5156576" vertical-offset="0" max-vertical-offset="479">
-          <folding />
-        </state>
+        <state line="14" column="20" selection-start="418" selection-end="418" vertical-scroll-proportion="0.5156576" vertical-offset="0" max-vertical-offset="479" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/../../../stock/py/stock_info.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="235" column="0" selection-start="6430" selection-end="6430" vertical-scroll-proportion="0.5407098" vertical-offset="3978" max-vertical-offset="24719">
+        <state line="235" column="0" selection-start="6430" selection-end="6430" vertical-scroll-proportion="0.5407098" vertical-offset="3978" max-vertical-offset="24719" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../../stock/py/stock_info_bak.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="18" column="0" selection-start="253" selection-end="272" vertical-scroll-proportion="0.0" vertical-offset="114" max-vertical-offset="24947">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/../../../python/re_test_case.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="3" column="0" selection-start="39" selection-end="39" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3724">
-          <folding>
-            <element signature="e#40#54#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../../stock/py/stock_info_bak.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="18" column="0" selection-start="253" selection-end="272" vertical-scroll-proportion="0.25110132" vertical-offset="0" max-vertical-offset="24947">
+        <state line="3" column="0" selection-start="39" selection-end="39" vertical-scroll-proportion="-3.4822547" vertical-offset="1725" max-vertical-offset="3686">
           <folding />
         </state>
       </provider>

@@ -86,12 +86,11 @@ struct log_conf{
     log_conf();
 };
 
-class log_msg:public normal_msg
+class log_msg
 {
     public:
         log_msg()
         {
-            _msg_op = MSG_LOG;
             _buf = NULL;
         }
         virtual ~log_msg()
