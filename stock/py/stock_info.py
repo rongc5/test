@@ -851,13 +851,13 @@ def get_basic_list(id_dic):
         if res['circulation_market_value'] >= 390:
             continue
 
-        if res['total_value'] >= 500:
+        if res['total_value'] >= 690:
             continue
 
         if res['pe'] > 99 or res['pe'] < 0:
             continue
 
-        if res['end'] > 39 or res['end'] <= 3:
+        if res['end'] > 69 or res['end'] <= 3:
             continue
 
         res['mgzb'] = get_stockid_mgzb(key)

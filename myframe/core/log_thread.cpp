@@ -183,31 +183,66 @@ void * log_thread::run()
     return NULL;
 }
 
+int log_thread::RECV(int fd, void *buf, size_t len)
+{
+    int ret = recv(fd, buf, len, MSG_DONTWAIT);
+
+    if (ret == 0)
+    {
+        THROW_COMMON_EXCEPT("the client close the socket(" << fd << ")");
+    }
+
+    else if (ret < 0)
+    {
+        if (errno != EAGAIN)
+        {
+            THROW_COMMON_EXCEPT("this socket occur fatal error " << strerror(errno));
+        }
+
+        ret = 0;
+    }
+
+    return ret;
+}
+
+size_t log_thread::process_recv_buf(const char *buf, const size_t len)
+{
+	size_t k = len /sizeof(CHANNEL_MSG_TAG);
+	size_t i = 0;
+	thread_lock lock(&_mutex); 
+	 deque<log_msg * >::iterator it;
+     for (it = _queue.begin(); it != _queue.end() && i < k;) {
+		  handle_msg(*it);
+		  it = _queue.erase(it);
+		  i++;
+        }
+
+        k =  i * sizeof(CHANNEL_MSG_TAG);
+		return k;
+}
+
 void log_thread::obj_process()
 {
     int  nfds = ::epoll_wait(_epoll_fd, _epoll_events, _epoll_size, DEFAULT_EPOLL_WAITE);
-    if (-1 == nfds) {
-        return;
-    }
 
     char buf[SIZE_LEN_2048];
+    ssize_t ret = 0;
     
-    deque<log_msg * >::iterator it;
+    
     for (int i =0; i < nfds; i++) {
         if (_epoll_events[i].events & EPOLLIN) {
-            thread_lock lock(&_mutex); 
-            for (it = _queue.begin(); it != _queue.end();) {
-                handle_msg(*it);
-                it = _queue.erase(it);
-                i++;
-            }
+            ret = RECV(_epoll_events[i].data.fd, buf, sizeof(buf));
+            if (ret)
+                _recv_buf.append(buf, ret);  
+        }
+    }
+    
+    if (_recv_buf.length() > 0) {
+    	size_t p_ret = process_recv_buf((char*)_recv_buf.c_str(), _recv_buf.length());
 
-            size_t len =  i * sizeof(CHANNEL_MSG_TAG);
-            if (len < sizeof(buf)) {
-                recv(_epoll_events[i].data.fd, buf, len, MSG_DONTWAIT); 
-            }else {
-                recv(_epoll_events[i].data.fd, buf, sizeof(buf), MSG_DONTWAIT);
-            }   
+      if (p_ret > 0 && p_ret <= _recv_buf.length())
+        {
+            _recv_buf.erase(0, p_ret); 
         }
     }
 }

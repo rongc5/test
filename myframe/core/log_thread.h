@@ -45,6 +45,10 @@ class log_thread:public base_thread
 
         void check_to_renmae(const char *filename, int max_size);
 
+        int RECV(int fd, void *buf, size_t len);
+           
+        size_t process_recv_buf(const char *buf, const size_t len);
+
     private:
         log_write_name _log_name[LOGSIZE];
         log_conf _conf;
@@ -54,6 +58,7 @@ class log_thread:public base_thread
         int _channelid;
         struct epoll_event *_epoll_events;
         uint32_t _epoll_size;
+        string _recv_buf;
 };
 
 
