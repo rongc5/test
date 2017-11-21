@@ -119,6 +119,7 @@ void base_connect::real_recv()
     {
         LOG_DEBUG("process_recv_buf _recv_buf_len[%d] fd[%d]", _recv_buf.length(), _fd);
         size_t p_ret = _process->process_recv_buf((char*)_recv_buf.c_str(), _recv_buf.length());
+        LOG_DEBUG("process_recv_buf p_ret[%d] fd[%d]", p_ret, _fd);
         if (p_ret && p_ret <= _recv_buf.length())
         {
             _recv_buf.erase(0, p_ret); 

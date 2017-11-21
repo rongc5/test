@@ -207,27 +207,29 @@ int log_thread::RECV(int fd, void *buf, size_t len)
 
 size_t log_thread::process_recv_buf(const char *buf, const size_t len)
 {
-	size_t k = len /sizeof(CHANNEL_MSG_TAG);
-	size_t i = 0;
-	thread_lock lock(&_mutex); 
-	 deque<log_msg * >::iterator it;
-     for (it = _queue.begin(); it != _queue.end() && i < k;) {
-		  handle_msg(*it);
-		  it = _queue.erase(it);
-		  i++;
-        }
+    size_t k = len /sizeof(CHANNEL_MSG_TAG);
+    size_t i = 0;
+    thread_lock lock(&_mutex); 
+    deque<log_msg * >::iterator it;
+    for (it = _queue.begin(); it != _queue.end() && i < k;) {
+        handle_msg(*it);
+        it = _queue.erase(it);
+        i++;
+    }
 
-        k =  i * sizeof(CHANNEL_MSG_TAG);
-		return k;
+    k =  i * sizeof(CHANNEL_MSG_TAG);
+    return k;
 }
 
 void log_thread::obj_process()
 {
     int  nfds = ::epoll_wait(_epoll_fd, _epoll_events, _epoll_size, DEFAULT_EPOLL_WAITE);
+    if (-1 == nfds){
+        return;
+    }
 
     char buf[SIZE_LEN_2048];
     ssize_t ret = 0;
-    
     
     for (int i =0; i < nfds; i++) {
         if (_epoll_events[i].events & EPOLLIN) {

@@ -2,6 +2,7 @@
 #include "base_net_thread.h"
 #include "base_net_obj.h"
 #include "base_connect.h"
+#include "log_helper.h"
 
 
 channel_data_process::channel_data_process(base_connect *p):base_data_process(p)
@@ -10,35 +11,35 @@ channel_data_process::channel_data_process(base_connect *p):base_data_process(p)
 
 size_t channel_data_process::process_recv_buf(const char *buf, size_t len)
 {
+    LOG_DEBUG("start1");
+    size_t k = len /sizeof(CHANNEL_MSG_TAG);
     thread_lock lock(&_mutex);
 
-    int i = 0;
+    size_t i = 0;
     deque<normal_obj_msg >::iterator it;
-    for (it = _queue.begin(); it != _queue.end();){
-       if (it->p_msg->_msg_op == MSG_CONNECT) {
-           base_net_obj * p_connect = dynamic_cast<base_net_obj *> (it->p_msg); 
-           if (p_connect) {
+    for (it = _queue.begin(); it != _queue.end() && i<k;){
+        if (it->p_msg->_msg_op == MSG_CONNECT) {
+            base_net_obj * p_connect = dynamic_cast<base_net_obj *> (it->p_msg); 
+            if (p_connect) {
                 p_connect->set_net_container(_p_connect->get_net_container());
             } else {
                 REC_OBJ<normal_msg> rc(it->p_msg);
             }
-       } else {
+        } else {
             if (it->_id._id > OBJ_ID_BEGIN) {
                 _p_connect->get_net_container()->put_msg(it->_id, it->p_msg);
             } else {
                 _p_connect->get_net_container()->get_net_thread()->handle_msg(it->p_msg);
             }
-       } 
+        } 
 
         it = _queue.erase(it);
         i++;
     }
 
-     size_t r_len =  i * sizeof(CHANNEL_MSG_TAG);
-     if (r_len > len)
-         r_len = len;
+     k =  i * sizeof(CHANNEL_MSG_TAG);
 
-    return r_len;
+    return k;
 }
 
 
