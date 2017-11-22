@@ -502,7 +502,7 @@ def get_stockid_dbfx(id):
 
 def get_single_analysis(id):
 
-    url = 'http://stock.finance.qq.com/sstock/list/view/dadan.php?t=js&c=%s&max=200&p=1&opt=1&o=0' % (id)
+    url = 'http://stock.finance.qq.com/sstock/list/view/dadan.php?t=js&c=%s&max=400&p=1&opt=1&o=0' % (id)
     refer = 'http://stockhtm.finance.qq.com/sstock/quotpage/dadan.htm?c=%s' % (id)
 
     stocklist = []
@@ -1011,7 +1011,7 @@ def base_select(id_dic):
             remove_ley.append(key)
             continue
 
-        if float(id_dic[key]['end']) >39:
+        if float(id_dic[key]['end']) >69:
             remove_ley.append(key)
             continue
 

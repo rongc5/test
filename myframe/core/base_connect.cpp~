@@ -194,6 +194,9 @@ bool base_connect::process_recv_msg(ObjId & id, normal_msg * p_msg)
     return true;
 }
 
-
+base_data_process * base_connect::get_process()
+{
+    return _process;
+} 
 
 

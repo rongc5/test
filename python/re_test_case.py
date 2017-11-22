@@ -5,6 +5,7 @@
 import urllib2
 import json, os
 import subprocess
+import sys
 
 __author__ = 'mingz'
 
@@ -184,8 +185,20 @@ def lod_request_list(path):
 
 
 if __name__ == '__main__':
-    res_list = []
-    res_list = lod_request_list('response.log')
-    for key in res_list:
-        if key.has_key('recommType')and key['recommType'] == 201:
-            test_201(key)
+
+    for line in sys.stdin:
+        line = line.strip()
+        if not line:
+            continue
+        item = line.split('_')
+        if len(item) != 2:
+            continue
+        if len(get_current_user_cart(item[1])) and not len(get_history_user_cart(item[1])):
+            print item[1]
+
+
+    #res_list = []
+    #res_list = lod_request_list('response.log')
+    #for key in res_list:
+    #    if key.has_key('recommType')and key['recommType'] == 201:
+    #        test_201(key)

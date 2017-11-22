@@ -18,7 +18,6 @@ OBJ	= ${SRC_DIR}/base_net_container.o                        \
     ${SRC_DIR}/log_thread.o                        \
     ${SRC_DIR}/base_net_obj.o                        \
     ${SRC_DIR}/thread_helper.o                        \
-    ${SRC_DIR}/base_connect.o                        \
     ${SRC_DIR}/listen_connect.o                        \
     ${SRC_DIR}/base_listen_thread.o                        \
     ${SRC_DIR}/common_obj_container.o                        \
