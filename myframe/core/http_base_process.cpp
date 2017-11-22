@@ -4,7 +4,7 @@
 #include "http_base_data_process.h"
 #include "log_helper.h"
 
-http_base_process::http_base_process(base_connect *p):base_data_process(p)
+http_base_process::http_base_process(base_net_obj *p):base_data_process(p)
 {
     _data_process = NULL;
 }
@@ -17,12 +17,12 @@ http_base_process::~http_base_process()
 
 http_req_head_para &http_base_process::get_req_head_para()
 {
-        return _req_head_para;
+    return _req_head_para;
 }
 
 http_res_head_para &http_base_process::get_res_head_para()
 {
-        return _res_head_para;
+    return _res_head_para;
 }
 
 void http_base_process::reset()
@@ -58,7 +58,7 @@ size_t http_base_process::process_recv_buf(const char *buf, size_t len)
         staus_change = true;				
     }
 
-    if (get_base_connect()->_msg_op != MSG_CONNECT) {
+    if (get_base_net()->_msg_op != MSG_CONNECT) {
         return ret;
     }
 

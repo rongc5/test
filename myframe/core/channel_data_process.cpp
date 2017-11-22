@@ -3,9 +3,10 @@
 #include "base_net_obj.h"
 #include "base_connect.h"
 #include "log_helper.h"
+#include "base_net_obj.h"
 
 
-channel_data_process::channel_data_process(base_connect *p):base_data_process(p)
+channel_data_process::channel_data_process(base_net_obj *p):base_data_process(p)
 {
 }
 

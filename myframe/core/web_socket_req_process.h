@@ -6,11 +6,11 @@
 #include "web_socket_msg.h"
 
 
-class base_connect;
+class base_net_obj;
 class web_socket_req_process:public web_socket_process
 {
     public:
-        web_socket_req_process(base_connect *p);
+        web_socket_req_process(base_net_obj *p);
 
         virtual ~web_socket_req_process();
 

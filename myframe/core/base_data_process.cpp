@@ -1,9 +1,9 @@
-#include "base_connect.h"
+#include "base_net_obj.h"
 #include "base_data_process.h"
 #include "log_helper.h"
 
 
-base_data_process::base_data_process(base_connect *p)
+base_data_process::base_data_process(base_net_obj *p)
 {
     _p_connect = p;
     LOG_DEBUG("%p", this);
@@ -80,7 +80,7 @@ void base_data_process::put_send_buf(string * str)
     _p_connect->notice_send();  
 }
 
-base_connect * base_data_process::get_base_connect()
+base_net_obj * base_data_process::get_base_net()
 {
     return _p_connect;
 }

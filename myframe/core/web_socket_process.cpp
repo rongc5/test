@@ -1,12 +1,12 @@
 #include "web_socket_data_process.h"
 #include "web_socket_process.h"
-#include "base_connect.h"
+#include "base_net_obj.h"
 #include "log_helper.h"
 #include "common_exception.h"
 #include "mybase64.h"
 
 
-web_socket_process::web_socket_process(base_connect *p):base_data_process(p)
+web_socket_process::web_socket_process(base_net_obj *p):base_data_process(p)
 {
     _wb_status = WB_INIT_STAUTS;
     _if_send_mask = true;

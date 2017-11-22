@@ -1,5 +1,5 @@
 #include "web_socket_res_process.h"
-#include "base_connect.h"
+#include "base_net_obj.h"
 #include "log_helper.h"
 #include "common_exception.h"
 #include "common_util.h"
@@ -12,7 +12,7 @@
 
 
 
-web_socket_res_process::web_socket_res_process(base_connect *p):web_socket_process(p)
+web_socket_res_process::web_socket_res_process(base_net_obj *p):web_socket_process(p)
 {
     _wb_version = 0;		
     _if_send_mask = false;
@@ -26,7 +26,7 @@ web_socket_res_process::~web_socket_res_process()
 
 void web_socket_res_process::on_connect_comming()
 {
-    base_timer * timer = get_base_connect()->get_net_container()->get_timer();
+    base_timer * timer = get_base_net()->get_net_container()->get_timer();
     timer_msg * t_msg = new timer_msg();
     t_msg->_timer_type = WEB_SOCKET_HANDSHAKE_OK_TIMER_TYPE;
     t_msg->_time_length = WEB_SOCKET_HANDSHAKE_OK_TIMER_LENGTH;
@@ -47,7 +47,7 @@ string* web_socket_res_process::SEND_WB_HEAD_FINISH_PROCESS()
     {
         _wb_status  = WB_HANDSHAKE_FAIL;
 
-        base_timer * timer = get_base_connect()->get_net_container()->get_timer();
+        base_timer * timer = get_base_net()->get_net_container()->get_timer();
         timer_msg * t_msg = new timer_msg();
         t_msg->_timer_type = DELAY_CLOSE_TIMER_TYPE;
         t_msg->_time_length = 3000;

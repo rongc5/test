@@ -2,7 +2,7 @@
 #define __HTTP_BASE_PROCESS_H__
 
 #include "base_def.h"
-#include "base_connect.h"
+#include "base_net_obj.h"
 #include "base_singleton.h"
 #include "base_data_process.h"
 #include "common_exception.h"
@@ -13,7 +13,7 @@ class http_base_data_process;
 class http_base_process: public base_data_process
 {
     public:
-        http_base_process(base_connect *p);
+        http_base_process(base_net_obj *p);
 
         virtual ~http_base_process();
 

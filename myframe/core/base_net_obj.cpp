@@ -109,6 +109,10 @@ bool base_net_obj::process_recv_msg(ObjId & id, normal_msg * p_msg)
     return true;
 }
 
+void base_net_obj::notice_send()
+{
+}
+
 int base_net_obj::destroy()
 {
     delete this;

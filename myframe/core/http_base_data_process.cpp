@@ -7,7 +7,7 @@
 //return NULL 底层就删除写事件, 正常返回将要发送的包体
 //
 http_base_data_process::http_base_data_process(http_base_process * _p_process):
-    base_data_process(_p_process->get_base_connect())
+    base_data_process(_p_process->get_base_net())
 {
     LOG_DEBUG("%p", this);
     _base_process = _p_process;

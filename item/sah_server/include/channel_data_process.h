@@ -5,11 +5,11 @@
 #include "thread_helper.h"
 #include "base_data_process.h"
 
-class base_connect;
+class base_net_obj;
 class channel_data_process:public base_data_process
 {
     public:
-        channel_data_process(base_connect *p);
+        channel_data_process(base_net_obj *p);
 
         virtual ~channel_data_process()
         {

@@ -26,6 +26,8 @@ class base_net_obj: public normal_msg
         void update_event(int event);    
         int get_event();
 
+        virtual void notice_send();
+
         int get_sfd();
 
         void set_id(const ObjId & id_str);

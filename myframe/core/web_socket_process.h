@@ -6,12 +6,12 @@
 #include "base_data_process.h"
 
 
-class base_connect;
+class base_net_obj;
 class web_socket_data_process;
 class web_socket_process: public base_data_process
 {
 	public:
-		web_socket_process(base_connect *p);
+		web_socket_process(base_net_obj *p);
 
 		virtual ~web_socket_process();
         

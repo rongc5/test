@@ -5,9 +5,10 @@
 #include "log_helper.h"
 #include "common_exception.h"
 #include "web_socket_data_process.h"
+#include "base_net_obj.h"
 
 
-web_socket_req_process::web_socket_req_process(base_connect *p):web_socket_process(p)
+web_socket_req_process::web_socket_req_process(base_net_obj *p):web_socket_process(p)
 {			
 }
 

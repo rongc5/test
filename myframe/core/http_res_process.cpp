@@ -1,5 +1,5 @@
 #include "base_def.h"
-#include "base_connect.h"
+#include "base_net_obj.h"
 #include "base_singleton.h"
 #include "http_res_process.h"
 #include "common_exception.h"
@@ -9,7 +9,7 @@
 #include "http_base_data_process.h"
 
 
-http_res_process::http_res_process(base_connect * p):http_base_process(p)
+http_res_process::http_res_process(base_net_obj * p):http_base_process(p)
 {
     change_http_status(RECV_HEAD);
     _recv_body_length = 0;

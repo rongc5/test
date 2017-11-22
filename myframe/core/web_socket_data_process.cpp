@@ -2,11 +2,11 @@
 #include "web_socket_msg.h"
 #include "web_socket_process.h"
 #include "log_helper.h"
-#include "base_connect.h"
+#include "base_net_obj.h"
 
 
 
-web_socket_data_process::web_socket_data_process(web_socket_process *p):base_data_process(p->get_base_connect())
+web_socket_data_process::web_socket_data_process(web_socket_process *p):base_data_process(p->get_base_net())
 {
     _process = p;
     LOG_DEBUG("%p", this);
@@ -59,7 +59,7 @@ void web_socket_data_process::put_send_msg(ws_msg_type msg)
 {
     _send_list.push_back(msg);
 
-    _process->get_base_connect()->notice_send();
+    _process->get_base_net()->notice_send();
 }
 
 ws_msg_type web_socket_data_process::get_send_msg()

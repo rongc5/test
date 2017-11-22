@@ -26,7 +26,7 @@ string * sah_data_process::get_send_body(int &result)
 
 void sah_data_process::header_recv_finish()
 {
-    base_net_container * net_container = get_base_connect()->get_net_container();
+    base_net_container * net_container = get_base_net()->get_net_container();
 }
 
 void sah_data_process::msg_recv_finish()
