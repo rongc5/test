@@ -150,7 +150,8 @@ class base_connect:public base_net_obj
 
         void real_recv()
         {
-            size_t tmp_len = MAX_RECV_SIZE - _recv_buf.length(); 	
+            size_t _recv_buf_len = _recv_buf.length();
+            size_t tmp_len = MAX_RECV_SIZE - _recv_buf_len; 	
             ssize_t ret = 0;
             size_t p_ret = 0;
             if (tmp_len > 0) //接收缓冲满了也可以先不接收
@@ -167,7 +168,6 @@ class base_connect:public base_net_obj
             if (_recv_buf_len > 0)
             {
                 LOG_DEBUG("process_recv_buf _recv_buf_len[%d] fd[%d]", _recv_buf_len, _fd);
-                LOG_DEBUG("_process %d", _recv_buf_len);
                 p_ret = _process->process_recv_buf(_recv_buf.data(), _recv_buf_len);
                 LOG_DEBUG("process_recv_buf p_ret[%d] fd[%d]", p_ret, _fd);
                 if (p_ret && p_ret <= _recv_buf_len)
@@ -190,10 +190,11 @@ class base_connect:public base_net_obj
                 return;
             }
 
-            if (_p_send_buf && _p_send_buf->length())
+            size_t _send_buf_len = _p_send_buf->length();
+            if (_p_send_buf && _send_buf_len)
             {
-                ssize_t ret = SEND(_p_send_buf->c_str(), _p_send_buf->length());				
-                if (ret == (ssize_t)_p_send_buf->length())
+                ssize_t ret = SEND(_p_send_buf->c_str(), _send_buf_len);				
+                if (ret == (ssize_t)_send_buf_len)
                 {
                     delete _p_send_buf;
                     _p_send_buf = NULL; 				
@@ -209,7 +210,6 @@ class base_connect:public base_net_obj
     protected:
         string _recv_buf;
         string* _p_send_buf;	
-
         PROCESS *_process;
 };
 

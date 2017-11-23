@@ -8,7 +8,7 @@ int main(int argc, char *argv[])
 {
     log_conf conf;
 
-    conf.type = LOGWARNING;
+    //conf.type = LOGWARNING;
     LOG_INIT(conf);
 
     listen_thread * lthread = new listen_thread();

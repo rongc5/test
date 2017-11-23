@@ -53,12 +53,13 @@ class log_thread:public base_thread
         log_write_name _log_name[LOGSIZE];
         log_conf _conf;
         int _epoll_fd; 
-        thread_mutex_t _mutex;
-        deque<log_msg *> _queue;
+        thread_mutex_t _mutex[2];
+        deque<log_msg *> _queue[2];
         int _channelid;
         struct epoll_event *_epoll_events;
         uint32_t _epoll_size;
         string _recv_buf;
+        int _current;
 };
 
 

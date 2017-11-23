@@ -16,10 +16,13 @@ log_thread::~log_thread()
         delete [] _epoll_events;
 
     deque<log_msg *>::iterator it;
-    for (it = _queue.begin(); it != _queue.end(); it++) {
+    for (it = _queue[_current].begin(); it != _queue[_current].end(); it++) {
         delete *it;
     }
 
+    for (it = _queue[1- _current].begin(); it != _queue[1 - _current].end(); it++) {
+        delete *it;
+    }
 }
 
 void log_thread::log_write(log_prefix & prefix, const char *format, ...)
@@ -62,8 +65,8 @@ void log_thread::log_write(log_prefix & prefix, const char *format, ...)
 
 void log_thread::put_msg(log_msg * p_msg)
 {
-    thread_lock lock(&_mutex);
-    _queue.push_back(p_msg);
+    thread_lock lock(&_mutex[1-_current]);
+    _queue[1-_current].push_back(p_msg);
     write(_channelid, CHANNEL_MSG_TAG, sizeof(CHANNEL_MSG_TAG));
 }
 
@@ -162,7 +165,7 @@ void log_thread::log_thread_init()
     }
 
     _channelid = fd[1];
-
+    _current = 0;
 
     struct epoll_event tmpEvent;
     memset(&tmpEvent, 0, sizeof(epoll_event));
@@ -209,42 +212,50 @@ size_t log_thread::process_recv_buf(const char *buf, const size_t len)
 {
     size_t k = len /sizeof(CHANNEL_MSG_TAG);
     size_t i = 0;
-    thread_lock lock(&_mutex); 
+    thread_lock lock(&_mutex[_current]); 
     deque<log_msg * >::iterator it;
-    for (it = _queue.begin(); it != _queue.end() && i < k;) {
+    for (it = _queue[_current].begin(); it != _queue[_current].end() && i < k;) {
         handle_msg(*it);
-        it = _queue.erase(it);
+        it = _queue[_current].erase(it);
         i++;
+    }
+    
+    if (_queue[_current].begin() == _queue[_current].end()){
+        _current = 1 - _current;
     }
 
     k =  i * sizeof(CHANNEL_MSG_TAG);
+
     return k;
 }
 
 void log_thread::obj_process()
 {
     int  nfds = ::epoll_wait(_epoll_fd, _epoll_events, _epoll_size, DEFAULT_EPOLL_WAITE);
-    if (-1 == nfds){
-        return;
-    }
+    //if (-1 == nfds){
+        //return;
+    //}
 
     char buf[SIZE_LEN_2048];
     ssize_t ret = 0;
+    size_t _recv_buf_len = _recv_buf.length();
     
     for (int i =0; i < nfds; i++) {
         if (_epoll_events[i].events & EPOLLIN) {
             ret = RECV(_epoll_events[i].data.fd, buf, sizeof(buf));
-            if (ret)
+            if (ret) {
                 _recv_buf.append(buf, ret);  
+                _recv_buf_len += ret;
+            }
         }
     }
     
-    if (_recv_buf.length() > 0) {
-    	size_t p_ret = process_recv_buf((char*)_recv_buf.c_str(), _recv_buf.length());
+    if (_recv_buf_len > 0) {
+    	size_t p_ret = process_recv_buf((char*)_recv_buf.c_str(), _recv_buf_len);
 
-      if (p_ret > 0 && p_ret <= _recv_buf.length())
+      if (p_ret > 0 && p_ret <= _recv_buf_len)
         {
-            _recv_buf.erase(0, p_ret); 
+            _recv_buf.erase(0, p_ret);
         }
     }
 }
