@@ -67,7 +67,7 @@ void base_net_thread::handle_msg(normal_msg * p_msg)
 
 base_net_thread * base_net_thread::get_base_net_thread_obj(uint32_t thread_index)
 {
-    bntMapIter it = _base_net_thread_map.find(thread_index);
+    map<uint32_t, base_net_thread *>::iterator it = _base_net_thread_map.find(thread_index);
     if (it != _base_net_thread_map.end()){
         return it->second;
     }

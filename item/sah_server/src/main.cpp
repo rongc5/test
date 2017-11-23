@@ -8,12 +8,13 @@ int main(int argc, char *argv[])
 {
     log_conf conf;
 
+    conf.type = LOGWARNING;
     LOG_INIT(conf);
 
     listen_thread * lthread = new listen_thread();
     lthread->init("0.0.0.0", 9090);
 
-    for (int i = 0; i<= 1; i++) {
+    for (int i = 0; i<= 3; i++) {
         base_net_thread * net_thread = new base_net_thread;
         lthread->add_worker_thread(net_thread->get_thread_index());
         net_thread->start();

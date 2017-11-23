@@ -152,21 +152,26 @@ class base_connect:public base_net_obj
         {
             size_t tmp_len = MAX_RECV_SIZE - _recv_buf.length(); 	
             ssize_t ret = 0;
+            size_t p_ret = 0;
+            size_t _recv_buf_len = _recv_buf.length();
             if (tmp_len > 0) //接收缓冲满了也可以先不接收
             {
                 char t_buf[SIZE_LEN_32768];
                 int r_len = tmp_len <= sizeof(t_buf) ? tmp_len:sizeof(t_buf);
                 ret = RECV(t_buf, r_len);
-                if (ret > 0)
+                if (ret > 0){
                     _recv_buf.append(t_buf, ret);
+                    _recv_buf_len += ret;
+                }
             }
 
-            if (_recv_buf.length() > 0)
+            if (_recv_buf_len > 0)
             {
-                LOG_DEBUG("process_recv_buf _recv_buf_len[%d] fd[%d]", _recv_buf.length(), _fd);
-                size_t p_ret = _process->process_recv_buf((char*)_recv_buf.c_str(), _recv_buf.length());
+                LOG_DEBUG("process_recv_buf _recv_buf_len[%d] fd[%d]", _recv_buf_len, _fd);
+                LOG_DEBUG("_process %d", _recv_buf_len);
+                p_ret = _process->process_recv_buf(_recv_buf.data(), _recv_buf_len);
                 LOG_DEBUG("process_recv_buf p_ret[%d] fd[%d]", p_ret, _fd);
-                if (p_ret && p_ret <= _recv_buf.length())
+                if (p_ret && p_ret <= _recv_buf_len)
                 {
                     _recv_buf.erase(0, p_ret); 
                 }

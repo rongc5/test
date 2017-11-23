@@ -32,7 +32,6 @@ class base_net_thread:public base_thread
 
         base_net_container * _base_container;
 
-        typedef typename map<uint32_t, base_net_thread *>::iterator bntMapIter;
         static map<uint32_t, base_net_thread *> _base_net_thread_map;
 };
 
