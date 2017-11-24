@@ -155,8 +155,8 @@ void log_thread::log_thread_init()
         THROW_COMMON_EXCEPT("epoll_create fail " << strerror(errno));
     }
 
-    _epoll_events = new epoll_event[SIZE_LEN_16];
     _epoll_size = SIZE_LEN_16;
+    _epoll_events = new epoll_event[_epoll_size];
 
     int fd[2];
     int ret = socketpair(AF_UNIX,SOCK_STREAM,0,fd);

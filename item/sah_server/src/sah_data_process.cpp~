@@ -7,9 +7,6 @@
 #include "base_net_container.h"
 #include "base_net_thread.h"
 
-#include "base_def.h"
-#include "http_res_process.h"
-
 
 sah_data_process::sah_data_process(http_base_process * _p_process):http_base_data_process(_p_process)
 {
@@ -71,14 +68,4 @@ size_t sah_data_process::process_recv_body(const char *buf, size_t len, int& res
     return len;
 }
 
-base_net_obj * sah_data_process::gen_listen_obj(int fd)
-{
-	  base_connect<http_res_process> * connect = new base_connect<http_res_process>(fd);
-     http_res_process * res_process = new http_res_process(connect);
-     sah_data_process * sa_process = new sah_data_process(res_process);
-     res_process->set_process(sa_process);
-     connect->set_process(res_process);
-
-     return connect;
-}
 
