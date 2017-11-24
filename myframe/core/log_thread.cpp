@@ -65,8 +65,9 @@ void log_thread::log_write(log_prefix & prefix, const char *format, ...)
 
 void log_thread::put_msg(log_msg * p_msg)
 {
-    thread_lock lock(&_mutex[1-_current]);
-    _queue[1-_current].push_back(p_msg);
+    int idle = 1 - _current;
+    thread_lock lock(&_mutex[idle]);
+    _queue[idle].push_back(p_msg);
     write(_channelid, CHANNEL_MSG_TAG, sizeof(CHANNEL_MSG_TAG));
 }
 
@@ -220,11 +221,11 @@ size_t log_thread::process_recv_buf(const char *buf, const size_t len)
         i++;
     }
     
+    k =  i * sizeof(CHANNEL_MSG_TAG);
+
     if (_queue[_current].begin() == _queue[_current].end()){
         _current = 1 - _current;
     }
-
-    k =  i * sizeof(CHANNEL_MSG_TAG);
 
     return k;
 }
