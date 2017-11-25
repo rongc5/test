@@ -212,20 +212,30 @@ int log_thread::RECV(int fd, void *buf, size_t len)
 size_t log_thread::process_recv_buf(const char *buf, const size_t len)
 {
     size_t k = len /sizeof(CHANNEL_MSG_TAG);
-    size_t i = 0;
-    thread_lock lock(&_mutex[_current]); 
+    size_t i = 0, m = 0;
+    bool flag = true;
     deque<log_msg * >::iterator it;
-    for (it = _queue[_current].begin(); it != _queue[_current].end() && i < k;) {
-        handle_msg(*it);
-        it = _queue[_current].erase(it);
-        i++;
+    for (; m < 2; m++) {
+        {
+            thread_lock lock(&_mutex[_current]); 
+            for (it = _queue[_current].begin(); it != _queue[_current].end() && i < k;) {
+                handle_msg(*it);
+                it = _queue[_current].erase(it);
+                i++;
+            }
+
+            if (_queue[_current].begin() == _queue[_current].end()){
+                _current = 1 - _current;
+                flag = false;
+            }
+        }
+
+        if (flag){
+            break;
+        }
     }
-    
     k =  i * sizeof(CHANNEL_MSG_TAG);
 
-    if (_queue[_current].begin() == _queue[_current].end()){
-        _current = 1 - _current;
-    }
 
     return k;
 }
@@ -233,9 +243,9 @@ size_t log_thread::process_recv_buf(const char *buf, const size_t len)
 void log_thread::obj_process()
 {
     int  nfds = ::epoll_wait(_epoll_fd, _epoll_events, _epoll_size, DEFAULT_EPOLL_WAITE);
-    //if (-1 == nfds){
-        //return;
-    //}
+    if (-1 == nfds){
+        return;
+    }
 
     char buf[SIZE_LEN_2048];
     ssize_t ret = 0;
