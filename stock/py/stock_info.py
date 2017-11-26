@@ -1091,24 +1091,26 @@ def log_print_res(search_dic):
 
             if not search_dic[key].has_key('main_force'):
                     search_dic[key]['main_force'] = []
+                    search_dic[key]['count_main_force'] = 0
 
-            if search_dic[key].has_key('big_res_weight') and search_dic[key]['big_res_weight'] < 0.6:
-                if search_dic[key].has_key('main_force') and len(search_dic[key]['main_force']) and search_dic[key]['main_force'][-1] < 500:
-                    remove_ley.append(key)
-                    continue
+            #if search_dic[key].has_key('big_weight') and search_dic[key]['big_weight'] < 0.6:
+            #    if search_dic[key].has_key('main_force') and len(search_dic[key]['main_force']) and search_dic[key]['main_force'][-1] < 500:
+            #        remove_ley.append(key)
+            #        continue
+            #
+            #if search_dic[key].has_key('big_weight2') and search_dic[key]['big_weight2'] < 0.6:
+            #    if search_dic[key].has_key('main_force') and len(search_dic[key]['main_force']) and search_dic[key]['main_force'][-1] < 500:
+            #        remove_ley.append(key)
+            #        continue
 
-            if search_dic[key].has_key('big_res2_weight') and search_dic[key]['big_res2_weight'] < 0.6:
-                if search_dic[key].has_key('main_force') and len(search_dic[key]['main_force']) and search_dic[key]['main_force'][-1] < 500:
-                    remove_ley.append(key)
-                    continue
-
-            money = get_money_flow(key)
-
-            if money.has_key('main_force'):
-                if len(search_dic[key]['main_force']) and abs(search_dic[key]['main_force'][-1] - money['main_force']) >= 50:
-                    search_dic[key]['main_force'].append(money['main_force'])
-                elif not len(search_dic[key]['main_force']):
-                    search_dic[key]['main_force'].append(money['main_force'])
+            if search_dic[key]['count_main_force'] % 5 == 0:
+                search_dic[key]['count_main_force'] += 1
+                money = get_money_flow(key)
+                if money.has_key('main_force'):
+                    if len(search_dic[key]['main_force']) and abs(search_dic[key]['main_force'][-1] - money['main_force']) >= 50:
+                        search_dic[key]['main_force'].append(money['main_force'])
+                    elif not len(search_dic[key]['main_force']):
+                        search_dic[key]['main_force'].append(money['main_force'])
 
             log_write('res_list', json.dumps(search_dic[key]))
             log_write('res_list', '\n')
@@ -1163,6 +1165,15 @@ def do_search_short():
     countx = 0
     TIME_DIFF = 20
     while 1:
+        monitor_mtime_second = time.ctime(os.path.getmtime('monitor_list'))
+        if monitor_mtime_first != monitor_mtime_second:
+            monitor_mtime_first = monitor_mtime_second
+            monitor_dic = load_monitor_list()
+            for key in monitor_dic:
+                if key not in id_dic:
+                    id_dic[key] = {}
+                    id_dic[key]['id'] = key
+
         for key in remove_ley:
             id_dic.pop(key)
 
@@ -1191,8 +1202,8 @@ def do_search_short():
             if  res.has_key('range_percent'):
                 #remove_ley.append(key)
 
-                if res['range_percent'] < -3 or  res['range_percent'] > 3.9:
-                    #remove_ley.append(key)
+                if res['range_percent'] < -3.9 or  res['range_percent'] > 4.9:
+                    remove_ley.append(key)
                     if key in search_dic:
                         search_dic.pop(key)
                     print 'remove key: ', key, res['range_percent']
@@ -1221,8 +1232,11 @@ def do_search_short():
                 id_dic[key]['last_closing'] = res['last_closing']
                 id_dic[key]['vol'] = res['vol']
 
+            if not id_dic[key].has_key('choice'):
+                id_dic[key]['choice'] = ''
+
             if id_dic[key].has_key('end') and id_dic[key].has_key('low') and id_dic[key].has_key('start'):
-                if id_dic[key]['end'] > id_dic[key]['low'] and abs(id_dic[key]['end'] - id_dic[key]['low']) >= 2* abs(id_dic[key]['end'] - id_dic[key]['start']):
+                if id_dic[key]['end'] > id_dic[key]['low'] and abs(id_dic[key]['end'] - id_dic[key]['low']) >= 1.8* abs(id_dic[key]['end'] - id_dic[key]['start']):
                     flag_one = True
 
             big_data = get_single_analysis(key)
@@ -1265,17 +1279,19 @@ def do_search_short():
                         search_dic.pop(key)
                 #print id_dic[key]['res2_vol_ratio'][-1]
 
-            id_dic[key]['big_res_weight'] = get_positive_ratio(id_dic[key]['res_vol_ratio'])
-            id_dic[key]['big_res2_weight'] = get_positive_ratio(id_dic[key]['res2_vol_ratio'])
+            id_dic[key]['big_weight'] = get_positive_ratio(id_dic[key]['res_vol_ratio'])
+            id_dic[key]['big_weight2'] = get_positive_ratio(id_dic[key]['res2_vol_ratio'])
 
             if flag_one and flag_two:
                 search_dic[key] = id_dic[key]
                 id_dic[key]['next_time'] = 0
-            elif flag_two and flag_three:
+                id_dic[key]['choice'] = 'A'
+            elif flag_two and flag_three and id_dic[key]['res_vol_ratio'][-1] >= 0.05:
                 search_dic[key] = id_dic[key]
                 id_dic[key]['next_time'] = 0
+                id_dic[key]['choice'] = 'B'
             elif key in search_dic:
-                search_dic[key] = id_dic[key]
+                search_dic.pop(key)
                 id_dic[key]['next_time'] = 0
             else:
                 if  len(id_dic[key]['big_res']) <= 1:
@@ -1285,16 +1301,6 @@ def do_search_short():
 
         #print 'length: ', len(search_dic)
         log_print_res(search_dic)
-
-        monitor_mtime_second = time.ctime(os.path.getmtime('monitor_list'))
-        if monitor_mtime_first != monitor_mtime_second:
-            monitor_mtime_first = monitor_mtime_second
-            monitor_dic = load_monitor_list()
-            for key in monitor_dic:
-                if key not in id_dic:
-                    id_dic[key] = {}
-                    id_dic[key]['id'] = key
-
         time.sleep(TIME_DIFF)
 
 #A股就是个坑， 技术指标低位了， 仍然可以再砸
