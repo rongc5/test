@@ -1,6 +1,7 @@
 package com.littleblackcat.net;
 
 import com.littleblackcat.util.Constant;
+import com.littleblackcat.util.LogUtil;
 
 import java.io.IOException;
 
@@ -77,8 +78,19 @@ public class AppClient {
         });
 
         if (Constant.DebugConfig.SHOW_NET_INFO) {
-            httpClient.addInterceptor(new HttpLoggingInterceptor().
-                    setLevel(HttpLoggingInterceptor.Level.BASIC));
+            HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
+                @Override
+                public void log(String message) {
+                    //打印retrofit日志
+                    LogUtil.d(TAG,"retrofitBack = "+message);
+                }
+            });
+            loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+
+            httpClient.addInterceptor(loggingInterceptor);
+
+//            httpClient.addInterceptor(new HttpLoggingInterceptor().
+//                    setLevel(HttpLoggingInterceptor.Level.BASIC));
         }
         return httpClient.build();
     }
