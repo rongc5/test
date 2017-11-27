@@ -14,7 +14,8 @@ REDIS_CLI = 'redis-3.0.6/redis-cli'
 REDIS1_NS = '10.26.25.15:6645'
 REDIS1_AUTH = 'Easou_RDS2017'
 REDIS2_NS='10.26.24.66:7000'
-
+RECOMM_APPID_EASOU2  =  20001
+RECOMM_APPID_EASOU = 10001
 
 test_list = [{'uid':'48808231', 'reqGid':''}]
 
@@ -31,6 +32,21 @@ def get_user_type(uid):
     user_type = user_type.split('\n')[0]
 
     return user_type
+
+
+#1 包月前期
+#2 包月中期
+#3 包月末期
+#4 包月结束
+#5 流失包月用户
+def get_baoyue(uid):
+    ip = REDIS2_NS.split(':')[0]
+    port = REDIS2_NS.split(':')[1]
+    cmd = [REDIS_CLI, '--raw', '-h', ip, '-p', port, '-c', 'hget', 'cu_%s' % (uid), 'baoyue']
+    baoyue = subprocess.Popen(cmd, stdout=subprocess.PIPE).communicate()[0]
+    baoyue = baoyue.split('\n')[0]
+
+    return baoyue
 
 
 #历史书架
@@ -70,6 +86,7 @@ def get_current_user_cart(uid):
     return res_list
 
 #tid3_key t_0EFF2921445097DC49E46156D5F6A18C
+#付费协同  field  ucf_knn3
 def get_current_ucf(uid, udid, field):
     ip = REDIS2_NS.split(':')[0]
     port = REDIS2_NS.split(':')[1]
@@ -89,9 +106,141 @@ def get_current_ucf(uid, udid, field):
 
     return res_list
 
-
+#uid1_key  u_54159287
+#uid3_key  d_0EFF2921445097DC49E46156D5F6A18C
 def get_history_ucf(uid, udid, field):
-    pass
+    ip = REDIS2_NS.split(':')[0]
+    port = REDIS2_NS.split(':')[1]
+    cmd = [REDIS_CLI, '--raw', '-h', ip, '-p', port, '-c', 'hget', 'u_%s' % (uid), field]
+    res_str = subprocess.Popen(cmd, stdout=subprocess.PIPE).communicate()[0]
+
+    res_list = []
+    if res_str.strip():
+        res_list = res_str.split('\t')
+
+    if not len(res_list):
+        cmd = [REDIS_CLI, '--raw', '-h', ip, '-p', port, '-c', 'hget', 'd_%s' % (udid), field]
+        res_str = subprocess.Popen(cmd, stdout=subprocess.PIPE).communicate()[0]
+        res_str = res_str.strip('\n')
+        if res_str.strip():
+            res_list = res_str.split('\t')
+
+    return res_list
+
+#uid4_key   v_0001
+def get_uid2_key(recomm_type, req_feature, appid, req_charge):
+    uid2_key = ''
+    uid4_key = ''
+    if recomm_type == 203:
+        if req_feature == 1:
+            if appid == RECOMM_APPID_EASOU2:
+                uid2_key = 'ns2_v_0102'
+            else:
+                uid2_key = 'v_0102'
+        elif req_feature == 2:
+            if appid == RECOMM_APPID_EASOU2:
+                uid2_key = 'ns2_v_0103'
+            else:
+                uid2_key = 'v_0103'
+        elif req_feature == 3:
+            if appid == RECOMM_APPID_EASOU2:
+                uid2_key = 'ns2_v_0107'
+            else:
+                uid2_key = 'v_0107'
+        elif req_feature == 11:
+            if appid == RECOMM_APPID_EASOU2:
+                uid2_key = 'ns2_v_0111'
+            else:
+                uid2_key = 'v_0111'
+        elif req_feature == 12:
+            if appid == RECOMM_APPID_EASOU2:
+                uid2_key = 'ns2_v_0112'
+            else:
+                uid2_key = 'v_0112'
+        elif req_feature == 13:
+            if appid == RECOMM_APPID_EASOU2:
+                uid2_key = 'ns2_v_0113'
+            else:
+                uid2_key = 'v_0113'
+        elif req_feature == 14:
+            if appid == RECOMM_APPID_EASOU2:
+                uid2_key = 'ns2_v_0114'
+            else:
+                uid2_key = 'v_0114'
+        elif req_feature == 21:
+            if appid == RECOMM_APPID_EASOU2:
+                uid2_key = 'ns2_v_0121'
+            else:
+                uid2_key = 'v_0121'
+        elif req_feature == 22:
+            if appid == RECOMM_APPID_EASOU2:
+                uid2_key = 'ns2_v_0122'
+            else:
+                uid2_key = 'v_0122'
+        elif req_feature == 23:
+            if appid == RECOMM_APPID_EASOU2:
+                uid2_key = 'ns2_v_0123'
+            else:
+                uid2_key = 'v_0123'
+        elif req_feature == 24:
+            if appid == RECOMM_APPID_EASOU2:
+                uid2_key = 'ns2_v_0124'
+            else:
+                uid2_key = 'v_0124'
+    elif recomm_type == 205:
+        if req_feature == 0:
+            if appid == RECOMM_APPID_EASOU2:
+                uid2_key = 'ns2_v_0201'
+            else:
+                uid2_key = 'v_0201'
+        elif req_feature == 1:
+            if appid == RECOMM_APPID_EASOU2:
+                uid2_key = 'ns2_v_0202'
+            else:
+                uid2_key = 'v_0202'
+        elif req_feature == 2:
+            if appid == RECOMM_APPID_EASOU2:
+                uid2_key = 'ns2_v_0203'
+            else:
+                uid2_key = 'v_0203'
+    elif recomm_type == 206:
+        if appid == RECOMM_APPID_EASOU2:
+            uid2_key = 'ns2_v_0301'
+        else:
+            uid2_key = 'v_0301'
+    elif recomm_type == 207:
+        if appid == RECOMM_APPID_EASOU2:
+            uid2_key = 'ns2_v_0001'
+            uid4_key = 'ns2_v_0301'
+        else:
+            uid2_key = 'v_0001'
+            uid4_key = 'v_0301'
+    elif recomm_type == 208:
+        if appid == RECOMM_APPID_EASOU2:
+            uid2_key = 'ns2_v_0101'
+        else:
+            uid2_key = 'v_0101'
+    elif recomm_type == 209:
+        if appid == RECOMM_APPID_EASOU2:
+            if req_charge == 1:
+                uid2_key = 'ns2_v_0101'
+            else:
+                uid2_key = 'ns2_v_0001'
+        else:
+            if req_charge == 1:
+                uid2_key = 'v_0101'
+            else:
+                uid2_key = 'v_0001'
+    elif recomm_type == 101:
+        if req_feature != 0:
+            if appid == RECOMM_APPID_EASOU2:
+                uid2_key = 'ns2_v_%04d' % (req_feature)
+            else:
+                uid2_key = 'v_%04d' % (req_feature)
+
+
+
+
 
 def test_201(search_dic):
     #print search_dic

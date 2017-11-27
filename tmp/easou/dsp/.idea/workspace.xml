@@ -31,7 +31,7 @@
       <file leaf-file-name="get_stock_id.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/../../../stock/py/get_stock_id.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="5" column="12" selection-start="66" selection-end="66" vertical-scroll-proportion="0.0" vertical-offset="1174" max-vertical-offset="1995">
+            <state line="5" column="12" selection-start="66" selection-end="66" vertical-scroll-proportion="0.0" vertical-offset="95" max-vertical-offset="2033">
               <folding />
             </state>
           </provider>
@@ -40,7 +40,7 @@
       <file leaf-file-name="countX.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/../../../python/countX.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="87" column="4" selection-start="1805" selection-end="1897" vertical-scroll-proportion="0.0" vertical-offset="1459" max-vertical-offset="2109">
+            <state line="87" column="4" selection-start="1805" selection-end="1897" vertical-scroll-proportion="0.0" vertical-offset="1653" max-vertical-offset="2109">
               <folding />
             </state>
           </provider>
@@ -49,7 +49,7 @@
       <file leaf-file-name="re_test_case.py" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/../../../python/re_test_case.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="191" column="16" selection-start="5052" selection-end="5052" vertical-scroll-proportion="0.40501043" vertical-offset="3435" max-vertical-offset="3971">
+            <state line="238" column="50" selection-start="7482" selection-end="7482" vertical-scroll-proportion="0.80167013" vertical-offset="4138" max-vertical-offset="6802">
               <folding>
                 <element signature="e#40#54#0" expanded="true" />
               </folding>
@@ -60,7 +60,7 @@
       <file leaf-file-name="stock_info_bak.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/../../../stock/py/stock_info_bak.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="18" column="0" selection-start="253" selection-end="272" vertical-scroll-proportion="0.0" vertical-offset="855" max-vertical-offset="24947">
+            <state line="21" column="0" selection-start="253" selection-end="272" vertical-scroll-proportion="0.0" vertical-offset="399" max-vertical-offset="25289">
               <folding />
             </state>
           </provider>
@@ -69,7 +69,7 @@
       <file leaf-file-name="remove_expired.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/../../../python/remove_expired.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="259" column="0" selection-start="6551" selection-end="6551" vertical-scroll-proportion="0.0" vertical-offset="4518" max-vertical-offset="4997">
+            <state line="259" column="0" selection-start="6551" selection-end="6551" vertical-scroll-proportion="0.0" vertical-offset="4921" max-vertical-offset="5035">
               <folding />
             </state>
           </provider>
@@ -78,7 +78,7 @@
       <file leaf-file-name="monitor.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/../../../stock/py/monitor.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="1" column="0" selection-start="22" selection-end="37" vertical-scroll-proportion="0.0" vertical-offset="1330" max-vertical-offset="5548">
+            <state line="1" column="0" selection-start="22" selection-end="37" vertical-scroll-proportion="0.0" vertical-offset="19" max-vertical-offset="5776">
               <folding />
             </state>
           </provider>
@@ -191,12 +191,12 @@
   <component name="PropertiesComponent">
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="options.lastSelected" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
     <property name="recentsLimit" value="5" />
+    <property name="options.lastSelected" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../../../python" />
     <property name="FullScreen" value="false" />
-    <property name="options.searchVisible" value="true" />
     <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="options.searchVisible" value="true" />
   </component>
   <component name="PyConsoleOptionsProvider">
     <option name="myPythonConsoleState">
@@ -369,9 +369,6 @@
       <option name="PARAMETERS" value="" />
       <method />
     </configuration>
-    <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug" singleton="true">
-      <method />
-    </configuration>
     <configuration default="true" type="tests" factoryName="Unittests">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -393,6 +390,9 @@
       <option name="PUREUNITTEST" value="true" />
       <option name="PARAMS" value="" />
       <option name="USE_PARAM" value="false" />
+      <method />
+    </configuration>
+    <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug" singleton="true">
       <method />
     </configuration>
     <configuration default="true" type="tests" factoryName="Doctests">
@@ -549,7 +549,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/../../../stock/py/stock_info_bak.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="18" column="0" selection-start="253" selection-end="272" vertical-scroll-proportion="0.0" vertical-offset="114" max-vertical-offset="24947">
+        <state line="21" column="0" selection-start="253" selection-end="272" vertical-scroll-proportion="0.0" vertical-offset="399" max-vertical-offset="25289">
           <folding />
         </state>
       </provider>
@@ -584,7 +584,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/../../../python/re_test_case.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="191" column="16" selection-start="5052" selection-end="5052" vertical-scroll-proportion="0.40501043" vertical-offset="3435" max-vertical-offset="3971">
+        <state line="238" column="50" selection-start="7482" selection-end="7482" vertical-scroll-proportion="0.80167013" vertical-offset="4138" max-vertical-offset="6802">
           <folding>
             <element signature="e#40#54#0" expanded="true" />
           </folding>
