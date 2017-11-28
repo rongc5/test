@@ -10,7 +10,7 @@ public class Constant {
         // 线上或测试环境
         public static boolean ONLINE_SERVER = true;
 
-        public static String SERVER_URL = "www.baidu.com";
+        public static String SERVER_URL = "http://223.99.226.165:9090/";
 
         public static long DEFAULT_CONNECT_TIMEOUT=15*1000;
 
