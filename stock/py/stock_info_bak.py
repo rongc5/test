@@ -19,6 +19,7 @@ from BaseHTTPServer import HTTPServer
 from BaseHTTPServer import BaseHTTPRequestHandler
 import threading
 import cgi
+from urlparse import urlparse
 
 __author__ = 'rong'
 
@@ -1182,7 +1183,7 @@ def log_print_res(search_dic):
                 continue
 
 
-            httpPostContent('http://127.0.0.1:8082/', ['content-type: application/json'], json.dumps(search_dic[key]))
+
 
             log_write('res_list', json.dumps(search_dic[key]))
             log_write('res_list', '\n')
@@ -1304,72 +1305,26 @@ def do_search_short():
                 id_dic[key]['last_closing'] = res['last_closing']
                 id_dic[key]['vol'] = res['vol']
 
-            if not id_dic[key].has_key('choice'):
-                id_dic[key]['choice'] = ''
-
             if id_dic[key].has_key('end') and id_dic[key].has_key('low') and id_dic[key].has_key('start'):
                 if id_dic[key]['end'] > id_dic[key]['low'] and abs(id_dic[key]['end'] - id_dic[key]['low']) >= 1.8* abs(id_dic[key]['end'] - id_dic[key]['start']):
                     flag_one = True
 
             big_data = get_single_analysis(key)
-            big_res = 0
-            big_res2 = 0
             if len(big_data):
-                big_res = big_data['b'] - big_data['s']
-                big_res2 = big_data['2b'] - big_data['2s']
+                id_dic[key]['big_res'] = big_data['b'] - big_data['s']
+                id_dic[key]['big_res2'] = big_data['2b'] - big_data['2s']
+                id_dic[key]['res_vol_ratio'] = id_dic[key]['big_res'] *1.0/id_dic[key]['vol']
+                id_dic[key]['res2_vol_ratio'] = id_dic[key]['big_res2'] *1.0/id_dic[key]['vol']
 
-            if not id_dic[key].has_key('big_res'):
-                id_dic[key]['big_res'] = []
-                id_dic[key]['big_res2'] = []
-                id_dic[key]['res_vol_ratio'] = []
-                id_dic[key]['res2_vol_ratio'] = []
-            if len(id_dic[key]['big_res']) and abs(id_dic[key]['big_res'][-1] - big_res) >= 200:
-                id_dic[key]['big_res'].append(big_res)
-                id_dic[key]['big_res2'].append(big_res2)
-            elif not len(id_dic[key]['big_res']):
-                id_dic[key]['big_res'].append(big_res)
-                id_dic[key]['big_res2'].append(big_res2)
+            index = random.randint(0, len(user_agent_list) -1)
+            httpPostContent('http://127.0.0.1:8082/', ['content-type: application/json', 'User-Agent: %s' % (user_agent_list[index])], json.dumps(id_dic[key]))
 
-            flag_two = False
-            if get_data_direction(id_dic[key]['big_res2']):
-                flag_two = True
 
-            flag_three = False
-            #if get_data_direction(id_dic[key]['main_force']):
-            if get_data_direction(id_dic[key]['big_res']):
-                flag_three = True
 
-            if len(id_dic[key]['big_res']) and id_dic[key].has_key('vol'):
-                res_vol_ratio = id_dic[key]['big_res'][-1] *1.0/id_dic[key]['vol']
-                res2_vol_ratio = id_dic[key]['big_res2'][-1] *1.0/id_dic[key]['vol']
-                if res_vol_ratio not in id_dic[key]['res_vol_ratio']:
-                    id_dic[key]['res_vol_ratio'].append(res_vol_ratio)
-                    id_dic[key]['res2_vol_ratio'].append(res2_vol_ratio)
-
-                if res_vol_ratio < 0 or res2_vol_ratio < 0:
-                    if key in search_dic:
-                        search_dic.pop(key)
-                #print id_dic[key]['res2_vol_ratio'][-1]
-
-            id_dic[key]['big_weight'] = get_positive_ratio(id_dic[key]['res_vol_ratio'])
-            id_dic[key]['big_weight2'] = get_positive_ratio(id_dic[key]['res2_vol_ratio'])
-
-            if flag_one and flag_two:
-                search_dic[key] = id_dic[key]
-                id_dic[key]['next_time'] = 0
-                id_dic[key]['choice'] = 'A'
-            elif flag_two and flag_three and id_dic[key]['res_vol_ratio'][-1] >= 0.06 and id_dic[key]['res2_vol_ratio'][-1] >= 0.06:
-                search_dic[key] = id_dic[key]
-                id_dic[key]['next_time'] = 0
-                id_dic[key]['choice'] = 'B'
-            elif key in search_dic:
-                search_dic.pop(key)
+            if  id_dic[key]['big_res'] > 0:
                 id_dic[key]['next_time'] = 0
             else:
-                if  len(id_dic[key]['big_res']) <= 1:
-                    id_dic[key]['next_time'] = 0
-                else:
-                    id_dic[key]['next_time'] = time.time() + 2 *TIME_DIFF
+                id_dic[key]['next_time'] = time.time() + 2 *TIME_DIFF
 
         #print 'length: ', len(search_dic)
         log_print_res(search_dic)
@@ -1377,7 +1332,49 @@ def do_search_short():
 
 
 class TodoHandler(BaseHTTPRequestHandler):
-    TODOS = []
+
+    def __init__(self):
+        self.id_dic = {}
+
+    def inert_data(self, post_values):
+        key = post_values['id']
+        if not self.id_dic.has_key(post_values['id']):
+                self.id_dic[key]['tbmgsy'] = post_values['tbmgsy']
+                self.id_dic[key]['change_rate'] = post_values['change_rate']
+                self.id_dic[key]['jlr'] = post_values['jlr']
+                self.id_dic[key]['vol'] = post_values['vol']
+                self.id_dic[key]['big_res2'] = []
+                self.id_dic[key]['big_res2'].append(post_values['big_res2'])
+                self.id_dic[key]['high'] = post_values['high']
+                self.id_dic[key]['zysr'] = post_values['zysr']
+                self.id_dic[key]['circulation_market_value'] = post_values['circulation_market_value']
+                self.id_dic[key]['end'] = post_values['end']
+                self.id_dic[key]['pb'] = post_values['pb']
+                self.id_dic[key]['start'] = post_values['start']
+                self.id_dic[key]['mgxjll'] = post_values['mgxjll']
+                self.id_dic[key]['low'] = post_values['low']
+                self.id_dic[key]['pe'] = post_values['pe']
+                self.id_dic[key]['yylr'] = post_values['yylr']
+                self.id_dic[key]['res_vol_ratio'] = []
+                self.id_dic[key]['res_vol_ratio'].append(post_values['res_vol_ratio'])
+                self.id_dic[key]['mgsy'] = post_values['mgsy']
+                self.id_dic[key]['total_value'] = post_values['total_value']
+                self.id_dic[key]['big_res'] = []
+                self.id_dic[key]['big_res'].append(post_values['big_res'])
+                self.id_dic[key]['last_closing'] = post_values['last_closing']
+                self.id_dic[key]['res2_vol_ratio'] = []
+                self.id_dic[key]['res2_vol_ratio'].append(post_values['res2_vol_ratio'])
+                self.id_dic[key]['mgxj'] = post_values['mgxj']
+                self.id_dic[key]['range_percent'] = post_values['range_percent']
+                self.id_dic[key]['swing'] = post_values['swing']
+        else:
+                if abs(self.id_dic[key]['big_res'][-1] - post_values['big_res']) >= 200:
+                    self.id_dic[key]['big_res'].append(post_values['big_res'])
+                    self.id_dic[key]['big_res2'].append(post_values['big_res'])
+                    res_vol_ratio = post_values['big_res'] *1.0/post_values['vol']
+                    res2_vol_ratio = post_values['big_res2'] *1.0/post_values['vol']
+                    self.id_dic[key]['res_vol_ratio'].append(res_vol_ratio)
+                    self.id_dic[key]['res2_vol_ratio'].append(res2_vol_ratio)
 
     def do_GET(self):
         # return all todos
@@ -1386,8 +1383,13 @@ class TodoHandler(BaseHTTPRequestHandler):
             self.send_error(404, "File not found.")
             return
 
+
+        query = urlparse(self.path).query
+        query_components = dict(qc.split("=") for qc in query.split("&"))
+        #imsi = query_components["imsi"]
+
         # Just dump data to json, and return it
-        message = json.dumps(self.TODOS)
+        message = json.dumps()
 
         self.send_response(200)
         self.send_header('Content-type', 'application/json')
@@ -1399,7 +1401,7 @@ class TodoHandler(BaseHTTPRequestHandler):
         if ctype == 'application/json':
             length = int(self.headers['content-length'])
             post_values = json.loads(self.rfile.read(length))
-            self.TODOS.append(post_values)
+            self.inert_data(post_values)
         else:
             self.send_error(415, "Only json data is supported.")
             return
@@ -1408,7 +1410,7 @@ class TodoHandler(BaseHTTPRequestHandler):
         self.send_header('Content-type', 'application/json')
         self.end_headers()
 
-        self.wfile.write(post_values)
+        self.wfile.write({'status':'ok'})
 
 
 #A股就是个坑， 技术指标低位了， 仍然可以再砸
