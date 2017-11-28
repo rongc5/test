@@ -127,6 +127,27 @@ def get_history_ucf(uid, udid, field):
 
     return res_list
 
+
+#ik_version
+#1501745183
+#uk_version
+#1501745183
+#ik4_version
+#1508112000
+#uk4_version
+#1508112000
+#tf1
+#4
+#tf2
+#4
+def get_version(field):
+    ip = REDIS1_NS.split(':')[0]
+    port = REDIS1_NS.split(':')[1]
+    cmd = [REDIS_CLI, '--raw', '-h', ip, '-p', port, '-a', REDIS1_AUTH, '-c', 'hgetall', 'i_version', field]
+    res_str = subprocess.Popen(cmd, stdout=subprocess.PIPE).communicate()[0]
+
+    return res_str
+
 #uid4_key   v_0001
 def get_uid2_key(recomm_type, req_feature, appid, req_charge):
     uid2_key = ''
@@ -237,8 +258,35 @@ def get_uid2_key(recomm_type, req_feature, appid, req_charge):
                 uid2_key = 'ns2_v_%04d' % (req_feature)
             else:
                 uid2_key = 'v_%04d' % (req_feature)
+        else:
+            if appid == RECOMM_APPID_EASOU2:
+                uid2_key = 'ns2_v_0101'
+            else:
+                uid2_key = 'v_0101'
+    elif recomm_type == 301 or recomm_type == 302 or recomm_type == 3011 or recomm_type == 3021:
+        if req_charge == 1:
+            if appid == RECOMM_APPID_EASOU2:
+                uid2_key = 'ns2_v_0101'
+            else:
+                uid2_key = 'v_0101'
+        else:
+            if appid == RECOMM_APPID_EASOU2:
+                uid2_key = 'ns2_v_0001'
+            else:
+                uid2_key = 'v_0001'
+    elif recomm_type == 201:
+        if appid == RECOMM_APPID_EASOU2:
+            uid2_key = 'ns2_v_0101'
+            uid4_key = 'ns2_v_0301'
+        else:
+            uid2_key = 'v_0101'
+            uid4_key = 'v_0301'
 
-
+    else:
+        if appid == RECOMM_APPID_EASOU2:
+            uid2_key = 'ns2_v_0101'
+        else:
+            uid2_key = 'v_0101'
 
 
 

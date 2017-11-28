@@ -15,6 +15,10 @@ import random
 from time import strftime, localtime
 from datetime import timedelta, date
 import calendar
+from BaseHTTPServer import HTTPServer
+from BaseHTTPServer import BaseHTTPRequestHandler
+import threading
+import cgi
 
 __author__ = 'rong'
 
@@ -295,6 +299,68 @@ def httpGetContent(url, req_header=None, version = '1.1'):
     response_header.close()
     #print res
     return res
+
+
+def httpPostContent(url, req_header, body):
+    buf = cStringIO.StringIO()
+    response_header = cStringIO.StringIO()
+    c = pycurl.Curl()
+    c.setopt(c.URL, url)
+    c.setopt(c.WRITEFUNCTION, buf.write)
+    c.setopt(c.CONNECTTIMEOUT, 100)
+    c.setopt(c.TIMEOUT, 300)
+    c.setopt(pycurl.MAXREDIRS, 5)
+    c.setopt(pycurl.FOLLOWLOCATION, 1)
+
+    if req_header is None:
+        req_header = []
+
+    flag = 0
+    for key in req_header:
+        if  'User-Agent:' in key or  'user-agent:' in key:
+            flag = 1
+            break
+
+    if not flag:
+        print 'no User-Agent', req_header, url, sys._getframe().f_lineno
+        return
+
+    #if not flag:
+    #    c.setopt(pycurl.USERAGENT, 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.113 Safari/537.36')
+
+    c.setopt(pycurl.TCP_NODELAY, 1)
+
+    add_headers = ['Accept:text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+             'Connection:keep-alive','Accept-Language:zh-CN,zh;q=0.8,en;q=0.6','Cache-Control:max-age=0',
+             'DNT:1','Upgrade-Insecure-Requests:1','Accept-Charset: utf-8']
+    c.setopt(pycurl.ENCODING, 'gzip, deflate')
+
+    c.setopt(pycurl.HTTP_VERSION, pycurl.CURL_HTTP_VERSION_1_0)
+    if len(req_header):
+        add_headers.extend(req_header)
+
+    c.setopt(c.HTTPHEADER, add_headers)
+    c.setopt(pycurl.POST, 1)
+    c.setopt(pycurl.POSTFIELDS, body)
+    c.setopt(c.HEADERFUNCTION, response_header.write)
+    res = {}
+
+    try:
+        c.perform()
+        str_head = '%s' % (response_header.getvalue())
+        str_body = '%s' % (buf.getvalue())
+        res['head'] = str_head
+        res['body'] = str_body
+        #print str_head, str_body
+    except pycurl.error, error:
+        errno, errstr = error
+        print 'An error occurred: ', errstr, url
+    c.close()
+    buf.close()
+    response_header.close()
+    #print res
+    return res
+
 
 def GzipStream(streams):
     "用于处理容启动gzip压缩"
@@ -1103,7 +1169,7 @@ def log_print_res(search_dic):
             #        remove_ley.append(key)
             #        continue
 
-            if search_dic[key]['count_main_force'] % 5 == 0:
+            if search_dic[key]['count_main_force'] % 3 == 0:
                 search_dic[key]['count_main_force'] += 1
                 money = get_money_flow(key)
                 if money.has_key('main_force'):
@@ -1111,6 +1177,12 @@ def log_print_res(search_dic):
                         search_dic[key]['main_force'].append(money['main_force'])
                     elif not len(search_dic[key]['main_force']):
                         search_dic[key]['main_force'].append(money['main_force'])
+
+            if search_dic[key]['change_rate'] < 0.8 and (search_dic[key]['big_res'][-1] < 1200 or  search_dic[key]['big_res2'][-1] < 1200):
+                continue
+
+
+            httpPostContent('http://127.0.0.1:8082/', ['content-type: application/json'], json.dumps(search_dic[key]))
 
             log_write('res_list', json.dumps(search_dic[key]))
             log_write('res_list', '\n')
@@ -1216,9 +1288,9 @@ def do_search_short():
 
                 id_dic[key]['swing'] = res['swing']
 
-                #if res['change_rate'] < 1:
-                    #id_dic[key]['next_time'] = time.time() + 2 *TIME_DIFF
-                    #continue
+                #if res['change_rate'] < 0.8:
+                #    id_dic[key]['next_time'] = time.time() + 2 *TIME_DIFF
+                #    continue
 
                 id_dic[key]['change_rate'] = res['change_rate']
                 if res['end'] < res['low']:
@@ -1286,7 +1358,7 @@ def do_search_short():
                 search_dic[key] = id_dic[key]
                 id_dic[key]['next_time'] = 0
                 id_dic[key]['choice'] = 'A'
-            elif flag_two and flag_three and id_dic[key]['res_vol_ratio'][-1] >= 0.05:
+            elif flag_two and flag_three and id_dic[key]['res_vol_ratio'][-1] >= 0.06 and id_dic[key]['res2_vol_ratio'][-1] >= 0.06:
                 search_dic[key] = id_dic[key]
                 id_dic[key]['next_time'] = 0
                 id_dic[key]['choice'] = 'B'
@@ -1302,6 +1374,42 @@ def do_search_short():
         #print 'length: ', len(search_dic)
         log_print_res(search_dic)
         time.sleep(TIME_DIFF)
+
+
+class TodoHandler(BaseHTTPRequestHandler):
+    TODOS = []
+
+    def do_GET(self):
+        # return all todos
+
+        if self.path != '/':
+            self.send_error(404, "File not found.")
+            return
+
+        # Just dump data to json, and return it
+        message = json.dumps(self.TODOS)
+
+        self.send_response(200)
+        self.send_header('Content-type', 'application/json')
+        self.end_headers()
+        self.wfile.write(message)
+
+    def do_POST(self):
+        ctype, pdict = cgi.parse_header(self.headers['content-type'])
+        if ctype == 'application/json':
+            length = int(self.headers['content-length'])
+            post_values = json.loads(self.rfile.read(length))
+            self.TODOS.append(post_values)
+        else:
+            self.send_error(415, "Only json data is supported.")
+            return
+
+        self.send_response(200)
+        self.send_header('Content-type', 'application/json')
+        self.end_headers()
+
+        self.wfile.write(post_values)
+
 
 #A股就是个坑， 技术指标低位了， 仍然可以再砸
 #技术指标高位了， 有资金接盘仍然可以涨, 高位始终是危险
@@ -1322,4 +1430,13 @@ def do_search_short():
 #割肉要坚决， 没有什么后悔的, 不看上证、a50 那是不行的
 #不要做T, 不看好就跑， 看好就买， 做T, 买了， 想跑跑不了
 if __name__ == '__main__':
-    do_search_short()
+    server = HTTPServer(('localhost', 8082), TodoHandler)
+    thread = threading.Thread(target = server.serve_forever)
+    thread.daemon = True
+    thread.start()
+
+
+    thread = threading.Thread(target = do_search_short())
+    thread.daemon = True
+    thread.start()
+
