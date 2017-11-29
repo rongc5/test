@@ -19,8 +19,8 @@ public class Constant {
         // web端口
         public static String SERVER_PORT = ONLINE_SERVER ? "80" : "8081";
 
-        public static String logDir = "DuoBaoDream";
-        public static String logFile = "duoBaoAppLog.txt";
+        public static String logDir = "SecretApp";
+        public static String logFile = "SecretAppLog.txt";
 
         // 调试控制台日志
         public static final boolean DEBUG = true;
