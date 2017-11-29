@@ -15,11 +15,6 @@ import random
 from time import strftime, localtime
 from datetime import timedelta, date
 import calendar
-from BaseHTTPServer import HTTPServer
-from BaseHTTPServer import BaseHTTPRequestHandler
-import threading
-import cgi
-from urlparse import urlparse
 
 __author__ = 'rong'
 
@@ -300,68 +295,6 @@ def httpGetContent(url, req_header=None, version = '1.1'):
     response_header.close()
     #print res
     return res
-
-
-def httpPostContent(url, req_header, body):
-    buf = cStringIO.StringIO()
-    response_header = cStringIO.StringIO()
-    c = pycurl.Curl()
-    c.setopt(c.URL, url)
-    c.setopt(c.WRITEFUNCTION, buf.write)
-    c.setopt(c.CONNECTTIMEOUT, 100)
-    c.setopt(c.TIMEOUT, 300)
-    c.setopt(pycurl.MAXREDIRS, 5)
-    c.setopt(pycurl.FOLLOWLOCATION, 1)
-
-    if req_header is None:
-        req_header = []
-
-    flag = 0
-    for key in req_header:
-        if  'User-Agent:' in key or  'user-agent:' in key:
-            flag = 1
-            break
-
-    if not flag:
-        print 'no User-Agent', req_header, url, sys._getframe().f_lineno
-        return
-
-    #if not flag:
-    #    c.setopt(pycurl.USERAGENT, 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.113 Safari/537.36')
-
-    c.setopt(pycurl.TCP_NODELAY, 1)
-
-    add_headers = ['Accept:text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
-             'Connection:keep-alive','Accept-Language:zh-CN,zh;q=0.8,en;q=0.6','Cache-Control:max-age=0',
-             'DNT:1','Upgrade-Insecure-Requests:1','Accept-Charset: utf-8']
-    c.setopt(pycurl.ENCODING, 'gzip, deflate')
-
-    c.setopt(pycurl.HTTP_VERSION, pycurl.CURL_HTTP_VERSION_1_0)
-    if len(req_header):
-        add_headers.extend(req_header)
-
-    c.setopt(c.HTTPHEADER, add_headers)
-    c.setopt(pycurl.POST, 1)
-    c.setopt(pycurl.POSTFIELDS, body)
-    c.setopt(c.HEADERFUNCTION, response_header.write)
-    res = {}
-
-    try:
-        c.perform()
-        str_head = '%s' % (response_header.getvalue())
-        str_body = '%s' % (buf.getvalue())
-        res['head'] = str_head
-        res['body'] = str_body
-        #print str_head, str_body
-    except pycurl.error, error:
-        errno, errstr = error
-        print 'An error occurred: ', errstr, url
-    c.close()
-    buf.close()
-    response_header.close()
-    #print res
-    return res
-
 
 def GzipStream(streams):
     "用于处理容启动gzip压缩"
@@ -1109,7 +1042,7 @@ def get_data_direction(arr):
     if len(arr) < 2 :
         return False
 
-    if arr[-1] > arr[0] and arr[-1] > 0:
+    if arr[-1] > arr[0]:
         return True
     else:
         return False
@@ -1170,7 +1103,7 @@ def log_print_res(search_dic):
             #        remove_ley.append(key)
             #        continue
 
-            if search_dic[key]['count_main_force'] % 3 == 0:
+            if search_dic[key]['count_main_force'] % 5 == 0:
                 search_dic[key]['count_main_force'] += 1
                 money = get_money_flow(key)
                 if money.has_key('main_force'):
@@ -1178,12 +1111,6 @@ def log_print_res(search_dic):
                         search_dic[key]['main_force'].append(money['main_force'])
                     elif not len(search_dic[key]['main_force']):
                         search_dic[key]['main_force'].append(money['main_force'])
-
-            if search_dic[key]['change_rate'] < 0.8 and (search_dic[key]['big_res'][-1] < 1200 or  search_dic[key]['big_res2'][-1] < 1200):
-                continue
-
-
-
 
             log_write('res_list', json.dumps(search_dic[key]))
             log_write('res_list', '\n')
@@ -1210,7 +1137,51 @@ def load_monitor_list():
 
     return id_dic
 
+def load_config():
+    id_dic = {}
+    if not os.path.isfile('stock_cfg'):
+        return id_dic
 
+    file = open("stock_cfg")
+    while 1:
+        line = file.readline().strip('\n')
+        if not line:
+            break
+
+        if line.strip().startswith('#'):
+            continue
+
+        items = line.split('=')
+        if len(items) != 2:
+            continue
+        id_dic[items[0]] = float(items[1])
+
+    file.close()
+
+    return id_dic
+
+
+def is_reload_base_list(old_dic, new_dic):
+    if not len(old_dic):
+        return True
+
+    if new_dic.has_key('pe_le'):
+        if not old_dic.has_key('pe_le'):
+            return True
+        elif new_dic['pe_le'] != old_dic['pe_le']:
+            return True
+        else:
+            return False
+
+    if new_dic.has_key('end_le'):
+        if not old_dic.has_key('end_le'):
+            return True
+        elif new_dic['end_le'] != old_dic['end_le']:
+            return True
+        else:
+            return False
+
+    return False
 
 def do_search_short():
     day = Day()
@@ -1230,27 +1201,33 @@ def do_search_short():
     id_dic = remove_from_banlist(id_dic, ban_dic)
     print 'after ban_dic', len(id_dic)
 
-    monitor_dic = {}
     search_dic = {}
+    query_components = {}
     remove_ley = []
-    monitor_mtime_first = 0
-    monitor_mtime_second = 0
-    countx = 0
+    monitor_mtime = 0
+    cfg_mtime = 0
     TIME_DIFF = 20
     while 1:
-        monitor_mtime_second = time.ctime(os.path.getmtime('monitor_list'))
-        if monitor_mtime_first != monitor_mtime_second:
-            monitor_mtime_first = monitor_mtime_second
+        mtime = time.ctime(os.path.getmtime('monitor_list'))
+        if monitor_mtime != mtime:
+            monitor_mtime = mtime
             monitor_dic = load_monitor_list()
             for key in monitor_dic:
                 if key not in id_dic:
                     id_dic[key] = {}
                     id_dic[key]['id'] = key
 
+        mtime = time.ctime(os.path.getmtime('stock_cfg'))
+        if cfg_mtime != mtime:
+            cfg_mtime = mtime
+            tmp_components = load_config()
+            if is_reload_base_list(query_components, tmp_components):
+                pass
+            query_components = tmp_components
+
         for key in remove_ley:
             id_dic.pop(key)
 
-        countx += 1
         remove_ley = []
         print 'after remove_ley', len(id_dic)
         for key in id_dic:
@@ -1264,7 +1241,11 @@ def do_search_short():
                 if diff_time < 0:
                     continue
 
-            flag_one = False
+            if query_components.has_key('pe_le'):
+                if id_dic[key]['pe'] > query_components['pe_le']:
+                    remove_ley.append(key)
+                    continue
+
             res = get_stockid_real_time(key)
 
             if res.has_key('block') and res['block']:  #停牌
@@ -1273,30 +1254,9 @@ def do_search_short():
                 continue
 
             if  res.has_key('range_percent'):
-                #remove_ley.append(key)
-
-                if res['range_percent'] < -3.9 or  res['range_percent'] > 4.9:
-                    remove_ley.append(key)
-                    if key in search_dic:
-                        search_dic.pop(key)
-                    print 'remove key: ', key, res['range_percent']
-                    continue
-
                 id_dic[key]['range_percent'] = res['range_percent']
-
-                #if res['swing'] < 2.0:
-                #    continue
-
                 id_dic[key]['swing'] = res['swing']
-
-                #if res['change_rate'] < 0.8:
-                #    id_dic[key]['next_time'] = time.time() + 2 *TIME_DIFF
-                #    continue
-
                 id_dic[key]['change_rate'] = res['change_rate']
-                if res['end'] < res['low']:
-                    id_dic[key]['next_time'] = time.time() + 2 *TIME_DIFF
-                    continue
 
                 id_dic[key]['end'] = res['end']
                 id_dic[key]['low'] = res['low']
@@ -1305,113 +1265,115 @@ def do_search_short():
                 id_dic[key]['last_closing'] = res['last_closing']
                 id_dic[key]['vol'] = res['vol']
 
+                if query_components.has_key('end_le'):
+                    if res['change_rate'] > query_components['end_le']:
+                        remove_ley.append(key)
+                        continue
+
+                if query_components.has_key('end_start_ge'):
+                    if res['end'] < query_components['start']:
+                        continue
+
+                if query_components.has_key('change_rate_ge'):
+                    if res['change_rate'] < query_components['change_rate_ge']:
+                        continue
+
+                if query_components.has_key('range_percent_ge'):
+                    if res['range_percent'] < query_components['range_percent_ge']:
+                        continue
+
+                if query_components.has_key('range_percent_le'):
+                    if res['range_percent'] > query_components['range_percent_le']:
+                        continue
+
+                if query_components.has_key('end_ge_low'):
+                    if res['end'] < res['low']:
+                        continue
+
+            if not id_dic[key].has_key('up_pointer'):
+                id_dic[key]['up_pointer'] = 0
+
+            if not id_dic[key].has_key('down_pointer'):
+                id_dic[key]['down_pointer'] = 0
+
             if id_dic[key].has_key('end') and id_dic[key].has_key('low') and id_dic[key].has_key('start'):
-                if id_dic[key]['end'] > id_dic[key]['low'] and abs(id_dic[key]['end'] - id_dic[key]['low']) >= 1.8* abs(id_dic[key]['end'] - id_dic[key]['start']):
-                    flag_one = True
+                if id_dic[key]['end'] > id_dic[key]['low'] and id_dic[key]['end'] != id_dic[key]['start']:
+                    id_dic[key]['down_pointer'] = abs(id_dic[key]['end'] - id_dic[key]['low']) /abs(id_dic[key]['end'] - id_dic[key]['start'])
+
+                if id_dic[key]['end'] < id_dic[key]['high'] and id_dic[key]['end'] != id_dic[key]['start']:
+                    id_dic[key]['up_pointer'] = abs(id_dic[key]['end'] - id_dic[key]['high']) /abs(id_dic[key]['end'] - id_dic[key]['start'])
 
             big_data = get_single_analysis(key)
+            big_res = 0
+            big_res2 = 0
             if len(big_data):
-                id_dic[key]['big_res'] = big_data['b'] - big_data['s']
-                id_dic[key]['big_res2'] = big_data['2b'] - big_data['2s']
-                id_dic[key]['res_vol_ratio'] = id_dic[key]['big_res'] *1.0/id_dic[key]['vol']
-                id_dic[key]['res2_vol_ratio'] = id_dic[key]['big_res2'] *1.0/id_dic[key]['vol']
-
-            index = random.randint(0, len(user_agent_list) -1)
-            httpPostContent('http://127.0.0.1:8082/', ['content-type: application/json', 'User-Agent: %s' % (user_agent_list[index])], json.dumps(id_dic[key]))
+                big_res = big_data['b'] - big_data['s']
+                big_res2 = big_data['2b'] - big_data['2s']
 
 
+            if not id_dic[key].has_key('big_res'):
+                id_dic[key]['big_res'] = []
+                id_dic[key]['big_res2'] = []
+                id_dic[key]['res_vol_ratio'] = []
+                id_dic[key]['res2_vol_ratio'] = []
+            if len(id_dic[key]['big_res']) and abs(id_dic[key]['big_res'][-1] - big_res) >= 200:
+                id_dic[key]['big_res'].append(big_res)
+                id_dic[key]['big_res2'].append(big_res2)
+            elif not len(id_dic[key]['big_res']):
+                id_dic[key]['big_res'].append(big_res)
+                id_dic[key]['big_res2'].append(big_res2)
 
-            if  id_dic[key]['big_res'] > 0:
-                id_dic[key]['next_time'] = 0
-            else:
-                id_dic[key]['next_time'] = time.time() + 2 *TIME_DIFF
+
+            if len(id_dic[key]['big_res']) and id_dic[key].has_key('vol'):
+                res_vol_ratio = id_dic[key]['big_res'][-1] *1.0/id_dic[key]['vol']
+                res2_vol_ratio = id_dic[key]['big_res2'][-1] *1.0/id_dic[key]['vol']
+                if res_vol_ratio not in id_dic[key]['res_vol_ratio']:
+                    id_dic[key]['res_vol_ratio'].append(res_vol_ratio)
+                    id_dic[key]['res2_vol_ratio'].append(res2_vol_ratio)
+
+            id_dic[key]['big_weight'] = get_positive_ratio(id_dic[key]['res_vol_ratio'])
+            id_dic[key]['big_weight2'] = get_positive_ratio(id_dic[key]['res2_vol_ratio'])
+
+            if query_components.has_key('big_res'):
+                if not get_data_direction(id_dic[key]['big_res']):
+                    continue
+
+            if query_components.has_key('big_res2'):
+                if not get_data_direction(id_dic[key]['big_res2']):
+                    continue
+
+            if query_components.has_key('big_res_ge'):
+                if id_dic[key]['big_res'][-1] < query_components['big_res_ge']:
+                    continue
+
+            if query_components.has_key('big_res2_ge'):
+                if id_dic[key]['big_res2'][-1] < query_components['big_res2_ge']:
+                    continue
+
+            if query_components.has_key('res_vol_ratio_ge'):
+                if id_dic[key]['res_vol_ratio'][-1] < query_components['res_vol_ratio_ge']:
+                    continue
+
+            if query_components.has_key('res2_vol_ratio_ge'):
+                if id_dic[key]['res2_vol_ratio'][-1] < query_components['res2_vol_ratio_ge']:
+                    continue
+
+            if query_components.has_key('down_pointer_ge'):
+                if id_dic[key]['down_pointer'][-1] < query_components['down_pointer_ge']:
+                    continue
+
+            if query_components.has_key('up_pointer_le'):
+                if id_dic[key]['up_pointer'][-1] > query_components['up_pointer_le']:
+                    continue
+
+                #print id_dic[key]['res2_vol_ratio'][-1]
+
+            search_dic[key] = id_dic[key]
+            id_dic[key]['next_time'] = 0
 
         #print 'length: ', len(search_dic)
         log_print_res(search_dic)
         time.sleep(TIME_DIFF)
-
-
-class TodoHandler(BaseHTTPRequestHandler):
-
-    def __init__(self):
-        self.id_dic = {}
-
-    def inert_data(self, post_values):
-        key = post_values['id']
-        if not self.id_dic.has_key(post_values['id']):
-                self.id_dic[key]['tbmgsy'] = post_values['tbmgsy']
-                self.id_dic[key]['change_rate'] = post_values['change_rate']
-                self.id_dic[key]['jlr'] = post_values['jlr']
-                self.id_dic[key]['vol'] = post_values['vol']
-                self.id_dic[key]['big_res2'] = []
-                self.id_dic[key]['big_res2'].append(post_values['big_res2'])
-                self.id_dic[key]['high'] = post_values['high']
-                self.id_dic[key]['zysr'] = post_values['zysr']
-                self.id_dic[key]['circulation_market_value'] = post_values['circulation_market_value']
-                self.id_dic[key]['end'] = post_values['end']
-                self.id_dic[key]['pb'] = post_values['pb']
-                self.id_dic[key]['start'] = post_values['start']
-                self.id_dic[key]['mgxjll'] = post_values['mgxjll']
-                self.id_dic[key]['low'] = post_values['low']
-                self.id_dic[key]['pe'] = post_values['pe']
-                self.id_dic[key]['yylr'] = post_values['yylr']
-                self.id_dic[key]['res_vol_ratio'] = []
-                self.id_dic[key]['res_vol_ratio'].append(post_values['res_vol_ratio'])
-                self.id_dic[key]['mgsy'] = post_values['mgsy']
-                self.id_dic[key]['total_value'] = post_values['total_value']
-                self.id_dic[key]['big_res'] = []
-                self.id_dic[key]['big_res'].append(post_values['big_res'])
-                self.id_dic[key]['last_closing'] = post_values['last_closing']
-                self.id_dic[key]['res2_vol_ratio'] = []
-                self.id_dic[key]['res2_vol_ratio'].append(post_values['res2_vol_ratio'])
-                self.id_dic[key]['mgxj'] = post_values['mgxj']
-                self.id_dic[key]['range_percent'] = post_values['range_percent']
-                self.id_dic[key]['swing'] = post_values['swing']
-        else:
-                if abs(self.id_dic[key]['big_res'][-1] - post_values['big_res']) >= 200:
-                    self.id_dic[key]['big_res'].append(post_values['big_res'])
-                    self.id_dic[key]['big_res2'].append(post_values['big_res'])
-                    res_vol_ratio = post_values['big_res'] *1.0/post_values['vol']
-                    res2_vol_ratio = post_values['big_res2'] *1.0/post_values['vol']
-                    self.id_dic[key]['res_vol_ratio'].append(res_vol_ratio)
-                    self.id_dic[key]['res2_vol_ratio'].append(res2_vol_ratio)
-
-    def do_GET(self):
-        # return all todos
-
-        if self.path != '/':
-            self.send_error(404, "File not found.")
-            return
-
-
-        query = urlparse(self.path).query
-        query_components = dict(qc.split("=") for qc in query.split("&"))
-        #imsi = query_components["imsi"]
-
-        # Just dump data to json, and return it
-        message = json.dumps()
-
-        self.send_response(200)
-        self.send_header('Content-type', 'application/json')
-        self.end_headers()
-        self.wfile.write(message)
-
-    def do_POST(self):
-        ctype, pdict = cgi.parse_header(self.headers['content-type'])
-        if ctype == 'application/json':
-            length = int(self.headers['content-length'])
-            post_values = json.loads(self.rfile.read(length))
-            self.inert_data(post_values)
-        else:
-            self.send_error(415, "Only json data is supported.")
-            return
-
-        self.send_response(200)
-        self.send_header('Content-type', 'application/json')
-        self.end_headers()
-
-        self.wfile.write({'status':'ok'})
-
 
 #A股就是个坑， 技术指标低位了， 仍然可以再砸
 #技术指标高位了， 有资金接盘仍然可以涨, 高位始终是危险
@@ -1432,13 +1394,4 @@ class TodoHandler(BaseHTTPRequestHandler):
 #割肉要坚决， 没有什么后悔的, 不看上证、a50 那是不行的
 #不要做T, 不看好就跑， 看好就买， 做T, 买了， 想跑跑不了
 if __name__ == '__main__':
-    server = HTTPServer(('localhost', 8082), TodoHandler)
-    thread = threading.Thread(target = server.serve_forever)
-    thread.daemon = True
-    thread.start()
-
-
-    thread = threading.Thread(target = do_search_short())
-    thread.daemon = True
-    thread.start()
-
+    do_search_short()

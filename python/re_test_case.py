@@ -33,6 +33,22 @@ def get_user_type(uid):
 
     return user_type
 
+def get_data_redis1(key, field):
+    ip = REDIS1_NS.split(':')[0]
+    port = REDIS1_NS.split(':')[1]
+    cmd = [REDIS_CLI, '--raw', '-h', ip, '-p', port, '-a', REDIS1_AUTH, '-c', 'hget', key, field]
+    res_str = subprocess.Popen(cmd, stdout=subprocess.PIPE).communicate()[0]
+    res_str = res_str.split('\n')[0]
+
+    return res_str
+
+def get_data_redis2(key, field):
+    ip = REDIS2_NS.split(':')[0]
+    port = REDIS2_NS.split(':')[1]
+    cmd = [REDIS_CLI, '--raw', '-h', ip, '-p', port, '-c', 'hget', key, field]
+    res_str = subprocess.Popen(cmd, stdout=subprocess.PIPE).communicate()[0]
+    res_str = res_str.split('\n')[0]
+    return res_str
 
 #1 包月前期
 #2 包月中期
@@ -128,6 +144,17 @@ def get_history_ucf(uid, udid, field):
     return res_list
 
 
+def get_pop(key, field):
+    ip = REDIS2_NS.split(':')[0]
+    port = REDIS2_NS.split(':')[1]
+    cmd = [REDIS_CLI, '--raw', '-h', ip, '-p', port, '-c', 'hget', '%s' % (key), field]
+    res_str = subprocess.Popen(cmd, stdout=subprocess.PIPE).communicate()[0]
+    res_list = []
+    if res_str.strip():
+        res_list = res_str.split('\t')
+
+    return res_list
+
 #ik_version
 #1501745183
 #uk_version
@@ -140,155 +167,181 @@ def get_history_ucf(uid, udid, field):
 #4
 #tf2
 #4
-def get_version(field):
+def get_version(key, field):
     ip = REDIS1_NS.split(':')[0]
     port = REDIS1_NS.split(':')[1]
-    cmd = [REDIS_CLI, '--raw', '-h', ip, '-p', port, '-a', REDIS1_AUTH, '-c', 'hgetall', 'i_version', field]
+    cmd = [REDIS_CLI, '--raw', '-h', ip, '-p', port, '-a', REDIS1_AUTH, '-c', 'hgetall', key, field]
     res_str = subprocess.Popen(cmd, stdout=subprocess.PIPE).communicate()[0]
 
     return res_str
 
 #uid4_key   v_0001
-def get_uid2_key(recomm_type, req_feature, appid, req_charge):
-    uid2_key = ''
-    uid4_key = ''
-    if recomm_type == 203:
-        if req_feature == 1:
-            if appid == RECOMM_APPID_EASOU2:
-                uid2_key = 'ns2_v_0102'
-            else:
-                uid2_key = 'v_0102'
-        elif req_feature == 2:
-            if appid == RECOMM_APPID_EASOU2:
-                uid2_key = 'ns2_v_0103'
-            else:
-                uid2_key = 'v_0103'
-        elif req_feature == 3:
-            if appid == RECOMM_APPID_EASOU2:
-                uid2_key = 'ns2_v_0107'
-            else:
-                uid2_key = 'v_0107'
-        elif req_feature == 11:
-            if appid == RECOMM_APPID_EASOU2:
-                uid2_key = 'ns2_v_0111'
-            else:
-                uid2_key = 'v_0111'
-        elif req_feature == 12:
-            if appid == RECOMM_APPID_EASOU2:
-                uid2_key = 'ns2_v_0112'
-            else:
-                uid2_key = 'v_0112'
-        elif req_feature == 13:
-            if appid == RECOMM_APPID_EASOU2:
-                uid2_key = 'ns2_v_0113'
-            else:
-                uid2_key = 'v_0113'
-        elif req_feature == 14:
-            if appid == RECOMM_APPID_EASOU2:
-                uid2_key = 'ns2_v_0114'
-            else:
-                uid2_key = 'v_0114'
-        elif req_feature == 21:
-            if appid == RECOMM_APPID_EASOU2:
-                uid2_key = 'ns2_v_0121'
-            else:
-                uid2_key = 'v_0121'
-        elif req_feature == 22:
-            if appid == RECOMM_APPID_EASOU2:
-                uid2_key = 'ns2_v_0122'
-            else:
-                uid2_key = 'v_0122'
-        elif req_feature == 23:
-            if appid == RECOMM_APPID_EASOU2:
-                uid2_key = 'ns2_v_0123'
-            else:
-                uid2_key = 'v_0123'
-        elif req_feature == 24:
-            if appid == RECOMM_APPID_EASOU2:
-                uid2_key = 'ns2_v_0124'
-            else:
-                uid2_key = 'v_0124'
-    elif recomm_type == 205:
-        if req_feature == 0:
-            if appid == RECOMM_APPID_EASOU2:
-                uid2_key = 'ns2_v_0201'
-            else:
-                uid2_key = 'v_0201'
-        elif req_feature == 1:
-            if appid == RECOMM_APPID_EASOU2:
-                uid2_key = 'ns2_v_0202'
-            else:
-                uid2_key = 'v_0202'
-        elif req_feature == 2:
-            if appid == RECOMM_APPID_EASOU2:
-                uid2_key = 'ns2_v_0203'
-            else:
-                uid2_key = 'v_0203'
-    elif recomm_type == 206:
-        if appid == RECOMM_APPID_EASOU2:
-            uid2_key = 'ns2_v_0301'
+def get_search_key(search_dic):
+    id_dic = {}
+    id_dic['uid2_key'] = ''
+    id_dic['uid4_key'] = ''
+
+    if search_dic.has_key('uid') and int(search_dic['uid']) > 0:
+        id_dic['uid1_key'] = 'u_%s' % (search_dic['uid'])
+        id_dic['cid1_key'] = 'cu_%s' % (search_dic['uid'])
+        id_dic['tid1_key'] = 't_%s' % (search_dic['uid'])
+
+        if search_dic.has_key('udid') and search_dic['udid'].strip():
+            id_dic['uid3_key'] = 'd_%s' % (search_dic['udid'])
+            id_dic['cid3_key'] = 'cd_%s' % (search_dic['udid'])
+            id_dic['tid3_key'] = 't_%s' % (search_dic['udid'])
+
+    elif search_dic.has_key('udid') and search_dic['udid'].strip():
+        id_dic['uid1_key'] = 'd_%s' % (search_dic['udid'])
+        id_dic['cid1_key'] = 'cd_%s' % (search_dic['udid'])
+        id_dic['tid1_key'] = 't_%s' % (search_dic['udid'])
+
+
+    if search_dic.has_key('reqGid') and search_dic['reqGid'].strip():
+        if search_dic['appid'] == RECOMM_APPID_EASOU2:
+            id_dic['iid1_key'] = 'ns2_i_%s' % (search_dic['reqGid'])
         else:
-            uid2_key = 'v_0301'
-    elif recomm_type == 207:
-        if appid == RECOMM_APPID_EASOU2:
-            uid2_key = 'ns2_v_0001'
-            uid4_key = 'ns2_v_0301'
-        else:
-            uid2_key = 'v_0001'
-            uid4_key = 'v_0301'
-    elif recomm_type == 208:
-        if appid == RECOMM_APPID_EASOU2:
-            uid2_key = 'ns2_v_0101'
-        else:
-            uid2_key = 'v_0101'
-    elif recomm_type == 209:
-        if appid == RECOMM_APPID_EASOU2:
-            if req_charge == 1:
-                uid2_key = 'ns2_v_0101'
+            id_dic['iid1_key'] = 'i_%' (search_dic['reqGid'])
+
+        id_dic['iid10_key'] = 'i_%' (search_dic['reqGid'])
+
+    if search_dic['recomm_type'] == 203:
+        if search_dic['req_feature'] == 1:
+            if search_dic['appid'] == RECOMM_APPID_EASOU2:
+                id_dic['uid2_key'] = 'ns2_v_0102'
             else:
-                uid2_key = 'ns2_v_0001'
+                id_dic['uid2_key'] = 'v_0102'
+        elif search_dic['req_feature'] == 2:
+            if search_dic['appid'] == RECOMM_APPID_EASOU2:
+                id_dic['uid2_key'] = 'ns2_v_0103'
+            else:
+                id_dic['uid2_key'] = 'v_0103'
+        elif search_dic['req_feature'] == 3:
+            if search_dic['appid'] == RECOMM_APPID_EASOU2:
+                id_dic['uid2_key'] = 'ns2_v_0107'
+            else:
+                id_dic['uid2_key'] = 'v_0107'
+        elif search_dic['req_feature'] == 11:
+            if search_dic['appid'] == RECOMM_APPID_EASOU2:
+                id_dic['uid2_key'] = 'ns2_v_0111'
+            else:
+                id_dic['uid2_key'] = 'v_0111'
+        elif search_dic['req_feature'] == 12:
+            if search_dic['appid'] == RECOMM_APPID_EASOU2:
+                id_dic['uid2_key'] = 'ns2_v_0112'
+            else:
+                id_dic['uid2_key'] = 'v_0112'
+        elif search_dic['req_feature'] == 13:
+            if search_dic['appid'] == RECOMM_APPID_EASOU2:
+                id_dic['uid2_key'] = 'ns2_v_0113'
+            else:
+                id_dic['uid2_key'] = 'v_0113'
+        elif search_dic['req_feature'] == 14:
+            if search_dic['appid'] == RECOMM_APPID_EASOU2:
+                id_dic['uid2_key'] = 'ns2_v_0114'
+            else:
+                id_dic['uid2_key'] = 'v_0114'
+        elif search_dic['req_feature'] == 21:
+            if search_dic['appid'] == RECOMM_APPID_EASOU2:
+                id_dic['uid2_key'] = 'ns2_v_0121'
+            else:
+                id_dic['uid2_key'] = 'v_0121'
+        elif search_dic['req_feature'] == 22:
+            if search_dic['appid'] == RECOMM_APPID_EASOU2:
+                id_dic['uid2_key'] = 'ns2_v_0122'
+            else:
+                id_dic['uid2_key'] = 'v_0122'
+        elif search_dic['req_feature'] == 23:
+            if search_dic['appid'] == RECOMM_APPID_EASOU2:
+                id_dic['uid2_key'] = 'ns2_v_0123'
+            else:
+                id_dic['uid2_key'] = 'v_0123'
+        elif search_dic['req_feature'] == 24:
+            if search_dic['appid'] == RECOMM_APPID_EASOU2:
+                id_dic['uid2_key'] = 'ns2_v_0124'
+            else:
+                id_dic['uid2_key'] = 'v_0124'
+    elif search_dic['recomm_type'] == 205:
+        if search_dic['req_feature'] == 0:
+            if search_dic['appid'] == RECOMM_APPID_EASOU2:
+                id_dic['uid2_key'] = 'ns2_v_0201'
+            else:
+                id_dic['uid2_key'] = 'v_0201'
+        elif search_dic['req_feature'] == 1:
+            if search_dic['appid'] == RECOMM_APPID_EASOU2:
+                id_dic['uid2_key'] = 'ns2_v_0202'
+            else:
+                id_dic['uid2_key'] = 'v_0202'
+        elif search_dic['req_feature'] == 2:
+            if search_dic['appid'] == RECOMM_APPID_EASOU2:
+                id_dic['uid2_key'] = 'ns2_v_0203'
+            else:
+                id_dic['uid2_key'] = 'v_0203'
+    elif search_dic['recomm_type'] == 206:
+        if search_dic['appid'] == RECOMM_APPID_EASOU2:
+            id_dic['uid2_key'] = 'ns2_v_0301'
         else:
-            if req_charge == 1:
-                uid2_key = 'v_0101'
-            else:
-                uid2_key = 'v_0001'
-    elif recomm_type == 101:
-        if req_feature != 0:
-            if appid == RECOMM_APPID_EASOU2:
-                uid2_key = 'ns2_v_%04d' % (req_feature)
-            else:
-                uid2_key = 'v_%04d' % (req_feature)
+            id_dic['uid2_key'] = 'v_0301'
+    elif search_dic['recomm_type'] == 207:
+        if search_dic['appid'] == RECOMM_APPID_EASOU2:
+            id_dic['uid2_key'] = 'ns2_v_0001'
+            id_dic['uid4_key'] = 'ns2_v_0301'
         else:
-            if appid == RECOMM_APPID_EASOU2:
-                uid2_key = 'ns2_v_0101'
-            else:
-                uid2_key = 'v_0101'
-    elif recomm_type == 301 or recomm_type == 302 or recomm_type == 3011 or recomm_type == 3021:
-        if req_charge == 1:
-            if appid == RECOMM_APPID_EASOU2:
-                uid2_key = 'ns2_v_0101'
-            else:
-                uid2_key = 'v_0101'
+            id_dic['uid2_key'] = 'v_0001'
+            id_dic['uid4_key'] = 'v_0301'
+    elif search_dic['recomm_type'] == 208:
+        if search_dic['appid'] == RECOMM_APPID_EASOU2:
+            id_dic['uid2_key'] = 'ns2_v_0101'
         else:
-            if appid == RECOMM_APPID_EASOU2:
-                uid2_key = 'ns2_v_0001'
+            id_dic['uid2_key'] = 'v_0101'
+    elif search_dic['recomm_type'] == 209:
+        if search_dic['appid'] == RECOMM_APPID_EASOU2:
+            if search_dic['req_charge'] == 1:
+                id_dic['uid2_key'] = 'ns2_v_0101'
             else:
-                uid2_key = 'v_0001'
-    elif recomm_type == 201:
-        if appid == RECOMM_APPID_EASOU2:
-            uid2_key = 'ns2_v_0101'
-            uid4_key = 'ns2_v_0301'
+                id_dic['uid2_key'] = 'ns2_v_0001'
         else:
-            uid2_key = 'v_0101'
-            uid4_key = 'v_0301'
+            if search_dic['req_charge'] == 1:
+                id_dic['uid2_key'] = 'v_0101'
+            else:
+                id_dic['uid2_key'] = 'v_0001'
+    elif search_dic['recomm_type'] == 101:
+        if search_dic['req_feature'] != 0:
+            if search_dic['appid'] == RECOMM_APPID_EASOU2:
+                id_dic['uid2_key'] = 'ns2_v_%04d' % (search_dic['req_feature'])
+            else:
+                id_dic['uid2_key'] = 'v_%04d' % (search_dic['req_feature'])
+        else:
+            if search_dic['appid'] == RECOMM_APPID_EASOU2:
+                id_dic['uid2_key'] = 'ns2_v_0101'
+            else:
+                id_dic['uid2_key'] = 'v_0101'
+    elif search_dic['recomm_type'] == 301 or search_dic['recomm_type'] == 302 or search_dic['recomm_type'] == 3011 or search_dic['recomm_type'] == 3021:
+        if search_dic['req_charge'] == 1:
+            if search_dic['appid'] == RECOMM_APPID_EASOU2:
+                id_dic['uid2_key'] = 'ns2_v_0101'
+            else:
+                id_dic['uid2_key'] = 'v_0101'
+        else:
+            if search_dic['appid'] == RECOMM_APPID_EASOU2:
+                id_dic['uid2_key'] = 'ns2_v_0001'
+            else:
+                id_dic['uid2_key'] = 'v_0001'
+    elif search_dic['recomm_type'] == 201:
+        if search_dic['appid'] == RECOMM_APPID_EASOU2:
+            id_dic['uid2_key'] = 'ns2_v_0101'
+            id_dic['uid4_key'] = 'ns2_v_0301'
+        else:
+            id_dic['uid2_key'] = 'v_0101'
+            id_dic['uid4_key'] = 'v_0301'
 
     else:
-        if appid == RECOMM_APPID_EASOU2:
-            uid2_key = 'ns2_v_0101'
+        if search_dic['appid'] == RECOMM_APPID_EASOU2:
+            id_dic['uid2_key'] = 'ns2_v_0101'
         else:
-            uid2_key = 'v_0101'
+            id_dic['uid2_key'] = 'v_0101'
 
-
+    return id_dic
 
 def test_201(search_dic):
     #print search_dic
@@ -312,9 +365,19 @@ def test_201(search_dic):
     print user_type
 
     history_cat = []
-    current_cart = []
     history_cat = get_history_user_cart(search_dic['uid'])
-    current_user_cart = get_current_user_cart(search_dic['uid'])
+    #current_user_cart = get_current_user_cart(search_dic['uid'])
+
+    t_ucf_knn4 = get_current_ucf(search_dic['uid'], search_dic['udid'], 'ucf_knn4')
+    t_ucf_knn3 = get_current_ucf(search_dic['uid'], search_dic['udid'], 'ucf_knn3')
+
+    ucf_knn4 = get_history_ucf(search_dic['uid'], search_dic['udid'], 'ucf_knn4')
+    ucf_knn3 = get_history_ucf(search_dic['uid'], search_dic['udid'], 'ucf_knn3')
+
+    for key in res_dic:
+        if key in history_cat:
+            return False
+
 
 def create_url(search_dic):
     url = ''
@@ -382,16 +445,16 @@ def lod_request_list(path):
 
 
 if __name__ == '__main__':
-
-    for line in sys.stdin:
-        line = line.strip()
-        if not line:
-            continue
-        item = line.split('_')
-        if len(item) != 2:
-            continue
-        if len(get_current_user_cart(item[1])) and not len(get_history_user_cart(item[1])):
-            print item[1]
+    pass
+    #for line in sys.stdin:
+    #    line = line.strip()
+    #    if not line:
+    #        continue
+    #    item = line.split('_')
+    #    if len(item) != 2:
+    #        continue
+    #    if len(get_current_user_cart(item[1])) and not len(get_history_user_cart(item[1])):
+    #        print item[1]
 
 
     #res_list = []
