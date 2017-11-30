@@ -1229,21 +1229,23 @@ def do_search_short():
             id_dic.pop(key)
 
         remove_ley = []
+        search_remove = []
         print 'after remove_ley', len(id_dic)
         for key in id_dic:
             time.sleep(0.01)
 
-            if not id_dic[key].has_key('next_time'):
-                id_dic[key]['next_time'] = 0
-
-            if id_dic[key]['next_time']:
-                diff_time = time.time() - id_dic[key]['next_time']
-                if diff_time < 0:
-                    continue
+            #if not id_dic[key].has_key('next_time'):
+            #    id_dic[key]['next_time'] = 0
+            #
+            #if id_dic[key]['next_time']:
+            #    diff_time = time.time() - id_dic[key]['next_time']
+            #    if diff_time < 0:
+            #        continue
 
             if query_components.has_key('pe_le'):
                 if id_dic[key]['pe'] > query_components['pe_le']:
                     remove_ley.append(key)
+                    search_remove.append(key)
                     continue
 
             res = get_stockid_real_time(key)
@@ -1266,28 +1268,34 @@ def do_search_short():
                 id_dic[key]['vol'] = res['vol']
 
                 if query_components.has_key('end_le'):
-                    if res['change_rate'] > query_components['end_le']:
+                    if res['end'] > query_components['end_le']:
                         remove_ley.append(key)
+                        search_remove.append(key)
                         continue
 
                 if query_components.has_key('end_start_ge'):
                     if res['end'] < query_components['start']:
+                        search_remove.append(key)
                         continue
 
                 if query_components.has_key('change_rate_ge'):
                     if res['change_rate'] < query_components['change_rate_ge']:
+                        search_remove.append(key)
                         continue
 
                 if query_components.has_key('range_percent_ge'):
                     if res['range_percent'] < query_components['range_percent_ge']:
+                        search_remove.append(key)
                         continue
 
                 if query_components.has_key('range_percent_le'):
                     if res['range_percent'] > query_components['range_percent_le']:
+                        search_remove.append(key)
                         continue
 
                 if query_components.has_key('end_ge_low'):
                     if res['end'] < res['low']:
+                        search_remove.append(key)
                         continue
 
             if not id_dic[key].has_key('up_pointer'):
@@ -1336,40 +1344,52 @@ def do_search_short():
 
             if query_components.has_key('big_res'):
                 if not get_data_direction(id_dic[key]['big_res']):
+                    search_remove.append(key)
                     continue
 
             if query_components.has_key('big_res2'):
                 if not get_data_direction(id_dic[key]['big_res2']):
+                    search_remove.append(key)
                     continue
 
             if query_components.has_key('big_res_ge'):
                 if id_dic[key]['big_res'][-1] < query_components['big_res_ge']:
+                    search_remove.append(key)
                     continue
 
             if query_components.has_key('big_res2_ge'):
                 if id_dic[key]['big_res2'][-1] < query_components['big_res2_ge']:
+                    search_remove.append(key)
                     continue
 
             if query_components.has_key('res_vol_ratio_ge'):
                 if id_dic[key]['res_vol_ratio'][-1] < query_components['res_vol_ratio_ge']:
+                    search_remove.append(key)
                     continue
 
             if query_components.has_key('res2_vol_ratio_ge'):
                 if id_dic[key]['res2_vol_ratio'][-1] < query_components['res2_vol_ratio_ge']:
+                    search_remove.append(key)
                     continue
 
             if query_components.has_key('down_pointer_ge'):
                 if id_dic[key]['down_pointer'][-1] < query_components['down_pointer_ge']:
+                    search_remove.append(key)
                     continue
 
             if query_components.has_key('up_pointer_le'):
                 if id_dic[key]['up_pointer'][-1] > query_components['up_pointer_le']:
+                    search_remove.append(key)
                     continue
 
                 #print id_dic[key]['res2_vol_ratio'][-1]
 
             search_dic[key] = id_dic[key]
-            id_dic[key]['next_time'] = 0
+            #id_dic[key]['next_time'] = 0
+
+
+        for key in search_remove:
+            search_dic.pop(key)
 
         #print 'length: ', len(search_dic)
         log_print_res(search_dic)

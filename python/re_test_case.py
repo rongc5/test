@@ -6,6 +6,7 @@ import urllib2
 import json, os
 import subprocess
 import sys
+import time
 
 __author__ = 'mingz'
 
@@ -17,6 +18,8 @@ REDIS2_NS='10.26.24.66:7000'
 RECOMM_APPID_EASOU2  =  20001
 RECOMM_APPID_EASOU = 10001
 
+RECOMM_ROOT_INTERVAL_TIME = 86400 * 3
+
 test_list = [{'uid':'48808231', 'reqGid':''}]
 
 #获取用户类型
@@ -24,12 +27,8 @@ test_list = [{'uid':'48808231', 'reqGid':''}]
 #2 准付费
 #3 付费
 #4 VIP付费
-def get_user_type(uid):
-    ip = REDIS2_NS.split(':')[0]
-    port = REDIS2_NS.split(':')[1]
-    cmd = [REDIS_CLI, '--raw', '-h', ip, '-p', port, '-c', 'hget', 'cu_%s' % (uid), 'user_type']
-    user_type = subprocess.Popen(cmd, stdout=subprocess.PIPE).communicate()[0]
-    user_type = user_type.split('\n')[0]
+def get_user_type(search_key_dic):
+    user_type = get_data_redis2(search_key_dic['cid1_key'], 'user_type')
 
     return user_type
 
@@ -55,12 +54,8 @@ def get_data_redis2(key, field):
 #3 包月末期
 #4 包月结束
 #5 流失包月用户
-def get_baoyue(uid):
-    ip = REDIS2_NS.split(':')[0]
-    port = REDIS2_NS.split(':')[1]
-    cmd = [REDIS_CLI, '--raw', '-h', ip, '-p', port, '-c', 'hget', 'cu_%s' % (uid), 'baoyue']
-    baoyue = subprocess.Popen(cmd, stdout=subprocess.PIPE).communicate()[0]
-    baoyue = baoyue.split('\n')[0]
+def get_baoyue(search_key_dic):
+    baoyue = get_data_redis2(search_key_dic['cid1_key'], 'baoyue')
 
     return baoyue
 
@@ -68,20 +63,14 @@ def get_baoyue(uid):
 #历史书架
 #uid1_key u_48808231
 #cid1_key cu_54159287
-def get_history_user_cart(uid):
-    ip = REDIS2_NS.split(':')[0]
-    port = REDIS2_NS.split(':')[1]
-    cmd = [REDIS_CLI, '--raw', '-h', ip, '-p', port, '-c', 'hget', 'u_%s' % (uid), 'cart_item']
-    res_str = subprocess.Popen(cmd, stdout=subprocess.PIPE).communicate()[0]
+def get_history_user_cart(search_key_dic):
+    res_str = get_data_redis2(search_key_dic['uid1_key'], 'cart_item')
 
     res_list = []
-    res_str = res_str.strip('\n')
     if res_str.strip():
         res_list = res_str.split('\t')
     if not len(res_list):
-        cmd = [REDIS_CLI, '--raw', '-h', ip, '-p', port, '-c', 'hget', 'cu_%s' % (uid), 'cart_item']
-        res_str = subprocess.Popen(cmd, stdout=subprocess.PIPE).communicate()[0]
-        res_str = res_str.strip('\n')
+        res_str = get_data_redis2(search_key_dic['cid1_key'], 'cart_item')
         if res_str.strip():
             res_list = res_str.split('\t')
 
@@ -89,34 +78,39 @@ def get_history_user_cart(uid):
 
 #实时书架
 #tid1_key t_54159287
-def get_current_user_cart(uid):
-    ip = REDIS2_NS.split(':')[0]
-    port = REDIS2_NS.split(':')[1]
-    cmd = [REDIS_CLI, '--raw', '-h', ip, '-p', port, '-c', 'hget', 't_%s' % (uid), 'cart_item']
-    res_str = subprocess.Popen(cmd, stdout=subprocess.PIPE).communicate()[0]
+def get_current_user_cart(search_key_dic):
+    res_str = get_data_redis2(search_key_dic['tid1_key'], 'cart_item')
 
     res_list = []
     if res_str.strip():
         res_list = res_str.split('\t')
 
-    return res_list
+    i = 0;
+    length = len(res_list)
+    valid_time = int(time.time()) - RECOMM_ROOT_INTERVAL_TIME
+    user_cart = []
+    while True:
+        if i + 1 >= length:
+            break
+
+        if res_list[i+1] < valid_time:
+            continue
+
+        user_cart.append(res_list[i])
+        i = i + 2
+
+    return user_cart
 
 #tid3_key t_0EFF2921445097DC49E46156D5F6A18C
 #付费协同  field  ucf_knn3
-def get_current_ucf(uid, udid, field):
-    ip = REDIS2_NS.split(':')[0]
-    port = REDIS2_NS.split(':')[1]
-    cmd = [REDIS_CLI, '--raw', '-h', ip, '-p', port, '-c', 'hget', 't_%s' % (uid), field]
-    res_str = subprocess.Popen(cmd, stdout=subprocess.PIPE).communicate()[0]
-
+def get_current_ucf(search_key_dic, field='ucf_knn3'):
+    res_str = get_data_redis2(search_key_dic['tid1_key'], field)
     res_list = []
     if res_str.strip():
         res_list = res_str.split('\t')
 
     if not len(res_list):
-        cmd = [REDIS_CLI, '--raw', '-h', ip, '-p', port, '-c', 'hget', 't_%s' % (udid), field]
-        res_str = subprocess.Popen(cmd, stdout=subprocess.PIPE).communicate()[0]
-        res_str = res_str.strip('\n')
+        res_str = get_data_redis2(search_key_dic['tid3_key'], field)
         if res_str.strip():
             res_list = res_str.split('\t')
 
@@ -124,11 +118,24 @@ def get_current_ucf(uid, udid, field):
 
 #uid1_key  u_54159287
 #uid3_key  d_0EFF2921445097DC49E46156D5F6A18C
-def get_history_ucf(uid, udid, field):
+def get_history_ucf(search_key_dic, field='ucf_knn3'):
     ip = REDIS2_NS.split(':')[0]
     port = REDIS2_NS.split(':')[1]
     cmd = [REDIS_CLI, '--raw', '-h', ip, '-p', port, '-c', 'hget', 'u_%s' % (uid), field]
     res_str = subprocess.Popen(cmd, stdout=subprocess.PIPE).communicate()[0]
+
+    uk_version = 0
+    uk_version_str = get_data_redis1('i_version', 'uk_version')
+    if uk_version_str.strip():
+        uk_version = int(uk_version_str)
+
+
+    1、在线计算， 获取用户历史书架
+    #redis-3.0.6/redis-cli --raw -a Easou_RDS2017 -h 10.26.25.15 -p 6645 -c hgetall i_100056338
+    2、获取书籍的信息
+    3、若为限免协同， 取一级类别比重最高的类别category_sign
+    4、recomm_ucf_cart_topn re.conf 中配置为100
+    5、根据  item_info->nname_sign, item_info->nauthor_sign 过滤
 
     res_list = []
     if res_str.strip():
@@ -144,11 +151,19 @@ def get_history_ucf(uid, udid, field):
     return res_list
 
 
-def get_pop(key, field):
-    ip = REDIS2_NS.split(':')[0]
-    port = REDIS2_NS.split(':')[1]
-    cmd = [REDIS_CLI, '--raw', '-h', ip, '-p', port, '-c', 'hget', '%s' % (key), field]
-    res_str = subprocess.Popen(cmd, stdout=subprocess.PIPE).communicate()[0]
+
+#免费流行度
+def get_free_pop(search_key_dic):
+    res_str = get_data_redis2(search_key_dic['uid4_key'], 'pop_topn')
+    res_list = []
+    if res_str.strip():
+        res_list = res_str.split('\t')
+
+    return res_list
+
+#付费流行度
+def get_pay_pop(search_key_dic):
+    res_str = get_data_redis2(search_key_dic['uid2_key'], 'pop_topn')
     res_list = []
     if res_str.strip():
         res_list = res_str.split('\t')
@@ -167,13 +182,6 @@ def get_pop(key, field):
 #4
 #tf2
 #4
-def get_version(key, field):
-    ip = REDIS1_NS.split(':')[0]
-    port = REDIS1_NS.split(':')[1]
-    cmd = [REDIS_CLI, '--raw', '-h', ip, '-p', port, '-a', REDIS1_AUTH, '-c', 'hgetall', key, field]
-    res_str = subprocess.Popen(cmd, stdout=subprocess.PIPE).communicate()[0]
-
-    return res_str
 
 #uid4_key   v_0001
 def get_search_key(search_dic):
