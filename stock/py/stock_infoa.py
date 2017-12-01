@@ -983,41 +983,41 @@ def load_base_list():
     file.close()
     return id_dic
 
-def base_select(id_dic):
+def base_select(id_dic, query_components):
     remove_ley = []
     for key in id_dic:
         #print id_dic[key]['zysr']
-        if '--' not in id_dic[key]['zysr'] and float(id_dic[key]['zysr']) < 0:
+        if query_components.has_key('zysr_ge') and '--' not in id_dic[key]['zysr'] and float(id_dic[key]['zysr']) < query_components['zysr_ge']:
             remove_ley.append(key)
             continue
 
-        if '--' not in id_dic[key]['jlr'] and float(id_dic[key]['jlr']) < 0:
+        if query_components.has_key('jlr_ge') and '--' not in id_dic[key]['jlr'] and float(id_dic[key]['jlr']) < query_components['jlr_ge']:
             remove_ley.append(key)
             continue
 
-        if '--' not in id_dic[key]['mgsy'] and float(id_dic[key]['mgsy']) < 0:
+        if query_components.has_key('mgsy_ge') and '--' not in id_dic[key]['mgsy'] and float(id_dic[key]['mgsy']) < query_components['mgsy_ge']:
             remove_ley.append(key)
             continue
 
-        if '--' not in id_dic[key]['mgxj'] and float(id_dic[key]['mgxj'])< 0:
+        if query_components.has_key('mgxj_ge') and '--' not in id_dic[key]['mgxj'] and float(id_dic[key]['mgxj'])< query_components['mgxj_ge']:
             remove_ley.append(key)
             continue
 
-        if '--' not in id_dic[key]['tbmgsy'] and float(id_dic[key]['tbmgsy']) < 0.2:
+        if query_components.has_key('tbmgsy_ge') and  '--' not in id_dic[key]['tbmgsy'] and float(id_dic[key]['tbmgsy']) < query_components['tbmgsy_ge']:
             remove_ley.append(key)
             continue
 
-        if '--' not in id_dic[key]['mgxjll'] and float(id_dic[key]['mgxjll']) < 0.1:
+        if query_components.has_key('mgxjll_ge') and '--' not in id_dic[key]['mgxjll'] and float(id_dic[key]['mgxjll']) < query_components['mgxjll_ge']:
             remove_ley.append(key)
             continue
 
-        if float(id_dic[key]['end']) >69:
+        if query_components.has_key('end_le') and float(id_dic[key]['end']) > query_components['end_le']:
             remove_ley.append(key)
             continue
 
-        #if id_dic[key]['code'] in ban_dic:
-        #    remove_ley.append(key)
-        #    continue
+        if query_components.has_key('pe_le') and float(id_dic[key]['pe']) > query_components['pe_le']:
+                remove_ley.append(key)
+                continue
 
     for key in remove_ley:
         id_dic.pop(key)
@@ -1134,7 +1134,6 @@ def load_monitor_list():
         id_dic[line] = line
 
     file.close()
-
     return id_dic
 
 def load_config():
@@ -1157,7 +1156,6 @@ def load_config():
         id_dic[items[0]] = float(items[1])
 
     file.close()
-
     return id_dic
 
 
@@ -1165,21 +1163,22 @@ def is_reload_base_list(old_dic, new_dic):
     if not len(old_dic):
         return True
 
-    if new_dic.has_key('pe_le'):
-        if not old_dic.has_key('pe_le'):
-            return True
-        elif new_dic['pe_le'] != old_dic['pe_le']:
-            return True
-        else:
-            return False
+    re_list = ['pe_le', 'end_le', 'zysr_ge', 'jlr_ge', 'mgsy_ge', 'mgxj_ge', 'tbmgsy_ge', 'mgxjll_ge']
 
-    if new_dic.has_key('end_le'):
-        if not old_dic.has_key('end_le'):
-            return True
-        elif new_dic['end_le'] != old_dic['end_le']:
-            return True
-        else:
-            return False
+    for key in new_dic:
+        if key in re_list:
+            if key in old_dic:
+                if new_dic[key] != old_dic[key]:
+                    return True
+                else:
+                    return False
+            else:
+                return True
+
+    for key in old_dic:
+        if key in re_list:
+            if key not in new_dic:
+                return True
 
     return False
 
@@ -1194,14 +1193,12 @@ def do_search_short():
         idstr = '%s' % key[0]
         ban_dic[idstr] = ''
 
-    id_dic = load_base_list()
-    print 'load_base_list', len(id_dic)
-    id_dic = base_select(id_dic)
-    print 'after base_select', len(id_dic)
-    id_dic = remove_from_banlist(id_dic, ban_dic)
-    print 'after ban_dic', len(id_dic)
-
+    base_dic = load_base_list()
+    print 'load_base_list', len(base_dic)
+    base_dic = remove_from_banlist(base_dic, ban_dic)
+    print 'after ban_dic', len(base_dic)
     search_dic = {}
+    id_dic = {}
     query_components = {}
     remove_ley = []
     monitor_mtime = 0
@@ -1217,16 +1214,18 @@ def do_search_short():
                     id_dic[key] = {}
                     id_dic[key]['id'] = key
 
+        for key in remove_ley:
+            id_dic.pop(key)
+
         mtime = time.ctime(os.path.getmtime('stock_cfg'))
         if cfg_mtime != mtime:
             cfg_mtime = mtime
             tmp_components = load_config()
             if is_reload_base_list(query_components, tmp_components):
-                pass
+                id_dic = base_select(base_dic, tmp_components)
+                print 'after base_select', len(id_dic)
             query_components = tmp_components
 
-        for key in remove_ley:
-            id_dic.pop(key)
 
         remove_ley = []
         search_remove = []
@@ -1241,12 +1240,6 @@ def do_search_short():
             #    diff_time = time.time() - id_dic[key]['next_time']
             #    if diff_time < 0:
             #        continue
-
-            if query_components.has_key('pe_le'):
-                if id_dic[key]['pe'] > query_components['pe_le']:
-                    remove_ley.append(key)
-                    search_remove.append(key)
-                    continue
 
             res = get_stockid_real_time(key)
 
@@ -1266,12 +1259,6 @@ def do_search_short():
                 id_dic[key]['start'] = res['start']
                 id_dic[key]['last_closing'] = res['last_closing']
                 id_dic[key]['vol'] = res['vol']
-
-                if query_components.has_key('end_le'):
-                    if res['end'] > query_components['end_le']:
-                        remove_ley.append(key)
-                        search_remove.append(key)
-                        continue
 
                 if query_components.has_key('end_start_ge'):
                     if res['end'] < query_components['start']:
@@ -1299,17 +1286,17 @@ def do_search_short():
                         continue
 
             if not id_dic[key].has_key('up_pointer'):
-                id_dic[key]['up_pointer'] = 0
+                id_dic[key]['up_pointer'] = 0.0
 
             if not id_dic[key].has_key('down_pointer'):
-                id_dic[key]['down_pointer'] = 0
+                id_dic[key]['down_pointer'] = 0.0
 
             if id_dic[key].has_key('end') and id_dic[key].has_key('low') and id_dic[key].has_key('start'):
                 if id_dic[key]['end'] > id_dic[key]['low'] and id_dic[key]['end'] != id_dic[key]['start']:
-                    id_dic[key]['down_pointer'] = abs(id_dic[key]['end'] - id_dic[key]['low']) /abs(id_dic[key]['end'] - id_dic[key]['start'])
+                    id_dic[key]['down_pointer'] = abs(id_dic[key]['end'] - id_dic[key]['low']) * 1.0 /abs(id_dic[key]['end'] - id_dic[key]['start'])
 
                 if id_dic[key]['end'] < id_dic[key]['high'] and id_dic[key]['end'] != id_dic[key]['start']:
-                    id_dic[key]['up_pointer'] = abs(id_dic[key]['end'] - id_dic[key]['high']) /abs(id_dic[key]['end'] - id_dic[key]['start'])
+                    id_dic[key]['up_pointer'] = abs(id_dic[key]['end'] - id_dic[key]['high']) *1.0/abs(id_dic[key]['end'] - id_dic[key]['start'])
 
             big_data = get_single_analysis(key)
             big_res = 0
@@ -1373,12 +1360,12 @@ def do_search_short():
                     continue
 
             if query_components.has_key('down_pointer_ge'):
-                if id_dic[key]['down_pointer'][-1] < query_components['down_pointer_ge']:
+                if id_dic[key]['down_pointer'] < query_components['down_pointer_ge']:
                     search_remove.append(key)
                     continue
 
             if query_components.has_key('up_pointer_le'):
-                if id_dic[key]['up_pointer'][-1] > query_components['up_pointer_le']:
+                if id_dic[key]['up_pointer'] > query_components['up_pointer_le']:
                     search_remove.append(key)
                     continue
 
@@ -1389,7 +1376,8 @@ def do_search_short():
 
 
         for key in search_remove:
-            search_dic.pop(key)
+            if key in search_dic:
+                search_dic.pop(key)
 
         #print 'length: ', len(search_dic)
         log_print_res(search_dic)

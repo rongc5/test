@@ -7,6 +7,7 @@ import json, os
 import subprocess
 import sys
 import time
+import hashlib
 
 __author__ = 'mingz'
 
@@ -48,6 +49,27 @@ def get_data_redis2(key, field):
     res_str = subprocess.Popen(cmd, stdout=subprocess.PIPE).communicate()[0]
     res_str = res_str.split('\n')[0]
     return res_str
+
+
+def get_iteminfo(key):
+    ip = REDIS1_NS.split(':')[0]
+    port = REDIS1_NS.split(':')[1]
+    cmd = [REDIS_CLI, '--raw', '-h', ip, '-p', port, '-a', REDIS1_AUTH, '-c', 'hgetall', key]
+    res_str = subprocess.Popen(cmd, stdout=subprocess.PIPE).communicate()[0]
+    res_str = res_str.split('\n')[0]
+
+    items = res_str.split('\t')
+    length = len(items)
+    i = 0
+    res_dic = {}
+    while True:
+        if i + 1>= length:
+            break
+
+        res_dic[items[i]] = items[i + 1]
+        i = i + 2
+
+    return res_dic
 
 #1 包月前期
 #2 包月中期
@@ -116,6 +138,12 @@ def get_current_ucf(search_key_dic, field='ucf_knn3'):
 
     return res_list
 
+def recomm_ucf_select_category(items_dic):
+
+    tmp_dic = {}
+    for key in items_dic:
+        if
+
 #uid1_key  u_54159287
 #uid3_key  d_0EFF2921445097DC49E46156D5F6A18C
 def get_history_ucf(search_key_dic, field='ucf_knn3'):
@@ -129,13 +157,35 @@ def get_history_ucf(search_key_dic, field='ucf_knn3'):
     if uk_version_str.strip():
         uk_version = int(uk_version_str)
 
+    if 'ucf_knn4' in field:
+        field = 'icf_knn4'
+    elif 'ucf_knn3' in field:
+        field = 'icf_knn3'
+    elif 'ucf_knn2' in field:
+        field = 'icf_knn2'
+    elif 'ucf_knn' in field:
+        field = 'icf_knn'
 
-    1、在线计算， 获取用户历史书架
+    cart_arr = get_history_user_cart(search_key_dic)
+    cart_items_dic = {}
+    i = 0
+    length = len(cart_arr)
+    while True:
+        if i + 1 >= length:
+            break
+
+        item = get_iteminfo(cart_arr[i])
+        item['gid'] = cart_arr[i]
+        item['wei_u41'] = cart_arr[i+1]
+        cart_items_dic[cart_arr[i]] = item
+        i = i + 2
+
+    #1、在线计算， 获取用户历史书架
     #redis-3.0.6/redis-cli --raw -a Easou_RDS2017 -h 10.26.25.15 -p 6645 -c hgetall i_100056338
-    2、获取书籍的信息
-    3、若为限免协同， 取一级类别比重最高的类别category_sign
-    4、recomm_ucf_cart_topn re.conf 中配置为100
-    5、根据  item_info->nname_sign, item_info->nauthor_sign 过滤
+    #2、获取书籍的信息
+    #3、若为限免协同， 取一级类别比重最高的类别category_sign
+    #4、recomm_ucf_cart_topn re.conf 中配置为100
+    #5、根据  item_info->nname_sign, item_info->nauthor_sign 过滤
 
     res_list = []
     if res_str.strip():

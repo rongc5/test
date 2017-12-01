@@ -1042,7 +1042,7 @@ def get_data_direction(arr):
     if len(arr) < 2 :
         return False
 
-    if arr[-1] > arr[0] and arr[-1] > 0:
+    if arr[-1] > arr[0]:
         return True
     else:
         return False
@@ -1137,7 +1137,51 @@ def load_monitor_list():
 
     return id_dic
 
+def load_config():
+    id_dic = {}
+    if not os.path.isfile('stock_cfg'):
+        return id_dic
 
+    file = open("stock_cfg")
+    while 1:
+        line = file.readline().strip('\n')
+        if not line:
+            break
+
+        if line.strip().startswith('#'):
+            continue
+
+        items = line.split('=')
+        if len(items) != 2:
+            continue
+        id_dic[items[0]] = float(items[1])
+
+    file.close()
+
+    return id_dic
+
+
+def is_reload_base_list(old_dic, new_dic):
+    if not len(old_dic):
+        return True
+
+    if new_dic.has_key('pe_le'):
+        if not old_dic.has_key('pe_le'):
+            return True
+        elif new_dic['pe_le'] != old_dic['pe_le']:
+            return True
+        else:
+            return False
+
+    if new_dic.has_key('end_le'):
+        if not old_dic.has_key('end_le'):
+            return True
+        elif new_dic['end_le'] != old_dic['end_le']:
+            return True
+        else:
+            return False
+
+    return False
 
 def do_search_short():
     day = Day()
@@ -1157,41 +1201,53 @@ def do_search_short():
     id_dic = remove_from_banlist(id_dic, ban_dic)
     print 'after ban_dic', len(id_dic)
 
-    monitor_dic = {}
     search_dic = {}
+    query_components = {}
     remove_ley = []
-    monitor_mtime_first = 0
-    monitor_mtime_second = 0
-    countx = 0
+    monitor_mtime = 0
+    cfg_mtime = 0
     TIME_DIFF = 20
     while 1:
-        monitor_mtime_second = time.ctime(os.path.getmtime('monitor_list'))
-        if monitor_mtime_first != monitor_mtime_second:
-            monitor_mtime_first = monitor_mtime_second
+        mtime = time.ctime(os.path.getmtime('monitor_list'))
+        if monitor_mtime != mtime:
+            monitor_mtime = mtime
             monitor_dic = load_monitor_list()
             for key in monitor_dic:
                 if key not in id_dic:
                     id_dic[key] = {}
                     id_dic[key]['id'] = key
 
+        mtime = time.ctime(os.path.getmtime('stock_cfg'))
+        if cfg_mtime != mtime:
+            cfg_mtime = mtime
+            tmp_components = load_config()
+            if is_reload_base_list(query_components, tmp_components):
+                pass
+            query_components = tmp_components
+
         for key in remove_ley:
             id_dic.pop(key)
 
-        countx += 1
         remove_ley = []
+        search_remove = []
         print 'after remove_ley', len(id_dic)
         for key in id_dic:
             time.sleep(0.01)
 
-            if not id_dic[key].has_key('next_time'):
-                id_dic[key]['next_time'] = 0
+            #if not id_dic[key].has_key('next_time'):
+            #    id_dic[key]['next_time'] = 0
+            #
+            #if id_dic[key]['next_time']:
+            #    diff_time = time.time() - id_dic[key]['next_time']
+            #    if diff_time < 0:
+            #        continue
 
-            if id_dic[key]['next_time']:
-                diff_time = time.time() - id_dic[key]['next_time']
-                if diff_time < 0:
+            if query_components.has_key('pe_le'):
+                if id_dic[key]['pe'] > query_components['pe_le']:
+                    remove_ley.append(key)
+                    search_remove.append(key)
                     continue
 
-            flag_one = False
             res = get_stockid_real_time(key)
 
             if res.has_key('block') and res['block']:  #停牌
@@ -1200,30 +1256,9 @@ def do_search_short():
                 continue
 
             if  res.has_key('range_percent'):
-                #remove_ley.append(key)
-
-                if res['range_percent'] < -3.9 or  res['range_percent'] > 4.9:
-                    remove_ley.append(key)
-                    if key in search_dic:
-                        search_dic.pop(key)
-                    print 'remove key: ', key, res['range_percent']
-                    continue
-
                 id_dic[key]['range_percent'] = res['range_percent']
-
-                #if res['swing'] < 2.0:
-                #    continue
-
                 id_dic[key]['swing'] = res['swing']
-
-                #if res['change_rate'] < 1:
-                    #id_dic[key]['next_time'] = time.time() + 2 *TIME_DIFF
-                    #continue
-
                 id_dic[key]['change_rate'] = res['change_rate']
-                if res['end'] < res['low']:
-                    id_dic[key]['next_time'] = time.time() + 2 *TIME_DIFF
-                    continue
 
                 id_dic[key]['end'] = res['end']
                 id_dic[key]['low'] = res['low']
@@ -1232,12 +1267,49 @@ def do_search_short():
                 id_dic[key]['last_closing'] = res['last_closing']
                 id_dic[key]['vol'] = res['vol']
 
-            if not id_dic[key].has_key('choice'):
-                id_dic[key]['choice'] = ''
+                if query_components.has_key('end_le'):
+                    if res['end'] > query_components['end_le']:
+                        remove_ley.append(key)
+                        search_remove.append(key)
+                        continue
+
+                if query_components.has_key('end_start_ge'):
+                    if res['end'] < query_components['start']:
+                        search_remove.append(key)
+                        continue
+
+                if query_components.has_key('change_rate_ge'):
+                    if res['change_rate'] < query_components['change_rate_ge']:
+                        search_remove.append(key)
+                        continue
+
+                if query_components.has_key('range_percent_ge'):
+                    if res['range_percent'] < query_components['range_percent_ge']:
+                        search_remove.append(key)
+                        continue
+
+                if query_components.has_key('range_percent_le'):
+                    if res['range_percent'] > query_components['range_percent_le']:
+                        search_remove.append(key)
+                        continue
+
+                if query_components.has_key('end_ge_low'):
+                    if res['end'] < res['low']:
+                        search_remove.append(key)
+                        continue
+
+            if not id_dic[key].has_key('up_pointer'):
+                id_dic[key]['up_pointer'] = 0
+
+            if not id_dic[key].has_key('down_pointer'):
+                id_dic[key]['down_pointer'] = 0
 
             if id_dic[key].has_key('end') and id_dic[key].has_key('low') and id_dic[key].has_key('start'):
-                if id_dic[key]['end'] > id_dic[key]['low'] and abs(id_dic[key]['end'] - id_dic[key]['low']) >= 1.8* abs(id_dic[key]['end'] - id_dic[key]['start']):
-                    flag_one = True
+                if id_dic[key]['end'] > id_dic[key]['low'] and id_dic[key]['end'] != id_dic[key]['start']:
+                    id_dic[key]['down_pointer'] = abs(id_dic[key]['end'] - id_dic[key]['low']) /abs(id_dic[key]['end'] - id_dic[key]['start'])
+
+                if id_dic[key]['end'] < id_dic[key]['high'] and id_dic[key]['end'] != id_dic[key]['start']:
+                    id_dic[key]['up_pointer'] = abs(id_dic[key]['end'] - id_dic[key]['high']) /abs(id_dic[key]['end'] - id_dic[key]['start'])
 
             big_data = get_single_analysis(key)
             big_res = 0
@@ -1245,6 +1317,7 @@ def do_search_short():
             if len(big_data):
                 big_res = big_data['b'] - big_data['s']
                 big_res2 = big_data['2b'] - big_data['2s']
+
 
             if not id_dic[key].has_key('big_res'):
                 id_dic[key]['big_res'] = []
@@ -1258,14 +1331,6 @@ def do_search_short():
                 id_dic[key]['big_res'].append(big_res)
                 id_dic[key]['big_res2'].append(big_res2)
 
-            flag_two = False
-            if get_data_direction(id_dic[key]['big_res2']):
-                flag_two = True
-
-            flag_three = False
-            #if get_data_direction(id_dic[key]['main_force']):
-            if get_data_direction(id_dic[key]['big_res']):
-                flag_three = True
 
             if len(id_dic[key]['big_res']) and id_dic[key].has_key('vol'):
                 res_vol_ratio = id_dic[key]['big_res'][-1] *1.0/id_dic[key]['vol']
@@ -1274,52 +1339,12 @@ def do_search_short():
                     id_dic[key]['res_vol_ratio'].append(res_vol_ratio)
                     id_dic[key]['res2_vol_ratio'].append(res2_vol_ratio)
 
-                if res_vol_ratio < 0 or res2_vol_ratio < 0:
-                    if key in search_dic:
-                        search_dic.pop(key)
-                #print id_dic[key]['res2_vol_ratio'][-1]
-
             id_dic[key]['big_weight'] = get_positive_ratio(id_dic[key]['res_vol_ratio'])
             id_dic[key]['big_weight2'] = get_positive_ratio(id_dic[key]['res2_vol_ratio'])
 
-            if flag_one and flag_two:
-                search_dic[key] = id_dic[key]
-                id_dic[key]['next_time'] = 0
-                id_dic[key]['choice'] = 'A'
-            elif flag_two and flag_three and id_dic[key]['res_vol_ratio'][-1] >= 0.05:
-                search_dic[key] = id_dic[key]
-                id_dic[key]['next_time'] = 0
-                id_dic[key]['choice'] = 'B'
-            elif key in search_dic:
-                search_dic.pop(key)
-                id_dic[key]['next_time'] = 0
-            else:
-                if  len(id_dic[key]['big_res']) <= 1:
-                    id_dic[key]['next_time'] = 0
-                else:
-                    id_dic[key]['next_time'] = time.time() + 2 *TIME_DIFF
+            if query_components.has_key('big_res'):
+                if not get_data_direction(id_dic[key]['big_res']):
+                    search_remove.append(key)
+                    continue
 
-        #print 'length: ', len(search_dic)
-        log_print_res(search_dic)
-        time.sleep(TIME_DIFF)
-
-#A股就是个坑， 技术指标低位了， 仍然可以再砸
-#技术指标高位了， 有资金接盘仍然可以涨, 高位始终是危险
-#压力如铁桶，支撑如窗户纸, 压力位不放量买就是要跌的节奏
-#有连续的大单介入才介入， 低位大资金都不介入， 肯定有猫腻
-#业绩好的，下跌， 大资金不介入， 肯定有什么利空， 业绩可以变脸
-#买二--买五是大单， 而买1是小单， 下跌也不买， 明显还没有跌到位
-#托单， 托而不买， 还有下跌
-#业绩增长的， 业绩出来之前已经开始涨了， 出业绩的那天直接出货下跌
-#利好消息也是一样， 这叫利好出尽是利空
-#不是说长下引线就能买， 高位， 主力先出货， 再用少量资金拉起来吸引
-#高位下引线， 股价快到顶了
-#跟封盘， 毕竟高位跟风盘不少， 再出货
-#macd 鸭子张嘴， 会加速下跌, 买之前一定要看一下15分钟macd、DMA
-#涨是需要理由的， 跌不需要,配股的股就不要进了， 号称散户的周扒皮
-#次新和业绩差的能不碰还是不要碰了, 选股还是要选强的
-#没有买盘的拉升都是骗人的
-#割肉要坚决， 没有什么后悔的, 不看上证、a50 那是不行的
-#不要做T, 不看好就跑， 看好就买， 做T, 买了， 想跑跑不了
-if __name__ == '__main__':
-    do_search_short()
+            if query_components.has_key('big_res2'):
