@@ -670,42 +670,4 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/../stock/py/stock_info.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="1273" column="20" selection-start="40257" selection-end="40380" vertical-scroll-proportion="0.0" vertical-offset="23568" max-vertical-offset="25061">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://D:/Python27/Lib/BaseHTTPServer.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="231" column="8" selection-start="8104" selection-end="8104" vertical-scroll-proportion="-1.6695353" vertical-offset="5302" max-vertical-offset="11514">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../stock/py/stock_info_bak.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="1391" column="29" selection-start="44909" selection-end="44909" vertical-scroll-proportion="3.1101549" vertical-offset="24622" max-vertical-offset="27550">
-          <folding>
-            <element signature="e#40#51#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-  </component>
-  <component name="masterDetails">
-    <states>
-      <state key="ScopeChooserConfigurable.UI">
-        <settings>
-          <splitter-proportions>
-            <option name="proportions">
-              <list>
-                <option value="0.2" />
-              </list>
-            </option>
-          </splitter-proportions>
-        </settings>
-      </state>
-    </states>
-  </component>
-</project>
-
+        <state line="1273" column="20" selection-s

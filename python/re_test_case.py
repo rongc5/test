@@ -21,6 +21,8 @@ RECOMM_APPID_EASOU = 10001
 
 RECOMM_ROOT_INTERVAL_TIME = 86400 * 3
 
+RECOMM_UCF_MASK_FLAG = 127
+
 test_list = [{'uid':'48808231', 'reqGid':''}]
 
 #获取用户类型
@@ -140,22 +142,107 @@ def get_current_ucf(search_key_dic, field='ucf_knn3'):
 
 def recomm_ucf_select_category(items_dic):
 
-    tmp_dic = {}
+    key_array = {}
     for key in items_dic:
-        if
+        if not items_dic[key].has_key('category1_sign') or not items_dic[key]['category1_sign'].strip():
+            continue
+
+        if items_dic[key]['category1_sign'] in key_array:
+            key_array['wei_u41'] += 1
+        else:
+            key_array['category1_sign'] = items_dic[key]['category1_sign']
+            key_array['wei_u41'] = 1
+
+    category_sign = ''
+    rid = 0
+    for key in key_array:
+        if key['wei_u41'] > rid:
+            rid = key['wei_u41']
+            category_sign = key['category1_sign']
+
+    return  category_sign
+
+
+def recomm_ucf_norm_filter(items_dic):
+
+    ks_hmap = {}
+    for key in items_dic:
+        if not items_dic[key].has_key('norm_name') or not items_dic[key]['norm_name'].strip():
+            continue
+
+        if not items_dic[key].has_key('norm_author') or not items_dic[key]['norm_author'].strip():
+            continue
+
+        key_buf = '%s_%s' % (items_dic[key]['norm_name'], items_dic[key]['norm_author'])
+        if key_buf in ks_hmap:
+            items_dic[key]['mask_level'] = RECOMM_UCF_MASK_FLAG
+            continue
+
+        ks_hmap[key_buf] = ''
+
+
+def recomm_ucf_cart_format(items_dic):
+
+    remove_key = []
+    for key in items_dic:
+        if items_dic[key].has_key('mask_level') and items_dic[key]['mask_level'] == RECOMM_UCF_MASK_FLAG:
+            remove_key.append(key)
+            continue
+
+        tv_now = int(time.time()) + (3600 << 3)
+        if items_dic[key]['wei_u81'] <= tv_now:
+            tv_now = tv_now - items_dic[key]['wei_u81']
+        tv_now = tv_now / 86400
+        if tv_now > 1095:
+            tv_now = 1095
+
+        items_dic[key]['base_weight'] = (2 << 10) / (1 + tv_now)
+
+    for key in remove_key:
+        items_dic.pop(key)
+
+def recomm_dao_idata_bget(items_dic, field):
+
+    for key in items_dic:
+        res_str = get_data_redis2('gid', field)
+        res_list = []
+        if res_str.strip():
+            res_list = res_str.split('\t')
+            items_dic[key]['idata'] = res_list
+
+
+def recomm_ucf_accumulation_weight(items_dic):
+
+    ks_hmap = {}
+    for key in items_dic:
+        if not items_dic[key].has_key('idata'):
+            continue
+        length = len(items_dic[key]['idata'])
+        i = 0
+        while True:
+            if i + 1 >= length:
+                break
+
+            if items_dic[key]['idata'][i] in ks_hmap:
+                ks_hmap[items_dic[key]['idata'][i]] += items_dic[key]['idata'][i + 1] * items_dic[key]['base_weight']
+            else:
+                ks_hmap[items_dic[key]['idata'][i]] = items_dic[key]['idata'][i + 1] * items_dic[key]['base_weight']
+            i += 2
+
+    return ks_hmap
+
+def recomm_ucf_select_topn():
+    pass
 
 #uid1_key  u_54159287
 #uid3_key  d_0EFF2921445097DC49E46156D5F6A18C
 def get_history_ucf(search_key_dic, field='ucf_knn3'):
-    ip = REDIS2_NS.split(':')[0]
-    port = REDIS2_NS.split(':')[1]
-    cmd = [REDIS_CLI, '--raw', '-h', ip, '-p', port, '-c', 'hget', 'u_%s' % (uid), field]
-    res_str = subprocess.Popen(cmd, stdout=subprocess.PIPE).communicate()[0]
+    #uk_version = 0
+    #uk_version_str = get_data_redis1('i_version', 'uk_version')
+    #if uk_version_str.strip():
+    #    uk_version = int(uk_version_str)
 
-    uk_version = 0
-    uk_version_str = get_data_redis1('i_version', 'uk_version')
-    if uk_version_str.strip():
-        uk_version = int(uk_version_str)
+
 
     if 'ucf_knn4' in field:
         field = 'icf_knn4'
@@ -176,9 +263,16 @@ def get_history_ucf(search_key_dic, field='ucf_knn3'):
 
         item = get_iteminfo(cart_arr[i])
         item['gid'] = cart_arr[i]
-        item['wei_u41'] = cart_arr[i+1]
+        item['wei_u81'] = cart_arr[i+1]
         cart_items_dic[cart_arr[i]] = item
         i = i + 2
+
+    cart_topn = 100
+    category_sign = ''
+    if field == 'icf_knn4':
+        category_sign = recomm_ucf_select_category(cart_items_dic)
+
+
 
     #1、在线计算， 获取用户历史书架
     #redis-3.0.6/redis-cli --raw -a Easou_RDS2017 -h 10.26.25.15 -p 6645 -c hgetall i_100056338
@@ -187,18 +281,18 @@ def get_history_ucf(search_key_dic, field='ucf_knn3'):
     #4、recomm_ucf_cart_topn re.conf 中配置为100
     #5、根据  item_info->nname_sign, item_info->nauthor_sign 过滤
 
-    res_list = []
-    if res_str.strip():
-        res_list = res_str.split('\t')
+    #res_list = []
+    #if res_str.strip():
+    #    res_list = res_str.split('\t')
+    #
+    #if not len(res_list):
+    #    cmd = [REDIS_CLI, '--raw', '-h', ip, '-p', port, '-c', 'hget', 'd_%s' % (udid), field]
+    #    res_str = subprocess.Popen(cmd, stdout=subprocess.PIPE).communicate()[0]
+    #    res_str = res_str.strip('\n')
+    #    if res_str.strip():
+    #        res_list = res_str.split('\t')
 
-    if not len(res_list):
-        cmd = [REDIS_CLI, '--raw', '-h', ip, '-p', port, '-c', 'hget', 'd_%s' % (udid), field]
-        res_str = subprocess.Popen(cmd, stdout=subprocess.PIPE).communicate()[0]
-        res_str = res_str.strip('\n')
-        if res_str.strip():
-            res_list = res_str.split('\t')
-
-    return res_list
+    #return res_list
 
 
 
