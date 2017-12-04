@@ -307,10 +307,30 @@ def GzipStream(streams):
 #成交明细
 def get_stockid_detail(id, date):
     url = 'http://market.finance.sina.com.cn/downxls.php?date=%s&symbol=%s' % (date, id)
-    res = httpGetContent(url)
-    file_object = open('%s_%s_detail' % (id, date), 'w')
-    file_object.write(res)
-    file_object.close( )
+
+    #cmd = [REDIS_CLI, '--raw', '-h', ip, '-p', port, '-a', REDIS1_AUTH, '-c', 'hget', key, field]
+    #res_str = subprocess.Popen(cmd, stdout=subprocess.PIPE).communicate()[0]
+    #req_header = []
+    #index = random.randint(0, len(user_agent_list) -1)
+    #req_header.extend(['User-Agent: %s' % (user_agent_list[index])])
+    #res = httpGetContent(url, req_header)
+    #file_object = open('%s_%s_detail' % (id, date), 'w')
+    #file_object.write(res)
+    #file_object.close( )
+    import subprocess
+    cmd = ['curl', url]
+    res_str = subprocess.Popen(cmd, stdout=subprocess.PIPE).communicate()[0]
+
+    print res_str
+    items = res_str.split('\n')
+    for key in items:
+        print 'hello, ', key
+
+    #if res and res.has_key('body'):
+    #    print res['body']
+    #    items = res['body'].split('\n')
+    #    for key in items:
+    #        print 'hello, ', key
 
 #查看每股财务指标
 def get_stockid_mgzb(id):
@@ -848,11 +868,11 @@ def get_basic_list(id_dic):
             log_write('err_base_list', key)
             continue
 
-        if res['circulation_market_value'] >= 390:
-            continue
-
-        if res['total_value'] >= 690:
-            continue
+        #if res['circulation_market_value'] >= 390:
+        #    continue
+        #
+        #if res['total_value'] >= 690:
+        #    continue
 
         if res['pe'] > 99 or res['pe'] < 0:
             continue
@@ -1402,4 +1422,5 @@ def do_search_short():
 #割肉要坚决， 没有什么后悔的, 不看上证、a50 那是不行的
 #不要做T, 不看好就跑， 看好就买， 做T, 买了， 想跑跑不了
 if __name__ == '__main__':
-    do_search_short()
+    #do_search_short()
+    get_stockid_detail('2017-12-04', 'sz002859')

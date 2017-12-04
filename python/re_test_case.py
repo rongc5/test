@@ -22,6 +22,7 @@ RECOMM_APPID_EASOU = 10001
 RECOMM_ROOT_INTERVAL_TIME = 86400 * 3
 
 RECOMM_UCF_MASK_FLAG = 127
+RECOMM_UCF_ITEMINFO_NUM = 36
 
 test_list = [{'uid':'48808231', 'reqGid':''}]
 
@@ -226,13 +227,41 @@ def recomm_ucf_accumulation_weight(items_dic):
             if items_dic[key]['idata'][i] in ks_hmap:
                 ks_hmap[items_dic[key]['idata'][i]] += items_dic[key]['idata'][i + 1] * items_dic[key]['base_weight']
             else:
-                ks_hmap[items_dic[key]['idata'][i]] = items_dic[key]['idata'][i + 1] * items_dic[key]['base_weight']
+                ks_hmap[items_dic[key]['idata'][i]] = int(items_dic[key]['idata'][i + 1]) * items_dic[key]['base_weight']
             i += 2
 
     return ks_hmap
 
-def recomm_ucf_select_topn():
-    pass
+
+def recomm_ucf_sort_weight(ks_hmap):
+    d_view = [ (v,k) for k,v in ks_hmap.iteritems()]
+    d_view.sort(reverse=True)
+    res_list = []
+    for v,k in d_view:
+        res_list.append(k)
+
+    return res_list
+
+def recomm_ucf_select_topn(items_dic, res_list, cut_count):
+
+    ks_hmap = {}
+    for key in items_dic:
+        if not items_dic[key].has_key('top_name') or not items_dic[key]['top_name'].strip():
+            continue
+
+        if items_dic[key]['top_name'] not in ks_hmap:
+            ks_hmap[items_dic[key]['top_name']] =''
+
+
+    cut_id = 0
+    while  cut_id < cut_count:
+        item_id = 0;
+        while item_id < RECOMM_UCF_ITEMINFO_NUM:
+            items = get_iteminfo(res_list[item_id])
+            items['gid'] = res_list[item_id]
+            ++item_id
+
+
 
 #uid1_key  u_54159287
 #uid3_key  d_0EFF2921445097DC49E46156D5F6A18C
@@ -241,6 +270,7 @@ def get_history_ucf(search_key_dic, field='ucf_knn3'):
     #uk_version_str = get_data_redis1('i_version', 'uk_version')
     #if uk_version_str.strip():
     #    uk_version = int(uk_version_str)
+
 
 
 
