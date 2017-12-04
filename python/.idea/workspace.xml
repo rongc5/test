@@ -50,31 +50,13 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="stock_info_bak.py" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/../stock/py/stock_info_bak.py">
+      <file leaf-file-name="re_test_case.py" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/re_test_case.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="1391" column="29" selection-start="44909" selection-end="44909" vertical-scroll-proportion="3.1101549" vertical-offset="24622" max-vertical-offset="27550">
+            <state line="348" column="11" selection-start="9159" selection-end="9159" vertical-scroll-proportion="0.6781411" vertical-offset="6218" max-vertical-offset="12369">
               <folding>
-                <element signature="e#40#51#0" expanded="true" />
+                <element signature="e#40#54#0" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="stock_info.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../stock/py/stock_info.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="1273" column="20" selection-start="40257" selection-end="40380" vertical-scroll-proportion="0.0" vertical-offset="23625" max-vertical-offset="25061">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="monitor.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../stock/py/monitor.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="148" column="25" selection-start="4780" selection-end="4780" vertical-scroll-proportion="0.0" vertical-offset="2812" max-vertical-offset="5776">
-              <folding />
             </state>
           </provider>
         </entry>
@@ -82,7 +64,7 @@
       <file leaf-file-name="api" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/../stock/py/api">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="69" column="6" selection-start="2325" selection-end="2325" vertical-scroll-proportion="0.0" vertical-offset="1311" max-vertical-offset="2774">
+            <state line="8" column="6" selection-start="1595" selection-end="1595" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2774">
               <folding />
             </state>
           </provider>
@@ -98,8 +80,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/../tmp/qf/mysql.py" />
-        <option value="$PROJECT_DIR$/../tmp/qf/myLog.py" />
         <option value="$PROJECT_DIR$/../tmp/qf/runJs.py" />
         <option value="$PROJECT_DIR$/../tmp/qf/runPhp.py" />
         <option value="$PROJECT_DIR$/../tmp/qf/runSwift.py" />
@@ -111,9 +91,11 @@
         <option value="$PROJECT_DIR$/../stock/py/mysql.py" />
         <option value="$PROJECT_DIR$/../stock/py/save_stock_list.py" />
         <option value="$PROJECT_DIR$/../stock/py/api" />
-        <option value="$PROJECT_DIR$/../stock/py/stock_info.py" />
         <option value="$PROJECT_DIR$/../stock/py/monitor.py" />
         <option value="$PROJECT_DIR$/../stock/py/stock_info_bak.py" />
+        <option value="$PROJECT_DIR$/../stock/py/stock_info.py" />
+        <option value="$PROJECT_DIR$/re_test_case.py" />
+        <option value="$PROJECT_DIR$/../stock/py/stock_infoa.py" />
       </list>
     </option>
   </component>
@@ -210,6 +192,16 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="python" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="python" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
     </panes>
@@ -218,7 +210,7 @@
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="recentsLimit" value="5" />
-    <property name="options.lastSelected" value="project.propVCSSupport.Mappings" />
+    <property name="options.lastSelected" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../stock" />
     <property name="FullScreen" value="false" />
     <property name="options.searchVisible" value="true" />
@@ -592,21 +584,16 @@
           <line>4</line>
           <option name="timeStamp" value="2" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="python-line">
+          <url>file://$PROJECT_DIR$/re_test_case.py</url>
+          <line>4</line>
+          <option name="timeStamp" value="5" />
+        </line-breakpoint>
       </breakpoints>
-      <option name="time" value="5" />
+      <option name="time" value="7" />
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/../stock/py/inquire_stock.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="-1.2788296" vertical-offset="743" max-vertical-offset="3819" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/asplog_2_json.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="15" column="0" selection-start="1002" selection-end="1002" vertical-scroll-proportion="0.7331461" vertical-offset="24" max-vertical-offset="1919" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/excel.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="-0.029810298" vertical-offset="11" max-vertical-offset="1292" />
@@ -654,20 +641,64 @@
         <state line="89" column="8" selection-start="1864" selection-end="1897" vertical-scroll-proportion="0.29316548" vertical-offset="1528" max-vertical-offset="2109" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../stock/py/api">
+    <entry file="file://D:/Python27/Lib/BaseHTTPServer.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="69" column="6" selection-start="2325" selection-end="2325" vertical-scroll-proportion="0.0" vertical-offset="855" max-vertical-offset="2774">
-          <folding />
-        </state>
+        <state line="231" column="8" selection-start="8104" selection-end="8104" vertical-scroll-proportion="-1.6695353" vertical-offset="5302" max-vertical-offset="11514" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/../stock/py/monitor.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="148" column="25" selection-start="4780" selection-end="4780" vertical-scroll-proportion="0.0" vertical-offset="2812" max-vertical-offset="5548">
-          <folding />
-        </state>
+        <state line="148" column="25" selection-start="4780" selection-end="4780" vertical-scroll-proportion="-0.39242685" vertical-offset="2812" max-vertical-offset="5548" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../stock/py/stock_infob.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="-47.2031" vertical-offset="27425" max-vertical-offset="28690" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/../stock/py/stock_info.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="1273" column="20" selection-s
+        <state line="1298" column="20" selection-start="40383" selection-end="40383" vertical-scroll-proportion="-0.89672977" vertical-offset="24955" max-vertical-offset="25536" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../stock/py/api">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="8" column="6" selection-start="1595" selection-end="1595" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2774">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../stock/py/stock_infoa.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="524" column="93" selection-start="15429" selection-end="15429" vertical-scroll-proportion="0.39759037" vertical-offset="9497" max-vertical-offset="26980">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/re_test_case.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="348" column="11" selection-start="9159" selection-end="9159" vertical-scroll-proportion="0.6781411" vertical-offset="6218" max-vertical-offset="12369">
+          <folding>
+            <element signature="e#40#54#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+  </component>
+  <component name="masterDetails">
+    <states>
+      <state key="ScopeChooserConfigurable.UI">
+        <settings>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+    </states>
+  </component>
+</project>
+

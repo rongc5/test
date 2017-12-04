@@ -1422,5 +1422,5 @@ def do_search_short():
 #割肉要坚决， 没有什么后悔的, 不看上证、a50 那是不行的
 #不要做T, 不看好就跑， 看好就买， 做T, 买了， 想跑跑不了
 if __name__ == '__main__':
-    #do_search_short()
-    get_stockid_detail('2017-12-04', 'sz002859')
+    do_search_short()
+    #get_stockid_detail('2017-12-04', 'sz002859')
