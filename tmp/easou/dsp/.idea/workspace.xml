@@ -51,6 +51,7 @@ user_agent_list = [
 
 user_agent_dic = {}
 user_agent_cookie = {}
+MAX_RESPONSE_KB = 10*1024
 
 class Day():
     def __init__(self):
@@ -296,6 +297,131 @@ def httpGetContent(url, req_header=None, version = '1.1'):
     #print res
     return res
 
+class HTTPError(Exception):
+    """Exception that is wrapped around all exceptions that are raised
+    by the underlying fetcher when using the ExceptionWrappingFetcher
+
+    @ivar why: The exception that caused this exception
+    """
+    def __init__(self, why=None):
+        Exception.__init__(self, why)
+        self.why = why
+
+class CurlHTTPFetcher(object):
+    """
+    An C{L{HTTPFetcher}} that uses pycurl for fetching.
+    See U{http://pycurl.sourceforge.net/}.
+    """
+    ALLOWED_TIME = 20 # seconds
+
+    def _parseHeaders(self, header_file):
+        header_file.seek(0)
+
+        # Remove the status line from the beginning of the input
+        unused_http_status_line = header_file.readline().lower ()
+        if unused_http_status_line.startswith('http/1.1 100 '):
+            unused_http_status_line = header_file.readline()
+            unused_http_status_line = header_file.readline()
+
+        lines = [line.strip() for line in header_file]
+
+        # and the blank line from the end
+        empty_line = lines.pop()
+        if empty_line:
+            raise HTTPError("No blank line at end of headers: %r" % (line,))
+
+        headers = {}
+        for line in lines:
+            try:
+                name, value = line.split(':', 1)
+            except ValueError:
+                raise HTTPError(
+                    "Malformed HTTP header line in response: %r" % (line,))
+
+            value = value.strip()
+
+            # HTTP headers are case-insensitive
+            name = name.lower()
+            headers[name] = value
+
+        return headers
+
+    def fetch(self, url, body=None, headers=None):
+        stop = int(time.time()) + self.ALLOWED_TIME
+        off = self.ALLOWED_TIME
+
+        if headers is None:
+            headers = {}
+
+        if  'User-Agent:' in headers or  'user-agent:' in headers:
+            print 'no User-Agent', headers, url, sys._getframe().f_lineno
+            return
+
+        header_list = []
+        if headers is not None:
+            for header_name, header_value in headers.iteritems():
+                header_list.append('%s: %s' % (header_name, header_value))
+
+        c = pycurl.Curl()
+        try:
+            c.setopt(pycurl.NOSIGNAL, 1)
+
+            if header_list:
+                c.setopt(pycurl.HTTPHEADER, header_list)
+
+            # Presence of a body indicates that we should do a POST
+            if body is not None:
+                c.setopt(pycurl.POST, 1)
+                c.setopt(pycurl.POSTFIELDS, body)
+
+            while off > 0:
+                if not url.startswith('http://') and not url.startswith('https://'):
+                        raise HTTPError("Fetching URL not allowed: %r" % (url,))
+
+                data = cStringIO.StringIO()
+                def write_data(chunk):
+                    if data.tell() > 1024*MAX_RESPONSE_KB:
+                        return 0
+                    else:
+                        print data.getvalue()
+                        return data.write(chunk)
+
+                response_header_data = cStringIO.StringIO()
+                c.setopt(pycurl.WRITEFUNCTION, write_data)
+                c.setopt(pycurl.HEADERFUNCTION, response_header_data.write)
+                c.setopt(pycurl.TIMEOUT, off)
+                c.setopt(pycurl.URL, url)
+
+                c.perform()
+
+                response_headers = self._parseHeaders(response_header_data)
+                code = c.getinfo(pycurl.RESPONSE_CODE)
+                if code in [301, 302, 303, 307]:
+                    url = response_headers.get('location')
+                    if url is None:
+                        raise HTTPError(
+                            'Redirect (%s) returned without a location' % code)
+
+                    # Redirects are always GETs
+                    c.setopt(pycurl.POST, 0)
+
+                    # There is no way to reset POSTFIELDS to empty and
+                    # reuse the connection, but we only use it once.
+                else:
+                    res = {}
+                    res['head'] = response_headers
+                    res['status'] = code
+                    res['final_url'] = url
+                    res['body'] = data.getvalue()
+                    return res
+
+                off = stop - int(time.time())
+
+            raise HTTPError("Timed out fetching: %r" % (url,))
+        finally:
+            c.close()
+
+
 def GzipStream(streams):
     "用于处理容启动gzip压缩"
     if streams:
@@ -308,21 +434,28 @@ def GzipStream(streams):
 def get_stockid_detail(id, date):
     url = 'http://market.finance.sina.com.cn/downxls.php?date=%s&symbol=%s' % (date, id)
 
-    #cmd = [REDIS_CLI, '--raw', '-h', ip, '-p', port, '-a', REDIS1_AUTH, '-c', 'hget', key, field]
-    #res_str = subprocess.Popen(cmd, stdout=subprocess.PIPE).communicate()[0]
-    req_header = []
+    header = {}
     index = random.randint(0, len(user_agent_list) -1)
-    req_header.extend(['User-Agent: %s' % (user_agent_list[index])])
-    res = httpGetContent(url, req_header)
-    #file_object = open('%s_%s_detail' % (id, date), 'w')
-    #file_object.write(res)
-    #file_object.close( )
+    header['User-Agent'] = user_agent_list[index]
 
-    if res and res.has_key('body'):
+    cookie_key = '%d_sina' % (index,)
+    if user_agent_cookie.has_key(cookie_key):
+        header['Cookie'] = user_agent_cookie[cookie_key]
+
+    curl =  CurlHTTPFetcher()
+
+    res = {}
+    try:
+        res = curl.fetch(url, None, header)
+    except HTTPError, e:
+        print e.why
+
+    if res.has_key('head') and res['head'].has_key('set-cookie'):
+        user_agent_cookie[cookie_key] = res['head']['set-cookie'].split(';')[0]
+        print user_agent_cookie[cookie_key]
+
+    if res.has_key('body'):
         print res['body']
-        items = res['body'].split('\n')
-        for key in items:
-            print 'hello, ', key
 
 #查看每股财务指标
 def get_stockid_mgzb(id):
@@ -815,175 +948,4 @@ def get_stock_list():
         file.flush()
 
     file.close()
-    return id_dic
-
-#解禁列表, http 相应数据不全， chunked 的问题， 后边再处理吧
-def get_outDxf_list(start, end):
-    url = 'http://stock.finance.qq.com//sstock/list/view/dxf.php?c=0&b=%s&e=%s' % (start, end)
-    refer = 'http://finance.qq.com/stock/dxfcx.htm?t=2&mn=%s&mx=%s' %(start, end)
-    req_header = []
-    req_header.extend(['Referer: %s' % (refer)])
-    print url
-    res = curl_cmd_get(url)
-    #print res
-    #value = res.split('=')[1].strip(';\n').decode("utf-8","ignore")
-    value = res.decode("gbk").split('=')[1].strip(';\r\n')
-    #print value
-    id_dic= json.loads(value)
-
-    if os.path.isfile('out_dxf_list'):
-        os.remove('out_dxf_list')
-    for key in id_dic:
-        str = '%s %s' % (key[0], key[2])
-        log_write('out_dxf_list', str)
-
-    return id_dic
-
-
-#去掉停牌等
-def get_basic_list(id_dic):
-    if not len(id_dic):
-        return
-
-    file = open('base_list', "a+")
-
-    basic_dic = {}
-    flag = False
-    for key in id_dic:
-        time.sleep(0.01)
-        res = get_stockid_real_time(key)
-
-        if res.has_key('block') and res['block']:  #停牌
-            continue
-
-        if not res.has_key('pe'):
-            log_write('err_base_list', key)
-            continue
-
-        #if res['circulation_market_value'] >= 390:
-        #    continue
-        #
-        #if res['total_value'] >= 690:
-        #    continue
-
-        if res['pe'] > 99 or res['pe'] < 0:
-            continue
-
-        if res['end'] > 69 or res['end'] <= 3:
-            continue
-
-        res['mgzb'] = get_stockid_mgzb(key)
-        if len(res['mgzb']) < 1:
-            log_write('err_base_list', key)
-            continue
-
-        if '--' not in res['mgzb'][0]['tbmgsy'] and  float(res['mgzb'][0]['tbmgsy']) < 0.1:
-            continue
-
-        if '--' not in res['mgzb'][0]['mgxjll'] and float(res['mgzb'][0]['mgxjll']) < 0.05:
-            continue
-
-        res['cznl'] = get_stockid_cznl(key)
-        if len(res['cznl']) < 1:
-            log_write('err_base_list', key)
-            continue
-        #if float(res['cznl'][0]['yylr']) < 0:
-        #    continue
-        #
-        #if float(res['cznl'][0]['jlr']) < 0:
-        #    continue
-        #
-        #if float(res['cznl'][0]['yylr']) < 30:
-        #    continue
-
-
-        basic_dic[res['id']] = res
-
-        file.write(res['code'])
-        file.write('\t')
-        file.write(res['id'])
-        file.write('\t')
-        file.write(str(res['end']))
-        file.write('\t')
-        file.write(str(res['pe']))
-        file.write('\t')
-        file.write(str(res['pb']))
-        file.write('\t')
-        file.write(str(res['circulation_market_value']))
-        file.write('\t')
-        file.write(str(res['total_value']))
-        file.write('\t')
-        file.write(res['mgzb'][0]['tbmgsy'])
-        file.write('\t')
-        file.write(res['mgzb'][0]['mgxjll'])
-        file.write('\t')
-        file.write(res['cznl'][0]['mgsy'])
-        file.write('\t')
-        file.write(res['cznl'][0]['mgxj'])
-        file.write('\t')
-        file.write(res['cznl'][0]['zysr'])
-        file.write('\t')
-        file.write(res['cznl'][0]['yylr'])
-        file.write('\t')
-        file.write(res['cznl'][0]['jlr'])
-        file.write('\t')
-        file.write(res['date'])
-
-        file.write('\n')
-        file.flush()
-
-        #print res
-        #break
-    file.close()
-
-
-def load_base_list():
-    if not os.path.isfile('code_all'):
-        get_stock_list()
-
-    if not os.path.isfile('base_list'):
-        id_list = []
-        file = open("code_all")
-        while 1:
-            line = file.readline().strip()
-            if not line:
-                break
-            id_list.append(line)
-        file.close()
-        get_basic_list(id_list)
-
-    id_list = []
-    if os.path.isfile('err_base_list'):
-        file = open('err_base_list')
-        while 1:
-            line = file.readline().strip()
-            if not line:
-                break
-            id_list.append(line)
-        file.close()
-        os.remove('err_base_list')
-        get_basic_list(id_list)
-
-    id_dic = {}
-    file = open("base_list")
-    while 1:
-        line = file.readline().strip()
-        if not line:
-            break
-        items = line.split('\t')
-        if len(items) < 8:
-            continue
-        tmp_dic = {}
-        tmp_dic['code'] = items[0]
-        tmp_dic['id'] = items[1]
-        tmp_dic['end'] = items[2]
-        tmp_dic['pe'] = float(items[3])
-        tmp_dic['pb'] = float(items[4])
-        tmp_dic['circulation_market_value'] = float(items[5])
-        tmp_dic['total_value'] = float(items[6])
-        tmp_dic['tbmgsy'] = items[7].replace(',', '')
-        tmp_dic['mgxjll'] = items[8].replace(',', '')
-        tmp_dic['mgsy'] = items[9].replace(',', '')
-        tmp_dic['mgxj'] = items[10].replace(',', '')
-        tmp_dic['zysr'] = items[11].replace(',', '')
-        tmp_dic['yylr'] =
+    retu

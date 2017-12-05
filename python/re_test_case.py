@@ -254,12 +254,19 @@ def recomm_ucf_select_topn(items_dic, res_list, cut_count):
 
 
     cut_id = 0
+    r_index = 0
     while  cut_id < cut_count:
         item_id = 0;
         while item_id < RECOMM_UCF_ITEMINFO_NUM:
-            items = get_iteminfo(res_list[item_id])
-            items['gid'] = res_list[item_id]
+            items = get_iteminfo(res_list[r_index])
+            items['gid'] = res_list[r_index]
             ++item_id
+            ++r_index
+
+        item_count = item_id
+        item_id = 0
+        while item_id < item_count:
+
 
 
 
