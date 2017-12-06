@@ -383,7 +383,7 @@ class CurlHTTPFetcher(object):
                     if data.tell() > 1024*MAX_RESPONSE_KB:
                         return 0
                     else:
-                        print 'hello', data.getvalue()
+                        #print 'hello', data.getvalue()
                         return data.write(chunk)
 
                 response_header_data = cStringIO.StringIO()
@@ -412,7 +412,7 @@ class CurlHTTPFetcher(object):
                     res['head'] = response_headers
                     res['status'] = code
                     res['final_url'] = url
-                    res['body'] = '%s' % (data.getvalue())
+                    res['body'] = '%s' % (data.getvalue().decode("gbk"))
                     return res
 
                 off = stop - int(time.time())
@@ -431,9 +431,16 @@ def GzipStream(streams):
         g = gzip.GzipFile('', 'rb', 9, data)
         return g.read()
 
-#
+def analysis_detail(detail_str):
+    if not detail_str.strip():
+        return
+
+    items = detail_str.split('\n')
+    for key in items:
+        print items
+
 #成交明细
-def get_stockid_detail(id, date):
+def get_stockid_detail(date, id):
     url = 'http://market.finance.sina.com.cn/downxls.php?date=%s&symbol=%s' % (date, id)
 
     header = {}
@@ -454,8 +461,12 @@ def get_stockid_detail(id, date):
 
     if res.has_key('head') and res['head'].has_key('set-cookie'):
         user_agent_cookie[cookie_key] = res['head']['set-cookie'].split(';')[0]
+        print res['head']
         print user_agent_cookie[cookie_key]
 
+    if res.has_key('body'):
+        analysis_detail(res['body'])
+        #print res['body']
 
 #查看每股财务指标
 def get_stockid_mgzb(id):

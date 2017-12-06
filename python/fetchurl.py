@@ -480,8 +480,8 @@ class CurlHTTPFetcher(HTTPFetcher):
 
         #headers.setdefault('User-Agent',
                            #"%s %s" % (USER_AGENT, pycurl.version,))
-        headers.setdefault('User-Agent',
-                           "%s" % (USER_AGENT,))
+        #headers.setdefault('User-Agent',
+        #                   "%s" % (USER_AGENT,))
 
 
         header_list = []
