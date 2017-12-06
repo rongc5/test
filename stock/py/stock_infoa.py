@@ -383,7 +383,7 @@ class CurlHTTPFetcher(object):
                     if data.tell() > 1024*MAX_RESPONSE_KB:
                         return 0
                     else:
-                        #print 'hello', data.getvalue()
+                        #print 'hello', data.getvalue().decode('gbk')
                         return data.write(chunk)
 
                 response_header_data = cStringIO.StringIO()
@@ -412,7 +412,7 @@ class CurlHTTPFetcher(object):
                     res['head'] = response_headers
                     res['status'] = code
                     res['final_url'] = url
-                    res['body'] = '%s' % (data.getvalue().decode("gbk"))
+                    res['body'] = '%s' % (data.getvalue())
                     return res
 
                 off = stop - int(time.time())
@@ -437,7 +437,15 @@ def analysis_detail(detail_str):
 
     items = detail_str.split('\n')
     for key in items:
-        print items
+        subitems = key.split('\t');
+        if len(subitems) == 6:
+            if u'买盘' in  subitems[5].decode('gbk'):
+                print 'B', subitems[5].decode('gbk')
+            elif u'卖盘' in subitems[5].decode('gbk'):
+                print 'S', subitems[5].decode('gbk')
+            elif u'中性盘' in subitems[5].decode('gbk'):
+                print 'M', subitems[5].decode('gbk')
+        #print items
 
 #成交明细
 def get_stockid_detail(date, id):
