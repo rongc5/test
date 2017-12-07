@@ -466,9 +466,17 @@ def get_stockid_detail(date, id):
                 if len(subitems) == 6:
                     if u'买盘' in  subitems[5].decode('gbk'):
                         if int(subitems[5]) <= 100:
-                            skey = ''
+                            skey = 'B'
                     elif u'卖盘' in subitems[5].decode('gbk'):
                         print 'S', subitems[5].decode('gbk')
+                        skey = 'S'
+                    else:
+                        continue
+
+                    vol = int(subitems[3])
+                    force = int(subitems[4]) *1.0 /10000
+
+
         except BaseException, e:
             print e.message
 
