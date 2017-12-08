@@ -226,6 +226,21 @@ def log_write(filename, str):
     file.close()
 
 
+def get_week_day(date_str, format_str='%Y-%m-%d'):
+    day = 0
+    if not date_str:
+        return day
+
+    try:
+        d = time.strptime(date_str, format_str)
+        day =d.tm_wday + 1
+    except BaseException, e:
+        print e.message
+        return day
+
+    return day
+
+
 #主要是针对chunked 模式，没办法搞
 def curl_cmd_get(url):
     cmd = "curl '%s'" % (url)
@@ -312,7 +327,7 @@ class CurlHTTPFetcher(object):
     An C{L{HTTPFetcher}} that uses pycurl for fetching.
     See U{http://pycurl.sourceforge.net/}.
     """
-    ALLOWED_TIME = 20 # seconds
+    ALLOWED_TIME = 30 # seconds
 
     def _parseHeaders(self, header_file):
         header_file.seek(0)
@@ -423,19 +438,10 @@ class CurlHTTPFetcher(object):
             data.close()
             c.close()
 
-
-def GzipStream(streams):
-    "用于处理容启动gzip压缩"
-    if streams:
-        data = cStringIO.StringIO(streams)
-        g = gzip.GzipFile('', 'rb', 9, data)
-        return g.read()
-
-
 #成交明细
 def get_stockid_detail(date, id):
     url = 'http://market.finance.sina.com.cn/downxls.php?date=%s&symbol=%s' % (date, id)
-
+    #print url
     header = {}
     index = random.randint(0, len(user_agent_list) -1)
     header['User-Agent'] = user_agent_list[index]
@@ -447,39 +453,120 @@ def get_stockid_detail(date, id):
     curl =  CurlHTTPFetcher()
 
     res = {}
+    deal_dic = {}
     try:
         res = curl.fetch(url, None, header)
-    except HTTPError, e:
+    except BaseException, e:
         print e.why
+        return deal_dic
 
     if res.has_key('head') and res['head'].has_key('set-cookie'):
         user_agent_cookie[cookie_key] = res['head']['set-cookie'].split(';')[0]
-        print res['head']
-        print user_agent_cookie[cookie_key]
+        #print user_agent_cookie[cookie_key]
 
-    skey = ''
+    deal_dic['total_vol'] = 0
+    deal_dic['total_force'] = 0
+    deal_dic['min_price'] = 0
+    deal_dic['high_price'] = 0
     if res.has_key('body') and res['body'].strip():
         try:
             items = res['body'].split('\n')
             for key in items:
                 subitems = key.split('\t');
                 if len(subitems) == 6:
+                    if not subitems[3].isdigit():
+                        continue
+                    vol = int(subitems[3])
+                    force = int(subitems[4])
+                    deal_dic['total_vol'] += vol
+                    deal_dic['total_force'] += force
+
+                    if float(subitems[1]) < deal_dic['min_price']:
+                        deal_dic['min_price'] = float(subitems[1])
+
+                    if float(subitems[1]) > deal_dic['high_price']:
+                        deal_dic['high_price'] = float(subitems[1])
+
                     if u'买盘' in  subitems[5].decode('gbk'):
-                        if int(subitems[5]) <= 100:
-                            skey = 'B'
+                        flag = 1
                     elif u'卖盘' in subitems[5].decode('gbk'):
-                        print 'S', subitems[5].decode('gbk')
-                        skey = 'S'
+                        flag = -1
                     else:
                         continue
 
-                    vol = int(subitems[3])
-                    force = int(subitems[4]) *1.0 /10000
+                    if vol < 100:
+                        if not deal_dic.has_key('vol_0'):
+                            deal_dic['vol_0'] = 0
+                            deal_dic['force_0'] = 0
 
+                        deal_dic['vol_0'] += vol * flag
+                        deal_dic['force_0'] += force * flag
+
+                    if vol >= 100:
+                        if not deal_dic.has_key('vol_1'):
+                            deal_dic['vol_1'] = 0
+                            deal_dic['force_1'] = 0
+
+                        deal_dic['vol_1'] += vol * flag
+                        deal_dic['force_1'] += force * flag
+
+
+                    if vol >= 200:
+                        if not deal_dic.has_key('vol_2'):
+                            deal_dic['vol_2'] = 0
+                            deal_dic['force_2'] = 0
+
+                        deal_dic['vol_2'] += vol * flag
+                        deal_dic['force_2'] += force * flag
+
+                    if vol >= 500:
+                        if not deal_dic.has_key('vol_3'):
+                            deal_dic['vol_3'] = 0
+                            deal_dic['force_3'] = 0
+
+                        deal_dic['vol_2'] += vol * flag
+                        deal_dic['force_2'] += force * flag
+
+                    if vol >= 1000:
+                        if not deal_dic.has_key('vol_4'):
+                            deal_dic['vol_4'] = 0
+                            deal_dic['force_4'] = 0
+
+                        deal_dic['vol_4'] += vol * flag
+                        deal_dic['force_4'] += force * flag
+
+            deal_dic['total_force'] = deal_dic['total_force'] * 1.0/10000
+
+            if deal_dic.has_key('force_0'):
+                deal_dic['force_0'] = deal_dic['force_0'] * 1.0 / 10000
+                deal_dic['ratio_force_0'] = deal_dic['force_0'] / deal_dic['total_force']
+                deal_dic['ratio_vol_0'] = deal_dic['vol_0'] *1.0 / deal_dic['total_vol']
+
+            if deal_dic.has_key('force_1'):
+                deal_dic['force_1'] = deal_dic['force_1'] * 1.0 / 10000
+                deal_dic['ratio_force_1'] = deal_dic['force_1'] / deal_dic['total_force']
+                deal_dic['ratio_vol_1'] = deal_dic['vol_1'] *1.0 / deal_dic['total_vol']
+
+            if deal_dic.has_key('force_2'):
+                deal_dic['force_2'] = deal_dic['force_2'] * 1.0 / 10000
+                deal_dic['ratio_force_2'] = deal_dic['force_2'] / deal_dic['total_force']
+                deal_dic['ratio_vol_2'] = deal_dic['vol_2'] *1.0 / deal_dic['total_vol']
+
+            if deal_dic.has_key('force_3'):
+                deal_dic['force_3'] = deal_dic['force_3'] * 1.0 / 10000
+                deal_dic['ratio_force_3'] = deal_dic['force_3'] / deal_dic['total_force']
+                deal_dic['ratio_vol_3'] = deal_dic['vol_3'] *1.0 / deal_dic['total_vol']
+
+            if deal_dic.has_key('force_4'):
+                deal_dic['force_4'] = deal_dic['force_4'] * 1.0 / 10000
+                deal_dic['ratio_force_4'] = deal_dic['force_4'] / deal_dic['total_force']
+                deal_dic['ratio_vol_4'] = deal_dic['vol_4'] *1.0 / deal_dic['total_vol']
 
         except BaseException, e:
             print e.message
 
+        #print deal_dic
+        return deal_dic
         #print res['body']
 
 #查看每股财务指标
@@ -866,15 +953,24 @@ def get_stockid_real_time(id):
     imax = 3
     stocklist = []
     stockdict = {}
+    curl =  CurlHTTPFetcher()
+
+    res = {}
+    deal_dic = {}
+
     while 1:
-        req_header = []
+        header = {}
         index = random.randint(0, len(user_agent_list) -1)
-        req_header.extend(['User-Agent: %s' % (user_agent_list[index])])
-        req_header.extend(['Referer: %s' % (refer)])
+        header['User-Agent'] = user_agent_list[index]
+        header['Referer'] = refer
         #if user_agent_dic.has_key(index):
         #    req_header.extend(['If-None-Match: %s' % (user_agent_dic[index])])
         i = i + 1
-        res = httpGetContent(url, req_header)
+        try:
+            res = curl.fetch(url, None, header)
+        except BaseException, e:
+            print e.message
+
         if len(res) < 2:
             print url, sys._getframe().f_lineno, res
             if i > imax:
@@ -936,27 +1032,33 @@ def get_stockid_real_time(id):
         key = '%d_%s' % (index, id)
         user_agent_dic[key]  = res['head'].split('Etag:')[1].strip()
 
+    #print stockdict
     return stockdict
 
 #获取所有股票列表
 def get_stock_list():
     #url = 'http://www.shdjt.com/js/lib/astock.js'
     url = 'http://www.ctxalgo.com/api/stocks'
-    req_header = ['Cookie: session=eyJfaWQiOnsiIGIiOiJNMkZtTldJME1qSXpNR1UzWWpka01UYzRabUV6TURKbU5qTTJZemcwWWpjPSJ9fQ.DOGz0g.7bJGQ4DUUtYLJ6OcX7bfvbEUa60']
-    #req_header = []
+    curl =  CurlHTTPFetcher()
     while 1:
-       index = random.randint(0, len(user_agent_list) -1)
-       req_header.extend(['User-Agent: %s' % (user_agent_list[index])])
-       res = httpGetContent(url, req_header)
+        header = {}
+        index = random.randint(0, len(user_agent_list) -1)
+        header['User-Agent'] = 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.113 Safari/537.36'
+        header['Cookie'] = 'session=eyJfaWQiOnsiIGIiOiJNMkZtTldJME1qSXpNR1UzWWpka01UYzRabUV6TURKbU5qTTJZemcwWWpjPSJ9fQ.DQvdBA.x1XmlgjogTBgu2R52U1y9mHxqXI'
+        res = {}
+        try:
+            res = curl.fetch(url, None, header)
+        except BaseException, e:
+            print e.message
        #res = {}
        #res['head'] = ''
        #res['body'] = curl_cmd_get(url)
-       if len(res) < 2:
-           print url
-           time.sleep(1)
-       else:
-           print res['head']
-           break
+        if len(res) < 2:
+            print url
+            time.sleep(1)
+        else:
+            print res['head']
+            break
 
     #print res
     #res = {}
@@ -979,13 +1081,22 @@ def get_stock_list():
 def get_outDxf_list(start, end):
     url = 'http://stock.finance.qq.com//sstock/list/view/dxf.php?c=0&b=%s&e=%s' % (start, end)
     refer = 'http://finance.qq.com/stock/dxfcx.htm?t=2&mn=%s&mx=%s' %(start, end)
-    req_header = []
-    req_header.extend(['Referer: %s' % (refer)])
-    print url
-    res = curl_cmd_get(url)
+
+    curl =  CurlHTTPFetcher()
+
+    header = {}
+    index = random.randint(0, len(user_agent_list) -1)
+    header['User-Agent'] = user_agent_list[index]
+    header['Referer'] = refer
+    res = {}
+    try:
+        res = curl.fetch(url, None, header)
+    except BaseException, e:
+        print e.message
+
     #print res
     #value = res.split('=')[1].strip(';\n').decode("utf-8","ignore")
-    value = res.decode("gbk").split('=')[1].strip(';\r\n')
+    value = res['body'].decode("gbk").split('=')[1].strip(';\r\n')
     #print value
     id_dic= json.loads(value)
 
@@ -1208,11 +1319,11 @@ def remove_from_banlist(id_dic, ban_list):
     return id_dic
 
 #增长 为true, 下降为false
-def get_data_direction(arr):
+def get_data_direction(arr, key):
     if len(arr) < 2 :
         return False
 
-    if arr[-1] > arr[0]:
+    if arr[-1][key] > arr[0][key]:
         return True
     else:
         return False
@@ -1258,29 +1369,6 @@ def log_print_res(search_dic):
                 search_dic[key].pop('next_time')
             if search_dic[key].has_key('code'):
                 search_dic[key].pop('code')
-
-            if not search_dic[key].has_key('main_force'):
-                    search_dic[key]['main_force'] = []
-                    search_dic[key]['count_main_force'] = 0
-
-            #if search_dic[key].has_key('big_weight') and search_dic[key]['big_weight'] < 0.6:
-            #    if search_dic[key].has_key('main_force') and len(search_dic[key]['main_force']) and search_dic[key]['main_force'][-1] < 500:
-            #        remove_ley.append(key)
-            #        continue
-            #
-            #if search_dic[key].has_key('big_weight2') and search_dic[key]['big_weight2'] < 0.6:
-            #    if search_dic[key].has_key('main_force') and len(search_dic[key]['main_force']) and search_dic[key]['main_force'][-1] < 500:
-            #        remove_ley.append(key)
-            #        continue
-
-            if search_dic[key]['count_main_force'] % 5 == 0:
-                search_dic[key]['count_main_force'] += 1
-                money = get_money_flow(key)
-                if money.has_key('main_force'):
-                    if len(search_dic[key]['main_force']) and abs(search_dic[key]['main_force'][-1] - money['main_force']) >= 50:
-                        search_dic[key]['main_force'].append(money['main_force'])
-                    elif not len(search_dic[key]['main_force']):
-                        search_dic[key]['main_force'].append(money['main_force'])
 
             log_write('res_list', json.dumps(search_dic[key]))
             log_write('res_list', '\n')
@@ -1356,6 +1444,7 @@ def do_search_short():
     day = Day()
     start_day = '%s' % (day.get_day_of_day(-20))
     end_day = '%s' % (day.get_day_of_day(30))
+    toady = '%s' % (day.today(),)
     print start_day.replace('-', ''), end_day.replace('-', '')
     ban_list = get_outDxf_list(start_day.replace('-', ''), end_day.replace('-', ''))
     ban_dic = {}
@@ -1387,7 +1476,7 @@ def do_search_short():
         for key in remove_ley:
             id_dic.pop(key)
 
-        mtime = time.ctime(os.path.getmtime('stock_cfg'))
+        mtime = time.ctime(os.path.getmtime('stocka_cfg'))
         if cfg_mtime != mtime:
             cfg_mtime = mtime
             tmp_components = load_config()
@@ -1402,15 +1491,6 @@ def do_search_short():
         print 'after remove_ley', len(id_dic)
         for key in id_dic:
             time.sleep(0.01)
-
-            #if not id_dic[key].has_key('next_time'):
-            #    id_dic[key]['next_time'] = 0
-            #
-            #if id_dic[key]['next_time']:
-            #    diff_time = time.time() - id_dic[key]['next_time']
-            #    if diff_time < 0:
-            #        continue
-
             res = get_stockid_real_time(key)
 
             if res.has_key('block') and res['block']:  #停牌
@@ -1468,64 +1548,76 @@ def do_search_short():
                 if id_dic[key]['end'] < id_dic[key]['high'] and id_dic[key]['end'] != id_dic[key]['start']:
                     id_dic[key]['up_pointer'] = abs(id_dic[key]['end'] - id_dic[key]['high']) *1.0/abs(id_dic[key]['end'] - id_dic[key]['start'])
 
-            big_data = get_single_analysis(key)
-            big_res = 0
-            big_res2 = 0
-            if len(big_data):
-                big_res = big_data['b'] - big_data['s']
-                big_res2 = big_data['2b'] - big_data['2s']
+            deal_dic = {}
+            deal_dic = get_stockid_detail(toady, key)
+            if not deal_dic.has_key('total_vol') or deal_dic['total_vol'] == 0:
+                continue
 
+            if not id_dic[key].has_key(toady):
+                id_dic[key][day.today] = []
 
-            if not id_dic[key].has_key('big_res'):
-                id_dic[key]['big_res'] = []
-                id_dic[key]['big_res2'] = []
-                id_dic[key]['res_vol_ratio'] = []
-                id_dic[key]['res2_vol_ratio'] = []
-            if len(id_dic[key]['big_res']) and abs(id_dic[key]['big_res'][-1] - big_res) >= 200:
-                id_dic[key]['big_res'].append(big_res)
-                id_dic[key]['big_res2'].append(big_res2)
-            elif not len(id_dic[key]['big_res']):
-                id_dic[key]['big_res'].append(big_res)
-                id_dic[key]['big_res2'].append(big_res2)
+            if len(id_dic[key][toady]) >= 10:
+                id_dic[key][toady].pop(0)
+            id_dic[key][toady].append(deal_dic)
 
-
-            if len(id_dic[key]['big_res']) and id_dic[key].has_key('vol'):
-                res_vol_ratio = id_dic[key]['big_res'][-1] *1.0/id_dic[key]['vol']
-                res2_vol_ratio = id_dic[key]['big_res2'][-1] *1.0/id_dic[key]['vol']
-                if res_vol_ratio not in id_dic[key]['res_vol_ratio']:
-                    id_dic[key]['res_vol_ratio'].append(res_vol_ratio)
-                    id_dic[key]['res2_vol_ratio'].append(res2_vol_ratio)
-
-            id_dic[key]['big_weight'] = get_positive_ratio(id_dic[key]['res_vol_ratio'])
-            id_dic[key]['big_weight2'] = get_positive_ratio(id_dic[key]['res2_vol_ratio'])
-
-            if query_components.has_key('big_res'):
-                if not get_data_direction(id_dic[key]['big_res']):
+            if query_components.has_key('vol_1'):
+                if not get_data_direction(id_dic[key][toady], 'vol_1'):
                     search_remove.append(key)
                     continue
 
-            if query_components.has_key('big_res2'):
-                if not get_data_direction(id_dic[key]['big_res2']):
+            if query_components.has_key('vol_2'):
+                if not get_data_direction(id_dic[key][toady], id_dic[key]['vol_2']):
                     search_remove.append(key)
                     continue
 
-            if query_components.has_key('big_res_ge'):
-                if id_dic[key]['big_res'][-1] < query_components['big_res_ge']:
+            if query_components.has_key('vol_3'):
+                if not get_data_direction(id_dic[key][toady], id_dic[key]['vol_3']):
                     search_remove.append(key)
                     continue
 
-            if query_components.has_key('big_res2_ge'):
-                if id_dic[key]['big_res2'][-1] < query_components['big_res2_ge']:
+            if query_components.has_key('vol_4'):
+                if not get_data_direction(id_dic[key][toady], id_dic[key]['vol_4']):
                     search_remove.append(key)
                     continue
 
-            if query_components.has_key('res_vol_ratio_ge'):
-                if id_dic[key]['res_vol_ratio'][-1] < query_components['res_vol_ratio_ge']:
+            if query_components.has_key('vol_1_ge'):
+                if id_dic[key][toady]['vol_1'][-1] < query_components['vol_1_ge']:
                     search_remove.append(key)
                     continue
 
-            if query_components.has_key('res2_vol_ratio_ge'):
-                if id_dic[key]['res2_vol_ratio'][-1] < query_components['res2_vol_ratio_ge']:
+            if query_components.has_key('vol_2_ge'):
+                if id_dic[key][toady]['vol_2'][-1] < query_components['vol_2_ge']:
+                    search_remove.append(key)
+                    continue
+
+            if query_components.has_key('vol_3_ge'):
+                if id_dic[key][toady]['vol_3'][-1] < query_components['vol_3_ge']:
+                    search_remove.append(key)
+                    continue
+
+            if query_components.has_key('vol_4_ge'):
+                if id_dic[key][toady]['vol_4'][-1] < query_components['vol_4_ge']:
+                    search_remove.append(key)
+                    continue
+
+            if query_components.has_key('ratio_vol_1_ge'):
+                if id_dic[key][toady]['ratio_vol_1'][-1] < query_components['ratio_vol_1_ge']:
+                    search_remove.append(key)
+                    continue
+
+
+            if query_components.has_key('ratio_vol_2_ge'):
+                if id_dic[key][toady]['ratio_vol_2'][-1] < query_components['ratio_vol_2_ge']:
+                    search_remove.append(key)
+                    continue
+
+            if query_components.has_key('ratio_vol_3_ge'):
+                if id_dic[key][toady]['ratio_vol_3'][-1] < query_components['ratio_vol_3_ge']:
+                    search_remove.append(key)
+                    continue
+
+            if query_components.has_key('ratio_vol_4_ge'):
+                if id_dic[key][toady]['ratio_vol_4'][-1] < query_components['ratio_vol_4_ge']:
                     search_remove.append(key)
                     continue
 
@@ -1540,6 +1632,20 @@ def do_search_short():
                     continue
 
                 #print id_dic[key]['res2_vol_ratio'][-1]
+
+            last_deal_dic = {}
+            if query_components.has_key('lastday_1'):
+                lastday = int(query_components['lastday_1'])
+                if lastday > 0:
+                    print lastday, 'must be negative number'
+                else:
+                    lastday_str =  '%s' % (day.get_day_of_day(lastday), )
+                    if get_week_day(lastday_str) > 5 or get_week_day(lastday_str) < 1:
+                        print  lastday_str, 'week_day must be >=1 or <= 5'
+                    else:
+                        if not id_dic[key].has_key(lastday_str):
+                            last_deal_dic = get_stockid_detail(lastday_str, key)
+                            id_dic[key][lastday_str] = last_deal_dic
 
             search_dic[key] = id_dic[key]
             #id_dic[key]['next_time'] = 0
@@ -1572,5 +1678,5 @@ def do_search_short():
 #割肉要坚决， 没有什么后悔的, 不看上证、a50 那是不行的
 #不要做T, 不看好就跑， 看好就买， 做T, 买了， 想跑跑不了
 if __name__ == '__main__':
-    #do_search_short()
-    get_stockid_detail('2017-12-05', 'sz002859')
+    do_search_short()
+    #get_stockid_detail('2017-12-05', 'sz002859')

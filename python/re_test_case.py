@@ -245,6 +245,7 @@ def recomm_ucf_sort_weight(ks_hmap):
 def recomm_ucf_select_topn(items_dic, res_list, cut_count):
 
     ks_hmap = {}
+    #过滤书架
     for key in items_dic:
         if not items_dic[key].has_key('top_name') or not items_dic[key]['top_name'].strip():
             continue
@@ -266,7 +267,7 @@ def recomm_ucf_select_topn(items_dic, res_list, cut_count):
         item_count = item_id
         item_id = 0
         while item_id < item_count:
-
+            
 
 
 
