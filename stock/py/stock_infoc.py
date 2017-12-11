@@ -418,7 +418,12 @@ def get_stockid_cznl(id):
 
     return id_dic['data']['cznl']
 
-def get_single_analysis(id):
+def get_single_analysis(id, vol, deal_dic):
+    stockdict = {}
+    if int(vol) <= 0:
+        print vol, 'err'
+        return stockdict
+
 
     url = 'http://stock.finance.qq.com/sstock/list/view/dadan.php?t=js&c=%s&max=400&p=1&opt=1&o=0' % (id)
     refer = 'http://stockhtm.finance.qq.com/sstock/quotpage/dadan.htm?c=%s' % (id)
@@ -453,23 +458,65 @@ def get_single_analysis(id):
         return  {}
 
     #print stocklist
-    stockdict = {}
-    stockdict['s'] = 0
-    stockdict['b'] = 0
-    stockdict['2s'] = 0
-    stockdict['2b'] = 0
+
+    if not deal_dic.has_key('vol_1'):
+        deal_dic['vol_1'] = []
+        deal_dic['vol_2'] = []
+        deal_dic['vol_3'] = []
+        deal_dic['vol_4'] = []
+        deal_dic['ratio_vol_1'] = []
+        deal_dic['ratio_vol_2'] = []
+        deal_dic['ratio_vol_3'] = []
+        deal_dic['ratio_vol_4'] = []
+
+    stockdict['vol_1'] = 0
+    stockdict['vol_2'] = 0
+    stockdict['vol_3'] = 0
+    stockdict['vol_4'] = 0
     items = stocklist.split('^')
     for item in items:
         subitems = item.split('~')
         if len(subitems) >= 6:
+            flag = 1
             if 's' in subitems[5] or 'S' in subitems[5]:
-                stockdict['s'] += int(subitems[3])
-                if abs(int(subitems[3])) >=200:
-                    stockdict['2s'] += int(subitems[3])
+                flag = -1
             elif 'b' in subitems[5] or 'B' in subitems[5]:
-                stockdict['b'] += int(subitems[3])
-                if abs(int(subitems[3])) >=200:
-                    stockdict['2b'] += int(subitems[3])
+                flag = 1
+
+            if int(subitems[3]) >= 100:
+                stockdict['vol_1'] += int(subitems[3]) * flag
+
+            if int(subitems[3]) >= 200:
+                stockdict['vol_2'] += int(subitems[3]) * flag
+
+            if int(subitems[3]) >= 500:
+                stockdict['vol_3'] += int(subitems[3]) * flag
+
+            if int(subitems[3]) >= 1000:
+                stockdict['vol_4'] += int(subitems[3]) * flag
+
+    if len(deal_dic['vol_1']) >= 10:
+        deal_dic['vol_1'].pop(0)
+        deal_dic['vol_2'].pop(0)
+        deal_dic['vol_3'].pop(0)
+        deal_dic['vol_4'].pop(0)
+        deal_dic['ratio_vol_1'].pop(0)
+        deal_dic['ratio_vol_2'].pop(0)
+        deal_dic['ratio_vol_3'].pop(0)
+        deal_dic['ratio_vol_4'].pop(0)
+
+    if len(deal_dic['vol_1']) >=1 and abs(deal_dic['vol_1'][-1] - stockdict['vol_1']) < 400:
+        return stockdict
+
+    deal_dic['vol_1'].append(stockdict['vol_1'])
+    deal_dic['vol_2'].append(stockdict['vol_2'])
+    deal_dic['vol_3'].append(stockdict['vol_3'])
+    deal_dic['vol_4'].append(stockdict['vol_4'])
+
+    deal_dic['ratio_vol_1'].append(stockdict['vol_1'] *1.0 / vol)
+    deal_dic['ratio_vol_2'].append(stockdict['vol_2'] *1.0 / vol)
+    deal_dic['ratio_vol_3'].append(stockdict['vol_3'] *1.0 / vol)
+    deal_dic['ratio_vol_4'].append(stockdict['vol_4'] *1.0 / vol)
 
     return stockdict
 
@@ -1007,9 +1054,9 @@ def log_print_res(search_dic):
             if search_dic[key].has_key('code'):
                 search_dic[key].pop('code')
 
-            if not search_dic[key].has_key('main_force'):
-                    search_dic[key]['main_force'] = []
-                    search_dic[key]['count_main_force'] = 0
+            #if not search_dic[key].has_key('main_force'):
+                    #search_dic[key]['main_force'] = []
+                    #search_dic[key]['count_main_force'] = 0
 
             #if search_dic[key].has_key('big_weight') and search_dic[key]['big_weight'] < 0.6:
             #    if search_dic[key].has_key('main_force') and len(search_dic[key]['main_force']) and search_dic[key]['main_force'][-1] < 500:
@@ -1021,14 +1068,14 @@ def log_print_res(search_dic):
             #        remove_ley.append(key)
             #        continue
 
-            if search_dic[key]['count_main_force'] % 5 == 0:
-                search_dic[key]['count_main_force'] += 1
-                money = get_money_flow(key)
-                if money.has_key('main_force'):
-                    if len(search_dic[key]['main_force']) and abs(search_dic[key]['main_force'][-1] - money['main_force']) >= 50:
-                        search_dic[key]['main_force'].append(money['main_force'])
-                    elif not len(search_dic[key]['main_force']):
-                        search_dic[key]['main_force'].append(money['main_force'])
+            #if search_dic[key]['count_main_force'] % 5 == 0:
+                #search_dic[key]['count_main_force'] += 1
+                #money = get_money_flow(key)
+                #if money.has_key('main_force'):
+                    #if len(search_dic[key]['main_force']) and abs(search_dic[key]['main_force'][-1] - money['main_force']) >= 50:
+                        #search_dic[key]['main_force'].append(money['main_force'])
+                    #elif not len(search_dic[key]['main_force']):
+                        #search_dic[key]['main_force'].append(money['main_force'])
 
             log_write('res_list', json.dumps(search_dic[key]))
             log_write('res_list', '\n')
@@ -1160,7 +1207,7 @@ def do_search_short():
             #        continue
 
             res = get_stockid_real_time(key)
-
+            #print res
             if res.has_key('block') and res['block']:  #停牌
                 print key, 'block'
                 remove_ley.append(key)
@@ -1216,64 +1263,77 @@ def do_search_short():
                 if id_dic[key]['end'] < id_dic[key]['high'] and id_dic[key]['end'] != id_dic[key]['start']:
                     id_dic[key]['up_pointer'] = abs(id_dic[key]['end'] - id_dic[key]['high']) *1.0/abs(id_dic[key]['end'] - id_dic[key]['start'])
 
-            big_data = get_single_analysis(key)
-            big_res = 0
-            big_res2 = 0
-            if len(big_data):
-                big_res = big_data['b'] - big_data['s']
-                big_res2 = big_data['2b'] - big_data['2s']
+            if not id_dic[key].has_key('vol'):
+                continue
 
 
-            if not id_dic[key].has_key('big_res'):
-                id_dic[key]['big_res'] = []
-                id_dic[key]['big_res2'] = []
-                id_dic[key]['res_vol_ratio'] = []
-                id_dic[key]['res2_vol_ratio'] = []
-            if len(id_dic[key]['big_res']) and abs(id_dic[key]['big_res'][-1] - big_res) >= 200:
-                id_dic[key]['big_res'].append(big_res)
-                id_dic[key]['big_res2'].append(big_res2)
-            elif not len(id_dic[key]['big_res']):
-                id_dic[key]['big_res'].append(big_res)
-                id_dic[key]['big_res2'].append(big_res2)
+            if not id_dic[key].has_key('single'):
+                id_dic[key]['single'] = {}
 
 
-            if len(id_dic[key]['big_res']) and id_dic[key].has_key('vol'):
-                res_vol_ratio = id_dic[key]['big_res'][-1] *1.0/id_dic[key]['vol']
-                res2_vol_ratio = id_dic[key]['big_res2'][-1] *1.0/id_dic[key]['vol']
-                if res_vol_ratio not in id_dic[key]['res_vol_ratio']:
-                    id_dic[key]['res_vol_ratio'].append(res_vol_ratio)
-                    id_dic[key]['res2_vol_ratio'].append(res2_vol_ratio)
+            get_single_analysis(key, id_dic[key]['vol'], id_dic[key]['single'])
+            if not id_dic[key]['single'].has_key('vol_1') or len(id_dic[key]['single']['vol_1']) == 0:
+                continue
 
-            id_dic[key]['big_weight'] = get_positive_ratio(id_dic[key]['res_vol_ratio'])
-            id_dic[key]['big_weight2'] = get_positive_ratio(id_dic[key]['res2_vol_ratio'])
-
-            if query_components.has_key('big_res'):
-                if not get_data_direction(id_dic[key]['big_res']):
+            if query_components.has_key('vol_1'):
+                if not get_data_direction(id_dic[key]['single']['vol_1']):
                     search_remove.append(key)
                     continue
 
-            if query_components.has_key('big_res2'):
-                if not get_data_direction(id_dic[key]['big_res2']):
+            if query_components.has_key('vol_2'):
+                if not get_data_direction(id_dic[key]['single']['vol_2']):
                     search_remove.append(key)
                     continue
 
-            if query_components.has_key('big_res_ge'):
-                if id_dic[key]['big_res'][-1] < query_components['big_res_ge']:
+            if query_components.has_key('vol_3'):
+                if not get_data_direction(id_dic[key]['single']['vol_3']):
                     search_remove.append(key)
                     continue
 
-            if query_components.has_key('big_res2_ge'):
-                if id_dic[key]['big_res2'][-1] < query_components['big_res2_ge']:
+            if query_components.has_key('vol_4'):
+                if not get_data_direction(id_dic[key]['single']['vol_4']):
                     search_remove.append(key)
                     continue
 
-            if query_components.has_key('res_vol_ratio_ge'):
-                if id_dic[key]['res_vol_ratio'][-1] < query_components['res_vol_ratio_ge']:
+            if query_components.has_key('vol_1_ge'):
+                #print id_dic[key]['single'][-1]['vol_1'], query_components['vol_1_ge']
+                if id_dic[key]['single']['vol_1'][-1] < query_components['vol_1_ge']:
                     search_remove.append(key)
                     continue
 
-            if query_components.has_key('res2_vol_ratio_ge'):
-                if id_dic[key]['res2_vol_ratio'][-1] < query_components['res2_vol_ratio_ge']:
+            if query_components.has_key('vol_2_ge'):
+                if id_dic[key]['single']['vol_2'][-1] < query_components['vol_2_ge']:
+                    search_remove.append(key)
+                    continue
+
+            if query_components.has_key('vol_3_ge'):
+                if id_dic[key]['single']['vol_3'][-1] < query_components['vol_3_ge']:
+                    search_remove.append(key)
+                    continue
+
+            if query_components.has_key('vol_4_ge'):
+                if id_dic[key]['single']['vol_4'][-1] < query_components['vol_4_ge']:
+                    search_remove.append(key)
+                    continue
+
+            if query_components.has_key('ratio_vol_1_ge'):
+                if id_dic[key]['single']['ratio_vol_1'][-1] < query_components['ratio_vol_1_ge']:
+                    search_remove.append(key)
+                    continue
+
+
+            if query_components.has_key('ratio_vol_2_ge'):
+                if id_dic[key]['single']['ratio_vol_2'][-1] < query_components['ratio_vol_2_ge']:
+                    search_remove.append(key)
+                    continue
+
+            if query_components.has_key('ratio_vol_3_ge'):
+                if id_dic[key]['single']['ratio_vol_3'][-1] < query_components['ratio_vol_3_ge']:
+                    search_remove.append(key)
+                    continue
+
+            if query_components.has_key('ratio_vol_4_ge'):
+                if id_dic[key]['single']['ratio_vol_4'][-1] < query_components['ratio_vol_4_ge']:
                     search_remove.append(key)
                     continue
 
@@ -1288,7 +1348,7 @@ def do_search_short():
                     continue
 
                 #print id_dic[key]['res2_vol_ratio'][-1]
-
+            print id_dic[key]
             search_dic[key] = id_dic[key]
             #id_dic[key]['next_time'] = 0
 

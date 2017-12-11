@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 #encoding=utf-8
 
+__author__ = 'Administrator'
 
 import json
 import time
@@ -16,42 +17,23 @@ from time import strftime, localtime
 from datetime import timedelta, date
 import calendar
 
-__author__ = 'rong'
-
-user_agent_list = [
-        "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 "
-        "(KHTML, like Gecko) Chrome/60.0.3112.113 Safari/537.36",
-        "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.1 "
-        "(KHTML, like Gecko) Chrome/22.0.1207.1 Safari/537.1",
-        "Mozilla/5.0 (X11; CrOS i686 2268.111.0) AppleWebKit/536.11 "
-        "(KHTML, like Gecko) Chrome/20.0.1132.57 Safari/536.11",
-        "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/536.6 "
-        "(KHTML, like Gecko) Chrome/20.0.1092.0 Safari/536.6",
-        "Mozilla/5.0 (Windows NT 6.2) AppleWebKit/536.6 "
-        "(KHTML, like Gecko) Chrome/20.0.1090.0 Safari/536.6",
-        "Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.1 "
-        "(KHTML, like Gecko) Chrome/19.77.34.5 Safari/537.1",
-        "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/536.5 "
-        "(KHTML, like Gecko) Chrome/19.0.1084.9 Safari/536.5",
-        "Mozilla/5.0 (Windows NT 6.0) AppleWebKit/536.5 "
-        "(KHTML, like Gecko) Chrome/19.0.1084.36 Safari/536.5",
-        "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/536.3 "
-        "(KHTML, like Gecko) Chrome/19.0.1063.0 Safari/536.3",
-        "Mozilla/5.0 (Windows NT 5.1) AppleWebKit/536.3 "
-        "(KHTML, like Gecko) Chrome/19.0.1063.0 Safari/536.3",
-        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_0) AppleWebKit/536.3 "
-        "(KHTML, like Gecko) Chrome/19.0.1063.0 Safari/536.3",
-        "Mozilla/5.0 (Windows NT 6.2) AppleWebKit/536.3 "
-        "(KHTML, like Gecko) Chrome/19.0.1062.0 Safari/536.3",
-        "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/536.3 "
-        "(KHTML, like Gecko) Chrome/19.0.1062.0 Safari/536.3",
-        "Mozilla/5.0 (Windows NT 6.2) AppleWebKit/536.3 "
-        "(KHTML, like Gecko) Chrome/19.0.1061.1 Safari/536.3"]
-
 
 user_agent_dic = {}
 user_agent_cookie = {}
 MAX_RESPONSE_KB = 10*1024
+
+user_agent_list = [
+            "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/536.3 "
+        "(KHTML, like Gecko) Chrome/19.0.1061.1 Safari/536.3",
+        "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/536.3 "
+        "(KHTML, like Gecko) Chrome/19.0.1061.1 Safari/536.3",
+        "Mozilla/5.0 (Windows NT 6.2) AppleWebKit/536.3 "
+        "(KHTML, like Gecko) Chrome/19.0.1061.0 Safari/536.3",
+        "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/535.24 "
+        "(KHTML, like Gecko) Chrome/19.0.1055.1 Safari/535.24",
+        "Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/535.24 "
+        "(KHTML, like Gecko) Chrome/19.0.1055.1 Safari/535.24"
+]
 
 class Day():
     def __init__(self):
@@ -226,91 +208,12 @@ def log_write(filename, str):
     file.close()
 
 
-def get_week_day(date_str, format_str='%Y-%m-%d'):
-    day = 0
-    if not date_str:
-        return day
-
-    try:
-        d = time.strptime(date_str, format_str)
-        day =d.tm_wday + 1
-    except BaseException, e:
-        print e.message
-        return day
-
-    return day
-
-
 #主要是针对chunked 模式，没办法搞
 def curl_cmd_get(url):
     cmd = "curl '%s'" % (url)
     res = os.popen(cmd).read()
     return res
 
-#1.0 版本不必支持chunked,
-def httpGetContent(url, req_header=None, version = '1.1'):
-
-    #print "==>", req_header, url, "<=="
-
-    buf = cStringIO.StringIO()
-    response_header = cStringIO.StringIO()
-    c = pycurl.Curl()
-    c.setopt(c.URL, url)
-    c.setopt(c.WRITEFUNCTION, buf.write)
-    c.setopt(c.CONNECTTIMEOUT, 100)
-    c.setopt(c.TIMEOUT, 300)
-    c.setopt(pycurl.MAXREDIRS, 5)
-    c.setopt(pycurl.FOLLOWLOCATION, 1)
-
-    if req_header is None:
-        req_header = []
-
-    flag = 0
-    for key in req_header:
-        if  'User-Agent:' in key or  'user-agent:' in key:
-            flag = 1
-            break
-
-    if not flag:
-        print 'no User-Agent', req_header, url, sys._getframe().f_lineno
-        return
-
-    #if not flag:
-    #    c.setopt(pycurl.USERAGENT, 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.113 Safari/537.36')
-
-    c.setopt(pycurl.TCP_NODELAY, 1)
-    if '1.1' in version:
-        add_headers = ['Accept:text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
-             'Connection:keep-alive','Accept-Language:zh-CN,zh;q=0.8,en;q=0.6','Cache-Control:max-age=0',
-             'DNT:1','Upgrade-Insecure-Requests:1','Accept-Charset: utf-8']
-        c.setopt(pycurl.ENCODING, 'gzip, deflate')
-    else:
-        add_headers = ['Accept:text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
-             'Connection:close','Accept-Language:zh-CN,zh;q=0.8,en;q=0.6','Cache-Control:max-age=0']
-        c.setopt(pycurl.HTTP_VERSION, pycurl.CURL_HTTP_VERSION_1_0)
-    if len(req_header):
-        add_headers.extend(req_header)
-
-    c.setopt(c.HTTPHEADER, add_headers)
-    c.setopt(pycurl.HTTPGET, 1)
-    c.setopt(c.HEADERFUNCTION, response_header.write)
-    res = {}
-
-    try:
-        c.perform()
-        str_head = '%s' % (response_header.getvalue())
-        str_body = '%s' % (buf.getvalue())
-        res['head'] = str_head
-        res['body'] = str_body
-        #print str_head, str_body
-    except pycurl.error, error:
-        errno, errstr = error
-        print 'An error occurred: ', errstr, url
-    c.close()
-    buf.close()
-    response_header.close()
-    #print res
-    return res
 
 class HTTPError(Exception):
     """Exception that is wrapped around all exceptions that are raised
@@ -322,12 +225,13 @@ class HTTPError(Exception):
         Exception.__init__(self, why)
         self.why = why
 
+
 class CurlHTTPFetcher(object):
     """
     An C{L{HTTPFetcher}} that uses pycurl for fetching.
     See U{http://pycurl.sourceforge.net/}.
     """
-    ALLOWED_TIME = 30 # seconds
+    ALLOWED_TIME = 20 # seconds
 
     def _parseHeaders(self, header_file):
         header_file.seek(0)
@@ -398,7 +302,7 @@ class CurlHTTPFetcher(object):
                     if data.tell() > 1024*MAX_RESPONSE_KB:
                         return 0
                     else:
-                        #print 'hello', data.getvalue().decode('gbk')
+                        print 'hello', data.getvalue().decode('gbk')
                         return data.write(chunk)
 
                 response_header_data = cStringIO.StringIO()
@@ -438,10 +342,11 @@ class CurlHTTPFetcher(object):
             data.close()
             c.close()
 
+
 #成交明细
 def get_stockid_detail(date, id):
     url = 'http://market.finance.sina.com.cn/downxls.php?date=%s&symbol=%s' % (date, id)
-    #print url
+    print url
     header = {}
     index = random.randint(0, len(user_agent_list) -1)
     header['User-Agent'] = user_agent_list[index]
@@ -516,4 +421,109 @@ def get_stockid_detail(date, id):
                             deal_dic['vol_2'] = 0
                             deal_dic['force_2'] = 0
 
-                        deal_dic['v
+                        deal_dic['vol_2'] += vol * flag
+                        deal_dic['force_2'] += force * flag
+
+                    if vol >= 500:
+                        if not deal_dic.has_key('vol_3'):
+                            deal_dic['vol_3'] = 0
+                            deal_dic['force_3'] = 0
+
+                        deal_dic['vol_2'] += vol * flag
+                        deal_dic['force_2'] += force * flag
+
+                    if vol >= 1000:
+                        if not deal_dic.has_key('vol_4'):
+                            deal_dic['vol_4'] = 0
+                            deal_dic['force_4'] = 0
+
+                        deal_dic['vol_4'] += vol * flag
+                        deal_dic['force_4'] += force * flag
+
+            deal_dic['total_force'] = deal_dic['total_force'] * 1.0/10000
+
+            if deal_dic.has_key('force_0'):
+                deal_dic['force_0'] = deal_dic['force_0'] * 1.0 / 10000
+                deal_dic['ratio_force_0'] = deal_dic['force_0'] / deal_dic['total_force']
+                deal_dic['ratio_vol_0'] = deal_dic['vol_0'] *1.0 / deal_dic['total_vol']
+
+            if deal_dic.has_key('force_1'):
+                deal_dic['force_1'] = deal_dic['force_1'] * 1.0 / 10000
+                deal_dic['ratio_force_1'] = deal_dic['force_1'] / deal_dic['total_force']
+                deal_dic['ratio_vol_1'] = deal_dic['vol_1'] *1.0 / deal_dic['total_vol']
+
+            if deal_dic.has_key('force_2'):
+                deal_dic['force_2'] = deal_dic['force_2'] * 1.0 / 10000
+                deal_dic['ratio_force_2'] = deal_dic['force_2'] / deal_dic['total_force']
+                deal_dic['ratio_vol_2'] = deal_dic['vol_2'] *1.0 / deal_dic['total_vol']
+
+            if deal_dic.has_key('force_3'):
+                deal_dic['force_3'] = deal_dic['force_3'] * 1.0 / 10000
+                deal_dic['ratio_force_3'] = deal_dic['force_3'] / deal_dic['total_force']
+                deal_dic['ratio_vol_3'] = deal_dic['vol_3'] *1.0 / deal_dic['total_vol']
+
+            if deal_dic.has_key('force_4'):
+                deal_dic['force_4'] = deal_dic['force_4'] * 1.0 / 10000
+                deal_dic['ratio_force_4'] = deal_dic['force_4'] / deal_dic['total_force']
+                deal_dic['ratio_vol_4'] = deal_dic['vol_4'] *1.0 / deal_dic['total_vol']
+
+        except BaseException, e:
+            print e.message
+
+        #print deal_dic
+        return deal_dic
+        #print res['body']
+
+
+id_dic = {}
+def load_monitor_list():
+    if not os.path.isfile('monitor_list'):
+        return
+    tmp_dic = {}
+    file = open("monitor_list")
+    while 1:
+        line = file.readline().strip('\n')
+        if not line:
+            break
+        tmp_dic[line] = line
+
+    file.close()
+
+    remove_list = []
+    for key in id_dic:
+        if not tmp_dic.has_key(key):
+            remove_list.append(key)
+
+    for key in remove_list:
+        id_dic.pop(key)
+
+    for key in tmp_dic:
+        if not id_dic.has_key(key):
+            id_dic[key] = {'id':key}
+    return
+
+def do_check_monitor():
+    load_monitor_list()
+    day = Day()
+    toady = '%s' % (day.today(),)
+    for key in id_dic:
+        time.sleep(0.05)
+
+        deal_dic = {}
+        deal_dic = get_stockid_detail(toady, key)
+        if not deal_dic.has_key('total_vol') or deal_dic['total_vol'] == 0:
+            continue
+
+        if not id_dic[key].has_key(toady):
+            id_dic[key][day.today] = []
+
+        if len(id_dic[key][toady]) >= 10:
+            id_dic[key][toady].pop(0)
+        id_dic[key][toady].append(deal_dic)
+
+        print 'monitor', id_dic[key]
+
+if __name__ == '__main__':
+    while 1:
+        do_check_monitor()
+        time.sleep(30)

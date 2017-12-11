@@ -1490,7 +1490,7 @@ def do_search_short():
         search_remove = []
         print 'after remove_ley', len(id_dic)
         for key in id_dic:
-            time.sleep(0.01)
+            time.sleep(5)
             res = get_stockid_real_time(key)
 
             if res.has_key('block') and res['block']:  #停牌
@@ -1566,58 +1566,58 @@ def do_search_short():
                     continue
 
             if query_components.has_key('vol_2'):
-                if not get_data_direction(id_dic[key][toady], id_dic[key]['vol_2']):
+                if not get_data_direction(id_dic[key][toady], 'vol_2'):
                     search_remove.append(key)
                     continue
 
             if query_components.has_key('vol_3'):
-                if not get_data_direction(id_dic[key][toady], id_dic[key]['vol_3']):
+                if not get_data_direction(id_dic[key][toady], 'vol_3'):
                     search_remove.append(key)
                     continue
 
             if query_components.has_key('vol_4'):
-                if not get_data_direction(id_dic[key][toady], id_dic[key]['vol_4']):
+                if not get_data_direction(id_dic[key][toady], 'vol_4'):
                     search_remove.append(key)
                     continue
 
             if query_components.has_key('vol_1_ge'):
-                if id_dic[key][toady]['vol_1'][-1] < query_components['vol_1_ge']:
+                if id_dic[key][toady][-1]['vol_1']< query_components['vol_1_ge']:
                     search_remove.append(key)
                     continue
 
             if query_components.has_key('vol_2_ge'):
-                if id_dic[key][toady]['vol_2'][-1] < query_components['vol_2_ge']:
+                if id_dic[key][toady][-1]['vol_2'] < query_components['vol_2_ge']:
                     search_remove.append(key)
                     continue
 
             if query_components.has_key('vol_3_ge'):
-                if id_dic[key][toady]['vol_3'][-1] < query_components['vol_3_ge']:
+                if id_dic[key][toady][-1]['vol_3'] < query_components['vol_3_ge']:
                     search_remove.append(key)
                     continue
 
             if query_components.has_key('vol_4_ge'):
-                if id_dic[key][toady]['vol_4'][-1] < query_components['vol_4_ge']:
+                if id_dic[key][toady][-1]['vol_4'] < query_components['vol_4_ge']:
                     search_remove.append(key)
                     continue
 
             if query_components.has_key('ratio_vol_1_ge'):
-                if id_dic[key][toady]['ratio_vol_1'][-1] < query_components['ratio_vol_1_ge']:
+                if id_dic[key][toady][-1]['ratio_vol_1'] < query_components['ratio_vol_1_ge']:
                     search_remove.append(key)
                     continue
 
 
             if query_components.has_key('ratio_vol_2_ge'):
-                if id_dic[key][toady]['ratio_vol_2'][-1] < query_components['ratio_vol_2_ge']:
+                if id_dic[key][toady][-1]['ratio_vol_2'] < query_components['ratio_vol_2_ge']:
                     search_remove.append(key)
                     continue
 
             if query_components.has_key('ratio_vol_3_ge'):
-                if id_dic[key][toady]['ratio_vol_3'][-1] < query_components['ratio_vol_3_ge']:
+                if id_dic[key][toady][-1]['ratio_vol_3'] < query_components['ratio_vol_3_ge']:
                     search_remove.append(key)
                     continue
 
             if query_components.has_key('ratio_vol_4_ge'):
-                if id_dic[key][toady]['ratio_vol_4'][-1] < query_components['ratio_vol_4_ge']:
+                if id_dic[key][toady][-1]['ratio_vol_4'] < query_components['ratio_vol_4_ge']:
                     search_remove.append(key)
                     continue
 
@@ -1633,19 +1633,28 @@ def do_search_short():
 
                 #print id_dic[key]['res2_vol_ratio'][-1]
 
-            last_deal_dic = {}
-            if query_components.has_key('lastday_1'):
-                lastday = int(query_components['lastday_1'])
-                if lastday > 0:
-                    print lastday, 'must be negative number'
-                else:
-                    lastday_str =  '%s' % (day.get_day_of_day(lastday), )
-                    if get_week_day(lastday_str) > 5 or get_week_day(lastday_str) < 1:
-                        print  lastday_str, 'week_day must be >=1 or <= 5'
-                    else:
-                        if not id_dic[key].has_key(lastday_str):
-                            last_deal_dic = get_stockid_detail(lastday_str, key)
-                            id_dic[key][lastday_str] = last_deal_dic
+            lastday_num = 0
+            if query_components.has_key('lastday_num'):
+                lastday_num = query_components['lastday_num']
+
+            for id_day in range(1, lastday_num + 1):
+                if query_components.has_key('lastday_%d' % (id_day)):
+                    lastday = int(query_components['lastday_%d' % (id_day)])
+                    if lastday > 0:
+                        print lastday, 'should be negative number'
+                        lastday *= -1
+
+                    while 1:
+                        lastday_str =  '%s' % (day.get_day_of_day(lastday), )
+                        if get_week_day(lastday_str) > 5:
+                            lastday = lastday - 2
+                        else:
+                            query_components['lastday_%d' % (id_day)] = lastday
+                            break
+
+                    if not id_dic[key].has_key(lastday_str):
+                        last_deal_dic = get_stockid_detail(lastday_str, key)
+                        id_dic[key][lastday_str] = last_deal_dic
 
             search_dic[key] = id_dic[key]
             #id_dic[key]['next_time'] = 0
