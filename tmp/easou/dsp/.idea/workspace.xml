@@ -58,11 +58,11 @@
         <option value="$PROJECT_DIR$/../../../stock/py/fetchers.py" />
         <option value="$PROJECT_DIR$/../../../python/fetchers.py" />
         <option value="$PROJECT_DIR$/../../../python/test6.py" />
-        <option value="$PROJECT_DIR$/../../../stock/py/monitor.py" />
         <option value="$PROJECT_DIR$/../../../stock/py/stocka_cfg" />
         <option value="$PROJECT_DIR$/../../../stock/py/stock_infoa.py" />
         <option value="$PROJECT_DIR$/../../../python/re_test_case.py" />
         <option value="$PROJECT_DIR$/../../../stock/py/stock_infoc.py" />
+        <option value="$PROJECT_DIR$/../../../stock/py/monitor.py" />
       </list>
     </option>
   </component>
@@ -501,20 +501,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../../../stock/py/monitor.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="512" column="49" selection-start="15639" selection-end="15639" vertical-scroll-proportion="0.51459855" vertical-offset="9218" max-vertical-offset="9937">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../../stock/py/stock_infoc.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="1274" column="55" selection-start="40775" selection-end="40780" vertical-scroll-proportion="-2.1551094" vertical-offset="25159" max-vertical-offset="26163">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../../../stock/py/stock_infoa.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="441" column="4" selection-start="13301" selection-end="13301" vertical-scroll-proportion="-4.462715" vertical-offset="5070" max-vertical-offset="26600">
@@ -523,6 +509,27 @@
             <element signature="e#8906#9202#0" expanded="false" />
             <element signature="e#9239#13291#0" expanded="false" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../../stock/py/monitor_list">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="548">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../../stock/py/stock_infoc.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="1272" column="0" selection-start="40644" selection-end="40644" vertical-scroll-proportion="0.62332696" vertical-offset="23614" max-vertical-offset="26163">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../../stock/py/monitor.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="188" column="43" selection-start="5856" selection-end="5863" vertical-scroll-proportion="-3.7846715" vertical-offset="5418" max-vertical-offset="6023">
+          <folding />
         </state>
       </provider>
     </entry>
