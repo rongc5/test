@@ -398,7 +398,7 @@ class CurlHTTPFetcher(object):
                     if data.tell() > 1024*MAX_RESPONSE_KB:
                         return 0
                     else:
-                        #print 'hello', data.getvalue().decode('gbk')
+                        print 'hello', data.getvalue().decode('gbk')
                         return data.write(chunk)
 
                 response_header_data = cStringIO.StringIO()
@@ -439,7 +439,7 @@ class CurlHTTPFetcher(object):
             c.close()
 
 #成交明细
-def get_stockid_detail(date, id):
+def get_stockid_detail(date, id, deal_dic):
     url = 'http://market.finance.sina.com.cn/downxls.php?date=%s&symbol=%s' % (date, id)
     #print url
     header = {}
@@ -453,7 +453,6 @@ def get_stockid_detail(date, id):
     curl =  CurlHTTPFetcher()
 
     res = {}
-    deal_dic = {}
     try:
         res = curl.fetch(url, None, header)
     except BaseException, e:
@@ -464,10 +463,26 @@ def get_stockid_detail(date, id):
         user_agent_cookie[cookie_key] = res['head']['set-cookie'].split(';')[0]
         #print user_agent_cookie[cookie_key]
 
-    deal_dic['total_vol'] = 0
-    deal_dic['total_force'] = 0
-    deal_dic['min_price'] = 0
-    deal_dic['high_price'] = 0
+    if not deal_dic.has_key('vol_1'):
+        deal_dic['vol_1'] = []
+        deal_dic['vol_2'] = []
+        deal_dic['vol_3'] = []
+        deal_dic['vol_4'] = []
+        deal_dic['ratio_vol_1'] = []
+        deal_dic['ratio_vol_2'] = []
+        deal_dic['ratio_vol_3'] = []
+        deal_dic['ratio_vol_4'] = []
+
+
+    stockdict = {}
+    stockdict['vol_1'] = 0
+    stockdict['vol_2'] = 0
+    stockdict['vol_3'] = 0
+    stockdict['vol_4'] = 0
+    stockdict['total_vol'] = 0
+    stockdict['min_price'] = 0
+    stockdict['high_price'] = 0
+
     if res.has_key('body') and res['body'].strip():
         try:
             items = res['body'].split('\n')
@@ -477,16 +492,15 @@ def get_stockid_detail(date, id):
                     if not subitems[3].isdigit():
                         continue
                     vol = int(subitems[3])
-                    force = int(subitems[4])
-                    deal_dic['total_vol'] += vol
-                    deal_dic['total_force'] += force
+                    stockdict['total_vol'] += vol
 
                     if float(subitems[1]) < deal_dic['min_price']:
-                        deal_dic['min_price'] = float(subitems[1])
+                        stockdict['min_price'] = float(subitems[1])
 
                     if float(subitems[1]) > deal_dic['high_price']:
-                        deal_dic['high_price'] = float(subitems[1])
+                        stockdict['high_price'] = float(subitems[1])
 
+                    flag = 1
                     if u'买盘' in  subitems[5].decode('gbk'):
                         flag = 1
                     elif u'卖盘' in subitems[5].decode('gbk'):
@@ -495,78 +509,66 @@ def get_stockid_detail(date, id):
                         continue
 
                     if vol < 100:
-                        if not deal_dic.has_key('vol_0'):
-                            deal_dic['vol_0'] = 0
-                            deal_dic['force_0'] = 0
-
-                        deal_dic['vol_0'] += vol * flag
-                        deal_dic['force_0'] += force * flag
+                        stockdict['vol_0'] += vol * flag
 
                     if vol >= 100:
-                        if not deal_dic.has_key('vol_1'):
-                            deal_dic['vol_1'] = 0
-                            deal_dic['force_1'] = 0
-
-                        deal_dic['vol_1'] += vol * flag
-                        deal_dic['force_1'] += force * flag
-
+                        stockdict['vol_1'] += vol * flag
 
                     if vol >= 200:
-                        if not deal_dic.has_key('vol_2'):
-                            deal_dic['vol_2'] = 0
-                            deal_dic['force_2'] = 0
-
-                        deal_dic['vol_2'] += vol * flag
-                        deal_dic['force_2'] += force * flag
+                        stockdict['vol_2'] += vol * flag
 
                     if vol >= 500:
-                        if not deal_dic.has_key('vol_3'):
-                            deal_dic['vol_3'] = 0
-                            deal_dic['force_3'] = 0
-
-                        deal_dic['vol_2'] += vol * flag
-                        deal_dic['force_2'] += force * flag
+                        stockdict['vol_3'] += vol * flag
 
                     if vol >= 1000:
-                        if not deal_dic.has_key('vol_4'):
-                            deal_dic['vol_4'] = 0
-                            deal_dic['force_4'] = 0
+                        stockdict['vol_4'] += vol * flag
 
-                        deal_dic['vol_4'] += vol * flag
-                        deal_dic['force_4'] += force * flag
+            stockdict['total_force'] = stockdict['total_force'] * 1.0/10000
 
-            deal_dic['total_force'] = deal_dic['total_force'] * 1.0/10000
+            if stockdict.has_key('vol_0'):
+                stockdict['ratio_vol_0'] = stockdict['vol_0'] *1.0 / stockdict['total_vol']
 
-            if deal_dic.has_key('force_0'):
-                deal_dic['force_0'] = deal_dic['force_0'] * 1.0 / 10000
-                deal_dic['ratio_force_0'] = deal_dic['force_0'] / deal_dic['total_force']
-                deal_dic['ratio_vol_0'] = deal_dic['vol_0'] *1.0 / deal_dic['total_vol']
+            if stockdict.has_key('vol_1'):
+                stockdict['ratio_vol_1'] = stockdict['vol_1'] *1.0 / stockdict['total_vol']
 
-            if deal_dic.has_key('force_1'):
-                deal_dic['force_1'] = deal_dic['force_1'] * 1.0 / 10000
-                deal_dic['ratio_force_1'] = deal_dic['force_1'] / deal_dic['total_force']
-                deal_dic['ratio_vol_1'] = deal_dic['vol_1'] *1.0 / deal_dic['total_vol']
+            if stockdict.has_key('vol_2'):
+                stockdict['ratio_vol_2'] = stockdict['vol_2'] *1.0 / stockdict['total_vol']
 
-            if deal_dic.has_key('force_2'):
-                deal_dic['force_2'] = deal_dic['force_2'] * 1.0 / 10000
-                deal_dic['ratio_force_2'] = deal_dic['force_2'] / deal_dic['total_force']
-                deal_dic['ratio_vol_2'] = deal_dic['vol_2'] *1.0 / deal_dic['total_vol']
+            if stockdict.has_key('vol_3'):
+                stockdict['ratio_vol_3'] = stockdict['vol_3'] *1.0 / stockdict['total_vol']
 
-            if deal_dic.has_key('force_3'):
-                deal_dic['force_3'] = deal_dic['force_3'] * 1.0 / 10000
-                deal_dic['ratio_force_3'] = deal_dic['force_3'] / deal_dic['total_force']
-                deal_dic['ratio_vol_3'] = deal_dic['vol_3'] *1.0 / deal_dic['total_vol']
+            if stockdict.has_key('vol_4'):
+                stockdict['ratio_vol_4'] = stockdict['vol_4'] *1.0 / stockdict['total_vol']
 
-            if deal_dic.has_key('force_4'):
-                deal_dic['force_4'] = deal_dic['force_4'] * 1.0 / 10000
-                deal_dic['ratio_force_4'] = deal_dic['force_4'] / deal_dic['total_force']
-                deal_dic['ratio_vol_4'] = deal_dic['vol_4'] *1.0 / deal_dic['total_vol']
+
+            if len(deal_dic['vol_1']) >= 10:
+                deal_dic['vol_1'].pop(0)
+                deal_dic['vol_2'].pop(0)
+                deal_dic['vol_3'].pop(0)
+                deal_dic['vol_4'].pop(0)
+                deal_dic['ratio_vol_1'].pop(0)
+                deal_dic['ratio_vol_2'].pop(0)
+                deal_dic['ratio_vol_3'].pop(0)
+                deal_dic['ratio_vol_4'].pop(0)
+
+            if len(deal_dic['vol_1']) >=1 and abs(deal_dic['vol_1'][-1] - stockdict['vol_1']) < 400:
+                return stockdict
+
+            deal_dic['vol_1'].append(stockdict['vol_1'])
+            deal_dic['vol_2'].append(stockdict['vol_2'])
+            deal_dic['vol_3'].append(stockdict['vol_3'])
+            deal_dic['vol_4'].append(stockdict['vol_4'])
+
+            deal_dic['ratio_vol_1'].append(stockdict['ratio_vol_1'])
+            deal_dic['ratio_vol_2'].append(stockdict['ratio_vol_2'])
+            deal_dic['ratio_vol_3'].append(stockdict['ratio_vol_3'])
+            deal_dic['ratio_vol_4'].append(stockdict['ratio_vol_4'])
 
         except BaseException, e:
             print e.message
 
         #print deal_dic
-        return deal_dic
+        return stockdict
         #print res['body']
 
 #查看每股财务指标
@@ -1319,11 +1321,11 @@ def remove_from_banlist(id_dic, ban_list):
     return id_dic
 
 #增长 为true, 下降为false
-def get_data_direction(arr, key):
+def get_data_direction(arr):
     if len(arr) < 2 :
         return False
 
-    if arr[-1][key] > arr[0][key]:
+    if arr[-1] > arr[0]:
         return True
     else:
         return False
@@ -1476,7 +1478,7 @@ def do_search_short():
         for key in remove_ley:
             id_dic.pop(key)
 
-        mtime = time.ctime(os.path.getmtime('stocka_cfg'))
+        mtime = time.ctime(os.path.getmtime('stock_cfg'))
         if cfg_mtime != mtime:
             cfg_mtime = mtime
             tmp_components = load_config()
@@ -1548,76 +1550,72 @@ def do_search_short():
                 if id_dic[key]['end'] < id_dic[key]['high'] and id_dic[key]['end'] != id_dic[key]['start']:
                     id_dic[key]['up_pointer'] = abs(id_dic[key]['end'] - id_dic[key]['high']) *1.0/abs(id_dic[key]['end'] - id_dic[key]['start'])
 
-            deal_dic = {}
-            deal_dic = get_stockid_detail(toady, key)
-            if not deal_dic.has_key('total_vol') or deal_dic['total_vol'] == 0:
-                continue
 
             if not id_dic[key].has_key(toady):
-                id_dic[key][day.today] = []
+                id_dic[key][toady] = {}
 
-            if len(id_dic[key][toady]) >= 10:
-                id_dic[key][toady].pop(0)
-            id_dic[key][toady].append(deal_dic)
+            get_stockid_detail(toady, key, id_dic[key][toady])
+            if not id_dic[key][toady].has_key('total_vol') or id_dic[key][toady]['total_vol'] == 0:
+                continue
 
             if query_components.has_key('vol_1'):
-                if not get_data_direction(id_dic[key][toady], 'vol_1'):
+                if not get_data_direction(id_dic[key][toady]['vol_1']):
                     search_remove.append(key)
                     continue
 
             if query_components.has_key('vol_2'):
-                if not get_data_direction(id_dic[key][toady], 'vol_2'):
+                if not get_data_direction(id_dic[key][toady]['vol_2']):
                     search_remove.append(key)
                     continue
 
             if query_components.has_key('vol_3'):
-                if not get_data_direction(id_dic[key][toady], 'vol_3'):
+                if not get_data_direction(id_dic[key][toady]['vol_3']):
                     search_remove.append(key)
                     continue
 
             if query_components.has_key('vol_4'):
-                if not get_data_direction(id_dic[key][toady], 'vol_4'):
+                if not get_data_direction(id_dic[key][toady]['vol_4']):
                     search_remove.append(key)
                     continue
 
             if query_components.has_key('vol_1_ge'):
-                if id_dic[key][toady][-1]['vol_1']< query_components['vol_1_ge']:
+                if id_dic[key][toady]['vol_1'][-1]< query_components['vol_1_ge']:
                     search_remove.append(key)
                     continue
 
             if query_components.has_key('vol_2_ge'):
-                if id_dic[key][toady][-1]['vol_2'] < query_components['vol_2_ge']:
+                if id_dic[key][toady]['vol_2'][-1] < query_components['vol_2_ge']:
                     search_remove.append(key)
                     continue
 
             if query_components.has_key('vol_3_ge'):
-                if id_dic[key][toady][-1]['vol_3'] < query_components['vol_3_ge']:
+                if id_dic[key][toady]['vol_3'][-1] < query_components['vol_3_ge']:
                     search_remove.append(key)
                     continue
 
             if query_components.has_key('vol_4_ge'):
-                if id_dic[key][toady][-1]['vol_4'] < query_components['vol_4_ge']:
+                if id_dic[key][toady]['vol_4'][-1] < query_components['vol_4_ge']:
                     search_remove.append(key)
                     continue
 
             if query_components.has_key('ratio_vol_1_ge'):
-                if id_dic[key][toady][-1]['ratio_vol_1'] < query_components['ratio_vol_1_ge']:
+                if id_dic[key][toady]['ratio_vol_1'][-1] < query_components['ratio_vol_1_ge']:
                     search_remove.append(key)
                     continue
 
 
             if query_components.has_key('ratio_vol_2_ge'):
-                if id_dic[key][toady][-1]['ratio_vol_2'] < query_components['ratio_vol_2_ge']:
+                if id_dic[key][toady]['ratio_vol_2'][-1] < query_components['ratio_vol_2_ge']:
                     search_remove.append(key)
                     continue
 
             if query_components.has_key('ratio_vol_3_ge'):
-                if id_dic[key][toady][-1]['ratio_vol_3'] < query_components['ratio_vol_3_ge']:
+                if id_dic[key][toady]['ratio_vol_3'][-1] < query_components['ratio_vol_3_ge']:
                     search_remove.append(key)
                     continue
 
             if query_components.has_key('ratio_vol_4_ge'):
-                if id_dic[key][toady][-1]['ratio_vol_4'] < query_components['ratio_vol_4_ge']:
+                if id_dic[key][toady]['ratio_vol_4'][-1] < query_components['ratio_vol_4_ge']:
                     search_remove.append(key)
                     continue
 

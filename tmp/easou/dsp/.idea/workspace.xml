@@ -28,10 +28,32 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="re_test_case.py" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="re_test_case.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/../../../python/re_test_case.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="320" column="7" selection-start="8338" selection-end="8338" vertical-scroll-proportion="0.9306569" vertical-offset="5475" max-vertical-offset="13376">
+            <state line="320" column="7" selection-start="8338" selection-end="8338" vertical-scroll-proportion="0.0" vertical-offset="5475" max-vertical-offset="13376">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="stock_infoa.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/../../../stock/py/stock_infoa.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="1566" column="59" selection-start="49790" selection-end="49795" vertical-scroll-proportion="0.0" vertical-offset="24944" max-vertical-offset="26562">
+              <folding>
+                <element signature="e#2151#6115#0" expanded="false" />
+                <element signature="e#8906#9202#0" expanded="false" />
+                <element signature="e#9239#13290#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="stock_infoa______.py" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/../../../stock/py/stock_infoa______.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="31977">
               <folding />
             </state>
           </provider>
@@ -59,10 +81,10 @@
         <option value="$PROJECT_DIR$/../../../python/fetchers.py" />
         <option value="$PROJECT_DIR$/../../../python/test6.py" />
         <option value="$PROJECT_DIR$/../../../stock/py/stocka_cfg" />
-        <option value="$PROJECT_DIR$/../../../stock/py/stock_infoa.py" />
         <option value="$PROJECT_DIR$/../../../python/re_test_case.py" />
         <option value="$PROJECT_DIR$/../../../stock/py/stock_infoc.py" />
         <option value="$PROJECT_DIR$/../../../stock/py/monitor.py" />
+        <option value="$PROJECT_DIR$/../../../stock/py/stock_infoa.py" />
       </list>
     </option>
   </component>
@@ -481,7 +503,9 @@
     </entry>
     <entry file="file://$USER_HOME$/.PyCharm30/system/python_stubs/1494736245/exceptions.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="79" column="24" selection-start="2392" selection-end="2392" vertical-scroll-proportion="0.33211678" vertical-offset="1319" max-vertical-offset="15257" />
+        <state line="79" column="24" selection-start="2392" selection-end="2392" vertical-scroll-proportion="0.33211678" vertical-offset="1319" max-vertical-offset="15257">
+          <folding />
+        </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/../../../python/remove_expired.py">
@@ -501,27 +525,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../../../stock/py/stock_infoa.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="441" column="4" selection-start="13301" selection-end="13301" vertical-scroll-proportion="-4.462715" vertical-offset="5070" max-vertical-offset="26600">
-          <folding>
-            <element signature="e#2151#6115#0" expanded="false" />
-            <element signature="e#8906#9202#0" expanded="false" />
-            <element signature="e#9239#13291#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../../../stock/py/monitor_list">
       <provider selected="true" editor-type-id="text-editor">
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="548">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../../stock/py/stock_infoc.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="1272" column="0" selection-start="40644" selection-end="40644" vertical-scroll-proportion="0.62332696" vertical-offset="23614" max-vertical-offset="26163">
           <folding />
         </state>
       </provider>
@@ -533,9 +539,34 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/../../../stock/py/stock_infoc.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="510" column="48" selection-start="15022" selection-end="15022" vertical-scroll-proportion="0.7481752" vertical-offset="9052" max-vertical-offset="26163">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/../../../python/re_test_case.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="320" column="7" selection-start="8338" selection-end="8338" vertical-scroll-proportion="0.9306569" vertical-offset="5475" max-vertical-offset="13376">
+        <state line="320" column="7" selection-start="8338" selection-end="8338" vertical-scroll-proportion="0.0" vertical-offset="5475" max-vertical-offset="13376">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../../stock/py/stock_infoa.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="1566" column="59" selection-start="49790" selection-end="49795" vertical-scroll-proportion="0.0" vertical-offset="24944" max-vertical-offset="26562">
+          <folding>
+            <element signature="e#2151#6115#0" expanded="false" />
+            <element signature="e#8906#9202#0" expanded="false" />
+            <element signature="e#9239#13290#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../../stock/py/stock_infoa______.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="31977">
           <folding />
         </state>
       </provider>
