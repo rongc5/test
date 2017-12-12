@@ -1168,7 +1168,7 @@ def do_search_short():
     remove_ley = []
     monitor_mtime = 0
     cfg_mtime = 0
-    TIME_DIFF = 20
+    TIME_DIFF = 10
     while 1:
         mtime = time.ctime(os.path.getmtime('monitor_list'))
         if monitor_mtime != mtime:
@@ -1196,7 +1196,7 @@ def do_search_short():
         search_remove = []
         print 'after remove_ley', len(id_dic)
         for key in id_dic:
-            time.sleep(0.01)
+            time.sleep(0.03)
 
             #if not id_dic[key].has_key('next_time'):
             #    id_dic[key]['next_time'] = 0

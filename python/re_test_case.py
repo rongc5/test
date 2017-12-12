@@ -2,673 +2,713 @@
 #encoding=utf-8
 
 
-import json
-import time
-import pycurl
-import cStringIO
-import gzip
-import unicodedata
-import os
+import urllib2
+import json, os
+import subprocess
 import sys
-import random
+import time
+import hashlib
 
-from time import strftime, localtime
-from datetime import timedelta, date
-import calendar
+__author__ = 'mingz'
 
-__author__ = 'rong'
+BASE_URL = 'http://10.26.24.86:6011/recomm.json?recommType'
+REDIS_CLI = 'redis-3.0.6/redis-cli'
+REDIS1_NS = '10.26.25.15:6645'
+REDIS1_AUTH = 'Easou_RDS2017'
+REDIS2_NS='10.26.24.66:7000'
+RECOMM_APPID_EASOU2  =  20001
+RECOMM_APPID_EASOU = 10001
 
-user_agent_list = [
-        "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 "
-        "(KHTML, like Gecko) Chrome/60.0.3112.113 Safari/537.36",
-        "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.1 "
-        "(KHTML, like Gecko) Chrome/22.0.1207.1 Safari/537.1",
-        "Mozilla/5.0 (X11; CrOS i686 2268.111.0) AppleWebKit/536.11 "
-        "(KHTML, like Gecko) Chrome/20.0.1132.57 Safari/536.11",
-        "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/536.6 "
-        "(KHTML, like Gecko) Chrome/20.0.1092.0 Safari/536.6",
-        "Mozilla/5.0 (Windows NT 6.2) AppleWebKit/536.6 "
-        "(KHTML, like Gecko) Chrome/20.0.1090.0 Safari/536.6",
-        "Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.1 "
-        "(KHTML, like Gecko) Chrome/19.77.34.5 Safari/537.1",
-        "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/536.5 "
-        "(KHTML, like Gecko) Chrome/19.0.1084.9 Safari/536.5",
-        "Mozilla/5.0 (Windows NT 6.0) AppleWebKit/536.5 "
-        "(KHTML, like Gecko) Chrome/19.0.1084.36 Safari/536.5",
-        "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/536.3 "
-        "(KHTML, like Gecko) Chrome/19.0.1063.0 Safari/536.3",
-        "Mozilla/5.0 (Windows NT 5.1) AppleWebKit/536.3 "
-        "(KHTML, like Gecko) Chrome/19.0.1063.0 Safari/536.3",
-        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_0) AppleWebKit/536.3 "
-        "(KHTML, like Gecko) Chrome/19.0.1063.0 Safari/536.3",
-        "Mozilla/5.0 (Windows NT 6.2) AppleWebKit/536.3 "
-        "(KHTML, like Gecko) Chrome/19.0.1062.0 Safari/536.3",
-        "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/536.3 "
-        "(KHTML, like Gecko) Chrome/19.0.1062.0 Safari/536.3",
-        "Mozilla/5.0 (Windows NT 6.2) AppleWebKit/536.3 "
-        "(KHTML, like Gecko) Chrome/19.0.1061.1 Safari/536.3"]
+RECOMM_ROOT_INTERVAL_TIME = 86400 * 3
 
+RECOMM_UCF_MASK_FLAG = 127
+RECOMM_UCF_ITEMINFO_NUM = 36
 
-user_agent_dic = {}
-user_agent_cookie = {}
-MAX_RESPONSE_KB = 10*1024
+test_list = [{'uid':'48808231', 'reqGid':''}]
 
-class Day():
-    def __init__(self):
-        self.year = strftime("%Y", localtime())
-        self.mon = strftime("%m", localtime())
-        self.day = strftime("%d", localtime())
-        self.hour = strftime("%H", localtime())
-        self.min = strftime("%M", localtime())
-        self.sec = strftime("%S", localtime())
+#获取用户类型
+#1 免费
+#2 准付费
+#3 付费
+#4 VIP付费
+def get_user_type(search_key_dic):
+    user_type = get_data_redis2(search_key_dic['cid1_key'], 'user_type')
 
-    def today(self):
-     '''''
-     get today,date format="YYYY-MM-DD"
-     '''''
-     return date.today()
+    return user_type
+
+def get_data_redis1(key, field):
+    ip = REDIS1_NS.split(':')[0]
+    port = REDIS1_NS.split(':')[1]
+    cmd = [REDIS_CLI, '--raw', '-h', ip, '-p', port, '-a', REDIS1_AUTH, '-c', 'hget', key, field]
+    res_str = subprocess.Popen(cmd, stdout=subprocess.PIPE).communicate()[0]
+    res_str = res_str.split('\n')[0]
+
+    return res_str
+
+def get_data_redis2(key, field):
+    ip = REDIS2_NS.split(':')[0]
+    port = REDIS2_NS.split(':')[1]
+    cmd = [REDIS_CLI, '--raw', '-h', ip, '-p', port, '-c', 'hget', key, field]
+    res_str = subprocess.Popen(cmd, stdout=subprocess.PIPE).communicate()[0]
+    res_str = res_str.split('\n')[0]
+    return res_str
 
 
-    def todaystr(self):
-     '''
-     get date string, date format="YYYYMMDD"
-     '''
-     return self.year + self.mon + self.day
+def get_iteminfo(key):
+    ip = REDIS1_NS.split(':')[0]
+    port = REDIS1_NS.split(':')[1]
+    cmd = [REDIS_CLI, '--raw', '-h', ip, '-p', port, '-a', REDIS1_AUTH, '-c', 'hgetall', key]
+    res_str = subprocess.Popen(cmd, stdout=subprocess.PIPE).communicate()[0]
+    res_str = res_str.split('\n')[0]
 
-
-    def datetime(self):
-     '''''
-     get datetime,format="YYYY-MM-DD HH:MM:SS"
-     '''
-     return strftime("%Y-%m-%d %H:%M:%S", localtime())
-
-
-    def datetimestr(self):
-     '''''
-     get datetime string
-     date format="YYYYMMDDHHMMSS"
-     '''
-     return self.year + self.mon + self.day + self.hour + self.min + self.sec
-
-
-    def get_day_of_day(self, n=0):
-     '''''
-     if n>=0,date is larger than today
-     if n<0,date is less than today
-     date format = "YYYY-MM-DD"
-     '''
-     if (n < 0):
-      n = abs(n)
-      return date.today() - timedelta(days=n)
-     else:
-      return date.today() + timedelta(days=n)
-
-
-    def get_days_of_month(self, year, mon):
-     '''''
-     get days of month
-     '''
-     return calendar.monthrange(year, mon)[1]
-
-
-    def get_firstday_of_month(self, year, mon):
-     '''''
-     get the first day of month
-     date format = "YYYY-MM-DD"
-     '''
-     days = "01"
-     if (int(mon) < 10):
-      mon = "0" + str(int(mon))
-     arr = (year, mon, days)
-     return "-".join("%s" % i for i in arr)
-
-
-    def get_lastday_of_month(self, year, mon):
-     '''''
-     get the last day of month
-     date format = "YYYY-MM-DD"
-     '''
-     days = calendar.monthrange(year, mon)[1]
-     mon = self.addzero(mon)
-     arr = (year, mon, days)
-     return "-".join("%s" % i for i in arr)
-
-
-    def get_firstday_month(self, n=0):
-     '''''
-     get the first day of month from today
-     n is how many months
-     '''
-     (y, m, d) = self.getyearandmonth(n)
-     d = "01"
-     arr = (y, m, d)
-     return "-".join("%s" % i for i in arr)
-
-
-    def get_lastday_month(self, n=0):
-     '''''
-     get the last day of month from today
-     n is how many months
-     '''
-     return "-".join("%s" % i for i in self.getyearandmonth(n))
-
-
-    def getyearandmonth(self, n=0):
-     '''''
-     get the year,month,days from today
-     befor or after n months
-     '''
-     thisyear = int(self.year)
-     thismon = int(self.mon)
-     totalmon = thismon + n
-     if (n >= 0):
-      if (totalmon <= 12):
-       days = str(self.get_days_of_month(thisyear, totalmon))
-       totalmon = self.addzero(totalmon)
-       return (self.year, totalmon, days)
-      else:
-       i = totalmon / 12
-       j = totalmon % 12
-       if (j == 0):
-        i -= 1
-        j = 12
-       thisyear += i
-       days = str(self.get_days_of_month(thisyear, j))
-       j = self.addzero(j)
-       return (str(thisyear), str(j), days)
-     else:
-      if ((totalmon > 0) and (totalmon < 12)):
-       days = str(self.get_days_of_month(thisyear, totalmon))
-       totalmon = self.addzero(totalmon)
-       return (self.year, totalmon, days)
-      else:
-       i = totalmon / 12
-       j = totalmon % 12
-       if (j == 0):
-        i -= 1
-        j = 12
-       thisyear += i
-       days = str(self.get_days_of_month(thisyear, j))
-       j = self.addzero(j)
-       return (str(thisyear), str(j), days)
-
-
-    def addzero(self, n):
-     '''''
-     add 0 before 0-9
-     return 01-09
-     '''
-     nabs = abs(int(n))
-     if (nabs < 10):
-      return "0" + str(nabs)
-     else:
-      return nabs
-
-
-    def get_today_month(self,n=0):
-     '''''
-     获取当前日期前后N月的日期
-     if n>0, 获取当前日期前N月的日期
-     if n<0, 获取当前日期后N月的日期
-     date format = "YYYY-MM-DD"
-     '''
-     (y, m, d) = self.getyearandmonth(n)
-     arr = (y, m, d)
-     if (int(self.day) < int(d)):
-      arr = (y, m, self.day)
-     return "-".join("%s" % i for i in arr)
-
-def log_write(filename, str):
-    file = open(filename, 'a')
-    file.write(str)
-    file.write('\n')
-    file.flush()
-    file.close()
-
-
-#主要是针对chunked 模式，没办法搞
-def curl_cmd_get(url):
-    cmd = "curl '%s'" % (url)
-    res = os.popen(cmd).read()
-    return res
-
-#1.0 版本不必支持chunked,
-def httpGetContent(url, req_header=None, version = '1.1'):
-
-    #print "==>", req_header, url, "<=="
-
-    buf = cStringIO.StringIO()
-    response_header = cStringIO.StringIO()
-    c = pycurl.Curl()
-    c.setopt(c.URL, url)
-    c.setopt(c.WRITEFUNCTION, buf.write)
-    c.setopt(c.CONNECTTIMEOUT, 100)
-    c.setopt(c.TIMEOUT, 300)
-    c.setopt(pycurl.MAXREDIRS, 5)
-    c.setopt(pycurl.FOLLOWLOCATION, 1)
-
-    if req_header is None:
-        req_header = []
-
-    flag = 0
-    for key in req_header:
-        if  'User-Agent:' in key or  'user-agent:' in key:
-            flag = 1
+    items = res_str.split('\t')
+    length = len(items)
+    i = 0
+    res_dic = {}
+    while True:
+        if i + 1>= length:
             break
 
-    if not flag:
-        print 'no User-Agent', req_header, url, sys._getframe().f_lineno
-        return
+        res_dic[items[i]] = items[i + 1]
+        i = i + 2
 
-    #if not flag:
-    #    c.setopt(pycurl.USERAGENT, 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.113 Safari/537.36')
+    return res_dic
 
-    c.setopt(pycurl.TCP_NODELAY, 1)
-    if '1.1' in version:
-        add_headers = ['Accept:text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
-             'Connection:keep-alive','Accept-Language:zh-CN,zh;q=0.8,en;q=0.6','Cache-Control:max-age=0',
-             'DNT:1','Upgrade-Insecure-Requests:1','Accept-Charset: utf-8']
-        c.setopt(pycurl.ENCODING, 'gzip, deflate')
-    else:
-        add_headers = ['Accept:text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
-             'Connection:close','Accept-Language:zh-CN,zh;q=0.8,en;q=0.6','Cache-Control:max-age=0']
-        c.setopt(pycurl.HTTP_VERSION, pycurl.CURL_HTTP_VERSION_1_0)
-    if len(req_header):
-        add_headers.extend(req_header)
+#1 包月前期
+#2 包月中期
+#3 包月末期
+#4 包月结束
+#5 流失包月用户
+def get_baoyue(search_key_dic):
+    baoyue = get_data_redis2(search_key_dic['cid1_key'], 'baoyue')
 
-    c.setopt(c.HTTPHEADER, add_headers)
-    c.setopt(pycurl.HTTPGET, 1)
-    c.setopt(c.HEADERFUNCTION, response_header.write)
-    res = {}
-
-    try:
-        c.perform()
-        str_head = '%s' % (response_header.getvalue())
-        str_body = '%s' % (buf.getvalue())
-        res['head'] = str_head
-        res['body'] = str_body
-        #print str_head, str_body
-    except pycurl.error, error:
-        errno, errstr = error
-        print 'An error occurred: ', errstr, url
-    c.close()
-    buf.close()
-    response_header.close()
-    #print res
-    return res
+    return baoyue
 
 
-def GzipStream(streams):
-    "用于处理容启动gzip压缩"
-    if streams:
-        data = cStringIO.StringIO(streams)
-        g = gzip.GzipFile('', 'rb', 9, data)
-        return g.read()
+#历史书架
+#uid1_key u_48808231
+#cid1_key cu_54159287
+def get_history_user_cart(search_key_dic):
+    res_str = get_data_redis2(search_key_dic['uid1_key'], 'cart_item')
 
-#查看每股财务指标
-def get_stockid_mgzb(id):
+    res_list = []
+    if res_str.strip():
+        res_list = res_str.split('\t')
+    if not len(res_list):
+        res_str = get_data_redis2(search_key_dic['cid1_key'], 'cart_item')
+        if res_str.strip():
+            res_list = res_str.split('\t')
 
-    url = 'http://comdata.finance.gtimg.cn/data/mgzb/%s' % (id)
-    refer = 'http://stock.finance.qq.com/corp1/cwfx.html?mgzb-%s' %(id)
+    return res_list
 
-    i = 0
-    imax = 3
-    id_dic = {}
-    while 1:
-        try:
-            if i + 1 < imax:
-                req_header = []
-                req_header.extend(['Referer: %s' % (refer)])
-                index = random.randint(0, len(user_agent_list) -1)
-                req_header.extend(['User-Agent: %s' % (user_agent_list[index])])
 
-                res = httpGetContent(url, req_header)
-                value = res['body'].decode("gbk").split('=')[1].strip(';\r\n')
-            else:
-                res = curl_cmd_get(url)
-                value = res.decode("gbk").split('=')[1].strip(';\r\n')
+def recomm_ucf_pull_cartitem(key, field):
+    res_str = get_data_redis2(key, field)
+    res_list = []
+    if res_str.strip():
+        res_list = res_str.split('\t')
 
-            id_dic= json.loads(value)
+    return res_list
+
+
+#实时书架
+#tid1_key t_54159287
+def get_current_user_cart(search_key_dic):
+    res_str = get_data_redis2(search_key_dic['tid1_key'], 'cart_item')
+
+    res_list = []
+    if res_str.strip():
+        res_list = res_str.split('\t')
+
+    i = 0;
+    length = len(res_list)
+    valid_time = int(time.time()) - RECOMM_ROOT_INTERVAL_TIME
+    user_cart = []
+    while True:
+        if i + 1 >= length:
             break
-        except Exception,e:
-            #print url, value, e
-            i = i+1
-            if i >= imax:
-                log_write('errcode', id)
-                break
-            time.sleep(random.randint(1, 3))
 
-    if i > imax:
-        return  {}
+        if res_list[i+1] < valid_time:
+            continue
 
-    return id_dic['data']['mgzb']
+        user_cart.append(res_list[i])
+        i = i + 2
 
-#查看每股盈利能力
-def get_stockid_ylnl(id):
+    return user_cart
 
-    url = 'http://comdata.finance.gtimg.cn/data/ylnl/%s' % (id)
-    refer = 'http://stock.finance.qq.com/corp1/cwfx.html?ylnl-%s' %(id)
+#tid3_key t_0EFF2921445097DC49E46156D5F6A18C
+#付费协同  field  ucf_knn3
+def get_current_ucf(search_key_dic, field='ucf_knn3'):
+    res_str = get_data_redis2(search_key_dic['tid1_key'], field)
+    res_list = []
+    if res_str.strip():
+        res_list = res_str.split('\t')
 
-    i = 0
-    imax = 3
-    id_dic = {}
-    while 1:
-        try:
-            if i + 1 < imax:
-                req_header = []
-                req_header.extend(['Referer: %s' % (refer)])
-                index = random.randint(0, len(user_agent_list) -1)
-                req_header.extend(['User-Agent: %s' % (user_agent_list[index])])
+    if not len(res_list):
+        res_str = get_data_redis2(search_key_dic['tid3_key'], field)
+        if res_str.strip():
+            res_list = res_str.split('\t')
 
-                res = httpGetContent(url, req_header)
-                value = res['body'].decode("gbk").split('=')[1].strip(';\r\n')
-            else:
-                res = curl_cmd_get(url)
-                value = res.decode("gbk").split('=')[1].strip(';\r\n')
+    return res_list
 
-            id_dic= json.loads(value)
-            break
-        except Exception,e:
-            #print url, value, e
-            i = i+1
-            if i >= imax:
-                log_write('errcode', id)
-                break
-            time.sleep(random.randint(1, 3))
+def recomm_ucf_select_category(items_dic):
 
-    if i > imax:
-        return  {}
+    key_array = {}
+    for key in items_dic:
+        if not items_dic[key].has_key('category1_sign') or not items_dic[key]['category1_sign'].strip():
+            continue
 
-    return id_dic['data']['ylnl']
-
-#查看每股成长能力
-def get_stockid_cznl(id):
-
-    url = 'http://comdata.finance.gtimg.cn/data/cznl/%s' % (id)
-    refer = 'http://stock.finance.qq.com/corp1/cwfx.html?cznl-%s' %(id)
-
-    i = 0
-    imax = 3
-    id_dic = {}
-    while 1:
-        try:
-            if i + 1 < imax:
-                req_header = []
-                req_header.extend(['Referer: %s' % (refer)])
-                index = random.randint(0, len(user_agent_list) -1)
-                req_header.extend(['User-Agent: %s' % (user_agent_list[index])])
-                res = httpGetContent(url, req_header)
-                value = res['body'].decode("gbk").split('=')[1].strip(';\r\n')
-            else:
-                res = curl_cmd_get(url)
-                value = res.decode("gbk").split('=')[1].strip(';\r\n')
-
-            id_dic= json.loads(value)
-            break
-        except Exception,e:
-            #print url, value, e
-            i = i+1
-            if i >= imax:
-                log_write('errcode', id)
-                break
-            time.sleep(random.randint(1, 3))
-
-    if i > imax:
-        return  {}
-
-    return id_dic['data']['cznl']
-
-def get_single_analysis(id, vol):
-    stockdict = {}
-    if int(vol) <= 0:
-        print vol, 'err'
-        return stockdict
-
-
-    url = 'http://stock.finance.qq.com/sstock/list/view/dadan.php?t=js&c=%s&max=400&p=1&opt=1&o=0' % (id)
-    refer = 'http://stockhtm.finance.qq.com/sstock/quotpage/dadan.htm?c=%s' % (id)
-
-    stocklist = []
-    i = 0
-    imax = 5
-    while 1:
-        try:
-            if i + 1 < imax:
-                req_header = []
-                req_header.extend(['Referer: %s' % (refer)])
-                index = random.randint(0, len(user_agent_list) -1)
-                req_header.extend(['User-Agent: %s' % (user_agent_list[index])])
-
-                res = httpGetContent(url, req_header)
-                value = res['body'].decode("gbk").split('=')[1].strip(';\r\n')
-            else:
-                res = curl_cmd_get(url)
-                value = res.decode("gbk").split('=')[1].strip(';\r\n')
-            stocklist = value.split(',')[1]
-            break
-        except Exception,e:
-            #print url, value, e
-            i = i+1
-            if i >= imax:
-                log_write('errcode', id)
-                break
-            time.sleep(random.randint(1, 3))
-
-    if i > imax:
-        return  {}
-
-    #print stocklist
-
-    stockdict['vol_1'] = 0
-    stockdict['vol_2'] = 0
-    stockdict['vol_3'] = 0
-    stockdict['vol_4'] = 0
-    items = stocklist.split('^')
-    for item in items:
-        subitems = item.split('~')
-        if len(subitems) >= 6:
-            if 's' in subitems[5] or 'S' in subitems[5]:
-                flag = -1
-            elif 'b' in subitems[5] or 'B' in subitems[5]:
-                flag = 1
-
-            if int(subitems[3]) >= 100:
-                stockdict['vol_1'] += int(subitems[3]) * flag
-
-            if int(subitems[3]) >= 200:
-                stockdict['vol_2'] += int(subitems[3]) * flag
-
-            if int(subitems[3]) >= 500:
-                stockdict['vol_3'] += int(subitems[3]) * flag
-
-            if int(subitems[3]) >= 1000:
-                stockdict['vol_4'] += int(subitems[3]) * flag
-
-    stockdict['ratio_vol_1'] = stockdict['vol_1'] *1.0 / vol
-    stockdict['ratio_vol_2'] = stockdict['vol_2'] *1.0 / vol
-    stockdict['ratio_vol_3'] = stockdict['vol_3'] *1.0 / vol
-    stockdict['ratio_vol_4'] = stockdict['vol_4'] *1.0 / vol
-
-    return stockdict
-
-
-def get_money_flow2(id):
-    url = 'https://gupiao.baidu.com/api/stocks/stockfunds?from=pc&os_ver=1&cuid=xxx&vv=100&format=json&stock_code=%s' % (id)
-    favicon = 'https://gupiao.baidu.com/favicon.ico'
-
-    tmp_dic = {}
-    i = 0
-    imax = 5
-    flag =0
-    index = 0
-    while 1:
-        try:
-            if i + 1 < imax:
-                req_header = []
-                index = random.randint(0, len(user_agent_list) -1)
-                req_header.extend(['User-Agent: %s' % (user_agent_list[index])])
-                if user_agent_cookie.has_key(index):
-                    req_header.extend(['Cookie: %s' % (user_agent_cookie[index])])
-                    flag = 1
-
-                #httpGetContent(favicon, ['Referer: %s' % (url), 'User-Agent: %s' % (user_agent_list[index])])
-                res = httpGetContent(url, req_header)
-                value = res.decode("gbk").strip(';\r\n')
-
-            else:
-                res['head'] = ''
-                res['body'] = curl_cmd_get(url)
-                value = res.decode("gbk").strip(';\r\n')
-            tmp_dic = json.loads(value)
-            if len(tmp_dic) >0:
-                break
-        except Exception,e:
-            #print url, value, e
-            if res.has_key('head'):
-                print res['head']
-
-            i = i+1
-            if i >= imax:
-                log_write('errcode', id)
-                break
-            time.sleep(random.randint(1, 3))
-
-    if i > imax:
-        return  {}
-
-    #print stocklist
-    #stockdict = {}
-    #if tmp_dic.has_key(''):
-    #    stockdict['main_force'] = float(stocklist[3])
-    #    stockdict['small_force'] = float(stocklist[7])
-
-    if res.has_key('head') and 'Set-Cookie:' in res['head']:
-        user_agent_cookie[index]  = res['head'].split('Set-Cookie:')[1].split(';')[0].strip()
-
-    if not flag:
-        req_header = []
-        req_header.extend(['Referer: %s' % (url)])
-        req_header.extend(['User-Agent: %s' % (user_agent_list[index])])
-        if user_agent_cookie.has_key(index):
-                res = req_header.extend(['Cookie: %s' % (user_agent_cookie[index])])
-        res = httpGetContent(favicon, req_header)
-        if res.has_key('head') and 'Set-Cookie:' in res['head']:
-            user_agent_cookie[index]  = res['head'].split('Set-Cookie:')[1].split(';')[0].strip()
-
-
-def get_money_flow(id):
-    url = 'http://qt.gtimg.cn/q=ff_%s' % (id)
-    refer = 'http://finance.qq.com/stock/sother/test_flow_stock_quotpage.htm'
-
-    favicon = 'http://qt.gtimg.cn/favicon.ico'
-
-    stocklist = []
-    i = 0
-    imax = 3
-    while 1:
-        try:
-            if i + 1 < imax:
-                index = random.randint(0, len(user_agent_list) -1)
-                req_header = []
-                req_header.extend(['Referer: %s' % (refer)])
-                req_header.extend(['User-Agent: %s' % (user_agent_list[index])])
-                if user_agent_dic.has_key(index):
-                    key = '%d_%s' % (index, id)
-                    req_header.extend(['If-None-Match: %s' % (user_agent_dic[key])])
-
-                #httpGetContent(favicon, ['Referer: %s' % (url), 'User-Agent: %s' % (user_agent_list[index])])
-                res = httpGetContent(url, req_header)
-                value = res['body'].decode("gbk").split('=')[1].strip(';\r\n')
-
-            else:
-                res['head'] = ''
-                res['body'] = curl_cmd_get(url)
-                value = res['body'].decode("gbk").split('=')[1].strip(';\r\n')
-            stocklist = value.split('~')
-            if len(stocklist) < 8:
-                #print url, res['head'], value
-                if 'must-revalidate' in res['head']:
-                    break
-                time.sleep(1)
-                continue
-            break
-        except Exception,e:
-            #print url, value, e
-            if res.has_key('head'):
-                print res['head']
-                if 'must-revalidate' in res['head']:
-                    break
-
-            i = i+1
-            if i >= imax:
-                log_write('errcode', id)
-                break
-            time.sleep(random.randint(1, 3))
-
-    if i > imax:
-        return  {}
-
-    #print stocklist
-    stockdict = {}
-    if len(stocklist) > 10:
-        stockdict['main_force'] = float(stocklist[3])
-        stockdict['small_force'] = float(stocklist[7])
-
-    if res.has_key('head') and 'Etag:' in res['head']:
-        key = '%d_%s' % (index, id)
-        user_agent_dic[key]  = res['head'].split('Etag:')[1].strip()
-
-    return stockdict
-
-#实时行情
-def get_stockid_real_time(id):
-    #url = 'http://qt.gtimg.cn/q=%s' % (id)
-    #favicon = 'http://qt.gtimg.cn/favicon.ico
-    url = 'http://web.sqt.gtimg.cn/q=%s' % (id)
-    refer = 'http://gu.qq.com/%s/gp' % (id)
-    #url = 'http://sqt.gtimg.cn/utf8/q=%s' % (id)
-    #favicon = 'http://sqt.gtimg.cn/favicon.ico'
-    i = 0
-    imax = 3
-    stocklist = []
-    stockdict = {}
-    while 1:
-        req_header = []
-        index = random.randint(0, len(user_agent_list) -1)
-        req_header.extend(['User-Agent: %s' % (user_agent_list[index])])
-        req_header.extend(['Referer: %s' % (refer)])
-        #if user_agent_dic.has_key(index):
-        #    req_header.extend(['If-None-Match: %s' % (user_agent_dic[index])])
-        i = i + 1
-        res = httpGetContent(url, req_header)
-        if len(res) < 2:
-            print url, sys._getframe().f_lineno, res
-            if i > imax:
-                break;
-            time.sleep(1)
+        if items_dic[key]['category1_sign'] in key_array:
+            key_array['wei_u41'] += 1
         else:
-            value = res['body'].split('=')[1].strip(';\n')
-            stocklist = value.split('~')
-            if len(stocklist) < 45:
-                print url, sys._getframe().f_lineno, res['body'], stocklist
-                print value
-                if i > imax:
-                    break;
-                time.sleep(1)
+            key_array['category1_sign'] = items_dic[key]['category1_sign']
+            key_array['wei_u41'] = 1
+
+    category_sign = ''
+    rid = 0
+    for key in key_array:
+        if key['wei_u41'] > rid:
+            rid = key['wei_u41']
+            category_sign = key['category1_sign']
+
+    return  category_sign
+
+
+def recomm_ucf_norm_filter(items_dic):
+
+    ks_hmap = {}
+    for key in items_dic:
+        if not items_dic[key].has_key('norm_name') or not items_dic[key]['norm_name'].strip():
+            continue
+
+        if not items_dic[key].has_key('norm_author') or not items_dic[key]['norm_author'].strip():
+            continue
+
+        key_buf = '%s_%s' % (items_dic[key]['norm_name'], items_dic[key]['norm_author'])
+        if key_buf in ks_hmap:
+            items_dic[key]['mask_level'] = RECOMM_UCF_MASK_FLAG
+            continue
+
+        ks_hmap[key_buf] = ''
+
+
+def recomm_ucf_cart_format(items_dic):
+
+    remove_key = []
+    for key in items_dic:
+        if items_dic[key].has_key('mask_level') and items_dic[key]['mask_level'] == RECOMM_UCF_MASK_FLAG:
+            remove_key.append(key)
+            continue
+
+        tv_now = int(time.time()) + (3600 << 3)
+        if items_dic[key]['wei_u81'] <= tv_now:
+            tv_now = tv_now - items_dic[key]['wei_u81']
+        tv_now = tv_now / 86400
+        if tv_now > 1095:
+            tv_now = 1095
+
+        items_dic[key]['base_weight'] = (2 << 10) / (1 + tv_now)
+
+    for key in remove_key:
+        items_dic.pop(key)
+
+def recomm_dao_idata_bget(items_dic, field):
+
+    for key in items_dic:
+        res_str = get_data_redis2('gid', field)
+        res_list = []
+        if res_str.strip():
+            res_list = res_str.split('\t')
+            items_dic[key]['idata'] = res_list
+
+
+def recomm_ucf_accumulation_weight(items_dic):
+
+    ks_hmap = {}
+    for key in items_dic:
+        if not items_dic[key].has_key('idata'):
+            continue
+        length = len(items_dic[key]['idata'])
+        i = 0
+        while True:
+            if i + 1 >= length:
+                break
+
+            if items_dic[key]['idata'][i] in ks_hmap:
+                ks_hmap[items_dic[key]['idata'][i]] += items_dic[key]['idata'][i + 1] * items_dic[key]['base_weight']
+            else:
+                ks_hmap[items_dic[key]['idata'][i]] = int(items_dic[key]['idata'][i + 1]) * items_dic[key]['base_weight']
+            i += 2
+
+    return ks_hmap
+
+
+def recomm_ucf_sort_weight(ks_hmap):
+    d_view = [ (v,k) for k,v in ks_hmap.iteritems()]
+    d_view.sort(reverse=True)
+    res_list = []
+    for v,k in d_view:
+        res_list.append(k)
+
+    return res_list
+
+def recomm_ucf_select_topn(items_dic, res_list, cut_count, category_sign):
+
+    ks_hmap = {}
+    res_key = []
+    #过滤书架
+    for key in items_dic:
+        if not items_dic[key].has_key('top_name') or not items_dic[key]['top_name'].strip():
+            continue
+
+        if items_dic[key]['top_name'] not in ks_hmap:
+            ks_hmap[items_dic[key]['top_name']] =''
+
+
+    cut_id = 0
+    r_index = 0
+    while  cut_id < cut_count:
+        item_id = 0;
+        while item_id < RECOMM_UCF_ITEMINFO_NUM:
+            items = get_iteminfo(res_list[r_index])
+            items['gid'] = res_list[r_index]
+            ++item_id
+            ++r_index
+
+        item_count = item_id
+        item_id = 0
+        for item_id in range(item_count):
+            if category_sign.strip():
+                if not items['category1'].strip():
+                    continue
+
+                if items['category1'] != category_sign:
+                    continue
+
+            if items['mask_level'] == 1:
                 continue
+
+            ts_sign =''
+            if items['top_name'].strip():
+                ts_sign = items['top_name']
+
+            if ts_sign in ks_hmap:
+                continue
+
+            ks_hmap[ts_sign] = items['gid']
+
+            res_key.append()
+            cut_id +=1
+            if cut_id >= cut_count:
+                break
+
+    return res_key
+
+
+
+def recomm_ucf_compute(search_key_dic, key_id, field):
+    res_list = []
+    if 'ucf_knn4' in field:
+        field = 'icf_knn4'
+    elif 'ucf_knn3' in field:
+        field = 'icf_knn3'
+    elif 'ucf_knn2' in field:
+        field = 'icf_knn2'
+    elif 'ucf_knn' in field:
+        field = 'icf_knn'
+    elif 'ucb_knn' in field:
+        field = 'icb_knn'
+    elif 'ucb_knn2' in field:
+        field = 'icb_knn2'
+    elif 'ucb_knn3' in field:
+        field = 'icb_knn3'
+    elif 'ucb_knn4' in field:
+        field = 'icb_knn4'
+
+    if not field.strip():
+        return res_list
+
+    ckey_id = ''
+    if key_id == search_key_dic['uid1_key']:
+        ckey_id = search_key_dic['cid1_key']
+    elif key_id == search_key_dic['uid3_key']:
+        ckey_id = search_key_dic['cid3_key']
+    else:
+        return res_list
+
+    list_count = 128
+    cart_arr = recomm_ucf_pull_cartitem(ckey_id, field)
+    cart_items_dic = {}
+    i = 0
+    length = len(cart_arr)
+    while True:
+        if i + 1 >= length:
             break
-    #不知道是不是反爬虫， 先请求吧
-    #httpGetContent(favicon, 'Referer: %s' % (url))
-    #print stocklist
 
-    if len(stocklist) < 45:
-        return stockdict
+        item = get_iteminfo(cart_arr[i])
+        item['gid'] = cart_arr[i]
+        item['wei_u81'] = cart_arr[i+1]
+        cart_items_dic[cart_arr[i]] = item
+        i = i + 2
 
-    stockdict['id'] = id
-    stockdict['code'] = stocklist[2]                           # 股票代码
-    #stockdict['name'] = unicode(stocklist[1], 'gbk')  # 股票名称
-    stockdict['last_closing'] = float(stocklist[4])    # 昨日收盘价格
-    stockdict['start'] = float(stocklist[5])           # 开盘价格
-    if stockdict['start'] <= 1:
-        stockdict['block'] = True
-        r
+    # 限免用户协同(匹配用户同一级分类)
+    category_sign = ''
+    if field == 'icf_knn4':
+        category_sign = recomm_ucf_select_category(cart_items_dic)
+
+    #归一化后去重(top100)
+    cart_topn = 100
+    if list_count > cart_topn:
+        list_count = cart_topn
+
+    #书架列表格式化
+    recomm_ucf_cart_format(cart_items_dic)
+
+    #书架对应的物品协同推荐
+    recomm_dao_idata_bget(cart_items_dic, field)
+
+    #计算各个推荐物品的权重
+    ks_hmap = {}
+    ks_hmap = recomm_ucf_accumulation_weight(cart_items_dic)
+
+    #速排序
+
+    res_list = recomm_ucf_sort_weight(ks_hmap)
+
+    #取topn
+    res_list = recomm_ucf_select_topn(cart_items_dic, res_list, list_count, category_sign)
+
+    #输出推荐结果
+    return res_list
+
+#uid1_key  u_54159287
+#uid3_key  d_0EFF2921445097DC49E46156D5F6A18C
+#免费流行度
+def get_free_pop(search_key_dic):
+    res_str = get_data_redis2(search_key_dic['uid4_key'], 'pop_topn')
+    res_list = []
+    if res_str.strip():
+        res_list = res_str.split('\t')
+
+    return res_list
+
+#付费流行度
+def get_pay_pop(search_key_dic):
+    res_str = get_data_redis2(search_key_dic['uid2_key'], 'pop_topn')
+    res_list = []
+    if res_str.strip():
+        res_list = res_str.split('\t')
+
+    return res_list
+
+#ik_version
+#1501745183
+#uk_version
+#1501745183
+#ik4_version
+#1508112000
+#uk4_version
+#1508112000
+#tf1
+#4
+#tf2
+#4
+
+#uid4_key   v_0001
+def get_search_key(search_dic):
+    id_dic = {}
+    id_dic['uid2_key'] = ''
+    id_dic['uid4_key'] = ''
+
+    if search_dic.has_key('uid') and int(search_dic['uid']) > 0:
+        id_dic['uid1_key'] = 'u_%s' % (search_dic['uid'])
+        id_dic['cid1_key'] = 'cu_%s' % (search_dic['uid'])
+        id_dic['tid1_key'] = 't_%s' % (search_dic['uid'])
+
+        if search_dic.has_key('udid') and search_dic['udid'].strip():
+            id_dic['uid3_key'] = 'd_%s' % (search_dic['udid'])
+            id_dic['cid3_key'] = 'cd_%s' % (search_dic['udid'])
+            id_dic['tid3_key'] = 't_%s' % (search_dic['udid'])
+
+    elif search_dic.has_key('udid') and search_dic['udid'].strip():
+        id_dic['uid1_key'] = 'd_%s' % (search_dic['udid'])
+        id_dic['cid1_key'] = 'cd_%s' % (search_dic['udid'])
+        id_dic['tid1_key'] = 't_%s' % (search_dic['udid'])
+
+
+    if search_dic.has_key('reqGid') and search_dic['reqGid'].strip():
+        if search_dic['appid'] == RECOMM_APPID_EASOU2:
+            id_dic['iid1_key'] = 'ns2_i_%s' % (search_dic['reqGid'])
+        else:
+            id_dic['iid1_key'] = 'i_%' (search_dic['reqGid'])
+
+        id_dic['iid10_key'] = 'i_%' (search_dic['reqGid'])
+
+    if search_dic['recomm_type'] == 203:
+        if search_dic['req_feature'] == 1:
+            if search_dic['appid'] == RECOMM_APPID_EASOU2:
+                id_dic['uid2_key'] = 'ns2_v_0102'
+            else:
+                id_dic['uid2_key'] = 'v_0102'
+        elif search_dic['req_feature'] == 2:
+            if search_dic['appid'] == RECOMM_APPID_EASOU2:
+                id_dic['uid2_key'] = 'ns2_v_0103'
+            else:
+                id_dic['uid2_key'] = 'v_0103'
+        elif search_dic['req_feature'] == 3:
+            if search_dic['appid'] == RECOMM_APPID_EASOU2:
+                id_dic['uid2_key'] = 'ns2_v_0107'
+            else:
+                id_dic['uid2_key'] = 'v_0107'
+        elif search_dic['req_feature'] == 11:
+            if search_dic['appid'] == RECOMM_APPID_EASOU2:
+                id_dic['uid2_key'] = 'ns2_v_0111'
+            else:
+                id_dic['uid2_key'] = 'v_0111'
+        elif search_dic['req_feature'] == 12:
+            if search_dic['appid'] == RECOMM_APPID_EASOU2:
+                id_dic['uid2_key'] = 'ns2_v_0112'
+            else:
+                id_dic['uid2_key'] = 'v_0112'
+        elif search_dic['req_feature'] == 13:
+            if search_dic['appid'] == RECOMM_APPID_EASOU2:
+                id_dic['uid2_key'] = 'ns2_v_0113'
+            else:
+                id_dic['uid2_key'] = 'v_0113'
+        elif search_dic['req_feature'] == 14:
+            if search_dic['appid'] == RECOMM_APPID_EASOU2:
+                id_dic['uid2_key'] = 'ns2_v_0114'
+            else:
+                id_dic['uid2_key'] = 'v_0114'
+        elif search_dic['req_feature'] == 21:
+            if search_dic['appid'] == RECOMM_APPID_EASOU2:
+                id_dic['uid2_key'] = 'ns2_v_0121'
+            else:
+                id_dic['uid2_key'] = 'v_0121'
+        elif search_dic['req_feature'] == 22:
+            if search_dic['appid'] == RECOMM_APPID_EASOU2:
+                id_dic['uid2_key'] = 'ns2_v_0122'
+            else:
+                id_dic['uid2_key'] = 'v_0122'
+        elif search_dic['req_feature'] == 23:
+            if search_dic['appid'] == RECOMM_APPID_EASOU2:
+                id_dic['uid2_key'] = 'ns2_v_0123'
+            else:
+                id_dic['uid2_key'] = 'v_0123'
+        elif search_dic['req_feature'] == 24:
+            if search_dic['appid'] == RECOMM_APPID_EASOU2:
+                id_dic['uid2_key'] = 'ns2_v_0124'
+            else:
+                id_dic['uid2_key'] = 'v_0124'
+    elif search_dic['recomm_type'] == 205:
+        if search_dic['req_feature'] == 0:
+            if search_dic['appid'] == RECOMM_APPID_EASOU2:
+                id_dic['uid2_key'] = 'ns2_v_0201'
+            else:
+                id_dic['uid2_key'] = 'v_0201'
+        elif search_dic['req_feature'] == 1:
+            if search_dic['appid'] == RECOMM_APPID_EASOU2:
+                id_dic['uid2_key'] = 'ns2_v_0202'
+            else:
+                id_dic['uid2_key'] = 'v_0202'
+        elif search_dic['req_feature'] == 2:
+            if search_dic['appid'] == RECOMM_APPID_EASOU2:
+                id_dic['uid2_key'] = 'ns2_v_0203'
+            else:
+                id_dic['uid2_key'] = 'v_0203'
+    elif search_dic['recomm_type'] == 206:
+        if search_dic['appid'] == RECOMM_APPID_EASOU2:
+            id_dic['uid2_key'] = 'ns2_v_0301'
+        else:
+            id_dic['uid2_key'] = 'v_0301'
+    elif search_dic['recomm_type'] == 207:
+        if search_dic['appid'] == RECOMM_APPID_EASOU2:
+            id_dic['uid2_key'] = 'ns2_v_0001'
+            id_dic['uid4_key'] = 'ns2_v_0301'
+        else:
+            id_dic['uid2_key'] = 'v_0001'
+            id_dic['uid4_key'] = 'v_0301'
+    elif search_dic['recomm_type'] == 208:
+        if search_dic['appid'] == RECOMM_APPID_EASOU2:
+            id_dic['uid2_key'] = 'ns2_v_0101'
+        else:
+            id_dic['uid2_key'] = 'v_0101'
+    elif search_dic['recomm_type'] == 209:
+        if search_dic['appid'] == RECOMM_APPID_EASOU2:
+            if search_dic['req_charge'] == 1:
+                id_dic['uid2_key'] = 'ns2_v_0101'
+            else:
+                id_dic['uid2_key'] = 'ns2_v_0001'
+        else:
+            if search_dic['req_charge'] == 1:
+                id_dic['uid2_key'] = 'v_0101'
+            else:
+                id_dic['uid2_key'] = 'v_0001'
+    elif search_dic['recomm_type'] == 101:
+        if search_dic['req_feature'] != 0:
+            if search_dic['appid'] == RECOMM_APPID_EASOU2:
+                id_dic['uid2_key'] = 'ns2_v_%04d' % (search_dic['req_feature'])
+            else:
+                id_dic['uid2_key'] = 'v_%04d' % (search_dic['req_feature'])
+        else:
+            if search_dic['appid'] == RECOMM_APPID_EASOU2:
+                id_dic['uid2_key'] = 'ns2_v_0101'
+            else:
+                id_dic['uid2_key'] = 'v_0101'
+    elif search_dic['recomm_type'] == 301 or search_dic['recomm_type'] == 302 or search_dic['recomm_type'] == 3011 or search_dic['recomm_type'] == 3021:
+        if search_dic['req_charge'] == 1:
+            if search_dic['appid'] == RECOMM_APPID_EASOU2:
+                id_dic['uid2_key'] = 'ns2_v_0101'
+            else:
+                id_dic['uid2_key'] = 'v_0101'
+        else:
+            if search_dic['appid'] == RECOMM_APPID_EASOU2:
+                id_dic['uid2_key'] = 'ns2_v_0001'
+            else:
+                id_dic['uid2_key'] = 'v_0001'
+    elif search_dic['recomm_type'] == 201:
+        if search_dic['appid'] == RECOMM_APPID_EASOU2:
+            id_dic['uid2_key'] = 'ns2_v_0101'
+            id_dic['uid4_key'] = 'ns2_v_0301'
+        else:
+            id_dic['uid2_key'] = 'v_0101'
+            id_dic['uid4_key'] = 'v_0301'
+
+    else:
+        if search_dic['appid'] == RECOMM_APPID_EASOU2:
+            id_dic['uid2_key'] = 'ns2_v_0101'
+        else:
+            id_dic['uid2_key'] = 'v_0101'
+
+    return id_dic
+
+def test_201(search_dic):
+    #print search_dic
+    if not len(search_dic):
+        return False
+
+    url = create_url(search_dic)
+    print url
+    res_dic = {}
+    try:
+        f = urllib2.urlopen(url)
+        res_dic = json.loads(f.read())
+    except Exception, e:
+        print e
+        return False
+
+    #user_cart
+    user_cart = get_history_user_cart(search_dic)
+    #时协同, 限免
+    t_ucf_knn4 = get_current_ucf(search_dic, 'ucf_knn4')
+    #时协同, 付费
+    t_ucf_knn3 = get_current_ucf(search_dic, 'ucf_knn3')
+
+    recomm_ucf_compute(search_dic, 'ucf_knn4')
+    t_ucf_knn4 = get_current_ucf(search_dic['uid'], 'ucf_knn4')
+    t_ucf_knn3 = get_current_ucf(search_dic['uid'], search_dic['udid'], 'ucf_knn3')
+
+    ucf_knn4 = get_history_ucf(search_dic['uid'], search_dic['udid'], 'ucf_knn4')
+    ucf_knn3 = get_history_ucf(search_dic['uid'], search_dic['udid'], 'ucf_knn3')
+
+
+    user_type = 0
+    if search_dic.has_key('uid'):
+        user_type = get_user_type(search_dic['uid'])
+
+    print user_type
+
+    history_cat = []
+    history_cat = get_history_user_cart(search_dic['uid'])
+    #current_user_cart = get_current_user_cart(search_dic['uid'])
+
+
+
+    for key in res_dic:
+        if key in history_cat:
+            return False
+
+
+def create_url(search_dic):
+    url = ''
+
+    if not len(search_dic):
+        return url
+
+    url = '%s=%s' % (BASE_URL, search_dic['recommType'])
+
+    if search_dic.has_key('uid'):
+        url += '&uid=%s' % (search_dic['uid'])
+
+    if search_dic.has_key('udid'):
+        url += '&udid=%s' % (search_dic['udid'])
+
+    if search_dic.has_key('start') and search_dic['start'] > 0:
+        url += '&start=%d' % (search_dic['start'])
+
+    if search_dic.has_key('cid'):
+        url += '&cid=%s' % (search_dic['cid'])
+
+    if search_dic.has_key('count') and search_dic['count'] > 0:
+        url += '&count=%d' % (search_dic['count'])
+
+    if search_dic.has_key('random') and search_dic['random'] > 0:
+        url += '&random=%d' % (search_dic['random'])
+
+    if search_dic.has_key('feature') and search_dic['feature'] > 0:
+        url += '&feature=%d' % (search_dic['feature'])
+
+    if search_dic.has_key('charge') and search_dic['charge'] > 0:
+        url += '&charge=%d' % (search_dic['charge'])
+
+    if search_dic.has_key('appid'):
+        url += '&appid=%s' % (search_dic['appid'])
+
+    print url
+    return url
+
+
+def lod_request_list(path):
+    res_list = []
+    if not os.path.isfile(path):
+        return res_list
+
+    file = open(path)
+    while 1:
+        line = file.readline().strip()
+        if not line:
+            break
+
+        res_dic = json.loads(line)
+        #print res_dic
+        if res_dic.has_key('guessResGids'):
+            res_dic.pop('guessResGids')
+
+        if res_dic.has_key('categoryRecGids'):
+            res_dic.pop('categoryRecGids')
+        res_list.append(res_dic)
+
+    file.close()
+    return res_list
+
+
+
+
+if __name__ == '__main__':
+    pass
+    #for line in sys.stdin:
+    #    line = line.strip()
+    #    if not line:
+    #        continue
+    #    item = line.split('_')
+    #    if len(item) != 2:
+    #        continue
+    #    if len(get_current_user_cart(item[1])) and not len(get_history_user_cart(item[1])):
+    #        print item[1]
+
+
+    #res_list = []
+    #res_list = lod_request_list('response.log')
+    #for key in res_list:
+    #    if key.has_key('recommType')and key['recommType'] == 201:
+    #        test_201(key)

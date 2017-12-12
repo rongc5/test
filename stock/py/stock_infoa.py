@@ -398,7 +398,7 @@ class CurlHTTPFetcher(object):
                     if data.tell() > 1024*MAX_RESPONSE_KB:
                         return 0
                     else:
-                        print 'hello', data.getvalue().decode('gbk')
+                        #print 'hello', data.getvalue().decode('gbk')
                         return data.write(chunk)
 
                 response_header_data = cStringIO.StringIO()
@@ -441,7 +441,7 @@ class CurlHTTPFetcher(object):
 #成交明细
 def get_stockid_detail(date, id, deal_dic):
     url = 'http://market.finance.sina.com.cn/downxls.php?date=%s&symbol=%s' % (date, id)
-    #print url
+    print url
     header = {}
     index = random.randint(0, len(user_agent_list) -1)
     header['User-Agent'] = user_agent_list[index]
@@ -1492,7 +1492,7 @@ def do_search_short():
         search_remove = []
         print 'after remove_ley', len(id_dic)
         for key in id_dic:
-            time.sleep(5)
+            time.sleep(random.randint(1,3))
             res = get_stockid_real_time(key)
 
             if res.has_key('block') and res['block']:  #停牌
@@ -1664,7 +1664,7 @@ def do_search_short():
 
         #print 'length: ', len(search_dic)
         log_print_res(search_dic)
-        time.sleep(TIME_DIFF)
+        #time.sleep(TIME_DIFF)
 
 #A股就是个坑， 技术指标低位了， 仍然可以再砸
 #技术指标高位了， 有资金接盘仍然可以涨, 高位始终是危险
