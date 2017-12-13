@@ -11,6 +11,7 @@ import unicodedata
 import os
 import sys
 import random
+import subprocess
 
 from time import strftime, localtime
 from datetime import timedelta, date
@@ -52,6 +53,7 @@ user_agent_list = [
 user_agent_dic = {}
 user_agent_cookie = {}
 MAX_RESPONSE_KB = 10*1024
+DATAPATH = '../data/'
 
 class Day():
     def __init__(self):
@@ -438,10 +440,9 @@ class CurlHTTPFetcher(object):
             data.close()
             c.close()
 
-#成交明细
-def get_stockid_detail(date, id, deal_dic):
+
+def load_stockid_detail(date, id, path):
     url = 'http://market.finance.sina.com.cn/downxls.php?date=%s&symbol=%s' % (date, id)
-    print url
     header = {}
     index = random.randint(0, len(user_agent_list) -1)
     header['User-Agent'] = user_agent_list[index]
@@ -456,12 +457,77 @@ def get_stockid_detail(date, id, deal_dic):
     try:
         res = curl.fetch(url, None, header)
     except BaseException, e:
-        print e.why
-        return deal_dic
+        print e.message
 
     if res.has_key('head') and res['head'].has_key('set-cookie'):
         user_agent_cookie[cookie_key] = res['head']['set-cookie'].split(';')[0]
-        #print user_agent_cookie[cookie_key]
+
+    res_str = ''
+    file_name = '%s/%s' % (path, id)
+    if res.has_key('body') and res['body'].strip():
+        items = res['body'].split('\n')
+        for key in items:
+            subitems = key.split('\t');
+            if len(subitems) == 6:
+                if not subitems[3].isdigit():
+                    continue
+                vol = int(subitems[3])
+
+                str_key = ''
+                if u'买盘' in  subitems[5].decode('gbk'):
+                    str_key = 'B'
+                elif u'卖盘' in subitems[5].decode('gbk'):
+                    str_key = 'S'
+                else:
+                    continue
+
+                res_str = '%s\t%s\t%s' % (subitems[1], subitems[3], str_key)
+                log_write(file_name, res_str)
+
+    if not res_str.strip():
+        print url
+
+def load_details(days_num, deal_dic):
+    if len(deal_dic) == 0:
+        return
+
+    for key in deal_dic:
+        deal_dic[key]['last_single'] = {}
+
+    day = Day()
+
+    for id_day in range(1, days_num + 1):
+        date = ''
+        lastday = id_day * -1
+        while 1:
+            date =  '%s' % (day.get_day_of_day(lastday), )
+            if get_week_day(date) > 5:
+                lastday = lastday - 2
+            else:
+                break
+
+        path = '%s/%s' %(DATAPATH, date)
+        cmd = ['mkdir', '-p', path]
+        subprocess.Popen(cmd, stdout=subprocess.PIPE).communicate()[0]
+
+        for key in deal_dic:
+            file_name = '%s/%s' % (path, id)
+            if not os.path.isfile(file_name):
+                index = random.randint(1, 5)
+                time.sleep(index)
+                load_stockid_detail(date, key, path)
+
+            get_stockid_detail(date, key, deal_dic[key]['last_single'])
+
+
+#成交明细
+def get_stockid_detail(date, id, deal_dic):
+    res = {}
+
+    path = '%s/%s/%s' %(DATAPATH, date, id)
+
+    if not os.path.isfile(path):
+        return res
 
     if not deal_dic.has_key('vol_1'):
         deal_dic['vol_1'] = []
@@ -472,6 +538,8 @@ def get_stockid_detail(date, id, deal_dic):
         deal_dic['ratio_vol_2'] = []
         deal_dic['ratio_vol_3'] = []
         deal_dic['ratio_vol_4'] = []
+        deal_dic['min_price'] = []
+        deal_dic['high_price'] = []
 
 
     stockdict = {}
@@ -483,27 +551,31 @@ def get_stockid_detail(date, id, deal_dic):
     stockdict['min_price'] = 0
     stockdict['high_price'] = 0
 
-    if res.has_key('body') and res['body'].strip():
+    file = open(path)
+    while 1:
         try:
-            items = res['body'].split('\n')
+            line = file.readline().strip()
+            if not line:
+                break
+            items = line.split('\n')
             for key in items:
                 subitems = key.split('\t');
-                if len(subitems) == 6:
-                    if not subitems[3].isdigit():
+                if len(subitems) == 3:
+                    if not subitems[1].isdigit():
                         continue
-                    vol = int(subitems[3])
+                    vol = int(subitems[1])
                     stockdict['total_vol'] += vol
 
-                    if float(subitems[1]) < deal_dic['min_price']:
-                        stockdict['min_price'] = float(subitems[1])
+                    if float(subitems[0]) < stockdict['min_price']:
+                        stockdict['min_price'] = float(subitems[0])
 
-                    if float(subitems[1]) > deal_dic['high_price']:
-                        stockdict['high_price'] = float(subitems[1])
+                    if float(subitems[0]) > stockdict['high_price']:
+                        stockdict['high_price'] = float(subitems[0])
 
                     flag = 1
-                    if u'买盘' in  subitems[5].decode('gbk'):
+                    if 'B' in subitems[2]:
                         flag = 1
-                    elif u'卖盘' in subitems[5].decode('gbk'):
+                    elif 'S' in subitems[2]:
                         flag = -1
                     else:
                         continue
@@ -522,8 +594,6 @@ def get_stockid_detail(date, id, deal_dic):
 
                     if vol >= 1000:
                         stockdict['vol_4'] += vol * flag
-
-            stockdict['total_force'] = stockdict['total_force'] * 1.0/10000
 
             if stockdict.has_key('vol_0'):
                 stockdict['ratio_vol_0'] = stockdict['vol_0'] *1.0 / stockdict['total_vol']
@@ -563,12 +633,14 @@ def get_stockid_detail(date, id, deal_dic):
             deal_dic['ratio_vol_2'].append(stockdict['ratio_vol_2'])
             deal_dic['ratio_vol_3'].append(stockdict['ratio_vol_3'])
             deal_dic['ratio_vol_4'].append(stockdict['ratio_vol_4'])
+            deal_dic['min_price'].append(stockdict['min_price'])
+            deal_dic['high_price'].append(stockdict['high_price'])
 
         except BaseException, e:
             print e.message
-
+    file.close()
         #print deal_dic
-        return stockdict
+    return stockdict
         #print res['body']
 
 #查看每股财务指标
@@ -759,7 +831,13 @@ def get_stockid_dbfx(id):
     return id_dic['data']['dbfx']
 
 
-def get_single_analysis(id):
+def get_single_analysis(id, vol, deal_dic):
+
+    stockdict = {}
+    if int(vol) <= 0:
+        print vol, 'err'
+        return stockdict
+
 
     url = 'http://stock.finance.qq.com/sstock/list/view/dadan.php?t=js&c=%s&max=400&p=1&opt=1&o=0' % (id)
     refer = 'http://stockhtm.finance.qq.com/sstock/quotpage/dadan.htm?c=%s' % (id)
@@ -794,23 +872,65 @@ def get_single_analysis(id):
         return  {}
 
     #print stocklist
-    stockdict = {}
-    stockdict['s'] = 0
-    stockdict['b'] = 0
-    stockdict['2s'] = 0
-    stockdict['2b'] = 0
+
+    if not deal_dic.has_key('vol_1'):
+        deal_dic['vol_1'] = []
+        deal_dic['vol_2'] = []
+        deal_dic['vol_3'] = []
+        deal_dic['vol_4'] = []
+        deal_dic['ratio_vol_1'] = []
+        deal_dic['ratio_vol_2'] = []
+        deal_dic['ratio_vol_3'] = []
+        deal_dic['ratio_vol_4'] = []
+
+    stockdict['vol_1'] = 0
+    stockdict['vol_2'] = 0
+    stockdict['vol_3'] = 0
+    stockdict['vol_4'] = 0
     items = stocklist.split('^')
     for item in items:
         subitems = item.split('~')
         if len(subitems) >= 6:
+            flag = 1
             if 's' in subitems[5] or 'S' in subitems[5]:
-                stockdict['s'] += int(subitems[3])
-                if abs(int(subitems[3])) >=200:
-                    stockdict['2s'] += int(subitems[3])
+                flag = -1
             elif 'b' in subitems[5] or 'B' in subitems[5]:
-                stockdict['b'] += int(subitems[3])
-                if abs(int(subitems[3])) >=200:
-                    stockdict['2b'] += int(subitems[3])
+                flag = 1
+
+            if int(subitems[3]) >= 100:
+                stockdict['vol_1'] += int(subitems[3]) * flag
+
+            if int(subitems[3]) >= 200:
+                stockdict['vol_2'] += int(subitems[3]) * flag
+
+            if int(subitems[3]) >= 500:
+                stockdict['vol_3'] += int(subitems[3]) * flag
+
+            if int(subitems[3]) >= 1000:
+                stockdict['vol_4'] += int(subitems[3]) * flag
+
+    if len(deal_dic['vol_1']) >= 10:
+        deal_dic['vol_1'].pop(0)
+        deal_dic['vol_2'].pop(0)
+        deal_dic['vol_3'].pop(0)
+        deal_dic['vol_4'].pop(0)
+        deal_dic['ratio_vol_1'].pop(0)
+        deal_dic['ratio_vol_2'].pop(0)
+        deal_dic['ratio_vol_3'].pop(0)
+        deal_dic['ratio_vol_4'].pop(0)
+
+    if len(deal_dic['vol_1']) >=1 and abs(deal_dic['vol_1'][-1] - stockdict['vol_1']) < 400:
+        return stockdict
+
+    deal_dic['vol_1'].append(stockdict['vol_1'])
+    deal_dic['vol_2'].append(stockdict['vol_2'])
+    deal_dic['vol_3'].append(stockdict['vol_3'])
+    deal_dic['vol_4'].append(stockdict['vol_4'])
+
+    deal_dic['ratio_vol_1'].append(stockdict['vol_1'] *1.0 / vol)
+    deal_dic['ratio_vol_2'].append(stockdict['vol_2'] *1.0 / vol)
+    deal_dic['ratio_vol_3'].append(stockdict['vol_3'] *1.0 / vol)
+    deal_dic['ratio_vol_4'].append(stockdict['vol_4'] *1.0 / vol)
 
     return stockdict
 
@@ -1484,7 +1604,10 @@ def do_search_short():
             tmp_components = load_config()
             if is_reload_base_list(query_components, tmp_components):
                 id_dic = base_select(base_dic, tmp_components)
+                if tmp_components.has_key('lastday_num'):
+                    load_details(int(tmp_components['lastday_num']), id_dic)
                 print 'after base_select', len(id_dic)
+
             query_components = tmp_components
 
 
@@ -1492,7 +1615,7 @@ def do_search_short():
         search_remove = []
         print 'after remove_ley', len(id_dic)
         for key in id_dic:
-            time.sleep(random.randint(1,3))
+            time.sleep(0.03)
             res = get_stockid_real_time(key)
 
             if res.has_key('block') and res['block']:  #停牌
@@ -1551,71 +1674,77 @@ def do_search_short():
                     id_dic[key]['up_pointer'] = abs(id_dic[key]['end'] - id_dic[key]['high']) *1.0/abs(id_dic[key]['end'] - id_dic[key]['start'])
 
 
-            if not id_dic[key].has_key(toady):
-                id_dic[key][toady] = {}
+            if not id_dic[key].has_key('vol'):
+                continue
 
-            get_stockid_detail(toady, key, id_dic[key][toady])
-            if not id_dic[key][toady].has_key('total_vol') or id_dic[key][toady]['total_vol'] == 0:
+
+            if not id_dic[key].has_key('single'):
+                id_dic[key]['single'] = {}
+
+
+            get_single_analysis(key, id_dic[key]['vol'], id_dic[key]['single'])
+            if not id_dic[key]['single'].has_key('vol_1') or len(id_dic[key]['single']['vol_1']) == 0:
                 continue
 
             if query_components.has_key('vol_1'):
-                if not get_data_direction(id_dic[key][toady]['vol_1']):
+                if not get_data_direction(id_dic[key]['single']['vol_1']):
                     search_remove.append(key)
                     continue
 
             if query_components.has_key('vol_2'):
-                if not get_data_direction(id_dic[key][toady]['vol_2']):
+                if not get_data_direction(id_dic[key]['single']['vol_2']):
                     search_remove.append(key)
                     continue
 
             if query_components.has_key('vol_3'):
-                if not get_data_direction(id_dic[key][toady]['vol_3']):
+                if not get_data_direction(id_dic[key]['single']['vol_3']):
                     search_remove.append(key)
                     continue
 
             if query_components.has_key('vol_4'):
-                if not get_data_direction(id_dic[key][toady]['vol_4']):
+                if not get_data_direction(id_dic[key]['single']['vol_4']):
                     search_remove.append(key)
                     continue
 
             if query_components.has_key('vol_1_ge'):
-                if id_dic[key][toady]['vol_1'][-1]< query_components['vol_1_ge']:
+                #print id_dic[key]['single'][-1]['vol_1'], query_components['vol_1_ge']
+                if id_dic[key]['single']['vol_1'][-1] < query_components['vol_1_ge']:
                     search_remove.append(key)
                     continue
 
             if query_components.has_key('vol_2_ge'):
-                if id_dic[key][toady]['vol_2'][-1] < query_components['vol_2_ge']:
+                if id_dic[key]['single']['vol_2'][-1] < query_components['vol_2_ge']:
                     search_remove.append(key)
                     continue
 
             if query_components.has_key('vol_3_ge'):
-                if id_dic[key][toady]['vol_3'][-1] < query_components['vol_3_ge']:
+                if id_dic[key]['single']['vol_3'][-1] < query_components['vol_3_ge']:
                     search_remove.append(key)
                     continue
 
             if query_components.has_key('vol_4_ge'):
-                if id_dic[key][toady]['vol_4'][-1] < query_components['vol_4_ge']:
+                if id_dic[key]['single']['vol_4'][-1] < query_components['vol_4_ge']:
                     search_remove.append(key)
                     continue
 
             if query_components.has_key('ratio_vol_1_ge'):
-                if id_dic[key][toady]['ratio_vol_1'][-1] < query_components['ratio_vol_1_ge']:
+                if id_dic[key]['single']['ratio_vol_1'][-1] < query_components['ratio_vol_1_ge']:
                     search_remove.append(key)
                     continue
 
 
             if query_components.has_key('ratio_vol_2_ge'):
-                if id_dic[key][toady]['ratio_vol_2'][-1] < query_components['ratio_vol_2_ge']:
+                if id_dic[key]['single']['ratio_vol_2'][-1] < query_components['ratio_vol_2_ge']:
                     search_remove.append(key)
                     continue
 
             if query_components.has_key('ratio_vol_3_ge'):
-                if id_dic[key][toady]['ratio_vol_3'][-1] < query_components['ratio_vol_3_ge']:
+                if id_dic[key]['single']['ratio_vol_3'][-1] < query_components['ratio_vol_3_ge']:
                     search_remove.append(key)
                     continue
 
             if query_components.has_key('ratio_vol_4_ge'):
-                if id_dic[key][toady]['ratio_vol_4'][-1] < query_components['ratio_vol_4_ge']:
+                if id_dic[key]['single']['ratio_vol_4'][-1] < query_components['ratio_vol_4_ge']:
                     search_remove.append(key)
                     continue
 
@@ -1629,30 +1758,21 @@ def do_search_short():
                     search_remove.append(key)
                     continue
 
-                #print id_dic[key]['res2_vol_ratio'][-1]
-
             lastday_num = 0
             if query_components.has_key('lastday_num'):
                 lastday_num = query_components['lastday_num']
 
-            for id_day in range(1, lastday_num + 1):
-                if query_components.has_key('lastday_%d' % (id_day)):
-                    lastday = int(query_components['lastday_%d' % (id_day)])
-                    if lastday > 0:
-                        print lastday, 'should be negative number'
-                        lastday *= -1
+            last_flag = True
+            for id_day in range(lastday_num):
+                if query_components.has_key('lastday_%d_vol_1_ge' % (id_day)) and id_dic[key].has_key('last_single') \
+                    and len(id_dic[key]['last_single']['vol_1']) > id_day:
+                    if id_dic[key]['last_single']['vol_1'][id_day] < query_components['lastday_%d_vol_1_ge' % (id_day)]:
+                        last_flag = False
+                        break
 
-                    while 1:
-                        lastday_str =  '%s' % (day.get_day_of_day(lastday), )
-                        if get_week_day(lastday_str) > 5:
-                            lastday = lastday - 2
-                        else:
-                            query_components['lastday_%d' % (id_day)] = lastday
-                            break
-
-                    if not id_dic[key].has_key(lastday_str):
-                        last_deal_dic = get_stockid_detail(lastday_str, key)
-                        id_dic[key][lastday_str] = last_deal_dic
+            if not last_flag:
+                search_remove.append(key)
+                continue
 
             search_dic[key] = id_dic[key]
             #id_dic[key]['next_time'] = 0
@@ -1664,7 +1784,7 @@ def do_search_short():
 
         #print 'length: ', len(search_dic)
         log_print_res(search_dic)
-        #time.sleep(TIME_DIFF)
+        time.sleep(TIME_DIFF)
 
 #A股就是个坑， 技术指标低位了， 仍然可以再砸
 #技术指标高位了， 有资金接盘仍然可以涨, 高位始终是危险
@@ -1686,4 +1806,3 @@ def do_search_short():
 #不要做T, 不看好就跑， 看好就买， 做T, 买了， 想跑跑不了
 if __name__ == '__main__':
     do_search_short()
-    #get_stockid_detail('2017-12-05', 'sz002859')

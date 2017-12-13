@@ -320,4 +320,4 @@ def do_check_monitor():
 if __name__ == '__main__':
     while 1:
         do_check_monitor()
-        time.sleep(30)
+        time.sleep(10)

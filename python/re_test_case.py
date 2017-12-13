@@ -604,29 +604,39 @@ def test_201(search_dic):
     #时协同, 付费
     t_ucf_knn3 = get_current_ucf(search_dic, 'ucf_knn3')
 
-    recomm_ucf_compute(search_dic, 'ucf_knn4')
-    t_ucf_knn4 = get_current_ucf(search_dic['uid'], 'ucf_knn4')
-    t_ucf_knn3 = get_current_ucf(search_dic['uid'], search_dic['udid'], 'ucf_knn3')
+    #史协同, 限免
+    ucf_knn4 = recomm_ucf_compute(search_dic, search_dic['uid1_key'], 'ucf_knn4')
+    if len(ucf_knn4) == 0:
+        ucf_knn4 = recomm_ucf_compute(search_dic, search_dic['uid3_key'], 'ucf_knn4')
+    #史协同, 付费
+    ucf_knn3 = recomm_ucf_compute(search_dic, search_dic['uid1_key'], 'ucf_knn3')
+    if len(ucf_knn3) == 0:
+        ucf_knn3 = recomm_ucf_compute(search_dic, search_dic['uid3_key'], 'ucf_knn3')
 
-    ucf_knn4 = get_history_ucf(search_dic['uid'], search_dic['udid'], 'ucf_knn4')
-    ucf_knn3 = get_history_ucf(search_dic['uid'], search_dic['udid'], 'ucf_knn3')
+    #免费流行度
+    free_pop = get_free_pop(search_dic)
+    #费流行度
+    pay_pop = get_pay_pop(search_dic)
 
-
+    #用户类型
     user_type = 0
     if search_dic.has_key('uid'):
         user_type = get_user_type(search_dic['uid'])
 
-    print user_type
-
-    history_cat = []
-    history_cat = get_history_user_cart(search_dic['uid'])
-    #current_user_cart = get_current_user_cart(search_dic['uid'])
-
-
 
     for key in res_dic:
-        if key in history_cat:
+        if key in user_cart:
             return False
+
+    # 免费
+    if user_type <= 1:
+        for key in res_dic:
+            pass
+
+
+
+
+
 
 
 def create_url(search_dic):
