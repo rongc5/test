@@ -479,7 +479,7 @@ def load_stockid_detail(date, id, path):
                 elif u'卖盘' in subitems[5].decode('gbk'):
                     str_key = 'S'
                 else:
-                    continue
+                    str_key = 'M'
 
                 res_str = '%s\t%s\t%s' % (subitems[1], subitems[3], str_key)
                 log_write(file_name, res_str)
@@ -553,91 +553,63 @@ def get_stockid_detail(date, id, deal_dic):
 
     file = open(path)
     while 1:
-        try:
-            line = file.readline().strip()
-            if not line:
-                break
-            items = line.split('\n')
-            for key in items:
-                subitems = key.split('\t');
-                if len(subitems) == 3:
-                    if not subitems[1].isdigit():
-                        continue
-                    vol = int(subitems[1])
-                    stockdict['total_vol'] += vol
+        line = file.readline().strip()
+        if not line:
+            break
+        items = line.split('\n')
+        for key in items:
+            subitems = key.split('\t');
+            if len(subitems) == 3:
+                if not subitems[1].isdigit():
+                    continue
+                vol = int(subitems[1])
+                stockdict['total_vol'] += vol
+                    #print stockdict['total_vol']
 
-                    if float(subitems[0]) < stockdict['min_price']:
-                        stockdict['min_price'] = float(subitems[0])
+                if float(subitems[0]) < stockdict['min_price']:
+                    stockdict['min_price'] = float(subitems[0])
 
-                    if float(subitems[0]) > stockdict['high_price']:
-                        stockdict['high_price'] = float(subitems[0])
+                if float(subitems[0]) > stockdict['high_price']:
+                    stockdict['high_price'] = float(subitems[0])
 
+                flag = 1
+                if 'B' in subitems[2]:
                     flag = 1
-                    if 'B' in subitems[2]:
-                        flag = 1
-                    elif 'S' in subitems[2]:
-                        flag = -1
-                    else:
-                        continue
+                elif 'S' in subitems[2]:
+                    flag = -1
+                else:
+                    continue
 
-                    if vol < 100:
-                        stockdict['vol_0'] += vol * flag
+                if vol >= 100:
+                    stockdict['vol_1'] += vol * flag
 
-                    if vol >= 100:
-                        stockdict['vol_1'] += vol * flag
+                if vol >= 200:
+                    stockdict['vol_2'] += vol * flag
 
-                    if vol >= 200:
-                        stockdict['vol_2'] += vol * flag
+                if vol >= 500:
+                    stockdict['vol_3'] += vol * flag
 
-                    if vol >= 500:
-                        stockdict['vol_3'] += vol * flag
+                if vol >= 1000:
+                    stockdict['vol_4'] += vol * flag
 
-                    if vol >= 1000:
-                        stockdict['vol_4'] += vol * flag
+    if stockdict.has_key('vol_1') and stockdict['total_vol'] > 0:
+        stockdict['ratio_vol_1'] = stockdict['vol_1'] *1.0 / stockdict['total_vol']
+        stockdict['ratio_vol_2'] = stockdict['vol_2'] *1.0 / stockdict['total_vol']
+        stockdict['ratio_vol_3'] = stockdict['vol_3'] *1.0 / stockdict['total_vol']
+        stockdict['ratio_vol_4'] = stockdict['vol_4'] *1.0 / stockdict['total_vol']
 
-            if stockdict.has_key('vol_0'):
-                stockdict['ratio_vol_0'] = stockdict['vol_0'] *1.0 / stockdict['total_vol']
+        deal_dic['vol_1'].append(stockdict['vol_1'])
+        deal_dic['vol_2'].append(stockdict['vol_2'])
+        deal_dic['vol_3'].append(stockdict['vol_3'])
+        deal_dic['vol_4'].append(stockdict['vol_4'])
 
-            if stockdict.has_key('vol_1'):
-                stockdict['ratio_vol_1'] = stockdict['vol_1'] *1.0 / stockdict['total_vol']
+        deal_dic['ratio_vol_1'].append(stockdict['ratio_vol_1'])
+        deal_dic['ratio_vol_2'].append(stockdict['ratio_vol_2'])
+        deal_dic['ratio_vol_3'].append(stockdict['ratio_vol_3'])
+        deal_dic['ratio_vol_4'].append(stockdict['ratio_vol_4'])
+        deal_dic['min_price'].append(stockdict['min_price'])
+        deal_dic['high_price'].append(stockdict['high_price'])
 
-            if stockdict.has_key('vol_2'):
-                stockdict['ratio_vol_2'] = stockdict['vol_2'] *1.0 / stockdict['total_vol']
-
-            if stockdict.has_key('vol_3'):
-                stockdict['ratio_vol_3'] = stockdict['vol_3'] *1.0 / stockdict['total_vol']
-
-            if stockdict.has_key('vol_4'):
-                stockdict['ratio_vol_4'] = stockdict['vol_4'] *1.0 / stockdict['total_vol']
-
-
-            if len(deal_dic['vol_1']) >= 10:
-                deal_dic['vol_1'].pop(0)
-                deal_dic['vol_2'].pop(0)
-                deal_dic['vol_3'].pop(0)
-                deal_dic['vol_4'].pop(0)
-                deal_dic['ratio_vol_1'].pop(0)
-                deal_dic['ratio_vol_2'].pop(0)
-                deal_dic['ratio_vol_3'].pop(0)
-                deal_dic['ratio_vol_4'].pop(0)
-
-            if len(deal_dic['vol_1']) >=1 and abs(deal_dic['vol_1'][-1] - stockdict['vol_1']) < 400:
-                return stockdict
-
-            deal_dic['vol_1'].append(stockdict['vol_1'])
-            deal_dic['vol_2'].append(stockdict['vol_2'])
-            deal_dic['vol_3'].append(stockdict['vol_3'])
-            deal_dic['vol_4'].append(stockdict['vol_4'])
-
-            deal_dic['ratio_vol_1'].append(stockdict['ratio_vol_1'])
-            deal_dic['ratio_vol_2'].append(stockdict['ratio_vol_2'])
-            deal_dic['ratio_vol_3'].append(stockdict['ratio_vol_3'])
-            deal_dic['ratio_vol_4'].append(stockdict['ratio_vol_4'])
-            deal_dic['min_price'].append(stockdict['min_price'])
-            deal_dic['high_price'].append(stockdict['high_price'])
-
-        except BaseException, e:
-            print e.message
     file.close()
         #print deal_dic
     return stockdict
