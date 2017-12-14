@@ -491,9 +491,6 @@ def load_details(days_num, deal_dic):
     if len(deal_dic) == 0:
         return
 
-    for key in deal_dic:
-        deal_dic[key]['last_single'] = {}
-
     day = Day()
 
     for id_day in range(1, days_num + 1):
@@ -517,8 +514,37 @@ def load_details(days_num, deal_dic):
                 time.sleep(index)
                 load_stockid_detail(date, key, path)
 
-            get_stockid_detail(date, key, deal_dic[key]['last_single'])
 
+def get_details(days_num, deal_dic):
+    if len(deal_dic) == 0:
+        return
+
+    for key in deal_dic:
+        deal_dic[key]['last_single'] = {}
+
+    day = Day()
+
+    for id_day in range(1, days_num + 1):
+        date = ''
+        lastday = id_day * -1
+        while 1:
+            date =  '%s' % (day.get_day_of_day(lastday), )
+            if get_week_day(date) > 5:
+                lastday = lastday - 2
+            else:
+                break
+
+        path = '%s/%s' %(DATAPATH, date)
+
+        for key in deal_dic:
+            file_name = '%s/%s' % (path, key)
+            if not os.path.isfile(file_name):
+                #if key == 'sh603326':
+                #    print file_name
+                continue
+
+
+            get_stockid_detail(date, key, deal_dic[key]['last_single'])
 
 #成交明细
 def get_stockid_detail(date, id, deal_dic):
@@ -1578,6 +1604,7 @@ def do_search_short():
                 id_dic = base_select(base_dic, tmp_components)
                 if tmp_components.has_key('lastday_num'):
                     load_details(int(tmp_components['lastday_num']), id_dic)
+                    #get_details(int(tmp_components['lastday_num']), id_dic)
                 print 'after base_select', len(id_dic)
 
             query_components = tmp_components
@@ -1732,13 +1759,31 @@ def do_search_short():
 
             lastday_num = 0
             if query_components.has_key('lastday_num'):
-                lastday_num = query_components['lastday_num']
+                lastday_num = int(query_components['lastday_num'])
 
             last_flag = True
             for id_day in range(lastday_num):
                 if query_components.has_key('lastday_%d_vol_1_ge' % (id_day)) and id_dic[key].has_key('last_single') \
-                    and len(id_dic[key]['last_single']['vol_1']) > id_day:
+                    and id_dic[key]['last_single'].has_key('vol_1') and len(id_dic[key]['last_single']['vol_1']) > id_day:
                     if id_dic[key]['last_single']['vol_1'][id_day] < query_components['lastday_%d_vol_1_ge' % (id_day)]:
+                        last_flag = False
+                        break
+
+                if query_components.has_key('lastday_%d_vol_2_ge' % (id_day)) and id_dic[key].has_key('last_single') \
+                    and id_dic[key]['last_single'].has_key('vol_2') and len(id_dic[key]['last_single']['vol_2']) > id_day:
+                    if id_dic[key]['last_single']['vol_2'][id_day] < query_components['lastday_%d_vol_2_ge' % (id_day)]:
+                        last_flag = False
+                        break
+
+                if query_components.has_key('lastday_%d_vol_3_ge' % (id_day)) and id_dic[key].has_key('last_single') \
+                    and id_dic[key]['last_single'].has_key('vol_3') and len(id_dic[key]['last_single']['vol_3']) > id_day:
+                    if id_dic[key]['last_single']['vol_3'][id_day] < query_components['lastday_%d_vol_3_ge' % (id_day)]:
+                        last_flag = False
+                        break
+
+                if query_components.has_key('lastday_%d_vol_4_ge' % (id_day)) and id_dic[key].has_key('last_single') \
+                    and id_dic[key]['last_single'].has_key('vol_4') and len(id_dic[key]['last_single']['vol_4']) > id_day:
+                    if id_dic[key]['last_single']['vol_4'][id_day] < query_components['lastday_%d_vol_4_ge' % (id_day)]:
                         last_flag = False
                         break
 

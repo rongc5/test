@@ -628,10 +628,42 @@ def test_201(search_dic):
         if key in user_cart:
             return False
 
+    length = len(res_dic)
+    list_id = 0
+    pay_count = free_count = 0
     # 免费
     if user_type <= 1:
-        for key in res_dic:
-            pass
+        while list_id < length:
+            step_max = 2
+            step_id = 0
+            while step_id < step_max and list_id < length:
+                if res_dic[list_id] not in ucf_knn3:
+                    return False
+                step_id +=1
+                list_id += 1
+
+
+            step_max = 1
+            step_id = 0
+            while step_id < step_max and list_id < length:
+                if res_dic[list_id] not in ucf_knn4:
+                    return False
+                step_id +=1
+                list_id += 1
+
+            step_max = 1
+            while step_id < step_max and list_id < length:
+                if res_dic[list_id] not in t_ucf_knn3:
+                    return False
+                step_id +=1
+                list_id += 1
+
+            step_max = 1
+            while step_id < step_max and list_id < length:
+                if res_dic[list_id] not in t_ucf_knn4:
+                    return False
+                step_id +=1
+                list_id += 1
 
 
 
