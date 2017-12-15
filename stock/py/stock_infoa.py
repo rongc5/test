@@ -532,6 +532,10 @@ def load_details(days_num, deal_dic):
 
     day = Day()
 
+    path = '%s/' %(DATAPATH)
+    cmd = ['mkdir', '-p', path]
+    subprocess.Popen(cmd, stdout=subprocess.PIPE).communicate()[0]
+
     for id_day in range(1, days_num + 1):
         date = ''
         lastday = id_day * -1
@@ -542,16 +546,12 @@ def load_details(days_num, deal_dic):
             else:
                 break
 
-        path = '%s/%s' %(DATAPATH, date)
-        cmd = ['mkdir', '-p', path]
-        subprocess.Popen(cmd, stdout=subprocess.PIPE).communicate()[0]
-
-        file_name = '%s/%s' % (path, 'last_single')
+        file_name = '%s/%s_%s' % (DATAPATH, 'last_single', date.replace('-', ''))
 
         for key in deal_dic:
             cmd = ['grep', key, file_name]
             res_str = subprocess.Popen(cmd, stdout=subprocess.PIPE).communicate()[0]
-            if not res_str.strip() and os.path.isfile(file_name):
+            if not res_str.strip() or not os.path.isfile(file_name):
                 index = random.randint(1, 5)
                 time.sleep(index)
                 load_stockid_detail(date, key, file_name)
@@ -576,8 +576,7 @@ def get_details(days_num, deal_dic):
             else:
                 break
 
-        path = '%s/%s' %(DATAPATH, date)
-        file_name = '%s/%s' % (path, 'last_single')
+        file_name = '%s/%s_%s' % (DATAPATH, 'last_single', date.replace('-', ''))
         if not os.path.isfile(file_name):
             continue
 
