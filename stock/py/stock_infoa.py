@@ -441,7 +441,7 @@ class CurlHTTPFetcher(object):
             c.close()
 
 
-def load_stockid_detail(date, id, path):
+def load_stockid_detail(date, id, file_name):
     url = 'http://market.finance.sina.com.cn/downxls.php?date=%s&symbol=%s' % (date, id)
     header = {}
     index = random.randint(0, len(user_agent_list) -1)
@@ -462,8 +462,19 @@ def load_stockid_detail(date, id, path):
     if res.has_key('head') and res['head'].has_key('set-cookie'):
         user_agent_cookie[cookie_key] = res['head']['set-cookie'].split(';')[0]
 
+
+    stockdict = {}
+    stockdict['vol_1'] = 0
+    stockdict['vol_2'] = 0
+    stockdict['vol_3'] = 0
+    stockdict['vol_4'] = 0
+    stockdict['vol_5'] = 0
+    stockdict['vol_6'] = 0
+    stockdict['total_vol'] = 0
+    stockdict['min_price'] = 0
+    stockdict['high_price'] = 0
+
     res_str = ''
-    file_name = '%s/%s' % (path, id)
     if res.has_key('body') and res['body'].strip():
         items = res['body'].split('\n')
         for key in items:
@@ -473,16 +484,44 @@ def load_stockid_detail(date, id, path):
                     continue
                 vol = int(subitems[3])
 
-                str_key = ''
-                if u'买盘' in  subitems[5].decode('gbk'):
-                    str_key = 'B'
-                elif u'卖盘' in subitems[5].decode('gbk'):
-                    str_key = 'S'
-                else:
-                    str_key = 'M'
+                stockdict['total_vol'] += vol
 
-                res_str = '%s\t%s\t%s' % (subitems[1], subitems[3], str_key)
-                log_write(file_name, res_str)
+                if float(subitems[1]) < stockdict['min_price']:
+                    stockdict['min_price'] = float(subitems[1])
+
+                if float(subitems[1]) > stockdict['high_price']:
+                    stockdict['high_price'] = float(subitems[1])
+
+
+                flag = 1
+                if u'买盘' in  subitems[5].decode('gbk'):
+                    flag = 1
+                elif u'卖盘' in subitems[5].decode('gbk'):
+                    flag = -1
+                else:
+                    continue
+
+                if vol >= 100:
+                    stockdict['vol_1'] += vol * flag
+
+                if vol >= 200:
+                    stockdict['vol_2'] += vol * flag
+
+                if vol >= 500:
+                    stockdict['vol_3'] += vol * flag
+
+                if vol >= 1000:
+                    stockdict['vol_4'] += vol * flag
+
+                if vol >= 2000:
+                    stockdict['vol_5'] += vol * flag
+
+                if vol >= 4000:
+                    stockdict['vol_6'] += vol * flag
+
+        res_str = '%s\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%f\t%f' % (id, stockdict['vol_1'], stockdict['vol_2'], stockdict['vol_3'], stockdict['vol_4'], stockdict['vol_5'],
+        stockdict['vol_6'], stockdict['total_vol'], stockdict['min_price'], stockdict['high_price'])
+        log_write(file_name, res_str)
 
     if not res_str.strip():
         print url
@@ -507,12 +546,15 @@ def load_details(days_num, deal_dic):
         cmd = ['mkdir', '-p', path]
         subprocess.Popen(cmd, stdout=subprocess.PIPE).communicate()[0]
 
+        file_name = '%s/%s' % (path, 'last_single')
+
         for key in deal_dic:
-            file_name = '%s/%s' % (path, id)
-            if not os.path.isfile(file_name):
+            cmd = ['grep', key, file_name]
+            res_str = subprocess.Popen(cmd, stdout=subprocess.PIPE).communicate()[0]
+            if not res_str.strip() and os.path.isfile(file_name):
                 index = random.randint(1, 5)
                 time.sleep(index)
-                load_stockid_detail(date, key, path)
+                load_stockid_detail(date, key, file_name)
 
 
 def get_details(days_num, deal_dic):
@@ -535,49 +577,19 @@ def get_details(days_num, deal_dic):
                 break
 
         path = '%s/%s' %(DATAPATH, date)
+        file_name = '%s/%s' % (path, 'last_single')
+        if not os.path.isfile(file_name):
+            continue
 
-        for key in deal_dic:
-            file_name = '%s/%s' % (path, key)
-            if not os.path.isfile(file_name):
-                #if key == 'sh603326':
-                #    print file_name
-                continue
-
-
-            get_stockid_detail(date, key, deal_dic[key]['last_single'])
+        get_stockid_detail(file_name, deal_dic, 'last_single')
 
 #成交明细
-def get_stockid_detail(date, id, deal_dic):
-    res = {}
+def get_stockid_detail(file_name, deal_dic, detail_key):
 
-    path = '%s/%s/%s' %(DATAPATH, date, id)
+    if not os.path.isfile(file_name):
+        return
 
-    if not os.path.isfile(path):
-        return res
-
-    if not deal_dic.has_key('vol_1'):
-        deal_dic['vol_1'] = []
-        deal_dic['vol_2'] = []
-        deal_dic['vol_3'] = []
-        deal_dic['vol_4'] = []
-        deal_dic['ratio_vol_1'] = []
-        deal_dic['ratio_vol_2'] = []
-        deal_dic['ratio_vol_3'] = []
-        deal_dic['ratio_vol_4'] = []
-        deal_dic['min_price'] = []
-        deal_dic['high_price'] = []
-
-
-    stockdict = {}
-    stockdict['vol_1'] = 0
-    stockdict['vol_2'] = 0
-    stockdict['vol_3'] = 0
-    stockdict['vol_4'] = 0
-    stockdict['total_vol'] = 0
-    stockdict['min_price'] = 0
-    stockdict['high_price'] = 0
-
-    file = open(path)
+    file = open(file_name)
     while 1:
         line = file.readline().strip()
         if not line:
@@ -585,61 +597,31 @@ def get_stockid_detail(date, id, deal_dic):
         items = line.split('\n')
         for key in items:
             subitems = key.split('\t');
-            if len(subitems) == 3:
-                if not subitems[1].isdigit():
-                    continue
-                vol = int(subitems[1])
-                stockdict['total_vol'] += vol
-                    #print stockdict['total_vol']
+            if len(subitems) == 10:
+                if subitems[0] in deal_dic:
+                    if not deal_dic.has_key('vol_1'):
+                        deal_dic[subitems[0]][detail_key]['vol_1'] = []
+                        deal_dic[subitems[0]][detail_key]['vol_2'] = []
+                        deal_dic[subitems[0]][detail_key]['vol_3'] = []
+                        deal_dic[subitems[0]][detail_key]['vol_4'] = []
+                        deal_dic[subitems[0]][detail_key]['vol_5'] = []
+                        deal_dic[subitems[0]][detail_key]['vol_6'] = []
+                        deal_dic[subitems[0]][detail_key]['min_price'] = []
+                        deal_dic[subitems[0]][detail_key]['high_price'] = []
+                        deal_dic[subitems[0]][detail_key]['total_vol'] = []
 
-                if float(subitems[0]) < stockdict['min_price']:
-                    stockdict['min_price'] = float(subitems[0])
-
-                if float(subitems[0]) > stockdict['high_price']:
-                    stockdict['high_price'] = float(subitems[0])
-
-                flag = 1
-                if 'B' in subitems[2]:
-                    flag = 1
-                elif 'S' in subitems[2]:
-                    flag = -1
-                else:
-                    continue
-
-                if vol >= 100:
-                    stockdict['vol_1'] += vol * flag
-
-                if vol >= 200:
-                    stockdict['vol_2'] += vol * flag
-
-                if vol >= 500:
-                    stockdict['vol_3'] += vol * flag
-
-                if vol >= 1000:
-                    stockdict['vol_4'] += vol * flag
-
-    if stockdict.has_key('vol_1') and stockdict['total_vol'] > 0:
-        stockdict['ratio_vol_1'] = stockdict['vol_1'] *1.0 / stockdict['total_vol']
-        stockdict['ratio_vol_2'] = stockdict['vol_2'] *1.0 / stockdict['total_vol']
-        stockdict['ratio_vol_3'] = stockdict['vol_3'] *1.0 / stockdict['total_vol']
-        stockdict['ratio_vol_4'] = stockdict['vol_4'] *1.0 / stockdict['total_vol']
-
-        deal_dic['vol_1'].append(stockdict['vol_1'])
-        deal_dic['vol_2'].append(stockdict['vol_2'])
-        deal_dic['vol_3'].append(stockdict['vol_3'])
-        deal_dic['vol_4'].append(stockdict['vol_4'])
-
-        deal_dic['ratio_vol_1'].append(stockdict['ratio_vol_1'])
-        deal_dic['ratio_vol_2'].append(stockdict['ratio_vol_2'])
-        deal_dic['ratio_vol_3'].append(stockdict['ratio_vol_3'])
-        deal_dic['ratio_vol_4'].append(stockdict['ratio_vol_4'])
-        deal_dic['min_price'].append(stockdict['min_price'])
-        deal_dic['high_price'].append(stockdict['high_price'])
+                    deal_dic[subitems[0]][detail_key]['vol_1'].append(int(subitems[1]))
+                    deal_dic[subitems[0]][detail_key]['vol_2'].append(int(subitems[2]))
+                    deal_dic[subitems[0]][detail_key]['vol_3'].append(int(subitems[3]))
+                    deal_dic[subitems[0]][detail_key]['vol_4'].append(int(subitems[4]))
+                    deal_dic[subitems[0]][detail_key]['vol_5'].append(int(subitems[5]))
+                    deal_dic[subitems[0]][detail_key]['vol_6'].append(int(subitems[6]))
+                    deal_dic[subitems[0]][detail_key]['total_vol'].append(int(subitems[7]))
+                    deal_dic[subitems[0]][detail_key]['min_price'].append(float(subitems[8]))
+                    deal_dic[subitems[0]][detail_key]['high_price'].append(float(subitems[9]))
 
     file.close()
-        #print deal_dic
-    return stockdict
-        #print res['body']
+    return
 
 #查看每股财务指标
 def get_stockid_mgzb(id):

@@ -24,6 +24,8 @@ RECOMM_ROOT_INTERVAL_TIME = 86400 * 3
 RECOMM_UCF_MASK_FLAG = 127
 RECOMM_UCF_ITEMINFO_NUM = 36
 
+RECOMM_ROOT_CUT1_RINFO_ITEMS = 128
+
 test_list = [{'uid':'48808231', 'reqGid':''}]
 
 #获取用户类型
@@ -88,7 +90,7 @@ def get_baoyue(search_key_dic):
 #历史书架
 #uid1_key u_48808231
 #cid1_key cu_54159287
-def get_history_user_cart(search_key_dic):
+def get_history_user_cart(search_key_dic, length):
     res_str = get_data_redis2(search_key_dic['uid1_key'], 'cart_item')
 
     res_list = []
@@ -99,7 +101,16 @@ def get_history_user_cart(search_key_dic):
         if res_str.strip():
             res_list = res_str.split('\t')
 
-    return res_list
+    tmp_res = []
+    res_length = len(res_list)
+    i = 0
+    count = 0
+    while i< res_length and count < length:
+        tmp_res.append(res_list[i])
+        i += 2
+        count += 1
+
+    return tmp_res
 
 
 def recomm_ucf_pull_cartitem(key, field):
@@ -138,7 +149,7 @@ def get_current_user_cart(search_key_dic):
 
 #tid3_key t_0EFF2921445097DC49E46156D5F6A18C
 #付费协同  field  ucf_knn3
-def get_current_ucf(search_key_dic, field='ucf_knn3'):
+def get_current_ucf(search_key_dic, field='ucf_knn3', length=RECOMM_ROOT_CUT1_RINFO_ITEMS):
     res_str = get_data_redis2(search_key_dic['tid1_key'], field)
     res_list = []
     if res_str.strip():
@@ -149,7 +160,16 @@ def get_current_ucf(search_key_dic, field='ucf_knn3'):
         if res_str.strip():
             res_list = res_str.split('\t')
 
-    return res_list
+    tmp_res = []
+    res_length = len(res_list)
+    i = 0
+    count = 0
+    while i< res_length and count < length:
+        tmp_res.append(res_list[i])
+        i += 2
+        count += 1
+
+    return tmp_res
 
 def recomm_ucf_select_category(items_dic):
 
@@ -384,22 +404,40 @@ def recomm_ucf_compute(search_key_dic, key_id, field):
 #uid1_key  u_54159287
 #uid3_key  d_0EFF2921445097DC49E46156D5F6A18C
 #免费流行度
-def get_free_pop(search_key_dic):
+def get_free_pop(search_key_dic, length):
     res_str = get_data_redis2(search_key_dic['uid4_key'], 'pop_topn')
     res_list = []
     if res_str.strip():
         res_list = res_str.split('\t')
 
-    return res_list
+    tmp_res = []
+    res_length = len(res_list)
+    i = 0
+    count = 0
+    while i< res_length and count < length:
+        tmp_res.append(res_list[i])
+        i += 2
+        count += 1
+
+    return tmp_res
 
 #付费流行度
-def get_pay_pop(search_key_dic):
+def get_pay_pop(search_key_dic, length):
     res_str = get_data_redis2(search_key_dic['uid2_key'], 'pop_topn')
     res_list = []
     if res_str.strip():
         res_list = res_str.split('\t')
 
-    return res_list
+    tmp_res = []
+    res_length = len(res_list)
+    i = 0
+    count = 0
+    while i< res_length and count < length:
+        tmp_res.append(res_list[i])
+        i += 2
+        count += 1
+
+    return tmp_res
 
 #ik_version
 #1501745183
@@ -598,11 +636,11 @@ def test_201(search_dic):
         return False
 
     #user_cart
-    user_cart = get_history_user_cart(search_dic)
+    user_cart = get_history_user_cart(search_dic, RECOMM_ROOT_CUT1_RINFO_ITEMS)
     #时协同, 限免
-    t_ucf_knn4 = get_current_ucf(search_dic, 'ucf_knn4')
+    t_ucf_knn4 = get_current_ucf(search_dic, 'ucf_knn4', RECOMM_ROOT_CUT1_RINFO_ITEMS)
     #时协同, 付费
-    t_ucf_knn3 = get_current_ucf(search_dic, 'ucf_knn3')
+    t_ucf_knn3 = get_current_ucf(search_dic, 'ucf_knn3', RECOMM_ROOT_CUT1_RINFO_ITEMS)
 
     #史协同, 限免
     ucf_knn4 = recomm_ucf_compute(search_dic, search_dic['uid1_key'], 'ucf_knn4')
@@ -614,9 +652,9 @@ def test_201(search_dic):
         ucf_knn3 = recomm_ucf_compute(search_dic, search_dic['uid3_key'], 'ucf_knn3')
 
     #免费流行度
-    free_pop = get_free_pop(search_dic)
+    free_pop = get_free_pop(search_dic, RECOMM_ROOT_CUT1_RINFO_ITEMS)
     #费流行度
-    pay_pop = get_pay_pop(search_dic)
+    pay_pop = get_pay_pop(search_dic, RECOMM_ROOT_CUT1_RINFO_ITEMS)
 
     #用户类型
     user_type = 0
@@ -631,42 +669,99 @@ def test_201(search_dic):
     length = len(res_dic)
     list_id = 0
     pay_count = free_count = 0
+    t_ucf_knn4_id = t_ucf_knn3_id = ucf_knn3_id = ucf_knn4_id = pop_id = 0
     # 免费
     if user_type <= 1:
-        while list_id < length:
+        while list_id < length and ucf_knn3_id < len(ucf_knn3) and ucf_knn4_id < len(ucf_knn4)\
+        and t_ucf_knn3_id < len(t_ucf_knn3) and t_ucf_knn4_id < len(t_ucf_knn4):
             step_max = 2
             step_id = 0
-            while step_id < step_max and list_id < length:
+            while step_id < step_max and list_id < length and ucf_knn3_id < len(ucf_knn3):
                 if res_dic[list_id] not in ucf_knn3:
                     return False
                 step_id +=1
                 list_id += 1
+                pay_count +=1
+                ucf_knn3_id +=1
 
 
             step_max = 1
             step_id = 0
-            while step_id < step_max and list_id < length:
+            while step_id < step_max and list_id < length and ucf_knn4_id < len(ucf_knn4) :
                 if res_dic[list_id] not in ucf_knn4:
                     return False
                 step_id +=1
                 list_id += 1
+                free_count +=1
+                ucf_knn4_id +=1
 
             step_max = 1
-            while step_id < step_max and list_id < length:
+            step_id = 0
+            while step_id < step_max and list_id < length and t_ucf_knn3_id < len(t_ucf_knn3):
                 if res_dic[list_id] not in t_ucf_knn3:
                     return False
                 step_id +=1
                 list_id += 1
+                pay_count +=1
+                t_ucf_knn3_id +=1
 
             step_max = 1
-            while step_id < step_max and list_id < length:
+            step_id = 0
+            while step_id < step_max and list_id < length and t_ucf_knn4_id < len(t_ucf_knn4):
                 if res_dic[list_id] not in t_ucf_knn4:
                     return False
                 step_id +=1
                 list_id += 1
+                free_count +=1
+                t_ucf_knn4_id +=1
 
 
+        while list_id < length:
+            if 2 * pay_count > 3 * free_count:
+                if res_dic[list_id] not in free_pop and pop_id < len(free_pop):
+                    return False
+            else:
+                if res_dic[list_id] not in pay_pop and pop_id < len(pay_pop):
+                    return False
 
+            pop_id += 1
+            list_id += 1
+
+
+    else:
+         while list_id < length and ucf_knn3_id < len(ucf_knn3) \
+            and t_ucf_knn3_id < len(t_ucf_knn3):
+            step_max = 3
+            step_id = 0
+            while step_id < step_max and list_id < length and ucf_knn3_id < len(ucf_knn3):
+                if res_dic[list_id] not in ucf_knn3:
+                    return False
+                step_id +=1
+                list_id += 1
+                ucf_knn3_id +=1
+
+
+            step_max = 2
+            step_id = 0
+            while step_id < step_max and list_id < length and t_ucf_knn3_id < len(t_ucf_knn3):
+                if res_dic[list_id] not in t_ucf_knn3:
+                    return False
+                step_id +=1
+                list_id += 1
+                t_ucf_knn3_id +=1
+
+         while list_id < length:
+            if res_dic[list_id] not in pay_pop and pop_id < len(pay_pop):
+                    return False
+            list_id += 1
+            pop_id += 1
+
+
+    return True
+
+
+def test_202(search_dic):
+    pass
 
 
 
