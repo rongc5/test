@@ -1,952 +1,518 @@
-#!/usr/bin/env python
-#encoding=utf-8
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="d3766abe-580e-40c2-998f-9c2d92058e97" name="Default" comment="" />
+    <ignored path="dsp.iws" />
+    <ignored path=".idea/workspace.xml" />
+    <option name="TRACKING_ENABLED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ChangesViewManager" flattened_view="true" show_ignored="false" />
+  <component name="CoverageDataManager">
+    <SUITE FILE_PATH="coverage/dsp$monitor.coverage" NAME="monitor Coverage Results" MODIFIED="1510717784517" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/../../../stock/py" />
+    <SUITE FILE_PATH="coverage/dsp$re_test_case.coverage" NAME="re_test_case Coverage Results" MODIFIED="1510825870603" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/../../../python" />
+    <SUITE FILE_PATH="coverage/dsp$stock_info.coverage" NAME="stock_info Coverage Results" MODIFIED="1509680086205" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/../../../stock/py" />
+  </component>
+  <component name="CreatePatchCommitExecutor">
+    <option name="PATCH_PATH" value="" />
+  </component>
+  <component name="DaemonCodeAnalyzer">
+    <disable_hints />
+  </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
+  <component name="FavoritesManager">
+    <favorites_list name="dsp" />
+  </component>
+  <component name="FileEditorManager">
+    <leaf />
+  </component>
+  <component name="FindManager">
+    <FindUsagesManager>
+      <setting name="OPEN_NEW_TAB" value="false" />
+    </FindUsagesManager>
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="changedFiles">
+      <list>
+        <option value="$PROJECT_DIR$/../../../python/find.py" />
+        <option value="$PROJECT_DIR$/../../../python/thread_pool_http.py" />
+        <option value="$PROJECT_DIR$/../../../python/remove_expired.py" />
+        <option value="$PROJECT_DIR$/../../../stock/py/api" />
+        <option value="$PROJECT_DIR$/../../../stock/py/stock_info_bak.py" />
+        <option value="$PROJECT_DIR$/../../../stock/py/stock_infob.py" />
+        <option value="$PROJECT_DIR$/../../../stock/py/stock_info.py" />
+        <option value="$PROJECT_DIR$/../../../stock/py/fetchers.py" />
+        <option value="$PROJECT_DIR$/../../../python/fetchers.py" />
+        <option value="$PROJECT_DIR$/../../../python/test6.py" />
+        <option value="$PROJECT_DIR$/../../../stock/py/stocka_cfg" />
+        <option value="$PROJECT_DIR$/../../../stock/py/stock_infoc.py" />
+        <option value="$PROJECT_DIR$/../../../stock/py/monitor.py" />
+        <option value="$PROJECT_DIR$/../../../python/re_test_case.py" />
+        <option value="$PROJECT_DIR$/../../../stock/py/stock_cfg" />
+        <option value="$PROJECT_DIR$/../../../stock/py/stock_infoa.py" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectFrameBounds">
+    <option name="x" value="-8" />
+    <option name="y" value="-8" />
+    <option name="width" value="1456" />
+    <option name="height" value="876" />
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="false">
+    <OptionsSetting value="true" id="Add" />
+    <OptionsSetting value="true" id="Remove" />
+    <OptionsSetting value="true" id="Checkout" />
+    <OptionsSetting value="true" id="Update" />
+    <OptionsSetting value="true" id="Status" />
+    <OptionsSetting value="true" id="Edit" />
+    <ConfirmationsSetting value="0" id="Add" />
+    <ConfirmationsSetting value="0" id="Remove" />
+  </component>
+  <component name="ProjectReloadState">
+    <option name="STATE" value="0" />
+  </component>
+  <component name="ProjectView">
+    <navigator currentView="ProjectPane" proportions="" version="1" splitterProportion="0.5">
+      <flattenPackages />
+      <showMembers />
+      <showModules />
+      <showLibraryContents />
+      <hideEmptyPackages />
+      <abbreviatePackageNames />
+      <autoscrollToSource />
+      <autoscrollFromSource />
+      <sortByType />
+    </navigator>
+    <panes>
+      <pane id="Scope">
+        <subPane subId="Project Files">
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
+      <pane id="ProjectPane">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="dsp" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="dsp" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="dsp" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="options.splitter.main.proportions" value="0.3" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="options.lastSelected" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+    <property name="recentsLimit" value="5" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../../python" />
+    <property name="FullScreen" value="false" />
+    <property name="options.searchVisible" value="true" />
+    <property name="options.splitter.details.proportions" value="0.2" />
+  </component>
+  <component name="PyConsoleOptionsProvider">
+    <option name="myPythonConsoleState">
+      <PyConsoleSettings />
+    </option>
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\work\self\test\stock\py" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Python.re_test_case">
+    <configuration default="false" name="__main__" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/dsp_server" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="dsp" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/dsp_server/__main__.py" />
+      <option name="PARAMETERS" value="" />
+      <RunnerSettings RunnerId="PythonCover" />
+      <ConfigurationWrapper RunnerId="PythonCover" />
+      <method />
+    </configuration>
+    <configuration default="false" name="stock_info" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/../../../stock/py" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="py" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/../../../stock/py/stock_info.py" />
+      <option name="PARAMETERS" value="" />
+      <RunnerSettings RunnerId="PythonRunner" />
+      <ConfigurationWrapper RunnerId="PythonRunner" />
+      <method />
+    </configuration>
+    <configuration default="false" name="monitor" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/../../../stock/py" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="py" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/../../../stock/py/monitor.py" />
+      <option name="PARAMETERS" value="" />
+      <RunnerSettings RunnerId="PythonRunner" />
+      <ConfigurationWrapper RunnerId="PythonRunner" />
+      <method />
+    </configuration>
+    <configuration default="false" name="re_test_case" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/../../../python" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="python" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/../../../python/re_test_case.py" />
+      <option name="PARAMETERS" value="" />
+      <RunnerSettings RunnerId="PythonRunner" />
+      <ConfigurationWrapper RunnerId="PythonRunner" />
+      <method />
+    </configuration>
+    <configuration default="true" type="DjangoTestsConfigurationType" factoryName="Django tests">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="dsp" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="TARGET" value="" />
+      <option name="SETTINGS_FILE" value="" />
+      <option name="CUSTOM_SETTINGS" value="false" />
+      <option name="USE_OPTIONS" value="false" />
+      <option name="OPTIONS" value="" />
+      <method />
+    </configuration>
+    <configuration default="true" type="tests" factoryName="py.test">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="dsp" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="" />
+      <option name="CLASS_NAME" value="" />
+      <option name="METHOD_NAME" value="" />
+      <option name="FOLDER_NAME" value="" />
+      <option name="TEST_TYPE" value="TEST_SCRIPT" />
+      <option name="PATTERN" value="" />
+      <option name="USE_PATTERN" value="false" />
+      <option name="testToRun" value="" />
+      <option name="keywords" value="" />
+      <option name="params" value="" />
+      <option name="USE_PARAM" value="false" />
+      <option name="USE_KEYWORD" value="false" />
+      <method />
+    </configuration>
+    <configuration default="true" type="tests" factoryName="Nosetests">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="dsp" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="" />
+      <option name="CLASS_NAME" value="" />
+      <option name="METHOD_NAME" value="" />
+      <option name="FOLDER_NAME" value="" />
+      <option name="TEST_TYPE" value="TEST_SCRIPT" />
+      <option name="PATTERN" value="" />
+      <option name="USE_PATTERN" value="false" />
+      <option name="PARAMS" value="" />
+      <option name="USE_PARAM" value="false" />
+      <method />
+    </configuration>
+    <configuration default="true" type="PythonConfigurationType" factoryName="Python">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="dsp" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="" />
+      <option name="PARAMETERS" value="" />
+      <method />
+    </configuration>
+    <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug" singleton="true">
+      <method />
+    </configuration>
+    <configuration default="true" type="tests" factoryName="Unittests">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="dsp" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="" />
+      <option name="CLASS_NAME" value="" />
+      <option name="METHOD_NAME" value="" />
+      <option name="FOLDER_NAME" value="" />
+      <option name="TEST_TYPE" value="TEST_SCRIPT" />
+      <option name="PATTERN" value="" />
+      <option name="USE_PATTERN" value="false" />
+      <option name="PUREUNITTEST" value="true" />
+      <option name="PARAMS" value="" />
+      <option name="USE_PARAM" value="false" />
+      <method />
+    </configuration>
+    <configuration default="true" type="tests" factoryName="Doctests">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="dsp" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="" />
+      <option name="CLASS_NAME" value="" />
+      <option name="METHOD_NAME" value="" />
+      <option name="FOLDER_NAME" value="" />
+      <option name="TEST_TYPE" value="TEST_SCRIPT" />
+      <option name="PATTERN" value="" />
+      <option name="USE_PATTERN" value="false" />
+      <method />
+    </configuration>
+    <configuration default="true" type="tests" factoryName="Attests">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="dsp" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="" />
+      <option name="CLASS_NAME" value="" />
+      <option name="METHOD_NAME" value="" />
+      <option name="FOLDER_NAME" value="" />
+      <option name="TEST_TYPE" value="TEST_SCRIPT" />
+      <option name="PATTERN" value="" />
+      <option name="USE_PATTERN" value="false" />
+      <method />
+    </configuration>
+    <list size="4">
+      <item index="0" class="java.lang.String" itemvalue="Python.__main__" />
+      <item index="1" class="java.lang.String" itemvalue="Python.stock_info" />
+      <item index="2" class="java.lang.String" itemvalue="Python.monitor" />
+      <item index="3" class="java.lang.String" itemvalue="Python.re_test_case" />
+    </list>
+    <recent_temporary>
+      <list size="4">
+        <item index="0" class="java.lang.String" itemvalue="Python.re_test_case" />
+        <item index="1" class="java.lang.String" itemvalue="Python.monitor" />
+        <item index="2" class="java.lang.String" itemvalue="Python.stock_info" />
+        <item index="3" class="java.lang.String" itemvalue="Python.__main__" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="ShelveChangesManager" show_recycled="false" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="d3766abe-580e-40c2-998f-9c2d92058e97" name="Default" comment="" />
+      <created>1468313240022</created>
+      <updated>1468313240022</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="-8" y="-8" width="1456" height="876" extended-state="6" />
+    <editor active="false" />
+    <layout>
+      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.25" sideWeight="0.777027" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.22297297" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.31621623" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32972974" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+    </layout>
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="myTodoPanelSettings">
+      <TodoPanelSettings />
+    </option>
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <option name="time" value="3" />
+    </breakpoint-manager>
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/../../../python/re_test_case.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="428" column="28" selection-start="10871" selection-end="10879" vertical-scroll-proportion="0.0" vertical-offset="7242" max-vertical-offset="13851" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../../python/spider.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="14" column="20" selection-start="418" selection-end="418" vertical-scroll-proportion="0.5156576" vertical-offset="0" max-vertical-offset="479" />
+      </provider>
+    </entry>
+    <entry file="file://D:/Python27/Lib/BaseHTTPServer.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="597" column="9" selection-start="22342" selection-end="22347" vertical-scroll-proportion="0.56405354" vertical-offset="10991" max-vertical-offset="11514" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../../stock/py/get_stock_id.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="5" column="12" selection-start="66" selection-end="66" vertical-scroll-proportion="-0.06934307" vertical-offset="95" max-vertical-offset="1995" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../../python/countX.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="91" column="0" selection-start="1898" selection-end="1898" vertical-scroll-proportion="0.30656934" vertical-offset="1561" max-vertical-offset="2109" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../../python/fetchurl.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="435" column="0" selection-start="12145" selection-end="12145" vertical-scroll-proportion="-0.5693431" vertical-offset="8463" max-vertical-offset="11932" />
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/.PyCharm30/system/python_stubs/1494736245/exceptions.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="79" column="24" selection-start="2392" selection-end="2392" vertical-scroll-proportion="0.33211678" vertical-offset="1319" max-vertical-offset="15257" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../../python/remove_expired.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="238" column="6" selection-start="5998" selection-end="5998" vertical-scroll-proportion="0.0" vertical-offset="4392" max-vertical-offset="4997" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../../stock/py/stock_infob.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="1306" column="0" selection-start="40585" selection-end="40585" vertical-scroll-proportion="-1.1719626" vertical-offset="25118" max-vertical-offset="28690" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../../stock/py/api">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="1" column="16" selection-start="5" selection-end="82" vertical-scroll-proportion="0.0" vertical-offset="2239" max-vertical-offset="2774" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../../stock/py/monitor_list">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="548" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../../stock/py/monitor.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="188" column="43" selection-start="5856" selection-end="5863" vertical-scroll-proportion="-3.7846715" vertical-offset="5418" max-vertical-offset="6023" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../../stock/py/stock_infoc.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="1259" column="49" selection-start="40013" selection-end="40013" vertical-scroll-proportion="0.26003823" vertical-offset="23557" max-vertical-offset="26163" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../../python/re_test_case.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="763" column="8" selection-start="22778" selection-end="22778" vertical-scroll-proportion="-0.10901163" vertical-offset="14572" max-vertical-offset="16264" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../../stock/py/stock_cfg">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="38" column="16" selection-start="670" selection-end="670" vertical-scroll-proportion="1.0126227" vertical-offset="0" max-vertical-offset="1045">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../../stock/py/stock_infoa.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="1593" column="96" selection-start="49891" selection-end="49902" vertical-scroll-proportion="0.6785714" vertical-offset="29545" max-vertical-offset="34333">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+  </component>
+</project>
 
-
-import json
-import time
-import pycurl
-import cStringIO
-import gzip
-import unicodedata
-import os
-import sys
-import random
-import subprocess
-
-from time import strftime, localtime
-from datetime import timedelta, date
-import calendar
-
-__author__ = 'rong'
-
-user_agent_list = [
-        "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 "
-        "(KHTML, like Gecko) Chrome/60.0.3112.113 Safari/537.36",
-        "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.1 "
-        "(KHTML, like Gecko) Chrome/22.0.1207.1 Safari/537.1",
-        "Mozilla/5.0 (X11; CrOS i686 2268.111.0) AppleWebKit/536.11 "
-        "(KHTML, like Gecko) Chrome/20.0.1132.57 Safari/536.11",
-        "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/536.6 "
-        "(KHTML, like Gecko) Chrome/20.0.1092.0 Safari/536.6",
-        "Mozilla/5.0 (Windows NT 6.2) AppleWebKit/536.6 "
-        "(KHTML, like Gecko) Chrome/20.0.1090.0 Safari/536.6",
-        "Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.1 "
-        "(KHTML, like Gecko) Chrome/19.77.34.5 Safari/537.1",
-        "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/536.5 "
-        "(KHTML, like Gecko) Chrome/19.0.1084.9 Safari/536.5",
-        "Mozilla/5.0 (Windows NT 6.0) AppleWebKit/536.5 "
-        "(KHTML, like Gecko) Chrome/19.0.1084.36 Safari/536.5",
-        "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/536.3 "
-        "(KHTML, like Gecko) Chrome/19.0.1063.0 Safari/536.3",
-        "Mozilla/5.0 (Windows NT 5.1) AppleWebKit/536.3 "
-        "(KHTML, like Gecko) Chrome/19.0.1063.0 Safari/536.3",
-        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_0) AppleWebKit/536.3 "
-        "(KHTML, like Gecko) Chrome/19.0.1063.0 Safari/536.3",
-        "Mozilla/5.0 (Windows NT 6.2) AppleWebKit/536.3 "
-        "(KHTML, like Gecko) Chrome/19.0.1062.0 Safari/536.3",
-        "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/536.3 "
-        "(KHTML, like Gecko) Chrome/19.0.1062.0 Safari/536.3",
-        "Mozilla/5.0 (Windows NT 6.2) AppleWebKit/536.3 "
-        "(KHTML, like Gecko) Chrome/19.0.1061.1 Safari/536.3"]
-
-
-user_agent_dic = {}
-user_agent_cookie = {}
-MAX_RESPONSE_KB = 10*1024
-DATAPATH = '../data/'
-
-class Day():
-    def __init__(self):
-        self.year = strftime("%Y", localtime())
-        self.mon = strftime("%m", localtime())
-        self.day = strftime("%d", localtime())
-        self.hour = strftime("%H", localtime())
-        self.min = strftime("%M", localtime())
-        self.sec = strftime("%S", localtime())
-
-    def today(self):
-     '''''
-     get today,date format="YYYY-MM-DD"
-     '''''
-     return date.today()
-
-
-    def todaystr(self):
-     '''
-     get date string, date format="YYYYMMDD"
-     '''
-     return self.year + self.mon + self.day
-
-
-    def datetime(self):
-     '''''
-     get datetime,format="YYYY-MM-DD HH:MM:SS"
-     '''
-     return strftime("%Y-%m-%d %H:%M:%S", localtime())
-
-
-    def datetimestr(self):
-     '''''
-     get datetime string
-     date format="YYYYMMDDHHMMSS"
-     '''
-     return self.year + self.mon + self.day + self.hour + self.min + self.sec
-
-
-    def get_day_of_day(self, n=0):
-     '''''
-     if n>=0,date is larger than today
-     if n<0,date is less than today
-     date format = "YYYY-MM-DD"
-     '''
-     if (n < 0):
-      n = abs(n)
-      return date.today() - timedelta(days=n)
-     else:
-      return date.today() + timedelta(days=n)
-
-
-    def get_days_of_month(self, year, mon):
-     '''''
-     get days of month
-     '''
-     return calendar.monthrange(year, mon)[1]
-
-
-    def get_firstday_of_month(self, year, mon):
-     '''''
-     get the first day of month
-     date format = "YYYY-MM-DD"
-     '''
-     days = "01"
-     if (int(mon) < 10):
-      mon = "0" + str(int(mon))
-     arr = (year, mon, days)
-     return "-".join("%s" % i for i in arr)
-
-
-    def get_lastday_of_month(self, year, mon):
-     '''''
-     get the last day of month
-     date format = "YYYY-MM-DD"
-     '''
-     days = calendar.monthrange(year, mon)[1]
-     mon = self.addzero(mon)
-     arr = (year, mon, days)
-     return "-".join("%s" % i for i in arr)
-
-
-    def get_firstday_month(self, n=0):
-     '''''
-     get the first day of month from today
-     n is how many months
-     '''
-     (y, m, d) = self.getyearandmonth(n)
-     d = "01"
-     arr = (y, m, d)
-     return "-".join("%s" % i for i in arr)
-
-
-    def get_lastday_month(self, n=0):
-     '''''
-     get the last day of month from today
-     n is how many months
-     '''
-     return "-".join("%s" % i for i in self.getyearandmonth(n))
-
-
-    def getyearandmonth(self, n=0):
-     '''''
-     get the year,month,days from today
-     befor or after n months
-     '''
-     thisyear = int(self.year)
-     thismon = int(self.mon)
-     totalmon = thismon + n
-     if (n >= 0):
-      if (totalmon <= 12):
-       days = str(self.get_days_of_month(thisyear, totalmon))
-       totalmon = self.addzero(totalmon)
-       return (self.year, totalmon, days)
-      else:
-       i = totalmon / 12
-       j = totalmon % 12
-       if (j == 0):
-        i -= 1
-        j = 12
-       thisyear += i
-       days = str(self.get_days_of_month(thisyear, j))
-       j = self.addzero(j)
-       return (str(thisyear), str(j), days)
-     else:
-      if ((totalmon > 0) and (totalmon < 12)):
-       days = str(self.get_days_of_month(thisyear, totalmon))
-       totalmon = self.addzero(totalmon)
-       return (self.year, totalmon, days)
-      else:
-       i = totalmon / 12
-       j = totalmon % 12
-       if (j == 0):
-        i -= 1
-        j = 12
-       thisyear += i
-       days = str(self.get_days_of_month(thisyear, j))
-       j = self.addzero(j)
-       return (str(thisyear), str(j), days)
-
-
-    def addzero(self, n):
-     '''''
-     add 0 before 0-9
-     return 01-09
-     '''
-     nabs = abs(int(n))
-     if (nabs < 10):
-      return "0" + str(nabs)
-     else:
-      return nabs
-
-
-    def get_today_month(self,n=0):
-     '''''
-     获取当前日期前后N月的日期
-     if n>0, 获取当前日期前N月的日期
-     if n<0, 获取当前日期后N月的日期
-     date format = "YYYY-MM-DD"
-     '''
-     (y, m, d) = self.getyearandmonth(n)
-     arr = (y, m, d)
-     if (int(self.day) < int(d)):
-      arr = (y, m, self.day)
-     return "-".join("%s" % i for i in arr)
-
-def log_write(filename, str):
-    file = open(filename, 'a')
-    file.write(str)
-    file.write('\n')
-    file.flush()
-    file.close()
-
-
-def get_week_day(date_str, format_str='%Y-%m-%d'):
-    day = 0
-    if not date_str:
-        return day
-
-    try:
-        d = time.strptime(date_str, format_str)
-        day =d.tm_wday + 1
-    except BaseException, e:
-        print e.message
-        return day
-
-    return day
-
-
-#主要是针对chunked 模式，没办法搞
-def curl_cmd_get(url):
-    cmd = "curl '%s'" % (url)
-    res = os.popen(cmd).read()
-    return res
-
-#1.0 版本不必支持chunked,
-def httpGetContent(url, req_header=None, version = '1.1'):
-
-    #print "==>", req_header, url, "<=="
-
-    buf = cStringIO.StringIO()
-    response_header = cStringIO.StringIO()
-    c = pycurl.Curl()
-    c.setopt(c.URL, url)
-    c.setopt(c.WRITEFUNCTION, buf.write)
-    c.setopt(c.CONNECTTIMEOUT, 100)
-    c.setopt(c.TIMEOUT, 300)
-    c.setopt(pycurl.MAXREDIRS, 5)
-    c.setopt(pycurl.FOLLOWLOCATION, 1)
-
-    if req_header is None:
-        req_header = []
-
-    flag = 0
-    for key in req_header:
-        if  'User-Agent:' in key or  'user-agent:' in key:
-            flag = 1
-            break
-
-    if not flag:
-        print 'no User-Agent', req_header, url, sys._getframe().f_lineno
-        return
-
-    #if not flag:
-    #    c.setopt(pycurl.USERAGENT, 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.113 Safari/537.36')
-
-    c.setopt(pycurl.TCP_NODELAY, 1)
-    if '1.1' in version:
-        add_headers = ['Accept:text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
-             'Connection:keep-alive','Accept-Language:zh-CN,zh;q=0.8,en;q=0.6','Cache-Control:max-age=0',
-             'DNT:1','Upgrade-Insecure-Requests:1','Accept-Charset: utf-8']
-        c.setopt(pycurl.ENCODING, 'gzip, deflate')
-    else:
-        add_headers = ['Accept:text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
-             'Connection:close','Accept-Language:zh-CN,zh;q=0.8,en;q=0.6','Cache-Control:max-age=0']
-        c.setopt(pycurl.HTTP_VERSION, pycurl.CURL_HTTP_VERSION_1_0)
-    if len(req_header):
-        add_headers.extend(req_header)
-
-    c.setopt(c.HTTPHEADER, add_headers)
-    c.setopt(pycurl.HTTPGET, 1)
-    c.setopt(c.HEADERFUNCTION, response_header.write)
-    res = {}
-
-    try:
-        c.perform()
-        str_head = '%s' % (response_header.getvalue())
-        str_body = '%s' % (buf.getvalue())
-        res['head'] = str_head
-        res['body'] = str_body
-        #print str_head, str_body
-    except pycurl.error, error:
-        errno, errstr = error
-        print 'An error occurred: ', errstr, url
-    c.close()
-    buf.close()
-    response_header.close()
-    #print res
-    return res
-
-class HTTPError(Exception):
-    """Exception that is wrapped around all exceptions that are raised
-    by the underlying fetcher when using the ExceptionWrappingFetcher
-
-    @ivar why: The exception that caused this exception
-    """
-    def __init__(self, why=None):
-        Exception.__init__(self, why)
-        self.why = why
-
-class CurlHTTPFetcher(object):
-    """
-    An C{L{HTTPFetcher}} that uses pycurl for fetching.
-    See U{http://pycurl.sourceforge.net/}.
-    """
-    ALLOWED_TIME = 30 # seconds
-
-    def _parseHeaders(self, header_file):
-        header_file.seek(0)
-
-        # Remove the status line from the beginning of the input
-        unused_http_status_line = header_file.readline().lower ()
-        if unused_http_status_line.startswith('http/1.1 100 '):
-            unused_http_status_line = header_file.readline()
-            unused_http_status_line = header_file.readline()
-
-        lines = [line.strip() for line in header_file]
-
-        # and the blank line from the end
-        empty_line = lines.pop()
-        if empty_line:
-            raise HTTPError("No blank line at end of headers: %r" % (line,))
-
-        headers = {}
-        for line in lines:
-            try:
-                name, value = line.split(':', 1)
-            except ValueError:
-                raise HTTPError(
-                    "Malformed HTTP header line in response: %r" % (line,))
-
-            value = value.strip()
-
-            # HTTP headers are case-insensitive
-            name = name.lower()
-            headers[name] = value
-
-        return headers
-
-    def fetch(self, url, body=None, headers=None):
-        stop = int(time.time()) + self.ALLOWED_TIME
-        off = self.ALLOWED_TIME
-
-        if headers is None:
-            headers = {}
-
-        if  'User-Agent:' in headers or  'user-agent:' in headers:
-            print 'no User-Agent', headers, url, sys._getframe().f_lineno
-            return
-
-        header_list = []
-        if headers is not None:
-            for header_name, header_value in headers.iteritems():
-                header_list.append('%s: %s' % (header_name, header_value))
-
-        c = pycurl.Curl()
-        try:
-            c.setopt(pycurl.NOSIGNAL, 1)
-
-            if header_list:
-                c.setopt(pycurl.HTTPHEADER, header_list)
-
-            # Presence of a body indicates that we should do a POST
-            if body is not None:
-                c.setopt(pycurl.POST, 1)
-                c.setopt(pycurl.POSTFIELDS, body)
-
-            while off > 0:
-                if not url.startswith('http://') and not url.startswith('https://'):
-                    raise HTTPError("Fetching URL not allowed: %r" % (url,))
-
-                data = cStringIO.StringIO()
-                def write_data(chunk):
-                    if data.tell() > 1024*MAX_RESPONSE_KB:
-                        return 0
-                    else:
-                        #print 'hello', data.getvalue().decode('gbk')
-                        return data.write(chunk)
-
-                response_header_data = cStringIO.StringIO()
-                c.setopt(pycurl.WRITEFUNCTION, write_data)
-                c.setopt(pycurl.HEADERFUNCTION, response_header_data.write)
-                c.setopt(pycurl.TIMEOUT, off)
-                c.setopt(pycurl.URL, url)
-
-                c.perform()
-
-                response_headers = self._parseHeaders(response_header_data)
-                code = c.getinfo(pycurl.RESPONSE_CODE)
-                if code in [301, 302, 303, 307]:
-                    url = response_headers.get('location')
-                    if url is None:
-                        raise HTTPError(
-                            'Redirect (%s) returned without a location' % code)
-
-                    # Redirects are always GETs
-                    c.setopt(pycurl.POST, 0)
-
-                    # There is no way to reset POSTFIELDS to empty and
-                    # reuse the connection, but we only use it once.
-                else:
-                    res = {}
-                    res['head'] = response_headers
-                    res['status'] = code
-                    res['final_url'] = url
-                    res['body'] = '%s' % (data.getvalue())
-                    return res
-
-                off = stop - int(time.time())
-
-            raise HTTPError("Timed out fetching: %r" % (url,))
-        finally:
-            response_header_data.close()
-            data.close()
-            c.close()
-
-
-def load_stockid_detail(date, id, file_name):
-    url = 'http://market.finance.sina.com.cn/downxls.php?date=%s&symbol=%s' % (date, id)
-    header = {}
-    index = random.randint(0, len(user_agent_list) -1)
-    header['User-Agent'] = user_agent_list[index]
-
-    cookie_key = '%d_sina' % (index,)
-    if user_agent_cookie.has_key(cookie_key):
-        header['Cookie'] = user_agent_cookie[cookie_key]
-
-    curl =  CurlHTTPFetcher()
-
-    res = {}
-    try:
-        res = curl.fetch(url, None, header)
-    except BaseException, e:
-        print e.message
-
-    if res.has_key('head') and res['head'].has_key('set-cookie'):
-        user_agent_cookie[cookie_key] = res['head']['set-cookie'].split(';')[0]
-
-
-    stockdict = {}
-    stockdict['vol_1'] = 0
-    stockdict['vol_2'] = 0
-    stockdict['vol_3'] = 0
-    stockdict['vol_4'] = 0
-    stockdict['vol_5'] = 0
-    stockdict['vol_6'] = 0
-    stockdict['total_vol'] = 0
-    stockdict['min_price'] = 0
-    stockdict['high_price'] = 0
-
-    res_str = ''
-    if res.has_key('body') and res['body'].strip():
-        items = res['body'].split('\n')
-        for key in items:
-            subitems = key.split('\t');
-            if len(subitems) == 6:
-                if not subitems[3].isdigit():
-                    continue
-                vol = int(subitems[3])
-
-                stockdict['total_vol'] += vol
-
-                if float(subitems[1]) < stockdict['min_price']:
-                    stockdict['min_price'] = float(subitems[1])
-
-                if float(subitems[1]) > stockdict['high_price']:
-                    stockdict['high_price'] = float(subitems[1])
-
-
-                flag = 1
-                if u'买盘' in  subitems[5].decode('gbk'):
-                    flag = 1
-                elif u'卖盘' in subitems[5].decode('gbk'):
-                    flag = -1
-                else:
-                    continue
-
-                if vol >= 100:
-                    stockdict['vol_1'] += vol * flag
-
-                if vol >= 200:
-                    stockdict['vol_2'] += vol * flag
-
-                if vol >= 500:
-                    stockdict['vol_3'] += vol * flag
-
-                if vol >= 1000:
-                    stockdict['vol_4'] += vol * flag
-
-                if vol >= 2000:
-                    stockdict['vol_5'] += vol * flag
-
-                if vol >= 4000:
-                    stockdict['vol_6'] += vol * flag
-
-        res_str = '%s\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%f\t%f' % (id, stockdict['vol_1'], stockdict['vol_2'], stockdict['vol_3'], stockdict['vol_4'], stockdict['vol_5'],
-        stockdict['vol_6'], stockdict['total_vol'], stockdict['min_price'], stockdict['high_price'])
-        log_write(file_name, res_str)
-
-    if not res_str.strip():
-        print url
-
-def load_details(days_num, deal_dic):
-    if len(deal_dic) == 0:
-        return
-
-    day = Day()
-
-    for id_day in range(1, days_num + 1):
-        date = ''
-        lastday = id_day * -1
-        while 1:
-            date =  '%s' % (day.get_day_of_day(lastday), )
-            if get_week_day(date) > 5:
-                lastday = lastday - 2
-            else:
-                break
-
-        path = '%s/%s' %(DATAPATH, date)
-        cmd = ['mkdir', '-p', path]
-        subprocess.Popen(cmd, stdout=subprocess.PIPE).communicate()[0]
-
-        file_name = '%s/%s' % (path, 'last_single')
-
-        for key in deal_dic:
-            if not os.path.isfile(file_name):
-                index = random.randint(1, 5)
-                time.sleep(index)
-                load_stockid_detail(date, key, file_name)
-
-
-def get_details(days_num, deal_dic):
-    if len(deal_dic) == 0:
-        return
-
-    for key in deal_dic:
-        deal_dic[key]['last_single'] = {}
-
-    day = Day()
-
-    for id_day in range(1, days_num + 1):
-        date = ''
-        lastday = id_day * -1
-        while 1:
-            date =  '%s' % (day.get_day_of_day(lastday), )
-            if get_week_day(date) > 5:
-                lastday = lastday - 2
-            else:
-                break
-
-        path = '%s/%s' %(DATAPATH, date)
-        file_name = '%s/%s' % (path, 'last_single')
-        if not os.path.isfile(file_name):
-            continue
-
-        get_stockid_detail(file_name, deal_dic, 'last_single')
-
-#成交明细
-def get_stockid_detail(file_name, deal_dic, detail_key):
-
-    if not os.path.isfile(file_name):
-        return
-
-    file = open(file_name)
-    while 1:
-        line = file.readline().strip()
-        if not line:
-            break
-        items = line.split('\n')
-        for key in items:
-            subitems = key.split('\t');
-            if len(subitems) == 10:
-                if subitems[0] in deal_dic:
-                    if not deal_dic.has_key('vol_1'):
-                        deal_dic[subitems[0]][detail_key]['vol_1'] = []
-                        deal_dic[subitems[0]][detail_key]['vol_2'] = []
-                        deal_dic[subitems[0]][detail_key]['vol_3'] = []
-                        deal_dic[subitems[0]][detail_key]['vol_4'] = []
-                        deal_dic[subitems[0]][detail_key]['vol_5'] = []
-                        deal_dic[subitems[0]][detail_key]['vol_6'] = []
-                        deal_dic[subitems[0]][detail_key]['min_price'] = []
-                        deal_dic[subitems[0]][detail_key]['high_price'] = []
-                        deal_dic[subitems[0]][detail_key]['total_vol'] = []
-
-                    deal_dic[subitems[0]][detail_key]['vol_1'].append(int(subitems[1]))
-                    deal_dic[subitems[0]][detail_key]['vol_2'].append(int(subitems[2]))
-                    deal_dic[subitems[0]][detail_key]['vol_3'].append(int(subitems[3]))
-                    deal_dic[subitems[0]][detail_key]['vol_4'].append(int(subitems[4]))
-                    deal_dic[subitems[0]][detail_key]['vol_5'].append(int(subitems[5]))
-                    deal_dic[subitems[0]][detail_key]['vol_6'].append(int(subitems[6]))
-                    deal_dic[subitems[0]][detail_key]['total_vol'].append(int(subitems[7]))
-                    deal_dic[subitems[0]][detail_key]['min_price'].append(float(subitems[8]))
-                    deal_dic[subitems[0]][detail_key]['high_price'].append(float(subitems[9]))
-
-    file.close()
-    return
-
-#查看每股财务指标
-def get_stockid_mgzb(id):
-
-    url = 'http://comdata.finance.gtimg.cn/data/mgzb/%s' % (id)
-    refer = 'http://stock.finance.qq.com/corp1/cwfx.html?mgzb-%s' %(id)
-
-    i = 0
-    imax = 3
-    id_dic = {}
-    while 1:
-        try:
-            if i + 1 < imax:
-                req_header = []
-                req_header.extend(['Referer: %s' % (refer)])
-                index = random.randint(0, len(user_agent_list) -1)
-                req_header.extend(['User-Agent: %s' % (user_agent_list[index])])
-
-                res = httpGetContent(url, req_header)
-                value = res['body'].decode("gbk").split('=')[1].strip(';\r\n')
-            else:
-                res = curl_cmd_get(url)
-                value = res.decode("gbk").split('=')[1].strip(';\r\n')
-
-            id_dic= json.loads(value)
-            break
-        except Exception,e:
-            #print url, value, e
-            i = i+1
-            if i >= imax:
-                log_write('errcode', id)
-                break
-            time.sleep(random.randint(1, 3))
-
-    if i > imax:
-        return  {}
-
-    return id_dic['data']['mgzb']
-
-#查看每股盈利能力
-def get_stockid_ylnl(id):
-
-    url = 'http://comdata.finance.gtimg.cn/data/ylnl/%s' % (id)
-    refer = 'http://stock.finance.qq.com/corp1/cwfx.html?ylnl-%s' %(id)
-
-    i = 0
-    imax = 3
-    id_dic = {}
-    while 1:
-        try:
-            if i + 1 < imax:
-                req_header = []
-                req_header.extend(['Referer: %s' % (refer)])
-                index = random.randint(0, len(user_agent_list) -1)
-                req_header.extend(['User-Agent: %s' % (user_agent_list[index])])
-
-                res = httpGetContent(url, req_header)
-                value = res['body'].decode("gbk").split('=')[1].strip(';\r\n')
-            else:
-                res = curl_cmd_get(url)
-                value = res.decode("gbk").split('=')[1].strip(';\r\n')
-
-            id_dic= json.loads(value)
-            break
-        except Exception,e:
-            #print url, value, e
-            i = i+1
-            if i >= imax:
-                log_write('errcode', id)
-                break
-            time.sleep(random.randint(1, 3))
-
-    if i > imax:
-        return  {}
-
-    return id_dic['data']['ylnl']
-
-#查看每股成长能力
-def get_stockid_cznl(id):
-
-    url = 'http://comdata.finance.gtimg.cn/data/cznl/%s' % (id)
-    refer = 'http://stock.finance.qq.com/corp1/cwfx.html?cznl-%s' %(id)
-
-    i = 0
-    imax = 3
-    id_dic = {}
-    while 1:
-        try:
-            if i + 1 < imax:
-                req_header = []
-                req_header.extend(['Referer: %s' % (refer)])
-                index = random.randint(0, len(user_agent_list) -1)
-                req_header.extend(['User-Agent: %s' % (user_agent_list[index])])
-                res = httpGetContent(url, req_header)
-                value = res['body'].decode("gbk").split('=')[1].strip(';\r\n')
-            else:
-                res = curl_cmd_get(url)
-                value = res.decode("gbk").split('=')[1].strip(';\r\n')
-
-            id_dic= json.loads(value)
-            break
-        except Exception,e:
-            #print url, value, e
-            i = i+1
-            if i >= imax:
-                log_write('errcode', id)
-                break
-            time.sleep(random.randint(1, 3))
-
-    if i > imax:
-        return  {}
-
-    return id_dic['data']['cznl']
-
-#偿债及资本结构
-def get_stockid_czzb(id):
-
-    url = 'http://comdata.finance.gtimg.cn/data/czzb/%s' % (id)
-    refer = 'http://stock.finance.qq.com/corp1/cwfx.html?czzb-%s' %(id)
-
-    i = 0
-    imax = 3
-    id_dic = {}
-    while 1:
-        try:
-            if i + 1 < imax:
-                req_header = []
-                req_header.extend(['Referer: %s' % (refer)])
-                index = random.randint(0, len(user_agent_list) -1)
-                req_header.extend(['User-Agent: %s' % (user_agent_list[index])])
-                res = httpGetContent(url, req_header)
-                value = res['body'].decode("gbk").split('=')[1].strip(';\r\n')
-            else:
-                res = curl_cmd_get(url)
-                value = res.decode("gbk").split('=')[1].strip(';\r\n')
-
-            id_dic= json.loads(value)
-            break
-        except Exception,e:
-            #print url, value, e
-            i = i+1
-            if i >= imax:
-                log_write('errcode', id)
-                break
-            time.sleep(random.randint(1, 3))
-
-    if i > imax:
-        return  {}
-
-    return id_dic['data']['czzb']
-
-
-#杜邦分析
-def get_stockid_dbfx(id):
-
-    url = 'http://comdata.finance.gtimg.cn/data/dbfx/%s' % (id)
-    refer = 'http://stock.finance.qq.com/corp1/dbfx.html?%s' %(id)
-
-    i = 0
-    imax = 3
-    while 1:
-        try:
-            if i + 1 < imax:
-                req_header = []
-                req_header.extend(['Referer: %s' % (refer)])
-                index = random.randint(0, len(user_agent_list) -1)
-                req_header.extend(['User-Agent: %s' % (user_agent_list[index])])
-                res = httpGetContent(url, req_header)
-                value = res['body'].decode("gbk").split('=')[1].strip(';\r\n')
-            else:
-                res = curl_cmd_get(url)
-                value = res.decode("gbk").split('=')[1].strip(';\r\n')
-
-            id_dic= json.loads(value)
-            break
-        except Exception,e:
-            #print url, value, e
-            i = i+1
-            if i >= imax:
-                log_write('errcode', id)
-                break
-            time.sleep(random.randint(1, 3))
-
-    if i > imax:
-        return  {}
-
-    return id_dic['data']['dbfx']
-
-
-def get_single_analysis(id, vol, deal_dic):
-
-    stockdict = {}
-    if int(vol) <= 0:
-        print vol, 'err'
-        return stockdict
-
-
-    url = 'http://stock.finance.qq.com/sstock/list/view/dadan.php?t=js&c=%s&max=400&p=1&opt=1&o=0' % (id)
-    refer = 'http://stockhtm.finance.qq.com/sstock/quotpage/dadan.htm?c=%s' % (id)
-
-    stocklist = []
-    i = 0
-    imax = 5
-    while 1:
-        try:
-            if i + 1 < imax:
-                req_header = []
-                req_header.extend(['Referer: %s' % (refer)])
-                index = random.randint(0, len(user_agent_list) -1)
-                req_header.extend(['User-Agent: %s' % (user_agent_list[index])])
-
-                res = httpGetContent(url, req_header)
-                value = res['body'].decode("gbk").split('=')[1].strip(';\r\n')
-            else:
-                res = curl_cmd_get(url)
-                value = res.decode("gbk").split('=')[1].strip(';\r\n')
-            stocklist = value.split(',')[1]
-            break
-        except Exception,e:
-            #print url, value, e
-            i = i+1
-            if i >= imax:
-                log_write('errcode', id)
-                break
-            time.sleep(random.randint(1, 3))
-
-    if i > imax:
-        return  {}
-
-    #print stocklist
-
-    if not deal_dic.has_key('vol_1'):
-        deal_dic['vol_1'] = []
-        deal_dic['vol_2'] = []
-        deal_dic['vol_3'] = []
-        deal_dic['vol_4'] = []
-        deal_dic['ratio_vol_1'] = []
-        deal_dic['ratio_vol_2'] = []
-        deal_dic['ratio_vol_3'] = []
-        deal_dic['ratio_vol_4'] = []
-
-    stockdict['vol_1'] = 0
-    stockdict['vol_2'] = 0
-    stockdict['vol_3'] = 0
-    stockdict['vol_4'] = 0
-    items = stocklist.split('^')
-    for item in items:
-        subitems = item.split('~')
-        if len(subitems) >= 6:
-            flag = 1
-            if 's' in subitems[5] or 'S' in subitems[5]:
-                flag = -1
-            elif 'b' in subitems[5] or 'B' in subitems[5]:
-                flag = 1
-
-            if int(subitems[3]) >= 100:
-                stockdict['vol_1'] += int(subitems[3]) * flag
-
-            if int(subitems[3]) >= 200:
-                stockdict['vol_2'] += int(subitems[3]) * flag
-
-            if int(subitems[3]) >= 500:
-                stockdict['vol_3'] += int(subitems[3]) * flag
-
-            if int(subitems[3]) >= 1000:
-                stockdict['vol_4'] += int(subitems[3]) * flag
-
-    if len(deal_dic['vol_1']) >= 10:
-        deal_dic['vol_1'].pop(0)
-        deal_dic['vol_2'].pop(0)
-        deal_dic['vol_3'].pop(0)
-        deal_dic['vol_4'].pop(0)
-        deal_dic['ratio_vol_1'].pop(0)
-        deal_dic['ratio_vol_2'].pop(0)
-        deal_dic['ratio_vol_3'].pop(0)
-        deal_dic['ratio_vol_4'].pop(0)
-
-    if len(deal_dic['vol_1']) >=1 and abs(deal_dic['vol_1'][-1] - stockdict['vol_1']) < 400:
-        return stockdict
-
-    deal_dic['vol_1'].append(stockdict['vol_1'])
-    deal_dic['vol_2'].append(stockdict['vol_2'])
-    deal_dic['vol_3'].append(stockdict['vol_3'])
-    deal_dic['vol_4'].append(stockdict['vol_4'])
-
-    deal_dic['ratio_vol_1'].append(stockdict['vol_1'] *1.0 / vol)
-    deal_dic['ratio_vol_2'].append(stockdict['vol_2'] *1.0 / vol)
-    deal_dic['ratio_vol_3'].append(stockdict['vol_3'] *1.0 / vol)
-    deal_dic['ratio_vol_4'].append(stockdict['vol_4'] *1.0 / vol)
-
-    return stockdict
-
-
-def get_money_flow2(id):
-    url = 'https://gupiao.baidu.com/api/stocks/stockfunds?from=pc&os_ver=1&cuid=xxx&vv=100&format=json&stock_code=%s' % (id)
-    favicon = 'https://gupiao.baidu.com/favicon.ico'
-
-    tmp_dic = {}
-    i = 0
-    imax = 5
-    flag =0
-    index = 0
-    while 1:
-        try:
-            if i + 1 < imax:
-                req_header = []
-                index = random.randint(0, len(user_agent_list) -1)
-                req_header.extend(['User-Agent: %s' % (user_agent_list[index])])
-                if user_agent_cookie.has_key(index):
-                    req_header.extend(['Cookie: %s' % (user_agent_cookie[index])])
-                    flag = 1
-
-                #httpGetContent(favicon, ['Referer: %s' % (url), 'User-Agent: %s' % (user_agent_list[index])])
-                res = httpGetContent(url, req_header)
-                value = res.decode("gbk").strip(';\r\n')
-
-            else:
-                res['head'] = ''
-                res['body'] = curl_cmd_get(url)
-                value = res.decode("gbk").strip(';\r\n')
-            tmp_dic = json.loads(value)
-            if len(tmp_dic) >0:
-                break
-        except Exception,e:
-            #print url, value, e
-            if res.has_key('head'):
-                print res['head']
-
-            i = i+1
-            if i 

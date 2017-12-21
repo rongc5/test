@@ -486,8 +486,15 @@ def load_stockid_detail(date, id, file_name):
 
                 stockdict['total_vol'] += vol
 
+                if stockdict['min_price'] == 0:
+                    stockdict['min_price'] = float(subitems[1])
+
+                if stockdict['high_price'] == 0:
+                    stockdict['high_price'] = float(subitems[1])
+
                 if float(subitems[1]) < stockdict['min_price']:
                     stockdict['min_price'] = float(subitems[1])
+                    #print stockdict['min_price']
 
                 if float(subitems[1]) > stockdict['high_price']:
                     stockdict['high_price'] = float(subitems[1])
@@ -551,7 +558,7 @@ def load_details(days_num, deal_dic):
         for key in deal_dic:
             cmd = ['grep', key, file_name]
             res_str = subprocess.Popen(cmd, stdout=subprocess.PIPE).communicate()[0]
-            if not res_str.strip() or not os.path.isfile(file_name):
+            if not os.path.isfile(file_name) or not res_str.strip():
                 index = random.randint(1, 5)
                 time.sleep(index)
                 load_stockid_detail(date, key, file_name)
@@ -1584,8 +1591,9 @@ def do_search_short():
             if is_reload_base_list(query_components, tmp_components):
                 id_dic = base_select(base_dic, tmp_components)
                 if tmp_components.has_key('lastday_num'):
-                    load_details(int(tmp_components['lastday_num']), id_dic)
-                    #get_details(int(tmp_components['lastday_num']), id_dic)
+                    if tmp_components.has_key('loadlastnow') and int(tmp_components['loadlastnow']) > 0:
+                        load_details(int(tmp_components['lastday_num']), id_dic)
+                    get_details(int(tmp_components['lastday_num']), id_dic)
                 print 'after base_select', len(id_dic)
 
             query_components = tmp_components
