@@ -526,9 +526,10 @@ def load_stockid_detail(date, id, file_name):
                 if vol >= 4000:
                     stockdict['vol_6'] += vol * flag
 
-        res_str = '%s\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%f\t%f' % (id, stockdict['vol_1'], stockdict['vol_2'], stockdict['vol_3'], stockdict['vol_4'], stockdict['vol_5'],
+        if stockdict['total_vol'] > 0:
+            res_str = '%s\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%f\t%f' % (id, stockdict['vol_1'], stockdict['vol_2'], stockdict['vol_3'], stockdict['vol_4'], stockdict['vol_5'],
         stockdict['vol_6'], stockdict['total_vol'], stockdict['min_price'], stockdict['high_price'])
-        log_write(file_name, res_str)
+            log_write(file_name, res_str)
 
     if not res_str.strip():
         print url
@@ -589,6 +590,9 @@ def get_details(days_num, deal_dic):
 
         get_stockid_detail(file_name, deal_dic, 'last_single')
 
+    return deal_dic
+        #print deal_dic
+
 #成交明细
 def get_stockid_detail(file_name, deal_dic, detail_key):
 
@@ -605,7 +609,7 @@ def get_stockid_detail(file_name, deal_dic, detail_key):
             subitems = key.split('\t');
             if len(subitems) == 10:
                 if subitems[0] in deal_dic:
-                    if not deal_dic.has_key('vol_1'):
+                    if not deal_dic[subitems[0]][detail_key].has_key('vol_1'):
                         deal_dic[subitems[0]][detail_key]['vol_1'] = []
                         deal_dic[subitems[0]][detail_key]['vol_2'] = []
                         deal_dic[subitems[0]][detail_key]['vol_3'] = []
@@ -627,6 +631,7 @@ def get_stockid_detail(file_name, deal_dic, detail_key):
                     deal_dic[subitems[0]][detail_key]['high_price'].append(float(subitems[9]))
 
     file.close()
+    #print deal_dic
     return
 
 #查看每股财务指标
@@ -1450,6 +1455,123 @@ def get_positive_ratio(arr):
 
     return count *1.0/sum
 
+def log_single_analysis(id_dic):
+    day = Day()
+    toady = '%s' % (day.today(),)
+
+    file_name = '%s_%s' % ('last_single', toady.replace('-', ''))
+    for key in id_dic:
+        cmd = ['grep', key, file_name]
+        res_str = subprocess.Popen(cmd, stdout=subprocess.PIPE).communicate()[0]
+        if os.path.isfile(file_name) and  res_str.strip():
+            continue
+
+        time.sleep(0.05)
+        res = get_stockid_real_time(key)
+
+        if res.has_key('block') and res['block']:  #停牌
+            print key, 'block'
+            continue
+
+        if  res.has_key('range_percent'):
+            id_dic[key]['range_percent'] = res['range_percent']
+            id_dic[key]['swing'] = res['swing']
+            id_dic[key]['change_rate'] = res['change_rate']
+
+            id_dic[key]['end'] = res['end']
+            id_dic[key]['low'] = res['low']
+            id_dic[key]['high'] = res['high']
+            id_dic[key]['start'] = res['start']
+            id_dic[key]['vol'] = res['vol']
+
+        if not id_dic[key].has_key('vol'):
+            continue
+
+        if not id_dic[key].has_key('single'):
+            id_dic[key]['single'] = {}
+
+        get_single_analysis(key, id_dic[key]['vol'], id_dic[key]['single'])
+        if len(id_dic[key]['single']) == 0:
+            continue
+
+        money = get_money_flow(key)
+        if len(money) > 0 and money.has_key('main_force'):
+            id_dic[key]['main_force'] = money['main_force']
+        else:
+            continue
+
+
+        if id_dic[key]['vol'] > 0:
+            res_str = '%s\t%d\t%d\t%d\t%d\t%.2f\t%d\t%.2f\t%.2f\t%.2f\t%.2f' % (key, id_dic[key]['single']['vol_1'][-1], id_dic[key]['single']['vol_2'][-1], id_dic[key]['single']['vol_3'][-1], \
+            id_dic[key]['single']['vol_4'][-1], id_dic[key]['main_force'], id_dic[key]['vol'], id_dic[key]['start'], id_dic[key]['end'], id_dic[key]['low'], id_dic[key]['high'])
+            log_write(file_name, res_str)
+
+
+def get_last_singles(days_num, deal_dic):
+    if len(deal_dic) == 0:
+        return {}
+    day = Day()
+
+    for key in deal_dic:
+        deal_dic[key]['last_single'] = {}
+
+    for id_day in range(1, days_num + 1):
+        date = ''
+        lastday = id_day * -1
+        while 1:
+            date =  '%s' % (day.get_day_of_day(lastday), )
+            if get_week_day(date) > 5:
+                lastday = lastday - 2
+            else:
+                break
+
+        file_name = '%s_%s' % ('last_single', date.replace('-', ''))
+        if not os.path.isfile(file_name):
+            continue
+
+
+        file = open(file_name)
+        while 1:
+            line = file.readline().strip()
+            if not line:
+                break
+            items = line.split('\n')
+            for key in items:
+                subitems = key.split('\t');
+                if len(subitems) > 10:
+                    if subitems[0] in deal_dic:
+
+                        if not subitems[0] in deal_dic:
+                            continue
+
+                        if not deal_dic[subitems[0]]['last_single'].has_key('vol_1'):
+                            deal_dic[subitems[0]]['last_single']['vol_1'] = []
+                            deal_dic[subitems[0]]['last_single']['vol_2'] = []
+                            deal_dic[subitems[0]]['last_single']['vol_3'] = []
+                            deal_dic[subitems[0]]['last_single']['vol_4'] = []
+                            deal_dic[subitems[0]]['last_single']['main_force'] = []
+                            deal_dic[subitems[0]]['last_single']['start'] = []
+                            deal_dic[subitems[0]]['last_single']['end'] = []
+                            deal_dic[subitems[0]]['last_single']['low'] = []
+                            deal_dic[subitems[0]]['last_single']['high'] = []
+                            deal_dic[subitems[0]]['last_single']['total_vol'] = []
+
+                        deal_dic[subitems[0]]['last_single']['vol_1'].append(int(subitems[1]))
+                        deal_dic[subitems[0]]['last_single']['vol_2'].append(int(subitems[2]))
+                        deal_dic[subitems[0]]['last_single']['vol_3'].append(int(subitems[3]))
+                        deal_dic[subitems[0]]['last_single']['vol_4'].append(int(subitems[4]))
+                        deal_dic[subitems[0]]['last_single']['main_force'].append(float(subitems[5]))
+                        deal_dic[subitems[0]]['last_single']['total_vol'].append(int(subitems[6]))
+                        deal_dic[subitems[0]]['last_single']['low'].append(float(subitems[9]))
+                        deal_dic[subitems[0]]['last_single']['high'].append(float(subitems[10]))
+                        deal_dic[subitems[0]]['last_single']['start'].append(float(subitems[7]))
+                        deal_dic[subitems[0]]['last_single']['end'].append(float(subitems[8]))
+
+        file.close()
+
+
+    return deal_dic
+
 def log_print_res(search_dic):
     if not len(search_dic):
         return
@@ -1497,7 +1619,7 @@ def load_monitor_list():
         line = file.readline().strip('\n')
         if not line:
             break
-        id_dic[line] = line
+        id_dic[line] = {}
 
     file.close()
     return id_dic
@@ -1560,6 +1682,7 @@ def do_search_short():
         idstr = '%s' % key[0]
         ban_dic[idstr] = ''
 
+    #print day.hour
     base_dic = load_base_list()
     print 'load_base_list', len(base_dic)
     base_dic = remove_from_banlist(base_dic, ban_dic)
@@ -1572,17 +1695,40 @@ def do_search_short():
     cfg_mtime = 0
     TIME_DIFF = 20
     while 1:
+
+        #mtime = time.ctime(os.path.getmtime('stock_cfg'))
+        #if cfg_mtime != mtime:
+        #    cfg_mtime = mtime
+        #    tmp_components = load_config()
+        #    if is_reload_base_list(query_components, tmp_components):
+        #        id_dic = base_select(base_dic, tmp_components)
+        #        if tmp_components.has_key('lastday_num'):
+        #            if tmp_components.has_key('loadlastnow') and int(tmp_components['loadlastnow']) > 0:
+        #                load_details(int(tmp_components['lastday_num']), id_dic)
+        #            get_details(int(tmp_components['lastday_num']), id_dic)
+        #        print 'after base_select', len(id_dic)
+        #
+        #    query_components = tmp_components
+
         mtime = time.ctime(os.path.getmtime('monitor_list'))
         if monitor_mtime != mtime:
             monitor_mtime = mtime
             monitor_dic = load_monitor_list()
+
+            #if query_components.has_key('loadlastnow') and int(query_components['loadlastnow']) > 0:
+            #    load_details(int(query_components['lastday_num']), monitor_dic)
+            #monitor_dic = get_details(int(query_components['lastday_num']), monitor_dic)
+
             for key in monitor_dic:
                 if key not in id_dic:
                     id_dic[key] = {}
                     id_dic[key]['id'] = key
+                    #id_dic[key]['last_single'] = monitor_dic[key]['last_single']
 
-        for key in remove_ley:
-            id_dic.pop(key)
+        if day.hour >= 15:
+            log_single_analysis(base_dic)
+            log_single_analysis(monitor_dic)
+
 
         mtime = time.ctime(os.path.getmtime('stock_cfg'))
         if cfg_mtime != mtime:
@@ -1591,13 +1737,13 @@ def do_search_short():
             if is_reload_base_list(query_components, tmp_components):
                 id_dic = base_select(base_dic, tmp_components)
                 if tmp_components.has_key('lastday_num'):
-                    if tmp_components.has_key('loadlastnow') and int(tmp_components['loadlastnow']) > 0:
-                        load_details(int(tmp_components['lastday_num']), id_dic)
-                    get_details(int(tmp_components['lastday_num']), id_dic)
+                    get_last_singles(int(tmp_components['lastday_num']), id_dic)
                 print 'after base_select', len(id_dic)
-
             query_components = tmp_components
 
+
+        for key in remove_ley:
+            id_dic.pop(key)
 
         remove_ley = []
         search_remove = []
