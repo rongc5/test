@@ -1502,8 +1502,9 @@ def log_single_analysis(id_dic):
 
 
         if id_dic[key]['vol'] > 0:
-            res_str = '%s\t%d\t%d\t%d\t%d\t%.2f\t%d\t%.2f\t%.2f\t%.2f\t%.2f' % (key, id_dic[key]['single']['vol_1'][-1], id_dic[key]['single']['vol_2'][-1], id_dic[key]['single']['vol_3'][-1], \
-            id_dic[key]['single']['vol_4'][-1], id_dic[key]['main_force'], id_dic[key]['vol'], id_dic[key]['start'], id_dic[key]['end'], id_dic[key]['low'], id_dic[key]['high'])
+            res_str = '%s\t%d\t%d\t%d\t%d\t%.2f\t%d\t%.2f\t%.2f\t%.2f\t%.2f\t%.2f' % (key, id_dic[key]['single']['vol_1'][-1], id_dic[key]['single']['vol_2'][-1], id_dic[key]['single']['vol_3'][-1], \
+            id_dic[key]['single']['vol_4'][-1], id_dic[key]['main_force'], id_dic[key]['vol'], id_dic[key]['start'], id_dic[key]['end'], id_dic[key]['low'], \
+            id_dic[key]['high'], id_dic[key]['range_percent'])
             log_write(file_name, res_str)
 
 
@@ -1511,6 +1512,8 @@ def get_last_singles(days_num, deal_dic):
     if len(deal_dic) == 0:
         return {}
     day = Day()
+
+    date_dic = {}
 
     for key in deal_dic:
         deal_dic[key]['last_single'] = {}
@@ -1520,9 +1523,13 @@ def get_last_singles(days_num, deal_dic):
         lastday = id_day * -1
         while 1:
             date =  '%s' % (day.get_day_of_day(lastday), )
+            #print lastday, date
             if get_week_day(date) > 5:
                 lastday = lastday - 2
+            elif lastday in date_dic:
+                lastday = lastday - 1;
             else:
+                date_dic[lastday] = date
                 break
 
         file_name = '%s_%s' % ('last_single', date.replace('-', ''))
@@ -1531,6 +1538,7 @@ def get_last_singles(days_num, deal_dic):
 
 
         file = open(file_name)
+        #print file_name
         while 1:
             line = file.readline().strip()
             if not line:
@@ -1555,6 +1563,7 @@ def get_last_singles(days_num, deal_dic):
                             deal_dic[subitems[0]]['last_single']['low'] = []
                             deal_dic[subitems[0]]['last_single']['high'] = []
                             deal_dic[subitems[0]]['last_single']['total_vol'] = []
+                            deal_dic[subitems[0]]['last_single']['range_percent'] = []
 
                         deal_dic[subitems[0]]['last_single']['vol_1'].append(int(subitems[1]))
                         deal_dic[subitems[0]]['last_single']['vol_2'].append(int(subitems[2]))
@@ -1566,6 +1575,9 @@ def get_last_singles(days_num, deal_dic):
                         deal_dic[subitems[0]]['last_single']['high'].append(float(subitems[10]))
                         deal_dic[subitems[0]]['last_single']['start'].append(float(subitems[7]))
                         deal_dic[subitems[0]]['last_single']['end'].append(float(subitems[8]))
+
+                if len(subitems) > 11:
+                    deal_dic[subitems[0]]['last_single']['range_percent'].append(float(subitems[11]))
 
         file.close()
 
@@ -1680,7 +1692,7 @@ def do_search_short():
     ban_dic = {}
     for key in ban_list:
         idstr = '%s' % key[0]
-        ban_dic[idstr] = ''
+        ban_dic[idstr] = {}
 
     #print day.hour
     base_dic = load_base_list()
@@ -1898,27 +1910,27 @@ def do_search_short():
 
             last_flag = True
             for id_day in range(lastday_num):
-                if query_components.has_key('lastday_%d_vol_1_ge' % (id_day)) and id_dic[key].has_key('last_single') \
+                if query_components.has_key('lastday_%d_vol_1_ge' % (id_day + 1)) and id_dic[key].has_key('last_single') \
                     and id_dic[key]['last_single'].has_key('vol_1') and len(id_dic[key]['last_single']['vol_1']) > id_day:
-                    if id_dic[key]['last_single']['vol_1'][id_day] < query_components['lastday_%d_vol_1_ge' % (id_day)]:
+                    if id_dic[key]['last_single']['vol_1'][id_day] < query_components['lastday_%d_vol_1_ge' % (id_day + 1)]:
                         last_flag = False
                         break
 
-                if query_components.has_key('lastday_%d_vol_2_ge' % (id_day)) and id_dic[key].has_key('last_single') \
+                if query_components.has_key('lastday_%d_vol_2_ge' % (id_day + 1)) and id_dic[key].has_key('last_single') \
                     and id_dic[key]['last_single'].has_key('vol_2') and len(id_dic[key]['last_single']['vol_2']) > id_day:
-                    if id_dic[key]['last_single']['vol_2'][id_day] < query_components['lastday_%d_vol_2_ge' % (id_day)]:
+                    if id_dic[key]['last_single']['vol_2'][id_day] < query_components['lastday_%d_vol_2_ge' % (id_day + 1)]:
                         last_flag = False
                         break
 
-                if query_components.has_key('lastday_%d_vol_3_ge' % (id_day)) and id_dic[key].has_key('last_single') \
+                if query_components.has_key('lastday_%d_vol_3_ge' % (id_day + 1)) and id_dic[key].has_key('last_single') \
                     and id_dic[key]['last_single'].has_key('vol_3') and len(id_dic[key]['last_single']['vol_3']) > id_day:
-                    if id_dic[key]['last_single']['vol_3'][id_day] < query_components['lastday_%d_vol_3_ge' % (id_day)]:
+                    if id_dic[key]['last_single']['vol_3'][id_day] < query_components['lastday_%d_vol_3_ge' % (id_day + 1)]:
                         last_flag = False
                         break
 
-                if query_components.has_key('lastday_%d_vol_4_ge' % (id_day)) and id_dic[key].has_key('last_single') \
+                if query_components.has_key('lastday_%d_vol_4_ge' % (id_day + 1)) and id_dic[key].has_key('last_single') \
                     and id_dic[key]['last_single'].has_key('vol_4') and len(id_dic[key]['last_single']['vol_4']) > id_day:
-                    if id_dic[key]['last_single']['vol_4'][id_day] < query_components['lastday_%d_vol_4_ge' % (id_day)]:
+                    if id_dic[key]['last_single']['vol_4'][id_day] < query_components['lastday_%d_vol_4_ge' % (id_day + 1)]:
                         last_flag = False
                         break
 
