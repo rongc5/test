@@ -31,7 +31,7 @@
       <file leaf-file-name="stock_infoa.py" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/../../../stock/py/stock_infoa.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="1915" column="41" selection-start="63636" selection-end="63636" vertical-scroll-proportion="0.5157143" vertical-offset="36024" max-vertical-offset="37582">
+            <state line="1865" column="39" selection-start="61231" selection-end="61231" vertical-scroll-proportion="3.5285714" vertical-offset="32965" max-vertical-offset="37582">
               <folding>
                 <element signature="e#40#51#0" expanded="true" />
               </folding>
@@ -100,16 +100,6 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="Scope">
-        <subPane subId="Project Files">
-          <PATH>
-            <PATH_ELEMENT USER_OBJECT="Root">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-          </PATH>
-        </subPane>
-      </pane>
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -140,17 +130,27 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scope">
+        <subPane subId="Project Files">
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="recentsLimit" value="5" />
     <property name="options.lastSelected" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+    <property name="recentsLimit" value="5" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../../../python" />
     <property name="FullScreen" value="false" />
-    <property name="options.splitter.details.proportions" value="0.2" />
     <property name="options.searchVisible" value="true" />
+    <property name="options.splitter.details.proportions" value="0.2" />
   </component>
   <component name="PyConsoleOptionsProvider">
     <option name="myPythonConsoleState">
@@ -323,6 +323,9 @@
       <option name="PARAMETERS" value="" />
       <method />
     </configuration>
+    <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug" singleton="true">
+      <method />
+    </configuration>
     <configuration default="true" type="tests" factoryName="Unittests">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -344,9 +347,6 @@
       <option name="PUREUNITTEST" value="true" />
       <option name="PARAMS" value="" />
       <option name="USE_PARAM" value="false" />
-      <method />
-    </configuration>
-    <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug" singleton="true">
       <method />
     </configuration>
     <configuration default="true" type="tests" factoryName="Doctests">
@@ -527,14 +527,12 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/../../../stock/py/stock_cfg">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="38" column="16" selection-start="676" selection-end="676" vertical-scroll-proportion="0.54698455" vertical-offset="332" max-vertical-offset="1045">
-          <folding />
-        </state>
+        <state line="38" column="16" selection-start="676" selection-end="676" vertical-scroll-proportion="0.54698455" vertical-offset="332" max-vertical-offset="1045" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/../../../stock/py/stock_infoa.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="1915" column="41" selection-start="63636" selection-end="63636" vertical-scroll-proportion="0.5157143" vertical-offset="36024" max-vertical-offset="37582">
+        <state line="1865" column="39" selection-start="61231" selection-end="61231" vertical-scroll-proportion="3.5285714" vertical-offset="32965" max-vertical-offset="37582">
           <folding>
             <element signature="e#40#51#0" expanded="true" />
           </folding>

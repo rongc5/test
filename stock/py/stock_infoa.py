@@ -1546,11 +1546,12 @@ def get_last_singles(days_num, deal_dic):
             items = line.split('\n')
             for key in items:
                 subitems = key.split('\t');
+                if not subitems[0] in deal_dic:
+                    continue
+
                 if len(subitems) > 10:
                     if subitems[0] in deal_dic:
 
-                        if not subitems[0] in deal_dic:
-                            continue
 
                         if not deal_dic[subitems[0]]['last_single'].has_key('vol_1'):
                             deal_dic[subitems[0]]['last_single']['vol_1'] = []
@@ -1589,7 +1590,6 @@ def log_print_res(search_dic):
         return
 
     day = Day()
-    remove_ley = []
 
     log_write('res_list', 'begin ==========:%s' % (day.datetime()))
 
@@ -1614,11 +1614,9 @@ def log_print_res(search_dic):
 
             log_write('res_list', json.dumps(search_dic[key]))
             log_write('res_list', '\n')
-            print 'search res', search_dic[key], '\n'
+            #print 'search res', search_dic[key], '\n'
 
     log_write('res_list', 'serch over ==========')
-    for key in remove_ley:
-        search_dic.pop(key)
 
 
 def load_monitor_list():
@@ -1737,7 +1735,8 @@ def do_search_short():
                     id_dic[key]['id'] = key
                     #id_dic[key]['last_single'] = monitor_dic[key]['last_single']
 
-        if day.hour >= 15:
+        if int(day.hour) >= 15:
+            print day.hour
             log_single_analysis(base_dic)
             log_single_analysis(monitor_dic)
 
@@ -1939,6 +1938,7 @@ def do_search_short():
                 continue
 
             search_dic[key] = id_dic[key]
+            print '==> ', search_dic[key], '\n'
             #id_dic[key]['next_time'] = 0
 
 
