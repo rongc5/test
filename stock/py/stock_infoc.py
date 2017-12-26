@@ -513,10 +513,10 @@ def get_single_analysis(id, vol, deal_dic):
     deal_dic['vol_3'].append(stockdict['vol_3'])
     deal_dic['vol_4'].append(stockdict['vol_4'])
 
-    deal_dic['ratio_vol_1'].append(stockdict['vol_1'] *1.0 / vol)
-    deal_dic['ratio_vol_2'].append(stockdict['vol_2'] *1.0 / vol)
-    deal_dic['ratio_vol_3'].append(stockdict['vol_3'] *1.0 / vol)
-    deal_dic['ratio_vol_4'].append(stockdict['vol_4'] *1.0 / vol)
+    deal_dic['ratio_vol_1'].append(round(stockdict['vol_1'] *1.0 / vol, 4))
+    deal_dic['ratio_vol_2'].append(round(stockdict['vol_2'] *1.0 / vol, 4))
+    deal_dic['ratio_vol_3'].append(round(stockdict['vol_3'] *1.0 / vol, 4))
+    deal_dic['ratio_vol_4'].append(round(stockdict['vol_4'] *1.0 / vol, 4))
 
     return stockdict
 
@@ -1258,10 +1258,10 @@ def do_search_short():
 
             if id_dic[key].has_key('end') and id_dic[key].has_key('low') and id_dic[key].has_key('start'):
                 if id_dic[key]['end'] > id_dic[key]['low'] and id_dic[key]['end'] != id_dic[key]['start']:
-                    id_dic[key]['down_pointer'] = abs(id_dic[key]['end'] - id_dic[key]['low']) * 1.0 /abs(id_dic[key]['end'] - id_dic[key]['start'])
+                    id_dic[key]['down_pointer'] = round(abs(id_dic[key]['end'] - id_dic[key]['low']) * 1.0 /abs(id_dic[key]['end'] - id_dic[key]['start']), 2)
 
                 if id_dic[key]['end'] < id_dic[key]['high'] and id_dic[key]['end'] != id_dic[key]['start']:
-                    id_dic[key]['up_pointer'] = abs(id_dic[key]['end'] - id_dic[key]['high']) *1.0/abs(id_dic[key]['end'] - id_dic[key]['start'])
+                    id_dic[key]['up_pointer'] = round(abs(id_dic[key]['end'] - id_dic[key]['high']) *1.0/abs(id_dic[key]['end'] - id_dic[key]['start']), 2)
 
             if not id_dic[key].has_key('vol'):
                 continue
