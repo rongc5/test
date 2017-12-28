@@ -31,7 +31,7 @@
       <file leaf-file-name="stock_infoa.py" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/../../../stock/py/stock_infoa.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="1865" column="39" selection-start="61231" selection-end="61231" vertical-scroll-proportion="3.5285714" vertical-offset="32965" max-vertical-offset="37582">
+            <state line="1020" column="46" selection-start="32250" selection-end="32250" vertical-scroll-proportion="-22.081482" vertical-offset="34285" max-vertical-offset="37753">
               <folding>
                 <element signature="e#40#51#0" expanded="true" />
               </folding>
@@ -100,6 +100,16 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="Scope">
+        <subPane subId="Project Files">
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -126,16 +136,6 @@
             <PATH_ELEMENT>
               <option name="myItemId" value="dsp" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-        </subPane>
-      </pane>
-      <pane id="Scope">
-        <subPane subId="Project Files">
-          <PATH>
-            <PATH_ELEMENT USER_OBJECT="Root">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
@@ -532,7 +532,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/../../../stock/py/stock_infoa.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="1865" column="39" selection-start="61231" selection-end="61231" vertical-scroll-proportion="3.5285714" vertical-offset="32965" max-vertical-offset="37582">
+        <state line="1020" column="46" selection-start="32250" selection-end="32250" vertical-scroll-proportion="-22.081482" vertical-offset="34285" max-vertical-offset="37753">
           <folding>
             <element signature="e#40#51#0" expanded="true" />
           </folding>

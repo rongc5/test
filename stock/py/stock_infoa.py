@@ -996,22 +996,31 @@ def get_money_flow(id):
 
     favicon = 'http://qt.gtimg.cn/favicon.ico'
 
+    curl =  CurlHTTPFetcher()
+    curl.ALLOWED_TIME = 2
+    random.seed(int(time.time()))
     stocklist = []
     i = 0
     imax = 3
     while 1:
         try:
-            if i + 1 < imax:
+            if i + 1 <= imax:
+
+                header = {}
                 index = random.randint(0, len(user_agent_list) -1)
-                req_header = []
-                req_header.extend(['Referer: %s' % (refer)])
-                req_header.extend(['User-Agent: %s' % (user_agent_list[index])])
+                header['User-Agent'] = user_agent_list[index]
+                header['Referer'] = refer
+                res = {}
                 if user_agent_dic.has_key(index):
                     key = '%d_%s' % (index, id)
-                    req_header.extend(['If-None-Match: %s' % (user_agent_dic[key])])
+                    header['If-None-Match']= (user_agent_dic[key])
+
+                try:
+                    res = curl.fetch(url, None, header)
+                except BaseException, e:
+                    print 'err', e.message, id
 
                 #httpGetContent(favicon, ['Referer: %s' % (url), 'User-Agent: %s' % (user_agent_list[index])])
-                res = httpGetContent(url, req_header)
                 value = res['body'].decode("gbk").split('=')[1].strip(';\r\n')
 
             else:
@@ -1023,13 +1032,13 @@ def get_money_flow(id):
                 #print url, res['head'], value
                 if 'must-revalidate' in res['head']:
                     break
-                time.sleep(1)
+                #time.sleep(random.randint(1, 3))
                 continue
             break
         except Exception,e:
             #print url, value, e
             if res.has_key('head'):
-                print res['head']
+                #print res['head']
                 if 'must-revalidate' in res['head']:
                     break
 
@@ -1037,7 +1046,7 @@ def get_money_flow(id):
             if i >= imax:
                 log_write('errcode', id)
                 break
-            time.sleep(random.randint(1, 3))
+            #time.sleep(random.randint(1, 3))
 
     if i > imax:
         return  {}
@@ -1259,11 +1268,11 @@ def get_basic_list(id_dic):
             log_write('err_base_list', key)
             continue
 
-        if '--' not in res['mgzb'][0]['tbmgsy'] and  float(res['mgzb'][0]['tbmgsy']) < 0.1:
+        if '--' not in res['mgzb'][0]['tbmgsy'] and  float(res['mgzb'][0]['tbmgsy']) < 0.2:
             continue
 
-        if '--' not in res['mgzb'][0]['mgxjll'] and float(res['mgzb'][0]['mgxjll']) < 0.05:
-            continue
+        #if '--' not in res['mgzb'][0]['mgxjll'] and float(res['mgzb'][0]['mgxjll']) < 0.05:
+            #continue
 
         res['cznl'] = get_stockid_cznl(key)
         if len(res['cznl']) < 1:
@@ -1736,7 +1745,7 @@ def do_search_short():
                     #id_dic[key]['last_single'] = monitor_dic[key]['last_single']
 
         if int(day.hour) >= 15:
-            print day.hour
+            #print day.hour
             log_single_analysis(base_dic)
             log_single_analysis(monitor_dic)
 
