@@ -17,6 +17,8 @@ from time import strftime, localtime
 from datetime import timedelta, date
 import calendar
 
+import ConfigParser
+
 __author__ = 'rong'
 
 user_agent_list = [
