@@ -1388,47 +1388,6 @@ def load_base_list():
     file.close()
     return id_dic
 
-def base_select(id_dic, query_components):
-    remove_ley = []
-    for key in id_dic:
-        #print id_dic[key]['zysr']
-        if query_components.has_key('zysr_ge') and '--' not in id_dic[key]['zysr'] and float(id_dic[key]['zysr']) < query_components['zysr_ge']:
-            remove_ley.append(key)
-            continue
-
-        if query_components.has_key('jlr_ge') and '--' not in id_dic[key]['jlr'] and float(id_dic[key]['jlr']) < query_components['jlr_ge']:
-            remove_ley.append(key)
-            continue
-
-        if query_components.has_key('mgsy_ge') and '--' not in id_dic[key]['mgsy'] and float(id_dic[key]['mgsy']) < query_components['mgsy_ge']:
-            remove_ley.append(key)
-            continue
-
-        if query_components.has_key('mgxj_ge') and '--' not in id_dic[key]['mgxj'] and float(id_dic[key]['mgxj'])< query_components['mgxj_ge']:
-            remove_ley.append(key)
-            continue
-
-        if query_components.has_key('tbmgsy_ge') and  '--' not in id_dic[key]['tbmgsy'] and float(id_dic[key]['tbmgsy']) < query_components['tbmgsy_ge']:
-            remove_ley.append(key)
-            continue
-
-        if query_components.has_key('mgxjll_ge') and '--' not in id_dic[key]['mgxjll'] and float(id_dic[key]['mgxjll']) < query_components['mgxjll_ge']:
-            remove_ley.append(key)
-            continue
-
-        if query_components.has_key('end_le') and float(id_dic[key]['end']) > query_components['end_le']:
-            remove_ley.append(key)
-            continue
-
-        if query_components.has_key('pe_le') and float(id_dic[key]['pe']) > query_components['pe_le']:
-                remove_ley.append(key)
-                continue
-
-    for key in remove_ley:
-        id_dic.pop(key)
-
-    return id_dic
-
 def remove_from_banlist(id_dic, ban_list):
     remove_ley = []
 
@@ -1547,7 +1506,6 @@ def get_last_singles(days_num, deal_dic):
         if not os.path.isfile(file_name):
             continue
 
-
         file = open(file_name)
         #print file_name
         while 1:
@@ -1604,29 +1562,25 @@ def log_print_res(search_dic):
 
     log_write('res_list', 'begin ==========:%s' % (day.datetime()))
 
-    for key in search_dic:
-            if search_dic[key].has_key('date'):
-                search_dic[key].pop('date')
-            #search_dic[key].pop('small_force')
-            if search_dic[key].has_key('high'):
-                search_dic[key].pop('high')
-            if search_dic[key].has_key('last_closing'):
-                search_dic[key].pop('last_closing')
-            if search_dic[key].has_key('start'):
-                search_dic[key].pop('start')
-            if search_dic[key].has_key('low'):
-                search_dic[key].pop('low')
-            if search_dic[key].has_key('swing'):
-                search_dic[key].pop('swing')
-            if search_dic[key].has_key('next_time'):
-                search_dic[key].pop('next_time')
-            if search_dic[key].has_key('code'):
-                search_dic[key].pop('code')
+    if search_dic.has_key('date'):
+        search_dic.pop('date')
+    if search_dic.has_key('high'):
+        search_dic.pop('high')
+    if search_dic.has_key('last_closing'):
+        search_dic.pop('last_closing')
+    if search_dic.has_key('start'):
+        search_dic.pop('start')
+    if search_dic.has_key('low'):
+        search_dic.pop('low')
+    if search_dic.has_key('swing'):
+        search_dic.pop('swing')
+    if search_dic.has_key('next_time'):
+        search_dic.pop('next_time')
+    if search_dic.has_key('code'):
+        search_dic.pop('code')
 
-            log_write('res_list', json.dumps(search_dic[key]))
-            log_write('res_list', '\n')
-            #print 'search res', search_dic[key], '\n'
-
+    log_write('res_list', json.dumps(search_dic))
+    log_write('res_list', '\n')
     log_write('res_list', 'serch over ==========')
 
 
@@ -1645,51 +1599,177 @@ def load_monitor_list():
     file.close()
     return id_dic
 
-def load_config():
-    id_dic = {}
-    if not os.path.isfile('stock_cfg'):
-        return id_dic
 
-    file = open("stock_cfg")
-    while 1:
-        line = file.readline().strip('\n')
-        if not line:
-            break
+def do_check_select(id_dic, sec, cf):
+    if not len(id_dic):
+        return
 
-        if line.strip().startswith('#'):
-            continue
+    if 0 == cf.getint(sec, 'is_open'):
+        return
 
-        items = line.split('=')
-        if len(items) != 2:
-            continue
-        id_dic[items[0]] = float(items[1])
+    if cf.has_option(sec, 'zysr_ge') and '--' not in id_dic['zysr'] and float(id_dic['zysr']) < cf.getfloat(sec, 'zysr_ge'):
+        return
 
-    file.close()
-    return id_dic
+    if cf.has_option(sec, 'jlr_ge') and '--' not in id_dic['jlr'] and float(id_dic['jlr']) < cf.getfloat(sec, 'jlr_ge'):
+        return
 
+    if cf.has_option(sec, 'mgsy_ge') and '--' not in id_dic['mgsy'] and float(id_dic['mgsy']) < cf.getfloat(sec, 'mgsy_ge'):
+        return
 
-def is_reload_base_list(old_dic, new_dic):
-    if not len(old_dic):
-        return True
+    if cf.has_option(sec, 'mgxj_ge') and '--' not in id_dic['mgxj'] and float(id_dic['mgxj'])< cf.getfloat(sec, 'mgxj_ge'):
+        return
 
-    re_list = ['pe_le', 'end_le', 'zysr_ge', 'jlr_ge', 'mgsy_ge', 'mgxj_ge', 'tbmgsy_ge', 'mgxjll_ge']
+    if cf.has_option(sec, 'tbmgsy_ge') and  '--' not in id_dic['tbmgsy'] and float(id_dic['tbmgsy']) < cf.getfloat(sec, 'tbmgsy_ge'):
+        return
 
-    for key in new_dic:
-        if key in re_list:
-            if key in old_dic:
-                if new_dic[key] != old_dic[key]:
-                    return True
-                else:
-                    return False
-            else:
-                return True
+    if cf.has_option(sec, 'mgxjll_ge') and '--' not in id_dic['mgxjll'] and float(id_dic['mgxjll']) < cf.getfloat(sec, 'mgxjll_ge'):
+        return
 
-    for key in old_dic:
-        if key in re_list:
-            if key not in new_dic:
-                return True
+    if cf.has_option(sec, 'end_le') and float(id_dic['end']) > cf.getfloat(sec, 'end_le'):
+        return
 
-    return False
+    if cf.has_option(sec, 'pe_le') and float(id_dic['pe']) > cf.getfloat(sec, 'pe_le'):
+        return
+
+    if cf.has_option(sec,'end_ge_start') and float(id_dic['end']) < float(id_dic['start']):
+        return
+
+    if cf.has_option(sec, 'change_rate_ge') and float(id_dic['change_rate']) < cf.getfloat(sec, 'change_rate_ge'):
+        return
+
+    if cf.has_option(sec, 'range_percent_ge') and float(id_dic['range_percent']) < cf.getfloat(sec, 'range_percent_ge'):
+        return
+
+    if cf.has_option(sec, 'range_percent_le') and float(id_dic['range_percent']) > cf.getfloat(sec, 'range_percent_le'):
+        return
+
+    if cf.has_option(sec,'end_ge_low') and float(id_dic['end']) < float(id_dic['low']):
+        return
+
+    if cf.has_option(sec,'down_pointer_ge_up_pointer') and float(id_dic['down_pointer']) < float(id_dic['up_pointer']):
+        return
+
+    if cf.has_option(sec,'vol_1_asc') and not get_data_direction(id_dic['single']['vol_1']):
+        return
+
+    if cf.has_option(sec,'vol_2_asc') and not get_data_direction(id_dic['single']['vol_2']):
+        return
+
+    if cf.has_option(sec,'vol_3_asc') and not get_data_direction(id_dic['single']['vol_3']):
+        return
+
+    if cf.has_option(sec,'vol_4_asc') and not get_data_direction(id_dic['single']['vol_4']):
+        return
+
+    if  cf.has_option(sec, 'vol_1_ge') and id_dic['single']['vol_1'][-1] < cf.getint(sec, 'vol_1_ge'):
+        return
+
+    if  cf.has_option(sec, 'vol_2_ge') and id_dic['single']['vol_2'][-1] < cf.getint(sec, 'vol_2_ge'):
+        return
+
+    if  cf.has_option(sec, 'vol_3_ge') and id_dic['single']['vol_3'][-1] < cf.getint(sec, 'vol_3_ge'):
+        return
+
+    if  cf.has_option(sec, 'vol_4_ge') and id_dic['single']['vol_4'][-1] < cf.getint(sec, 'vol_4_ge'):
+        return
+
+    if  cf.has_option(sec, 'ratio_vol_1_ge') and id_dic['single']['ratio_vol_1'][-1] < cf.getfloat(sec, 'ratio_vol_1_ge'):
+        return
+
+    if  cf.has_option(sec, 'ratio_vol_2_ge') and id_dic['single']['ratio_vol_2'][-1] < cf.getfloat(sec, 'ratio_vol_2_ge'):
+        return
+
+    if  cf.has_option(sec, 'ratio_vol_3_ge') and id_dic['single']['ratio_vol_3'][-1] < cf.getfloat(sec, 'ratio_vol_3_ge'):
+        return
+
+    if  cf.has_option(sec, 'ratio_vol_4_ge') and id_dic['single']['ratio_vol_4'][-1] < cf.getfloat(sec, 'ratio_vol_4_ge'):
+        return
+
+    if  cf.has_option(sec, 'down_pointer_ge') and id_dic['single']['down_pointer'] < cf.getfloat(sec, 'down_pointer_ge'):
+        return
+
+    if  cf.has_option(sec, 'up_pointer_le') and id_dic['single']['up_pointer'] > cf.getfloat(sec, 'up_pointer_le'):
+        return
+
+    lastday_num = 0
+    if cf.has_option(sec, 'lastday_num'):
+        lastday_num = cf.getint(sec, 'lastday_num')
+    else:
+        lastday_num = 3
+
+    lastday_has_vol_1_ge = False
+    lastday_has_vol_2_ge = False
+    lastday_has_vol_3_ge = False
+    lastday_has_vol_4_ge = False
+
+    lastday_has_range_percent_ge = False
+
+    lastday_range_percent_ge_ratio=0
+    lastday_range_percent_ge_sum = 0
+    lastday_has_down_pointer_ge = False
+    for id_day in range(lastday_num):
+        if cf.has_option(sec, 'lastday_has_vol_1_ge') and id_dic.has_key('last_single') \
+            and id_dic['last_single'].has_key('vol_1') and len(id_dic['last_single']['vol_1']) > id_day:
+            if id_dic['last_single']['vol_1'][id_day] > cf.getint(sec, 'lastday_has_vol_1_ge'):
+                    lastday_has_vol_1_ge = True
+
+        if cf.has_option(sec, 'lastday_has_vol_2_ge') and id_dic.has_key('last_single') \
+            and id_dic['last_single'].has_key('vol_2') and len(id_dic['last_single']['vol_2']) > id_day:
+            if id_dic['last_single']['vol_2'][id_day] > cf.getint(sec, 'lastday_has_vol_2_ge'):
+                    lastday_has_vol_2_ge = True
+
+        if cf.has_option(sec, 'lastday_has_vol_3_ge') and id_dic.has_key('last_single') \
+            and id_dic['last_single'].has_key('vol_3') and len(id_dic['last_single']['vol_3']) > id_day:
+            if id_dic['last_single']['vol_3'][id_day] > cf.getint(sec, 'lastday_has_vol_3_ge'):
+                    lastday_has_vol_3_ge = True
+
+        if cf.has_option(sec, 'lastday_has_vol_4_ge') and id_dic.has_key('last_single') \
+            and id_dic['last_single'].has_key('vol_4') and len(id_dic['last_single']['vol_4']) > id_day:
+            if id_dic['last_single']['vol_4'][id_day] > cf.getint(sec, 'lastday_has_vol_4_ge'):
+                    lastday_has_vol_4_ge = True
+
+        if cf.has_option(sec, 'lastday_has_range_percent_ge') and id_dic.has_key('last_single') \
+            and id_dic['last_single'].has_key('range_percent') and len(id_dic['last_single']['range_percent']) > id_day:
+            if id_dic['last_single']['range_percent'][id_day] > cf.float(sec, 'lastday_has_range_percent_ge'):
+                    lastday_has_range_percent_ge = True
+
+        if cf.has_option(sec, 'lastday_range_percent_ge') and id_dic.has_key('last_single') \
+            and id_dic['last_single'].has_key('range_percent') and len(id_dic['last_single']['range_percent']) > id_day:
+            if id_dic['last_single']['range_percent'][id_day] > cf.float(sec, 'lastday_range_percent_ge'):
+                    lastday_range_percent_ge_sum += 1
+
+        if cf.has_option(sec, 'lastday_has_down_pointer_ge') and id_dic.has_key('last_single') \
+            and id_dic['last_single'].has_key('end') and len(id_dic['last_single']['end']) > id_day:
+            down_pointer = round(abs(id_dic['last_single']['end'] - id_dic['last_single']['low']) * 1.0 /abs(id_dic['last_single']['end'] - id_dic['last_single']['start']), 2)
+            if down_pointer > cf.float(sec, 'lastday_has_down_pointer_ge'):
+                    lastday_has_down_pointer_ge = True
+
+    if cf.has_option(sec, 'lastday_has_vol_1_ge') and id_dic['last_single'].has_key('vol_1') and not lastday_has_vol_1_ge:
+        return
+
+    if cf.has_option(sec, 'lastday_has_vol_2_ge') and id_dic['last_single'].has_key('vol_2') and not lastday_has_vol_2_ge:
+        return
+
+    if cf.has_option(sec, 'lastday_has_vol_3_ge') and id_dic['last_single'].has_key('vol_3') and not lastday_has_vol_3_ge:
+        return
+
+    if cf.has_option(sec, 'lastday_has_vol_4_ge') and id_dic['last_single'].has_key('vol_4') and not lastday_has_vol_4_ge:
+        return
+
+    if cf.has_option(sec, 'lastday_has_range_percent_ge') and id_dic['last_single'].has_key('range_percent') and not lastday_has_range_percent_ge:
+        return
+
+    if cf.has_option(sec, 'lastday_range_percent_ge_ratio') and id_dic['last_single'].has_key('range_percent') and cf.has_option(sec, 'lastday_range_percent_ge'):
+        lastday_range_percent_ge_ratio = round(lastday_range_percent_ge_sum * 1.0/lastday_num, 2)
+        if lastday_range_percent_ge_ratio < cf.float(sec, 'lastday_range_percent_ge_ratio'):
+            return
+
+    if cf.has_option(sec, 'lastday_has_down_pointer_ge') and id_dic['last_single'].has_key('end') and not lastday_has_down_pointer_ge:
+        return
+
+    id_dic['sec'] = sec
+    log_print_res(id_dic)
+
 
 def do_search_short():
     day = Day()
@@ -1708,67 +1788,38 @@ def do_search_short():
     print 'load_base_list', len(base_dic)
     base_dic = remove_from_banlist(base_dic, ban_dic)
     print 'after ban_dic', len(base_dic)
+
     search_dic = {}
     id_dic = {}
-    query_components = {}
     remove_ley = []
     monitor_mtime = 0
     cfg_mtime = 0
     TIME_DIFF = 20
+    cf = ConfigParser.ConfigParser()
     while 1:
-
-        #mtime = time.ctime(os.path.getmtime('stock_cfg'))
-        #if cfg_mtime != mtime:
-        #    cfg_mtime = mtime
-        #    tmp_components = load_config()
-        #    if is_reload_base_list(query_components, tmp_components):
-        #        id_dic = base_select(base_dic, tmp_components)
-        #        if tmp_components.has_key('lastday_num'):
-        #            if tmp_components.has_key('loadlastnow') and int(tmp_components['loadlastnow']) > 0:
-        #                load_details(int(tmp_components['lastday_num']), id_dic)
-        #            get_details(int(tmp_components['lastday_num']), id_dic)
-        #        print 'after base_select', len(id_dic)
-        #
-        #    query_components = tmp_components
-
         mtime = time.ctime(os.path.getmtime('monitor_list'))
         if monitor_mtime != mtime:
             monitor_mtime = mtime
             monitor_dic = load_monitor_list()
 
-            #if query_components.has_key('loadlastnow') and int(query_components['loadlastnow']) > 0:
-            #    load_details(int(query_components['lastday_num']), monitor_dic)
-            #monitor_dic = get_details(int(query_components['lastday_num']), monitor_dic)
-
             for key in monitor_dic:
                 if key not in id_dic:
                     id_dic[key] = {}
                     id_dic[key]['id'] = key
-                    #id_dic[key]['last_single'] = monitor_dic[key]['last_single']
+
+            get_last_singles(5, id_dic)
 
         if int(day.hour) >= 15:
             #print day.hour
             log_single_analysis(base_dic)
             log_single_analysis(monitor_dic)
 
-
-        mtime = time.ctime(os.path.getmtime('stock_cfg'))
-        if cfg_mtime != mtime:
-            cfg_mtime = mtime
-            tmp_components = load_config()
-            if is_reload_base_list(query_components, tmp_components):
-                id_dic = base_select(base_dic, tmp_components)
-                if tmp_components.has_key('lastday_num'):
-                    get_last_singles(int(tmp_components['lastday_num']), id_dic)
-                print 'after base_select', len(id_dic)
-            query_components = tmp_components
-
+        print 'after base_select', len(id_dic)
 
         for key in remove_ley:
             id_dic.pop(key)
 
         remove_ley = []
-        search_remove = []
         print 'after remove_ley', len(id_dic)
         for key in id_dic:
             time.sleep(0.03)
@@ -1791,31 +1842,6 @@ def do_search_short():
                 id_dic[key]['last_closing'] = res['last_closing']
                 id_dic[key]['vol'] = res['vol']
 
-                if query_components.has_key('end_start_ge'):
-                    if res['end'] < query_components['start']:
-                        search_remove.append(key)
-                        continue
-
-                if query_components.has_key('change_rate_ge'):
-                    if res['change_rate'] < query_components['change_rate_ge']:
-                        search_remove.append(key)
-                        continue
-
-                if query_components.has_key('range_percent_ge'):
-                    if res['range_percent'] < query_components['range_percent_ge']:
-                        search_remove.append(key)
-                        continue
-
-                if query_components.has_key('range_percent_le'):
-                    if res['range_percent'] > query_components['range_percent_le']:
-                        search_remove.append(key)
-                        continue
-
-                if query_components.has_key('end_ge_low'):
-                    if res['end'] < res['low']:
-                        search_remove.append(key)
-                        continue
-
             if not id_dic[key].has_key('up_pointer'):
                 id_dic[key]['up_pointer'] = 0.0
 
@@ -1829,136 +1855,28 @@ def do_search_short():
                 if id_dic[key]['end'] < id_dic[key]['high'] and id_dic[key]['end'] != id_dic[key]['start']:
                     id_dic[key]['up_pointer'] = round(abs(id_dic[key]['end'] - id_dic[key]['high']) *1.0/abs(id_dic[key]['end'] - id_dic[key]['start']), 2)
 
-
             if not id_dic[key].has_key('vol'):
                 continue
 
-
             if not id_dic[key].has_key('single'):
                 id_dic[key]['single'] = {}
-
 
             get_single_analysis(key, id_dic[key]['vol'], id_dic[key]['single'])
             if not id_dic[key]['single'].has_key('vol_1') or len(id_dic[key]['single']['vol_1']) == 0:
                 continue
 
-            if query_components.has_key('vol_1'):
-                if not get_data_direction(id_dic[key]['single']['vol_1']):
-                    search_remove.append(key)
-                    continue
+            mtime = time.ctime(os.path.getmtime('stock.ini'))
+            if cfg_mtime != mtime:
+                cfg_mtime = mtime
+                cf.read('stock.ini')
 
-            if query_components.has_key('vol_2'):
-                if not get_data_direction(id_dic[key]['single']['vol_2']):
-                    search_remove.append(key)
-                    continue
-
-            if query_components.has_key('vol_3'):
-                if not get_data_direction(id_dic[key]['single']['vol_3']):
-                    search_remove.append(key)
-                    continue
-
-            if query_components.has_key('vol_4'):
-                if not get_data_direction(id_dic[key]['single']['vol_4']):
-                    search_remove.append(key)
-                    continue
-
-            if query_components.has_key('vol_1_ge'):
-                #print id_dic[key]['single'][-1]['vol_1'], query_components['vol_1_ge']
-                if id_dic[key]['single']['vol_1'][-1] < query_components['vol_1_ge']:
-                    search_remove.append(key)
-                    continue
-
-            if query_components.has_key('vol_2_ge'):
-                if id_dic[key]['single']['vol_2'][-1] < query_components['vol_2_ge']:
-                    search_remove.append(key)
-                    continue
-
-            if query_components.has_key('vol_3_ge'):
-                if id_dic[key]['single']['vol_3'][-1] < query_components['vol_3_ge']:
-                    search_remove.append(key)
-                    continue
-
-            if query_components.has_key('vol_4_ge'):
-                if id_dic[key]['single']['vol_4'][-1] < query_components['vol_4_ge']:
-                    search_remove.append(key)
-                    continue
-
-            if query_components.has_key('ratio_vol_1_ge'):
-                if id_dic[key]['single']['ratio_vol_1'][-1] < query_components['ratio_vol_1_ge']:
-                    search_remove.append(key)
-                    continue
-
-
-            if query_components.has_key('ratio_vol_2_ge'):
-                if id_dic[key]['single']['ratio_vol_2'][-1] < query_components['ratio_vol_2_ge']:
-                    search_remove.append(key)
-                    continue
-
-            if query_components.has_key('ratio_vol_3_ge'):
-                if id_dic[key]['single']['ratio_vol_3'][-1] < query_components['ratio_vol_3_ge']:
-                    search_remove.append(key)
-                    continue
-
-            if query_components.has_key('ratio_vol_4_ge'):
-                if id_dic[key]['single']['ratio_vol_4'][-1] < query_components['ratio_vol_4_ge']:
-                    search_remove.append(key)
-                    continue
-
-            if query_components.has_key('down_pointer_ge'):
-                if id_dic[key]['down_pointer'] < query_components['down_pointer_ge']:
-                    search_remove.append(key)
-                    continue
-
-            if query_components.has_key('up_pointer_le'):
-                if id_dic[key]['up_pointer'] > query_components['up_pointer_le']:
-                    search_remove.append(key)
-                    continue
-
-            lastday_num = 0
-            if query_components.has_key('lastday_num'):
-                lastday_num = int(query_components['lastday_num'])
-
-            last_flag = True
-            for id_day in range(lastday_num):
-                if query_components.has_key('lastday_%d_vol_1_ge' % (id_day + 1)) and id_dic[key].has_key('last_single') \
-                    and id_dic[key]['last_single'].has_key('vol_1') and len(id_dic[key]['last_single']['vol_1']) > id_day:
-                    if id_dic[key]['last_single']['vol_1'][id_day] < query_components['lastday_%d_vol_1_ge' % (id_day + 1)]:
-                        last_flag = False
-                        break
-
-                if query_components.has_key('lastday_%d_vol_2_ge' % (id_day + 1)) and id_dic[key].has_key('last_single') \
-                    and id_dic[key]['last_single'].has_key('vol_2') and len(id_dic[key]['last_single']['vol_2']) > id_day:
-                    if id_dic[key]['last_single']['vol_2'][id_day] < query_components['lastday_%d_vol_2_ge' % (id_day + 1)]:
-                        last_flag = False
-                        break
-
-                if query_components.has_key('lastday_%d_vol_3_ge' % (id_day + 1)) and id_dic[key].has_key('last_single') \
-                    and id_dic[key]['last_single'].has_key('vol_3') and len(id_dic[key]['last_single']['vol_3']) > id_day:
-                    if id_dic[key]['last_single']['vol_3'][id_day] < query_components['lastday_%d_vol_3_ge' % (id_day + 1)]:
-                        last_flag = False
-                        break
-
-                if query_components.has_key('lastday_%d_vol_4_ge' % (id_day + 1)) and id_dic[key].has_key('last_single') \
-                    and id_dic[key]['last_single'].has_key('vol_4') and len(id_dic[key]['last_single']['vol_4']) > id_day:
-                    if id_dic[key]['last_single']['vol_4'][id_day] < query_components['lastday_%d_vol_4_ge' % (id_day + 1)]:
-                        last_flag = False
-                        break
-
-            if not last_flag:
-                search_remove.append(key)
-                continue
+            for sec in cf.sections():
+                do_check_select(id_dic[key], sec, cf)
 
             search_dic[key] = id_dic[key]
             print '==> ', search_dic[key], '\n'
-            #id_dic[key]['next_time'] = 0
-
-
-        for key in search_remove:
-            if key in search_dic:
-                search_dic.pop(key)
 
         #print 'length: ', len(search_dic)
-        log_print_res(search_dic)
         time.sleep(TIME_DIFF)
 
 #A股就是个坑， 技术指标低位了， 仍然可以再砸
