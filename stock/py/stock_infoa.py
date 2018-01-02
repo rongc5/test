@@ -1564,14 +1564,8 @@ def log_print_res(search_dic):
 
     if search_dic.has_key('date'):
         search_dic.pop('date')
-    if search_dic.has_key('high'):
-        search_dic.pop('high')
     if search_dic.has_key('last_closing'):
         search_dic.pop('last_closing')
-    if search_dic.has_key('start'):
-        search_dic.pop('start')
-    if search_dic.has_key('low'):
-        search_dic.pop('low')
     if search_dic.has_key('swing'):
         search_dic.pop('swing')
     if search_dic.has_key('next_time'):
@@ -1607,28 +1601,29 @@ def do_check_select(id_dic, sec, cf):
     if 0 == cf.getint(sec, 'is_open'):
         return
 
-    if cf.has_option(sec, 'zysr_ge') and '--' not in id_dic['zysr'] and float(id_dic['zysr']) < cf.getfloat(sec, 'zysr_ge'):
+    #print id_dic
+    if cf.has_option(sec, 'zysr_ge') and id_dic.has_key('zysr') and '--' not in id_dic['zysr'] and float(id_dic['zysr']) < cf.getfloat(sec, 'zysr_ge'):
         return
 
-    if cf.has_option(sec, 'jlr_ge') and '--' not in id_dic['jlr'] and float(id_dic['jlr']) < cf.getfloat(sec, 'jlr_ge'):
+    if cf.has_option(sec, 'jlr_ge') and id_dic.has_key('jlr') and '--' not in id_dic['jlr'] and float(id_dic['jlr']) < cf.getfloat(sec, 'jlr_ge'):
         return
 
-    if cf.has_option(sec, 'mgsy_ge') and '--' not in id_dic['mgsy'] and float(id_dic['mgsy']) < cf.getfloat(sec, 'mgsy_ge'):
+    if cf.has_option(sec, 'mgsy_ge') and id_dic.has_key('mgsy') and '--' not in id_dic['mgsy'] and float(id_dic['mgsy']) < cf.getfloat(sec, 'mgsy_ge'):
         return
 
-    if cf.has_option(sec, 'mgxj_ge') and '--' not in id_dic['mgxj'] and float(id_dic['mgxj'])< cf.getfloat(sec, 'mgxj_ge'):
+    if cf.has_option(sec, 'mgxj_ge') and id_dic.has_key('mgxj') and '--' not in id_dic['mgxj'] and float(id_dic['mgxj'])< cf.getfloat(sec, 'mgxj_ge'):
         return
 
-    if cf.has_option(sec, 'tbmgsy_ge') and  '--' not in id_dic['tbmgsy'] and float(id_dic['tbmgsy']) < cf.getfloat(sec, 'tbmgsy_ge'):
+    if cf.has_option(sec, 'tbmgsy_ge') and id_dic.has_key('tbmgsy') and  '--' not in id_dic['tbmgsy'] and float(id_dic['tbmgsy']) < cf.getfloat(sec, 'tbmgsy_ge'):
         return
 
-    if cf.has_option(sec, 'mgxjll_ge') and '--' not in id_dic['mgxjll'] and float(id_dic['mgxjll']) < cf.getfloat(sec, 'mgxjll_ge'):
+    if cf.has_option(sec, 'mgxjll_ge') and id_dic.has_key('mgxjll') and '--' not in id_dic['mgxjll'] and float(id_dic['mgxjll']) < cf.getfloat(sec, 'mgxjll_ge'):
         return
 
     if cf.has_option(sec, 'end_le') and float(id_dic['end']) > cf.getfloat(sec, 'end_le'):
         return
 
-    if cf.has_option(sec, 'pe_le') and float(id_dic['pe']) > cf.getfloat(sec, 'pe_le'):
+    if cf.has_option(sec, 'pe_le') and id_dic.has_key('pe') and float(id_dic['pe']) > cf.getfloat(sec, 'pe_le'):
         return
 
     if cf.has_option(sec,'end_ge_start') and float(id_dic['end']) < float(id_dic['start']):
@@ -1685,10 +1680,10 @@ def do_check_select(id_dic, sec, cf):
     if  cf.has_option(sec, 'ratio_vol_4_ge') and id_dic['single']['ratio_vol_4'][-1] < cf.getfloat(sec, 'ratio_vol_4_ge'):
         return
 
-    if  cf.has_option(sec, 'down_pointer_ge') and id_dic['single']['down_pointer'] < cf.getfloat(sec, 'down_pointer_ge'):
+    if  cf.has_option(sec, 'down_pointer_ge') and id_dic['down_pointer'] < cf.getfloat(sec, 'down_pointer_ge'):
         return
 
-    if  cf.has_option(sec, 'up_pointer_le') and id_dic['single']['up_pointer'] > cf.getfloat(sec, 'up_pointer_le'):
+    if  cf.has_option(sec, 'up_pointer_le') and id_dic['up_pointer'] > cf.getfloat(sec, 'up_pointer_le'):
         return
 
     lastday_num = 0
@@ -1767,6 +1762,7 @@ def do_check_select(id_dic, sec, cf):
     if cf.has_option(sec, 'lastday_has_down_pointer_ge') and id_dic['last_single'].has_key('end') and not lastday_has_down_pointer_ge:
         return
 
+    print id_dic
     id_dic['sec'] = sec
     log_print_res(id_dic)
 
@@ -1789,8 +1785,7 @@ def do_search_short():
     base_dic = remove_from_banlist(base_dic, ban_dic)
     print 'after ban_dic', len(base_dic)
 
-    search_dic = {}
-    id_dic = {}
+    id_dic = base_dic
     remove_ley = []
     monitor_mtime = 0
     cfg_mtime = 0
@@ -1873,10 +1868,6 @@ def do_search_short():
             for sec in cf.sections():
                 do_check_select(id_dic[key], sec, cf)
 
-            search_dic[key] = id_dic[key]
-            print '==> ', search_dic[key], '\n'
-
-        #print 'length: ', len(search_dic)
         time.sleep(TIME_DIFF)
 
 #A股就是个坑， 技术指标低位了， 仍然可以再砸

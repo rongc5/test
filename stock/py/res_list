@@ -68,3 +68,173 @@ begin ==========:2017-12-29 14:40:27
 
 
 serch over ==========
+begin ==========:2018-01-02 14:37:37
+{"tbmgsy": "1.13", "change_rate": 5.4, "jlr": "117.48", "vol": 927667, "single": {"vol_4": [10494], "vol_3": [19843], "vol_2": [25145], "vol_1": [28181], "ratio_vol_4": [0.0113], "ratio_vol_1": [0.0304], "ratio_vol_3": [0.0214], "ratio_vol_2": [0.0271]}, "zysr": "2.78", "id": "sh600516", "circulation_market_value": 496.49, "last_single": {"range_percent": [-1.8, 2.51, -0.9, 0.24], "end": [28.88, 29.41, 28.69, 28.95], "total_vol": [880031, 1212178, 1566898, 1242187], "vol_4": [-4812, 2237, 28362, 7793], "vol_3": [-13323, 2400, 30807, 12597], "vol_2": [-15445, 6965, 37776, 14685], "vol_1": [-14201, 6917, 38567, 15948], "high": [29.88, 29.72, 30.33, 29.13], "start": [29.11, 28.6, 29.1, 28.7], "main_force": [-14205.1, 5858.2, -17775.5, -4378.4], "low": [28.67, 28.3, 28.35, 28.12]}, "end": 29.56, "pb": 6.26, "mgxjll": "0.49", "pe": 25.73, "yylr": "112.44", "mgsy": "117.77", "total_value": 516.6, "down_pointer": 4.13, "mgxj": "--", "up_pointer": 1.1, "range_percent": 2.35, "sec": "strategy0"}
+
+
+serch over ==========
+begin ==========:2018-01-02 14:40:35
+{"tbmgsy": "1.13", "change_rate": 5.45, "jlr": "117.48", "vol": 936830, "single": {"vol_4": [12124], "vol_3": [21190], "vol_2": [26197], "vol_1": [27612], "ratio_vol_4": [0.0129], "ratio_vol_1": [0.0295], "ratio_vol_3": [0.0226], "ratio_vol_2": [0.028]}, "zysr": "2.78", "id": "sh600516", "circulation_market_value": 496.49, "last_single": {"range_percent": [-1.8, 2.51, -0.9, 0.24], "end": [28.88, 29.41, 28.69, 28.95], "total_vol": [880031, 1212178, 1566898, 1242187], "vol_4": [-4812, 2237, 28362, 7793], "vol_3": [-13323, 2400, 30807, 12597], "vol_2": [-15445, 6965, 37776, 14685], "vol_1": [-14201, 6917, 38567, 15948], "high": [29.88, 29.72, 30.33, 29.13], "start": [29.11, 28.6, 29.1, 28.7], "main_force": [-14205.1, 5858.2, -17775.5, -4378.4], "low": [28.67, 28.3, 28.35, 28.12]}, "end": 29.63, "pb": 6.26, "mgxjll": "0.49", "pe": 25.73, "yylr": "112.44", "mgsy": "117.77", "total_value": 516.6, "down_pointer": 3.55, "mgxj": "--", "up_pointer": 0.71, "range_percent": 2.6, "sec": "strategy0"}
+
+
+serch over ==========
+begin ==========:2018-01-02 14:48:22
+{"tbmgsy": "1.13", "change_rate": 5.59, "jlr": "117.48", "vol": 961297, "single": {"vol_4": [12124], "vol_3": [23099], "vol_2": [25235], "vol_1": [26769], "ratio_vol_4": [0.0126], "ratio_vol_1": [0.0278], "ratio_vol_3": [0.024], "ratio_vol_2": [0.0263]}, "zysr": "2.78", "id": "sh600516", "circulation_market_value": 496.49, "last_single": {"range_percent": [-1.8, 2.51, -0.9, 0.24], "end": [28.88, 29.41, 28.69, 28.95], "total_vol": [880031, 1212178, 1566898, 1242187], "vol_4": [-4812, 2237, 28362, 7793], "vol_3": [-13323, 2400, 30807, 12597], "vol_2": [-15445, 6965, 37776, 14685], "vol_1": [-14201, 6917, 38567, 15948], "high": [29.88, 29.72, 30.33, 29.13], "start": [29.11, 28.6, 29.1, 28.7], "main_force": [-14205.1, 5858.2, -17775.5, -4378.4], "low": [28.67, 28.3, 28.35, 28.12]}, "end": 29.6, "pb": 6.26, "mgxjll": "0.49", "pe": 25.73, "yylr": "112.44", "mgsy": "117.77", "total_value": 516.6, "down_pointer": 3.77, "mgxj": "--", "up_pointer": 0.86, "range_percent": 2.49, "sec": "strategy0"}
+
+
+serch over ==========
+begin ==========:2018-01-02 14:55:09
+{"tbmgsy": "1.13", "change_rate": 5.85, "jlr": "117.48", "vol": 1005643, "high": 29.9, "single": {"vol_4": [11919], "vol_3": [12870], "vol_2": [18850], "vol_1": [20099], "ratio_vol_4": [0.0119], "ratio_vol_1": [0.02], "ratio_vol_3": [0.0128], "ratio_vol_2": [0.0187]}, "zysr": "2.78", "id": "sh600516", "circulation_market_value": 496.49, "last_single": {"range_percent": [-1.8, 2.51, -0.9, 0.24], "end": [28.88, 29.41, 28.69, 28.95], "total_vol": [880031, 1212178, 1566898, 1242187], "vol_4": [-4812, 2237, 28362, 7793], "vol_3": [-13323, 2400, 30807, 12597], "vol_2": [-15445, 6965, 37776, 14685], "vol_1": [-14201, 6917, 38567, 15948], "high": [29.88, 29.72, 30.33, 29.13], "start": [29.11, 28.6, 29.1, 28.7], "main_force": [-14205.1, 5858.2, -17775.5, -4378.4], "low": [28.67, 28.3, 28.35, 28.12]}, "end": 29.72, "pb": 6.26, "start": 29.25, "mgxjll": "0.49", "low": 28.28, "pe": 25.73, "yylr": "112.44", "mgsy": "117.77", "total_value": 516.6, "down_pointer": 3.06, "mgxj": "--", "up_pointer": 0.38, "range_percent": 2.91, "sec": "strategy0"}
+
+
+serch over ==========
+begin ==========:2018-01-02 14:56:50
+{"tbmgsy": "0.50", "change_rate": 2.99, "jlr": "53.03", "vol": 230226, "high": 11.95, "single": {"vol_4": [-5350], "vol_3": [2230], "vol_2": [-2904], "vol_1": [-6124], "ratio_vol_4": [-0.0232], "ratio_vol_1": [-0.0266], "ratio_vol_3": [0.0097], "ratio_vol_2": [-0.0126]}, "zysr": "83.70", "id": "sh600856", "circulation_market_value": 89.52, "last_single": {"range_percent": [-1.27, 0.77], "end": [11.69, 11.84], "total_vol": [190750, 302454], "vol_4": [4952, 14811], "vol_3": [2856, 17913], "vol_2": [-429, 21995], "vol_1": [-3736, 23899], "high": [11.84, 11.86], "start": [11.84, 11.74], "main_force": [1075.95, 2600.2], "low": [11.53, 11.3]}, "end": 11.86, "pb": 3.2, "start": 11.71, "mgxjll": "0.88", "low": 11.62, "pe": 30.63, "yylr": "52.58", "mgsy": "53.02", "total_value": 158.67, "down_pointer": 1.6, "mgxj": "47.46", "up_pointer": 0.6, "range_percent": 1.45, "sec": "strategy0"}
+
+
+serch over ==========
+begin ==========:2018-01-02 14:58:11
+{"tbmgsy": "0.24", "change_rate": 4.59, "jlr": "50.41", "vol": 729512, "high": 10.93, "single": {"vol_4": [-4273], "vol_3": [-9697], "vol_2": [-13553], "vol_1": [-20507], "ratio_vol_4": [-0.0059], "ratio_vol_1": [-0.0281], "ratio_vol_3": [-0.0133], "ratio_vol_2": [-0.0186]}, "zysr": "51.67", "id": "sz300017", "circulation_market_value": 162.16, "last_single": {"range_percent": [4.93, 1.0, 5.8, 0.0], "end": [10.64, 10.14, 10.04, 9.49], "total_vol": [1045878, 591993, 991529, 335089], "vol_4": [-3201, -13578, -12544, 20660], "vol_3": [-3686, -13892, -17856, 26578], "vol_2": [-848, -13309, -22237, 32471], "vol_1": [-3147, -9885, -21604, 36922], "high": [10.94, 10.29, 10.34, 9.55], "start": [10.16, 10.09, 9.55, 9.45], "main_force": [18590.3, 2731.9, 22199.8, -1707.58], "low": [10.14, 10.0, 9.55, 9.34]}, "end": 10.75, "pb": 3.18, "start": 10.6, "mgxjll": "0.16", "low": 10.42, "pe": 27.11, "yylr": "53.06", "mgsy": "32.84", "total_value": 245.79, "down_pointer": 2.2, "mgxj": "-195.68", "up_pointer": 1.2, "range_percent": 1.03, "sec": "strategy0"}
+
+
+serch over ==========
+begin ==========:2018-01-02 15:04:01
+{"tbmgsy": "0.41", "change_rate": 1.69, "jlr": "70.05", "vol": 104058, "high": 24.03, "single": {"vol_4": [-3054], "vol_3": [-1814], "vol_2": [274], "vol_1": [1185], "ratio_vol_4": [-0.0293], "ratio_vol_1": [0.0114], "ratio_vol_3": [-0.0174], "ratio_vol_2": [0.0026]}, "zysr": "42.20", "id": "sz002273", "circulation_market_value": 144.21, "last_single": {}, "end": 23.86, "pb": 4.99, "start": 23.69, "mgxjll": "0.38", "low": 23.03, "pe": 43.9, "yylr": "67.85", "mgsy": "11.99", "total_value": 155.6, "down_pointer": 4.88, "mgxj": "-87.98", "up_pointer": 1.0, "range_percent": 1.14, "sec": "strategy0"}
+
+
+serch over ==========
+begin ==========:2018-01-02 15:04:15
+{"tbmgsy": "0.21", "change_rate": 2.08, "jlr": "294.29", "vol": 388750, "high": 4.47, "single": {"vol_4": [-2409], "vol_3": [11609], "vol_2": [22122], "vol_1": [33326], "ratio_vol_4": [-0.0062], "ratio_vol_1": [0.0857], "ratio_vol_3": [0.0299], "ratio_vol_2": [0.0569]}, "zysr": "68.28", "id": "sz002477", "circulation_market_value": 82.85, "last_single": {"range_percent": [0.23, 0.68], "end": [4.44, 4.43], "total_vol": [134562, 171059], "vol_4": [-9339, 15082], "vol_3": [-14880, 16074], "vol_2": [-23947, 12159], "vol_1": [-25407, 7483], "high": [4.45, 4.46], "start": [4.43, 4.43], "main_force": [-634.19, 1409.7], "low": [4.41, 4.4]}, "end": 4.46, "pb": 2.48, "start": 4.45, "mgxjll": "-0.28", "low": 4.43, "pe": 17.16, "yylr": "1399.46", "mgsy": "31.43", "total_value": 139.2, "down_pointer": 3.0, "mgxj": "-30.85", "up_pointer": 1.0, "range_percent": 0.45, "sec": "strategy0"}
+
+
+serch over ==========
+begin ==========:2018-01-02 15:06:51
+{"tbmgsy": "0.39", "change_rate": 26.66, "jlr": "3.64", "vol": 124892, "high": 21.73, "single": {"vol_4": [-926], "vol_3": [1227], "vol_2": [5956], "vol_1": [8760], "ratio_vol_4": [-0.0074], "ratio_vol_1": [0.0701], "ratio_vol_3": [0.0098], "ratio_vol_2": [0.0477]}, "zysr": "6.34", "id": "sz002910", "circulation_market_value": 9.67, "last_single": {"range_percent": [-6.36, 2.18, 2.04, 10.01], "end": [20.6, 22.0, 21.53, 21.1], "total_vol": [129660, 212213, 262765, 247355], "vol_4": [361, -4601, -1990, 10599], "vol_3": [-440, -5129, -2335, 12272], "vol_2": [-5162, -5663, -3606, 14643], "vol_1": [-13634, -5825, -3116, 18438], "high": [21.83, 22.58, 23.05, 21.1], "start": [21.52, 21.0, 21.01, 18.73], "main_force": [-2395.14, -651.92, -4771.22, -2676.12], "low": [20.39, 20.13, 20.91, 18.73]}, "end": 21.33, "pb": 3.62, "start": 20.77, "mgxjll": "0.93", "low": 20.2, "pe": 50.94, "yylr": "5.29", "mgsy": "3.64", "total_value": 38.67, "down_pointer": 2.02, "mgxj": "156.40", "up_pointer": 0.71, "range_percent": 3.54, "sec": "strategy0"}
+
+
+serch over ==========
+begin ==========:2018-01-02 16:39:33
+{"tbmgsy": "1.13", "change_rate": 6.2, "jlr": "117.48", "vol": 1065731, "high": 29.9, "single": {"vol_4": [-3239], "vol_3": [-982], "vol_2": [7580], "vol_1": [7950], "ratio_vol_4": [-0.003], "ratio_vol_1": [0.0075], "ratio_vol_3": [-0.0009], "ratio_vol_2": [0.0071]}, "zysr": "2.78", "id": "sh600516", "circulation_market_value": 496.49, "last_single": {"range_percent": [-1.8, 2.51, -0.9, 0.24], "end": [28.88, 29.41, 28.69, 28.95], "total_vol": [880031, 1212178, 1566898, 1242187], "vol_4": [-4812, 2237, 28362, 7793], "vol_3": [-13323, 2400, 30807, 12597], "vol_2": [-15445, 6965, 37776, 14685], "vol_1": [-14201, 6917, 38567, 15948], "high": [29.88, 29.72, 30.33, 29.13], "start": [29.11, 28.6, 29.1, 28.7], "main_force": [-14205.1, 5858.2, -17775.5, -4378.4], "low": [28.67, 28.3, 28.35, 28.12]}, "end": 29.83, "pb": 6.26, "start": 29.25, "mgxjll": "0.49", "low": 28.28, "pe": 25.73, "yylr": "112.44", "mgsy": "117.77", "total_value": 516.6, "down_pointer": 2.67, "mgxj": "--", "up_pointer": 0.12, "range_percent": 3.29, "sec": "strategy0"}
+
+
+serch over ==========
+begin ==========:2018-01-02 16:40:20
+{"tbmgsy": "0.50", "change_rate": 3.05, "jlr": "53.03", "vol": 235336, "high": 11.95, "single": {"vol_4": [-5482], "vol_3": [3284], "vol_2": [-971], "vol_1": [-3915], "ratio_vol_4": [-0.0233], "ratio_vol_1": [-0.0166], "ratio_vol_3": [0.014], "ratio_vol_2": [-0.0041]}, "zysr": "83.70", "id": "sh600856", "circulation_market_value": 89.52, "last_single": {"range_percent": [-1.27, 0.77], "end": [11.69, 11.84], "total_vol": [190750, 302454], "vol_4": [4952, 14811], "vol_3": [2856, 17913], "vol_2": [-429, 21995], "vol_1": [-3736, 23899], "high": [11.84, 11.86], "start": [11.84, 11.74], "main_force": [1075.95, 2600.2], "low": [11.53, 11.3]}, "end": 11.88, "pb": 3.2, "start": 11.71, "mgxjll": "0.88", "low": 11.62, "pe": 30.63, "yylr": "52.58", "mgsy": "53.02", "total_value": 158.67, "down_pointer": 1.53, "mgxj": "47.46", "up_pointer": 0.41, "range_percent": 1.63, "main_force": 5615.64, "sec": "strategy0"}
+
+
+serch over ==========
+begin ==========:2018-01-02 16:41:17
+{"tbmgsy": "0.24", "change_rate": 4.64, "jlr": "50.41", "vol": 738318, "high": 10.93, "single": {"vol_4": [-13079], "vol_3": [-18503], "vol_2": [-22567], "vol_1": [-29521], "ratio_vol_4": [-0.0177], "ratio_vol_1": [-0.04], "ratio_vol_3": [-0.0251], "ratio_vol_2": [-0.0306]}, "zysr": "51.67", "id": "sz300017", "circulation_market_value": 162.16, "last_single": {"range_percent": [4.93, 1.0, 5.8, 0.0], "end": [10.64, 10.14, 10.04, 9.49], "total_vol": [1045878, 591993, 991529, 335089], "vol_4": [-3201, -13578, -12544, 20660], "vol_3": [-3686, -13892, -17856, 26578], "vol_2": [-848, -13309, -22237, 32471], "vol_1": [-3147, -9885, -21604, 36922], "high": [10.94, 10.29, 10.34, 9.55], "start": [10.16, 10.09, 9.55, 9.45], "main_force": [18590.3, 2731.9, 22199.8, -1707.58], "low": [10.14, 10.0, 9.55, 9.34]}, "end": 10.73, "pb": 3.18, "start": 10.6, "mgxjll": "0.16", "low": 10.42, "pe": 27.11, "yylr": "53.06", "mgsy": "32.84", "total_value": 245.79, "down_pointer": 2.38, "mgxj": "-195.68", "up_pointer": 1.54, "range_percent": 0.85, "main_force": 5559.8, "sec": "strategy0"}
+
+
+serch over ==========
+begin ==========:2018-01-02 16:47:09
+{"tbmgsy": "0.41", "change_rate": 1.69, "jlr": "70.05", "vol": 104058, "high": 24.03, "single": {"vol_4": [-3054], "vol_3": [-1814], "vol_2": [274], "vol_1": [1185], "ratio_vol_4": [-0.0293], "ratio_vol_1": [0.0114], "ratio_vol_3": [-0.0174], "ratio_vol_2": [0.0026]}, "zysr": "42.20", "id": "sz002273", "circulation_market_value": 144.21, "last_single": {}, "end": 23.86, "pb": 4.99, "start": 23.69, "mgxjll": "0.38", "low": 23.03, "pe": 43.9, "yylr": "67.85", "mgsy": "11.99", "total_value": 155.6, "down_pointer": 4.88, "mgxj": "-87.98", "up_pointer": 1.0, "range_percent": 1.14, "main_force": 291.5, "sec": "strategy0"}
+
+
+serch over ==========
+begin ==========:2018-01-02 16:47:17
+{"tbmgsy": "0.21", "change_rate": 2.08, "jlr": "294.29", "vol": 388750, "high": 4.47, "single": {"vol_4": [-2409], "vol_3": [11609], "vol_2": [22122], "vol_1": [33326], "ratio_vol_4": [-0.0062], "ratio_vol_1": [0.0857], "ratio_vol_3": [0.0299], "ratio_vol_2": [0.0569]}, "zysr": "68.28", "id": "sz002477", "circulation_market_value": 82.85, "last_single": {"range_percent": [0.23, 0.68], "end": [4.44, 4.43], "total_vol": [134562, 171059], "vol_4": [-9339, 15082], "vol_3": [-14880, 16074], "vol_2": [-23947, 12159], "vol_1": [-25407, 7483], "high": [4.45, 4.46], "start": [4.43, 4.43], "main_force": [-634.19, 1409.7], "low": [4.41, 4.4]}, "end": 4.46, "pb": 2.48, "start": 4.45, "mgxjll": "-0.28", "low": 4.43, "pe": 17.16, "yylr": "1399.46", "mgsy": "31.43", "total_value": 139.2, "down_pointer": 3.0, "mgxj": "-30.85", "up_pointer": 1.0, "range_percent": 0.45, "main_force": -3980.43, "sec": "strategy0"}
+
+
+serch over ==========
+begin ==========:2018-01-02 16:49:42
+{"tbmgsy": "0.39", "change_rate": 26.66, "jlr": "3.64", "vol": 124892, "high": 21.73, "single": {"vol_4": [-926], "vol_3": [1227], "vol_2": [5956], "vol_1": [8760], "ratio_vol_4": [-0.0074], "ratio_vol_1": [0.0701], "ratio_vol_3": [0.0098], "ratio_vol_2": [0.0477]}, "zysr": "6.34", "id": "sz002910", "circulation_market_value": 9.67, "last_single": {"range_percent": [-6.36, 2.18, 2.04, 10.01], "end": [20.6, 22.0, 21.53, 21.1], "total_vol": [129660, 212213, 262765, 247355], "vol_4": [361, -4601, -1990, 10599], "vol_3": [-440, -5129, -2335, 12272], "vol_2": [-5162, -5663, -3606, 14643], "vol_1": [-13634, -5825, -3116, 18438], "high": [21.83, 22.58, 23.05, 21.1], "start": [21.52, 21.0, 21.01, 18.73], "main_force": [-2395.14, -651.92, -4771.22, -2676.12], "low": [20.39, 20.13, 20.91, 18.73]}, "end": 21.33, "pb": 3.62, "start": 20.77, "mgxjll": "0.93", "low": 20.2, "pe": 50.94, "yylr": "5.29", "mgsy": "3.64", "total_value": 38.67, "down_pointer": 2.02, "mgxj": "156.40", "up_pointer": 0.71, "range_percent": 3.54, "main_force": 437.34, "sec": "strategy0"}
+
+
+serch over ==========
+begin ==========:2018-01-02 16:51:15
+{"tbmgsy": "0.21", "change_rate": 1.28, "jlr": "56.25", "vol": 116807, "high": 8.32, "single": {"vol_4": [-4332], "vol_3": [-6427], "vol_2": [-6859], "vol_1": [-5080], "ratio_vol_4": [-0.0371], "ratio_vol_1": [-0.0435], "ratio_vol_3": [-0.055], "ratio_vol_2": [-0.0587]}, "zysr": "-8.40", "id": "sh603128", "circulation_market_value": 75.16, "last_single": {"range_percent": [0.61, 1.12], "end": [8.19, 8.14], "total_vol": [108193, 180640], "vol_4": [700, 12572], "vol_3": [2236, 20467], "vol_2": [-1777, 20136], "vol_1": [-3008, 19982], "high": [8.23, 8.36], "start": [8.1, 8.08], "main_force": [-90.49, 1208.28], "low": [8.08, 7.99]}, "end": 8.27, "pb": 2.27, "start": 8.2, "mgxjll": "-0.04", "low": 8.14, "pe": 37.12, "yylr": "43.02", "mgsy": "26.36", "total_value": 82.95, "down_pointer": 1.86, "mgxj": "188.24", "up_pointer": 0.71, "range_percent": 0.98, "main_force": -165.71, "sec": "strategy0"}
+
+
+serch over ==========
+begin ==========:2018-01-02 16:51:24
+{"tbmgsy": "1.18", "change_rate": 1.05, "jlr": "-35.75", "vol": 115101, "high": 22.72, "single": {"vol_4": [-1708], "vol_3": [-2274], "vol_2": [-8498], "vol_1": [-11162], "ratio_vol_4": [-0.0148], "ratio_vol_1": [-0.097], "ratio_vol_3": [-0.0198], "ratio_vol_2": [-0.0738]}, "zysr": "17.22", "id": "sz000623", "circulation_market_value": 241.4, "last_single": {"range_percent": [2.32, 0.69], "end": [22.5, 21.99], "total_vol": [170653, 50504], "vol_4": [22430, 0], "vol_3": [25461, 556], "vol_2": [33336, 852], "vol_1": [34514, 164], "high": [22.98, 22.15], "start": [22.0, 21.85], "main_force": [3043.38, 591.83], "low": [21.99, 21.81]}, "end": 22.6, "pb": 1.28, "start": 22.5, "mgxjll": "0.04", "low": 22.32, "pe": 14.61, "yylr": "-36.16", "mgsy": "-35.74", "total_value": 256.27, "down_pointer": 2.8, "mgxj": "-500.73", "up_pointer": 1.2, "range_percent": 0.44, "main_force": -3387.07, "sec": "strategy0"}
+
+
+serch over ==========
+begin ==========:2018-01-02 16:52:31
+{"tbmgsy": "0.43", "change_rate": 1.46, "jlr": "7.58", "vol": 88564, "high": 8.33, "single": {"vol_4": [240], "vol_3": [-956], "vol_2": [-639], "vol_1": [-3748], "ratio_vol_4": [0.0027], "ratio_vol_1": [-0.0423], "ratio_vol_3": [-0.0108], "ratio_vol_2": [-0.0072]}, "zysr": "-2.64", "id": "sh603323", "circulation_market_value": 50.31, "last_single": {"range_percent": [-0.12, 1.23], "end": [8.23, 8.24], "total_vol": [99289, 176326], "vol_4": [-587, 15449], "vol_3": [893, 15893], "vol_2": [-4650, 21297], "vol_1": [-6367, 23598], "high": [8.27, 8.42], "start": [8.18, 8.11], "main_force": [-820.2, -698.99], "low": [8.15, 8.11]}, "end": 8.29, "pb": 1.45, "start": 8.25, "mgxjll": "-2.49", "low": 8.23, "pe": 17.0, "yylr": "4.77", "mgsy": "-3.18", "total_value": 120.05, "down_pointer": 1.5, "mgxj": "110.73", "up_pointer": 1.0, "range_percent": 0.73, "main_force": -157.9, "sec": "strategy0"}
+
+
+serch over ==========
+begin ==========:2018-01-02 16:52:31
+{"tbmgsy": "0.21", "change_rate": 4.04, "jlr": "-19.17", "vol": 31110, "high": 12.13, "single": {"vol_4": [0], "vol_3": [0], "vol_2": [-677], "vol_1": [-1987], "ratio_vol_4": [0.0], "ratio_vol_1": [-0.0639], "ratio_vol_3": [0.0], "ratio_vol_2": [-0.0218]}, "zysr": "-9.45", "id": "sh603321", "circulation_market_value": 9.38, "last_single": {"range_percent": [-2.76, -0.64, 2.14, 10.05], "end": [12.0, 12.34, 12.42, 12.16], "total_vol": [51763, 73809, 158273, 99450], "vol_4": [-1845, 0, 4058, 13651], "vol_3": [-2098, 907, 2117, 13814], "vol_2": [-4875, 535, 1459, 14495], "vol_1": [-9836, 365, -2011, 13400], "high": [12.29, 12.46, 12.79, 12.16], "start": [12.29, 12.2, 12.48, 11.02], "main_force": [-894.34, -51.55, -1932.55, 3267.61], "low": [11.89, 11.88, 12.2, 11.02]}, "end": 12.03, "pb": 3.78, "start": 12.0, "mgxjll": "1.47", "low": 11.92, "pe": 41.27, "yylr": "-23.13", "mgsy": "-19.16", "total_value": 37.39, "down_pointer": 3.67, "mgxj": "-425.54", "up_pointer": 3.33, "range_percent": 0.25, "main_force": -77.48, "sec": "strategy0"}
+
+
+serch over ==========
+begin ==========:2018-01-02 16:52:43
+{"tbmgsy": "0.54", "change_rate": 2.38, "jlr": "--", "vol": 257506, "high": 26.24, "single": {"vol_4": [-1051], "vol_3": [51], "vol_2": [2975], "vol_1": [7898], "ratio_vol_4": [-0.0041], "ratio_vol_1": [0.0307], "ratio_vol_3": [0.0002], "ratio_vol_2": [0.0116]}, "zysr": "9.98", "id": "sh600549", "circulation_market_value": 273.2, "last_single": {}, "end": 26.1, "pb": 4.0, "start": 25.75, "mgxjll": "0.13", "low": 25.4, "pe": 47.2, "yylr": "--", "mgsy": "122.18", "total_value": 274.48, "down_pointer": 2.0, "mgxj": "--", "up_pointer": 0.4, "range_percent": 1.4, "main_force": 2101.87, "sec": "strategy0"}
+
+
+serch over ==========
+begin ==========:2018-01-02 16:52:50
+{"tbmgsy": "0.23", "change_rate": 1.03, "jlr": "6.96", "vol": 283800, "high": 10.4, "single": {"vol_4": [1445], "vol_3": [-4338], "vol_2": [-2824], "vol_1": [-3025], "ratio_vol_4": [0.0051], "ratio_vol_1": [-0.0107], "ratio_vol_3": [-0.0153], "ratio_vol_2": [-0.01]}, "zysr": "5.32", "id": "sz000559", "circulation_market_value": 254.45, "last_single": {"range_percent": [9.85, -0.96], "end": [10.15, 9.24], "total_vol": [423580, 89019], "vol_4": [61385, -3508], "vol_3": [61485, -8379], "vol_2": [55853, -12857], "vol_1": [52569, -15154], "high": [10.16, 9.45], "start": [9.24, 9.29], "main_force": [13147.6, -671.79], "low": [9.17, 9.21]}, "end": 10.12, "pb": 5.34, "start": 10.0, "mgxjll": "-0.17", "low": 9.87, "pe": 30.59, "yylr": "11.65", "mgsy": "6.94", "total_value": 254.94, "down_pointer": 2.08, "mgxj": "-431.87", "up_pointer": 2.33, "range_percent": -0.3, "main_force": -2759.67, "sec": "strategy0"}
+
+
+serch over ==========
+begin ==========:2018-01-02 17:08:02
+{"tbmgsy": "1.13", "change_rate": 6.2, "jlr": "117.48", "vol": 1065731, "high": 29.9, "single": {"vol_4": [-3239], "vol_3": [-982], "vol_2": [7580], "vol_1": [7950], "ratio_vol_4": [-0.003], "ratio_vol_1": [0.0075], "ratio_vol_3": [-0.0009], "ratio_vol_2": [0.0071]}, "zysr": "2.78", "id": "sh600516", "circulation_market_value": 496.49, "last_single": {"range_percent": [-1.8, 2.51, -0.9, 0.24], "end": [28.88, 29.41, 28.69, 28.95], "total_vol": [880031, 1212178, 1566898, 1242187], "vol_4": [-4812, 2237, 28362, 7793], "vol_3": [-13323, 2400, 30807, 12597], "vol_2": [-15445, 6965, 37776, 14685], "vol_1": [-14201, 6917, 38567, 15948], "high": [29.88, 29.72, 30.33, 29.13], "start": [29.11, 28.6, 29.1, 28.7], "main_force": [-14205.1, 5858.2, -17775.5, -4378.4], "low": [28.67, 28.3, 28.35, 28.12]}, "end": 29.83, "pb": 6.26, "start": 29.25, "mgxjll": "0.49", "low": 28.28, "pe": 25.73, "yylr": "112.44", "mgsy": "117.77", "total_value": 516.6, "down_pointer": 2.67, "mgxj": "--", "up_pointer": 0.12, "range_percent": 3.29, "main_force": 17403.8, "sec": "strategy0"}
+
+
+serch over ==========
+begin ==========:2018-01-02 17:08:34
+{"tbmgsy": "0.50", "change_rate": 3.05, "jlr": "53.03", "vol": 235336, "high": 11.95, "single": {"vol_4": [-5482], "vol_3": [3284], "vol_2": [-971], "vol_1": [-3915], "ratio_vol_4": [-0.0233], "ratio_vol_1": [-0.0166], "ratio_vol_3": [0.014], "ratio_vol_2": [-0.0041]}, "zysr": "83.70", "id": "sh600856", "circulation_market_value": 89.52, "last_single": {"range_percent": [-1.27, 0.77], "end": [11.69, 11.84], "total_vol": [190750, 302454], "vol_4": [4952, 14811], "vol_3": [2856, 17913], "vol_2": [-429, 21995], "vol_1": [-3736, 23899], "high": [11.84, 11.86], "start": [11.84, 11.74], "main_force": [1075.95, 2600.2], "low": [11.53, 11.3]}, "end": 11.88, "pb": 3.2, "start": 11.71, "mgxjll": "0.88", "low": 11.62, "pe": 30.63, "yylr": "52.58", "mgsy": "53.02", "total_value": 158.67, "down_pointer": 1.53, "mgxj": "47.46", "up_pointer": 0.41, "range_percent": 1.63, "sec": "strategy0"}
+
+
+serch over ==========
+begin ==========:2018-01-02 17:09:24
+{"tbmgsy": "0.24", "change_rate": 4.64, "jlr": "50.41", "vol": 738318, "high": 10.93, "single": {"vol_4": [-13079], "vol_3": [-18503], "vol_2": [-22567], "vol_1": [-29521], "ratio_vol_4": [-0.0177], "ratio_vol_1": [-0.04], "ratio_vol_3": [-0.0251], "ratio_vol_2": [-0.0306]}, "zysr": "51.67", "id": "sz300017", "circulation_market_value": 162.16, "last_single": {"range_percent": [4.93, 1.0, 5.8, 0.0], "end": [10.64, 10.14, 10.04, 9.49], "total_vol": [1045878, 591993, 991529, 335089], "vol_4": [-3201, -13578, -12544, 20660], "vol_3": [-3686, -13892, -17856, 26578], "vol_2": [-848, -13309, -22237, 32471], "vol_1": [-3147, -9885, -21604, 36922], "high": [10.94, 10.29, 10.34, 9.55], "start": [10.16, 10.09, 9.55, 9.45], "main_force": [18590.3, 2731.9, 22199.8, -1707.58], "low": [10.14, 10.0, 9.55, 9.34]}, "end": 10.73, "pb": 3.18, "start": 10.6, "mgxjll": "0.16", "low": 10.42, "pe": 27.11, "yylr": "53.06", "mgsy": "32.84", "total_value": 245.79, "down_pointer": 2.38, "mgxj": "-195.68", "up_pointer": 1.54, "range_percent": 0.85, "sec": "strategy0"}
+
+
+serch over ==========
+begin ==========:2018-01-02 17:16:42
+{"tbmgsy": "0.41", "change_rate": 1.69, "jlr": "70.05", "vol": 104058, "high": 24.03, "single": {"vol_4": [-3054], "vol_3": [-1814], "vol_2": [274], "vol_1": [1185], "ratio_vol_4": [-0.0293], "ratio_vol_1": [0.0114], "ratio_vol_3": [-0.0174], "ratio_vol_2": [0.0026]}, "zysr": "42.20", "id": "sz002273", "circulation_market_value": 144.21, "last_single": {}, "end": 23.86, "pb": 4.99, "start": 23.69, "mgxjll": "0.38", "low": 23.03, "pe": 43.9, "yylr": "67.85", "mgsy": "11.99", "total_value": 155.6, "down_pointer": 4.88, "mgxj": "-87.98", "up_pointer": 1.0, "range_percent": 1.14, "sec": "strategy0"}
+
+
+serch over ==========
+begin ==========:2018-01-02 17:17:28
+{"tbmgsy": "0.21", "change_rate": 2.08, "jlr": "294.29", "vol": 388750, "high": 4.47, "single": {"vol_4": [-2409], "vol_3": [11609], "vol_2": [22122], "vol_1": [33326], "ratio_vol_4": [-0.0062], "ratio_vol_1": [0.0857], "ratio_vol_3": [0.0299], "ratio_vol_2": [0.0569]}, "zysr": "68.28", "id": "sz002477", "circulation_market_value": 82.85, "last_single": {"range_percent": [0.23, 0.68], "end": [4.44, 4.43], "total_vol": [134562, 171059], "vol_4": [-9339, 15082], "vol_3": [-14880, 16074], "vol_2": [-23947, 12159], "vol_1": [-25407, 7483], "high": [4.45, 4.46], "start": [4.43, 4.43], "main_force": [-634.19, 1409.7], "low": [4.41, 4.4]}, "end": 4.46, "pb": 2.48, "start": 4.45, "mgxjll": "-0.28", "low": 4.43, "pe": 17.16, "yylr": "1399.46", "mgsy": "31.43", "total_value": 139.2, "down_pointer": 3.0, "mgxj": "-30.85", "up_pointer": 1.0, "range_percent": 0.45, "sec": "strategy0"}
+
+
+serch over ==========
+begin ==========:2018-01-02 17:19:59
+{"tbmgsy": "0.39", "change_rate": 26.66, "jlr": "3.64", "vol": 124892, "high": 21.73, "single": {"vol_4": [-926], "vol_3": [1227], "vol_2": [5956], "vol_1": [8760], "ratio_vol_4": [-0.0074], "ratio_vol_1": [0.0701], "ratio_vol_3": [0.0098], "ratio_vol_2": [0.0477]}, "zysr": "6.34", "id": "sz002910", "circulation_market_value": 9.67, "last_single": {"range_percent": [-6.36, 2.18, 2.04, 10.01], "end": [20.6, 22.0, 21.53, 21.1], "total_vol": [129660, 212213, 262765, 247355], "vol_4": [361, -4601, -1990, 10599], "vol_3": [-440, -5129, -2335, 12272], "vol_2": [-5162, -5663, -3606, 14643], "vol_1": [-13634, -5825, -3116, 18438], "high": [21.83, 22.58, 23.05, 21.1], "start": [21.52, 21.0, 21.01, 18.73], "main_force": [-2395.14, -651.92, -4771.22, -2676.12], "low": [20.39, 20.13, 20.91, 18.73]}, "end": 21.33, "pb": 3.62, "start": 20.77, "mgxjll": "0.93", "low": 20.2, "pe": 50.94, "yylr": "5.29", "mgsy": "3.64", "total_value": 38.67, "down_pointer": 2.02, "mgxj": "156.40", "up_pointer": 0.71, "range_percent": 3.54, "sec": "strategy0"}
+
+
+serch over ==========
+begin ==========:2018-01-02 17:24:14
+{"tbmgsy": "0.21", "change_rate": 1.28, "jlr": "56.25", "vol": 116807, "high": 8.32, "single": {"vol_4": [-4332], "vol_3": [-6427], "vol_2": [-6859], "vol_1": [-5080], "ratio_vol_4": [-0.0371], "ratio_vol_1": [-0.0435], "ratio_vol_3": [-0.055], "ratio_vol_2": [-0.0587]}, "zysr": "-8.40", "id": "sh603128", "circulation_market_value": 75.16, "last_single": {"range_percent": [0.61, 1.12], "end": [8.19, 8.14], "total_vol": [108193, 180640], "vol_4": [700, 12572], "vol_3": [2236, 20467], "vol_2": [-1777, 20136], "vol_1": [-3008, 19982], "high": [8.23, 8.36], "start": [8.1, 8.08], "main_force": [-90.49, 1208.28], "low": [8.08, 7.99]}, "end": 8.27, "pb": 2.27, "start": 8.2, "mgxjll": "-0.04", "low": 8.14, "pe": 37.12, "yylr": "43.02", "mgsy": "26.36", "total_value": 82.95, "down_pointer": 1.86, "mgxj": "188.24", "up_pointer": 0.71, "range_percent": 0.98, "sec": "strategy0"}
+
+
+serch over ==========
+begin ==========:2018-01-02 17:24:32
+{"tbmgsy": "1.18", "change_rate": 1.05, "jlr": "-35.75", "vol": 115101, "high": 22.72, "single": {"vol_4": [-1708], "vol_3": [-2274], "vol_2": [-8498], "vol_1": [-11162], "ratio_vol_4": [-0.0148], "ratio_vol_1": [-0.097], "ratio_vol_3": [-0.0198], "ratio_vol_2": [-0.0738]}, "zysr": "17.22", "id": "sz000623", "circulation_market_value": 241.4, "last_single": {"range_percent": [2.32, 0.69], "end": [22.5, 21.99], "total_vol": [170653, 50504], "vol_4": [22430, 0], "vol_3": [25461, 556], "vol_2": [33336, 852], "vol_1": [34514, 164], "high": [22.98, 22.15], "start": [22.0, 21.85], "main_force": [3043.38, 591.83], "low": [21.99, 21.81]}, "end": 22.6, "pb": 1.28, "start": 22.5, "mgxjll": "0.04", "low": 22.32, "pe": 14.61, "yylr": "-36.16", "mgsy": "-35.74", "total_value": 256.27, "down_pointer": 2.8, "mgxj": "-500.73", "up_pointer": 1.2, "range_percent": 0.44, "sec": "strategy0"}
+
+
+serch over ==========
+begin ==========:2018-01-02 17:27:48
+{"tbmgsy": "0.43", "change_rate": 1.46, "jlr": "7.58", "vol": 88564, "high": 8.33, "single": {"vol_4": [240], "vol_3": [-956], "vol_2": [-639], "vol_1": [-3748], "ratio_vol_4": [0.0027], "ratio_vol_1": [-0.0423], "ratio_vol_3": [-0.0108], "ratio_vol_2": [-0.0072]}, "zysr": "-2.64", "id": "sh603323", "circulation_market_value": 50.31, "last_single": {"range_percent": [-0.12, 1.23], "end": [8.23, 8.24], "total_vol": [99289, 176326], "vol_4": [-587, 15449], "vol_3": [893, 15893], "vol_2": [-4650, 21297], "vol_1": [-6367, 23598], "high": [8.27, 8.42], "start": [8.18, 8.11], "main_force": [-820.2, -698.99], "low": [8.15, 8.11]}, "end": 8.29, "pb": 1.45, "start": 8.25, "mgxjll": "-2.49", "low": 8.23, "pe": 17.0, "yylr": "4.77", "mgsy": "-3.18", "total_value": 120.05, "down_pointer": 1.5, "mgxj": "110.73", "up_pointer": 1.0, "range_percent": 0.73, "sec": "strategy0"}
+
+
+serch over ==========
+begin ==========:2018-01-02 17:27:49
+{"tbmgsy": "0.21", "change_rate": 4.04, "jlr": "-19.17", "vol": 31110, "high": 12.13, "single": {"vol_4": [0], "vol_3": [0], "vol_2": [-677], "vol_1": [-1987], "ratio_vol_4": [0.0], "ratio_vol_1": [-0.0639], "ratio_vol_3": [0.0], "ratio_vol_2": [-0.0218]}, "zysr": "-9.45", "id": "sh603321", "circulation_market_value": 9.38, "last_single": {"range_percent": [-2.76, -0.64, 2.14, 10.05], "end": [12.0, 12.34, 12.42, 12.16], "total_vol": [51763, 73809, 158273, 99450], "vol_4": [-1845, 0, 4058, 13651], "vol_3": [-2098, 907, 2117, 13814], "vol_2": [-4875, 535, 1459, 14495], "vol_1": [-9836, 365, -2011, 13400], "high": [12.29, 12.46, 12.79, 12.16], "start": [12.29, 12.2, 12.48, 11.02], "main_force": [-894.34, -51.55, -1932.55, 3267.61], "low": [11.89, 11.88, 12.2, 11.02]}, "end": 12.03, "pb": 3.78, "start": 12.0, "mgxjll": "1.47", "low": 11.92, "pe": 41.27, "yylr": "-23.13", "mgsy": "-19.16", "total_value": 37.39, "down_pointer": 3.67, "mgxj": "-425.54", "up_pointer": 3.33, "range_percent": 0.25, "sec": "strategy0"}
+
+
+serch over ==========
+begin ==========:2018-01-02 17:28:39
+{"tbmgsy": "0.54", "change_rate": 2.38, "jlr": "--", "vol": 257506, "high": 26.24, "single": {"vol_4": [-1051], "vol_3": [51], "vol_2": [2975], "vol_1": [7898], "ratio_vol_4": [-0.0041], "ratio_vol_1": [0.0307], "ratio_vol_3": [0.0002], "ratio_vol_2": [0.0116]}, "zysr": "9.98", "id": "sh600549", "circulation_market_value": 273.2, "last_single": {}, "end": 26.1, "pb": 4.0, "start": 25.75, "mgxjll": "0.13", "low": 25.4, "pe": 47.2, "yylr": "--", "mgsy": "122.18", "total_value": 274.48, "down_pointer": 2.0, "mgxj": "--", "up_pointer": 0.4, "range_percent": 1.4, "sec": "strategy0"}
+
+
+serch over ==========
+begin ==========:2018-01-02 17:29:22
+{"tbmgsy": "0.23", "change_rate": 1.03, "jlr": "6.96", "vol": 283800, "high": 10.4, "single": {"vol_4": [1445], "vol_3": [-4338], "vol_2": [-2824], "vol_1": [-3025], "ratio_vol_4": [0.0051], "ratio_vol_1": [-0.0107], "ratio_vol_3": [-0.0153], "ratio_vol_2": [-0.01]}, "zysr": "5.32", "id": "sz000559", "circulation_market_value": 254.45, "last_single": {"range_percent": [9.85, -0.96], "end": [10.15, 9.24], "total_vol": [423580, 89019], "vol_4": [61385, -3508], "vol_3": [61485, -8379], "vol_2": [55853, -12857], "vol_1": [52569, -15154], "high": [10.16, 9.45], "start": [9.24, 9.29], "main_force": [13147.6, -671.79], "low": [9.17, 9.21]}, "end": 10.12, "pb": 5.34, "start": 10.0, "mgxjll": "-0.17", "low": 9.87, "pe": 30.59, "yylr": "11.65", "mgsy": "6.94", "total_value": 254.94, "down_pointer": 2.08, "mgxj": "-431.87", "up_pointer": 2.33, "range_percent": -0.3, "sec": "strategy0"}
+
+
+serch over ==========
+begin ==========:2018-01-02 17:31:45
+{"tbmgsy": "0.80", "change_rate": 2.28, "jlr": "1.45", "vol": 2189443, "high": 8.0, "single": {"vol_4": [13375], "vol_3": [15753], "vol_2": [23030], "vol_1": [21546], "ratio_vol_4": [0.0061], "ratio_vol_1": [0.0098], "ratio_vol_3": [0.0072], "ratio_vol_2": [0.0105]}, "zysr": "-0.02", "id": "sh601939", "circulation_market_value": 717.61, "last_single": {"range_percent": [1.72, 0.67, -0.53, 1.89], "end": [7.68, 7.55, 7.5, 7.54], "total_vol": [1106196, 931307, 1332422, 920589], "vol_4": [35077, -5746, -14729, -13257], "vol_3": [43570, -15348, -18046, -2863], "vol_2": [61160, -18748, -34294, -12141], "vol_1": [66243, -22365, -45418, -22257], "high": [7.73, 7.61, 7.69, 7.54], "start": [7.55, 7.5, 7.49, 7.41], "main_force": [4687.8, 4083.1, 8958.4, 17067.6], "low": [7.5, 7.41, 7.45, 7.35]}, "end": 7.79, "pb": 1.11, "start": 7.69, "mgxjll": "0.14", "low": 7.64, "pe": 7.83, "yylr": "-1.24", "mgsy": "1.45", "total_value": 18700.82, "down_pointer": 1.5, "mgxj": "517.47", "up_pointer": 2.1, "range_percent": 1.43, "sec": "strategy0"}
+
+
+serch over ==========
