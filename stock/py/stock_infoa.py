@@ -1725,17 +1725,17 @@ def do_check_select(id_dic, sec, cf):
 
         if cf.has_option(sec, 'lastday_has_range_percent_ge') and id_dic.has_key('last_single') \
             and id_dic['last_single'].has_key('range_percent') and len(id_dic['last_single']['range_percent']) > id_day:
-            if id_dic['last_single']['range_percent'][id_day] > cf.float(sec, 'lastday_has_range_percent_ge'):
+            if id_dic['last_single']['range_percent'][id_day] > cf.getfloat(sec, 'lastday_has_range_percent_ge'):
                     lastday_has_range_percent_ge = True
 
         if cf.has_option(sec, 'lastday_range_percent_ge') and id_dic.has_key('last_single') \
             and id_dic['last_single'].has_key('range_percent') and len(id_dic['last_single']['range_percent']) > id_day:
-            if id_dic['last_single']['range_percent'][id_day] > cf.float(sec, 'lastday_range_percent_ge'):
+            if id_dic['last_single']['range_percent'][id_day] > cf.getfloat(sec, 'lastday_range_percent_ge'):
                     lastday_range_percent_ge_sum += 1
 
         if cf.has_option(sec, 'lastday_has_down_pointer_ge') and id_dic.has_key('last_single') \
             and id_dic['last_single'].has_key('end') and len(id_dic['last_single']['end']) > id_day:
-            down_pointer = round(abs(id_dic['last_single']['end'] - id_dic['last_single']['low']) * 1.0 /abs(id_dic['last_single']['end'] - id_dic['last_single']['start']), 2)
+            down_pointer = round(abs(id_dic['last_single']['end'][id_day] - id_dic['last_single']['low'][id_day]) * 1.0 /abs(id_dic['last_single']['end'][id_day] - id_dic['last_single']['start'][id_day]), 2)
             if down_pointer > cf.float(sec, 'lastday_has_down_pointer_ge'):
                     lastday_has_down_pointer_ge = True
 
@@ -1756,7 +1756,7 @@ def do_check_select(id_dic, sec, cf):
 
     if cf.has_option(sec, 'lastday_range_percent_ge_ratio') and id_dic['last_single'].has_key('range_percent') and cf.has_option(sec, 'lastday_range_percent_ge'):
         lastday_range_percent_ge_ratio = round(lastday_range_percent_ge_sum * 1.0/lastday_num, 2)
-        if lastday_range_percent_ge_ratio < cf.float(sec, 'lastday_range_percent_ge_ratio'):
+        if lastday_range_percent_ge_ratio < cf.getfloat(sec, 'lastday_range_percent_ge_ratio'):
             return
 
     if cf.has_option(sec, 'lastday_has_down_pointer_ge') and id_dic['last_single'].has_key('end') and not lastday_has_down_pointer_ge:
@@ -1770,7 +1770,7 @@ def do_check_select(id_dic, sec, cf):
 def do_search_short():
     day = Day()
     start_day = '%s' % (day.get_day_of_day(-20))
-    end_day = '%s' % (day.get_day_of_day(30))
+    end_day = '%s' % (day.get_day_of_day(45))
     toady = '%s' % (day.today(),)
     print start_day.replace('-', ''), end_day.replace('-', '')
     ban_list = get_outDxf_list(start_day.replace('-', ''), end_day.replace('-', ''))
