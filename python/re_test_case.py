@@ -761,7 +761,18 @@ def test_201(search_dic):
 
 
 def test_202(search_dic):
-    pass
+    if not len(search_dic):
+        return False
+
+    url = create_url(search_dic)
+    print url
+    res_dic = {}
+    try:
+        f = urllib2.urlopen(url)
+        res_dic = json.loads(f.read())
+    except Exception, e:
+        print e
+        return False
 
 
 
