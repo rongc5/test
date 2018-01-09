@@ -21,37 +21,7 @@ import ConfigParser
 
 __author__ = 'rong'
 
-user_agent_list = [
-        "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 "
-        "(KHTML, like Gecko) Chrome/60.0.3112.113 Safari/537.36",
-        "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.1 "
-        "(KHTML, like Gecko) Chrome/22.0.1207.1 Safari/537.1",
-        "Mozilla/5.0 (X11; CrOS i686 2268.111.0) AppleWebKit/536.11 "
-        "(KHTML, like Gecko) Chrome/20.0.1132.57 Safari/536.11",
-        "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/536.6 "
-        "(KHTML, like Gecko) Chrome/20.0.1092.0 Safari/536.6",
-        "Mozilla/5.0 (Windows NT 6.2) AppleWebKit/536.6 "
-        "(KHTML, like Gecko) Chrome/20.0.1090.0 Safari/536.6",
-        "Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.1 "
-        "(KHTML, like Gecko) Chrome/19.77.34.5 Safari/537.1",
-        "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/536.5 "
-        "(KHTML, like Gecko) Chrome/19.0.1084.9 Safari/536.5",
-        "Mozilla/5.0 (Windows NT 6.0) AppleWebKit/536.5 "
-        "(KHTML, like Gecko) Chrome/19.0.1084.36 Safari/536.5",
-        "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/536.3 "
-        "(KHTML, like Gecko) Chrome/19.0.1063.0 Safari/536.3",
-        "Mozilla/5.0 (Windows NT 5.1) AppleWebKit/536.3 "
-        "(KHTML, like Gecko) Chrome/19.0.1063.0 Safari/536.3",
-        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_0) AppleWebKit/536.3 "
-        "(KHTML, like Gecko) Chrome/19.0.1063.0 Safari/536.3",
-        "Mozilla/5.0 (Windows NT 6.2) AppleWebKit/536.3 "
-        "(KHTML, like Gecko) Chrome/19.0.1062.0 Safari/536.3",
-        "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/536.3 "
-        "(KHTML, like Gecko) Chrome/19.0.1062.0 Safari/536.3",
-        "Mozilla/5.0 (Windows NT 6.2) AppleWebKit/536.3 "
-        "(KHTML, like Gecko) Chrome/19.0.1061.1 Safari/536.3"]
-
-
+user_agent_list = []
 user_agent_dic = {}
 user_agent_cookie = {}
 MAX_RESPONSE_KB = 10*1024
@@ -835,22 +805,29 @@ def get_single_analysis(id, vol, deal_dic):
     url = 'http://stock.finance.qq.com/sstock/list/view/dadan.php?t=js&c=%s&max=400&p=1&opt=1&o=0' % (id)
     refer = 'http://stockhtm.finance.qq.com/sstock/quotpage/dadan.htm?c=%s' % (id)
 
-    stocklist = []
+    curl =  CurlHTTPFetcher()
+    curl.ALLOWED_TIME = 2
+    stocklist = ''
     i = 0
     imax = 5
     while 1:
         try:
-            if i + 1 < imax:
-                req_header = []
-                req_header.extend(['Referer: %s' % (refer)])
+            if i + 1 <= imax:
+                header = {}
                 index = random.randint(0, len(user_agent_list) -1)
-                req_header.extend(['User-Agent: %s' % (user_agent_list[index])])
+                header['User-Agent'] = user_agent_list[index]
+                header['Referer'] = refer
+                res = {}
+                try:
+                    res = curl.fetch(url, None, header)
+                except BaseException, e:
+                    print 'err', e.message, id
 
-                res = httpGetContent(url, req_header)
                 value = res['body'].decode("gbk").split('=')[1].strip(';\r\n')
             else:
                 res = curl_cmd_get(url)
                 value = res.decode("gbk").split('=')[1].strip(';\r\n')
+            print value
             stocklist = value.split(',')[1]
             break
         except Exception,e:
@@ -1593,6 +1570,22 @@ def load_monitor_list():
     file.close()
     return id_dic
 
+def load_ua_list():
+    id_dic = {}
+    if not os.path.isfile('ua_list'):
+        return id_dic
+
+    file = open("ua_list")
+    while 1:
+        line = file.readline().strip('\n')
+        if not line:
+            break
+        user_agent_list.append(line)
+
+    file.close()
+    print 'user_agent_list:', len(user_agent_list)
+    return user_agent_list
+
 
 def do_check_select(id_dic, sec, cf):
     if not len(id_dic):
@@ -1768,6 +1761,9 @@ def do_check_select(id_dic, sec, cf):
 
 
 def do_search_short():
+
+    load_ua_list()
+
     day = Day()
     start_day = '%s' % (day.get_day_of_day(-20))
     end_day = '%s' % (day.get_day_of_day(45))
@@ -1873,20 +1869,4 @@ def do_search_short():
 #A股就是个坑， 技术指标低位了， 仍然可以再砸
 #技术指标高位了， 有资金接盘仍然可以涨, 高位始终是危险
 #压力如铁桶，支撑如窗户纸, 压力位不放量买就是要跌的节奏
-#有连续的大单介入才介入， 低位大资金都不介入， 肯定有猫腻
-#业绩好的，下跌， 大资金不介入， 肯定有什么利空， 业绩可以变脸
-#买二--买五是大单， 而买1是小单， 下跌也不买， 明显还没有跌到位
-#托单， 托而不买， 还有下跌
-#业绩增长的， 业绩出来之前已经开始涨了， 出业绩的那天直接出货下跌
-#利好消息也是一样， 这叫利好出尽是利空
-#不是说长下引线就能买， 高位， 主力先出货， 再用少量资金拉起来吸引
-#高位下引线， 股价快到顶了
-#跟封盘， 毕竟高位跟风盘不少， 再出货
-#macd 鸭子张嘴， 会加速下跌, 买之前一定要看一下15分钟macd、DMA
-#涨是需要理由的， 跌不需要,配股的股就不要进了， 号称散户的周扒皮
-#次新和业绩差的能不碰还是不要碰了, 选股还是要选强的
-#没有买盘的拉升都是骗人的
-#割肉要坚决， 没有什么后悔的, 不看上证、a50 那是不行的
-#不要做T, 不看好就跑， 看好就买， 做T, 买了， 想跑跑不了
-if __name__ == '__main__':
-    do_search_short()
+#有连续的大单介入才介入， 低位
