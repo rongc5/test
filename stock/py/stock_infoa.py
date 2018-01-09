@@ -413,7 +413,7 @@ class CurlHTTPFetcher(object):
             c.close()
 
 
-def load_stockid_detail(date, id, file_name):
+def get_single_analysis2(date, id, sum_vol, deal_dic):
     url = 'http://market.finance.sina.com.cn/downxls.php?date=%s&symbol=%s' % (date, id)
     header = {}
     index = random.randint(0, len(user_agent_list) -1)
@@ -440,11 +440,6 @@ def load_stockid_detail(date, id, file_name):
     stockdict['vol_2'] = 0
     stockdict['vol_3'] = 0
     stockdict['vol_4'] = 0
-    stockdict['vol_5'] = 0
-    stockdict['vol_6'] = 0
-    stockdict['total_vol'] = 0
-    stockdict['min_price'] = 0
-    stockdict['high_price'] = 0
 
     res_str = ''
     if res.has_key('body') and res['body'].strip():
@@ -456,22 +451,6 @@ def load_stockid_detail(date, id, file_name):
                     continue
                 vol = int(subitems[3])
 
-                stockdict['total_vol'] += vol
-
-                if stockdict['min_price'] == 0:
-                    stockdict['min_price'] = float(subitems[1])
-
-                if stockdict['high_price'] == 0:
-                    stockdict['high_price'] = float(subitems[1])
-
-                if float(subitems[1]) < stockdict['min_price']:
-                    stockdict['min_price'] = float(subitems[1])
-                    #print stockdict['min_price']
-
-                if float(subitems[1]) > stockdict['high_price']:
-                    stockdict['high_price'] = float(subitems[1])
-
-
                 flag = 1
                 if u'买盘' in  subitems[5].decode('gbk'):
                     flag = 1
@@ -480,28 +459,54 @@ def load_stockid_detail(date, id, file_name):
                 else:
                     continue
 
-                if vol >= 100:
+                if vol >= 200:
                     stockdict['vol_1'] += vol * flag
 
-                if vol >= 200:
+                if vol >= 500:
                     stockdict['vol_2'] += vol * flag
 
-                if vol >= 500:
+                if vol >= 1000:
                     stockdict['vol_3'] += vol * flag
 
-                if vol >= 1000:
+                if vol >= 2000:
                     stockdict['vol_4'] += vol * flag
 
-                if vol >= 2000:
-                    stockdict['vol_5'] += vol * flag
+        if stockdict['vol_1'] == 0:
+            return stockdict
 
-                if vol >= 4000:
-                    stockdict['vol_6'] += vol * flag
+        if not deal_dic.has_key('vol_1'):
+            deal_dic['vol_1'] = []
+            deal_dic['vol_2'] = []
+            deal_dic['vol_3'] = []
+            deal_dic['vol_4'] = []
+            deal_dic['ratio_vol_1'] = []
+            deal_dic['ratio_vol_2'] = []
+            deal_dic['ratio_vol_3'] = []
+            deal_dic['ratio_vol_4'] = []
 
-        if stockdict['total_vol'] > 0:
-            res_str = '%s\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%f\t%f' % (id, stockdict['vol_1'], stockdict['vol_2'], stockdict['vol_3'], stockdict['vol_4'], stockdict['vol_5'],
-        stockdict['vol_6'], stockdict['total_vol'], stockdict['min_price'], stockdict['high_price'])
-            log_write(file_name, res_str)
+        if len(deal_dic['vol_1']) >= 10:
+            deal_dic['vol_1'].pop(0)
+            deal_dic['vol_2'].pop(0)
+            deal_dic['vol_3'].pop(0)
+            deal_dic['vol_4'].pop(0)
+            deal_dic['ratio_vol_1'].pop(0)
+            deal_dic['ratio_vol_2'].pop(0)
+            deal_dic['ratio_vol_3'].pop(0)
+            deal_dic['ratio_vol_4'].pop(0)
+
+        if len(deal_dic['vol_1']) >=1 and abs(deal_dic['vol_1'][-1] - stockdict['vol_1']) < 400:
+            return stockdict
+
+        deal_dic['vol_1'].append(stockdict['vol_1'])
+        deal_dic['vol_2'].append(stockdict['vol_2'])
+        deal_dic['vol_3'].append(stockdict['vol_3'])
+        deal_dic['vol_4'].append(stockdict['vol_4'])
+
+        deal_dic['ratio_vol_1'].append(round(stockdict['vol_1'] *1.0 / sum_vol, 4))
+        deal_dic['ratio_vol_2'].append(round(stockdict['vol_2'] *1.0 / sum_vol, 4))
+        deal_dic['ratio_vol_3'].append(round(stockdict['vol_3'] *1.0 / sum_vol, 4))
+        deal_dic['ratio_vol_4'].append(round(stockdict['vol_4'] *1.0 / sum_vol, 4))
+
 
     if not res_str.strip():
         print url
@@ -534,7 +539,7 @@ def load_details(days_num, deal_dic):
             if not os.path.isfile(file_name) or not res_str.strip():
                 index = random.randint(1, 5)
                 time.sleep(index)
-                load_stockid_detail(date, key, file_name)
+                #load_stockid_detail(date, key, file_name)
 
 
 def get_details(days_num, deal_dic):
@@ -719,80 +724,6 @@ def get_stockid_cznl(id):
 
     return id_dic['data']['cznl']
 
-#偿债及资本结构
-def get_stockid_czzb(id):
-
-    url = 'http://comdata.finance.gtimg.cn/data/czzb/%s' % (id)
-    refer = 'http://stock.finance.qq.com/corp1/cwfx.html?czzb-%s' %(id)
-
-    i = 0
-    imax = 3
-    id_dic = {}
-    while 1:
-        try:
-            if i + 1 < imax:
-                req_header = []
-                req_header.extend(['Referer: %s' % (refer)])
-                index = random.randint(0, len(user_agent_list) -1)
-                req_header.extend(['User-Agent: %s' % (user_agent_list[index])])
-                res = httpGetContent(url, req_header)
-                value = res['body'].decode("gbk").split('=')[1].strip(';\r\n')
-            else:
-                res = curl_cmd_get(url)
-                value = res.decode("gbk").split('=')[1].strip(';\r\n')
-
-            id_dic= json.loads(value)
-            break
-        except Exception,e:
-            #print url, value, e
-            i = i+1
-            if i >= imax:
-                log_write('errcode', id)
-                break
-            time.sleep(random.randint(1, 3))
-
-    if i > imax:
-        return  {}
-
-    return id_dic['data']['czzb']
-
-
-#杜邦分析
-def get_stockid_dbfx(id):
-
-    url = 'http://comdata.finance.gtimg.cn/data/dbfx/%s' % (id)
-    refer = 'http://stock.finance.qq.com/corp1/dbfx.html?%s' %(id)
-
-    i = 0
-    imax = 3
-    while 1:
-        try:
-            if i + 1 < imax:
-                req_header = []
-                req_header.extend(['Referer: %s' % (refer)])
-                index = random.randint(0, len(user_agent_list) -1)
-                req_header.extend(['User-Agent: %s' % (user_agent_list[index])])
-                res = httpGetContent(url, req_header)
-                value = res['body'].decode("gbk").split('=')[1].strip(';\r\n')
-            else:
-                res = curl_cmd_get(url)
-                value = res.decode("gbk").split('=')[1].strip(';\r\n')
-
-            id_dic= json.loads(value)
-            break
-        except Exception,e:
-            #print url, value, e
-            i = i+1
-            if i >= imax:
-                log_write('errcode', id)
-                break
-            time.sleep(random.randint(1, 3))
-
-    if i > imax:
-        return  {}
-
-    return id_dic['data']['dbfx']
-
 
 def get_single_analysis(id, vol, deal_dic):
 
@@ -802,11 +733,11 @@ def get_single_analysis(id, vol, deal_dic):
         return stockdict
 
 
-    url = 'http://stock.finance.qq.com/sstock/list/view/dadan.php?t=js&c=%s&max=400&p=1&opt=1&o=0' % (id)
+    url = 'http://stock.finance.qq.com/sstock/list/view/dadan.php?t=js&c=%s&max=600&p=1&opt=2&o=0' % (id)
     refer = 'http://stockhtm.finance.qq.com/sstock/quotpage/dadan.htm?c=%s' % (id)
 
     curl =  CurlHTTPFetcher()
-    curl.ALLOWED_TIME = 2
+    curl.ALLOWED_TIME = 1
     stocklist = ''
     i = 0
     imax = 5
@@ -821,13 +752,13 @@ def get_single_analysis(id, vol, deal_dic):
                 try:
                     res = curl.fetch(url, None, header)
                 except BaseException, e:
-                    print 'err', e.message, id
+                    print '111111, err', e.message, id
 
                 value = res['body'].decode("gbk").split('=')[1].strip(';\r\n')
             else:
                 res = curl_cmd_get(url)
                 value = res.decode("gbk").split('=')[1].strip(';\r\n')
-            print value
+            #print value
             stocklist = value.split(',')[1]
             break
         except Exception,e:
@@ -866,18 +797,23 @@ def get_single_analysis(id, vol, deal_dic):
                 flag = -1
             elif 'b' in subitems[5] or 'B' in subitems[5]:
                 flag = 1
-
-            if int(subitems[3]) >= 100:
-                stockdict['vol_1'] += int(subitems[3]) * flag
+            else:
+                continue
 
             if int(subitems[3]) >= 200:
-                stockdict['vol_2'] += int(subitems[3]) * flag
+                stockdict['vol_1'] += int(subitems[3]) * flag
 
             if int(subitems[3]) >= 500:
-                stockdict['vol_3'] += int(subitems[3]) * flag
+                stockdict['vol_2'] += int(subitems[3]) * flag
 
             if int(subitems[3]) >= 1000:
+                stockdict['vol_3'] += int(subitems[3]) * flag
+
+            if int(subitems[3]) >= 2000:
                 stockdict['vol_4'] += int(subitems[3]) * flag
+
+    if stockdict['vol_1'] == 0:
+        return stockdict
 
     if len(deal_dic['vol_1']) >= 10:
         deal_dic['vol_1'].pop(0)
@@ -1439,7 +1375,9 @@ def log_single_analysis(id_dic):
 
         get_single_analysis(key, id_dic[key]['vol'], id_dic[key]['single'])
         if len(id_dic[key]['single']) == 0:
-            continue
+            get_single_analysis2(toady, key, id_dic[key]['vol'], id_dic[key]['single'])
+            if len(id_dic[key]['single']) == 0:
+                continue
 
         money = get_money_flow(key)
         if len(money) > 0 and money.has_key('main_force'):
@@ -1869,4 +1807,20 @@ def do_search_short():
 #A股就是个坑， 技术指标低位了， 仍然可以再砸
 #技术指标高位了， 有资金接盘仍然可以涨, 高位始终是危险
 #压力如铁桶，支撑如窗户纸, 压力位不放量买就是要跌的节奏
-#有连续的大单介入才介入， 低位
+#有连续的大单介入才介入， 低位大资金都不介入， 肯定有猫腻
+#业绩好的，下跌， 大资金不介入， 肯定有什么利空， 业绩可以变脸
+#买二--买五是大单， 而买1是小单， 下跌也不买， 明显还没有跌到位
+#托单， 托而不买， 还有下跌
+#业绩增长的， 业绩出来之前已经开始涨了， 出业绩的那天直接出货下跌
+#利好消息也是一样， 这叫利好出尽是利空
+#不是说长下引线就能买， 高位， 主力先出货， 再用少量资金拉起来吸引
+#高位下引线， 股价快到顶了
+#跟封盘， 毕竟高位跟风盘不少， 再出货
+#macd 鸭子张嘴， 会加速下跌, 买之前一定要看一下15分钟macd、DMA
+#涨是需要理由的， 跌不需要,配股的股就不要进了， 号称散户的周扒皮
+#次新和业绩差的能不碰还是不要碰了, 选股还是要选强的
+#没有买盘的拉升都是骗人的
+#割肉要坚决， 没有什么后悔的, 不看上证、a50 那是不行的
+#不要做T, 不看好就跑， 看好就买， 做T, 买了， 想跑跑不了
+if __name__ == '__main__':
+    do_search_short()

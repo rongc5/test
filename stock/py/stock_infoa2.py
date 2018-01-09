@@ -413,7 +413,7 @@ class CurlHTTPFetcher(object):
             c.close()
 
 
-def load_stockid_detail(date, id, file_name):
+def get_single_analysis2(date, id, sum_vol, deal_dic):
     url = 'http://market.finance.sina.com.cn/downxls.php?date=%s&symbol=%s' % (date, id)
     header = {}
     index = random.randint(0, len(user_agent_list) -1)
@@ -440,11 +440,6 @@ def load_stockid_detail(date, id, file_name):
     stockdict['vol_2'] = 0
     stockdict['vol_3'] = 0
     stockdict['vol_4'] = 0
-    stockdict['vol_5'] = 0
-    stockdict['vol_6'] = 0
-    stockdict['total_vol'] = 0
-    stockdict['min_price'] = 0
-    stockdict['high_price'] = 0
 
     res_str = ''
     if res.has_key('body') and res['body'].strip():
@@ -456,22 +451,6 @@ def load_stockid_detail(date, id, file_name):
                     continue
                 vol = int(subitems[3])
 
-                stockdict['total_vol'] += vol
-
-                if stockdict['min_price'] == 0:
-                    stockdict['min_price'] = float(subitems[1])
-
-                if stockdict['high_price'] == 0:
-                    stockdict['high_price'] = float(subitems[1])
-
-                if float(subitems[1]) < stockdict['min_price']:
-                    stockdict['min_price'] = float(subitems[1])
-                    #print stockdict['min_price']
-
-                if float(subitems[1]) > stockdict['high_price']:
-                    stockdict['high_price'] = float(subitems[1])
-
-
                 flag = 1
                 if u'买盘' in  subitems[5].decode('gbk'):
                     flag = 1
@@ -480,28 +459,54 @@ def load_stockid_detail(date, id, file_name):
                 else:
                     continue
 
-                if vol >= 100:
+                if vol >= 200:
                     stockdict['vol_1'] += vol * flag
 
-                if vol >= 200:
+                if vol >= 500:
                     stockdict['vol_2'] += vol * flag
 
-                if vol >= 500:
+                if vol >= 1000:
                     stockdict['vol_3'] += vol * flag
 
-                if vol >= 1000:
+                if vol >= 2000:
                     stockdict['vol_4'] += vol * flag
 
-                if vol >= 2000:
-                    stockdict['vol_5'] += vol * flag
+        if stockdict['vol_1'] == 0:
+            return stockdict
 
-                if vol >= 4000:
-                    stockdict['vol_6'] += vol * flag
+        if not deal_dic.has_key('vol_1'):
+            deal_dic['vol_1'] = []
+            deal_dic['vol_2'] = []
+            deal_dic['vol_3'] = []
+            deal_dic['vol_4'] = []
+            deal_dic['ratio_vol_1'] = []
+            deal_dic['ratio_vol_2'] = []
+            deal_dic['ratio_vol_3'] = []
+            deal_dic['ratio_vol_4'] = []
 
-        if stockdict['total_vol'] > 0:
-            res_str = '%s\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%f\t%f' % (id, stockdict['vol_1'], stockdict['vol_2'], stockdict['vol_3'], stockdict['vol_4'], stockdict['vol_5'],
-        stockdict['vol_6'], stockdict['total_vol'], stockdict['min_price'], stockdict['high_price'])
-            log_write(file_name, res_str)
+        if len(deal_dic['vol_1']) >= 10:
+            deal_dic['vol_1'].pop(0)
+            deal_dic['vol_2'].pop(0)
+            deal_dic['vol_3'].pop(0)
+            deal_dic['vol_4'].pop(0)
+            deal_dic['ratio_vol_1'].pop(0)
+            deal_dic['ratio_vol_2'].pop(0)
+            deal_dic['ratio_vol_3'].pop(0)
+            deal_dic['ratio_vol_4'].pop(0)
+
+        if len(deal_dic['vol_1']) >=1 and abs(deal_dic['vol_1'][-1] - stockdict['vol_1']) < 400:
+            return stockdict
+
+        deal_dic['vol_1'].append(stockdict['vol_1'])
+        deal_dic['vol_2'].append(stockdict['vol_2'])
+        deal_dic['vol_3'].append(stockdict['vol_3'])
+        deal_dic['vol_4'].append(stockdict['vol_4'])
+
+        deal_dic['ratio_vol_1'].append(round(stockdict['vol_1'] *1.0 / sum_vol, 4))
+        deal_dic['ratio_vol_2'].append(round(stockdict['vol_2'] *1.0 / sum_vol, 4))
+        deal_dic['ratio_vol_3'].append(round(stockdict['vol_3'] *1.0 / sum_vol, 4))
+        deal_dic['ratio_vol_4'].append(round(stockdict['vol_4'] *1.0 / sum_vol, 4))
+
 
     if not res_str.strip():
         print url
@@ -534,7 +539,7 @@ def load_details(days_num, deal_dic):
             if not os.path.isfile(file_name) or not res_str.strip():
                 index = random.randint(1, 5)
                 time.sleep(index)
-                load_stockid_detail(date, key, file_name)
+                #load_stockid_detail(date, key, file_name)
 
 
 def get_details(days_num, deal_dic):
@@ -719,80 +724,6 @@ def get_stockid_cznl(id):
 
     return id_dic['data']['cznl']
 
-#偿债及资本结构
-def get_stockid_czzb(id):
-
-    url = 'http://comdata.finance.gtimg.cn/data/czzb/%s' % (id)
-    refer = 'http://stock.finance.qq.com/corp1/cwfx.html?czzb-%s' %(id)
-
-    i = 0
-    imax = 3
-    id_dic = {}
-    while 1:
-        try:
-            if i + 1 < imax:
-                req_header = []
-                req_header.extend(['Referer: %s' % (refer)])
-                index = random.randint(0, len(user_agent_list) -1)
-                req_header.extend(['User-Agent: %s' % (user_agent_list[index])])
-                res = httpGetContent(url, req_header)
-                value = res['body'].decode("gbk").split('=')[1].strip(';\r\n')
-            else:
-                res = curl_cmd_get(url)
-                value = res.decode("gbk").split('=')[1].strip(';\r\n')
-
-            id_dic= json.loads(value)
-            break
-        except Exception,e:
-            #print url, value, e
-            i = i+1
-            if i >= imax:
-                log_write('errcode', id)
-                break
-            time.sleep(random.randint(1, 3))
-
-    if i > imax:
-        return  {}
-
-    return id_dic['data']['czzb']
-
-
-#杜邦分析
-def get_stockid_dbfx(id):
-
-    url = 'http://comdata.finance.gtimg.cn/data/dbfx/%s' % (id)
-    refer = 'http://stock.finance.qq.com/corp1/dbfx.html?%s' %(id)
-
-    i = 0
-    imax = 3
-    while 1:
-        try:
-            if i + 1 < imax:
-                req_header = []
-                req_header.extend(['Referer: %s' % (refer)])
-                index = random.randint(0, len(user_agent_list) -1)
-                req_header.extend(['User-Agent: %s' % (user_agent_list[index])])
-                res = httpGetContent(url, req_header)
-                value = res['body'].decode("gbk").split('=')[1].strip(';\r\n')
-            else:
-                res = curl_cmd_get(url)
-                value = res.decode("gbk").split('=')[1].strip(';\r\n')
-
-            id_dic= json.loads(value)
-            break
-        except Exception,e:
-            #print url, value, e
-            i = i+1
-            if i >= imax:
-                log_write('errcode', id)
-                break
-            time.sleep(random.randint(1, 3))
-
-    if i > imax:
-        return  {}
-
-    return id_dic['data']['dbfx']
-
 
 def get_single_analysis(id, vol, deal_dic):
 
@@ -802,12 +733,11 @@ def get_single_analysis(id, vol, deal_dic):
         return stockdict
 
 
-    url = 'http://stock.finance.qq.com/sstock/list/view/dadan.php?t=js&c=%s&max=400&p=1&opt=1&o=0' % (id)
+    url = 'http://stock.finance.qq.com/sstock/list/view/dadan.php?t=js&c=%s&max=600&p=1&opt=2&o=0' % (id)
     refer = 'http://stockhtm.finance.qq.com/sstock/quotpage/dadan.htm?c=%s' % (id)
 
-    print url
     curl =  CurlHTTPFetcher()
-    curl.ALLOWED_TIME = 2
+    curl.ALLOWED_TIME = 1
     stocklist = ''
     i = 0
     imax = 5
@@ -822,13 +752,13 @@ def get_single_analysis(id, vol, deal_dic):
                 try:
                     res = curl.fetch(url, None, header)
                 except BaseException, e:
-                    print '1111111 err', e.message, id
+                    print 'err', e.message, id
 
                 value = res['body'].decode("gbk").split('=')[1].strip(';\r\n')
             else:
                 res = curl_cmd_get(url)
                 value = res.decode("gbk").split('=')[1].strip(';\r\n')
-            print value
+            #print value
             stocklist = value.split(',')[1]
             break
         except Exception,e:
@@ -867,18 +797,23 @@ def get_single_analysis(id, vol, deal_dic):
                 flag = -1
             elif 'b' in subitems[5] or 'B' in subitems[5]:
                 flag = 1
-
-            if int(subitems[3]) >= 100:
-                stockdict['vol_1'] += int(subitems[3]) * flag
+            else:
+                continue
 
             if int(subitems[3]) >= 200:
-                stockdict['vol_2'] += int(subitems[3]) * flag
+                stockdict['vol_1'] += int(subitems[3]) * flag
 
             if int(subitems[3]) >= 500:
-                stockdict['vol_3'] += int(subitems[3]) * flag
+                stockdict['vol_2'] += int(subitems[3]) * flag
 
             if int(subitems[3]) >= 1000:
+                stockdict['vol_3'] += int(subitems[3]) * flag
+
+            if int(subitems[3]) >= 2000:
                 stockdict['vol_4'] += int(subitems[3]) * flag
+
+    if stockdict['vol_1'] == 0:
+        return stockdict
 
     if len(deal_dic['vol_1']) >= 10:
         deal_dic['vol_1'].pop(0)
@@ -1333,4 +1268,543 @@ def load_base_list():
             id_list.append(line)
         file.close()
         os.remove('err_base_list')
-        get_basic_list(id_l
+        get_basic_list(id_list)
+
+    id_dic = {}
+    file = open("base_list")
+    while 1:
+        line = file.readline().strip()
+        if not line:
+            break
+        items = line.split('\t')
+        if len(items) < 8:
+            continue
+        tmp_dic = {}
+        tmp_dic['code'] = items[0]
+        tmp_dic['id'] = items[1]
+        tmp_dic['end'] = items[2]
+        tmp_dic['pe'] = float(items[3])
+        tmp_dic['pb'] = float(items[4])
+        tmp_dic['circulation_market_value'] = float(items[5])
+        tmp_dic['total_value'] = float(items[6])
+        tmp_dic['tbmgsy'] = items[7].replace(',', '')
+        tmp_dic['mgxjll'] = items[8].replace(',', '')
+        tmp_dic['mgsy'] = items[9].replace(',', '')
+        tmp_dic['mgxj'] = items[10].replace(',', '')
+        tmp_dic['zysr'] = items[11].replace(',', '')
+        tmp_dic['yylr'] = items[12].replace(',', '')
+        tmp_dic['jlr'] = items[13].replace(',', '')
+        tmp_dic['date'] = items[14]
+
+        id_dic[items[1]] = tmp_dic
+
+    file.close()
+    return id_dic
+
+def remove_from_banlist(id_dic, ban_list):
+    remove_ley = []
+
+    for key in id_dic:
+        if id_dic[key]['code'] in ban_list:
+            remove_ley.append(key)
+            continue
+
+    for key in remove_ley:
+        id_dic.pop(key)
+
+    return id_dic
+
+#增长 为true, 下降为false
+def get_data_direction(arr):
+    if len(arr) < 2 :
+        return False
+
+    if arr[-1] > arr[0]:
+        return True
+    else:
+        return False
+
+
+def get_positive_ratio(arr):
+    length = len(arr)
+    if length <= 1:
+        return 0
+    count = 0
+    sum = 0;
+    for i in range(length - 1):
+        if arr[length -i -1] > arr[length -i -2]:
+            count += 1
+        sum += 1
+
+    return count *1.0/sum
+
+def log_single_analysis(id_dic):
+    day = Day()
+    toady = '%s' % (day.today(),)
+
+    file_name = '%s_%s' % ('last_single', toady.replace('-', ''))
+    for key in id_dic:
+        cmd = ['grep', key, file_name]
+        res_str = subprocess.Popen(cmd, stdout=subprocess.PIPE).communicate()[0]
+        if os.path.isfile(file_name) and  res_str.strip():
+            continue
+
+        time.sleep(0.05)
+        res = get_stockid_real_time(key)
+
+        if res.has_key('block') and res['block']:  #停牌
+            print key, 'block'
+            continue
+
+        if  res.has_key('range_percent'):
+            id_dic[key]['range_percent'] = res['range_percent']
+            id_dic[key]['swing'] = res['swing']
+            id_dic[key]['change_rate'] = res['change_rate']
+
+            id_dic[key]['end'] = res['end']
+            id_dic[key]['low'] = res['low']
+            id_dic[key]['high'] = res['high']
+            id_dic[key]['start'] = res['start']
+            id_dic[key]['vol'] = res['vol']
+
+        if not id_dic[key].has_key('vol'):
+            continue
+
+        if not id_dic[key].has_key('single'):
+            id_dic[key]['single'] = {}
+
+        get_single_analysis(key, id_dic[key]['vol'], id_dic[key]['single'])
+        if len(id_dic[key]['single']) == 0:
+            get_single_analysis2(toady, key, id_dic[key]['vol'], id_dic[key]['single'])
+            if len(id_dic[key]['single']) == 0:
+                continue
+
+        money = get_money_flow(key)
+        if len(money) > 0 and money.has_key('main_force'):
+            id_dic[key]['main_force'] = money['main_force']
+        else:
+            continue
+
+
+        if id_dic[key]['vol'] > 0:
+            res_str = '%s\t%d\t%d\t%d\t%d\t%.2f\t%d\t%.2f\t%.2f\t%.2f\t%.2f\t%.2f' % (key, id_dic[key]['single']['vol_1'][-1], id_dic[key]['single']['vol_2'][-1], id_dic[key]['single']['vol_3'][-1], \
+            id_dic[key]['single']['vol_4'][-1], id_dic[key]['main_force'], id_dic[key]['vol'], id_dic[key]['start'], id_dic[key]['end'], id_dic[key]['low'], \
+            id_dic[key]['high'], id_dic[key]['range_percent'])
+            log_write(file_name, res_str)
+
+
+def get_last_singles(days_num, deal_dic):
+    if len(deal_dic) == 0:
+        return {}
+    day = Day()
+
+    date_dic = {}
+
+    for key in deal_dic:
+        deal_dic[key]['last_single'] = {}
+
+    for id_day in range(1, days_num + 1):
+        date = ''
+        lastday = id_day * -1
+        while 1:
+            date =  '%s' % (day.get_day_of_day(lastday), )
+            #print lastday, date
+            if get_week_day(date) > 5:
+                lastday = lastday - 2
+            elif lastday in date_dic:
+                lastday = lastday - 1;
+            else:
+                date_dic[lastday] = date
+                break
+
+        file_name = '%s_%s' % ('last_single', date.replace('-', ''))
+        if not os.path.isfile(file_name):
+            continue
+
+        file = open(file_name)
+        #print file_name
+        while 1:
+            line = file.readline().strip()
+            if not line:
+                break
+            items = line.split('\n')
+            for key in items:
+                subitems = key.split('\t');
+                if not subitems[0] in deal_dic:
+                    continue
+
+                if len(subitems) > 10:
+                    if subitems[0] in deal_dic:
+
+
+                        if not deal_dic[subitems[0]]['last_single'].has_key('vol_1'):
+                            deal_dic[subitems[0]]['last_single']['vol_1'] = []
+                            deal_dic[subitems[0]]['last_single']['vol_2'] = []
+                            deal_dic[subitems[0]]['last_single']['vol_3'] = []
+                            deal_dic[subitems[0]]['last_single']['vol_4'] = []
+                            deal_dic[subitems[0]]['last_single']['main_force'] = []
+                            deal_dic[subitems[0]]['last_single']['start'] = []
+                            deal_dic[subitems[0]]['last_single']['end'] = []
+                            deal_dic[subitems[0]]['last_single']['low'] = []
+                            deal_dic[subitems[0]]['last_single']['high'] = []
+                            deal_dic[subitems[0]]['last_single']['total_vol'] = []
+                            deal_dic[subitems[0]]['last_single']['range_percent'] = []
+
+                        deal_dic[subitems[0]]['last_single']['vol_1'].append(int(subitems[1]))
+                        deal_dic[subitems[0]]['last_single']['vol_2'].append(int(subitems[2]))
+                        deal_dic[subitems[0]]['last_single']['vol_3'].append(int(subitems[3]))
+                        deal_dic[subitems[0]]['last_single']['vol_4'].append(int(subitems[4]))
+                        deal_dic[subitems[0]]['last_single']['main_force'].append(float(subitems[5]))
+                        deal_dic[subitems[0]]['last_single']['total_vol'].append(int(subitems[6]))
+                        deal_dic[subitems[0]]['last_single']['low'].append(float(subitems[9]))
+                        deal_dic[subitems[0]]['last_single']['high'].append(float(subitems[10]))
+                        deal_dic[subitems[0]]['last_single']['start'].append(float(subitems[7]))
+                        deal_dic[subitems[0]]['last_single']['end'].append(float(subitems[8]))
+
+                if len(subitems) > 11:
+                    deal_dic[subitems[0]]['last_single']['range_percent'].append(float(subitems[11]))
+
+        file.close()
+
+
+    return deal_dic
+
+def log_print_res(search_dic):
+    if not len(search_dic):
+        return
+
+    day = Day()
+
+    log_write('res_list', 'begin ==========:%s' % (day.datetime()))
+
+    if search_dic.has_key('date'):
+        search_dic.pop('date')
+    if search_dic.has_key('last_closing'):
+        search_dic.pop('last_closing')
+    if search_dic.has_key('swing'):
+        search_dic.pop('swing')
+    if search_dic.has_key('next_time'):
+        search_dic.pop('next_time')
+    if search_dic.has_key('code'):
+        search_dic.pop('code')
+
+    log_write('res_list', json.dumps(search_dic))
+    log_write('res_list', '\n')
+    log_write('res_list', 'serch over ==========')
+
+
+def load_monitor_list():
+    id_dic = {}
+    if not os.path.isfile('monitor_list'):
+        return id_dic
+
+    file = open("monitor_list")
+    while 1:
+        line = file.readline().strip('\n')
+        if not line:
+            break
+        id_dic[line] = {}
+
+    file.close()
+    return id_dic
+
+def load_ua_list():
+    id_dic = {}
+    if not os.path.isfile('ua_list'):
+        return id_dic
+
+    file = open("ua_list")
+    while 1:
+        line = file.readline().strip('\n')
+        if not line:
+            break
+        user_agent_list.append(line)
+
+    file.close()
+    print 'user_agent_list:', len(user_agent_list)
+    return user_agent_list
+
+
+def do_check_select(id_dic, sec, cf):
+    if not len(id_dic):
+        return
+
+    if 0 == cf.getint(sec, 'is_open'):
+        return
+
+    #print id_dic
+    if cf.has_option(sec, 'zysr_ge') and id_dic.has_key('zysr') and '--' not in id_dic['zysr'] and float(id_dic['zysr']) < cf.getfloat(sec, 'zysr_ge'):
+        return
+
+    if cf.has_option(sec, 'jlr_ge') and id_dic.has_key('jlr') and '--' not in id_dic['jlr'] and float(id_dic['jlr']) < cf.getfloat(sec, 'jlr_ge'):
+        return
+
+    if cf.has_option(sec, 'mgsy_ge') and id_dic.has_key('mgsy') and '--' not in id_dic['mgsy'] and float(id_dic['mgsy']) < cf.getfloat(sec, 'mgsy_ge'):
+        return
+
+    if cf.has_option(sec, 'mgxj_ge') and id_dic.has_key('mgxj') and '--' not in id_dic['mgxj'] and float(id_dic['mgxj'])< cf.getfloat(sec, 'mgxj_ge'):
+        return
+
+    if cf.has_option(sec, 'tbmgsy_ge') and id_dic.has_key('tbmgsy') and  '--' not in id_dic['tbmgsy'] and float(id_dic['tbmgsy']) < cf.getfloat(sec, 'tbmgsy_ge'):
+        return
+
+    if cf.has_option(sec, 'mgxjll_ge') and id_dic.has_key('mgxjll') and '--' not in id_dic['mgxjll'] and float(id_dic['mgxjll']) < cf.getfloat(sec, 'mgxjll_ge'):
+        return
+
+    if cf.has_option(sec, 'end_le') and float(id_dic['end']) > cf.getfloat(sec, 'end_le'):
+        return
+
+    if cf.has_option(sec, 'pe_le') and id_dic.has_key('pe') and float(id_dic['pe']) > cf.getfloat(sec, 'pe_le'):
+        return
+
+    if cf.has_option(sec,'end_ge_start') and float(id_dic['end']) < float(id_dic['start']):
+        return
+
+    if cf.has_option(sec, 'change_rate_ge') and float(id_dic['change_rate']) < cf.getfloat(sec, 'change_rate_ge'):
+        return
+
+    if cf.has_option(sec, 'range_percent_ge') and float(id_dic['range_percent']) < cf.getfloat(sec, 'range_percent_ge'):
+        return
+
+    if cf.has_option(sec, 'range_percent_le') and float(id_dic['range_percent']) > cf.getfloat(sec, 'range_percent_le'):
+        return
+
+    if cf.has_option(sec,'end_ge_low') and float(id_dic['end']) < float(id_dic['low']):
+        return
+
+    if cf.has_option(sec,'down_pointer_ge_up_pointer') and float(id_dic['down_pointer']) < float(id_dic['up_pointer']):
+        return
+
+    if cf.has_option(sec,'vol_1_asc') and not get_data_direction(id_dic['single']['vol_1']):
+        return
+
+    if cf.has_option(sec,'vol_2_asc') and not get_data_direction(id_dic['single']['vol_2']):
+        return
+
+    if cf.has_option(sec,'vol_3_asc') and not get_data_direction(id_dic['single']['vol_3']):
+        return
+
+    if cf.has_option(sec,'vol_4_asc') and not get_data_direction(id_dic['single']['vol_4']):
+        return
+
+    if  cf.has_option(sec, 'vol_1_ge') and id_dic['single']['vol_1'][-1] < cf.getint(sec, 'vol_1_ge'):
+        return
+
+    if  cf.has_option(sec, 'vol_2_ge') and id_dic['single']['vol_2'][-1] < cf.getint(sec, 'vol_2_ge'):
+        return
+
+    if  cf.has_option(sec, 'vol_3_ge') and id_dic['single']['vol_3'][-1] < cf.getint(sec, 'vol_3_ge'):
+        return
+
+    if  cf.has_option(sec, 'vol_4_ge') and id_dic['single']['vol_4'][-1] < cf.getint(sec, 'vol_4_ge'):
+        return
+
+    if  cf.has_option(sec, 'ratio_vol_1_ge') and id_dic['single']['ratio_vol_1'][-1] < cf.getfloat(sec, 'ratio_vol_1_ge'):
+        return
+
+    if  cf.has_option(sec, 'ratio_vol_2_ge') and id_dic['single']['ratio_vol_2'][-1] < cf.getfloat(sec, 'ratio_vol_2_ge'):
+        return
+
+    if  cf.has_option(sec, 'ratio_vol_3_ge') and id_dic['single']['ratio_vol_3'][-1] < cf.getfloat(sec, 'ratio_vol_3_ge'):
+        return
+
+    if  cf.has_option(sec, 'ratio_vol_4_ge') and id_dic['single']['ratio_vol_4'][-1] < cf.getfloat(sec, 'ratio_vol_4_ge'):
+        return
+
+    if  cf.has_option(sec, 'down_pointer_ge') and id_dic['down_pointer'] < cf.getfloat(sec, 'down_pointer_ge'):
+        return
+
+    if  cf.has_option(sec, 'up_pointer_le') and id_dic['up_pointer'] > cf.getfloat(sec, 'up_pointer_le'):
+        return
+
+    lastday_num = 0
+    if cf.has_option(sec, 'lastday_num'):
+        lastday_num = cf.getint(sec, 'lastday_num')
+    else:
+        lastday_num = 3
+
+    lastday_has_vol_1_ge = False
+    lastday_has_vol_2_ge = False
+    lastday_has_vol_3_ge = False
+    lastday_has_vol_4_ge = False
+
+    lastday_has_range_percent_ge = False
+
+    lastday_range_percent_ge_ratio=0
+    lastday_range_percent_ge_sum = 0
+    lastday_has_down_pointer_ge = False
+    for id_day in range(lastday_num):
+        if cf.has_option(sec, 'lastday_has_vol_1_ge') and id_dic.has_key('last_single') \
+            and id_dic['last_single'].has_key('vol_1') and len(id_dic['last_single']['vol_1']) > id_day:
+            if id_dic['last_single']['vol_1'][id_day] > cf.getint(sec, 'lastday_has_vol_1_ge'):
+                    lastday_has_vol_1_ge = True
+
+        if cf.has_option(sec, 'lastday_has_vol_2_ge') and id_dic.has_key('last_single') \
+            and id_dic['last_single'].has_key('vol_2') and len(id_dic['last_single']['vol_2']) > id_day:
+            if id_dic['last_single']['vol_2'][id_day] > cf.getint(sec, 'lastday_has_vol_2_ge'):
+                    lastday_has_vol_2_ge = True
+
+        if cf.has_option(sec, 'lastday_has_vol_3_ge') and id_dic.has_key('last_single') \
+            and id_dic['last_single'].has_key('vol_3') and len(id_dic['last_single']['vol_3']) > id_day:
+            if id_dic['last_single']['vol_3'][id_day] > cf.getint(sec, 'lastday_has_vol_3_ge'):
+                    lastday_has_vol_3_ge = True
+
+        if cf.has_option(sec, 'lastday_has_vol_4_ge') and id_dic.has_key('last_single') \
+            and id_dic['last_single'].has_key('vol_4') and len(id_dic['last_single']['vol_4']) > id_day:
+            if id_dic['last_single']['vol_4'][id_day] > cf.getint(sec, 'lastday_has_vol_4_ge'):
+                    lastday_has_vol_4_ge = True
+
+        if cf.has_option(sec, 'lastday_has_range_percent_ge') and id_dic.has_key('last_single') \
+            and id_dic['last_single'].has_key('range_percent') and len(id_dic['last_single']['range_percent']) > id_day:
+            if id_dic['last_single']['range_percent'][id_day] > cf.getfloat(sec, 'lastday_has_range_percent_ge'):
+                    lastday_has_range_percent_ge = True
+
+        if cf.has_option(sec, 'lastday_range_percent_ge') and id_dic.has_key('last_single') \
+            and id_dic['last_single'].has_key('range_percent') and len(id_dic['last_single']['range_percent']) > id_day:
+            if id_dic['last_single']['range_percent'][id_day] > cf.getfloat(sec, 'lastday_range_percent_ge'):
+                    lastday_range_percent_ge_sum += 1
+
+        if cf.has_option(sec, 'lastday_has_down_pointer_ge') and id_dic.has_key('last_single') \
+            and id_dic['last_single'].has_key('end') and len(id_dic['last_single']['end']) > id_day:
+            down_pointer = round(abs(id_dic['last_single']['end'][id_day] - id_dic['last_single']['low'][id_day]) * 1.0 /abs(id_dic['last_single']['end'][id_day] - id_dic['last_single']['start'][id_day]), 2)
+            if down_pointer > cf.float(sec, 'lastday_has_down_pointer_ge'):
+                    lastday_has_down_pointer_ge = True
+
+    if cf.has_option(sec, 'lastday_has_vol_1_ge') and id_dic['last_single'].has_key('vol_1') and not lastday_has_vol_1_ge:
+        return
+
+    if cf.has_option(sec, 'lastday_has_vol_2_ge') and id_dic['last_single'].has_key('vol_2') and not lastday_has_vol_2_ge:
+        return
+
+    if cf.has_option(sec, 'lastday_has_vol_3_ge') and id_dic['last_single'].has_key('vol_3') and not lastday_has_vol_3_ge:
+        return
+
+    if cf.has_option(sec, 'lastday_has_vol_4_ge') and id_dic['last_single'].has_key('vol_4') and not lastday_has_vol_4_ge:
+        return
+
+    if cf.has_option(sec, 'lastday_has_range_percent_ge') and id_dic['last_single'].has_key('range_percent') and not lastday_has_range_percent_ge:
+        return
+
+    if cf.has_option(sec, 'lastday_range_percent_ge_ratio') and id_dic['last_single'].has_key('range_percent') and cf.has_option(sec, 'lastday_range_percent_ge'):
+        lastday_range_percent_ge_ratio = round(lastday_range_percent_ge_sum * 1.0/lastday_num, 2)
+        if lastday_range_percent_ge_ratio < cf.getfloat(sec, 'lastday_range_percent_ge_ratio'):
+            return
+
+    if cf.has_option(sec, 'lastday_has_down_pointer_ge') and id_dic['last_single'].has_key('end') and not lastday_has_down_pointer_ge:
+        return
+
+    print id_dic
+    id_dic['sec'] = sec
+    log_print_res(id_dic)
+
+
+def do_search_short():
+
+    load_ua_list()
+
+    day = Day()
+    start_day = '%s' % (day.get_day_of_day(-20))
+    end_day = '%s' % (day.get_day_of_day(45))
+    toady = '%s' % (day.today(),)
+    print start_day.replace('-', ''), end_day.replace('-', '')
+    ban_list = get_outDxf_list(start_day.replace('-', ''), end_day.replace('-', ''))
+    ban_dic = {}
+    for key in ban_list:
+        idstr = '%s' % key[0]
+        ban_dic[idstr] = {}
+
+    #print day.hour
+    base_dic = load_base_list()
+    print 'load_base_list', len(base_dic)
+    base_dic = remove_from_banlist(base_dic, ban_dic)
+    print 'after ban_dic', len(base_dic)
+
+    id_dic = base_dic
+    remove_ley = []
+    monitor_mtime = 0
+    cfg_mtime = 0
+    TIME_DIFF = 20
+    cf = ConfigParser.ConfigParser()
+    while 1:
+        mtime = time.ctime(os.path.getmtime('monitor_list'))
+        if monitor_mtime != mtime:
+            monitor_mtime = mtime
+            monitor_dic = load_monitor_list()
+
+            for key in monitor_dic:
+                if key not in id_dic:
+                    id_dic[key] = {}
+                    id_dic[key]['id'] = key
+
+            get_last_singles(5, id_dic)
+
+        if int(day.hour) >= 15:
+            #print day.hour
+            log_single_analysis(base_dic)
+            log_single_analysis(monitor_dic)
+
+        print 'after base_select', len(id_dic)
+
+        for key in remove_ley:
+            id_dic.pop(key)
+
+        remove_ley = []
+        print 'after remove_ley', len(id_dic)
+        for key in id_dic:
+            time.sleep(0.03)
+            res = get_stockid_real_time(key)
+
+            if res.has_key('block') and res['block']:  #停牌
+                print key, 'block'
+                remove_ley.append(key)
+                continue
+
+            if  res.has_key('range_percent'):
+                id_dic[key]['range_percent'] = res['range_percent']
+                id_dic[key]['swing'] = res['swing']
+                id_dic[key]['change_rate'] = res['change_rate']
+
+                id_dic[key]['end'] = res['end']
+                id_dic[key]['low'] = res['low']
+                id_dic[key]['high'] = res['high']
+                id_dic[key]['start'] = res['start']
+                id_dic[key]['last_closing'] = res['last_closing']
+                id_dic[key]['vol'] = res['vol']
+
+            if not id_dic[key].has_key('up_pointer'):
+                id_dic[key]['up_pointer'] = 0.0
+
+            if not id_dic[key].has_key('down_pointer'):
+                id_dic[key]['down_pointer'] = 0.0
+
+            if id_dic[key].has_key('end') and id_dic[key].has_key('low') and id_dic[key].has_key('start'):
+                if id_dic[key]['end'] > id_dic[key]['low'] and id_dic[key]['end'] != id_dic[key]['start']:
+                    id_dic[key]['down_pointer'] = round(abs(id_dic[key]['end'] - id_dic[key]['low']) * 1.0 /abs(id_dic[key]['end'] - id_dic[key]['start']), 2)
+
+                if id_dic[key]['end'] < id_dic[key]['high'] and id_dic[key]['end'] != id_dic[key]['start']:
+                    id_dic[key]['up_pointer'] = round(abs(id_dic[key]['end'] - id_dic[key]['high']) *1.0/abs(id_dic[key]['end'] - id_dic[key]['start']), 2)
+
+            if not id_dic[key].has_key('vol'):
+                continue
+
+            if not id_dic[key].has_key('single'):
+                id_dic[key]['single'] = {}
+
+            get_single_analysis(key, id_dic[key]['vol'], id_dic[key]['single'])
+            if not id_dic[key]['single'].has_key('vol_1') or len(id_dic[key]['single']['vol_1']) == 0:
+                continue
+
+            mtime = time.ctime(os.path.getmtime('stock.ini'))
+            if cfg_mtime != mtime:
+                cfg_mtime = mtime
+                cf.read('stock.ini')
+
+            for sec in cf.sections():
+                do_check_select(id_dic[key], sec, cf)
+
+        time.sleep(TIME_DIFF)
+
+#A股就是个坑， 技术指标低位了， 仍然可以再砸
+#技术指标高位了， 有资金接盘仍然可以涨, 高位始终是危险
+#压力如铁桶，支撑如窗户纸, 压力位不放量买就是要跌的节奏
+#有连续的大单介入才介入， 低位
