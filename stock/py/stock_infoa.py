@@ -430,6 +430,7 @@ def get_single_analysis2(date, id, sum_vol, deal_dic):
         header['Cookie'] = user_agent_cookie[cookie_key]
 
     curl =  CurlHTTPFetcher()
+    curl.ALLOWED_TIME = 2
 
     res = {}
     try:
@@ -495,7 +496,7 @@ def get_single_analysis2(date, id, sum_vol, deal_dic):
         if len(deal_dic['vol_1']) >=1 and abs(deal_dic['vol_1'][-1] - stockdict['vol_1']) < 400:
             return stockdict
 
-        #print stockdict
+        print stockdict
         deal_dic['vol_1'].append(stockdict['vol_1'])
         deal_dic['vol_2'].append(stockdict['vol_2'])
         deal_dic['vol_3'].append(stockdict['vol_3'])
@@ -733,7 +734,7 @@ def get_single_analysis(id, vol, deal_dic):
     refer = 'http://stockhtm.finance.qq.com/sstock/quotpage/dadan.htm?c=%s' % (id)
 
     curl =  CurlHTTPFetcher()
-    curl.ALLOWED_TIME = 1
+    curl.ALLOWED_TIME = 2
     stocklist = ''
     i = 0
     imax = 1
@@ -1360,10 +1361,10 @@ def log_single_analysis(id_dic):
         if not id_dic[key].has_key('single'):
             id_dic[key]['single'] = {}
 
-        if len(get_single_analysis(key, id_dic[key]['vol'], id_dic[key]['single'])) == 0:
-            get_single_analysis2(toady, key, id_dic[key]['vol'], id_dic[key]['single'])
-            if len(id_dic[key]['single']) == 0:
-                continue
+        #if len(get_single_analysis(key, id_dic[key]['vol'], id_dic[key]['single'])) == 0:
+        get_single_analysis2(toady, key, id_dic[key]['vol'], id_dic[key]['single'])
+        if len(id_dic[key]['single']) == 0:
+            continue
 
         money = get_money_flow(key)
         if len(money) > 0 and money.has_key('main_force'):
@@ -1759,10 +1760,10 @@ def do_search_short():
             if not id_dic[key].has_key('single'):
                 id_dic[key]['single'] = {}
 
-            if len(get_single_analysis(key, id_dic[key]['vol'], id_dic[key]['single'])) == 0:
-                get_single_analysis2(toady, key, id_dic[key]['vol'], id_dic[key]['single'])
-                if len(id_dic[key]['single']) == 0:
-                    continue
+            #if len(get_single_analysis(key, id_dic[key]['vol'], id_dic[key]['single'])) == 0:
+            get_single_analysis2(toady, key, id_dic[key]['vol'], id_dic[key]['single'])
+            if len(id_dic[key]['single']) == 0:
+                continue
             #print id_dic[key]['single']
             mtime = time.ctime(os.path.getmtime('stock.ini'))
             if cfg_mtime != mtime:
