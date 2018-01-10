@@ -1,3 +1,721 @@
+<<<<<<< HEAD:python/.idea/workspace.xml
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="42f0272a-c3a0-439f-ad28-fb8fb0026ca7" name="Default" comment="" />
+    <ignored path="python.iws" />
+    <ignored path=".idea/workspace.xml" />
+    <option name="TRACKING_ENABLED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ChangesViewManager" flattened_view="true" show_ignored="false" />
+  <component name="CoverageDataManager">
+    <SUITE FILE_PATH="coverage/python$stock_info.coverage" NAME="stock_info Coverage Results" MODIFIED="1508078165713" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/../stock/py" />
+    <SUITE FILE_PATH="coverage/python$reportlab1.coverage" NAME="reportlab1 Coverage Results" MODIFIED="1392025800147" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/python$excel.coverage" NAME="excel Coverage Results" MODIFIED="1385439648117" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/python$semail.coverage" NAME="semail Coverage Results" MODIFIED="1395218032791" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/python$spider.coverage" NAME="spider Coverage Results" MODIFIED="1393162491935" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/python$autoPay1.coverage" NAME="autoPay1 Coverage Results" MODIFIED="1385554673318" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/python$AnalyzeUserEnjoyed.coverage" NAME="AnalyzeUserEnjoyed Coverage Results" MODIFIED="1385107263698" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/python$test2.coverage" NAME="test2 Coverage Results" MODIFIED="1383186299534" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/python$str.coverage" NAME="str Coverage Results" MODIFIED="1395217952573" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/python$readline.coverage" NAME="readline Coverage Results" MODIFIED="1385258667199" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/python$test3.coverage" NAME="test3 Coverage Results" MODIFIED="1385107406384" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/python$RwLock.coverage" NAME="RwLock Coverage Results" MODIFIED="1394705924622" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/python$win32com1.coverage" NAME="win32com1 Coverage Results" MODIFIED="1385530198454" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/python$TopXReport.coverage" NAME="TopXReport Coverage Results" MODIFIED="1392025505657" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/python$semail2.coverage" NAME="semail2 Coverage Results" MODIFIED="1385713701937" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/python$semail3.coverage" NAME="semail3 Coverage Results" MODIFIED="1393569733603" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/python$loadconfig.coverage" NAME="loadconfig Coverage Results" MODIFIED="1385261298066" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/python$spider1.coverage" NAME="spider1 Coverage Results" MODIFIED="1393162028934" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/python$win2com.coverage" NAME="win2com Coverage Results" MODIFIED="1385558689291" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/python$test.coverage" NAME="test Coverage Results" MODIFIED="1383186517713" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/python$autoPay.coverage" NAME="autoPay Coverage Results" MODIFIED="1388239717682" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/python$win32com2.coverage" NAME="win32com2 Coverage Results" MODIFIED="1385539941773" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/python$semail__1_.coverage" NAME="semail (1) Coverage Results" MODIFIED="1395218330442" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="D:/svn/CAS/服务器源码/tv sniffer/script" />
+    <SUITE FILE_PATH="coverage/python$reportlab2.coverage" NAME="reportlab2 Coverage Results" MODIFIED="1392093322344" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/python$semail1.coverage" NAME="semail1 Coverage Results" MODIFIED="1395196850336" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+  </component>
+  <component name="CreatePatchCommitExecutor">
+    <option name="PATCH_PATH" value="" />
+  </component>
+  <component name="DaemonCodeAnalyzer">
+    <disable_hints />
+  </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
+  <component name="FavoritesManager">
+    <favorites_list name="python" />
+  </component>
+  <component name="FileEditorManager">
+    <leaf>
+      <file leaf-file-name="re_test_case.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/re_test_case.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="28" column="45" selection-start="571" selection-end="571" vertical-scroll-proportion="0.0" vertical-offset="95" max-vertical-offset="16473">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="stock_infoa.py" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/../stock/py/stock_infoa.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="1367" column="4" selection-start="41666" selection-end="41666" vertical-scroll-proportion="27.247408" vertical-offset="7581" max-vertical-offset="35283">
+              <folding>
+                <element signature="e#40#51#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="stock_infoc.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/../stock/py/stock_infoc.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="439" column="46" selection-start="12746" selection-end="12751" vertical-scroll-proportion="0.0" vertical-offset="8341" max-vertical-offset="26391">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="FindManager">
+    <FindUsagesManager>
+      <setting name="OPEN_NEW_TAB" value="false" />
+    </FindUsagesManager>
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="changedFiles">
+      <list>
+        <option value="$PROJECT_DIR$/../tmp/qf/runSwift.py" />
+        <option value="$PROJECT_DIR$/../tmp/qf/runCpp.py" />
+        <option value="$PROJECT_DIR$/../tmp/qf/utils.py" />
+        <option value="$PROJECT_DIR$/../tmp/qf/__main__.py" />
+        <option value="$PROJECT_DIR$/../tmp/qf/runJava.py" />
+        <option value="$PROJECT_DIR$/../stock/py/get_stock_list.py" />
+        <option value="$PROJECT_DIR$/../stock/py/mysql.py" />
+        <option value="$PROJECT_DIR$/../stock/py/save_stock_list.py" />
+        <option value="$PROJECT_DIR$/../stock/py/api" />
+        <option value="$PROJECT_DIR$/../stock/py/monitor.py" />
+        <option value="$PROJECT_DIR$/../stock/py/stock_info_bak.py" />
+        <option value="$PROJECT_DIR$/../stock/py/stock_info.py" />
+        <option value="$PROJECT_DIR$/../stock/py/stock_infoc.py" />
+        <option value="$PROJECT_DIR$/../stock/py/stock.ini" />
+        <option value="$PROJECT_DIR$/re_test_case.py" />
+        <option value="$PROJECT_DIR$/../stock/py/stock_infoa.py" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectFrameBounds">
+    <option name="x" value="-8" />
+    <option name="y" value="-8" />
+    <option name="width" value="1456" />
+    <option name="height" value="876" />
+  </component>
+  <component name="ProjectInspectionProfilesVisibleTreeState">
+    <entry key="Project Default">
+      <profile-state>
+        <expanded-state>
+          <State>
+            <id />
+          </State>
+          <State>
+            <id>GeneralJavaScript</id>
+          </State>
+          <State>
+            <id>JavaScript</id>
+          </State>
+          <State>
+            <id>Potentially confusing code constructsJavaScript</id>
+          </State>
+          <State>
+            <id>Python</id>
+          </State>
+          <State>
+            <id>SQL</id>
+          </State>
+        </expanded-state>
+      </profile-state>
+    </entry>
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="false">
+    <OptionsSetting value="true" id="Add" />
+    <OptionsSetting value="true" id="Remove" />
+    <OptionsSetting value="true" id="Checkout" />
+    <OptionsSetting value="true" id="Update" />
+    <OptionsSetting value="true" id="Status" />
+    <OptionsSetting value="true" id="Edit" />
+    <ConfirmationsSetting value="0" id="Add" />
+    <ConfirmationsSetting value="0" id="Remove" />
+  </component>
+  <component name="ProjectReloadState">
+    <option name="STATE" value="0" />
+  </component>
+  <component name="ProjectView">
+    <navigator currentView="ProjectPane" proportions="" version="1" splitterProportion="0.5">
+      <flattenPackages />
+      <showMembers />
+      <showModules />
+      <showLibraryContents />
+      <hideEmptyPackages />
+      <abbreviatePackageNames />
+      <autoscrollToSource />
+      <autoscrollFromSource />
+      <sortByType />
+    </navigator>
+    <panes>
+      <pane id="Scope">
+        <subPane subId="Problems" />
+      </pane>
+      <pane id="ProjectPane">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="python" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="python" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="tmp" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="python" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="stock" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="py" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="python" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="stock" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="options.splitter.main.proportions" value="0.3" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="options.lastSelected" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+    <property name="recentsLimit" value="5" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="FullScreen" value="false" />
+    <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="options.searchVisible" value="true" />
+  </component>
+  <component name="PyConsoleOptionsProvider">
+    <option name="myPythonConsoleState">
+      <PyConsoleSettings />
+    </option>
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\work\self\test\stock\py" />
+      <recent name="D:\work\self\myproj\test\stock\py" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Python.stock_info">
+    <configuration default="false" name="semail" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="python" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/semail.py" />
+      <option name="PARAMETERS" value="" />
+      <RunnerSettings RunnerId="PythonRunner" />
+      <ConfigurationWrapper RunnerId="PythonRunner" />
+      <method />
+    </configuration>
+    <configuration default="false" name="semail1" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="python" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/semail1.py" />
+      <option name="PARAMETERS" value="" />
+      <RunnerSettings RunnerId="PythonRunner" />
+      <ConfigurationWrapper RunnerId="PythonRunner" />
+      <method />
+    </configuration>
+    <configuration default="false" name="str" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="python" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/str.py" />
+      <option name="PARAMETERS" value="" />
+      <RunnerSettings RunnerId="PythonRunner" />
+      <ConfigurationWrapper RunnerId="PythonRunner" />
+      <method />
+    </configuration>
+    <configuration default="false" name="semail (1)" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="D:/svn/CAS/服务器源码/tv sniffer/script" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="python" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="D:/svn/CAS/服务器源码/tv sniffer/script/semail.py" />
+      <option name="PARAMETERS" value="" />
+      <RunnerSettings RunnerId="PythonRunner" />
+      <ConfigurationWrapper RunnerId="PythonRunner" />
+      <method />
+    </configuration>
+    <configuration default="false" name="stock_info" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/../stock/py" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="stock" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/../stock/py/stock_info.py" />
+      <option name="PARAMETERS" value="" />
+      <RunnerSettings RunnerId="PythonRunner" />
+      <ConfigurationWrapper RunnerId="PythonRunner" />
+      <method />
+    </configuration>
+    <configuration default="true" type="DjangoTestsConfigurationType" factoryName="Django tests">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="python" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="TARGET" value="" />
+      <option name="SETTINGS_FILE" value="" />
+      <option name="CUSTOM_SETTINGS" value="false" />
+      <option name="USE_OPTIONS" value="false" />
+      <option name="OPTIONS" value="" />
+      <method />
+    </configuration>
+    <configuration default="true" type="tests" factoryName="py.test">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="python" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="" />
+      <option name="CLASS_NAME" value="" />
+      <option name="METHOD_NAME" value="" />
+      <option name="FOLDER_NAME" value="" />
+      <option name="TEST_TYPE" value="TEST_SCRIPT" />
+      <option name="PATTERN" value="" />
+      <option name="USE_PATTERN" value="false" />
+      <option name="testToRun" value="" />
+      <option name="keywords" value="" />
+      <option name="params" value="" />
+      <option name="USE_PARAM" value="false" />
+      <option name="USE_KEYWORD" value="false" />
+      <method />
+    </configuration>
+    <configuration default="true" type="tests" factoryName="Nosetests">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="python" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="" />
+      <option name="CLASS_NAME" value="" />
+      <option name="METHOD_NAME" value="" />
+      <option name="FOLDER_NAME" value="" />
+      <option name="TEST_TYPE" value="TEST_SCRIPT" />
+      <option name="PATTERN" value="" />
+      <option name="USE_PATTERN" value="false" />
+      <option name="PARAMS" value="" />
+      <option name="USE_PARAM" value="false" />
+      <method />
+    </configuration>
+    <configuration default="true" type="PythonConfigurationType" factoryName="Python">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="python" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="" />
+      <option name="PARAMETERS" value="" />
+      <method />
+    </configuration>
+    <configuration default="true" type="tests" factoryName="Unittests">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="python" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="" />
+      <option name="CLASS_NAME" value="" />
+      <option name="METHOD_NAME" value="" />
+      <option name="FOLDER_NAME" value="" />
+      <option name="TEST_TYPE" value="TEST_SCRIPT" />
+      <option name="PATTERN" value="" />
+      <option name="USE_PATTERN" value="false" />
+      <option name="PUREUNITTEST" value="true" />
+      <option name="PARAMS" value="" />
+      <option name="USE_PARAM" value="false" />
+      <method />
+    </configuration>
+    <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug" singleton="true">
+      <method />
+    </configuration>
+    <configuration default="true" type="tests" factoryName="Doctests">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="python" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="" />
+      <option name="CLASS_NAME" value="" />
+      <option name="METHOD_NAME" value="" />
+      <option name="FOLDER_NAME" value="" />
+      <option name="TEST_TYPE" value="TEST_SCRIPT" />
+      <option name="PATTERN" value="" />
+      <option name="USE_PATTERN" value="false" />
+      <method />
+    </configuration>
+    <configuration default="true" type="tests" factoryName="Attests">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="python" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="" />
+      <option name="CLASS_NAME" value="" />
+      <option name="METHOD_NAME" value="" />
+      <option name="FOLDER_NAME" value="" />
+      <option name="TEST_TYPE" value="TEST_SCRIPT" />
+      <option name="PATTERN" value="" />
+      <option name="USE_PATTERN" value="false" />
+      <method />
+    </configuration>
+    <list size="5">
+      <item index="0" class="java.lang.String" itemvalue="Python.semail" />
+      <item index="1" class="java.lang.String" itemvalue="Python.semail1" />
+      <item index="2" class="java.lang.String" itemvalue="Python.str" />
+      <item index="3" class="java.lang.String" itemvalue="Python.semail (1)" />
+      <item index="4" class="java.lang.String" itemvalue="Python.stock_info" />
+    </list>
+    <recent_temporary>
+      <list size="5">
+        <item index="0" class="java.lang.String" itemvalue="Python.stock_info" />
+        <item index="1" class="java.lang.String" itemvalue="Python.semail (1)" />
+        <item index="2" class="java.lang.String" itemvalue="Python.semail" />
+        <item index="3" class="java.lang.String" itemvalue="Python.str" />
+        <item index="4" class="java.lang.String" itemvalue="Python.semail1" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="ShelveChangesManager" show_recycled="false" />
+  <component name="SvnConfiguration" maxAnnotateRevisions="500" myUseAcceleration="nothing" myAutoUpdateAfterCommit="false" cleanupOnStartRun="false" SSL_PROTOCOLS="sslv3">
+    <option name="USER" value="" />
+    <option name="PASSWORD" value="" />
+    <option name="mySSHConnectionTimeout" value="30000" />
+    <option name="mySSHReadTimeout" value="30000" />
+    <option name="LAST_MERGED_REVISION" />
+    <option name="MERGE_DRY_RUN" value="false" />
+    <option name="MERGE_DIFF_USE_ANCESTRY" value="true" />
+    <option name="UPDATE_LOCK_ON_DEMAND" value="false" />
+    <option name="IGNORE_SPACES_IN_MERGE" value="false" />
+    <option name="CHECK_NESTED_FOR_QUICK_MERGE" value="false" />
+    <option name="IGNORE_SPACES_IN_ANNOTATE" value="true" />
+    <option name="SHOW_MERGE_SOURCES_IN_ANNOTATE" value="true" />
+    <option name="FORCE_UPDATE" value="false" />
+    <option name="IGNORE_EXTERNALS" value="false" />
+    <myIsUseDefaultProxy>false</myIsUseDefaultProxy>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="42f0272a-c3a0-439f-ad28-fb8fb0026ca7" name="Default" comment="" />
+      <created>1381563182007</created>
+      <updated>1381563182007</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="TodoView" selected-index="0">
+    <todo-panel id="selected-file">
+      <are-packages-shown value="false" />
+      <are-modules-shown value="false" />
+      <flatten-packages value="false" />
+      <is-autoscroll-to-source value="false" />
+    </todo-panel>
+    <todo-panel id="all">
+      <are-packages-shown value="false" />
+      <are-modules-shown value="false" />
+      <flatten-packages value="false" />
+      <is-autoscroll-to-source value="false" />
+    </todo-panel>
+    <todo-panel id="default-changelist">
+      <are-packages-shown value="false" />
+      <are-modules-shown value="false" />
+      <flatten-packages value="false" />
+      <is-autoscroll-to-source value="false" />
+    </todo-panel>
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="-8" y="-8" width="1456" height="876" extended-state="6" />
+    <editor active="false" />
+    <layout>
+      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32761577" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.05098684" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.19583334" sideWeight="0.9490132" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39862543" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.26557633" sideWeight="0.2898032" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3291592" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.30756578" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3298969" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.39864865" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+    </layout>
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="myTodoPanelSettings">
+      <TodoPanelSettings />
+    </option>
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="python-line">
+          <url>file://$PROJECT_DIR$/loadconfig.py</url>
+          <line>3</line>
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="python-line">
+          <url>file://$PROJECT_DIR$/semail.py</url>
+          <line>3</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="python-line">
+          <url>file://$PROJECT_DIR$/../stock/py/save_stock_list.py</url>
+          <line>4</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="python-line">
+          <url>file://$PROJECT_DIR$/re_test_case.py</url>
+          <line>4</line>
+          <option name="timeStamp" value="5" />
+        </line-breakpoint>
+      </breakpoints>
+      <option name="time" value="7" />
+    </breakpoint-manager>
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/../stock/py/stock_infoc.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="439" column="46" selection-start="12751" selection-end="12751" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="26391">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/semail2.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="-11.595506" vertical-offset="4128" max-vertical-offset="4484" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/spider1.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="418" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../stock/py/get_plate_urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="1" column="0" selection-start="23" selection-end="36" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1919" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../stock/py/save_stock_list.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="97" column="29" selection-start="2734" selection-end="2734" vertical-scroll-proportion="-0.033450704" vertical-offset="1843" max-vertical-offset="3040">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../tmp/test/test.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="105" column="31" selection-start="3064" selection-end="3223" vertical-scroll-proportion="0.0" vertical-offset="1995" max-vertical-offset="2888" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../tmp/qf/__main__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="204" column="16" selection-start="5363" selection-end="5363" vertical-scroll-proportion="0.5" vertical-offset="3459" max-vertical-offset="4066" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/countX.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="89" column="8" selection-start="1864" selection-end="1897" vertical-scroll-proportion="0.29316548" vertical-offset="1528" max-vertical-offset="2109" />
+      </provider>
+    </entry>
+    <entry file="file://D:/Python27/Lib/BaseHTTPServer.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="231" column="8" selection-start="8104" selection-end="8104" vertical-scroll-proportion="-1.6695353" vertical-offset="5302" max-vertical-offset="11514" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../stock/py/monitor.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="148" column="25" selection-start="4780" selection-end="4780" vertical-scroll-proportion="-0.39242685" vertical-offset="2812" max-vertical-offset="5548" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../stock/py/stock_infob.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="-47.2031" vertical-offset="27425" max-vertical-offset="28690" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../stock/py/api">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="8" column="6" selection-start="1595" selection-end="1595" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2774" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../stock/py/stock.ini">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="15" column="18" selection-start="192" selection-end="192" vertical-scroll-proportion="0.034545455" vertical-offset="266" max-vertical-offset="988" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/re_test_case.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="28" column="45" selection-start="571" selection-end="571" vertical-scroll-proportion="0.0" vertical-offset="95" max-vertical-offset="16473">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../stock/py/stock_infoc.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="439" column="46" selection-start="12746" selection-end="12751" vertical-scroll-proportion="0.0" vertical-offset="7682" max-vertical-offset="26163">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../stock/py/stock_infoa.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="1367" column="4" selection-start="41666" selection-end="41666" vertical-scroll-proportion="27.247408" vertical-offset="7581" max-vertical-offset="35283">
+          <folding>
+            <element signature="e#40#51#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+  </component>
+  <component name="masterDetails">
+    <states>
+      <state key="ScopeChooserConfigurable.UI">
+        <settings>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+    </states>
+  </component>
+</project>
+
+=======
 #!/usr/bin/env python
 #encoding=utf-8
 
@@ -414,13 +1132,7 @@ class CurlHTTPFetcher(object):
 
 
 def get_single_analysis2(date, id, sum_vol, deal_dic):
-    #url = 'http://market.finance.sina.com.cn/downxls.php?date=%s&symbol=%s' % (date, id)
-
-    url = 'http://vip.stock.finance.sina.com.cn/quotes_service/view/cn_bill_download.php?' \
-          'symbol=%s&num=600&page=1&sort=ticktime&asc=0&volume=40000&amount=0&type=0&day=%s' % (id, date)
-
-    #print url
-
+    url = 'http://market.finance.sina.com.cn/downxls.php?date=%s&symbol=%s' % (date, id)
     header = {}
     index = random.randint(0, len(user_agent_list) -1)
     header['User-Agent'] = user_agent_list[index]
@@ -445,68 +1157,77 @@ def get_single_analysis2(date, id, sum_vol, deal_dic):
     stockdict['vol_1'] = 0
     stockdict['vol_2'] = 0
     stockdict['vol_3'] = 0
+    stockdict['vol_4'] = 0
 
     res_str = ''
     if res.has_key('body') and res['body'].strip():
         items = res['body'].split('\n')
-        #print res['body']
         for key in items:
-            subitems = key.split(',');
-            if len(subitems) == 7:
-                if not subitems[4].isdigit():
+            subitems = key.split('\t');
+            if len(subitems) == 6:
+                if not subitems[3].isdigit():
                     continue
-                vol = int(subitems[4])
+                vol = int(subitems[3])
 
                 flag = 1
-                if u'买盘' in  subitems[6].decode('gbk'):
+                if u'买盘' in  subitems[5].decode('gbk'):
                     flag = 1
-                elif u'卖盘' in subitems[6].decode('gbk'):
+                elif u'卖盘' in subitems[5].decode('gbk'):
                     flag = -1
                 else:
                     continue
 
-                vol = vol /100
-
-                if vol >= 400:
+                if vol >= 200:
                     stockdict['vol_1'] += vol * flag
 
-                if vol >= 1000:
+                if vol >= 500:
                     stockdict['vol_2'] += vol * flag
 
-                if vol >= 2000:
+                if vol >= 1000:
                     stockdict['vol_3'] += vol * flag
+
+                if vol >= 2000:
+                    stockdict['vol_4'] += vol * flag
+
+        if stockdict['vol_1'] == 0:
+            return stockdict
 
         if not deal_dic.has_key('vol_1'):
             deal_dic['vol_1'] = []
             deal_dic['vol_2'] = []
             deal_dic['vol_3'] = []
+            deal_dic['vol_4'] = []
             deal_dic['ratio_vol_1'] = []
             deal_dic['ratio_vol_2'] = []
             deal_dic['ratio_vol_3'] = []
+            deal_dic['ratio_vol_4'] = []
 
         if len(deal_dic['vol_1']) >= 10:
             deal_dic['vol_1'].pop(0)
             deal_dic['vol_2'].pop(0)
             deal_dic['vol_3'].pop(0)
+            deal_dic['vol_4'].pop(0)
             deal_dic['ratio_vol_1'].pop(0)
             deal_dic['ratio_vol_2'].pop(0)
             deal_dic['ratio_vol_3'].pop(0)
+            deal_dic['ratio_vol_4'].pop(0)
 
         if len(deal_dic['vol_1']) >=1 and abs(deal_dic['vol_1'][-1] - stockdict['vol_1']) < 400:
             return stockdict
 
-        #print stockdict
         deal_dic['vol_1'].append(stockdict['vol_1'])
         deal_dic['vol_2'].append(stockdict['vol_2'])
         deal_dic['vol_3'].append(stockdict['vol_3'])
+        deal_dic['vol_4'].append(stockdict['vol_4'])
 
         deal_dic['ratio_vol_1'].append(round(stockdict['vol_1'] *1.0 / sum_vol, 4))
         deal_dic['ratio_vol_2'].append(round(stockdict['vol_2'] *1.0 / sum_vol, 4))
         deal_dic['ratio_vol_3'].append(round(stockdict['vol_3'] *1.0 / sum_vol, 4))
+        deal_dic['ratio_vol_4'].append(round(stockdict['vol_4'] *1.0 / sum_vol, 4))
 
-    #print stockdict
-    #if not res_str.strip():
-    #    print url
+
+    if not res_str.strip():
+        print url
 
 def load_details(days_num, deal_dic):
     if len(deal_dic) == 0:
@@ -729,14 +1450,15 @@ def get_single_analysis(id, vol, deal_dic):
         print vol, 'err'
         return stockdict
 
-    url = 'http://stock.finance.qq.com/sstock/list/view/dadan.php?t=js&c=%s&max=600&p=1&opt=4&o=0' % (id)
+
+    url = 'http://stock.finance.qq.com/sstock/list/view/dadan.php?t=js&c=%s&max=600&p=1&opt=2&o=0' % (id)
     refer = 'http://stockhtm.finance.qq.com/sstock/quotpage/dadan.htm?c=%s' % (id)
 
     curl =  CurlHTTPFetcher()
     curl.ALLOWED_TIME = 1
     stocklist = ''
     i = 0
-    imax = 1
+    imax = 5
     while 1:
         try:
             if i + 1 <= imax:
@@ -748,8 +1470,7 @@ def get_single_analysis(id, vol, deal_dic):
                 try:
                     res = curl.fetch(url, None, header)
                 except BaseException, e:
-                    pass
-                    #print '111111, err', e.message, id
+                    print 'err', e.message, id
 
                 value = res['body'].decode("gbk").split('=')[1].strip(';\r\n')
             else:
@@ -760,17 +1481,14 @@ def get_single_analysis(id, vol, deal_dic):
             break
         except Exception,e:
             #print url, value, e
-            stocklist = ''
             i = i+1
             if i >= imax:
                 log_write('errcode', id)
                 break
+            time.sleep(random.randint(1, 3))
 
     if i > imax:
         return  {}
-
-    if not stocklist.strip():
-        return {}
 
     #print stocklist
 
@@ -778,13 +1496,16 @@ def get_single_analysis(id, vol, deal_dic):
         deal_dic['vol_1'] = []
         deal_dic['vol_2'] = []
         deal_dic['vol_3'] = []
+        deal_dic['vol_4'] = []
         deal_dic['ratio_vol_1'] = []
         deal_dic['ratio_vol_2'] = []
         deal_dic['ratio_vol_3'] = []
+        deal_dic['ratio_vol_4'] = []
 
     stockdict['vol_1'] = 0
     stockdict['vol_2'] = 0
     stockdict['vol_3'] = 0
+    stockdict['vol_4'] = 0
     items = stocklist.split('^')
     for item in items:
         subitems = item.split('~')
@@ -797,22 +1518,30 @@ def get_single_analysis(id, vol, deal_dic):
             else:
                 continue
 
-            if int(subitems[3]) >= 400:
+            if int(subitems[3]) >= 200:
                 stockdict['vol_1'] += int(subitems[3]) * flag
 
-            if int(subitems[3]) >= 1000:
+            if int(subitems[3]) >= 500:
                 stockdict['vol_2'] += int(subitems[3]) * flag
 
-            if int(subitems[3]) >= 2000:
+            if int(subitems[3]) >= 1000:
                 stockdict['vol_3'] += int(subitems[3]) * flag
+
+            if int(subitems[3]) >= 2000:
+                stockdict['vol_4'] += int(subitems[3]) * flag
+
+    if stockdict['vol_1'] == 0:
+        return stockdict
 
     if len(deal_dic['vol_1']) >= 10:
         deal_dic['vol_1'].pop(0)
         deal_dic['vol_2'].pop(0)
         deal_dic['vol_3'].pop(0)
+        deal_dic['vol_4'].pop(0)
         deal_dic['ratio_vol_1'].pop(0)
         deal_dic['ratio_vol_2'].pop(0)
         deal_dic['ratio_vol_3'].pop(0)
+        deal_dic['ratio_vol_4'].pop(0)
 
     if len(deal_dic['vol_1']) >=1 and abs(deal_dic['vol_1'][-1] - stockdict['vol_1']) < 400:
         return stockdict
@@ -820,10 +1549,12 @@ def get_single_analysis(id, vol, deal_dic):
     deal_dic['vol_1'].append(stockdict['vol_1'])
     deal_dic['vol_2'].append(stockdict['vol_2'])
     deal_dic['vol_3'].append(stockdict['vol_3'])
+    deal_dic['vol_4'].append(stockdict['vol_4'])
 
     deal_dic['ratio_vol_1'].append(round(stockdict['vol_1'] *1.0 / vol, 4))
     deal_dic['ratio_vol_2'].append(round(stockdict['vol_2'] *1.0 / vol, 4))
     deal_dic['ratio_vol_3'].append(round(stockdict['vol_3'] *1.0 / vol, 4))
+    deal_dic['ratio_vol_4'].append(round(stockdict['vol_4'] *1.0 / vol, 4))
 
     return stockdict
 
@@ -903,7 +1634,7 @@ def get_money_flow(id):
     random.seed(int(time.time()))
     stocklist = []
     i = 0
-    imax = 2
+    imax = 3
     while 1:
         try:
             if i + 1 <= imax:
@@ -920,7 +1651,7 @@ def get_money_flow(id):
                 try:
                     res = curl.fetch(url, None, header)
                 except BaseException, e:
-                    print 'money', e.message, id
+                    print 'err', e.message, id
 
                 #httpGetContent(favicon, ['Referer: %s' % (url), 'User-Agent: %s' % (user_agent_list[index])])
                 value = res['body'].decode("gbk").split('=')[1].strip(';\r\n')
@@ -1360,7 +2091,8 @@ def log_single_analysis(id_dic):
         if not id_dic[key].has_key('single'):
             id_dic[key]['single'] = {}
 
-        if len(get_single_analysis(key, id_dic[key]['vol'], id_dic[key]['single'])) == 0:
+        get_single_analysis(key, id_dic[key]['vol'], id_dic[key]['single'])
+        if len(id_dic[key]['single']) == 0:
             get_single_analysis2(toady, key, id_dic[key]['vol'], id_dic[key]['single'])
             if len(id_dic[key]['single']) == 0:
                 continue
@@ -1374,7 +2106,7 @@ def log_single_analysis(id_dic):
 
         if id_dic[key]['vol'] > 0:
             res_str = '%s\t%d\t%d\t%d\t%d\t%.2f\t%d\t%.2f\t%.2f\t%.2f\t%.2f\t%.2f' % (key, id_dic[key]['single']['vol_1'][-1], id_dic[key]['single']['vol_2'][-1], id_dic[key]['single']['vol_3'][-1], \
-            0, id_dic[key]['main_force'], id_dic[key]['vol'], id_dic[key]['start'], id_dic[key]['end'], id_dic[key]['low'], \
+            id_dic[key]['single']['vol_4'][-1], id_dic[key]['main_force'], id_dic[key]['vol'], id_dic[key]['start'], id_dic[key]['end'], id_dic[key]['low'], \
             id_dic[key]['high'], id_dic[key]['range_percent'])
             log_write(file_name, res_str)
 
@@ -1427,6 +2159,7 @@ def get_last_singles(days_num, deal_dic):
                             deal_dic[subitems[0]]['last_single']['vol_1'] = []
                             deal_dic[subitems[0]]['last_single']['vol_2'] = []
                             deal_dic[subitems[0]]['last_single']['vol_3'] = []
+                            deal_dic[subitems[0]]['last_single']['vol_4'] = []
                             deal_dic[subitems[0]]['last_single']['main_force'] = []
                             deal_dic[subitems[0]]['last_single']['start'] = []
                             deal_dic[subitems[0]]['last_single']['end'] = []
@@ -1438,6 +2171,7 @@ def get_last_singles(days_num, deal_dic):
                         deal_dic[subitems[0]]['last_single']['vol_1'].append(int(subitems[1]))
                         deal_dic[subitems[0]]['last_single']['vol_2'].append(int(subitems[2]))
                         deal_dic[subitems[0]]['last_single']['vol_3'].append(int(subitems[3]))
+                        deal_dic[subitems[0]]['last_single']['vol_4'].append(int(subitems[4]))
                         deal_dic[subitems[0]]['last_single']['main_force'].append(float(subitems[5]))
                         deal_dic[subitems[0]]['last_single']['total_vol'].append(int(subitems[6]))
                         deal_dic[subitems[0]]['last_single']['low'].append(float(subitems[9]))
@@ -1568,6 +2302,9 @@ def do_check_select(id_dic, sec, cf):
     if cf.has_option(sec,'vol_3_asc') and not get_data_direction(id_dic['single']['vol_3']):
         return
 
+    if cf.has_option(sec,'vol_4_asc') and not get_data_direction(id_dic['single']['vol_4']):
+        return
+
     if  cf.has_option(sec, 'vol_1_ge') and id_dic['single']['vol_1'][-1] < cf.getint(sec, 'vol_1_ge'):
         return
 
@@ -1575,6 +2312,9 @@ def do_check_select(id_dic, sec, cf):
         return
 
     if  cf.has_option(sec, 'vol_3_ge') and id_dic['single']['vol_3'][-1] < cf.getint(sec, 'vol_3_ge'):
+        return
+
+    if  cf.has_option(sec, 'vol_4_ge') and id_dic['single']['vol_4'][-1] < cf.getint(sec, 'vol_4_ge'):
         return
 
     if  cf.has_option(sec, 'ratio_vol_1_ge') and id_dic['single']['ratio_vol_1'][-1] < cf.getfloat(sec, 'ratio_vol_1_ge'):
@@ -1604,6 +2344,7 @@ def do_check_select(id_dic, sec, cf):
     lastday_has_vol_1_ge = False
     lastday_has_vol_2_ge = False
     lastday_has_vol_3_ge = False
+    lastday_has_vol_4_ge = False
 
     lastday_has_range_percent_ge = False
 
@@ -1625,6 +2366,11 @@ def do_check_select(id_dic, sec, cf):
             and id_dic['last_single'].has_key('vol_3') and len(id_dic['last_single']['vol_3']) > id_day:
             if id_dic['last_single']['vol_3'][id_day] > cf.getint(sec, 'lastday_has_vol_3_ge'):
                     lastday_has_vol_3_ge = True
+
+        if cf.has_option(sec, 'lastday_has_vol_4_ge') and id_dic.has_key('last_single') \
+            and id_dic['last_single'].has_key('vol_4') and len(id_dic['last_single']['vol_4']) > id_day:
+            if id_dic['last_single']['vol_4'][id_day] > cf.getint(sec, 'lastday_has_vol_4_ge'):
+                    lastday_has_vol_4_ge = True
 
         if cf.has_option(sec, 'lastday_has_range_percent_ge') and id_dic.has_key('last_single') \
             and id_dic['last_single'].has_key('range_percent') and len(id_dic['last_single']['range_percent']) > id_day:
@@ -1649,6 +2395,9 @@ def do_check_select(id_dic, sec, cf):
         return
 
     if cf.has_option(sec, 'lastday_has_vol_3_ge') and id_dic['last_single'].has_key('vol_3') and not lastday_has_vol_3_ge:
+        return
+
+    if cf.has_option(sec, 'lastday_has_vol_4_ge') and id_dic['last_single'].has_key('vol_4') and not lastday_has_vol_4_ge:
         return
 
     if cf.has_option(sec, 'lastday_has_range_percent_ge') and id_dic['last_single'].has_key('range_percent') and not lastday_has_range_percent_ge:
@@ -1720,7 +2469,7 @@ def do_search_short():
         remove_ley = []
         print 'after remove_ley', len(id_dic)
         for key in id_dic:
-            time.sleep(0.01)
+            time.sleep(0.03)
             res = get_stockid_real_time(key)
 
             if res.has_key('block') and res['block']:  #停牌
@@ -1759,11 +2508,10 @@ def do_search_short():
             if not id_dic[key].has_key('single'):
                 id_dic[key]['single'] = {}
 
-            if len(get_single_analysis(key, id_dic[key]['vol'], id_dic[key]['single'])) == 0:
-                get_single_analysis2(toady, key, id_dic[key]['vol'], id_dic[key]['single'])
-                if len(id_dic[key]['single']) == 0:
-                    continue
-            #print id_dic[key]['single']
+            get_single_analysis(key, id_dic[key]['vol'], id_dic[key]['single'])
+            if not id_dic[key]['single'].has_key('vol_1') or len(id_dic[key]['single']['vol_1']) == 0:
+                continue
+
             mtime = time.ctime(os.path.getmtime('stock.ini'))
             if cfg_mtime != mtime:
                 cfg_mtime = mtime
@@ -1777,20 +2525,5 @@ def do_search_short():
 #A股就是个坑， 技术指标低位了， 仍然可以再砸
 #技术指标高位了， 有资金接盘仍然可以涨, 高位始终是危险
 #压力如铁桶，支撑如窗户纸, 压力位不放量买就是要跌的节奏
-#有连续的大单介入才介入， 低位大资金都不介入， 肯定有猫腻
-#业绩好的，下跌， 大资金不介入， 肯定有什么利空， 业绩可以变脸
-#买二--买五是大单， 而买1是小单， 下跌也不买， 明显还没有跌到位
-#托单， 托而不买， 还有下跌
-#业绩增长的， 业绩出来之前已经开始涨了， 出业绩的那天直接出货下跌
-#利好消息也是一样， 这叫利好出尽是利空
-#不是说长下引线就能买， 高位， 主力先出货， 再用少量资金拉起来吸引
-#高位下引线， 股价快到顶了
-#跟封盘， 毕竟高位跟风盘不少， 再出货
-#macd 鸭子张嘴， 会加速下跌, 买之前一定要看一下15分钟macd、DMA
-#涨是需要理由的， 跌不需要,配股的股就不要进了， 号称散户的周扒皮
-#次新和业绩差的能不碰还是不要碰了, 选股还是要选强的
-#没有买盘的拉升都是骗人的
-#割肉要坚决， 没有什么后悔的, 不看上证、a50 那是不行的
-#不要做T, 不看好就跑， 看好就买， 做T, 买了， 想跑跑不了
-if __name__ == '__main__':
-    do_search_short()
+#有连续的大单介入才介入， 低位
+>>>>>>> origin:stock/py/stock_infoa2.py

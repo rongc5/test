@@ -774,6 +774,11 @@ def test_202(search_dic):
         print e
         return False
 
+    #user_cart
+    user_cart = get_history_user_cart(search_dic, RECOMM_ROOT_CUT1_RINFO_ITEMS)
+
+    #t_cart
+    t_cart = get_current_user_cart(search_dic)
 
 
 

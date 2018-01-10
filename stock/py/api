@@ -138,3 +138,6 @@ https://gupiao.baidu.com/api/stocks/stockfunds?from=pc&os_ver=1&cuid=xxx&vv=100&
 http://web.ifzq.gtimg.cn/appstock/hs/gszl/get?code=sz002611&type=gsgk_tips&_callback=jQuery1124006293975313828826_1509515397918&_=1509515397919
 http://web.ifzq.gtimg.cn/appstock/hs/hypm/get?code=sz002611&_var=gg_hypm&_=1509515397920
 
+大单数据
+http://vip.stock.finance.sina.com.cn/quotes_service/view/cn_bill_download.php?symbol=sz002285&num=60&page=1&sort=ticktime&asc=0&volume=40000&amount=0&type=0&day=2018-01-10
+
