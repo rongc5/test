@@ -780,6 +780,20 @@ def test_202(search_dic):
     #t_cart
     t_cart = get_current_user_cart(search_dic)
 
+     #历史协同, 付费
+    ucf_knn3 = recomm_ucf_compute(search_dic, search_dic['uid1_key'], 'ucf_knn3')
+    if len(ucf_knn3) == 0:
+        ucf_knn3 = recomm_ucf_compute(search_dic, search_dic['uid3_key'], 'ucf_knn3')
+
+    #历史协同, 包月
+    ucf_knn2 = recomm_ucf_compute(search_dic, search_dic['uid1_key'], 'ucf_knn2')
+    if len(ucf_knn3) == 0:
+        ucf_knn2 = recomm_ucf_compute(search_dic, search_dic['uid3_key'], 'ucf_knn2')
+
+    #实时协同
+    t_ucf_knn3 = get_current_ucf(search_dic, 'ucf_knn3', RECOMM_ROOT_CUT1_RINFO_ITEMS)
+
+
 
 
 def create_url(search_dic):

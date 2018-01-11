@@ -12,6 +12,7 @@ import os
 import sys
 import random
 import subprocess
+import ast
 
 from time import strftime, localtime
 from datetime import timedelta, date
@@ -496,7 +497,7 @@ def get_single_analysis2(date, id, sum_vol, deal_dic):
         if len(deal_dic['vol_1']) >=1 and abs(deal_dic['vol_1'][-1] - stockdict['vol_1']) < 400:
             return stockdict
 
-        print stockdict
+        #print stockdict
         deal_dic['vol_1'].append(stockdict['vol_1'])
         deal_dic['vol_2'].append(stockdict['vol_2'])
         deal_dic['vol_3'].append(stockdict['vol_3'])
@@ -828,6 +829,105 @@ def get_single_analysis(id, vol, deal_dic):
 
     return stockdict
 
+
+def get_single_analysis3(id, vol, deal_dic):
+
+    stockdict = {}
+    if int(vol) <= 0:
+        print vol, 'err'
+        return stockdict
+
+    url = 'http://stock.gtimg.cn/data/index.php?appn=dadan&action=summary&c=%s' % (id)
+
+    curl =  CurlHTTPFetcher()
+    curl.ALLOWED_TIME = 2
+    stocklist = ''
+    i = 0
+    imax = 1
+    while 1:
+        try:
+            if i + 1 <= imax:
+                header = {}
+                index = random.randint(0, len(user_agent_list) -1)
+                header['User-Agent'] = user_agent_list[index]
+                res = {}
+                try:
+                    res = curl.fetch(url, None, header)
+                except BaseException, e:
+                    pass
+                    #print '111111, err', e.message, id
+
+                value = res['body'].decode("gbk").split('=')[1].strip(';\r\n')
+            else:
+                res = curl_cmd_get(url)
+                value = res.decode("gbk").split('=')[1].strip(';\r\n')
+            #print value
+            stocklist = value
+            break
+        except Exception,e:
+            #print url, value, e
+            stocklist = ''
+            i = i+1
+            if i >= imax:
+                log_write('errcode', id)
+                break
+
+    if i > imax:
+        return  {}
+
+    if not stocklist.strip():
+        return {}
+
+    #print stocklist
+
+
+    #items = stocklist.split('^')
+    try:
+        #print type(stocklist)
+        items = ast.literal_eval(stocklist)
+        #print '111111'
+
+        #>=300
+        stockdict['vol_1'] = int(items[2 + 3][4]) - int(items[2 + 2][5])
+        #>=1000
+        stockdict['vol_2'] = int(items[2 + 7][4]) - int(items[2 + 7][5])
+        #>=2000
+        stockdict['vol_3'] = int(items[2 + 9][4]) - int(items[2 + 9][5])
+
+        #print stockdict, '2222222222'
+
+    except Exception,e:
+        print e
+        return {}
+
+    if not deal_dic.has_key('vol_1'):
+        deal_dic['vol_1'] = []
+        deal_dic['vol_2'] = []
+        deal_dic['vol_3'] = []
+        deal_dic['ratio_vol_1'] = []
+        deal_dic['ratio_vol_2'] = []
+        deal_dic['ratio_vol_3'] = []
+
+    if len(deal_dic['vol_1']) >= 10:
+        deal_dic['vol_1'].pop(0)
+        deal_dic['vol_2'].pop(0)
+        deal_dic['vol_3'].pop(0)
+        deal_dic['ratio_vol_1'].pop(0)
+        deal_dic['ratio_vol_2'].pop(0)
+        deal_dic['ratio_vol_3'].pop(0)
+
+    if len(deal_dic['vol_1']) >=1 and abs(deal_dic['vol_1'][-1] - stockdict['vol_1']) < 400:
+        return stockdict
+
+    deal_dic['vol_1'].append(stockdict['vol_1'])
+    deal_dic['vol_2'].append(stockdict['vol_2'])
+    deal_dic['vol_3'].append(stockdict['vol_3'])
+
+    deal_dic['ratio_vol_1'].append(round(stockdict['vol_1'] *1.0 / vol, 4))
+    deal_dic['ratio_vol_2'].append(round(stockdict['vol_2'] *1.0 / vol, 4))
+    deal_dic['ratio_vol_3'].append(round(stockdict['vol_3'] *1.0 / vol, 4))
+
+    return stockdict
 
 def get_money_flow2(id):
     url = 'https://gupiao.baidu.com/api/stocks/stockfunds?from=pc&os_ver=1&cuid=xxx&vv=100&format=json&stock_code=%s' % (id)
@@ -1361,10 +1461,10 @@ def log_single_analysis(id_dic):
         if not id_dic[key].has_key('single'):
             id_dic[key]['single'] = {}
 
-        #if len(get_single_analysis(key, id_dic[key]['vol'], id_dic[key]['single'])) == 0:
-        get_single_analysis2(toady, key, id_dic[key]['vol'], id_dic[key]['single'])
-        if len(id_dic[key]['single']) == 0:
-            continue
+        if len(get_single_analysis3(key, id_dic[key]['vol'], id_dic[key]['single'])) == 0:
+            get_single_analysis2(toady, key, id_dic[key]['vol'], id_dic[key]['single'])
+            if len(id_dic[key]['single']) == 0:
+                continue
 
         money = get_money_flow(key)
         if len(money) > 0 and money.has_key('main_force'):
@@ -1760,10 +1860,10 @@ def do_search_short():
             if not id_dic[key].has_key('single'):
                 id_dic[key]['single'] = {}
 
-            #if len(get_single_analysis(key, id_dic[key]['vol'], id_dic[key]['single'])) == 0:
-            get_single_analysis2(toady, key, id_dic[key]['vol'], id_dic[key]['single'])
-            if len(id_dic[key]['single']) == 0:
-                continue
+            if len(get_single_analysis3(key, id_dic[key]['vol'], id_dic[key]['single'])) == 0:
+                get_single_analysis2(toady, key, id_dic[key]['vol'], id_dic[key]['single'])
+                if len(id_dic[key]['single']) == 0:
+                    continue
             #print id_dic[key]['single']
             mtime = time.ctime(os.path.getmtime('stock.ini'))
             if cfg_mtime != mtime:
