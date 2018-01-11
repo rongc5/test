@@ -497,7 +497,7 @@ def get_single_analysis2(date, id, sum_vol, deal_dic):
         if len(deal_dic['vol_1']) >=1 and abs(deal_dic['vol_1'][-1] - stockdict['vol_1']) < 400:
             return stockdict
 
-        #print stockdict
+        print stockdict, id
         deal_dic['vol_1'].append(stockdict['vol_1'])
         deal_dic['vol_2'].append(stockdict['vol_2'])
         deal_dic['vol_3'].append(stockdict['vol_3'])
@@ -505,6 +505,8 @@ def get_single_analysis2(date, id, sum_vol, deal_dic):
         deal_dic['ratio_vol_1'].append(round(stockdict['vol_1'] *1.0 / sum_vol, 4))
         deal_dic['ratio_vol_2'].append(round(stockdict['vol_2'] *1.0 / sum_vol, 4))
         deal_dic['ratio_vol_3'].append(round(stockdict['vol_3'] *1.0 / sum_vol, 4))
+
+    return stockdict
 
     #print stockdict
     #if not res_str.strip():
@@ -888,13 +890,13 @@ def get_single_analysis3(id, vol, deal_dic):
         #print '111111'
 
         #>=300
-        stockdict['vol_1'] = int(items[2 + 3][4]) - int(items[2 + 2][5])
+        stockdict['vol_1'] = int(float(items[2 + 3][4])) - int(float(items[2 + 2][5]))
         #>=1000
-        stockdict['vol_2'] = int(items[2 + 7][4]) - int(items[2 + 7][5])
+        stockdict['vol_2'] = int(float(items[2 + 7][4])) - int(float(items[2 + 7][5]))
         #>=2000
-        stockdict['vol_3'] = int(items[2 + 9][4]) - int(items[2 + 9][5])
+        stockdict['vol_3'] = int(float(items[2 + 9][4])) - int(float(items[2 + 9][5]))
 
-        #print stockdict, '2222222222'
+        #print stockdict, id
 
     except Exception,e:
         print e
@@ -1462,7 +1464,7 @@ def log_single_analysis(id_dic):
             id_dic[key]['single'] = {}
 
         if len(get_single_analysis3(key, id_dic[key]['vol'], id_dic[key]['single'])) == 0:
-            get_single_analysis2(toady, key, id_dic[key]['vol'], id_dic[key]['single'])
+            #get_single_analysis2(toady, key, id_dic[key]['vol'], id_dic[key]['single'])
             if len(id_dic[key]['single']) == 0:
                 continue
 
@@ -1861,7 +1863,7 @@ def do_search_short():
                 id_dic[key]['single'] = {}
 
             if len(get_single_analysis3(key, id_dic[key]['vol'], id_dic[key]['single'])) == 0:
-                get_single_analysis2(toady, key, id_dic[key]['vol'], id_dic[key]['single'])
+                #get_single_analysis2(toady, key, id_dic[key]['vol'], id_dic[key]['single'])
                 if len(id_dic[key]['single']) == 0:
                     continue
             #print id_dic[key]['single']
