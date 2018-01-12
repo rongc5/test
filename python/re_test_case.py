@@ -171,6 +171,29 @@ def get_current_ucf(search_key_dic, field='ucf_knn3', length=RECOMM_ROOT_CUT1_RI
 
     return tmp_res
 
+#app_rec
+def get_app_charge(search_key_dic, field='app_charge', length=RECOMM_ROOT_CUT1_RINFO_ITEMS):
+    res_str = get_data_redis2(search_key_dic['tid1_key'], field)
+    res_list = []
+    if res_str.strip():
+        res_list = res_str.split('\t')
+
+    if not len(res_list):
+        res_str = get_data_redis2(search_key_dic['tid3_key'], field)
+        if res_str.strip():
+            res_list = res_str.split('\t')
+
+    tmp_res = []
+    res_length = len(res_list)
+    i = 0
+    count = 0
+    while i< res_length and count < length:
+        tmp_res.append(res_list[i])
+        i += 2
+        count += 1
+
+    return tmp_res
+
 def recomm_ucf_select_category(items_dic):
 
     key_array = {}
@@ -792,6 +815,41 @@ def test_202(search_dic):
 
     #实时协同
     t_ucf_knn3 = get_current_ucf(search_dic, 'ucf_knn3', RECOMM_ROOT_CUT1_RINFO_ITEMS)
+
+    #app_rec
+    if len(t_ucf_knn3) == 0:
+        t_app_charge = get_app_charge(search_dic, 'app_charge', RECOMM_ROOT_CUT1_RINFO_ITEMS)
+
+    #免费流行度
+    free_pop = get_free_pop(search_dic, RECOMM_ROOT_CUT1_RINFO_ITEMS)
+
+
+    for key in res_dic:
+        if key in user_cart or key in t_cart:
+            return False
+
+
+#回值为 获取的书籍付费类型, 1、为付费，2为包月、3、限免
+def recomm_root_gid_pay_type(search_dic, gid):
+    pay_type = 0
+    baoyue = get_baoyue(search_dic)
+
+    fee_flag = int(get_data_redis2(gid, 'fee_flag'))
+    if fee_flag == 1:
+        pay_type = 1
+    elif fee_flag == 2:
+        pay_type = 2
+
+    tf = get_data_redis2(gid, 'tf')
+
+    if search_dic.has_key('appid') and int(search_dic['appid']) == RECOMM_APPID_EASOU:
+        g_tf = get_data_redis2('i_version', 'tf1')
+    else:
+        g_tf = get_data_redis2('i_version', 'tf2')
+
+
+
+
 
 
 

@@ -336,7 +336,7 @@ class CurlHTTPFetcher(object):
 
         return headers
 
-    def fetch(self, url, body=None, headers=None):
+    def fetch(self, url, body=None, headers=None, withChunked = True):
         stop = int(time.time()) + self.ALLOWED_TIME
         off = self.ALLOWED_TIME
 
@@ -404,6 +404,9 @@ class CurlHTTPFetcher(object):
                     res['final_url'] = url
                     res['body'] = '%s' % (data.getvalue())
                     return res
+
+                if not withChunked:
+                    break
 
                 off = stop - int(time.time())
 
@@ -737,7 +740,7 @@ def get_single_analysis(id, vol, deal_dic):
     refer = 'http://stockhtm.finance.qq.com/sstock/quotpage/dadan.htm?c=%s' % (id)
 
     curl =  CurlHTTPFetcher()
-    curl.ALLOWED_TIME = 2
+    curl.ALLOWED_TIME = 1
     stocklist = ''
     i = 0
     imax = 1
@@ -842,7 +845,7 @@ def get_single_analysis3(id, vol, deal_dic):
     url = 'http://stock.gtimg.cn/data/index.php?appn=dadan&action=summary&c=%s' % (id)
 
     curl =  CurlHTTPFetcher()
-    curl.ALLOWED_TIME = 2
+    curl.ALLOWED_TIME = 1
     stocklist = ''
     i = 0
     imax = 1
@@ -1002,7 +1005,7 @@ def get_money_flow(id):
     favicon = 'http://qt.gtimg.cn/favicon.ico'
 
     curl =  CurlHTTPFetcher()
-    curl.ALLOWED_TIME = 2
+    curl.ALLOWED_TIME = 1
     random.seed(int(time.time()))
     stocklist = []
     i = 0
@@ -1021,7 +1024,7 @@ def get_money_flow(id):
                     header['If-None-Match']= (user_agent_dic[key])
 
                 try:
-                    res = curl.fetch(url, None, header)
+                    res = curl.fetch(url, None, header, False)
                 except BaseException, e:
                     print 'money', e.message, id
 
@@ -1081,6 +1084,7 @@ def get_stockid_real_time(id):
     stocklist = []
     stockdict = {}
     curl =  CurlHTTPFetcher()
+    curl.ALLOWED_TIME = 1
 
     res = {}
     deal_dic = {}
@@ -1612,6 +1616,42 @@ def load_ua_list():
     return user_agent_list
 
 
+def do_check_remove(id_dic, sec, cf):
+    if not len(id_dic):
+        return False
+
+    if 0 == cf.getint(sec, 'is_open'):
+        return False
+
+    if cf.has_option(sec, 'zysr_ge') and id_dic.has_key('zysr') and '--' not in id_dic['zysr'] and float(id_dic['zysr']) < cf.getfloat(sec, 'zysr_ge'):
+        return True
+
+    if cf.has_option(sec, 'jlr_ge') and id_dic.has_key('jlr') and '--' not in id_dic['jlr'] and float(id_dic['jlr']) < cf.getfloat(sec, 'jlr_ge'):
+        return True
+
+    if cf.has_option(sec, 'mgsy_ge') and id_dic.has_key('mgsy') and '--' not in id_dic['mgsy'] and float(id_dic['mgsy']) < cf.getfloat(sec, 'mgsy_ge'):
+        return True
+
+    if cf.has_option(sec, 'mgxj_ge') and id_dic.has_key('mgxj') and '--' not in id_dic['mgxj'] and float(id_dic['mgxj'])< cf.getfloat(sec, 'mgxj_ge'):
+        return True
+
+    if cf.has_option(sec, 'tbmgsy_ge') and id_dic.has_key('tbmgsy') and  '--' not in id_dic['tbmgsy'] and float(id_dic['tbmgsy']) < cf.getfloat(sec, 'tbmgsy_ge'):
+        return True
+
+    if cf.has_option(sec, 'mgxjll_ge') and id_dic.has_key('mgxjll') and '--' not in id_dic['mgxjll'] and float(id_dic['mgxjll']) < cf.getfloat(sec, 'mgxjll_ge'):
+        return True
+
+    if cf.has_option(sec, 'change_rate_ge') and id_dic.has_key('change_rate') and float(id_dic['change_rate']) < cf.getfloat(sec, 'change_rate_ge'):
+        return True
+
+    if cf.has_option(sec, 'range_percent_ge') and id_dic.has_key('range_percent') and float(id_dic['range_percent']) < cf.getfloat(sec, 'range_percent_ge'):
+        return True
+
+    if cf.has_option(sec, 'range_percent_le') and id_dic.has_key('range_percent') and float(id_dic['range_percent']) > cf.getfloat(sec, 'range_percent_le'):
+        return True
+
+    return False
+
 def do_check_select(id_dic, sec, cf):
     if not len(id_dic):
         return
@@ -1823,6 +1863,16 @@ def do_search_short():
         remove_ley = []
         print 'after remove_ley', len(id_dic)
         for key in id_dic:
+
+            mtime = time.ctime(os.path.getmtime('stock.ini'))
+            if cfg_mtime != mtime:
+                cfg_mtime = mtime
+                cf.read('stock.ini')
+
+            if do_check_remove(id_dic[key], 'remove', cf):
+                remove_ley.append(key)
+                continue
+
             time.sleep(0.01)
             res = get_stockid_real_time(key)
 
@@ -1867,13 +1917,14 @@ def do_search_short():
                 if len(id_dic[key]['single']) == 0:
                     continue
             #print id_dic[key]['single']
-            mtime = time.ctime(os.path.getmtime('stock.ini'))
-            if cfg_mtime != mtime:
-                cfg_mtime = mtime
-                cf.read('stock.ini')
 
             for sec in cf.sections():
-                do_check_select(id_dic[key], sec, cf)
+                if 'remove' in sec:
+                    if do_check_remove(id_dic[key], sec, cf):
+                        remove_ley.append(key)
+                        break
+                else:
+                    do_check_select(id_dic[key], sec, cf)
 
         time.sleep(TIME_DIFF)
 

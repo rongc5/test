@@ -545,7 +545,7 @@ def do_check_monitor():
             id_dic[key]['single'] = {}
 
         #get_single_analysis(key, id_dic[key]['single'])
-        get_single_analysis3(key, id_dic[key]['single'])
+        get_single_analysis3(key, 10000000, id_dic[key]['single'])
 
         print 'monitor', id_dic[key]
 
