@@ -193,14 +193,6 @@ class Day():
       arr = (y, m, self.day)
      return "-".join("%s" % i for i in arr)
 
-def log_write(filename, str):
-    file = open(filename, 'a')
-    file.write(str)
-    file.write('\n')
-    file.flush()
-    file.close()
-
-
 def get_week_day(date_str, format_str='%Y-%m-%d'):
     day = 0
     if not date_str:
@@ -215,77 +207,12 @@ def get_week_day(date_str, format_str='%Y-%m-%d'):
 
     return day
 
-
-#主要是针对chunked 模式，没办法搞
-def curl_cmd_get(url):
-    cmd = "curl '%s'" % (url)
-    res = os.popen(cmd).read()
-    return res
-
-#1.0 版本不必支持chunked,
-def httpGetContent(url, req_header=None, version = '1.1'):
-
-    #print "==>", req_header, url, "<=="
-
-    buf = cStringIO.StringIO()
-    response_header = cStringIO.StringIO()
-    c = pycurl.Curl()
-    c.setopt(c.URL, url)
-    c.setopt(c.WRITEFUNCTION, buf.write)
-    c.setopt(c.CONNECTTIMEOUT, 100)
-    c.setopt(c.TIMEOUT, 300)
-    c.setopt(pycurl.MAXREDIRS, 5)
-    c.setopt(pycurl.FOLLOWLOCATION, 1)
-
-    if req_header is None:
-        req_header = []
-
-    flag = 0
-    for key in req_header:
-        if  'User-Agent:' in key or  'user-agent:' in key:
-            flag = 1
-            break
-
-    if not flag:
-        print 'no User-Agent', req_header, url, sys._getframe().f_lineno
-        return
-
-    #if not flag:
-    #    c.setopt(pycurl.USERAGENT, 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.113 Safari/537.36')
-
-    c.setopt(pycurl.TCP_NODELAY, 1)
-    if '1.1' in version:
-        add_headers = ['Accept:text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
-             'Connection:keep-alive','Accept-Language:zh-CN,zh;q=0.8,en;q=0.6','Cache-Control:max-age=0',
-             'DNT:1','Upgrade-Insecure-Requests:1','Accept-Charset: utf-8']
-        c.setopt(pycurl.ENCODING, 'gzip, deflate')
-    else:
-        add_headers = ['Accept:text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
-             'Connection:close','Accept-Language:zh-CN,zh;q=0.8,en;q=0.6','Cache-Control:max-age=0']
-        c.setopt(pycurl.HTTP_VERSION, pycurl.CURL_HTTP_VERSION_1_0)
-    if len(req_header):
-        add_headers.extend(req_header)
-
-    c.setopt(c.HTTPHEADER, add_headers)
-    c.setopt(pycurl.HTTPGET, 1)
-    c.setopt(c.HEADERFUNCTION, response_header.write)
-    res = {}
-
-    try:
-        c.perform()
-        str_head = '%s' % (response_header.getvalue())
-        str_body = '%s' % (buf.getvalue())
-        res['head'] = str_head
-        res['body'] = str_body
-        #print str_head, str_body
-    except pycurl.error, error:
-        errno, errstr = error
-        print 'An error occurred: ', errstr, url
-    c.close()
-    buf.close()
-    response_header.close()
-    #print res
-    return res
+def log_write(filename, str):
+    file = open(filename, 'a')
+    file.write(str)
+    file.write('\n')
+    file.flush()
+    file.close()
 
 class HTTPError(Exception):
     """Exception that is wrapped around all exceptions that are raised
@@ -512,326 +439,6 @@ def get_single_analysis2(date, id, sum_vol, deal_dic):
     #if not res_str.strip():
     #    print url
 
-def load_details(days_num, deal_dic):
-    if len(deal_dic) == 0:
-        return
-
-    day = Day()
-
-    path = '%s/' %(DATAPATH)
-    cmd = ['mkdir', '-p', path]
-    subprocess.Popen(cmd, stdout=subprocess.PIPE).communicate()[0]
-
-    for id_day in range(1, days_num + 1):
-        date = ''
-        lastday = id_day * -1
-        while 1:
-            date =  '%s' % (day.get_day_of_day(lastday), )
-            if get_week_day(date) > 5:
-                lastday = lastday - 2
-            else:
-                break
-
-        file_name = '%s/%s_%s' % (DATAPATH, 'last_single', date.replace('-', ''))
-
-        for key in deal_dic:
-            cmd = ['grep', key, file_name]
-            res_str = subprocess.Popen(cmd, stdout=subprocess.PIPE).communicate()[0]
-            if not os.path.isfile(file_name) or not res_str.strip():
-                index = random.randint(1, 5)
-                time.sleep(index)
-                #load_stockid_detail(date, key, file_name)
-
-
-def get_details(days_num, deal_dic):
-    if len(deal_dic) == 0:
-        return
-
-    for key in deal_dic:
-        deal_dic[key]['last_single'] = {}
-
-    day = Day()
-
-    for id_day in range(1, days_num + 1):
-        date = ''
-        lastday = id_day * -1
-        while 1:
-            date =  '%s' % (day.get_day_of_day(lastday), )
-            if get_week_day(date) > 5:
-                lastday = lastday - 2
-            else:
-                break
-
-        file_name = '%s/%s_%s' % (DATAPATH, 'last_single', date.replace('-', ''))
-        if not os.path.isfile(file_name):
-            continue
-
-        get_stockid_detail(file_name, deal_dic, 'last_single')
-
-    return deal_dic
-        #print deal_dic
-
-#成交明细
-def get_stockid_detail(file_name, deal_dic, detail_key):
-
-    if not os.path.isfile(file_name):
-        return
-
-    file = open(file_name)
-    while 1:
-        line = file.readline().strip()
-        if not line:
-            break
-        items = line.split('\n')
-        for key in items:
-            subitems = key.split('\t');
-            if len(subitems) == 10:
-                if subitems[0] in deal_dic:
-                    if not deal_dic[subitems[0]][detail_key].has_key('vol_1'):
-                        deal_dic[subitems[0]][detail_key]['vol_1'] = []
-                        deal_dic[subitems[0]][detail_key]['vol_2'] = []
-                        deal_dic[subitems[0]][detail_key]['vol_3'] = []
-                        deal_dic[subitems[0]][detail_key]['vol_4'] = []
-                        deal_dic[subitems[0]][detail_key]['vol_5'] = []
-                        deal_dic[subitems[0]][detail_key]['vol_6'] = []
-                        deal_dic[subitems[0]][detail_key]['min_price'] = []
-                        deal_dic[subitems[0]][detail_key]['high_price'] = []
-                        deal_dic[subitems[0]][detail_key]['total_vol'] = []
-
-                    deal_dic[subitems[0]][detail_key]['vol_1'].append(int(subitems[1]))
-                    deal_dic[subitems[0]][detail_key]['vol_2'].append(int(subitems[2]))
-                    deal_dic[subitems[0]][detail_key]['vol_3'].append(int(subitems[3]))
-                    deal_dic[subitems[0]][detail_key]['vol_4'].append(int(subitems[4]))
-                    deal_dic[subitems[0]][detail_key]['vol_5'].append(int(subitems[5]))
-                    deal_dic[subitems[0]][detail_key]['vol_6'].append(int(subitems[6]))
-                    deal_dic[subitems[0]][detail_key]['total_vol'].append(int(subitems[7]))
-                    deal_dic[subitems[0]][detail_key]['min_price'].append(float(subitems[8]))
-                    deal_dic[subitems[0]][detail_key]['high_price'].append(float(subitems[9]))
-
-    file.close()
-    #print deal_dic
-    return
-
-#查看每股财务指标
-def get_stockid_mgzb(id):
-
-    url = 'http://comdata.finance.gtimg.cn/data/mgzb/%s' % (id)
-    refer = 'http://stock.finance.qq.com/corp1/cwfx.html?mgzb-%s' %(id)
-
-    i = 0
-    imax = 3
-    id_dic = {}
-    while 1:
-        try:
-            if i + 1 < imax:
-                req_header = []
-                req_header.extend(['Referer: %s' % (refer)])
-                index = random.randint(0, len(user_agent_list) -1)
-                req_header.extend(['User-Agent: %s' % (user_agent_list[index])])
-
-                res = httpGetContent(url, req_header)
-                value = res['body'].decode("gbk").split('=')[1].strip(';\r\n')
-            else:
-                res = curl_cmd_get(url)
-                value = res.decode("gbk").split('=')[1].strip(';\r\n')
-
-            id_dic= json.loads(value)
-            break
-        except Exception,e:
-            #print url, value, e
-            i = i+1
-            if i >= imax:
-                log_write('errcode', id)
-                break
-            time.sleep(random.randint(1, 3))
-
-    if i > imax:
-        return  {}
-
-    return id_dic['data']['mgzb']
-
-#查看每股盈利能力
-def get_stockid_ylnl(id):
-
-    url = 'http://comdata.finance.gtimg.cn/data/ylnl/%s' % (id)
-    refer = 'http://stock.finance.qq.com/corp1/cwfx.html?ylnl-%s' %(id)
-
-    i = 0
-    imax = 3
-    id_dic = {}
-    while 1:
-        try:
-            if i + 1 < imax:
-                req_header = []
-                req_header.extend(['Referer: %s' % (refer)])
-                index = random.randint(0, len(user_agent_list) -1)
-                req_header.extend(['User-Agent: %s' % (user_agent_list[index])])
-
-                res = httpGetContent(url, req_header)
-                value = res['body'].decode("gbk").split('=')[1].strip(';\r\n')
-            else:
-                res = curl_cmd_get(url)
-                value = res.decode("gbk").split('=')[1].strip(';\r\n')
-
-            id_dic= json.loads(value)
-            break
-        except Exception,e:
-            #print url, value, e
-            i = i+1
-            if i >= imax:
-                log_write('errcode', id)
-                break
-            time.sleep(random.randint(1, 3))
-
-    if i > imax:
-        return  {}
-
-    return id_dic['data']['ylnl']
-
-#查看每股成长能力
-def get_stockid_cznl(id):
-
-    url = 'http://comdata.finance.gtimg.cn/data/cznl/%s' % (id)
-    refer = 'http://stock.finance.qq.com/corp1/cwfx.html?cznl-%s' %(id)
-
-    i = 0
-    imax = 3
-    id_dic = {}
-    while 1:
-        try:
-            if i + 1 < imax:
-                req_header = []
-                req_header.extend(['Referer: %s' % (refer)])
-                index = random.randint(0, len(user_agent_list) -1)
-                req_header.extend(['User-Agent: %s' % (user_agent_list[index])])
-                res = httpGetContent(url, req_header)
-                value = res['body'].decode("gbk").split('=')[1].strip(';\r\n')
-            else:
-                res = curl_cmd_get(url)
-                value = res.decode("gbk").split('=')[1].strip(';\r\n')
-
-            id_dic= json.loads(value)
-            break
-        except Exception,e:
-            #print url, value, e
-            i = i+1
-            if i >= imax:
-                log_write('errcode', id)
-                break
-            time.sleep(random.randint(1, 3))
-
-    if i > imax:
-        return  {}
-
-    return id_dic['data']['cznl']
-
-
-def get_single_analysis(id, vol, deal_dic):
-
-    stockdict = {}
-    if int(vol) <= 0:
-        print vol, 'err'
-        return stockdict
-
-    url = 'http://stock.finance.qq.com/sstock/list/view/dadan.php?t=js&c=%s&max=600&p=1&opt=4&o=0' % (id)
-    refer = 'http://stockhtm.finance.qq.com/sstock/quotpage/dadan.htm?c=%s' % (id)
-
-    curl =  CurlHTTPFetcher()
-    curl.ALLOWED_TIME = 1
-    stocklist = ''
-    i = 0
-    imax = 1
-    while 1:
-        try:
-            if i + 1 <= imax:
-                header = {}
-                index = random.randint(0, len(user_agent_list) -1)
-                header['User-Agent'] = user_agent_list[index]
-                header['Referer'] = refer
-                res = {}
-                try:
-                    res = curl.fetch(url, None, header)
-                except BaseException, e:
-                    pass
-                    #print '111111, err', e.message, id
-
-                value = res['body'].decode("gbk").split('=')[1].strip(';\r\n')
-            else:
-                res = curl_cmd_get(url)
-                value = res.decode("gbk").split('=')[1].strip(';\r\n')
-            #print value
-            stocklist = value.split(',')[1]
-            break
-        except Exception,e:
-            #print url, value, e
-            stocklist = ''
-            i = i+1
-            if i >= imax:
-                log_write('errcode', id)
-                break
-
-    if i > imax:
-        return  {}
-
-    if not stocklist.strip():
-        return {}
-
-    #print stocklist
-
-    if not deal_dic.has_key('vol_1'):
-        deal_dic['vol_1'] = []
-        deal_dic['vol_2'] = []
-        deal_dic['vol_3'] = []
-        deal_dic['ratio_vol_1'] = []
-        deal_dic['ratio_vol_2'] = []
-        deal_dic['ratio_vol_3'] = []
-
-    stockdict['vol_1'] = 0
-    stockdict['vol_2'] = 0
-    stockdict['vol_3'] = 0
-    items = stocklist.split('^')
-    for item in items:
-        subitems = item.split('~')
-        if len(subitems) >= 6:
-            flag = 1
-            if 's' in subitems[5] or 'S' in subitems[5]:
-                flag = -1
-            elif 'b' in subitems[5] or 'B' in subitems[5]:
-                flag = 1
-            else:
-                continue
-
-            if int(subitems[3]) >= 400:
-                stockdict['vol_1'] += int(subitems[3]) * flag
-
-            if int(subitems[3]) >= 1000:
-                stockdict['vol_2'] += int(subitems[3]) * flag
-
-            if int(subitems[3]) >= 2000:
-                stockdict['vol_3'] += int(subitems[3]) * flag
-
-    if len(deal_dic['vol_1']) >= 10:
-        deal_dic['vol_1'].pop(0)
-        deal_dic['vol_2'].pop(0)
-        deal_dic['vol_3'].pop(0)
-        deal_dic['ratio_vol_1'].pop(0)
-        deal_dic['ratio_vol_2'].pop(0)
-        deal_dic['ratio_vol_3'].pop(0)
-
-    if len(deal_dic['vol_1']) >=1 and abs(deal_dic['vol_1'][-1] - stockdict['vol_1']) < 400:
-        return stockdict
-
-    deal_dic['vol_1'].append(stockdict['vol_1'])
-    deal_dic['vol_2'].append(stockdict['vol_2'])
-    deal_dic['vol_3'].append(stockdict['vol_3'])
-
-    deal_dic['ratio_vol_1'].append(round(stockdict['vol_1'] *1.0 / vol, 4))
-    deal_dic['ratio_vol_2'].append(round(stockdict['vol_2'] *1.0 / vol, 4))
-    deal_dic['ratio_vol_3'].append(round(stockdict['vol_3'] *1.0 / vol, 4))
-
-    return stockdict
-
-
 def get_single_analysis3(id, vol, deal_dic):
 
     stockdict = {}
@@ -860,9 +467,6 @@ def get_single_analysis3(id, vol, deal_dic):
                     #print '111111, err', e.message, id
 
                 value = res['body'].decode("gbk").split('=')[1].strip(';\r\n')
-            else:
-                res = curl_cmd_get(url)
-                value = res.decode("gbk").split('=')[1].strip(';\r\n')
             #print value
             stocklist = value
             break
@@ -931,69 +535,6 @@ def get_single_analysis3(id, vol, deal_dic):
 
     return stockdict
 
-def get_money_flow2(id):
-    url = 'https://gupiao.baidu.com/api/stocks/stockfunds?from=pc&os_ver=1&cuid=xxx&vv=100&format=json&stock_code=%s' % (id)
-    favicon = 'https://gupiao.baidu.com/favicon.ico'
-
-    tmp_dic = {}
-    i = 0
-    imax = 5
-    flag =0
-    index = 0
-    while 1:
-        try:
-            if i + 1 < imax:
-                req_header = []
-                index = random.randint(0, len(user_agent_list) -1)
-                req_header.extend(['User-Agent: %s' % (user_agent_list[index])])
-                if user_agent_cookie.has_key(index):
-                    req_header.extend(['Cookie: %s' % (user_agent_cookie[index])])
-                    flag = 1
-
-                #httpGetContent(favicon, ['Referer: %s' % (url), 'User-Agent: %s' % (user_agent_list[index])])
-                res = httpGetContent(url, req_header)
-                value = res.decode("gbk").strip(';\r\n')
-
-            else:
-                res['head'] = ''
-                res['body'] = curl_cmd_get(url)
-                value = res.decode("gbk").strip(';\r\n')
-            tmp_dic = json.loads(value)
-            if len(tmp_dic) >0:
-                break
-        except Exception,e:
-            #print url, value, e
-            if res.has_key('head'):
-                print res['head']
-
-            i = i+1
-            if i >= imax:
-                log_write('errcode', id)
-                break
-            time.sleep(random.randint(1, 3))
-
-    if i > imax:
-        return  {}
-
-    #print stocklist
-    #stockdict = {}
-    #if tmp_dic.has_key(''):
-    #    stockdict['main_force'] = float(stocklist[3])
-    #    stockdict['small_force'] = float(stocklist[7])
-
-    if res.has_key('head') and 'Set-Cookie:' in res['head']:
-        user_agent_cookie[index]  = res['head'].split('Set-Cookie:')[1].split(';')[0].strip()
-
-    if not flag:
-        req_header = []
-        req_header.extend(['Referer: %s' % (url)])
-        req_header.extend(['User-Agent: %s' % (user_agent_list[index])])
-        if user_agent_cookie.has_key(index):
-                res = req_header.extend(['Cookie: %s' % (user_agent_cookie[index])])
-        res = httpGetContent(favicon, req_header)
-        if res.has_key('head') and 'Set-Cookie:' in res['head']:
-            user_agent_cookie[index]  = res['head'].split('Set-Cookie:')[1].split(';')[0].strip()
-
 
 def get_money_flow(id):
     url = 'http://qt.gtimg.cn/q=ff_%s' % (id)
@@ -1026,11 +567,6 @@ def get_money_flow(id):
                     print 'money', e.message, id
 
                 #httpGetContent(favicon, ['Referer: %s' % (url), 'User-Agent: %s' % (user_agent_list[index])])
-                value = res['body'].decode("gbk").split('=')[1].strip(';\r\n')
-
-            else:
-                res['head'] = ''
-                res['body'] = curl_cmd_get(url)
                 value = res['body'].decode("gbk").split('=')[1].strip(';\r\n')
             stocklist = value.split('~')
             if len(stocklist) < 8:
@@ -1163,52 +699,10 @@ def get_stockid_real_time(id):
     #print stockdict
     return stockdict
 
-#获取所有股票列表
-def get_stock_list():
-    #url = 'http://www.shdjt.com/js/lib/astock.js'
-    url = 'http://www.ctxalgo.com/api/stocks'
-    curl =  CurlHTTPFetcher()
-    while 1:
-        header = {}
-        index = random.randint(0, len(user_agent_list) -1)
-        header['User-Agent'] = 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.113 Safari/537.36'
-        header['Cookie'] = 'session=eyJfaWQiOnsiIGIiOiJNMkZtTldJME1qSXpNR1UzWWpka01UYzRabUV6TURKbU5qTTJZemcwWWpjPSJ9fQ.DQvdBA.x1XmlgjogTBgu2R52U1y9mHxqXI'
-        res = {}
-        try:
-            res = curl.fetch(url, None, header)
-        except BaseException, e:
-            print e.message
-       #res = {}
-       #res['head'] = ''
-       #res['body'] = curl_cmd_get(url)
-        if len(res) < 2:
-            print url
-            time.sleep(1)
-        else:
-            print res['head']
-            break
-
-    #print res
-    #res = {}
-    #res['head'] = ''
-    #res['body'] = curl_cmd_get(url)
-    id_dic= json.loads(res['body'])
-
-    file = open('code_all', "w+")
-    for key in id_dic:
-        file.write(unicodedata.normalize('NFKD', key).encode('ascii','ignore'))
-        file.write('\n')
-        id_dic[key] = {}
-        key = unicodedata.normalize('NFKD', key).encode('ascii','ignore')
-        file.flush()
-
-    file.close()
-    return id_dic
-
-#解禁列表, http 相应数据不全， chunked 的问题， 后边再处理吧
-def get_outDxf_list(start, end):
-    url = 'http://stock.finance.qq.com//sstock/list/view/dxf.php?c=0&b=%s&e=%s' % (start, end)
-    refer = 'http://finance.qq.com/stock/dxfcx.htm?t=2&mn=%s&mx=%s' %(start, end)
+#价跌主力增仓个股
+def get_force_in(id_dic):
+    url = 'http://stock.gtimg.cn/data/view/flow.php?t=7&d=1'
+    refer = 'http://finance.qq.com/zjlx/zjlx_modules/price.htm?t=down&change_color_0'
 
     curl =  CurlHTTPFetcher()
 
@@ -1219,191 +713,147 @@ def get_outDxf_list(start, end):
     res = {}
     try:
         res = curl.fetch(url, None, header)
+        value = res['body'].decode("gbk").split('=')[1].strip(';\r\n')
+        items = value.split('^')
+        for item in items:
+            subitems = item.split('~')
+            id = subitems[0].strip('\'')
+            if not id_dic.has_key(id):
+                id_dic[id] = {}
+
+            id_dic[id]['force'] = float(subitems[3])
+            id_dic[id]['tag'] = 'in'
+
     except BaseException, e:
         print e.message
 
-    #print res
-    #value = res.split('=')[1].strip(';\n').decode("utf-8","ignore")
-    value = res['body'].decode("gbk").split('=')[1].strip(';\r\n')
-    #print value
-    id_dic= json.loads(value)
+    return id_dic
 
-    if os.path.isfile('out_dxf_list'):
-        os.remove('out_dxf_list')
-    for key in id_dic:
-        str = '%s %s' % (key[0], key[2])
-        log_write('out_dxf_list', str)
+#主力增仓个股
+def get_force_add(id_dic):
+    url = 'http://stock.gtimg.cn/data/view/zldx.php?t=1'
+    refer = 'http://finance.qq.com/zjlx/zjlx_modules/flow_stock.htm?t=zl_in&change_color_0'
+
+    curl =  CurlHTTPFetcher()
+
+    header = {}
+    index = random.randint(0, len(user_agent_list) -1)
+    header['User-Agent'] = user_agent_list[index]
+    header['Referer'] = refer
+    res = {}
+    try:
+        res = curl.fetch(url, None, header)
+        value = res['body'].decode("gbk").split('=')[1].strip(';\r\n')
+        items = value.split('^')
+        for item in items:
+            subitems = item.split('~')
+            id = subitems[0].strip('\'')
+            if not id_dic.has_key(id):
+                id_dic[id] = {}
+
+            id_dic[id]['force'] = float(subitems[3])
+            id_dic[id]['tag'] = 'add'
+
+    except BaseException, e:
+        print e.message
 
     return id_dic
 
 
-#去掉停牌等
-def get_basic_list(id_dic):
-    if not len(id_dic):
+#主力增仓个股
+def get_force_add5(id_dic):
+    url = 'http://stock.gtimg.cn/data/view/zldx.php?t=2'
+    refer = 'http://finance.qq.com/zjlx/zjlx_modules/flow_stock.htm?t=zl_in&change_color_0'
+
+    curl =  CurlHTTPFetcher()
+
+    header = {}
+    index = random.randint(0, len(user_agent_list) -1)
+    header['User-Agent'] = user_agent_list[index]
+    header['Referer'] = refer
+    res = {}
+    try:
+        res = curl.fetch(url, None, header)
+        value = res['body'].decode("gbk").split('=')[1].strip(';\r\n')
+        value = value.split(';')[0]
+        items = value.split('^')
+        for item in items:
+            subitems = item.split('~')
+            id = subitems[0].strip('\'')
+            if not id_dic.has_key(id):
+                id_dic[id] = {}
+
+            id_dic[id]['force5'] = float(subitems[1])
+            id_dic[id]['tag'] = 'add5'
+
+    except BaseException, e:
+        print e.message
+
+    return id_dic
+
+def load_force_list():
+    day = Day()
+
+    toady = '%s' % (day.today(),)
+    file_name = '%s_%s' % ('last_force', toady.replace('-', ''))
+    if  os.path.isfile(file_name):
         return
 
-    file = open('base_list', "a+")
-
-    basic_dic = {}
-    flag = False
-    for key in id_dic:
-        time.sleep(0.01)
-        res = get_stockid_real_time(key)
-
-        if res.has_key('block') and res['block']:  #停牌
-            continue
-
-        if not res.has_key('pe'):
-            log_write('err_base_list', key)
-            continue
-
-        #if res['circulation_market_value'] >= 390:
-        #    continue
-        #
-        #if res['total_value'] >= 690:
-        #    continue
-
-        if res['pe'] > 99 or res['pe'] < 0:
-            continue
-
-        if res['end'] > 69 or res['end'] <= 3:
-            continue
-
-        res['mgzb'] = get_stockid_mgzb(key)
-        if len(res['mgzb']) < 1:
-            log_write('err_base_list', key)
-            continue
-
-        if '--' not in res['mgzb'][0]['tbmgsy'] and  float(res['mgzb'][0]['tbmgsy']) < 0.2:
-            continue
-
-        #if '--' not in res['mgzb'][0]['mgxjll'] and float(res['mgzb'][0]['mgxjll']) < 0.05:
-            #continue
-
-        res['cznl'] = get_stockid_cznl(key)
-        if len(res['cznl']) < 1:
-            log_write('err_base_list', key)
-            continue
-        #if float(res['cznl'][0]['yylr']) < 0:
-        #    continue
-        #
-        #if float(res['cznl'][0]['jlr']) < 0:
-        #    continue
-        #
-        #if float(res['cznl'][0]['yylr']) < 30:
-        #    continue
-
-
-        basic_dic[res['id']] = res
-
-        file.write(res['code'])
-        file.write('\t')
-        file.write(res['id'])
-        file.write('\t')
-        file.write(str(res['end']))
-        file.write('\t')
-        file.write(str(res['pe']))
-        file.write('\t')
-        file.write(str(res['pb']))
-        file.write('\t')
-        file.write(str(res['circulation_market_value']))
-        file.write('\t')
-        file.write(str(res['total_value']))
-        file.write('\t')
-        file.write(res['mgzb'][0]['tbmgsy'])
-        file.write('\t')
-        file.write(res['mgzb'][0]['mgxjll'])
-        file.write('\t')
-        file.write(res['cznl'][0]['mgsy'])
-        file.write('\t')
-        file.write(res['cznl'][0]['mgxj'])
-        file.write('\t')
-        file.write(res['cznl'][0]['zysr'])
-        file.write('\t')
-        file.write(res['cznl'][0]['yylr'])
-        file.write('\t')
-        file.write(res['cznl'][0]['jlr'])
-        file.write('\t')
-        file.write(res['date'])
-
-        file.write('\n')
-        file.flush()
-
-        #print res
-        #break
-    file.close()
-
-
-def load_base_list():
-    if not os.path.isfile('code_all'):
-        get_stock_list()
-
-    if not os.path.isfile('base_list'):
-        id_list = []
-        file = open("code_all")
-        while 1:
-            line = file.readline().strip()
-            if not line:
-                break
-            id_list.append(line)
-        file.close()
-        get_basic_list(id_list)
-
-    id_list = []
-    if os.path.isfile('err_base_list'):
-        file = open('err_base_list')
-        while 1:
-            line = file.readline().strip()
-            if not line:
-                break
-            id_list.append(line)
-        file.close()
-        os.remove('err_base_list')
-        get_basic_list(id_list)
-
     id_dic = {}
-    file = open("base_list")
-    while 1:
-        line = file.readline().strip()
-        if not line:
-            break
-        items = line.split('\t')
-        if len(items) < 8:
-            continue
-        tmp_dic = {}
-        tmp_dic['code'] = items[0]
-        tmp_dic['id'] = items[1]
-        tmp_dic['end'] = items[2]
-        tmp_dic['pe'] = float(items[3])
-        tmp_dic['pb'] = float(items[4])
-        tmp_dic['circulation_market_value'] = float(items[5])
-        tmp_dic['total_value'] = float(items[6])
-        tmp_dic['tbmgsy'] = items[7].replace(',', '')
-        tmp_dic['mgxjll'] = items[8].replace(',', '')
-        tmp_dic['mgsy'] = items[9].replace(',', '')
-        tmp_dic['mgxj'] = items[10].replace(',', '')
-        tmp_dic['zysr'] = items[11].replace(',', '')
-        tmp_dic['yylr'] = items[12].replace(',', '')
-        tmp_dic['jlr'] = items[13].replace(',', '')
-        tmp_dic['date'] = items[14]
 
-        id_dic[items[1]] = tmp_dic
-
-    file.close()
-    return id_dic
-
-def remove_from_banlist(id_dic, ban_list):
-    remove_ley = []
+    get_force_in(id_dic)
+    get_force_add(id_dic)
+    get_force_add5(id_dic)
 
     for key in id_dic:
-        if id_dic[key]['code'] in ban_list:
-            remove_ley.append(key)
+
+        if not id_dic[key].has_key('force'):
+            id_dic[key]['force'] = 0
+
+        if not id_dic[key].has_key('force5'):
+            id_dic[key]['force5'] = 0
+
+        str = '%s\t%s\t%s\t\%s' % (key, id_dic[key]['force'], id_dic[key]['force5'], id_dic[key]['tag'])
+        log_write(file_name, str)
+
+def load_base_list(days_num):
+    day = Day()
+    toady = '%s' % (day.today(),)
+
+    date_dic = {}
+    id_dic = {}
+    for id_day in range(1, days_num + 1):
+        date = ''
+        lastday = id_day * -1
+        while 1:
+            date =  '%s' % (day.get_day_of_day(lastday), )
+            #print lastday, date
+            if get_week_day(date) > 5:
+                lastday = lastday - 2
+            elif lastday in date_dic:
+                lastday = lastday - 1;
+            else:
+                date_dic[lastday] = date
+                break
+
+        file_name = '%s_%s' % ('last_force', date.replace('-', ''))
+        #print file_name
+        if not os.path.isfile(file_name):
             continue
 
-    for key in remove_ley:
-        id_dic.pop(key)
+        file = open(file_name)
+        #print file_name
+        while 1:
+            line = file.readline().strip()
+            if not line:
+                break
+            #print line
+            items = line.split('\t')
+            id_dic[items[0]] = {}
+            id_dic[items[0]]['last_single'] = {}
 
     return id_dic
+
 
 #增长 为true, 下降为false
 def get_data_direction(arr):
@@ -1429,141 +879,13 @@ def get_positive_ratio(arr):
 
     return count *1.0/sum
 
-def log_single_analysis(id_dic):
-    day = Day()
-    toady = '%s' % (day.today(),)
-
-    file_name = '%s_%s' % ('last_single', toady.replace('-', ''))
-    for key in id_dic:
-        cmd = ['grep', key, file_name]
-        res_str = subprocess.Popen(cmd, stdout=subprocess.PIPE).communicate()[0]
-        if os.path.isfile(file_name) and  res_str.strip():
-            continue
-
-        time.sleep(0.05)
-        res = get_stockid_real_time(key)
-
-        if res.has_key('block') and res['block']:  #停牌
-            print key, 'block'
-            continue
-
-        if  res.has_key('range_percent'):
-            id_dic[key]['range_percent'] = res['range_percent']
-            id_dic[key]['swing'] = res['swing']
-            id_dic[key]['change_rate'] = res['change_rate']
-
-            id_dic[key]['end'] = res['end']
-            id_dic[key]['low'] = res['low']
-            id_dic[key]['high'] = res['high']
-            id_dic[key]['start'] = res['start']
-            id_dic[key]['vol'] = res['vol']
-
-        if not id_dic[key].has_key('vol'):
-            continue
-
-        if not id_dic[key].has_key('single'):
-            id_dic[key]['single'] = {}
-
-        if len(get_single_analysis3(key, id_dic[key]['vol'], id_dic[key]['single'])) == 0:
-            #get_single_analysis2(toady, key, id_dic[key]['vol'], id_dic[key]['single'])
-            if len(id_dic[key]['single']) == 0:
-                continue
-
-        money = get_money_flow(key)
-        if len(money) > 0 and money.has_key('main_force'):
-            id_dic[key]['main_force'] = money['main_force']
-        else:
-            continue
-
-
-        if id_dic[key]['vol'] > 0:
-            res_str = '%s\t%d\t%d\t%d\t%d\t%.2f\t%d\t%.2f\t%.2f\t%.2f\t%.2f\t%.2f' % (key, id_dic[key]['single']['vol_1'][-1], id_dic[key]['single']['vol_2'][-1], id_dic[key]['single']['vol_3'][-1], \
-            0, id_dic[key]['main_force'], id_dic[key]['vol'], id_dic[key]['start'], id_dic[key]['end'], id_dic[key]['low'], \
-            id_dic[key]['high'], id_dic[key]['range_percent'])
-            log_write(file_name, res_str)
-
-
-def get_last_singles(days_num, deal_dic):
-    if len(deal_dic) == 0:
-        return {}
-    day = Day()
-
-    date_dic = {}
-
-    for key in deal_dic:
-        deal_dic[key]['last_single'] = {}
-
-    for id_day in range(1, days_num + 1):
-        date = ''
-        lastday = id_day * -1
-        while 1:
-            date =  '%s' % (day.get_day_of_day(lastday), )
-            #print lastday, date
-            if get_week_day(date) > 5:
-                lastday = lastday - 2
-            elif lastday in date_dic:
-                lastday = lastday - 1;
-            else:
-                date_dic[lastday] = date
-                break
-
-        file_name = '%s_%s' % ('last_single', date.replace('-', ''))
-        if not os.path.isfile(file_name):
-            continue
-
-        file = open(file_name)
-        #print file_name
-        while 1:
-            line = file.readline().strip()
-            if not line:
-                break
-            items = line.split('\n')
-            for key in items:
-                subitems = key.split('\t');
-                if not subitems[0] in deal_dic:
-                    continue
-
-                if len(subitems) > 10:
-                    if subitems[0] in deal_dic:
-
-
-                        if not deal_dic[subitems[0]]['last_single'].has_key('vol_1'):
-                            deal_dic[subitems[0]]['last_single']['vol_1'] = []
-                            deal_dic[subitems[0]]['last_single']['vol_2'] = []
-                            deal_dic[subitems[0]]['last_single']['vol_3'] = []
-                            deal_dic[subitems[0]]['last_single']['main_force'] = []
-                            deal_dic[subitems[0]]['last_single']['start'] = []
-                            deal_dic[subitems[0]]['last_single']['end'] = []
-                            deal_dic[subitems[0]]['last_single']['low'] = []
-                            deal_dic[subitems[0]]['last_single']['high'] = []
-                            deal_dic[subitems[0]]['last_single']['total_vol'] = []
-                            deal_dic[subitems[0]]['last_single']['range_percent'] = []
-
-                        deal_dic[subitems[0]]['last_single']['vol_1'].append(int(subitems[1]))
-                        deal_dic[subitems[0]]['last_single']['vol_2'].append(int(subitems[2]))
-                        deal_dic[subitems[0]]['last_single']['vol_3'].append(int(subitems[3]))
-                        deal_dic[subitems[0]]['last_single']['main_force'].append(float(subitems[5]))
-                        deal_dic[subitems[0]]['last_single']['total_vol'].append(int(subitems[6]))
-                        deal_dic[subitems[0]]['last_single']['low'].append(float(subitems[9]))
-                        deal_dic[subitems[0]]['last_single']['high'].append(float(subitems[10]))
-                        deal_dic[subitems[0]]['last_single']['start'].append(float(subitems[7]))
-                        deal_dic[subitems[0]]['last_single']['end'].append(float(subitems[8]))
-
-                if len(subitems) > 11:
-                    deal_dic[subitems[0]]['last_single']['range_percent'].append(float(subitems[11]))
-
-        file.close()
-
-
-    return deal_dic
-
 def log_print_res(search_dic):
     if not len(search_dic):
         return
 
     day = Day()
 
-    log_write('res_list', 'begin ==========:%s' % (day.datetime()))
+    log_write('d_list', 'begin ==========:%s' % (day.datetime()))
 
     if search_dic.has_key('date'):
         search_dic.pop('date')
@@ -1576,25 +898,10 @@ def log_print_res(search_dic):
     if search_dic.has_key('code'):
         search_dic.pop('code')
 
-    log_write('res_list', json.dumps(search_dic))
-    log_write('res_list', '\n')
-    log_write('res_list', 'serch over ==========')
+    log_write('d_list', json.dumps(search_dic))
+    log_write('d_list', '\n')
+    log_write('d_list', 'serch over ==========')
 
-
-def load_monitor_list():
-    id_dic = {}
-    if not os.path.isfile('monitor_list'):
-        return id_dic
-
-    file = open("monitor_list")
-    while 1:
-        line = file.readline().strip('\n')
-        if not line:
-            break
-        id_dic[line] = {}
-
-    file.close()
-    return id_dic
 
 def load_ua_list():
     id_dic = {}
@@ -1812,45 +1119,21 @@ def do_search_short():
     load_ua_list()
 
     day = Day()
-    start_day = '%s' % (day.get_day_of_day(-20))
-    end_day = '%s' % (day.get_day_of_day(45))
+
     toady = '%s' % (day.today(),)
-    print start_day.replace('-', ''), end_day.replace('-', '')
-    ban_list = get_outDxf_list(start_day.replace('-', ''), end_day.replace('-', ''))
-    ban_dic = {}
-    for key in ban_list:
-        idstr = '%s' % key[0]
-        ban_dic[idstr] = {}
 
     #print day.hour
-    base_dic = load_base_list()
-    print 'load_base_list', len(base_dic)
-    base_dic = remove_from_banlist(base_dic, ban_dic)
-    print 'after ban_dic', len(base_dic)
+    id_dic = load_base_list(5)
 
-    id_dic = base_dic
     remove_ley = []
     monitor_mtime = 0
     cfg_mtime = 0
     TIME_DIFF = 20
     cf = ConfigParser.ConfigParser()
     while 1:
-        mtime = time.ctime(os.path.getmtime('monitor_list'))
-        if monitor_mtime != mtime:
-            monitor_mtime = mtime
-            monitor_dic = load_monitor_list()
-
-            for key in monitor_dic:
-                if key not in id_dic:
-                    id_dic[key] = {}
-                    id_dic[key]['id'] = key
-
-            get_last_singles(5, id_dic)
-
         if int(day.hour) >= 15:
-            #print day.hour
-            log_single_analysis(base_dic)
-            log_single_analysis(monitor_dic)
+            load_force_list()
+            id_dic = load_base_list(5)
 
         print 'after base_select', len(id_dic)
 
@@ -1861,10 +1144,10 @@ def do_search_short():
         print 'after remove_ley', len(id_dic)
         for key in id_dic:
 
-            mtime = time.ctime(os.path.getmtime('stock.ini'))
+            mtime = time.ctime(os.path.getmtime('d.ini'))
             if cfg_mtime != mtime:
                 cfg_mtime = mtime
-                cf.read('stock.ini')
+                cf.read('d.ini')
 
             if do_check_remove(id_dic[key], 'remove', cf):
                 remove_ley.append(key)
@@ -1944,4 +1227,4 @@ def do_search_short():
 #割肉要坚决， 没有什么后悔的, 不看上证、a50 那是不行的
 #不要做T, 不看好就跑， 看好就买， 做T, 买了， 想跑跑不了
 if __name__ == '__main__':
-    do_search_short()
+    do_search_short()
