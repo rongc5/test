@@ -1,445 +1,784 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project version="4">
-  <component name="ChangeListManager">
-    <list default="true" id="11893aac-56b1-4dbf-8bb9-5660df997c91" name="Default" comment="" />
-    <ignored path="stock.iws" />
-    <ignored path=".idea/workspace.xml" />
-    <option name="TRACKING_ENABLED" value="true" />
-    <option name="SHOW_DIALOG" value="false" />
-    <option name="HIGHLIGHT_CONFLICTS" value="true" />
-    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
-    <option name="LAST_RESOLUTION" value="IGNORE" />
-  </component>
-  <component name="ChangesViewManager" flattened_view="true" show_ignored="false" />
-  <component name="CreatePatchCommitExecutor">
-    <option name="PATCH_PATH" value="" />
-  </component>
-  <component name="DaemonCodeAnalyzer">
-    <disable_hints />
-  </component>
-  <component name="DatabaseView">
-    <flatten value="false" />
-    <groupTables value="false" />
-    <sortChildren value="false" />
-  </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
-  <component name="FavoritesManager">
-    <favorites_list name="stock" />
-  </component>
-  <component name="FileEditorManager">
-    <leaf>
-      <file leaf-file-name="stock_infoa.py" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/py/stock_infoa.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="1510" column="8" selection-start="46066" selection-end="46120" vertical-scroll-proportion="0.47884616" vertical-offset="28137" max-vertical-offset="36803">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
-  </component>
-  <component name="FindManager">
-    <FindUsagesManager>
-      <setting name="OPEN_NEW_TAB" value="false" />
-    </FindUsagesManager>
-  </component>
-  <component name="IdeDocumentHistory">
-    <option name="changedFiles">
-      <list>
-        <option value="$PROJECT_DIR$/py/monitor.py" />
-        <option value="$PROJECT_DIR$/py/stock_infoa.py" />
-        <option value="$PROJECT_DIR$/py/stock.ini" />
-        <option value="$PROJECT_DIR$/py/stock_infod.py" />
-      </list>
-    </option>
-  </component>
-  <component name="ProjectFrameBounds">
-    <option name="x" value="-8" />
-    <option name="y" value="-8" />
-    <option name="width" value="1382" />
-    <option name="height" value="744" />
-  </component>
-  <component name="ProjectLevelVcsManager" settingsEditedManually="false">
-    <OptionsSetting value="true" id="Add" />
-    <OptionsSetting value="true" id="Remove" />
-    <OptionsSetting value="true" id="Checkout" />
-    <OptionsSetting value="true" id="Update" />
-    <OptionsSetting value="true" id="Status" />
-    <OptionsSetting value="true" id="Edit" />
-    <ConfirmationsSetting value="0" id="Add" />
-    <ConfirmationsSetting value="0" id="Remove" />
-  </component>
-  <component name="ProjectReloadState">
-    <option name="STATE" value="0" />
-  </component>
-  <component name="ProjectView">
-    <navigator currentView="ProjectPane" proportions="" version="1" splitterProportion="0.5">
-      <flattenPackages />
-      <showMembers />
-      <showModules />
-      <showLibraryContents />
-      <hideEmptyPackages />
-      <abbreviatePackageNames />
-      <autoscrollToSource />
-      <autoscrollFromSource />
-      <sortByType />
-    </navigator>
-    <panes>
-      <pane id="ProjectPane">
-        <subPane>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="stock" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="stock" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="stock" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="py" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="stock" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="stock" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-        </subPane>
-      </pane>
-      <pane id="Scope" />
-    </panes>
-  </component>
-  <component name="PropertiesComponent">
-    <property name="options.splitter.main.proportions" value="0.3" />
-    <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="options.lastSelected" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
-    <property name="last_opened_file_path" value="D:/Python27/python.exe" />
-    <property name="FullScreen" value="false" />
-    <property name="options.searchVisible" value="true" />
-    <property name="options.splitter.details.proportions" value="0.2" />
-  </component>
-  <component name="PyConsoleOptionsProvider">
-    <option name="myPythonConsoleState">
-      <PyConsoleSettings />
-    </option>
-  </component>
-  <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="D:\work\self\myproj\test\stock\py" />
-    </key>
-  </component>
-  <component name="RunManager">
-    <configuration default="true" type="DjangoTestsConfigurationType" factoryName="Django tests">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="stock" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
-      <option name="TARGET" value="" />
-      <option name="SETTINGS_FILE" value="" />
-      <option name="CUSTOM_SETTINGS" value="false" />
-      <option name="USE_OPTIONS" value="false" />
-      <option name="OPTIONS" value="" />
-      <method />
-    </configuration>
-    <configuration default="true" type="tests" factoryName="py.test">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="stock" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="" />
-      <option name="CLASS_NAME" value="" />
-      <option name="METHOD_NAME" value="" />
-      <option name="FOLDER_NAME" value="" />
-      <option name="TEST_TYPE" value="TEST_SCRIPT" />
-      <option name="PATTERN" value="" />
-      <option name="USE_PATTERN" value="false" />
-      <option name="testToRun" value="" />
-      <option name="keywords" value="" />
-      <option name="params" value="" />
-      <option name="USE_PARAM" value="false" />
-      <option name="USE_KEYWORD" value="false" />
-      <method />
-    </configuration>
-    <configuration default="true" type="tests" factoryName="Nosetests">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="stock" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="" />
-      <option name="CLASS_NAME" value="" />
-      <option name="METHOD_NAME" value="" />
-      <option name="FOLDER_NAME" value="" />
-      <option name="TEST_TYPE" value="TEST_SCRIPT" />
-      <option name="PATTERN" value="" />
-      <option name="USE_PATTERN" value="false" />
-      <option name="PARAMS" value="" />
-      <option name="USE_PARAM" value="false" />
-      <method />
-    </configuration>
-    <configuration default="true" type="PythonConfigurationType" factoryName="Python">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="stock" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="" />
-      <option name="PARAMETERS" value="" />
-      <method />
-    </configuration>
-    <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug" singleton="true">
-      <method />
-    </configuration>
-    <configuration default="true" type="tests" factoryName="Unittests">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="stock" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="" />
-      <option name="CLASS_NAME" value="" />
-      <option name="METHOD_NAME" value="" />
-      <option name="FOLDER_NAME" value="" />
-      <option name="TEST_TYPE" value="TEST_SCRIPT" />
-      <option name="PATTERN" value="" />
-      <option name="USE_PATTERN" value="false" />
-      <option name="PUREUNITTEST" value="true" />
-      <option name="PARAMS" value="" />
-      <option name="USE_PARAM" value="false" />
-      <method />
-    </configuration>
-    <configuration default="true" type="tests" factoryName="Doctests">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="stock" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="" />
-      <option name="CLASS_NAME" value="" />
-      <option name="METHOD_NAME" value="" />
-      <option name="FOLDER_NAME" value="" />
-      <option name="TEST_TYPE" value="TEST_SCRIPT" />
-      <option name="PATTERN" value="" />
-      <option name="USE_PATTERN" value="false" />
-      <method />
-    </configuration>
-    <configuration default="true" type="tests" factoryName="Attests">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="stock" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="" />
-      <option name="CLASS_NAME" value="" />
-      <option name="METHOD_NAME" value="" />
-      <option name="FOLDER_NAME" value="" />
-      <option name="TEST_TYPE" value="TEST_SCRIPT" />
-      <option name="PATTERN" value="" />
-      <option name="USE_PATTERN" value="false" />
-      <method />
-    </configuration>
-    <list size="0" />
-  </component>
-  <component name="ShelveChangesManager" show_recycled="false" />
-  <component name="SvnConfiguration" maxAnnotateRevisions="500" myUseAcceleration="nothing" myAutoUpdateAfterCommit="false" cleanupOnStartRun="false" SSL_PROTOCOLS="all">
-    <option name="USER" value="" />
-    <option name="PASSWORD" value="" />
-    <option name="mySSHConnectionTimeout" value="30000" />
-    <option name="mySSHReadTimeout" value="30000" />
-    <option name="LAST_MERGED_REVISION" />
-    <option name="MERGE_DRY_RUN" value="false" />
-    <option name="MERGE_DIFF_USE_ANCESTRY" value="true" />
-    <option name="UPDATE_LOCK_ON_DEMAND" value="false" />
-    <option name="IGNORE_SPACES_IN_MERGE" value="false" />
-    <option name="CHECK_NESTED_FOR_QUICK_MERGE" value="false" />
-    <option name="IGNORE_SPACES_IN_ANNOTATE" value="true" />
-    <option name="SHOW_MERGE_SOURCES_IN_ANNOTATE" value="true" />
-    <option name="FORCE_UPDATE" value="false" />
-    <option name="IGNORE_EXTERNALS" value="false" />
-    <myIsUseDefaultProxy>false</myIsUseDefaultProxy>
-  </component>
-  <component name="TaskManager">
-    <task active="true" id="Default" summary="Default task">
-      <changelist id="11893aac-56b1-4dbf-8bb9-5660df997c91" name="Default" comment="" />
-      <created>1515508989073</created>
-      <updated>1515508989073</updated>
-    </task>
-    <servers />
-  </component>
-  <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
-    <editor active="false" />
-    <layout>
-      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32954547" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2090909" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-    </layout>
-  </component>
-  <component name="VcsContentAnnotationSettings">
-    <option name="myLimit" value="2678400000" />
-  </component>
-  <component name="VcsManagerConfiguration">
-    <option name="myTodoPanelSettings">
-      <TodoPanelSettings />
-    </option>
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="python-line">
-          <url>file://$PROJECT_DIR$/py/monitor.py</url>
-          <line>5</line>
-        </line-breakpoint>
-      </breakpoints>
-      <option name="time" value="4" />
-    </breakpoint-manager>
-  </component>
-  <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/py/stock_infoc.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="1360" column="31" selection-start="44389" selection-end="44389" vertical-scroll-proportion="0.0" vertical-offset="25840" max-vertical-offset="26163">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/py/stock_infoa.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="754" column="33" selection-start="22722" selection-end="22722" vertical-scroll-proportion="0.0" vertical-offset="14033" max-vertical-offset="34789">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/py/stock_infoc.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="1363" column="0" selection-start="44423" selection-end="44936" vertical-scroll-proportion="0.0" vertical-offset="25897" max-vertical-offset="26391">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/py/stock_infoa2.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="1809" column="16" selection-start="59835" selection-end="59835" vertical-scroll-proportion="0.79082566" vertical-offset="33655" max-vertical-offset="34200" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/py/monitor_list">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="558" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/py/monitor.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="24" column="25" selection-start="363" selection-end="363" vertical-scroll-proportion="0.49283153" vertical-offset="181" max-vertical-offset="10659">
-          <folding>
-            <element signature="e#69#80#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/py/api">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="118" column="0" selection-start="4607" selection-end="4607" vertical-scroll-proportion="0.0" vertical-offset="1735" max-vertical-offset="2831">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/py/stock_infoc.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="1383" column="0" selection-start="44986" selection-end="44986" vertical-scroll-proportion="0.86055046" vertical-offset="25580" max-vertical-offset="26163">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/py/stock_infod.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="852" column="32" selection-start="25112" selection-end="25112" vertical-scroll-proportion="-9.825" vertical-offset="20993" max-vertical-offset="23199">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/py/stock.ini">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="26" column="1" selection-start="289" selection-end="289" vertical-scroll-proportion="-2.4050179" vertical-offset="1836" max-vertical-offset="2793">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/py/stock_infoa.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="1510" column="8" selection-start="46066" selection-end="46120" vertical-scroll-proportion="0.47884616" vertical-offset="28137" max-vertical-offset="36803">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-  </component>
-</project>
+#!/usr/bin/env python
+#encoding=utf-8
 
+
+import json
+import time
+import pycurl
+import cStringIO
+import gzip
+import unicodedata
+import os
+import sys
+import random
+import subprocess
+import ast
+
+from time import strftime, localtime
+from datetime import timedelta, date
+import calendar
+
+import ConfigParser
+
+__author__ = 'rong'
+
+user_agent_list = []
+user_agent_dic = {}
+user_agent_cookie = {}
+MAX_RESPONSE_KB = 10*1024
+DATAPATH = '../data/'
+
+class Day():
+    def __init__(self):
+        self.year = strftime("%Y", localtime())
+        self.mon = strftime("%m", localtime())
+        self.day = strftime("%d", localtime())
+        self.hour = strftime("%H", localtime())
+        self.min = strftime("%M", localtime())
+        self.sec = strftime("%S", localtime())
+
+    def today(self):
+     '''''
+     get today,date format="YYYY-MM-DD"
+     '''''
+     return date.today()
+
+
+    def todaystr(self):
+     '''
+     get date string, date format="YYYYMMDD"
+     '''
+     return self.year + self.mon + self.day
+
+
+    def datetime(self):
+     '''''
+     get datetime,format="YYYY-MM-DD HH:MM:SS"
+     '''
+     return strftime("%Y-%m-%d %H:%M:%S", localtime())
+
+
+    def datetimestr(self):
+     '''''
+     get datetime string
+     date format="YYYYMMDDHHMMSS"
+     '''
+     return self.year + self.mon + self.day + self.hour + self.min + self.sec
+
+
+    def get_day_of_day(self, n=0):
+     '''''
+     if n>=0,date is larger than today
+     if n<0,date is less than today
+     date format = "YYYY-MM-DD"
+     '''
+     if (n < 0):
+      n = abs(n)
+      return date.today() - timedelta(days=n)
+     else:
+      return date.today() + timedelta(days=n)
+
+
+    def get_days_of_month(self, year, mon):
+     '''''
+     get days of month
+     '''
+     return calendar.monthrange(year, mon)[1]
+
+
+    def get_firstday_of_month(self, year, mon):
+     '''''
+     get the first day of month
+     date format = "YYYY-MM-DD"
+     '''
+     days = "01"
+     if (int(mon) < 10):
+      mon = "0" + str(int(mon))
+     arr = (year, mon, days)
+     return "-".join("%s" % i for i in arr)
+
+
+    def get_lastday_of_month(self, year, mon):
+     '''''
+     get the last day of month
+     date format = "YYYY-MM-DD"
+     '''
+     days = calendar.monthrange(year, mon)[1]
+     mon = self.addzero(mon)
+     arr = (year, mon, days)
+     return "-".join("%s" % i for i in arr)
+
+
+    def get_firstday_month(self, n=0):
+     '''''
+     get the first day of month from today
+     n is how many months
+     '''
+     (y, m, d) = self.getyearandmonth(n)
+     d = "01"
+     arr = (y, m, d)
+     return "-".join("%s" % i for i in arr)
+
+
+    def get_lastday_month(self, n=0):
+     '''''
+     get the last day of month from today
+     n is how many months
+     '''
+     return "-".join("%s" % i for i in self.getyearandmonth(n))
+
+
+    def getyearandmonth(self, n=0):
+     '''''
+     get the year,month,days from today
+     befor or after n months
+     '''
+     thisyear = int(self.year)
+     thismon = int(self.mon)
+     totalmon = thismon + n
+     if (n >= 0):
+      if (totalmon <= 12):
+       days = str(self.get_days_of_month(thisyear, totalmon))
+       totalmon = self.addzero(totalmon)
+       return (self.year, totalmon, days)
+      else:
+       i = totalmon / 12
+       j = totalmon % 12
+       if (j == 0):
+        i -= 1
+        j = 12
+       thisyear += i
+       days = str(self.get_days_of_month(thisyear, j))
+       j = self.addzero(j)
+       return (str(thisyear), str(j), days)
+     else:
+      if ((totalmon > 0) and (totalmon < 12)):
+       days = str(self.get_days_of_month(thisyear, totalmon))
+       totalmon = self.addzero(totalmon)
+       return (self.year, totalmon, days)
+      else:
+       i = totalmon / 12
+       j = totalmon % 12
+       if (j == 0):
+        i -= 1
+        j = 12
+       thisyear += i
+       days = str(self.get_days_of_month(thisyear, j))
+       j = self.addzero(j)
+       return (str(thisyear), str(j), days)
+
+
+    def addzero(self, n):
+     '''''
+     add 0 before 0-9
+     return 01-09
+     '''
+     nabs = abs(int(n))
+     if (nabs < 10):
+      return "0" + str(nabs)
+     else:
+      return nabs
+
+
+    def get_today_month(self,n=0):
+     '''''
+     获取当前日期前后N月的日期
+     if n>0, 获取当前日期前N月的日期
+     if n<0, 获取当前日期后N月的日期
+     date format = "YYYY-MM-DD"
+     '''
+     (y, m, d) = self.getyearandmonth(n)
+     arr = (y, m, d)
+     if (int(self.day) < int(d)):
+      arr = (y, m, self.day)
+     return "-".join("%s" % i for i in arr)
+
+def get_week_day(date_str, format_str='%Y-%m-%d'):
+    day = 0
+    if not date_str:
+        return day
+
+    try:
+        d = time.strptime(date_str, format_str)
+        day =d.tm_wday + 1
+    except BaseException, e:
+        print e.message
+        return day
+
+    return day
+
+def log_write(filename, str):
+    file = open(filename, 'a')
+    file.write(str)
+    file.write('\n')
+    file.flush()
+    file.close()
+
+class HTTPError(Exception):
+    """Exception that is wrapped around all exceptions that are raised
+    by the underlying fetcher when using the ExceptionWrappingFetcher
+
+    @ivar why: The exception that caused this exception
+    """
+    def __init__(self, why=None):
+        Exception.__init__(self, why)
+        self.why = why
+
+class CurlHTTPFetcher(object):
+    """
+    An C{L{HTTPFetcher}} that uses pycurl for fetching.
+    See U{http://pycurl.sourceforge.net/}.
+    """
+    ALLOWED_TIME = 30 # seconds
+
+    def _parseHeaders(self, header_file):
+        header_file.seek(0)
+
+        # Remove the status line from the beginning of the input
+        unused_http_status_line = header_file.readline().lower ()
+        if unused_http_status_line.startswith('http/1.1 100 '):
+            unused_http_status_line = header_file.readline()
+            unused_http_status_line = header_file.readline()
+
+        lines = [line.strip() for line in header_file]
+
+        # and the blank line from the end
+        empty_line = lines.pop()
+        if empty_line:
+            raise HTTPError("No blank line at end of headers: %r" % (line,))
+
+        headers = {}
+        for line in lines:
+            try:
+                name, value = line.split(':', 1)
+            except ValueError:
+                raise HTTPError(
+                    "Malformed HTTP header line in response: %r" % (line,))
+
+            value = value.strip()
+
+            # HTTP headers are case-insensitive
+            name = name.lower()
+            headers[name] = value
+
+        return headers
+
+    def fetch(self, url, body=None, headers=None):
+        stop = int(time.time()) + self.ALLOWED_TIME
+        off = self.ALLOWED_TIME
+
+        if headers is None:
+            headers = {}
+
+        if  'User-Agent:' in headers or  'user-agent:' in headers:
+            print 'no User-Agent', headers, url, sys._getframe().f_lineno
+            return
+
+        header_list = []
+        if headers is not None:
+            for header_name, header_value in headers.iteritems():
+                header_list.append('%s: %s' % (header_name, header_value))
+
+        c = pycurl.Curl()
+        try:
+            c.setopt(pycurl.NOSIGNAL, 1)
+
+            if header_list:
+                c.setopt(pycurl.HTTPHEADER, header_list)
+
+            # Presence of a body indicates that we should do a POST
+            if body is not None:
+                c.setopt(pycurl.POST, 1)
+                c.setopt(pycurl.POSTFIELDS, body)
+
+            while off > 0:
+                if not url.startswith('http://') and not url.startswith('https://'):
+                    raise HTTPError("Fetching URL not allowed: %r" % (url,))
+
+                data = cStringIO.StringIO()
+                def write_data(chunk):
+                    if data.tell() > 1024*MAX_RESPONSE_KB:
+                        return 0
+                    else:
+                        #print 'hello', data.getvalue().decode('gbk')
+                        return data.write(chunk)
+
+                response_header_data = cStringIO.StringIO()
+                c.setopt(pycurl.WRITEFUNCTION, write_data)
+                c.setopt(pycurl.HEADERFUNCTION, response_header_data.write)
+                c.setopt(pycurl.TIMEOUT, off)
+                c.setopt(pycurl.URL, url)
+
+                c.perform()
+
+                response_headers = self._parseHeaders(response_header_data)
+                code = c.getinfo(pycurl.RESPONSE_CODE)
+                if code in [301, 302, 303, 307]:
+                    url = response_headers.get('location')
+                    if url is None:
+                        raise HTTPError(
+                            'Redirect (%s) returned without a location' % code)
+
+                    # Redirects are always GETs
+                    c.setopt(pycurl.POST, 0)
+
+                    # There is no way to reset POSTFIELDS to empty and
+                    # reuse the connection, but we only use it once.
+                else:
+                    res = {}
+                    res['head'] = response_headers
+                    res['status'] = code
+                    res['final_url'] = url
+                    res['body'] = '%s' % (data.getvalue())
+                    return res
+
+                off = stop - int(time.time())
+
+            raise HTTPError("Timed out fetching: %r" % (url,))
+        finally:
+            response_header_data.close()
+            data.close()
+            c.close()
+
+
+def get_single_analysis2(date, id, sum_vol, deal_dic):
+    #url = 'http://market.finance.sina.com.cn/downxls.php?date=%s&symbol=%s' % (date, id)
+
+    url = 'http://vip.stock.finance.sina.com.cn/quotes_service/view/cn_bill_download.php?' \
+          'symbol=%s&num=600&page=1&sort=ticktime&asc=0&volume=40000&amount=0&type=0&day=%s' % (id, date)
+
+    #print url
+
+    header = {}
+    index = random.randint(0, len(user_agent_list) -1)
+    header['User-Agent'] = user_agent_list[index]
+
+    cookie_key = '%d_sina' % (index,)
+    if user_agent_cookie.has_key(cookie_key):
+        header['Cookie'] = user_agent_cookie[cookie_key]
+
+    curl =  CurlHTTPFetcher()
+    curl.ALLOWED_TIME = 2
+
+    res = {}
+    try:
+        res = curl.fetch(url, None, header)
+    except BaseException, e:
+        print e.message
+
+    if res.has_key('head') and res['head'].has_key('set-cookie'):
+        user_agent_cookie[cookie_key] = res['head']['set-cookie'].split(';')[0]
+
+
+    stockdict = {}
+    stockdict['vol_1'] = 0
+    stockdict['vol_2'] = 0
+    stockdict['vol_3'] = 0
+
+    res_str = ''
+    if res.has_key('body') and res['body'].strip():
+        items = res['body'].split('\n')
+        #print res['body']
+        for key in items:
+            subitems = key.split(',');
+            if len(subitems) == 7:
+                if not subitems[4].isdigit():
+                    continue
+                vol = int(subitems[4])
+
+                flag = 1
+                if u'买盘' in  subitems[6].decode('gbk'):
+                    flag = 1
+                elif u'卖盘' in subitems[6].decode('gbk'):
+                    flag = -1
+                else:
+                    continue
+
+                vol = vol /100
+
+                if vol >= 400:
+                    stockdict['vol_1'] += vol * flag
+
+                if vol >= 1000:
+                    stockdict['vol_2'] += vol * flag
+
+                if vol >= 2000:
+                    stockdict['vol_3'] += vol * flag
+
+        if not deal_dic.has_key('vol_1'):
+            deal_dic['vol_1'] = []
+            deal_dic['vol_2'] = []
+            deal_dic['vol_3'] = []
+            deal_dic['ratio_vol_1'] = []
+            deal_dic['ratio_vol_2'] = []
+            deal_dic['ratio_vol_3'] = []
+
+        if len(deal_dic['vol_1']) >= 10:
+            deal_dic['vol_1'].pop(0)
+            deal_dic['vol_2'].pop(0)
+            deal_dic['vol_3'].pop(0)
+            deal_dic['ratio_vol_1'].pop(0)
+            deal_dic['ratio_vol_2'].pop(0)
+            deal_dic['ratio_vol_3'].pop(0)
+
+        if len(deal_dic['vol_1']) >=1 and abs(deal_dic['vol_1'][-1] - stockdict['vol_1']) < 400:
+            return stockdict
+
+        print stockdict, id
+        deal_dic['vol_1'].append(stockdict['vol_1'])
+        deal_dic['vol_2'].append(stockdict['vol_2'])
+        deal_dic['vol_3'].append(stockdict['vol_3'])
+
+        deal_dic['ratio_vol_1'].append(round(stockdict['vol_1'] *1.0 / sum_vol, 4))
+        deal_dic['ratio_vol_2'].append(round(stockdict['vol_2'] *1.0 / sum_vol, 4))
+        deal_dic['ratio_vol_3'].append(round(stockdict['vol_3'] *1.0 / sum_vol, 4))
+
+    return stockdict
+
+    #print stockdict
+    #if not res_str.strip():
+    #    print url
+
+def get_single_analysis3(id, vol, deal_dic):
+
+    stockdict = {}
+    if int(vol) <= 0:
+        print vol, 'err'
+        return stockdict
+
+    url = 'http://stock.gtimg.cn/data/index.php?appn=dadan&action=summary&c=%s' % (id)
+
+    curl =  CurlHTTPFetcher()
+    curl.ALLOWED_TIME = 1
+    stocklist = ''
+    i = 0
+    imax = 1
+    while 1:
+        try:
+            if i + 1 <= imax:
+                header = {}
+                index = random.randint(0, len(user_agent_list) -1)
+                header['User-Agent'] = user_agent_list[index]
+                res = {}
+                try:
+                    res = curl.fetch(url, None, header)
+                except BaseException, e:
+                    pass
+                    #print '111111, err', e.message, id
+
+                value = res['body'].decode("gbk").split('=')[1].strip(';\r\n')
+            #print value
+            stocklist = value
+            break
+        except Exception,e:
+            #print url, value, e
+            stocklist = ''
+            i = i+1
+            if i >= imax:
+                log_write('errcode', id)
+                break
+
+    if i > imax:
+        return  {}
+
+    if not stocklist.strip():
+        return {}
+
+    #print stocklist
+
+
+    #items = stocklist.split('^')
+    try:
+        #print type(stocklist)
+        items = ast.literal_eval(stocklist)
+        #print '111111'
+
+        #>=300
+        stockdict['vol_1'] = int(float(items[2 + 3][4])) - int(float(items[2 + 2][5]))
+        #>=1000
+        stockdict['vol_2'] = int(float(items[2 + 7][4])) - int(float(items[2 + 7][5]))
+        #>=2000
+        stockdict['vol_3'] = int(float(items[2 + 9][4])) - int(float(items[2 + 9][5]))
+
+        #print stockdict, id
+
+    except Exception,e:
+        print e
+        return {}
+
+    if not deal_dic.has_key('vol_1'):
+        deal_dic['vol_1'] = []
+        deal_dic['vol_2'] = []
+        deal_dic['vol_3'] = []
+        deal_dic['ratio_vol_1'] = []
+        deal_dic['ratio_vol_2'] = []
+        deal_dic['ratio_vol_3'] = []
+
+    if len(deal_dic['vol_1']) >= 10:
+        deal_dic['vol_1'].pop(0)
+        deal_dic['vol_2'].pop(0)
+        deal_dic['vol_3'].pop(0)
+        deal_dic['ratio_vol_1'].pop(0)
+        deal_dic['ratio_vol_2'].pop(0)
+        deal_dic['ratio_vol_3'].pop(0)
+
+    if len(deal_dic['vol_1']) >=1 and abs(deal_dic['vol_1'][-1] - stockdict['vol_1']) < 400:
+        return stockdict
+
+    deal_dic['vol_1'].append(stockdict['vol_1'])
+    deal_dic['vol_2'].append(stockdict['vol_2'])
+    deal_dic['vol_3'].append(stockdict['vol_3'])
+
+    deal_dic['ratio_vol_1'].append(round(stockdict['vol_1'] *1.0 / vol, 4))
+    deal_dic['ratio_vol_2'].append(round(stockdict['vol_2'] *1.0 / vol, 4))
+    deal_dic['ratio_vol_3'].append(round(stockdict['vol_3'] *1.0 / vol, 4))
+
+    return stockdict
+
+
+def get_money_flow(id):
+    url = 'http://qt.gtimg.cn/q=ff_%s' % (id)
+    refer = 'http://finance.qq.com/stock/sother/test_flow_stock_quotpage.htm'
+
+    favicon = 'http://qt.gtimg.cn/favicon.ico'
+
+    curl =  CurlHTTPFetcher()
+    curl.ALLOWED_TIME = 1
+    random.seed(int(time.time()))
+    stocklist = []
+    i = 0
+    imax = 2
+    while 1:
+        try:
+            if i + 1 <= imax:
+
+                header = {}
+                index = random.randint(0, len(user_agent_list) -1)
+                header['User-Agent'] = user_agent_list[index]
+                header['Referer'] = refer
+                res = {}
+                if user_agent_dic.has_key(index):
+                    key = '%d_%s' % (index, id)
+                    header['If-None-Match']= (user_agent_dic[key])
+
+                try:
+                    res = curl.fetch(url, None, header)
+                except BaseException, e:
+                    print 'money', e.message, id
+
+                #httpGetContent(favicon, ['Referer: %s' % (url), 'User-Agent: %s' % (user_agent_list[index])])
+                value = res['body'].decode("gbk").split('=')[1].strip(';\r\n')
+            stocklist = value.split('~')
+            if len(stocklist) < 8:
+                #print url, res['head'], value
+                if 'must-revalidate' in res['head']:
+                    break
+                #time.sleep(random.randint(1, 3))
+                continue
+            break
+        except Exception,e:
+            #print url, value, e
+            if res.has_key('head'):
+                #print res['head']
+                if 'must-revalidate' in res['head']:
+                    break
+
+            i = i+1
+            if i >= imax:
+                log_write('errcode', id)
+                break
+            #time.sleep(random.randint(1, 3))
+
+    if i > imax:
+        return  {}
+
+    #print stocklist
+    stockdict = {}
+    if len(stocklist) > 10:
+        stockdict['main_force'] = float(stocklist[3])
+        stockdict['small_force'] = float(stocklist[7])
+
+    if res.has_key('head') and 'Etag:' in res['head']:
+        key = '%d_%s' % (index, id)
+        user_agent_dic[key]  = res['head'].split('Etag:')[1].strip()
+
+    return stockdict
+
+#实时行情
+def get_stockid_real_time(id):
+    #url = 'http://qt.gtimg.cn/q=%s' % (id)
+    #favicon = 'http://qt.gtimg.cn/favicon.ico
+    url = 'http://web.sqt.gtimg.cn/q=%s' % (id)
+    refer = 'http://gu.qq.com/%s/gp' % (id)
+    #url = 'http://sqt.gtimg.cn/utf8/q=%s' % (id)
+    #favicon = 'http://sqt.gtimg.cn/favicon.ico'
+    i = 0
+    imax = 3
+    stocklist = []
+    stockdict = {}
+    curl =  CurlHTTPFetcher()
+    curl.ALLOWED_TIME = 1
+
+    res = {}
+    deal_dic = {}
+
+    while 1:
+        header = {}
+        index = random.randint(0, len(user_agent_list) -1)
+        header['User-Agent'] = user_agent_list[index]
+        header['Referer'] = refer
+        #if user_agent_dic.has_key(index):
+        #    req_header.extend(['If-None-Match: %s' % (user_agent_dic[index])])
+        i = i + 1
+        try:
+            res = curl.fetch(url, None, header)
+        except BaseException, e:
+            print e.message
+
+        if len(res) < 2:
+            print url, sys._getframe().f_lineno, res
+            if i > imax:
+                break;
+            time.sleep(1)
+        else:
+            value = res['body'].split('=')[1].strip(';\n')
+            stocklist = value.split('~')
+            if len(stocklist) < 45:
+                print url, sys._getframe().f_lineno, res['body'], stocklist
+                print value
+                if i > imax:
+                    break;
+                time.sleep(1)
+                continue
+            break
+    #不知道是不是反爬虫， 先请求吧
+    #httpGetContent(favicon, 'Referer: %s' % (url))
+    #print stocklist
+
+    if len(stocklist) < 45:
+        return stockdict
+
+    stockdict['id'] = id
+    stockdict['code'] = stocklist[2]                           # 股票代码
+    #stockdict['name'] = unicode(stocklist[1], 'gbk')  # 股票名称
+    stockdict['last_closing'] = float(stocklist[4])    # 昨日收盘价格
+    stockdict['start'] = float(stocklist[5])           # 开盘价格
+    if stockdict['start'] <= 1:
+        stockdict['block'] = True
+        return stockdict
+    stockdict['end'] = float(stocklist[3])             # 当前收盘价格（可以是当前价格）
+    stockdict['high'] = float(stocklist[33])           # 最高价格
+    stockdict['low'] = float(stocklist[34])            # 最低价格
+    #stockdict['buyvol'] = int(stocklist[7])             # 外盘
+    #stockdict['sellvol'] = int(stocklist[8])           # 内盘
+
+    #stockdict['range_price'] = float(stocklist[31])    # 涨跌价格
+    stockdict['range_percent'] = float(stocklist[32])  # 涨跌比%
+
+    stockdict['vol'] = int(stocklist[36])            # 成交量（手）
+    #stockdict['total_price'] = int(stocklist[37])      # 成交额（万元）
+    #print 'change_rate', stocklist
+    if stocklist[38].strip():
+        stockdict['change_rate'] = float(stocklist[38]) # 换手率
+    else:
+        stockdict['change_rate'] = 0
+    stockdict['pe'] = float(stocklist[39])          # 市盈率
+    stockdict['swing'] = float(stocklist[43])           # 振幅
+
+    stockdict['pb'] = float(stocklist[46])              # 股票市净率
+    stockdict['date'] = stocklist[30][:8]               # 时间
+    stockdict['block'] = False if stockdict['start'] else True #股票是否停牌
+    stockdict['circulation_market_value'] = float(stocklist[44])
+    stockdict['total_value'] = float(stocklist[45])
+    #stockdict['high_limit'] = float(stocklist[47])
+    #stockdict['low_limit'] = float(stocklist[48])
+    if 'Etag:' in res['head']:
+        key = '%d_%s' % (index, id)
+        user_agent_dic[key]  = res['head'].split('Etag:')[1].strip()
+
+    #print stockdict
+    return stockdict
+
+#价跌主力增仓个股
+def get_force_in(id_dic):
+    url = 'http://stock.gtimg.cn/data/view/flow.php?t=7&d=1'
+    refer = 'http://finance.qq.com/zjlx/zjlx_modules/price.htm?t=down&change_color_0'
+
+    curl =  CurlHTTPFetcher()
+
+    header = {}
+    index = random.randint(0, len(user_agent_list) -1)
+    header['User-Agent'] = user_agent_list[index]
+    header['Referer'] = refer
+    res = {}
+    try:
+        res = curl.fetch(url, None, header)
+        value = res['body'].decode("gbk").split('=')[1].strip(';\r\n')
+        items = value.split('^')
+        for item in items:
+            subitems = item.split('~')
+            id = subitems[0].strip('\'')
+            if not id_dic.has_key(id):
+                id_dic[id] = {}
+
+            id_dic[id]['force'] = float(subitems[3])
+            id_dic[id]['tag'] = 'in'
+
+    except BaseException, e:
+        print e.message
+
+    return id_dic
+
+#主力增仓个股
+def get_force_add(id_dic):
+    url = 'http://stock.gtimg.cn/data/view/zldx.php?t=1'
+    refer = 'http://finance.qq.com/zjlx/zjlx_modules/flow_stock.htm?t=zl_in&change_color_0'
+
+    curl =  CurlHTTPFetcher()
+
+    header = {}
+    index = random.randint(0, len(user_agent_list) -1)
+    header['User-Agent'] = user_agent_list[index]
+    header['Referer'] = refer
+    res = {}
+    try:
+        res = curl.fetch(url, None, header)
+        value = res['body'].decode("gbk").split('=')[1].strip(';\r\n')
+        items = value.split('^')
+        for item in items:
+            subitems = item.split('~')
+            id = subitems[0].strip('\'')
+            if not id_dic.has_key(id):
+                id_dic[id] = {}
+
+            id_dic[id]['force'] = float(subitems[3])
+            id_dic[id]['tag'] = 'add'
+
+    except BaseException, e:
+        print e.message
+
+    return id_dic
+
+
+#主力增仓个股
+def get_force_add5(id_dic):
+    url = 'http://stock.gtimg.cn/data/view/zldx.php?t=2'
+    refer = 'http://finance.qq.com/zjlx/zjlx_modules/flow_stock.htm?t=zl_in&change_color_0'
+
+    curl =  CurlHTTPFetcher()
+
+    header = {}
+    index = random.randint(0, len(user_agent_list) -1)
+    header['User-Agent'] = user_agent_list[index]
+    header['Referer'] = refer
+    res = {}
+    try:
+        res = curl.fetch(url, None, header)
+        value = res['body'].decode("gbk").split('=')[1].strip(';\r\n')
+        value = value.split(';')[0]
+        items = value.split('^')
+        for item in items:
+            subitems = item.split('~')
+            id = subitems[0].strip('\'')
+            if not id_dic.has_key(id):
+ 

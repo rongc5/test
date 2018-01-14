@@ -791,10 +791,47 @@ def get_force_add5(id_dic):
 
     return id_dic
 
+
+#主力资金放量
+def get_force_vol(id_dic):
+    url = 'http://stock.gtimg.cn/data/view/flow.php?t=9&d=1'
+    refer = 'http://finance.qq.com/zjlx/zjlx_modules/zlfl.htm?change_color_0'
+
+    curl =  CurlHTTPFetcher()
+
+    header = {}
+    index = random.randint(0, len(user_agent_list) -1)
+    header['User-Agent'] = user_agent_list[index]
+    header['Referer'] = refer
+    res = {}
+    try:
+        res = curl.fetch(url, None, header)
+        value = res['body'].decode("gbk").split('=')[1].strip(';\r\n')
+        items = value.split('^')
+        for item in items:
+            subitems = item.split('~')
+            id = subitems[0].strip('\'')
+            if not id_dic.has_key(id):
+                id_dic[id] = {}
+
+            id_dic[id]['vol'] = float(subitems[2])
+            id_dic[id]['tag'] = 'vol'
+
+    except BaseException, e:
+        print e.message
+
+    return id_dic
+
 def load_force_list():
     day = Day()
+    lastday = 0
+    while 1:
+        toady =  '%s' % (day.get_day_of_day(lastday), )
+        if get_week_day(toady) > 5:
+            lastday = lastday - 1
+        else:
+            break
 
-    toady = '%s' % (day.today(),)
     file_name = '%s_%s' % ('last_force', toady.replace('-', ''))
     if  os.path.isfile(file_name):
         return
@@ -804,6 +841,7 @@ def load_force_list():
     get_force_in(id_dic)
     get_force_add(id_dic)
     get_force_add5(id_dic)
+    get_force_vol(id_dic)
 
     for key in id_dic:
 
@@ -813,7 +851,10 @@ def load_force_list():
         if not id_dic[key].has_key('force5'):
             id_dic[key]['force5'] = 0
 
-        str = '%s\t%s\t%s\t\%s' % (key, id_dic[key]['force'], id_dic[key]['force5'], id_dic[key]['tag'])
+        if not id_dic[key].has_key('vol'):
+            id_dic[key]['vol'] = 0
+
+        str = '%s\t%s\t%s\t%s\t%s' % (key, id_dic[key]['force'], id_dic[key]['force5'], id_dic[key]['vol'], id_dic[key]['tag'])
         log_write(file_name, str)
 
 def load_base_list(days_num):
@@ -1131,9 +1172,9 @@ def do_search_short():
     TIME_DIFF = 20
     cf = ConfigParser.ConfigParser()
     while 1:
-        if int(day.hour) >= 15:
-            load_force_list()
-            id_dic = load_base_list(5)
+        #if int(day.hour) >= 15:
+        load_force_list()
+        id_dic = load_base_list(5)
 
         print 'after base_select', len(id_dic)
 
@@ -1227,4 +1268,5 @@ def do_search_short():
 #割肉要坚决， 没有什么后悔的, 不看上证、a50 那是不行的
 #不要做T, 不看好就跑， 看好就买， 做T, 买了， 想跑跑不了
 if __name__ == '__main__':
-    do_search_short()
+    do_search_short()
+
