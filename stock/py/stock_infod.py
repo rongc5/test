@@ -449,7 +449,7 @@ def get_single_analysis3(id, vol, deal_dic):
     url = 'http://stock.gtimg.cn/data/index.php?appn=dadan&action=summary&c=%s' % (id)
 
     curl =  CurlHTTPFetcher()
-    curl.ALLOWED_TIME = 1
+    curl.ALLOWED_TIME = 2
     stocklist = ''
     i = 0
     imax = 1
@@ -543,11 +543,11 @@ def get_money_flow(id):
     favicon = 'http://qt.gtimg.cn/favicon.ico'
 
     curl =  CurlHTTPFetcher()
-    curl.ALLOWED_TIME = 1
+    curl.ALLOWED_TIME = 3
     random.seed(int(time.time()))
     stocklist = []
     i = 0
-    imax = 2
+    imax = 1
     while 1:
         try:
             if i + 1 <= imax:
@@ -617,7 +617,7 @@ def get_stockid_real_time(id):
     stocklist = []
     stockdict = {}
     curl =  CurlHTTPFetcher()
-    curl.ALLOWED_TIME = 1
+    curl.ALLOWED_TIME = 2
 
     res = {}
     deal_dic = {}
@@ -720,6 +720,7 @@ def get_force_in(id_dic):
             id = subitems[0].strip('\'')
             if not id_dic.has_key(id):
                 id_dic[id] = {}
+                id_dic[id]['id'] = id
 
             id_dic[id]['force'] = float(subitems[3])
             id_dic[id]['tag'] = 'in'
@@ -750,6 +751,7 @@ def get_force_add(id_dic):
             id = subitems[0].strip('\'')
             if not id_dic.has_key(id):
                 id_dic[id] = {}
+                id_dic[id]['id'] = id
 
             id_dic[id]['force'] = float(subitems[3])
             id_dic[id]['tag'] = 'add'
@@ -782,6 +784,7 @@ def get_force_add5(id_dic):
             id = subitems[0].strip('\'')
             if not id_dic.has_key(id):
                 id_dic[id] = {}
+                id_dic[id]['id'] = id
 
             id_dic[id]['force5'] = float(subitems[1])
             id_dic[id]['tag'] = 'add5'
@@ -813,6 +816,7 @@ def get_force_vol(id_dic):
             id = subitems[0].strip('\'')
             if not id_dic.has_key(id):
                 id_dic[id] = {}
+                id_dic[id]['id'] = id
 
             id_dic[id]['vol'] = float(subitems[2])
             id_dic[id]['tag'] = 'vol'
@@ -833,8 +837,6 @@ def load_force_list():
             break
 
     file_name = '%s_%s' % ('last_force', toady.replace('-', ''))
-    if  os.path.isfile(file_name):
-        return
 
     id_dic = {}
 
@@ -844,6 +846,10 @@ def load_force_list():
     get_force_vol(id_dic)
 
     for key in id_dic:
+        cmd = ['grep', key, file_name]
+        res_str = subprocess.Popen(cmd, stdout=subprocess.PIPE).communicate()[0]
+        if res_str.strip():
+            continue
 
         if not id_dic[key].has_key('force'):
             id_dic[key]['force'] = 0
@@ -891,6 +897,7 @@ def load_base_list(days_num):
             #print line
             items = line.split('\t')
             id_dic[items[0]] = {}
+            id_dic[items[0]]['id'] = items[0]
             id_dic[items[0]]['last_single'] = {}
 
     return id_dic

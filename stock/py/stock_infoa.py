@@ -430,11 +430,11 @@ def get_single_analysis2(date, id, sum_vol, deal_dic):
     if user_agent_cookie.has_key(cookie_key):
         header['Cookie'] = user_agent_cookie[cookie_key]
 
-    curl =  CurlHTTPFetcher()
-    curl.ALLOWED_TIME = 2
 
     res = {}
     try:
+        curl =  CurlHTTPFetcher()
+        curl.ALLOWED_TIME = 2
         res = curl.fetch(url, None, header)
     except BaseException, e:
         print e.message
@@ -736,8 +736,6 @@ def get_single_analysis(id, vol, deal_dic):
     url = 'http://stock.finance.qq.com/sstock/list/view/dadan.php?t=js&c=%s&max=600&p=1&opt=4&o=0' % (id)
     refer = 'http://stockhtm.finance.qq.com/sstock/quotpage/dadan.htm?c=%s' % (id)
 
-    curl =  CurlHTTPFetcher()
-    curl.ALLOWED_TIME = 1
     stocklist = ''
     i = 0
     imax = 1
@@ -750,6 +748,8 @@ def get_single_analysis(id, vol, deal_dic):
                 header['Referer'] = refer
                 res = {}
                 try:
+                    curl =  CurlHTTPFetcher()
+                    curl.ALLOWED_TIME = 2
                     res = curl.fetch(url, None, header)
                 except BaseException, e:
                     pass
@@ -841,8 +841,6 @@ def get_single_analysis3(id, vol, deal_dic):
 
     url = 'http://stock.gtimg.cn/data/index.php?appn=dadan&action=summary&c=%s' % (id)
 
-    curl =  CurlHTTPFetcher()
-    curl.ALLOWED_TIME = 1
     stocklist = ''
     i = 0
     imax = 1
@@ -854,6 +852,8 @@ def get_single_analysis3(id, vol, deal_dic):
                 header['User-Agent'] = user_agent_list[index]
                 res = {}
                 try:
+                    curl =  CurlHTTPFetcher()
+                    curl.ALLOWED_TIME = 2
                     res = curl.fetch(url, None, header)
                 except BaseException, e:
                     pass
@@ -1001,12 +1001,10 @@ def get_money_flow(id):
 
     favicon = 'http://qt.gtimg.cn/favicon.ico'
 
-    curl =  CurlHTTPFetcher()
-    curl.ALLOWED_TIME = 1
     random.seed(int(time.time()))
     stocklist = []
     i = 0
-    imax = 2
+    imax = 1
     while 1:
         try:
             if i + 1 <= imax:
@@ -1021,6 +1019,8 @@ def get_money_flow(id):
                     header['If-None-Match']= (user_agent_dic[key])
 
                 try:
+                    curl =  CurlHTTPFetcher()
+                    curl.ALLOWED_TIME = 3
                     res = curl.fetch(url, None, header)
                 except BaseException, e:
                     print 'money', e.message, id
@@ -1077,11 +1077,9 @@ def get_stockid_real_time(id):
     #url = 'http://sqt.gtimg.cn/utf8/q=%s' % (id)
     #favicon = 'http://sqt.gtimg.cn/favicon.ico'
     i = 0
-    imax = 3
+    imax = 2
     stocklist = []
     stockdict = {}
-    curl =  CurlHTTPFetcher()
-    curl.ALLOWED_TIME = 1
 
     res = {}
     deal_dic = {}
@@ -1095,6 +1093,8 @@ def get_stockid_real_time(id):
         #    req_header.extend(['If-None-Match: %s' % (user_agent_dic[index])])
         i = i + 1
         try:
+            curl =  CurlHTTPFetcher()
+            curl.ALLOWED_TIME = 2
             res = curl.fetch(url, None, header)
         except BaseException, e:
             print e.message
@@ -1103,7 +1103,7 @@ def get_stockid_real_time(id):
             print url, sys._getframe().f_lineno, res
             if i > imax:
                 break;
-            time.sleep(1)
+            #time.sleep(1)
         else:
             value = res['body'].split('=')[1].strip(';\n')
             stocklist = value.split('~')
@@ -1112,7 +1112,7 @@ def get_stockid_real_time(id):
                 print value
                 if i > imax:
                     break;
-                time.sleep(1)
+                #time.sleep(1)
                 continue
             break
     #不知道是不是反爬虫， 先请求吧
@@ -1183,7 +1183,7 @@ def get_stock_list():
        #res['body'] = curl_cmd_get(url)
         if len(res) < 2:
             print url
-            time.sleep(1)
+            #time.sleep(1)
         else:
             print res['head']
             break
@@ -1440,7 +1440,7 @@ def log_single_analysis(id_dic):
         if os.path.isfile(file_name) and  res_str.strip():
             continue
 
-        time.sleep(0.05)
+        #time.sleep(0.05)
         res = get_stockid_real_time(key)
 
         if res.has_key('block') and res['block']:  #停牌
@@ -1870,7 +1870,7 @@ def do_search_short():
                 remove_ley.append(key)
                 continue
 
-            time.sleep(0.01)
+            #time.sleep(0.01)
             res = get_stockid_real_time(key)
 
             if res.has_key('block') and res['block']:  #停牌
