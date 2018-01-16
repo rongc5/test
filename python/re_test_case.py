@@ -847,7 +847,7 @@ def recomm_root_gid_pay_type(search_dic, gid):
     else:
         g_tf = get_data_redis2('i_version', 'tf2')
 
-    
+
 
 
 
