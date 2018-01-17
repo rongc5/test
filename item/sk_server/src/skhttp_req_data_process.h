@@ -9,8 +9,24 @@ class skhttp_req_data_process: public http_base_data_process
 {
     public:
         skhttp_req_data_process(http_base_process * _p_process);
+
         virtual ~skhttp_req_data_process(){}
+
+        virtual string *get_send_body(int &result);
+
+        virtual void header_recv_finish();
+
+        virtual void msg_recv_finish();
+
+        virtual string * get_send_head();
+
+        virtual size_t process_recv_body(const char *buf, size_t len, int& result);
+
+        static base_net_obj * gen_listen_obj(int fd);
+
     protected:
+        string _send_body;
+        string _recv_buf;
 
 };
 
