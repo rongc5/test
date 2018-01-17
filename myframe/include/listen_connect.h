@@ -11,11 +11,11 @@ class listen_connect:public base_net_obj
 {
     public:
         listen_connect(const string &ip, unsigned short port)
-        {
-            _process = NULL;
-
-            _ip = ip;
+    {
+        _process = NULL;
+          _ip = ip;
             _port = port;
+
 
             struct sockaddr_in address; 
             int reuse_addr = 1;  
@@ -54,7 +54,7 @@ class listen_connect:public base_net_obj
 
             set_unblock(fd);
             base_net_obj(fd);
-        }
+    }
 
         virtual ~listen_connect()
         {
@@ -96,7 +96,7 @@ class listen_connect:public base_net_obj
 
 
     private:
-        string _ip;
+    	  string _ip;
         unsigned short _port;
         PROCESS *_process;
 };

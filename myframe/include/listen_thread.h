@@ -23,7 +23,7 @@ class listen_thread: public base_net_thread
 
         void init(const string &ip, unsigned short port)
         { 
-            _ip = ip;
+        		_ip = ip;
             _port = port;
             _listen_connect = new listen_connect<listen_process<PROCESS> >(ip, port);
             _process =  new listen_process<PROCESS>(_listen_connect);

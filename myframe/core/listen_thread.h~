@@ -1,21 +1,31 @@
-#ifndef __LISTEN_CONNECT_H__
-#define __LISTEN_CONNECT_H__
+#ifndef __LISTEN_THREAD_H__
+#define __LISTEN_THREAD_H__
 
+#include "base_net_thread.h"
+#include "base_net_container.h"
+#include "common_obj_container.h"
+#include "listen_connect.h"
 #include "common_def.h"
-#include "log_helper.h"
-#include "base_net_obj.h"
+#include "listen_process.h"
 
 
 template<class PROCESS>
-class listen_connect:public base_net_obj
+class listen_thread: public base_net_thread
 {
     public:
-        listen_connect(const string &ip, unsigned short port)
-        {
-            _process = NULL;
+        listen_thread():_listen_connect(NULL)
+    {
+    }
 
+        virtual ~listen_thread()
+        {
+        }
+
+        void init(const string &ip, unsigned short port)
+        {
             _ip = ip;
             _port = port;
+
 
             struct sockaddr_in address; 
             int reuse_addr = 1;  
@@ -52,55 +62,25 @@ class listen_connect:public base_net_obj
                 THROW_COMMON_EXCEPT("listen error "  << strerror(errno));
             }
 
-            set_unblock(fd);
-            base_net_obj(fd);
+            set_unblock(fd); 
+            _listen_connect = new listen_connect<listen_process<PROCESS> >(fd);
+            _process =  new listen_process<PROCESS>(_listen_connect);
+            _process->set_listen_thread(this);
+            _listen_connect->set_process(_process);
+            _listen_connect->set_net_container(_base_container);
         }
 
-        virtual ~listen_connect()
+        int add_worker_thread(uint32_t thread_index)
         {
-            if (_process)
-                delete _process;
+            _process->add_worker_thread(thread_index);
         }
 
-        virtual void event_process(int events)
-        {
-            if ((events & EPOLLIN) == EPOLLIN)
-            {
-                int tmp_sock = 0;
-                sockaddr_in addr;	
-                socklen_t len = 0;
-                while((tmp_sock = accept(_fd, (sockaddr*)&addr, &len)) != -1)
-                {				
-                    LOG_DEBUG("recv fd[%d]\n", tmp_sock);
-                    _process->process(tmp_sock);
-                }
-            }
-            else
-            {
-            }
-        }
+    protected:
 
-
-        virtual int real_net_process()
-        {
-            return 0;
-        }
-
-        void set_process(PROCESS *p)
-        {
-            if (_process != NULL)
-                delete _process;
-            _process = p;
-
-        }
-
-
-    private:
         string _ip;
         unsigned short _port;
-        PROCESS *_process;
+        listen_connect<listen_process<PROCESS> > *_listen_connect;
+        listen_process<PROCESS> * _process;
 };
 
-
 #endif
-
