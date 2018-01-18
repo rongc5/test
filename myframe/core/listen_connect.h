@@ -53,7 +53,7 @@ class listen_connect:public base_net_obj
             }
 
             set_unblock(fd);
-            base_net_obj(fd);
+            _fd  = fd;
         }
 
         virtual ~listen_connect()

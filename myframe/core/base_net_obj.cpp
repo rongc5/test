@@ -8,9 +8,9 @@
 #include "common_util.h"
 
 
-base_net_obj::base_net_obj(const int32_t sock)
+base_net_obj::base_net_obj()
 {
-    _fd = sock;
+    _fd = 0;
     _epoll_event = EPOLLIN | EPOLLERR | EPOLLHUP;
     _p_net_container = NULL;
     _msg_op = MSG_CONNECT;

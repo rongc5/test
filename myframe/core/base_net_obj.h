@@ -8,7 +8,7 @@ class base_net_container;
 class base_net_obj: public normal_msg
 {
     public:
-        base_net_obj(const int32_t sock);
+        base_net_obj();
 
         virtual ~base_net_obj();
 
@@ -23,7 +23,7 @@ class base_net_obj: public normal_msg
 
         base_net_container * get_net_container();
 
-        void update_event(int event);    
+        virtual void update_event(int event);    
         int get_event();
 
         virtual void notice_send();

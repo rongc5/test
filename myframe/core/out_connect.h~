@@ -1,5 +1,5 @@
-#ifndef __BASE_CONNECT_H__
-#define __BASE_CONNECT_H__
+#ifndef __OUT_CONNECT_H__
+#define __OUT_CONNECT_H__
 
 #include "common_def.h"
 #include "base_net_obj.h"
@@ -8,38 +8,65 @@
 #include "common_exception.h"
 #include "common_epoll.h"
 
+enum CONNECT_STATUS
+{
+    CLOSED = 0,
+    CONNECT_OK = 1,
+    CONNECTING = 2  
+};
+
+
 class base_data_process;
 template<class PROCESS>
-class base_connect:public base_net_obj
+class out_connect:public base_connect<PROCESS>
 {
     public:
 
-        base_connect(const int32_t sock)
+        base_connect(const string &ip, unsigned short port)
         {
-            _fd = sock;
-            _p_send_buf = NULL;
-            _process = NULL;
+            _status = CLOSED;
         }
 
-        base_connect()
+        virtual ~out_connect()
         {
-            _p_send_buf = NULL;
-            _process = NULL;
+            _status = CLOSED;
+
         }
 
-        virtual ~base_connect()
+        void connect()
         {
-            if (_p_send_buf != NULL){
-                delete _p_send_buf;
-                _p_send_buf = NULL;
+            _fd = socket(AF_INET, SOCK_STREAM, 0);
+            if (_fd == -1)
+            {
+                THROW_COMMON_EXCEPT("create sock fail " << strerror(errno));
             }
 
-            if (_process) {
-                delete _process;
-                _process = NULL;
-            }
-        }
+            set_unblock(_fd);
 
+            sockaddr_in address;
+            memset((char *) &address, 0, sizeof(address));
+            address.sin_family = AF_INET;
+            address.sin_port = htons(_port);
+            inet_aton(_ip.c_str(), &address.sin_addr);
+
+            int ret = ::connect(out_connect<PROCESS>::_sock, (sockaddr*)&address, sizeof(address));
+            if (ret != 0)
+            {
+                if (errno != EINPROGRESS && errno != EALREADY)
+                {
+                    LOG_WARNING("connect fail " << strerror(errno));
+                    return;
+                }
+            }
+            out_connect<PROCESS>::_epoll_event = out_connect<PROCESS>::_epoll_event | EPOLLOUT;
+            _status = CONNECTING;
+        }
+        
+        virtual void update_event(int event)
+        {
+            if (_status == CONNECT_OK)
+                base_connect<PROCESS>::update_event(event);
+        }
 
         virtual void event_process(int event)
         {
@@ -93,8 +120,7 @@ class base_connect:public base_net_obj
 
         virtual bool process_recv_msg(ObjId & id, normal_msg * p_msg)
         {
-            if (p_msg->_msg_op == MSG_TIMER) 
-            {
+            if (p_msg->_msg_op == MSG_TIMER) {
                 timer_msg * t_msg = dynamic_cast<timer_msg *> (p_msg);
                 if (!t_msg) {
                     REC_OBJ<normal_msg> rc(p_msg);
@@ -216,9 +242,8 @@ class base_connect:public base_net_obj
         }
 
     protected:
-        string _recv_buf;
-        string* _p_send_buf;	
-        PROCESS *_process;
+        string _ip;
+        unsigned short _port
 };
 
 

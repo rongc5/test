@@ -14,7 +14,14 @@ class base_connect:public base_net_obj
 {
     public:
 
-        base_connect(const int32_t sock):base_net_obj(sock)
+        base_connect(const int32_t sock)
+        {
+            _fd = sock;
+            _p_send_buf = NULL;
+            _process = NULL;
+        }
+
+        base_connect()
         {
             _p_send_buf = NULL;
             _process = NULL;
@@ -86,7 +93,8 @@ class base_connect:public base_net_obj
 
         virtual bool process_recv_msg(ObjId & id, normal_msg * p_msg)
         {
-            if (p_msg->_msg_op == MSG_TIMER) {
+            if (p_msg->_msg_op == MSG_TIMER) 
+            {
                 timer_msg * t_msg = dynamic_cast<timer_msg *> (p_msg);
                 if (!t_msg) {
                     REC_OBJ<normal_msg> rc(p_msg);
