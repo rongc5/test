@@ -8,19 +8,28 @@
 #include "common_exception.h"
 #include "common_epoll.h"
 
+enum CONNECT_STATUS
+{
+    CLOSED = 0,
+    CONNECT_OK = 1,
+    CONNECTING = 2  
+};
+
+
 class base_data_process;
 template<class PROCESS>
-class base_connect:public base_net_obj
+class out_connect:public base_connect<PROCESS>
 {
     public:
 
-        base_connect(const int32_t sock):base_net_obj(sock)
+        base_connect(const string &ip, unsigned short port):base_net_obj(sock)
         {
-            _p_send_buf = NULL;
-            _process = NULL;
+
+
+            base_net_obj<PROCESS>()
         }
 
-        virtual ~base_connect()
+        virtual ~out_connect()
         {
             if (_p_send_buf != NULL){
                 delete _p_send_buf;
@@ -33,6 +42,32 @@ class base_connect:public base_net_obj
             }
         }
 
+        void connect()
+        {
+            int fd = socket(AF_INET, SOCK_STREAM, 0);
+            if (fd == -1)
+            {
+                THROW_COMMON_EXCEPT(errno, "create sock fail " << strerror(errno));
+            }
+
+            set_unblock(fd);
+
+            sockaddr_in address;
+            memset((char *) &address, 0, sizeof(address));
+            address.sin_family = AF_INET;
+            address.sin_port = htons(_port);
+            inet_aton(_ip.c_str(), &address.sin_addr);
+
+            int ret = ::connect(out_connect<PROCESS>::_sock, (sockaddr*)&address, sizeof(address));
+            if (ret != 0)
+            {
+                if (errno != EINPROGRESS && errno != EALREADY)
+                {
+                    WRITE_ERROR("connect fail " << strerror(errno));
+                    return;
+                }
+            }
+        }
 
         virtual void event_process(int event)
         {
@@ -208,9 +243,8 @@ class base_connect:public base_net_obj
         }
 
     protected:
-        string _recv_buf;
-        string* _p_send_buf;	
-        PROCESS *_process;
+        string _ip;
+        unsigned short _port
 };
 
 
