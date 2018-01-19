@@ -123,5 +123,7 @@ const TMonth MONTHARRAY[]=
 string GetMonStr(int nMonth);
 string GetWeekStr(int nWeek);
 
+int parse_domain(const string &sDomain, vector<string> & vIp);
+
 
 #endif

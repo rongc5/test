@@ -383,3 +383,7 @@ char * strncasestr(const char *p, int nLen, const char *pattern)
     return ret;
 }
 
+int parse_domain(const string &sDomain, vector<string> & vIp)
+{
+
+}
