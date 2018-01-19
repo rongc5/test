@@ -125,5 +125,6 @@ string GetWeekStr(int nWeek);
 
 int parse_domain(const string &sDomain, vector<string> & vIp);
 
+int parse_url(const string &url, url_info & info);
 
 #endif

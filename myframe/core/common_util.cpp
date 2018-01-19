@@ -385,5 +385,27 @@ char * strncasestr(const char *p, int nLen, const char *pattern)
 
 int parse_domain(const string &sDomain, vector<string> & vIp)
 {
+    char ipbuf[SIZE_LEN_16];
 
+    ret = getaddrinfo(argv[1], NULL, NULL, &res);
+    if (-1 == ret)
+    {
+        fprintf(stderr, "%s\n", gai_strerror(ret));
+        return -1;
+    }
+
+    for (cur = res; cur != NULL; cur = cur->ai_next)
+    {
+        addr = (struct sockaddr_in *)cur->ai_addr;
+        inet_ntop(AF_INET, &addr->sin_addr, ipbuf, sizeof(ipbuf));
+        vIp.push_back(ipbuf);
+    }
+
+    freeaddrinfo(res);
+    return 0;
+}
+
+int parse_url(const string &url, url_info & info)
+{
+        
 }

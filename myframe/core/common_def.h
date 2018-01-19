@@ -105,6 +105,14 @@ class log_msg
         vector<char> * _buf;
 };
 
+struct url_info
+{
+    string protocol_type;
+    string domain;
+    int port;
+    string path;
+    string query;
+};
 
 
 #endif
