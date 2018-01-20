@@ -2,6 +2,7 @@
 #define __COMMON_UTIL_H__
 
 #include "base_def.h"
+#include "common_def.h"
 
 void get_proc_name(char buf[], size_t buf_len);
 
@@ -21,11 +22,7 @@ class REC_OBJ
 
 int get_prime_num(int num);
 
-int SplitString(const string &srcStr,const string &delim, vector<string>& strList);
-
-int SplitString(const char *srcStr, const string &delim, vector<string>& strList);
-
-int SplitfirstDelimString(const string &srcStr,const string &delim, vector<string>& strList);
+int SplitString(const char *srcStr, const char *delim, vector<string> * strVec);
 
 void StringTrim(string &sSrc);
 

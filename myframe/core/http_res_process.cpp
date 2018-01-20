@@ -147,7 +147,7 @@ size_t http_res_process::process_recv_body(const char *buf, size_t len, int &res
 void http_res_process::parse_first_line(const string & line)
 {
     vector<string> tmp_vec;
-    SplitString(line, " ", tmp_vec);
+    SplitString(line.c_str(), " ", &tmp_vec);
     if (tmp_vec.size() != 3) {
         THROW_COMMON_EXCEPT("http first line");
     }
@@ -169,12 +169,12 @@ void http_res_process::parse_first_line(const string & line)
 void http_res_process::parse_url_para(const string &url_para, map<string, string> &url_para_map)
 {
     vector<string> vec_str;
-    SplitString(url_para, "&", vec_str);
+    SplitString(url_para.c_str(), "&", &vec_str);
     size_t num = vec_str.size();
     for (size_t ii = 0; ii < num; ii ++)
     {
         vector<string> tmp_vec;
-        SplitString(vec_str[ii], "=", tmp_vec);
+        SplitString(vec_str[ii].c_str(), "=", &tmp_vec);
         if (tmp_vec.size() == 2)
         {
             StringTrim(tmp_vec[0]);
@@ -191,13 +191,13 @@ void http_res_process::parse_header(string & recv_head)
 {
     string &head_str = recv_head;
     vector<string> strList;
-    SplitString(head_str, CRLF, strList);
+    SplitString(head_str.c_str(), CRLF, &strList);
     for (uint32_t i = 0; i < strList.size(); i++) {
         if (!i) {
             parse_first_line(strList[i]);
         }else {
             vector<string> tmp_vec;
-            SplitfirstDelimString(strList[i], ":", tmp_vec);
+            SplitString(strList[i].c_str(), ":", &tmp_vec);
             if (tmp_vec.size() != 2) {
                 THROW_COMMON_EXCEPT("http headers parms error");
             } else {
@@ -211,12 +211,12 @@ void http_res_process::parse_header(string & recv_head)
     if (cookie_str)
     {
         vector<string> cookie_vec;
-        SplitString(*cookie_str, ";", cookie_vec);
+        SplitString(cookie_str->c_str(), ";", &cookie_vec);
         size_t c_num = cookie_vec.size();
         for (size_t ii = 0; ii < c_num; ii++)
         {
             vector<string> c_tmp_vec;
-            SplitString(cookie_vec[ii], "=", c_tmp_vec);
+            SplitString(cookie_vec[ii].c_str(), "=", &c_tmp_vec);
             if (c_tmp_vec.size() == 2)
             {
                 StringTrim(c_tmp_vec[0]);

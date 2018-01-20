@@ -207,55 +207,43 @@ void StringTrim(string &sSrc)
     sSrc = sSrc.substr(nBeginPos, nEnd - nBeginPos + 1);        
 }
 
-int SplitString(const char *srcStr, const string &delim, vector<string>& strList)
+int SplitString(const char *srcStr, const char *delim, vector<string> * strVec)
 {
-    char *sTmpBuf = new char[strlen(srcStr) + 1];
-    char *tt = sTmpBuf;
-    char *sToken = strtok_r((char*)srcStr, delim.c_str(), &tt);
-    while (sToken)
+    if (!srcStr || !delim || !strVec)
     {
-        strList.push_back(sToken);
-        sToken = strtok_r(NULL, delim.c_str(),  &tt);
+        return 0;
     }
-    delete []sTmpBuf;
-    return 0;
-}
 
-int SplitString(const string &srcStr,const string &delim, vector<string>& strList)
-{
-    char *sBuf = new char[srcStr.length() + 1];
-    char *sTmpBuf = new char[srcStr.length() + 1];
+    char *pstart = const_cast<char *>(srcStr);
+    char * pend = NULL;
+    int count = 0;
 
-    strncpy(sBuf, srcStr.c_str(), srcStr.length());
-    sBuf[srcStr.length()] = 0;
-
-    char *tmpSrc = sBuf;
-    char *tt = sTmpBuf;
-
-    char *sToken = strtok_r(tmpSrc, delim.c_str(), &tt);
-    while (sToken)
+    size_t dlen = strlen(delim);
+    while (1)
     {
-        strList.push_back(string(sToken));
-        sToken = strtok_r(NULL, delim.c_str(), &tt);
-    }
-    delete [] sBuf;
-    delete [] sTmpBuf;
-    return 0;
-}
-
-int SplitfirstDelimString(const string &srcStr,const string &delim, vector<string>& strList)
-{
-    size_t pos = srcStr.find_first_of(delim);
-    if (pos != std::string::npos) {
-        string tmp_str = srcStr.substr(0, pos);
-        string left_str = srcStr.substr(pos+delim.length());
-        strList.push_back(tmp_str);
-        strList.push_back(left_str);
+        pend = strstr(pstart, delim);
+        if (pend)
+        {
+            string str(pstart, pend);
+            strVec->push_back(str);
+            pstart =  pend + dlen;
+            count += 1;
+        }
+        else 
+        {
+            break;
+        }
     }
 
-    return 0;
-}
+    if (*pstart != '\0' && pstart != srcStr)
+    {
+        string str(pstart);
+        strVec->push_back(str);
+        count += 1;
+    }
 
+    return count;
+}
 
 int get_prime_num(int num)
 {
@@ -387,7 +375,11 @@ int parse_domain(const string &sDomain, vector<string> & vIp)
 {
     char ipbuf[SIZE_LEN_16];
 
-    ret = getaddrinfo(argv[1], NULL, NULL, &res);
+    int ret;
+    struct addrinfo *res, *cur;
+    struct sockaddr_in *addr;
+
+    ret = getaddrinfo(sDomain.c_str(), NULL, NULL, &res);
     if (-1 == ret)
     {
         fprintf(stderr, "%s\n", gai_strerror(ret));
@@ -407,5 +399,45 @@ int parse_domain(const string &sDomain, vector<string> & vIp)
 
 int parse_url(const string &url, url_info & info)
 {
-        
+    vector<string> tmp_vec;
+    SplitString(url.c_str(), "://", &tmp_vec);
+    if (tmp_vec.size()) 
+    {
+        info.protocol_type = tmp_vec[0];
+    }
+
+    vector<string> t_vec;
+    SplitString(tmp_vec[1].c_str(), "/", &t_vec);
+    if (t_vec.size()) 
+    {
+        tmp_vec.clear();
+        SplitString(t_vec[0].c_str(), ":", &tmp_vec);
+        if (tmp_vec.size()) 
+        {
+            info.port = atoi(tmp_vec[1].c_str());
+            info.domain = tmp_vec[0];
+        }
+        else 
+        {
+            info.domain = t_vec[0];
+            if (info.protocol_type == "http")
+                info.port = 80;
+            else if (info.protocol_type == "https")
+                info.port = 443;
+        }
+
+        tmp_vec.clear();
+        SplitString(t_vec[1].c_str(), "?", &tmp_vec);
+        if (tmp_vec.size()) 
+        {
+            info.path = tmp_vec[0];
+            info.query = tmp_vec[1];
+        } 
+        else 
+        {
+            info.path = t_vec[1];
+        }
+    }
+
+    return 0;
 }

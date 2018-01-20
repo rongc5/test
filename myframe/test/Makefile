@@ -10,12 +10,12 @@ CPPFLAGS = -g -msse3 -Wall $(INCLUDE) -DDEBUG=1
 CC  = g++ $(CPPFLAGS)
 
 
-OBJ	= ./test_log.o     \
+OBJ	= ./test_split.o     \
 
 
 AR=ar
 
-server=test_server
+server=app
 client=test_client
 
 all	: $(server)
