@@ -11,3 +11,7 @@ if '__main__' == __name__:
 
     items = url.split("qqqqqq");
     print items
+
+    str = "hthth"
+    str1 = str.strip("h")
+    print str1

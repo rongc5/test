@@ -207,6 +207,8 @@ void StringTrim(string &sSrc)
     sSrc = sSrc.substr(nBeginPos, nEnd - nBeginPos + 1);        
 }
 
+string stringStrip(const char *srcStr, const char *delim);
+
 int SplitString(const char *srcStr, const char *delim, vector<string> * strVec)
 {
     if (!srcStr || !delim || !strVec)
