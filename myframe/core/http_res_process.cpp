@@ -241,8 +241,6 @@ void http_res_process::parse_header(string & recv_head)
         tmp_str = _req_head_para.get_header("Content-Type");
         if (tmp_str)
         {
-            _req_head_para._content_type = *tmp_str;
-
             if (strncasestr(tmp_str->c_str(), tmp_str->length(),  "multipart/form-data") != NULL)
             {
                 GetCaseStringByLabel(*tmp_str, "boundary=", "", _boundary_para._boundary_str);
@@ -252,12 +250,6 @@ void http_res_process::parse_header(string & recv_head)
 
     //parse connection		
 
-    tmp_str = _req_head_para.get_header("connection");
-    if (tmp_str)
-    {
-        _req_head_para._connect_type = *tmp_str;
-        StringTrim(_req_head_para._connect_type);
-    }
     tmp_str = _req_head_para.get_header("Host");
     if (tmp_str)
     {

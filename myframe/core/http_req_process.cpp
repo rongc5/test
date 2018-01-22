@@ -108,8 +108,8 @@ string http_req_process::gen_req_head()
     ss << "Host: " << _req_head_para._host << "\r\n";
 
     //other para
-    for (map<string, string>::iterator itr = _req_head_para._other_list.begin(); 
-            itr != _req_head_para._other_list.end(); ++itr)
+    for (map<string, string>::iterator itr = _req_head_para._headers.begin(); 
+            itr != _req_head_para._headers.end(); ++itr)
     {
         ss << itr->first << ": " << itr->second << "\r\n";
     }

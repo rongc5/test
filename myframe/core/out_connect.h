@@ -25,6 +25,8 @@ class out_connect:public base_connect<PROCESS>
         base_connect(const string &ip, unsigned short port)
         {
             _status = CLOSED;
+            _ip = ip;
+            _port = port;
         }
 
         virtual ~out_connect()

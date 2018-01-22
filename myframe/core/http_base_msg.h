@@ -84,7 +84,6 @@ struct http_req_head_para
 
     void init()
     {
-
         _method.clear();
         _host.clear();
         _url_path.clear();
@@ -95,8 +94,6 @@ struct http_req_head_para
         _cookie_list.clear();
 
         _content_length = (uint64_t)-1;
-        _content_type.clear();
-        _connect_type.clear();
     }
 
     string * get_header(const char * str)
@@ -127,8 +124,6 @@ struct http_req_head_para
     map<string, string> _cookie_list;
 
     uint64_t _content_length;
-    string _content_type;
-    string _connect_type;
 };
 
 struct set_cookie_item
