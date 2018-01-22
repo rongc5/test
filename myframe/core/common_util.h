@@ -22,6 +22,11 @@ class REC_OBJ
 
 int get_prime_num(int num);
 
+#define STRIP_MODE_LEFT 0x1  
+#define STRIP_MODE_RIGHT 0x2
+
+int stringStrip(const char *srcStr, const char *delim, string *dest, int s_mode);
+
 int SplitString(const char *srcStr, const char *delim, vector<string> * strVec);
 
 void StringTrim(string &sSrc);

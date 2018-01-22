@@ -19,6 +19,12 @@ int main(int argc, char *argv[])
     printf("%s %s %d %s %s\n", info.protocol_type.c_str(), info.domain.c_str(), 
             info.port, info.path.c_str(), info.query.c_str());
 
+    string t("hhhheeellllhhh");
+    printf("%s\n", t.c_str());
+    string dest;
+    stringStrip(t.c_str(), "hhh", &dest, STRIP_MODE_LEFT | STRIP_MODE_RIGHT);
+
+    printf("%s\n", dest.c_str());
 
     return 0;
 }

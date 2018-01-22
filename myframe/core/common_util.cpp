@@ -207,7 +207,52 @@ void StringTrim(string &sSrc)
     sSrc = sSrc.substr(nBeginPos, nEnd - nBeginPos + 1);        
 }
 
-string stringStrip(const char *srcStr, const char *delim);
+int stringStrip(const char *srcStr, const char *delim, string *dest, int s_mode)
+{
+    if (!srcStr || !dest)
+    {
+        return -1;
+    }
+
+
+    char *pstart = const_cast<char *>(srcStr);
+    char *pend = strlen(srcStr) + pstart;
+    size_t dlen = strlen(delim);
+
+    if (!delim) {
+        dest->append(pstart);
+        return 0;
+    }
+
+    char *start = pstart;
+    char *end = pend;
+
+    while (s_mode & STRIP_MODE_LEFT)
+    {
+        if (!strncmp(pstart, delim, dlen))
+        {
+            pstart += dlen;
+            start = pstart;
+            //printf("start:%s\n", start);
+        }else
+            break;
+    }
+
+    while (s_mode & STRIP_MODE_RIGHT && pend - start >= dlen)
+    {
+        pend = pend - dlen;
+        if (!strncmp(pend, delim, dlen))
+        {
+            end = pend;
+        }else
+            break;
+    }
+    
+    dest->clear();
+    dest->append(start, end);
+    
+    return 0;
+}
 
 int SplitString(const char *srcStr, const char *delim, vector<string> * strVec)
 {
