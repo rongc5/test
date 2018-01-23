@@ -59,7 +59,7 @@ void http_req_process::peer_close()
     }
 }
 
-void http_req_process::gen_send_head(string * head)
+string http_req_process::gen_req_head()
 {
     //method
     stringstream ss;

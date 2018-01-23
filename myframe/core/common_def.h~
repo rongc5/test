@@ -262,7 +262,6 @@ struct http_res_head_para
     {
         _response_code = 200;
         _version = "HTTP/1.1";
-        _content_length = (uint64_t)-1;
     }
 
     void init()
@@ -272,7 +271,6 @@ struct http_res_head_para
         _cookie_list.clear();
         _headers.clear();
         _chunked.clear();
-        _content_length = (uint64_t)-1;
     }
 
     string * get_header(const char * str)
@@ -298,7 +296,6 @@ struct http_res_head_para
     map<string, set_cookie_item> _cookie_list;
     map<string, string> _headers;
     string _chunked;
-    _content_length = (uint64_t)-1;
 }; 
 
 

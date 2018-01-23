@@ -488,29 +488,3 @@ int parse_url(const string &url, url_info & info)
 
     return 0;
 }
-
-void http_res_process::parse_url_para(const string &url_path, map<string, string> &url_para_map)
-{
-	size_t pos = url_path.find("?");
-    if (pos == string::npos)
-    {
-        return;
-    }
-
-    vector<string> vec_str;
-    SplitString(url_path.substr(pos + 1).c_str(), "&", &vec_str);
-    size_t num = vec_str.size();
-    for (size_t ii = 0; ii < num; ii ++)
-    {
-        vector<string> tmp_vec;
-        SplitString(vec_str[ii].c_str(), "=", &tmp_vec);
-        if (tmp_vec.size() == 2)
-        {
-            StringTrim(tmp_vec[0]);
-            StringTrim(tmp_vec[1]);
-            string tmp_para;
-            UrlDecode(tmp_vec[1], tmp_para);
-            url_para_map.insert(make_pair(tmp_vec[0], tmp_para));
-        }
-    }               
-}

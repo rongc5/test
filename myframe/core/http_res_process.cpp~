@@ -81,6 +81,16 @@ void http_res_process::gen_send_head(string * head)
         }
     }
 
+    //content_length
+    if (_res_head_para._content_length != (uint64_t)-1)
+    {
+        head->append("Content-Length: ");
+        char tmp_buf[SIZE_LEN_32];
+        snprintf(tmp_buf, sizeof(tmp_buf), "%llu", _res_head_para._content_length);
+        head->append(tmp_buf);
+        head->append(CRLF);
+    }
+
     //other para
     for (map<string, string>::iterator itr = _res_head_para._headers.begin(); 
             itr != _res_head_para._headers.end(); ++itr)
@@ -91,6 +101,16 @@ void http_res_process::gen_send_head(string * head)
         head->append(CRLF);
     }
 
+    if (!_res_head_para.get_header("Connection")) {
+        string * tmp_str =_req_head_para.get_header("Connection");
+        if (tmp_str) {
+            head->append("Connection");
+            head->append(": ");
+            head->append(tmp_str->c_str());
+            head->append(CRLF);
+        }
+
+    }
 
     //最后一个分隔符
     head->append(CRLF);
