@@ -7,7 +7,6 @@
 #include "base_data_process.h"
 #include "common_exception.h"
 #include "common_def.h"
-#include "http_base_msg.h"
 #include "http_base_process.h"
 
 class http_res_process:public http_base_process
@@ -48,7 +47,7 @@ class http_res_process:public http_base_process
 		BOUNDARY_STATUS _recv_boundary_status;
 		uint32_t _recv_body_length;
 		
-        response_code _res_code;
+        http_response_code _res_code;
 };
 
 

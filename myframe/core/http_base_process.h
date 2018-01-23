@@ -7,7 +7,7 @@
 #include "base_data_process.h"
 #include "common_exception.h"
 #include "common_def.h"
-#include "http_base_msg.h"
+
 
 class http_base_data_process;
 class http_base_process: public base_data_process
