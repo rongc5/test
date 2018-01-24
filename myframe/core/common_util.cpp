@@ -16,7 +16,7 @@ time_t get_timestr(char dest[], size_t dest_len, const char * format)
     return now;
 }
 
- time_t get_timestr_millSecond(char dest[], size_t dest_len, const char * format)
+time_t get_timestr_millSecond(char dest[], size_t dest_len, const char * format)
 {
     if (!dest || !dest_len || !format){
         return 0;
@@ -30,7 +30,7 @@ time_t get_timestr(char dest[], size_t dest_len, const char * format)
     size_t s = strftime(dest, dest_len, format, tm_now);
 
     uint64_t millSecond = GetMilliSecond();
-    
+
     snprintf(dest + s, dest_len - s, ".%03d", (int)(millSecond %1000));
 
     return now;
@@ -149,45 +149,45 @@ int GetStringByLabel(const string &sSrc,const string &sLabel1,const string &sLab
 
 int GetCaseStringByLabel(const string &sSrc,const string &sLabel1,const string &sLabel2, string &sOut, unsigned int nBeginPos, int nIfRetPos)
 {
-        if (nBeginPos >= sSrc.length())
+    if (nBeginPos >= sSrc.length())
+    {
+        return -1;
+    }
+    char *pTmp = (char*)sSrc.c_str() + nBeginPos;
+    char *pTmp0;
+    char *pTmp1;
+    if (sLabel1 == "")
+    {
+        pTmp0 = pTmp;
+    }
+    else
+    {  
+        pTmp0= strcasestr(pTmp, sLabel1.c_str());
+        if (pTmp0 == NULL)
+        { 
+            return -1;
+        }
+    }
+    int ret=pTmp0-sSrc.c_str()+sLabel1.length();
+    if (sLabel2 != "")
+    {   
+        pTmp1 = strcasestr(pTmp0+sLabel1.length(), sLabel2.c_str());if (pTmp1 == NULL)
         {
             return -1;
         }
-        char *pTmp = (char*)sSrc.c_str() + nBeginPos;
-        char *pTmp0;
-        char *pTmp1;
-        if (sLabel1 == "")
-        {
-            pTmp0 = pTmp;
-        }
-        else
-        {  
-            pTmp0= strcasestr(pTmp, sLabel1.c_str());
-            if (pTmp0 == NULL)
-            { 
-                return -1;
-            }
-        }
-        int ret=pTmp0-sSrc.c_str()+sLabel1.length();
-        if (sLabel2 != "")
-        {   
-            pTmp1 = strcasestr(pTmp0+sLabel1.length(), sLabel2.c_str());if (pTmp1 == NULL)
-            {
-                return -1;
-            }
-            ret=pTmp1+sLabel2.length()-sSrc.c_str();
-            sOut=string(pTmp0+sLabel1.length(), pTmp1-pTmp0-sLabel1.length());
-        }
-        else
-        {
-            sOut = string(pTmp0+sLabel1.length());
-            ret=sSrc.length();
-        }
-        if (nIfRetPos == 0)
-        {
-            ret = 0;
-        }
-        return ret;
+        ret=pTmp1+sLabel2.length()-sSrc.c_str();
+        sOut=string(pTmp0+sLabel1.length(), pTmp1-pTmp0-sLabel1.length());
+    }
+    else
+    {
+        sOut = string(pTmp0+sLabel1.length());
+        ret=sSrc.length();
+    }
+    if (nIfRetPos == 0)
+    {
+        ret = 0;
+    }
+    return ret;
 }
 
 void StringTrim(string &sSrc)
@@ -247,10 +247,10 @@ int stringStrip(const char *srcStr, const char *delim, string *dest, int s_mode)
         }else
             break;
     }
-    
+
     dest->clear();
     dest->append(start, end);
-    
+
     return 0;
 }
 
@@ -312,7 +312,7 @@ int get_prime_num(int num)
 
 int UrlEncode(const string &sSrc, string &sDest)
 {
-	    int nLen = sSrc.length();
+    int nLen = sSrc.length();
     int i=0;
     while (i < nLen)
     {
@@ -321,7 +321,7 @@ int UrlEncode(const string &sSrc, string &sDest)
         {
             char sBuf[10] = {0};
             //sprintf(sBuf, "%c%02X", '%', tmpc);
-			snprintf(sBuf, sizeof(sBuf),"%c%02X", '%', tmpc);
+            snprintf(sBuf, sizeof(sBuf),"%c%02X", '%', tmpc);
             sDest.append(sBuf);
         }
         else
@@ -336,70 +336,70 @@ int UrlEncode(const string &sSrc, string &sDest)
 
 int UrlDecode(const string &sSrc, string &sDest)
 {
-	int nLen = sSrc.length();
-	for (int i = 0; i < nLen; )
-	{
-		unsigned char chTmp =  (unsigned char)sSrc[i];
-		if (chTmp == '%')
-		{
-			if (i + 2 >= nLen)
-				return -1;
-			
-		        ++i;
-		        char szBuf[3] = {0};
-		        szBuf[0] = sSrc[i++];
-		        szBuf[1] = sSrc[i++];
-		        int nTmp = strtoul(szBuf, 0, 16);
-			 chTmp = nTmp;
-		        sDest.append(1, chTmp);
-		}
-		else
-		{
-			sDest.append(1, sSrc[i]);
-			++i;
-		}
-	}
-	return 0;
+    int nLen = sSrc.length();
+    for (int i = 0; i < nLen; )
+    {
+        unsigned char chTmp =  (unsigned char)sSrc[i];
+        if (chTmp == '%')
+        {
+            if (i + 2 >= nLen)
+                return -1;
+
+            ++i;
+            char szBuf[3] = {0};
+            szBuf[0] = sSrc[i++];
+            szBuf[1] = sSrc[i++];
+            int nTmp = strtoul(szBuf, 0, 16);
+            chTmp = nTmp;
+            sDest.append(1, chTmp);
+        }
+        else
+        {
+            sDest.append(1, sSrc[i]);
+            ++i;
+        }
+    }
+    return 0;
 }
 
 
 string GetMonStr(int nMonth)
 {
-        string sMonth;
-        if (nMonth >=1 && nMonth <=12)
-        {
-                sMonth = string(MONTHARRAY[nMonth-1].sMonth);
-        }
-        return sMonth;
+    string sMonth;
+    if (nMonth >=1 && nMonth <=12)
+    {
+        sMonth = string(MONTHARRAY[nMonth-1].sMonth);
+    }
+    return sMonth;
 }
 
 string GetWeekStr(int nWeek)
 {
-        string sWeek;
-        if (nWeek >=0 && nWeek <=6)
-        {
-                sWeek = string(WEEKARRAY[nWeek].sWeek);
-        }
-        return sWeek;
+    string sWeek;
+    if (nWeek >=0 && nWeek <=6)
+    {
+        sWeek = string(WEEKARRAY[nWeek].sWeek);
+    }
+    return sWeek;
 }
 
 
 string SecToHttpTime(time_t tmpTime)
 {
-		struct timeval tm1;
-        struct timezone tz1;        
-        gettimeofday(&tm1, &tz1);
-        tmpTime = tmpTime + tz1.tz_minuteswest*60;
-        tm tmpTm;
-        localtime_r(&tmpTime, &tmpTm);
-        char sTime[128] = {0};
-        //sprintf(sTime, "%s, %d %s %d %02d:%02d:%02d GMT ", GetWeekStr(tmpTm.tm_wday).c_str(),  tmpTm.tm_mday, 
-        //        GetMonStr(tmpTm.tm_mon + 1).c_str(), 
-        //        tmpTm.tm_year+1900, tmpTm.tm_hour, tmpTm.tm_min,   tmpTm.tm_sec);
-		snprintf(sTime, sizeof(sTime),"%s, %d %s %d %02d:%02d:%02d GMT ", GetWeekStr(tmpTm.tm_wday).c_str(),  tmpTm.tm_mday, 
-			GetMonStr(tmpTm.tm_mon + 1).c_str(), 
-			tmpTm.tm_year+1900, tmpTm.tm_hour, tmpTm.tm_min,   tmpTm.tm_sec);
-        return string(sTime);
+    struct timeval tm1;
+    struct timezone tz1;        
+    gettimeofday(&tm1, &tz1);
+    tmpTime = tmpTime + tz1.tz_minuteswest*60;
+    tm tmpTm;
+    localtime_r(&tmpTime, &tmpTm);
+    char sTime[128] = {0};
+    //sprintf(sTime, "%s, %d %s %d %02d:%02d:%02d GMT ", GetWeekStr(tmpTm.tm_wday).c_str(),  tmpTm.tm_mday, 
+    //        GetMonStr(tmpTm.tm_mon + 1).c_str(), 
+    //        tmpTm.tm_year+1900, tmpTm.tm_hour, tmpTm.tm_min,   tmpTm.tm_sec);
+    snprintf(sTime, sizeof(sTime),"%s, %d %s %d %02d:%02d:%02d GMT ", GetWeekStr(tmpTm.tm_wday).c_str(),  tmpTm.tm_mday, 
+            GetMonStr(tmpTm.tm_mon + 1).c_str(), 
+            tmpTm.tm_year+1900, tmpTm.tm_hour, tmpTm.tm_min,   tmpTm.tm_sec);
+    return string(sTime);
 }
 
 
@@ -489,9 +489,9 @@ int parse_url(const string &url, url_info & info)
     return 0;
 }
 
-void http_res_process::parse_url_para(const string &url_path, map<string, string> &url_para_map)
+void parse_url_para(const string &url_path, map<string, string> &url_para_map)
 {
-	size_t pos = url_path.find("?");
+    size_t pos = url_path.find("?");
     if (pos == string::npos)
     {
         return;

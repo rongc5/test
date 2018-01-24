@@ -31,73 +31,10 @@ void http_res_process::reset()
     _recv_boundary_status = BOUNDARY_RECV_HEAD;
 }
 
-void http_res_process::gen_send_head(string * head)
-{
-    if (!head) {
-        return;
-    }
-    //返回状态码
-    string response_str = _res_code.get_response_str(_res_head_para._response_code);
-
-    {
-        head->append(_res_head_para._version);
-        head->append(" ");
-        char tmp_buf[SIZE_LEN_32];
-        snprintf(tmp_buf, sizeof(tmp_buf), "%d", _res_head_para._response_code);
-        head->append(tmp_buf);
-        head->append(" ");
-        head->append(response_str);
-        head->append(CRLF);
-    }
-
-    //cookie
-    if (_res_head_para._cookie_list.size() > 0)
-    {
-        for (map<string, set_cookie_item>::iterator itr = _res_head_para._cookie_list.begin(); 
-                itr != _res_head_para._cookie_list.end(); ++itr)
-        {
-            head->append("Set-Cookie: ");
-            head->append(itr->first);
-            head->append("=");
-            head->append(itr->second._value);
-            if (itr->second._expire != 0)
-            {
-                head->append(";expires=");
-                head->append(SecToHttpTime(itr->second._expire));
-            }
-
-            if (itr->second._path != "")
-            {
-                head->append(";path=");
-                head->append(itr->second._path);
-            }
-
-            if (itr->second._domain != "")
-            {
-                head->append(";domain=");
-                head->append(itr->second._domain);
-            }
-            head->append(CRLF);
-        }
-    }
-
-    //other para
-    for (map<string, string>::iterator itr = _res_head_para._headers.begin(); 
-            itr != _res_head_para._headers.end(); ++itr)
-    {
-        head->append(itr->first);
-        head->append(": ");
-        head->append(itr->second);
-        head->append(CRLF);
-    }
-
-
-    //最后一个分隔符
-    head->append(CRLF);
-}
 
 size_t http_res_process::process_recv_body(const char *buf, size_t len, int &result)
 {
+
     int ret = 0;
     if (strcasecmp(_req_head_para._method.c_str(), "GET") == 0 || strcasecmp(_req_head_para._method.c_str(), "HEAD") == 0)
     {
@@ -110,7 +47,17 @@ size_t http_res_process::process_recv_body(const char *buf, size_t len, int &res
         {
             ret = _data_process->process_recv_body(buf, len, result);
             _recv_body_length += ret;
-            if (_recv_body_length == _req_head_para._content_length)
+
+
+            uint64_t content_length = 0;
+            string *tmp_str = _req_head_para.get_header("Content-Length");
+            if (tmp_str) 
+            {
+                content_length = strtoull(tmp_str->c_str(), 0, 10);
+            }
+
+
+            if (_recv_body_length == content_length)
             {
                 result = 1;
             }				
@@ -180,13 +127,6 @@ void http_res_process::parse_header(string & recv_head)
     string *tmp_str = NULL;
     if (_req_head_para._method == "POST" || _req_head_para._method == "PUT")
     {
-        //parse content_length
-        tmp_str = _req_head_para.get_header("Content-Length");
-        if (tmp_str)
-        {
-            _req_head_para._content_length = strtoull(tmp_str->c_str(), 0, 10);
-        }
-
         //parse content_type
         tmp_str = _req_head_para.get_header("Content-Type");
         if (tmp_str)
@@ -213,7 +153,14 @@ void http_res_process::send_finish()
 
 size_t http_res_process::get_boundary(const char *buf, size_t len, int &result)
 {	
-    if (_req_head_para._content_length == (uint32_t)-1)
+    uint64_t content_length = 0;
+    string *tmp_str = _req_head_para.get_header("Content-Length");
+    if (tmp_str) 
+    {
+        content_length = strtoull(tmp_str->c_str(), 0, 10);
+    }
+
+    if (!content_length)
     {
         THROW_COMMON_EXCEPT("get boundary but content_len not found");
     }
@@ -228,14 +175,14 @@ size_t http_res_process::get_boundary(const char *buf, size_t len, int &result)
         size_t pos = _recv_boundary_head.find("\r\n\r\n");
         if (pos != string::npos)
         {					
-            _boundary_para._boundary_content_length = _req_head_para._content_length - (_boundary_para._boundary_str.length() + BOUNDARY_EXTRA_LEN)
+            _boundary_para._boundary_content_length = content_length - (_boundary_para._boundary_str.length() + BOUNDARY_EXTRA_LEN)
                 - (pos+4);	
             string left_str;
-            if (_recv_body_length == _req_head_para._content_length)
+            if (_recv_body_length == content_length)
             {											
                 left_str = _recv_boundary_head.substr(pos+4, _boundary_para._boundary_content_length);
             }
-            else if (_recv_body_length >= _req_head_para._content_length - (_boundary_para._boundary_str.length() + BOUNDARY_EXTRA_LEN)) 
+            else if (_recv_body_length >= content_length - (_boundary_para._boundary_str.length() + BOUNDARY_EXTRA_LEN)) 
             {
                 left_str = _recv_boundary_head.substr(pos+4, _boundary_para._boundary_content_length);
                 _recv_boundary_status = BOUNDARY_RECV_TAIL;
@@ -249,7 +196,7 @@ size_t http_res_process::get_boundary(const char *buf, size_t len, int &result)
             if (left_str.length() > 0)
             {
                 p_len = _data_process->process_recv_body(left_str.c_str(), left_str.length(), result);
-                if (_recv_body_length == _req_head_para._content_length)
+                if (_recv_body_length == content_length)
                     result = 1;
                 p_len = left_str.length() - p_len;
             }
@@ -266,14 +213,14 @@ size_t http_res_process::get_boundary(const char *buf, size_t len, int &result)
     else if (_recv_boundary_status == BOUNDARY_RECV_BODY)//recv_body
     {		
         int tmp_len = len;
-        if (_recv_body_length == _req_head_para._content_length)
+        if (_recv_body_length == content_length)
         {
             tmp_len = len - (_boundary_para._boundary_str.length() + BOUNDARY_EXTRA_LEN);
 
         }
-        else if (_recv_body_length >= _req_head_para._content_length - (_boundary_para._boundary_str.length() + BOUNDARY_EXTRA_LEN))
+        else if (_recv_body_length >= content_length - (_boundary_para._boundary_str.length() + BOUNDARY_EXTRA_LEN))
         {
-            tmp_len = len - (_recv_body_length - (_req_head_para._content_length - (_boundary_para._boundary_str.length() + BOUNDARY_EXTRA_LEN)));
+            tmp_len = len - (_recv_body_length - (content_length - (_boundary_para._boundary_str.length() + BOUNDARY_EXTRA_LEN)));
             _recv_boundary_status = BOUNDARY_RECV_TAIL;
         }
         else //还要收body
@@ -283,13 +230,13 @@ size_t http_res_process::get_boundary(const char *buf, size_t len, int &result)
         p_len = _data_process->process_recv_body(buf, tmp_len, result);
         p_len = tmp_len - p_len;
 
-        if (_recv_body_length == _req_head_para._content_length)
+        if (_recv_body_length == content_length)
             result = 1; //结束了
     }
     else //recv tail
     {	
         //什么也不干，只等收完
-        if (_recv_body_length == _req_head_para._content_length)
+        if (_recv_body_length == content_length)
             result = 1;				
     }
     _recv_body_length = _recv_body_length - p_len;

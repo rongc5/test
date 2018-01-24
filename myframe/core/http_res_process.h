@@ -16,9 +16,7 @@ class http_res_process:public http_base_process
 
         virtual ~http_res_process();
 
-		virtual void reset();
-		
-		virtual void gen_send_head(string * head);       
+		virtual void reset();     
 
     protected:
 		virtual size_t process_recv_body(const char *buf, size_t len, int &result);
@@ -44,8 +42,6 @@ class http_res_process:public http_base_process
 		boundary_para _boundary_para;		
 		BOUNDARY_STATUS _recv_boundary_status;
 		uint32_t _recv_body_length;
-		
-        http_response_code _res_code;
 };
 
 

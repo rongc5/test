@@ -129,6 +129,6 @@ int parse_domain(const string &sDomain, vector<string> & vIp);
 
 int parse_url(const string &url, url_info & info);
 
-void parse_url_para(const string &url_para, map<string, string> &url_para_map);
+void parse_url_para(const string &url_path, map<string, string> &url_para_map);
 
 #endif

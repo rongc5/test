@@ -35,8 +35,6 @@ class http_base_process: public base_data_process
 
 		http_base_data_process *get_process();
 
-        virtual void gen_send_head(string * head) = 0;
-
         virtual void reset();
 
     protected:		

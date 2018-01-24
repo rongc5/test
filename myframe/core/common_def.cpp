@@ -1,6 +1,7 @@
 #include "common_def.h"
 #include "log_helper.h"
 #include "common_util.h"
+#include "common_exception.h"
 
 log_conf::log_conf()
 {
@@ -26,3 +27,129 @@ bool operator==(const ObjId & oj1, const ObjId & oj2)
     return oj1._thread_index ==  oj2._thread_index && oj1._id == oj2._id;
 }
 
+map<int, string> http_response_code::_response_list;
+
+string http_response_code::get_response_str(int status_code)
+{
+    map<int, string>::iterator tmp_itr = _response_list.find(status_code);
+    if (tmp_itr == _response_list.end())
+    {
+        THROW_COMMON_EXCEPT("http response code not found");
+    }
+
+    return tmp_itr->second;
+}
+
+
+void http_req_head_para::to_head_str(string * head)
+{
+    if (!head) 
+    {
+        return;
+    }
+
+
+    head->append(_method);
+    head->append(" ");
+    head->append(_url_path);
+    head->append(" ");
+    head->append(_version);
+    head->append(CRLF);        
+
+
+    if (_cookie_list.size() > 0)
+    {
+        head->append("Cookie");
+        head->append(": ");
+        int ii = 0;
+        for (map<string, string>::iterator itr = _cookie_list.begin(); 
+                itr != _cookie_list.end(); ++itr)
+        {
+            if (ii > 0)
+                head->append(";");
+            head->append(itr->first);
+            head->append("=");
+            head->append(itr->second);
+            ii++;
+        }
+        head->append(CRLF);
+    }
+
+    //other para
+    for (map<string, string>::iterator itr = _headers.begin();itr != _headers.end(); ++itr)
+    {
+        head->append(itr->first);
+        head->append(": ");
+        head->append(itr->second);
+        head->append(CRLF);
+    }
+
+    //最后一个分隔符
+    head->append(CRLF);
+
+}
+
+void http_res_head_para::to_head_str(string * head)
+{
+    if (!head) {
+        return;
+    }
+    //返回状态码
+    string response_str = http_response_code::get_response_str(_response_code);
+
+    {
+        head->append(_version);
+        head->append(" ");
+        char tmp_buf[SIZE_LEN_32];
+        snprintf(tmp_buf, sizeof(tmp_buf), "%d", _response_code);
+        head->append(tmp_buf);
+        head->append(" ");
+        head->append(response_str);
+        head->append(CRLF);
+    }
+
+    //cookie
+    if (_cookie_list.size() > 0)
+    {
+        for (map<string, set_cookie_item>::iterator itr = _cookie_list.begin(); 
+                itr != _cookie_list.end(); ++itr)
+        {
+            head->append("Set-Cookie: ");
+            head->append(itr->first);
+            head->append("=");
+            head->append(itr->second._value);
+            if (itr->second._expire != 0)
+            {
+                head->append(";expires=");
+                head->append(SecToHttpTime(itr->second._expire));
+            }
+
+            if (itr->second._path != "")
+            {
+                head->append(";path=");
+                head->append(itr->second._path);
+            }
+
+            if (itr->second._domain != "")
+            {
+                head->append(";domain=");
+                head->append(itr->second._domain);
+            }
+            head->append(CRLF);
+        }
+    }
+
+    //other para
+    for (map<string, string>::iterator itr = _headers.begin(); 
+            itr != _headers.end(); ++itr)
+    {
+        head->append(itr->first);
+        head->append(": ");
+        head->append(itr->second);
+        head->append(CRLF);
+    }
+
+
+    //最后一个分隔符
+    head->append(CRLF);
+}

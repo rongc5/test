@@ -20,24 +20,20 @@ class http_req_process:public http_base_process
 
 		void peer_close();
 
-		virtual void gen_send_head(string * head);
-
     protected:
         size_t process_recv_body(char *buf, size_t len, int &result);
 
         size_t get_chuncked(char *buf, size_t len, int &result);
 
-        void parse_header();
-
-        virtual void gen_send_head();
-
         void recv_finish();
 
         void send_finish();
+        
+        virtual void parse_first_line(const string & line);
+
+        virtual void parse_header(string & recv_head);
 
     protected:
-        http_req_head_para _req_head_para;
-        http_res_head_para _res_head_para;
 
 		int64_t _cur_chunked_len;
 		int64_t _cur_chunked_rec_len;

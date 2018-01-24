@@ -138,13 +138,13 @@ class http_req_msg:public normal_msg
             _msg_op = MSG_HTTP_REQ;
         };
         virtual ~http_req_msg(){}
-          
+
         http_cmd_type cmd_type;
 
         string sid;
-		  string  url;
-		  string post_data;
-		  map<string, string> headers;
+        string  url;
+        string post_data;
+        map<string, string> headers;
 };
 
 enum HTTP_STATUS
@@ -177,20 +177,12 @@ class http_response_code
         ~http_response_code()
         {
         }
-       
-		string get_response_str(int status_code)
-		{
-			map<int, string>::iterator tmp_itr = _response_list.find(status_code);
-			if (tmp_itr == _response_list.end())
-			{
-				THROW_COMMON_EXCEPT("http response code not found");
-			}
 
-			return tmp_itr->second;
-		}
+        static string get_response_str(int status_code);
 
-	private:	
-        map<int, string> _response_list;
+
+    private:	
+        static map<int, string> _response_list;
 };
 
 struct set_cookie_item
@@ -211,7 +203,6 @@ struct http_req_head_para
     {
         _method = "GET";
         _version = "HTTP/1.1";
-        _content_length = (uint64_t)-1;
     }
 
     void init()
@@ -222,8 +213,6 @@ struct http_req_head_para
 
         _headers.clear();
         _cookie_list.clear();
-          
-        _content_length = (uint64_t)-1;
     }
 
     string * get_header(const char * str)
@@ -244,14 +233,15 @@ struct http_req_head_para
         return ptr;
     }
 
+    void to_head_str(string * head);
+
+
     string _method;
     string _url_path;
     string _version;
 
     map<string, string> _headers;    
     map<string, string> _cookie_list;
-     
-    uint64_t _content_length;
 };
 
 
@@ -262,7 +252,6 @@ struct http_res_head_para
     {
         _response_code = 200;
         _version = "HTTP/1.1";
-        _content_length = (uint64_t)-1;
     }
 
     void init()
@@ -272,7 +261,6 @@ struct http_res_head_para
         _cookie_list.clear();
         _headers.clear();
         _chunked.clear();
-        _content_length = (uint64_t)-1;
     }
 
     string * get_header(const char * str)
@@ -293,36 +281,40 @@ struct http_res_head_para
         return ptr;
     }
 
+
+    void to_head_str(string * head);
+
+
+
     int _response_code;
     string _version;
     map<string, set_cookie_item> _cookie_list;
     map<string, string> _headers;
     string _chunked;
-    _content_length = (uint64_t)-1;
 }; 
 
 
 enum HTTP_RECV_TYPE
 {
-	CHUNK_TYPE = 0,
-	CONTENT_LENGTH_TYPE = 1,
-	OTHER_TYPE = 2
+    CHUNK_TYPE = 0,
+    CONTENT_LENGTH_TYPE = 1,
+    OTHER_TYPE = 2
 };
 
 struct boundary_para
 {
-	string _boundary_str;
-	uint32_t _boundary_content_length;
-	boundary_para()
-	{
-		init();
-	}
-	
-	void init()
-	{
-		_boundary_str.clear();
-		_boundary_content_length = (uint32_t)-1;		
-	}
+    string _boundary_str;
+    uint32_t _boundary_content_length;
+    boundary_para()
+    {
+        init();
+    }
+
+    void init()
+    {
+        _boundary_str.clear();
+        _boundary_content_length = (uint32_t)-1;		
+    }
 };
 
 const uint32_t BOUNDARY_EXTRA_LEN = 8;
