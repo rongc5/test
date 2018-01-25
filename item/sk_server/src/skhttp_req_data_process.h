@@ -10,7 +10,14 @@ class skhttp_req_data_process: public http_base_data_process
     public:
         skhttp_req_data_process(http_base_process * _p_process);
 
-        virtual ~skhttp_req_data_process(){}
+        virtual ~skhttp_req_data_process()
+        {
+            if (req_msg)
+            {
+                delete req_msg;
+                req_msg = NULL;
+            }
+        }
 
         virtual string *get_send_body(int &result);
 

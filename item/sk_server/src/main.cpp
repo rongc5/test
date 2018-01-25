@@ -4,6 +4,8 @@
 #include "base_net_thread.h"
 #include "sah_data_process.h"
 
+#include "skhttp_req_thread.h"
+
 
 int main(int argc, char *argv[])
 {

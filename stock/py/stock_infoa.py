@@ -1581,9 +1581,9 @@ def get_last_singles(days_num, deal_dic):
                 if len(subitems) > 11:
                     deal_dic[subitems[0]]['last_single']['range_percent'].append(float(subitems[11]))
                     if not len(deal_dic[subitems[0]]['last_single']['sum_range_percent']):
-                        deal_dic[subitems[0]]['last_single']['sum_range_percent'].append(float(subitems[11]))
+                        deal_dic[subitems[0]]['last_single']['sum_range_percent'].append(round(float(subitems[11]), 2))
                     else:
-                        deal_dic[subitems[0]]['last_single']['sum_range_percent'].append(float(subitems[11]) + deal_dic[subitems[0]]['last_single']['sum_range_percent'][-1])
+                        deal_dic[subitems[0]]['last_single']['sum_range_percent'].append(round(float(subitems[11]) + deal_dic[subitems[0]]['last_single']['sum_range_percent'][-1], 2))
 
         file.close()
 

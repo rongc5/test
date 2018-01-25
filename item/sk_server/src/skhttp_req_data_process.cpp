@@ -19,11 +19,13 @@ string * skhttp_req_data_process::get_send_body(int &result)
 {
     result = 1;
 
-    string * body = new string(_body);
+    //string * body = new string(_body);
 
-    _body.clear();
+    //_body.clear();
 
-    return body;
+    if (_req_msg.post_data)
+
+    return NULL;
 }
 
 void skhttp_req_data_process::set_req_msg(http_req_msg * req_msg)
@@ -85,6 +87,7 @@ size_t skhttp_req_data_process::process_recv_body(const char *buf, size_t len, i
 
     _recv_buf.append(buf, len);
 
+    LOG_DEBUG("recv_buf: %s", recv_buf.c_str());
     return len;
 }
 
@@ -104,6 +107,7 @@ base_net_obj * skhttp_req_data_process::gen_net_obj(http_req_msg * req_msg)
     connect->set_process(req_process);
 
     sk_process->set_url_info(info);
+    sk_process->set_req_msg(req_msg);
 
     return connect;
 }
