@@ -12,7 +12,7 @@
 
 skhttp_req_data_process::sah_data_process(http_base_process * _p_process):http_base_data_process(_p_process)
 {
-	_req_msg = NULL;
+    _req_msg = NULL;
 }
 
 string * skhttp_req_data_process::get_send_body(int &result)
@@ -28,19 +28,19 @@ string * skhttp_req_data_process::get_send_body(int &result)
 
 void skhttp_req_data_process::set_req_msg(http_req_msg * req_msg)
 {
-	_req_msg = req_msg;
+    _req_msg = req_msg;
 }
 
 
 url_info & skhttp_req_data_process::get_url_info()
 {
-	return _url_info;
+    return _url_info;
 }
 
 
 void skhttp_req_data_process::set_url_info(url_info & info)
 {
-	_url_info = info;
+    _url_info = info;
 }
 
 
@@ -65,7 +65,7 @@ string * skhttp_req_data_process::get_send_head()
 {
     string * str = new string;
     http_req_head_para & req_head = _base_process->get_req_head_para();
-    
+
     char proc_name[SIZE_LEN_256] = {'\0'};
     get_proc_name(proc_name, sizeof(proc_name));
 
@@ -90,20 +90,21 @@ size_t skhttp_req_data_process::process_recv_body(const char *buf, size_t len, i
 
 base_net_obj * skhttp_req_data_process::gen_net_obj(http_req_msg * req_msg)
 {
-	  url_info info; 
-	  parse_url(req_msg->url, _url_info);
-	  	
-	  vector<string> vIp;
-	  parse_domain(info.domain, vIp);
-	  
-	  out_connect<http_req_process> * connect = new out_connect<http_res_process>(vIP[0], info.port);
-     http_req_process * req_process = new http_req_process(connect);
-     skhttp_req_data_process * sk_process = new sah_data_process(req_process);
-     req_process->set_process(sk_process);
-     connect->set_process(req_process);
-     
-      sk_process->set_url_info(info);
+    url_info info; 
+    parse_url(req_msg->url, _url_info);
 
-     return connect;
+    vector<string> vIp;
+    parse_domain(info.domain, vIp);
+
+    int index = rand() % vIP;
+    out_connect<http_req_process> * connect = new out_connect<http_res_process>(vIP[index], info.port);
+    http_req_process * req_process = new http_req_process(connect);
+    skhttp_req_data_process * sk_process = new sah_data_process(req_process);
+    req_process->set_process(sk_process);
+    connect->set_process(req_process);
+
+    sk_process->set_url_info(info);
+
+    return connect;
 }
 
