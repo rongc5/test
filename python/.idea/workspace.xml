@@ -26,17 +26,19 @@
       <file leaf-file-name="re_test_case.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/re_test_case.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="851" column="0" selection-start="25157" selection-end="25157" vertical-scroll-proportion="0.0" vertical-offset="17030" max-vertical-offset="17841">
+            <state line="851" column="0" selection-start="25157" selection-end="25157" vertical-scroll-proportion="0.0" vertical-offset="15884" max-vertical-offset="17841">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="stock_infoa.py" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/../stock/py/stock_infoa.py">
+      <file leaf-file-name="wjad.py" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/wjad.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="1640" column="21" selection-start="52805" selection-end="52805" vertical-scroll-proportion="0.25" vertical-offset="30685" max-vertical-offset="38361">
-              <folding />
+            <state line="113" column="38" selection-start="3819" selection-end="3819" vertical-scroll-proportion="0.5555556" vertical-offset="1767" max-vertical-offset="2565">
+              <folding>
+                <element signature="e#37#51#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -54,8 +56,9 @@
         <option value="$PROJECT_DIR$/../stock/py/api" />
         <option value="$PROJECT_DIR$/../stock/py/ua_list" />
         <option value="$PROJECT_DIR$/re_test_case.py" />
-        <option value="$PROJECT_DIR$/../stock/py/stock.ini" />
         <option value="$PROJECT_DIR$/../stock/py/stock_infoa.py" />
+        <option value="$PROJECT_DIR$/../stock/py/stock.ini" />
+        <option value="$PROJECT_DIR$/wjad.py" />
       </list>
     </option>
   </component>
@@ -90,6 +93,7 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -107,10 +111,6 @@
               <option name="myItemId" value="stock" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="py" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
           </PATH>
           <PATH>
             <PATH_ELEMENT>
@@ -118,13 +118,12 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="stock" />
+              <option name="myItemId" value="python" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -133,8 +132,8 @@
     <property name="options.lastSelected" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../stock" />
     <property name="FullScreen" value="false" />
-    <property name="options.splitter.details.proportions" value="0.2" />
     <property name="options.searchVisible" value="true" />
+    <property name="options.splitter.details.proportions" value="0.2" />
   </component>
   <component name="PyConsoleOptionsProvider">
     <option name="myPythonConsoleState">
@@ -231,9 +230,6 @@
       <option name="PARAMETERS" value="" />
       <method />
     </configuration>
-    <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug" singleton="true">
-      <method />
-    </configuration>
     <configuration default="true" type="tests" factoryName="Unittests">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -255,6 +251,9 @@
       <option name="PUREUNITTEST" value="true" />
       <option name="PARAMS" value="" />
       <option name="USE_PARAM" value="false" />
+      <method />
+    </configuration>
+    <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug" singleton="true">
       <method />
     </configuration>
     <configuration default="true" type="tests" factoryName="Doctests">
@@ -310,7 +309,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="20" y="0" width="1400" height="860" extended-state="0" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -344,6 +343,20 @@
     <breakpoint-manager />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/re_test_case.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="851" column="0" selection-start="25157" selection-end="25157" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="17936">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../stock/py/stock_infoa.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="1640" column="21" selection-start="52805" selection-end="52805" vertical-scroll-proportion="0.0" vertical-offset="31160" max-vertical-offset="38361">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/re_test_case.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="851" column="0" selection-start="25157" selection-end="25157" vertical-scroll-proportion="0.0" vertical-offset="16169" max-vertical-offset="17841">
@@ -404,29 +417,40 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/../stock/py/ua_list">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="419" column="105" selection-start="47288" selection-end="47288" vertical-scroll-proportion="0.9399684" vertical-offset="7366" max-vertical-offset="8075" />
-      </provider>
       <provider editor-type-id="com.intellij.persistence.database.editor.CsvTableFileEditorProvider">
         <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="419" column="105" selection-start="47288" selection-end="47288" vertical-scroll-proportion="0.9399684" vertical-offset="7366" max-vertical-offset="8075" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/../stock/py/stock.ini">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="125" column="1" selection-start="2052" selection-end="2052" vertical-scroll-proportion="3.1807747" vertical-offset="158" max-vertical-offset="3534" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/re_test_case.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="851" column="0" selection-start="25157" selection-end="25157" vertical-scroll-proportion="0.0" vertical-offset="17030" max-vertical-offset="17841">
+        <state line="94" column="0" selection-start="1408" selection-end="1408" vertical-scroll-proportion="0.0" vertical-offset="1659" max-vertical-offset="2603">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/../stock/py/stock_infoa.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="1640" column="21" selection-start="52805" selection-end="52805" vertical-scroll-proportion="0.25" vertical-offset="30685" max-vertical-offset="38361">
+        <state line="1595" column="4" selection-start="51155" selection-end="51155" vertical-scroll-proportion="-0.33333334" vertical-offset="30229" max-vertical-offset="37392">
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/re_test_case.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="851" column="0" selection-start="25157" selection-end="25157" vertical-scroll-proportion="0.0" vertical-offset="15884" max-vertical-offset="17841">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/wjad.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="113" column="38" selection-start="3819" selection-end="3819" vertical-scroll-proportion="0.5555556" vertical-offset="1767" max-vertical-offset="2565">
+          <folding>
+            <element signature="e#37#51#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
