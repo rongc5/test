@@ -3,6 +3,8 @@
 
 import MySQLdb
 import time
+import subprocess
+import os
 
 
 def log_write(filename, str):                                                                                                                                                   
@@ -110,13 +112,13 @@ class MySQL:
         except MySQLdb.Error as e:
             log_write(LOG_NAME, "%s Mysql Error %s" % (time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time())), e.args[1]))
 
-HADOOP_DIR='/data/mingz/hadoop-2.8.1'
+HADOOP_BIN='/data/mingz/hadoop-2.8.1/bin/hadoop'
 HADOOP_HDFS='hdfs://10.26.24.165:9090'
 
 if __name__ == '__main__':
     sql = MySQL('10.26.20.20','root','1Q2W3E4R')
-    today = time.strftime('%Y%m%d',time.localtime(time.time()))
-    file_name = 'wjad_' %s (today)
+    now = time.strftime('%H%M%S',time.localtime(time.time()))
+    file_name = 'wjad_%s' % (now)
     sql.selectDb('search_admin')
     res = sql.select('select gid, name, author, cp, cover_flag, chapter_flag from charge_data_recommend_weijuan;')
     #print res
@@ -125,5 +127,13 @@ if __name__ == '__main__':
         res_str = 'i_%s\twjad\t%s\t%s' % (key['gid'], key['cover_flag'], key['chapter_flag'])
         log_write(file_name, res_str)
         print res_str
+    today = time.strftime('%Y-%m-%d',time.localtime(time.time()))
+    hadoop_dir = '%s%s/%s' % (HADOOP_HDFS, '/rs/iteminfo', today)
+    cmd = [HADOOP_BIN, 'fs', '-mkdir', '-p', hadoop_dir]
+    res_str = subprocess.Popen(cmd, stdout=subprocess.PIPE).communicate()[0]
+
+    if  os.path.isfile(file_name):
+        cmd = [HADOOP_BIN, 'fs', '-put', file_name, hadoop_dir]
+        res_str = subprocess.Popen(cmd, stdout=subprocess.PIPE).communicate()[0]
 
 
