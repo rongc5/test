@@ -29,6 +29,7 @@ OBJ	= ${SRC_DIR}/base_net_container.o                        \
     ${SRC_DIR}/http_base_data_process.o                        \
     ${SRC_DIR}/http_base_process.o                        \
     ${SRC_DIR}/http_res_process.o                        \
+    ${SRC_DIR}/http_req_process.o                        \
     ${SRC_DIR}/mybase64.o                        \
 
 OBJ_INCLUDE=

@@ -19,7 +19,7 @@ CC  = g++ $(CPPFLAGS)
 
 
 OBJ	= $(LOC_DIR)/main.o     \
-	  $(LOC_DIR)/sah_data_process.o \
+	  $(LOC_DIR)/skhttp_req_data_process.o \
 
 
 AR=ar

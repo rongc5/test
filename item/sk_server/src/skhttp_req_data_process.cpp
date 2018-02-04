@@ -10,7 +10,7 @@
 #include "http_req_process.h"
 
 
-skhttp_req_data_process::sah_data_process(http_base_process * _p_process):http_base_data_process(_p_process)
+skhttp_req_data_process::skhttp_req_data_process(http_base_process * _p_process):http_base_data_process(_p_process)
 {
     _req_msg = NULL;
 }
@@ -19,11 +19,10 @@ string * skhttp_req_data_process::get_send_body(int &result)
 {
     result = 1;
 
-    //string * body = new string(_body);
-
-    //_body.clear();
-
-    if (_req_msg.post_data)
+    if (!_req_msg->post_data.empty())
+    {
+        return new string(_req_msg->post_data);
+    }
 
     return NULL;
 }
@@ -53,31 +52,51 @@ void skhttp_req_data_process::header_recv_finish()
 
 void skhttp_req_data_process::msg_recv_finish()
 {
-    http_req_head_para & req_head_para = _base_process->get_req_head_para();
-    LOG_DEBUG("url_path:%s", req_head_para._url_path.c_str());
+    http_res_head_para & res_head_para = _base_process->get_res_head_para();
     map<string, string>::iterator it;
-    for (it = req_head_para._url_para_list.begin(); it != req_head_para._url_para_list.end(); it++)
-        LOG_DEBUG("query:%s %s", it->first.c_str(), it->second.c_str());
-    _recv_buf.clear();
 
-    _body.append("I have recved, I am Server\n");
+    _recv_buf.clear();
 }
 
 string * skhttp_req_data_process::get_send_head()
 {
-    string * str = new string;
     http_req_head_para & req_head = _base_process->get_req_head_para();
 
-    char proc_name[SIZE_LEN_256] = {'\0'};
-    get_proc_name(proc_name, sizeof(proc_name));
+    req_head._headers = _req_msg->headers;
+    
+    if (!_req_msg->sid.empty()) 
+    {
+        LOG_DEBUG("sid: %s", _req_msg->sid.c_str());
+    }
 
-    req_head._headers.insert(make_pair("Date", SecToHttpTime(time(NULL))));
-    req_head._headers.insert(make_pair("Server", proc_name));
-    req_head._headers.insert(make_pair("Connection", "keep-alive"));
-    req_head._content_length = _body.length();
-    _base_process->gen_send_head(str);
+    if (_req_msg->cmd_type == HTTP_REQ_GET)
+    {
+        req_head._method = "GET";
+    }
+    else if (_req_msg->cmd_type == HTTP_REQ_POST)
+    {
+        req_head._method = "POST";
+    }
 
+
+    req_head._url_path = _req_msg->url;
+    req_head._version = "HTTP/1.1";
+
+    req_head._headers.insert(make_pair("Host", _url_info.domain));
+    if (!_req_msg->post_data.empty())
+    {
+        req_head._headers.insert(make_pair("content-length", _req_msg->post_data));
+    }
+
+    if (req_head.get_header("Accept"))
+    {
+        req_head._headers.insert(make_pair("Accept", "*/*"));
+    }
+
+    string * str = new string;
+    req_head.to_head_str(str);
     LOG_DEBUG("%s", str->c_str());
+
     return str;
 }
 
@@ -87,24 +106,25 @@ size_t skhttp_req_data_process::process_recv_body(const char *buf, size_t len, i
 
     _recv_buf.append(buf, len);
 
-    LOG_DEBUG("recv_buf: %s", recv_buf.c_str());
+    LOG_DEBUG("recv_buf: %s", _recv_buf.c_str());
     return len;
 }
 
 base_net_obj * skhttp_req_data_process::gen_net_obj(http_req_msg * req_msg)
 {
     url_info info; 
-    parse_url(req_msg->url, _url_info);
+    parse_url(req_msg->url, info);
 
     vector<string> vIp;
     parse_domain(info.domain, vIp);
 
-    int index = rand() % vIP;
-    out_connect<http_req_process> * connect = new out_connect<http_res_process>(vIP[index], info.port);
+    int index = rand() % vIp.size();
+    out_connect<http_req_process> * connect = new out_connect<http_req_process>(vIp[index], info.port);
     http_req_process * req_process = new http_req_process(connect);
-    skhttp_req_data_process * sk_process = new sah_data_process(req_process);
+    skhttp_req_data_process * sk_process = new skhttp_req_data_process(req_process);
     req_process->set_process(sk_process);
     connect->set_process(req_process);
+    connect->connect();
 
     sk_process->set_url_info(info);
     sk_process->set_req_msg(req_msg);

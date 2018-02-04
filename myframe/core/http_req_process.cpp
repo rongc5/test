@@ -5,10 +5,10 @@
 #include "common_exception.h"
 #include "common_def.h"
 #include "log_helper.h"
-#include "base_connect.h"
+#include "http_base_data_process.h"
 
 
-http_req_process::http_req_process(base_connect *p):http_base_process(p)
+http_req_process::http_req_process(base_net_obj *p):http_base_process(p)
 {
     http_base_process::change_http_status(SEND_HEAD);
     _cur_chunked_len = -1;
@@ -19,22 +19,6 @@ http_req_process::http_req_process(base_connect *p):http_base_process(p)
 
 http_req_process::~http_req_process()
 {
-}
-
-
-http_head_para & http_req_process::get_req_head_para()
-{
-    return _req_head_para;
-}
-
-http_res_head_para& http_req_process::get_res_head_para()
-{
-    return _res_head_para;
-}
-
-void http_req_process::set_req_head_para(const http_head_para &para)
-{
-    _req_head_para = para;
 }
 
 void http_req_process::reset()
@@ -66,7 +50,7 @@ void http_req_process::parse_first_line(const string & line)
     if (tmp_vec.size() != 3) {
         THROW_COMMON_EXCEPT("http first line");
     }
-    _res_head_para._response_code = strtoull(tmp_vec[1]->c_str(), 0, 10);
+    _res_head_para._response_code = strtoull(tmp_vec[1].c_str(), 0, 10);
     _res_head_para._version = tmp_vec[0];
 }
 
@@ -98,11 +82,9 @@ void http_req_process::parse_header(string & recv_head)
         StringTrim(_res_head_para._chunked);	
     }
 
-
 }
 
-
-size_t http_req_process::process_recv_body(char *buf, size_t len, int &result)
+size_t http_req_process::process_recv_body(const char *buf, size_t len, int &result)
 {
     result = 0;
     size_t ret  = 0;
@@ -110,7 +92,7 @@ size_t http_req_process::process_recv_body(char *buf, size_t len, int &result)
     string *tmp_str = _res_head_para.get_header("Content-Length");
     if (tmp_str) 
     {
-        content_length = strtoull(tmp_str->c_str(), 0, 10)
+        content_length = strtoull(tmp_str->c_str(), 0, 10);
     }
     if (_res_head_para._chunked == "chunked")
     {
@@ -120,7 +102,7 @@ size_t http_req_process::process_recv_body(char *buf, size_t len, int &result)
     else if (content_length)
     {
         _recv_type = CONTENT_LENGTH_TYPE;
-        ret = _data_process->process_recv_body(buf, len);
+        ret = _data_process->process_recv_body(buf, len, result);
         _recv_body_length += ret;
         if (_recv_body_length == content_length)
         {
@@ -131,13 +113,13 @@ size_t http_req_process::process_recv_body(char *buf, size_t len, int &result)
     {
         _recv_type = OTHER_TYPE;
         //THROW_COMMON_EXCEPT(-1, "recv body fail " << http_base_process<DATA_PROCESS>::_recv_head.c_str());
-        ret = _data_process->process_recv_body(buf, len);
+        ret = _data_process->process_recv_body(buf, len, result);
         _recv_body_length += ret;
     }
     return ret;
 }
 
-size_t http_req_process::get_chuncked(char *buf, size_t len, int &result)
+size_t http_req_process::get_chuncked(const char *buf, size_t len, int &result)
 {
     size_t ret = len;
     size_t p_len = 0;
@@ -168,7 +150,7 @@ size_t http_req_process::get_chuncked(char *buf, size_t len, int &result)
                 }
                 else
                 {
-                    p_len = _data_process->process_recv_body((char*)_chunked_body.substr(_cur_chunked_rec_len, _cur_chunked_len).c_str(), _cur_chunked_len);
+                    p_len = _data_process->process_recv_body((char*)_chunked_body.substr(_cur_chunked_rec_len, _cur_chunked_len).c_str(), _cur_chunked_len, result);
                     p_len = _cur_chunked_len - p_len;
 
                     _chunked_body = _chunked_body.substr(_cur_chunked_rec_len+2+_cur_chunked_len);
@@ -190,7 +172,7 @@ size_t http_req_process::get_chuncked(char *buf, size_t len, int &result)
             }
             else
             {
-                p_len = _data_process->process_recv_body((char*)_chunked_body.substr(_cur_chunked_rec_len, _cur_chunked_len).c_str(), _cur_chunked_len); 
+                p_len = _data_process->process_recv_body((char*)_chunked_body.substr(_cur_chunked_rec_len, _cur_chunked_len).c_str(), _cur_chunked_len, result); 
                 p_len = _cur_chunked_len - p_len;
                 _chunked_body = _chunked_body.substr(_cur_chunked_len+_cur_chunked_rec_len+2);
                 _cur_chunked_len = -1;
@@ -202,15 +184,9 @@ size_t http_req_process::get_chuncked(char *buf, size_t len, int &result)
     return ret - p_len;
 }
 
-
-void http_req_process::gen_send_head()
-{             	
-    _send_head = _data_process->gen_send_head();
-}      
-
 void http_req_process::recv_finish()
 {        	
-    _data_process->recv_finish();            
+    _data_process->msg_recv_finish();            
     reset();
 }
 
