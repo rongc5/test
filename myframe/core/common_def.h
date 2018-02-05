@@ -284,8 +284,6 @@ struct http_res_head_para
 
     void to_head_str(string * head);
 
-
-
     int _response_code;
     string _version;
     map<string, set_cookie_item> _cookie_list;

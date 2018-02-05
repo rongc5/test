@@ -48,13 +48,16 @@ void skhttp_req_data_process::set_url_info(url_info & info)
 void skhttp_req_data_process::header_recv_finish()
 {
     //base_net_container * net_container = get_base_net()->get_net_container();
+    http_res_head_para & res_head_para = _base_process->get_res_head_para();
+    string * str = new string;
+    res_head_para.to_head_str(str);
+    LOG_DEBUG("header: %s", str->c_str());
 }
 
 void skhttp_req_data_process::msg_recv_finish()
 {
-    http_res_head_para & res_head_para = _base_process->get_res_head_para();
-    map<string, string>::iterator it;
 
+    LOG_DEBUG("recv_buf: %s", _recv_buf.c_str());
     _recv_buf.clear();
 }
 

@@ -87,7 +87,10 @@ class base_connect:public base_net_obj
         {
             update_event(_epoll_event | EPOLLOUT);
 
-            real_send();
+            if (_process)
+            {
+                real_send();
+            }
         }
 
         virtual bool process_recv_msg(ObjId & id, normal_msg * p_msg)
@@ -131,6 +134,8 @@ class base_connect:public base_net_obj
                 ret = 0;
             }
 
+            LOG_DEBUG("recv:%s", buf);
+
             return ret;
         }
 
@@ -141,6 +146,7 @@ class base_connect:public base_net_obj
                 THROW_COMMON_EXCEPT("close the socket " << _fd);
             }
 
+            LOG_DEBUG("send:%s", buf);
             ssize_t ret =  send(_fd, buf, len, MSG_DONTWAIT | MSG_NOSIGNAL);
             if (ret < 0)
             {

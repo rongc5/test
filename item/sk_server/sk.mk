@@ -24,7 +24,7 @@ OBJ	= $(LOC_DIR)/main.o     \
 
 AR=ar
 
-server=sah_ser
+server=sk_ser
 
 all	: $(server)
 	

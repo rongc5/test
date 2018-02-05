@@ -2,7 +2,7 @@
 
 
 
-mk=kf.mk
+mk=sk.mk
 
 path=`pwd`
 base_file=`basename $path`

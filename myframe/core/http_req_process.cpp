@@ -56,6 +56,7 @@ void http_req_process::parse_first_line(const string & line)
 
 void http_req_process::parse_header(string & recv_head)
 {
+    LOG_DEBUG("recv_head:%s", recv_head.c_str());
     string &head_str = recv_head;
     vector<string> strList;
     SplitString(head_str.c_str(), CRLF, &strList);

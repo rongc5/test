@@ -75,6 +75,11 @@ base_net_container * base_net_obj::get_net_container()
 
 void base_net_obj::update_event(int event)
 {
+    if (!_p_net_container)
+    {
+        return;
+    }
+
     common_epoll * p_epoll = _p_net_container->get_epoll();
     if (_epoll_event != event && p_epoll) {
         _epoll_event = event;
