@@ -118,7 +118,7 @@ HADOOP_HDFS='hdfs://10.26.24.165:9090'
 if __name__ == '__main__':
     sql = MySQL('10.26.20.20','root','1Q2W3E4R')
     now = time.strftime('%H%M%S',time.localtime(time.time()))
-    file_name = 'wjad_%s' % (now)
+    file_name = 'wjad_%d' % (int(time.time()))
     sql.selectDb('search_admin')
     res = sql.select('select gid, name, author, cp, cover_flag, chapter_flag from charge_data_recommend_weijuan;')
     #print res
@@ -126,14 +126,24 @@ if __name__ == '__main__':
     for key in res:
         res_str = 'i_%s\twjad\t%s\t%s' % (key['gid'], key['cover_flag'], key['chapter_flag'])
         log_write(file_name, res_str)
-        print res_str
+        #print res_str
     today = time.strftime('%Y-%m-%d',time.localtime(time.time()))
-    hadoop_dir = '%s%s/%s' % (HADOOP_HDFS, '/rs/iteminfo', today)
+    hadoop_dir = '%s%s/%s/%s' % (HADOOP_HDFS, '/rs/iteminfo', today, file_name)
     cmd = [HADOOP_BIN, 'fs', '-mkdir', '-p', hadoop_dir]
+    print cmd
     res_str = subprocess.Popen(cmd, stdout=subprocess.PIPE).communicate()[0]
 
     if  os.path.isfile(file_name):
         cmd = [HADOOP_BIN, 'fs', '-put', file_name, hadoop_dir]
+        res_str = subprocess.Popen(cmd, stdout=subprocess.PIPE).communicate()[0]
+
+        src = '%s/%s' % (hadoop_dir, file_name)
+        dst = '%s/%s' % (hadoop_dir, 'part-00000')
+        cmd = [HADOOP_BIN, 'fs', '-mv', src, dst]
+        res_str = subprocess.Popen(cmd, stdout=subprocess.PIPE).communicate()[0]
+		
+        dst = '%s/%s' % (hadoop_dir, '_SUCCESS')
+        cmd = [HADOOP_BIN, 'fs', '-tochz', dst]
         res_str = subprocess.Popen(cmd, stdout=subprocess.PIPE).communicate()[0]
 
 
