@@ -155,9 +155,8 @@ enum HTTP_STATUS
     SEND_BODY = 3
 };
 
-class http_response_code
+struct http_response_code
 {
-    public:
         http_response_code()
         {
             _response_list.insert(make_pair(200, "OK"));
@@ -178,11 +177,10 @@ class http_response_code
         {
         }
 
-        static string get_response_str(int status_code);
+        string get_response_str(int status_code);
 
-
-    private:	
-        static map<int, string> _response_list;
+        map<int, string> _response_list;
+        static http_response_code response;
 };
 
 struct set_cookie_item
@@ -251,12 +249,14 @@ struct http_res_head_para
     http_res_head_para()
     {
         _response_code = 200;
+        _response_str = "OK";
         _version = "HTTP/1.1";
     }
 
     void init()
     {
         _response_code = 200;
+        _response_str.clear();
         _version.clear();
         _cookie_list.clear();
         _headers.clear();
@@ -285,6 +285,7 @@ struct http_res_head_para
     void to_head_str(string * head);
 
     int _response_code;
+    string _response_str;
     string _version;
     map<string, set_cookie_item> _cookie_list;
     map<string, string> _headers;

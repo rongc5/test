@@ -74,7 +74,7 @@ size_t http_res_process::process_recv_body(const char *buf, size_t len, int &res
 void http_res_process::parse_first_line(const string & line)
 {
     vector<string> tmp_vec;
-    SplitString(line.c_str(), " ", &tmp_vec);
+    SplitString(line.c_str(), " ", &tmp_vec, SPLIT_MODE_ALL);
     if (tmp_vec.size() != 3) {
         THROW_COMMON_EXCEPT("http first line");
     }
@@ -88,16 +88,14 @@ void http_res_process::parse_header(string & recv_head)
 {
     string &head_str = recv_head;
     vector<string> strList;
-    SplitString(head_str.c_str(), CRLF, &strList);
+    SplitString(head_str.c_str(), CRLF, &strList, SPLIT_MODE_ALL);
     for (uint32_t i = 0; i < strList.size(); i++) {
         if (!i) {
             parse_first_line(strList[i]);
         }else {
             vector<string> tmp_vec;
-            SplitString(strList[i].c_str(), ":", &tmp_vec);
-            if (tmp_vec.size() != 2) {
-                THROW_COMMON_EXCEPT("http headers parms error");
-            } else {
+            SplitString(strList[i].c_str(), ":", &tmp_vec, SPLIT_MODE_ONE);
+            if (2 == tmp_vec.size()) {
                 _req_head_para._headers.insert(make_pair(tmp_vec[0], tmp_vec[1]));
                 LOG_DEBUG("%s: %s", tmp_vec[0].c_str(), tmp_vec[1].c_str());
             }
@@ -108,12 +106,12 @@ void http_res_process::parse_header(string & recv_head)
     if (cookie_str)
     {
         vector<string> cookie_vec;
-        SplitString(cookie_str->c_str(), ";", &cookie_vec);
+        SplitString(cookie_str->c_str(), ";", &cookie_vec, SPLIT_MODE_ALL);
         size_t c_num = cookie_vec.size();
         for (size_t ii = 0; ii < c_num; ii++)
         {
             vector<string> c_tmp_vec;
-            SplitString(cookie_vec[ii].c_str(), "=", &c_tmp_vec);
+            SplitString(cookie_vec[ii].c_str(), "=", &c_tmp_vec, SPLIT_MODE_ONE);
             if (c_tmp_vec.size() == 2)
             {
                 StringTrim(c_tmp_vec[0]);

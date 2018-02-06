@@ -46,12 +46,13 @@ void http_req_process::peer_close()
 void http_req_process::parse_first_line(const string & line)
 {
     vector<string> tmp_vec;
-    SplitString(line.c_str(), " ", &tmp_vec);
+    SplitString(line.c_str(), " ", &tmp_vec, SPLIT_MODE_ALL);
     if (tmp_vec.size() != 3) {
         THROW_COMMON_EXCEPT("http first line");
     }
     _res_head_para._response_code = strtoull(tmp_vec[1].c_str(), 0, 10);
     _res_head_para._version = tmp_vec[0];
+    _res_head_para._response_str = tmp_vec[2];
 }
 
 void http_req_process::parse_header(string & recv_head)
@@ -59,16 +60,15 @@ void http_req_process::parse_header(string & recv_head)
     LOG_DEBUG("recv_head:%s", recv_head.c_str());
     string &head_str = recv_head;
     vector<string> strList;
-    SplitString(head_str.c_str(), CRLF, &strList);
+    SplitString(head_str.c_str(), CRLF, &strList, SPLIT_MODE_ALL);
     for (uint32_t i = 0; i < strList.size(); i++) {
         if (!i) {
             parse_first_line(strList[i]);
         }else {
             vector<string> tmp_vec;
-            SplitString(strList[i].c_str(), ":", &tmp_vec);
-            if (tmp_vec.size() != 2) {
-                THROW_COMMON_EXCEPT("http headers parms error");
-            } else {
+            SplitString(strList[i].c_str(), ":", &tmp_vec, SPLIT_MODE_ONE);
+            if (2 == tmp_vec.size()) {
+                //THROW_COMMON_EXCEPT("http headers parms error");
                 _res_head_para._headers.insert(make_pair(tmp_vec[0], tmp_vec[1]));
                 LOG_DEBUG("%s: %s", tmp_vec[0].c_str(), tmp_vec[1].c_str());
             }
@@ -76,7 +76,7 @@ void http_req_process::parse_header(string & recv_head)
     }
 
     //parse chunked
-    string * tmp_str= _res_head_para.get_header("Transfer-Encoding:");
+    string * tmp_str= _res_head_para.get_header("Transfer-Encoding");
     if (tmp_str)
     {	
         _res_head_para._chunked = *tmp_str;

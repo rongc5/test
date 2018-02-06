@@ -27,7 +27,9 @@ int get_prime_num(int num);
 
 int stringStrip(const char *srcStr, const char *delim, string *dest, int s_mode);
 
-int SplitString(const char *srcStr, const char *delim, vector<string> * strVec);
+#define SPLIT_MODE_ONE 0x1
+#define SPLIT_MODE_ALL 0x2
+int SplitString(const char *srcStr, const char *delim, vector<string> * strVec, int s_mode);
 
 void StringTrim(string &sSrc);
 

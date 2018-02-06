@@ -27,14 +27,16 @@ bool operator==(const ObjId & oj1, const ObjId & oj2)
     return oj1._thread_index ==  oj2._thread_index && oj1._id == oj2._id;
 }
 
-map<int, string> http_response_code::_response_list;
+http_response_code http_response_code::response;
 
 string http_response_code::get_response_str(int status_code)
 {
+    string str;
     map<int, string>::iterator tmp_itr = _response_list.find(status_code);
     if (tmp_itr == _response_list.end())
     {
-        THROW_COMMON_EXCEPT("http response code not found");
+        LOG_DEBUG("http response code not found:%d", status_code);
+        return str;
     }
 
     return tmp_itr->second;
@@ -95,7 +97,8 @@ void http_res_head_para::to_head_str(string * head)
         return;
     }
     //返回状态码
-    string response_str = http_response_code::get_response_str(_response_code);
+    if (!_response_str.empty())
+        _response_str = http_response_code::response.get_response_str(_response_code);
 
     {
         head->append(_version);
@@ -104,7 +107,7 @@ void http_res_head_para::to_head_str(string * head)
         snprintf(tmp_buf, sizeof(tmp_buf), "%d", _response_code);
         head->append(tmp_buf);
         head->append(" ");
-        head->append(response_str);
+        head->append(_response_str);
         head->append(CRLF);
     }
 

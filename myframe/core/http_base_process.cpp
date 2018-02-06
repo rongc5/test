@@ -61,6 +61,7 @@ size_t http_base_process::process_recv_buf(const char *buf, size_t len)
     if (get_base_net()->_msg_op != MSG_CONNECT) {
         return ret;
     }
+    LOG_DEBUG("%s\n", buf);
 
     if (_http_status == RECV_BODY) //避免数据不被拷贝多次
     {	

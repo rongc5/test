@@ -254,7 +254,7 @@ int stringStrip(const char *srcStr, const char *delim, string *dest, int s_mode)
     return 0;
 }
 
-int SplitString(const char *srcStr, const char *delim, vector<string> * strVec)
+int SplitString(const char *srcStr, const char *delim, vector<string> * strVec, int s_mode)
 {
     if (!srcStr || !delim || !strVec)
     {
@@ -275,6 +275,10 @@ int SplitString(const char *srcStr, const char *delim, vector<string> * strVec)
             strVec->push_back(str);
             pstart =  pend + dlen;
             count += 1;
+            if (SPLIT_MODE_ONE == s_mode)
+            {
+                break;
+            }
         }
         else 
         {
@@ -447,18 +451,18 @@ int parse_domain(const string &sDomain, vector<string> & vIp)
 int parse_url(const string &url, url_info & info)
 {
     vector<string> tmp_vec;
-    SplitString(url.c_str(), "://", &tmp_vec);
+    SplitString(url.c_str(), "://", &tmp_vec, SPLIT_MODE_ONE);
     if (tmp_vec.size()) 
     {
         info.protocol_type = tmp_vec[0];
     }
 
     vector<string> t_vec;
-    SplitString(tmp_vec[1].c_str(), "/", &t_vec);
+    SplitString(tmp_vec[1].c_str(), "/", &t_vec, SPLIT_MODE_ONE);
     if (t_vec.size()) 
     {
         tmp_vec.clear();
-        SplitString(t_vec[0].c_str(), ":", &tmp_vec);
+        SplitString(t_vec[0].c_str(), ":", &tmp_vec, SPLIT_MODE_ONE);
         if (tmp_vec.size()) 
         {
             info.port = atoi(tmp_vec[1].c_str());
@@ -474,7 +478,7 @@ int parse_url(const string &url, url_info & info)
         }
 
         tmp_vec.clear();
-        SplitString(t_vec[1].c_str(), "?", &tmp_vec);
+        SplitString(t_vec[1].c_str(), "?", &tmp_vec, SPLIT_MODE_ONE);
         if (tmp_vec.size()) 
         {
             info.path = tmp_vec[0];
@@ -498,12 +502,12 @@ void parse_url_para(const string &url_path, map<string, string> &url_para_map)
     }
 
     vector<string> vec_str;
-    SplitString(url_path.substr(pos + 1).c_str(), "&", &vec_str);
+    SplitString(url_path.substr(pos + 1).c_str(), "&", &vec_str, SPLIT_MODE_ALL);
     size_t num = vec_str.size();
     for (size_t ii = 0; ii < num; ii ++)
     {
         vector<string> tmp_vec;
-        SplitString(vec_str[ii].c_str(), "=", &tmp_vec);
+        SplitString(vec_str[ii].c_str(), "=", &tmp_vec, SPLIT_MODE_ONE);
         if (tmp_vec.size() == 2)
         {
             StringTrim(tmp_vec[0]);

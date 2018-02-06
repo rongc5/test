@@ -7,7 +7,7 @@ int main(int argc, char *argv[])
 
     vector<string> strList;
 
-    SplitString(url.c_str(), "://", &strList);
+    SplitString(url.c_str(), "://", &strList, SPLIT_MODE_ONE);
 
     for (int i = 0; i< strList.size(); i++){
         printf("%s\n", strList[i].c_str());
