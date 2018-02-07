@@ -44,7 +44,6 @@ void skhttp_req_data_process::set_url_info(url_info & info)
     _url_info = info;
 }
 
-
 void skhttp_req_data_process::header_recv_finish()
 {
     //base_net_container * net_container = get_base_net()->get_net_container();
@@ -52,11 +51,12 @@ void skhttp_req_data_process::header_recv_finish()
     string * str = new string;
     res_head_para.to_head_str(str);
     LOG_DEBUG("header: %s", str->c_str());
+
+    REC_OBJ<string> rc(str);
 }
 
 void skhttp_req_data_process::msg_recv_finish()
 {
-
     LOG_DEBUG("recv_buf: %s", _recv_buf.c_str());
     _recv_buf.clear();
 }
@@ -109,7 +109,7 @@ size_t skhttp_req_data_process::process_recv_body(const char *buf, size_t len, i
 
     _recv_buf.append(buf, len);
 
-    LOG_DEBUG("recv_buf: %s", _recv_buf.c_str());
+    //LOG_DEBUG("recv_buf: %s", _recv_buf.c_str());
     return len;
 }
 
@@ -135,3 +135,15 @@ base_net_obj * skhttp_req_data_process::gen_net_obj(http_req_msg * req_msg)
     return connect;
 }
 
+bool skhttp_req_data_process::process_recv_msg(ObjId & id, normal_msg * p_msg)
+{
+    if (!p_msg)
+    {
+        return true;
+    }
+
+    REC_OBJ<normal_msg> rc(p_msg);
+
+
+
+}

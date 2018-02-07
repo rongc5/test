@@ -110,8 +110,7 @@ class base_connect:public base_net_obj
                 }
             }
 
-            _process->process_recv_msg(id, p_msg);
-            return true;
+            return _process->process_recv_msg(id, p_msg);
         }
 
 
