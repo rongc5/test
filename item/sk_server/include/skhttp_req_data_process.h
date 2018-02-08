@@ -30,12 +30,13 @@ class skhttp_req_data_process: public http_base_data_process
 
         virtual size_t process_recv_body(const char *buf, size_t len, int& result);
 
+        virtual bool process_recv_msg(ObjId & id, normal_msg * p_msg);
+
         void set_req_msg(http_req_msg * req_msg);
 
         url_info & get_url_info();
 
         void set_url_info(url_info & info);
-
 
         static base_net_obj * gen_net_obj(http_req_msg * req_msg);
 

@@ -37,7 +37,6 @@ class skhttp_req_thread:public base_net_thread
                 REC_OBJ<normal_msg> rc(p_msg);
                 return;
             }
-
         }
 
 };

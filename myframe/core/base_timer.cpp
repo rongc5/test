@@ -2,9 +2,11 @@
 #include "base_timer.h"
 #include "common_util.h"
 #include "base_net_thread.h"
+#include "base_net_container.h"
 
-base_timer::base_timer()
+base_timer::base_timer(base_net_container * net_container)
 {
+    _net_container = net_container;
 }
 
 base_timer::~base_timer()
@@ -52,7 +54,7 @@ void base_timer::check_timer()
         for (it = _timer_list.begin(); it != itup; it++) {
             vector<timer_msg *>::iterator itvec;
             for (itvec = it->second.begin(); itvec != it->second.end(); itvec++) {
-                base_net_thread::put_obj_msg((*itvec)->_id, (*itvec));
+                _net_container->handle_timeout(*itvec);
             }
         }
 

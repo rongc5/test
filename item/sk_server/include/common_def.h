@@ -3,14 +3,11 @@
 
 #include "base_def.h"
 
-enum normal_msg_op
-{
-    MSG_CONNECT = 1,
-    MSG_TIMER,
-    MSG_HTTP_REQ,
-    MSG_LOG,
-    PASS_NEW_MSG
-};
+#define MSG_CONNECT 1
+#define MSG_HTTP_REQ 2
+#define MSG_HTTP_RES 3
+#define MSG_LOG 4
+#define PASS_NEW_MSG 5
 
 struct ObjId
 {
@@ -29,7 +26,7 @@ class normal_msg
     public:
         normal_msg(){}
         virtual ~normal_msg(){}
-        normal_msg_op _msg_op;
+        int _msg_op;
 };
 
 
@@ -43,20 +40,16 @@ class normal_obj_msg //内部传递的消息
         }
 };
 
-enum timer_type
-{
-    NONE_TIMER_TYPE,
-    DELAY_CLOSE_TIMER_TYPE,
-    WEB_SOCKET_HANDSHAKE_OK_TIMER_TYPE = 10000, 
-};
+#define NONE_TIMER_TYPE 1
+#define DELAY_CLOSE_TIMER_TYPE 2
+#define WEB_SOCKET_HANDSHAKE_OK_TIMER_TYPE 3
 
 
-class timer_msg:public normal_msg
+class timer_msg
 {
     public:
         timer_msg()
         {
-            _msg_op = MSG_TIMER;
             _timer_type = NONE_TIMER_TYPE;
             _time_length = 0;
             _reach_time = 0;
@@ -64,7 +57,7 @@ class timer_msg:public normal_msg
         virtual ~timer_msg(){}
 
         ObjId _id;
-        timer_type _timer_type;
+        int _timer_type;
         uint64_t _time_length;
         uint64_t _reach_time;
 };

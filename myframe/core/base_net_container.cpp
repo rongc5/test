@@ -37,7 +37,7 @@ void base_net_container::init(const uint32_t epoll_size)
     _p_epoll = new common_epoll();
     _p_epoll->init(epoll_size);
 
-    _timer = new base_timer();
+    _timer = new base_timer(this);
 
     _id_str._id = OBJ_ID_BEGIN;
 }
@@ -58,6 +58,42 @@ const ObjId & base_net_container::gen_id_str()
 base_net_thread * base_net_container::get_net_thread()
 {
     return _net_thread;
+}
+
+void base_net_container::add_timer(timer_msg * t_msg)
+{
+    if (t_msg && _timer)
+        _timer->add_timer(t_msg); 
+}
+
+void base_net_container::handle_timeout(timer_msg * t_msg)
+{
+    if (!t_msg)
+    {
+        return;
+    }
+    
+    bool flag = false;
+    if (t_msg->_id._id <= OBJ_ID_BEGIN)
+    {
+        flag = _net_thread->handle_timeout(t_msg);
+        REC_OBJ<timer_msg> rec(t_msg);
+        return;
+    }
+
+    base_net_obj * net_obj = find(&t_msg->_id);
+    if (!net_obj)
+    {
+        REC_OBJ<timer_msg> rec(t_msg);
+        return;
+    }
+
+    flag = net_obj->handle_timeout(t_msg);
+    if (!flag)
+    {
+        REC_OBJ<timer_msg> rec(t_msg);
+        return;
+    }
 }
 
 

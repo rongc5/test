@@ -75,6 +75,11 @@ base_net_thread * base_net_thread::get_base_net_thread_obj(uint32_t thread_index
     return NULL;
 }
 
+void base_net_thread::add_timer(timer_msg * t_msg)
+{
+    _base_container->add_timer(t_msg);
+}
+
 void base_net_thread::put_obj_msg(ObjId & id, normal_msg * p_msg)
 {
     if (!p_msg) {
@@ -88,6 +93,11 @@ void base_net_thread::put_obj_msg(ObjId & id, normal_msg * p_msg)
     }
 
     net_thread->put_msg(id, p_msg);
+}
+
+bool base_net_thread::handle_timeout(timer_msg * t_msg)
+{
+    return false;
 }
 
 

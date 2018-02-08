@@ -93,27 +93,22 @@ class base_connect:public base_net_obj
             }
         }
 
-        virtual bool process_recv_msg(ObjId & id, normal_msg * p_msg)
+        virtual bool handle_timeout(timer_msg * t_msg)
         {
-            if (p_msg->_msg_op == MSG_TIMER) 
+            if (t_msg->_timer_type == DELAY_CLOSE_TIMER_TYPE) 
             {
-                timer_msg * t_msg = dynamic_cast<timer_msg *> (p_msg);
-                if (!t_msg) {
-                    REC_OBJ<normal_msg> rc(p_msg);
-                    return true;
-                }
-
-                if (t_msg->_timer_type == DELAY_CLOSE_TIMER_TYPE) {
-                    REC_OBJ<normal_msg> rc(p_msg);
-                    THROW_COMMON_EXCEPT("the connect obj delay close, delete it");
-                    return true;
-                }
+                REC_OBJ<timer_msg> rc(t_msg);
+                THROW_COMMON_EXCEPT("the connect obj delay close, delete it");
+                return true;
             }
-
-            return _process->process_recv_msg(id, p_msg);
+            
+            return _process->handle_timeout(t_msg);
         }
 
-
+        virtual bool process_recv_msg(ObjId & id, normal_msg * p_msg)
+        {
+            return _process->process_recv_msg(id, p_msg);
+        }
 
     protected:
         virtual int RECV(void *buf, size_t len)

@@ -3,10 +3,11 @@
 
 #include "common_def.h"
 
+class base_net_container;
 class base_timer
 {
 	public:
-		base_timer();
+		base_timer(base_net_container * net_container);
 
 		virtual ~base_timer();
 		
@@ -18,6 +19,7 @@ class base_timer
 
 	protected:
 		map<uint64_t, vector<timer_msg *> > _timer_list;
+        base_net_container * _net_container;
 };
 #endif
 

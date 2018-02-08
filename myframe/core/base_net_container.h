@@ -28,6 +28,10 @@ class base_net_container
 
         base_timer * get_timer();
 
+        void add_timer(timer_msg * t_msg);
+
+        void handle_timeout(timer_msg * t_msg);
+
         void init(const uint32_t epoll_size = 0);
 
     protected:

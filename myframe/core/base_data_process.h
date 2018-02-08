@@ -25,6 +25,10 @@ class base_data_process
 
         virtual bool process_recv_msg(ObjId & id, normal_msg * p_msg);
 
+        void add_timer(timer_msg * t_msg);
+
+        virtual bool handle_timeout(timer_msg * t_msg);
+
         void put_send_buf(string * str);
 
         base_net_obj * get_base_net();

@@ -58,37 +58,32 @@ size_t web_socket_process::process_recv_buf(const char *buf, const size_t len)
     return len;
 }
 
+bool web_socket_process::handle_timeout(timer_msg * t_msg)
+{
+    if (t_msg->_timer_type == WEB_SOCKET_HANDSHAKE_OK_TIMER_TYPE)
+    {
+        REC_OBJ<timer_msg> rc(t_msg);
+
+        if (_wb_status != WB_HANDSHAKE_OK)
+        {
+            THROW_COMMON_EXCEPT("the web socket handshake time out, delete it");
+        }
+        else
+        {
+            LOG_DEBUG("web socket handshake timer arrive, status ok");
+        }
+
+        return true;
+    }
+
+    return _p_data_process->handle_timeout(t_msg);
+}
+
 bool web_socket_process::process_recv_msg(ObjId & id, normal_msg * p_msg)
 {
     if (!_p_data_process) {
         REC_OBJ<normal_msg> rc(p_msg);
         return true;
-    }
-
-        
-    if (p_msg->_msg_op == MSG_TIMER) {
-        timer_msg * t_msg = dynamic_cast<timer_msg *> (p_msg);
-
-        if (!t_msg) {
-            REC_OBJ<normal_msg> rc(p_msg);
-            return true;
-        }
-
-        if (t_msg->_timer_type == WEB_SOCKET_HANDSHAKE_OK_TIMER_TYPE)
-        {
-            REC_OBJ<normal_msg> rc(p_msg);
-
-            if (_wb_status != WB_HANDSHAKE_OK)
-            {
-                THROW_COMMON_EXCEPT("the web socket handshake time out, delete it");
-            }
-            else
-            {
-                LOG_DEBUG("web socket handshake timer arrive, status ok");
-            }
-
-            return true;
-        }
     }
 
     _p_data_process->process_recv_msg(id, p_msg);

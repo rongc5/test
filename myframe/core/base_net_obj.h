@@ -35,6 +35,9 @@ class base_net_obj: public normal_msg
 
         virtual bool process_recv_msg(ObjId & id, normal_msg * p_msg);
 
+        void add_timer(timer_msg * t_msg);
+        virtual bool handle_timeout(timer_msg * t_msg);
+
         int destroy();
 
     protected:
