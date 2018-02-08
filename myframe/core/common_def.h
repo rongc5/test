@@ -45,21 +45,17 @@ class normal_obj_msg //内部传递的消息
 #define WEB_SOCKET_HANDSHAKE_OK_TIMER_TYPE 3
 
 
-class timer_msg
+struct timer_msg
 {
-    public:
         timer_msg()
         {
             _timer_type = NONE_TIMER_TYPE;
             _time_length = 0;
-            _reach_time = 0;
         };
-        virtual ~timer_msg(){}
 
         ObjId _id;
         int _timer_type;
         uint64_t _time_length;
-        uint64_t _reach_time;
 };
 
 enum LogType {

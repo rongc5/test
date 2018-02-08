@@ -45,21 +45,17 @@ class normal_obj_msg //内部传递的消息
 #define WEB_SOCKET_HANDSHAKE_OK_TIMER_TYPE 3
 
 
-class timer_msg
+struct timer_msg
 {
-    public:
         timer_msg()
         {
             _timer_type = NONE_TIMER_TYPE;
             _time_length = 0;
-            _reach_time = 0;
         };
-        virtual ~timer_msg(){}
 
         ObjId _id;
         int _timer_type;
         uint64_t _time_length;
-        uint64_t _reach_time;
 };
 
 enum LogType {
@@ -108,8 +104,6 @@ struct url_info
     string query;
 };
 
-
-
 enum http_cmd_type {
     HTTP_REQ_GET     = 1 << 0,
     HTTP_REQ_POST    = 1 << 1,
@@ -122,14 +116,13 @@ enum http_cmd_type {
     HTTP_REQ_PATCH   = 1 << 8
 };
 
-
 class http_req_msg:public normal_msg
 {
     public:
         http_req_msg()
         {
             _msg_op = MSG_HTTP_REQ;
-        };
+        }
         virtual ~http_req_msg(){}
 
         http_cmd_type cmd_type;
@@ -138,6 +131,21 @@ class http_req_msg:public normal_msg
         string  url;
         string post_data;
         map<string, string> headers;
+};
+
+class http_res_msg: public normal_msg
+{
+    public:
+        http_res_msg()
+        {
+            _msg_op = MSG_HTTP_RES;
+        }
+
+        virtual ~http_res_msg(){}
+
+        string sid;
+
+
 };
 
 enum HTTP_STATUS

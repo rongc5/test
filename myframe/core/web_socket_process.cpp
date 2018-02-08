@@ -58,12 +58,10 @@ size_t web_socket_process::process_recv_buf(const char *buf, const size_t len)
     return len;
 }
 
-bool web_socket_process::handle_timeout(timer_msg * t_msg)
+bool web_socket_process::handle_timeout(timer_msg & t_msg)
 {
-    if (t_msg->_timer_type == WEB_SOCKET_HANDSHAKE_OK_TIMER_TYPE)
+    if (t_msg._timer_type == WEB_SOCKET_HANDSHAKE_OK_TIMER_TYPE)
     {
-        REC_OBJ<timer_msg> rc(t_msg);
-
         if (_wb_status != WB_HANDSHAKE_OK)
         {
             THROW_COMMON_EXCEPT("the web socket handshake time out, delete it");

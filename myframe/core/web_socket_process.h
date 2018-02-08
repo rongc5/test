@@ -22,7 +22,7 @@ class web_socket_process: public base_data_process
 
         virtual bool process_recv_msg(ObjId & id, normal_msg * p_msg);
 
-        virtual bool handle_timeout(timer_msg * t_msg);
+        virtual bool handle_timeout(timer_msg & t_msg);
 
 		virtual string* get_send_buf();
 

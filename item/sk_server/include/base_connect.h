@@ -93,11 +93,10 @@ class base_connect:public base_net_obj
             }
         }
 
-        virtual bool handle_timeout(timer_msg * t_msg)
+        virtual bool handle_timeout(timer_msg & t_msg)
         {
-            if (t_msg->_timer_type == DELAY_CLOSE_TIMER_TYPE) 
+            if (t_msg._timer_type == DELAY_CLOSE_TIMER_TYPE) 
             {
-                REC_OBJ<timer_msg> rc(t_msg);
                 THROW_COMMON_EXCEPT("the connect obj delay close, delete it");
                 return true;
             }

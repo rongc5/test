@@ -125,7 +125,7 @@ int base_net_obj::destroy()
     return 0;
 }
 
-void base_net_obj::add_timer(timer_msg * t_msg)
+void base_net_obj::add_timer(timer_msg & t_msg)
 {
     if (_p_net_container)
     {
@@ -133,7 +133,7 @@ void base_net_obj::add_timer(timer_msg * t_msg)
     }
 }
 
-bool base_net_obj::handle_timeout(timer_msg * t_msg)
+bool base_net_obj::handle_timeout(timer_msg & t_msg)
 {
     return false;
 }

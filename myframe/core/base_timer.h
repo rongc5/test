@@ -11,14 +11,14 @@ class base_timer
 
 		virtual ~base_timer();
 		
-		uint64_t add_timer(timer_msg * t_msg);
+		uint64_t add_timer(timer_msg & t_msg);
 
 		void check_timer();
 
         bool is_empty();
 
 	protected:
-		map<uint64_t, vector<timer_msg *> > _timer_list;
+		map<uint64_t, vector<timer_msg> > _timer_list;
         base_net_container * _net_container;
 };
 #endif

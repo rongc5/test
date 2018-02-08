@@ -60,38 +60,31 @@ base_net_thread * base_net_container::get_net_thread()
     return _net_thread;
 }
 
-void base_net_container::add_timer(timer_msg * t_msg)
+void base_net_container::add_timer(timer_msg & t_msg)
 {
-    if (t_msg && _timer)
+    if (_timer)
         _timer->add_timer(t_msg); 
 }
 
-void base_net_container::handle_timeout(timer_msg * t_msg)
+void base_net_container::handle_timeout(timer_msg & t_msg)
 {
-    if (!t_msg)
-    {
-        return;
-    }
     
     bool flag = false;
-    if (t_msg->_id._id <= OBJ_ID_BEGIN)
+    if (t_msg._id._id <= OBJ_ID_BEGIN)
     {
         flag = _net_thread->handle_timeout(t_msg);
-        REC_OBJ<timer_msg> rec(t_msg);
         return;
     }
 
-    base_net_obj * net_obj = find(&t_msg->_id);
+    base_net_obj * net_obj = find(&t_msg._id);
     if (!net_obj)
     {
-        REC_OBJ<timer_msg> rec(t_msg);
         return;
     }
 
     flag = net_obj->handle_timeout(t_msg);
     if (!flag)
     {
-        REC_OBJ<timer_msg> rec(t_msg);
         return;
     }
 }

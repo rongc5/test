@@ -85,13 +85,13 @@ base_net_obj * base_data_process::get_base_net()
     return _p_connect;
 }
 
-void base_data_process::add_timer(timer_msg * t_msg)
+void base_data_process::add_timer(timer_msg & t_msg)
 {
     if (_p_connect)
         _p_connect->add_timer(t_msg);
 }
 
-bool base_data_process::handle_timeout(timer_msg * t_msg)
+bool base_data_process::handle_timeout(timer_msg & t_msg)
 {
     return false;
 }
