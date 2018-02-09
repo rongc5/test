@@ -144,8 +144,8 @@ class http_res_msg: public normal_msg
         virtual ~http_res_msg(){}
 
         string sid;
-
-
+        string url;
+        string response;
 };
 
 enum HTTP_STATUS
