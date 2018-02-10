@@ -11,8 +11,16 @@ int main(int argc, char *argv[])
     LOG_INIT(conf);
 
 
-    skhttp_req_thread * req_thread = new skhttp_req_thread();
-    req_thread->start();
+    skhttp_master_thread * master_thread = new skhttp_master_thread();
+    master_thread->start();
+
+    for (int i = 0; i < 3; i++)
+    {
+        skhttp_req_thread * req_thread = new skhttp_req_thread();
+        master_thread->add_worker_thread(req_thread->get_thread_index());
+        req_thread->start();
+    }
+
 
     http_req_msg * req_msg = new http_req_msg();
     ObjId  id;
