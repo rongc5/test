@@ -6,7 +6,7 @@
 #include "common_def.h"
 #include "log_helper.h"
 #include "http_base_data_process.h"
-
+#include "common_util.h"
 
 http_req_process::http_req_process(base_net_obj *p):http_base_process(p)
 {

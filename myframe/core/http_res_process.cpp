@@ -7,6 +7,7 @@
 #include "log_helper.h"
 #include "http_base_process.h"
 #include "http_base_data_process.h"
+#include "common_util.h"
 
 
 http_res_process::http_res_process(base_net_obj * p):http_base_process(p)

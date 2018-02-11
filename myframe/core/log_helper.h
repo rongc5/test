@@ -4,8 +4,6 @@
 #include "log_thread.h"
 #include "base_def.h"
 #include "base_singleton.h"
-#include "common_util.h"
-
 
 #define LOG_INIT(log_conf) \
     do { \

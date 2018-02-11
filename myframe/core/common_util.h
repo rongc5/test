@@ -3,6 +3,7 @@
 
 #include "base_def.h"
 #include "common_def.h"
+#include "log_helper.h"
 
 void get_proc_name(char buf[], size_t buf_len);
 
@@ -21,6 +22,16 @@ class REC_OBJ
 };
 
 int get_prime_num(int num);
+
+/*
+ *去除字符串末尾的单个回车换行符 ("\n" 或者 "\r\n")
+ *
+ *@data - 待处理的字符串;
+ *
+ *总是返回 @data;
+ *
+ */
+char* im_chomp(char *data);
 
 #define STRIP_MODE_LEFT 0x1  
 #define STRIP_MODE_RIGHT 0x2
@@ -52,6 +63,22 @@ time_t get_timestr_millSecond(char dest[], size_t dest_len, const char * format)
 int UrlEncode(const string &sSrc, string &sDest);
 
 int UrlDecode(const string &sSrc, string &sDest);
+
+#define ASSERT_WARNING(valid, fmt, arg...) \
+    do{ \
+        if(!(valid)){ \
+            LOG_WARNING(fmt, ##arg); \
+            return -1; \
+        } \
+    }while(0)
+
+#define ASSERT_DEBUG(valid, fmt, arg...) \
+    do{ \
+        if(!(valid)){ \
+            LOG_DEBUG(fmt, ##arg); \
+            return -1; \
+        } \
+    }while(0)
 
 
 #define ASSERT_DO(valid, PRINT) \

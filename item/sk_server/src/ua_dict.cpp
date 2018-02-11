@@ -2,16 +2,47 @@
 #include "base_def.h"
 #include "log_helper.h"
 
+ua_dict::ua_dict()
+{
+}
+
+ua_dict::~ua_dict()
+{
+    destroy();
+}
+
 int ua_dict::init(const char * path, uint32_t ua_num)
 {
     snprintf(_fullpath, sizeof(_fullpath), "%s", path);
+
+    destroy();
 
     return 0;
 }
 
 int ua_dict::load()
 {
+    FILE * fp = fopen(tmp_path, "r");
+    ASSERT_WARNING(fp != NULL,"open query dict failed. path[%s]", _fullpath);
 
+    char line[SIZE_LEN_1024];
+    char * ptr = NULL;
+
+    while (fgets(line, 1024, fp)) 
+    {
+        if('\0' == line[0]){
+            continue;
+        }
+        line[strlen(line) - 1] = '\0';
+        ptr = im_chomp(line);
+        if (ptr == NULL || *ptr == '\0'|| *ptr == '#')
+            continue;
+
+        string * str = new string(ptr);
+        _ua_vec.push_back(str);
+    }
+
+    fclose(fp);
     struct stat st;
     stat(_fullpath, &st);
     last_load_ = st.st_mtime;
@@ -21,8 +52,8 @@ int ua_dict::load()
 
 int ua_dict::reload()
 {
-    load();
-    return 0;
+    destroy();
+    return load();
 }
 
 void ua_dict::set_path (const char* path)
@@ -50,6 +81,14 @@ int ua_dict::dump()
 
 int ua_dict::destroy()
 {
+    vector<string *>::iterator it;
+
+    for (it = _ua_vec.begin(); it != _ua_vec.begin(); it++)
+    {
+        delete *it;
+    }
+    
+    _ua_vec.clear();
 
     return 0;
 }

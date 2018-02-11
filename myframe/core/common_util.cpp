@@ -81,6 +81,26 @@ void set_unblock(int fd)
     fcntl(fd, F_SETFL, ret | O_NONBLOCK);
 }
 
+char* im_chomp(char *data) 
+{
+    char *ptr;
+
+    if (data == NULL) {
+        return NULL;
+    }
+
+    ptr = strchr(data, '\n');
+
+    if (ptr != NULL) {
+        *ptr-- = 0;
+
+        if (ptr >= data && *ptr == '\r') {
+            *ptr = 0;
+        }
+    }
+
+    return data;
+}
 
 uint64_t htonl64(uint64_t src)
 {

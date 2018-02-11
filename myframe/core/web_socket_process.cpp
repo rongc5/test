@@ -4,6 +4,7 @@
 #include "log_helper.h"
 #include "common_exception.h"
 #include "mybase64.h"
+#include "common_util.h"
 
 
 web_socket_process::web_socket_process(base_net_obj *p):base_data_process(p)

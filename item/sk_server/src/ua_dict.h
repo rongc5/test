@@ -21,6 +21,7 @@ class ua_dict:public reload_inf
     private:
         char _fullpath[SIZE_LEN_512];
         time_t _last_load;
+        vector<string *> _ua_vec;
 };
 
 
