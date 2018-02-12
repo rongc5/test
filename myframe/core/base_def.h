@@ -41,6 +41,7 @@
 #include <sstream>
 #include <exception>
 #include <memory>
+#include <fstream>
 
 
 using namespace std;

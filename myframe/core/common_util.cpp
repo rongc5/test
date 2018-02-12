@@ -227,6 +227,22 @@ void StringTrim(string &sSrc)
     sSrc = sSrc.substr(nBeginPos, nEnd - nBeginPos + 1);        
 }
 
+string trim(const char * source, char const* delims = " \t\r\n")
+{
+    std::string result(source);
+    std::string::size_type index = result.find_last_not_of(delims);
+    if(index != std::string::npos)
+        result.erase(++index);
+
+    index = result.find_first_not_of(delims);
+    if(index != std::string::npos)
+        result.erase(0, index);
+    else
+        result.erase();      
+
+    return result;
+}
+
 int stringStrip(const char *srcStr, const char *delim, string *dest, int s_mode)
 {
     if (!srcStr || !dest)

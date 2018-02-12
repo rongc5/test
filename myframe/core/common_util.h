@@ -44,6 +44,8 @@ int SplitString(const char *srcStr, const char *delim, vector<string> * strVec, 
 
 void StringTrim(string &sSrc);
 
+string trim(const char * source, char const* delims = " \t\r\n");
+
 int GetCaseStringByLabel(const string &sSrc,const string &sLabel1,const string &sLabel2, string &sOut, unsigned int nBeginPos = 0, int nIfRetPos = 0);
 
 int GetStringByLabel(const string &sSrc,const string &sLabel1,const string &sLabel2, string &sOut, unsigned int nBeginPos, int nIfRetPos);

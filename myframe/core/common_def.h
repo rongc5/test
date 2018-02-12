@@ -4,8 +4,6 @@
 #include "base_def.h"
 
 #define MSG_CONNECT 1
-#define MSG_HTTP_REQ 2
-#define MSG_HTTP_RES 3
 #define MSG_LOG 4
 #define PASS_NEW_MSG 5
 
@@ -114,38 +112,6 @@ enum http_cmd_type {
     HTTP_REQ_TRACE   = 1 << 6,
     HTTP_REQ_CONNECT = 1 << 7,
     HTTP_REQ_PATCH   = 1 << 8
-};
-
-class http_req_msg:public normal_msg
-{
-    public:
-        http_req_msg()
-        {
-            _msg_op = MSG_HTTP_REQ;
-        }
-        virtual ~http_req_msg(){}
-
-        http_cmd_type cmd_type;
-
-        string sid;
-        string  url;
-        string post_data;
-        map<string, string> headers;
-};
-
-class http_res_msg: public normal_msg
-{
-    public:
-        http_res_msg()
-        {
-            _msg_op = MSG_HTTP_RES;
-        }
-
-        virtual ~http_res_msg(){}
-
-        string sid;
-        string url;
-        string response;
 };
 
 enum HTTP_STATUS
