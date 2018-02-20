@@ -21,6 +21,7 @@ int main()
   phoneNums.insert(pair<string, int>("Smith",567));
   phoneNums.insert(pair<string, int>("Joe",888));
   phoneNums.insert(pair<string, int>("Will",999));
+  phoneNums.insert(pair<string, int>("Will",999));
   printer(phoneNums);
 
   //Checking frequency of different keys

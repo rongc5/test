@@ -23,7 +23,7 @@ class common_cfgparser
         void get_sections(vector<string> & sections) const;
 
     private:
-        multimap<string, multimap<string, string> > entry;
+        map<string, map<string, string> > entry;
 };
 
 
