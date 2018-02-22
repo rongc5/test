@@ -74,10 +74,21 @@ class base_connect:public base_net_obj
             return ret;
         }
 
+        virtual void before_destory()
+        {
+            if (_process)
+            {
+                _process->before_destory();
+            }
+        }
+
         void set_process(PROCESS *p)
         {
             if (_process != NULL)
+            {
+                _process->before_destory();
                 delete _process;
+            }
             _process = p;
 
             _process->set_para();

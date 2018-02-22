@@ -85,7 +85,6 @@ bool common_obj_container::remove_real_net(base_net_obj *p_obj)
     _obj_net_map->remove_node(sign);
 
     return true;
-
 }
 
 

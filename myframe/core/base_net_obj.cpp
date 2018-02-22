@@ -118,8 +118,15 @@ void base_net_obj::notice_send()
 {
 }
 
+void base_net_obj::before_destory()
+{
+
+}
+
 int base_net_obj::destroy()
 {
+    before_destory();
+
     delete this;
 
     return 0;

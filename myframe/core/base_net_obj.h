@@ -38,6 +38,8 @@ class base_net_obj: public normal_msg
         void add_timer(timer_msg & t_msg);
         virtual bool handle_timeout(timer_msg & t_msg);
 
+        virtual void before_destory();
+
         int destroy();
 
     protected:
