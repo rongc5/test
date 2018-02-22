@@ -26,7 +26,7 @@
       <file leaf-file-name="re_test_case.py" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/re_test_case.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="859" column="27" selection-start="25231" selection-end="25231" vertical-scroll-proportion="0.31850788" vertical-offset="16099" max-vertical-offset="17936">
+            <state line="924" column="28" selection-start="26892" selection-end="26892" vertical-scroll-proportion="2.1176472" vertical-offset="16080" max-vertical-offset="17936">
               <folding>
                 <element signature="e#40#54#0" expanded="true" />
               </folding>
@@ -84,7 +84,6 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -129,6 +128,7 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -137,8 +137,8 @@
     <property name="options.lastSelected" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../stock" />
     <property name="FullScreen" value="false" />
-    <property name="options.searchVisible" value="true" />
     <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="options.searchVisible" value="true" />
   </component>
   <component name="PyConsoleOptionsProvider">
     <option name="myPythonConsoleState">
@@ -235,6 +235,9 @@
       <option name="PARAMETERS" value="" />
       <method />
     </configuration>
+    <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug" singleton="true">
+      <method />
+    </configuration>
     <configuration default="true" type="tests" factoryName="Unittests">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -256,9 +259,6 @@
       <option name="PUREUNITTEST" value="true" />
       <option name="PARAMS" value="" />
       <option name="USE_PARAM" value="false" />
-      <method />
-    </configuration>
-    <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug" singleton="true">
       <method />
     </configuration>
     <configuration default="true" type="tests" factoryName="Doctests">
@@ -456,7 +456,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/re_test_case.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="859" column="27" selection-start="25231" selection-end="25231" vertical-scroll-proportion="0.31850788" vertical-offset="16099" max-vertical-offset="17936">
+        <state line="924" column="28" selection-start="26892" selection-end="26892" vertical-scroll-proportion="2.1176472" vertical-offset="16080" max-vertical-offset="17936">
           <folding>
             <element signature="e#40#54#0" expanded="true" />
           </folding>

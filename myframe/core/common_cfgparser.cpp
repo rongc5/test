@@ -30,32 +30,34 @@ int common_cfgparser::load_cfg(const string & file_name)
             continue;
         }
 
-        if (strstr(tmp.c_str(), '[') && strstr(tmp.c_str, ']'))
+        if (strstr(tmp.c_str(), "[") && strstr(tmp.c_str(), "]"))
         {
             section = trim(tmp.c_str(), " []");
             option.clear();
             continue;
         }
 
-        if (strstr(tmp.c_str(), '='))
+        if (strstr(tmp.c_str(), "="))
         {
             vector<string> item;
             SplitString(tmp.c_str(), "=", &item, SPLIT_MODE_ONE);
-            if (item != 2)
+            if (item.size() != 2)
             {
                 continue;
             }
 
-            option[trim(item[0])] = trim(item[1]);
+            option[trim(item[0].c_str())] = trim(item[1].c_str());
             entry[section] = option;
         }
     }
+
+    return 0;
 }
 
-int get_vale(const string & section, const string & option, string & value)
+int common_cfgparser::get_vale(const string & section, const string & option, string & value) const
 {
-    map<string, map<string, string> >::iterator it;
-    map<string, string>::iterator itt;
+    map<string, map<string, string> >::const_iterator it;
+    map<string, string>::const_iterator itt;
 
     it = entry.find(section);
     if (it != entry.end())
@@ -71,10 +73,10 @@ int get_vale(const string & section, const string & option, string & value)
     return -1;
 }
 
-bool has_option(const string & section, const string & option)
+bool common_cfgparser::has_option(const string & section, const string & option) const
 {
-    map<string, map<string, string> >::iterator it;
-    map<string, string>::iterator itt;
+    map<string, map<string, string> >::const_iterator it;
+    map<string, string>::const_iterator itt;
 
     it = entry.find(section);
     if (it != entry.end())
@@ -89,9 +91,9 @@ bool has_option(const string & section, const string & option)
     return false;
 }
 
-bool has_section(const string & section)
+bool common_cfgparser::has_section(const string & section) const
 {
-    map<string, map<string, string> >::iterator it;
+    map<string, map<string, string> >::const_iterator it;
     it = entry.find(section);
 
     if (it != entry.end())
@@ -102,10 +104,10 @@ bool has_section(const string & section)
     return false;
 }
 
-void get_options(const string & section, vector<string> & options)
+void common_cfgparser::get_options(const string & section, vector<string> & options) const
 {
-    map<string, map<string, string> >::iterator it;
-    map<string, string>::iterator itt;
+    map<string, map<string, string> >::const_iterator it;
+    map<string, string>::const_iterator itt;
 
     it = entry.find(section);
     if (it != entry.end())
@@ -117,9 +119,9 @@ void get_options(const string & section, vector<string> & options)
     }
 }
 
-void get_sections(vector<string> & sections)
+void common_cfgparser::get_sections(vector<string> & sections) const
 {
-    map<string, map<string, string> >::iterator it;
+    map<string, map<string, string> >::const_iterator it;
     for (it = entry.begin(); it != entry.end(); it++)
     {
         sections.push_back(it->first);
