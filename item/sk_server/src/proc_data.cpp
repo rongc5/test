@@ -15,3 +15,29 @@ proc_data * proc_data::instance()
 
     return _singleton;
 }
+
+int proc_data::load()
+{
+
+    return 0;
+}
+int proc_data::reload()
+{
+
+    return 0;
+}
+bool proc_data::need_reload()
+{
+
+    return true;
+}
+int proc_data::dump()
+{
+
+    return 0;
+}
+int proc_data::destroy()
+{
+
+    return 0;
+}
