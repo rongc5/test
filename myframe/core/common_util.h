@@ -108,6 +108,14 @@ int UrlDecode(const string &sSrc, string &sDest);
     #define PDEBUG(format, arg...) 
 #endif
 
+#define FORMAT_STR(DST, SRC) \
+    do {\
+        stringstream ss;\
+        ss << SRC; \
+        DST = ss.str(); \
+    }while (0)
+
+
 char * strncasestr(const char *p, int nLen, const char *pattern);
 
 
