@@ -2,6 +2,7 @@
 #define __PROC_DATA_H__
 
 #include "base_reload.h"
+#include "sk_conf.h"
 
 class ua_dict;
 class proc_data:public reload_inf
@@ -11,6 +12,7 @@ class proc_data:public reload_inf
         
         static proc_data * instance();
 
+        int init(sk_conf *conf);
         virtual int load();
         virtual int reload();
         virtual bool need_reload();
@@ -22,6 +24,7 @@ class proc_data:public reload_inf
 
     private:
         static proc_data* _singleton;
+        sk_conf * _conf;
 };
 
 
