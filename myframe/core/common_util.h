@@ -21,6 +21,18 @@ class REC_OBJ
         OBJ *_p_obj;
 };
 
+#define DEL_PTR(PTR) \
+    do {\
+        delete PTR; \
+        PTR = NULL;\
+    }while (0)
+
+#define DEL_ARR(PTR) \
+    do {\
+        delete [] PTR; \
+        PTR = NULL;\
+    }while (0)
+
 int get_prime_num(int num);
 
 /*

@@ -56,6 +56,8 @@ int common_cfgparser::load_cfg(const string & file_name)
 
 int common_cfgparser::get_vale(const string & section, const string & option, string & value) const
 {
+    value.clear();
+
     map<string, map<string, string> >::const_iterator it;
     map<string, string>::const_iterator itt;
 
