@@ -5,6 +5,7 @@
 #include "sk_conf.h"
 
 class ua_dict;
+class strategy_dict;
 class proc_data:public reload_inf
 {
     public:
@@ -20,7 +21,8 @@ class proc_data:public reload_inf
         virtual int destroy();
 
     public:
-        ua_dict * _ua_dict;
+        reload_mgr<ua_dict> * _ua_dict;
+        reload_mgr<strategy_dict> * _strategy_dict;
 
     private:
         static proc_data* _singleton;

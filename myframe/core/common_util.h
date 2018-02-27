@@ -182,4 +182,21 @@ int parse_url(const string &url, url_info & info);
 
 void parse_url_para(const string &url_path, map<string, string> &url_para_map);
 
+template <class T, class U>  
+bool has_key(const map<T, U> & query, const T &key);
+
+template <class T, class U>
+bool has_key(const map<T, U> & query, const T & key)
+{
+    typename map<T, U>::const_iterator  it;
+    it = query.find(key);
+    if (it == query.end())
+    {
+        return false;
+    }
+
+    return true;
+}
+
+
 #endif

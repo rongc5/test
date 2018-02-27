@@ -31,7 +31,6 @@ OBJ	= ${SRC_DIR}/base_net_container.o                        \
     ${SRC_DIR}/http_res_process.o                        \
     ${SRC_DIR}/http_req_process.o                        \
     ${SRC_DIR}/mybase64.o                        \
-    ${SRC_DIR}/base_reload.o                        \
     ${SRC_DIR}/common_cfgparser.o                        \
 
 OBJ_INCLUDE=

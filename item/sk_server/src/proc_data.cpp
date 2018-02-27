@@ -1,16 +1,28 @@
 #include "ua_dict.h"
+#include "strategy_dict.h"
 #include "log_helper.h"
 
 int Proc_data::init(sk_conf * conf)
 {
     _conf = conf;
     
-    _ua_dict = new (std::nothrow)ua_dict();
-    ASSERT_WARNING(_ua_dict != NULL, "allocate ua_dict fail");
-    _ua_dict->init(_conf->ua_path.c_str(), _conf->ua_num);
-
+    ua_dict *ua_dict1 = new (std::nothrow)ua_dict();
+    ASSERT_WARNING(ua_dict1 != NULL, "allocate ua_dict fail");
+    ua_dict1->init(_conf->ua_path.c_str(), _conf->ua_num);
     
+    ua_dict *ua_dict2 = new (std::nothrow)ua_dict();
+    ASSERT_WARNING(ua_dict2 != NULL, "allocate ua_dict fail");
+    ua_dict2->init(_conf->ua_path.c_str(), _conf->ua_num);
 
+    _ua_dict = new (std::nothrow)reload_mgr<ua_dict>(ua_dict1, ua_dict2);
+
+    strategy_dict *strategy_dict1 = new (std::nothrow)strategy_dict();
+    ASSERT_WARNING(strategy_dict1 != NULL, "allocate strategy_dict fail");
+    strategy_dict1->init(_conf->local_strategy_path.c_str());
+    
+    strategy_dict *strategy_dict2 = new (std::nothrow)strategy_dict();
+    ASSERT_WARNING(strategy_dict2 != NULL, "allocate strategy_dict fail");
+    strategy_dict2->init(_conf->local_strategy_path.c_str());
 
 }
 
@@ -33,6 +45,8 @@ int proc_data::load()
 {
     _ua_dict->load();
 
+    _strategy_dict->load();
+
     return 0;
 }
 int proc_data::reload()
@@ -40,6 +54,11 @@ int proc_data::reload()
     if (_ua_dict->need_reload())
     {
         _ua_dict->reload();
+    }
+
+    if (_strategy_dict->need_reload())
+    {
+        _strategy_dict->reload();
     }
 
     return 0;
@@ -52,11 +71,15 @@ int proc_data::dump()
 {
     _ua_dict->dump();
 
+    _strategy_dict->dump();
+
     return 0;
 }
 int proc_data::destroy()
 {
     _ua_dict->destroy();
+
+    _strategy_dict->destroy();
 
     return 0;
 }

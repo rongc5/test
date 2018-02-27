@@ -1,14 +1,15 @@
-#ifndef UA_DICT_H_
-#define UA_DICT_H_
+#ifndef _STRATEGY_DICT_H_
+#define _STRATEGY_DICT_H_
 
 #include "base_reload.h"
+#include "common_cfgparser.h"
 
-class ua_dict:public reload_inf
+class strategy_dict:public reload_inf
 {
     public:
-        virtual ~ua_dict(){}
+        virtual ~strategy_dict(){}
 
-        virtual int init(const char * path, uint32_t ua_num);
+        virtual int init(const char * path);
         virtual int load();
         virtual int reload();
         virtual bool need_reload();
@@ -21,8 +22,9 @@ class ua_dict:public reload_inf
     private:
         char _fullpath[SIZE_LEN_512];
         time_t _last_load;
+
     public:
-        vector<string *> _ua_vec;
+        common_cfgparser _cfg;
 };
 
 
