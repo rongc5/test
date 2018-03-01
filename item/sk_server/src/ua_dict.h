@@ -8,7 +8,7 @@ class ua_dict:public reload_inf
     public:
         virtual ~ua_dict(){}
 
-        virtual int init(const char * path, uint32_t ua_num);
+        virtual int init(const char * path);
         virtual int load();
         virtual int reload();
         virtual bool need_reload();
@@ -22,7 +22,7 @@ class ua_dict:public reload_inf
         char _fullpath[SIZE_LEN_512];
         time_t _last_load;
     public:
-        vector<string *> _ua_vec;
+        vector<string> _ua_vec;
 };
 
 

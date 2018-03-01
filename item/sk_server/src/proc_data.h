@@ -22,6 +22,7 @@ class proc_data:public reload_inf
 
     public:
         reload_mgr<ua_dict> * _ua_dict;
+        reload_mgr<ua_dict> * _id_dict;
         reload_mgr<strategy_dict> * _strategy_dict;
 
     private:

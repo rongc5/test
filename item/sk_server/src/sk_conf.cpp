@@ -3,19 +3,13 @@
 
 sk_conf::sk_conf(const char * sk_conf)
 {
-    ua_path[0] = '\0';
-    ua_num = 20000;
-
-    local_strategy_path[0] = '\0';
     http_req_thread_num = 3;
     
     http_server_port = 8080;
     http_server_thread_num = 3;
 
-    ip_deny_path[0] = '\0';
     ip_deny_num = 100;
 
-    dump_dir[0] = '\0';
     reload_second = 5;
 
     log_type = LOGDEBUG;
@@ -29,11 +23,9 @@ int sk_conf::load()
     common_cfgparser cfg(_filename.c_str());
 
     cfg.get_vale("server", "ua_path", ua_path);
+    cfg.get_vale("server", "id_path", id_path);
 
     string tmp;
-    cfg.get_vale("server", "ua_num", tmp);
-    ua_num = atoi(tmp.c_str());
-
     cfg.get_vale("server", "local_strategy_path", local_strategy_path);
 
     cfg.get_vale("server", "http_req_thread_num", tmp);

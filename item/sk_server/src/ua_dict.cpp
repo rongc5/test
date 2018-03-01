@@ -11,7 +11,7 @@ ua_dict::~ua_dict()
     destroy();
 }
 
-int ua_dict::init(const char * path, uint32_t ua_num)
+int ua_dict::init(const char * path)
 {
     snprintf(_fullpath, sizeof(_fullpath), "%s", path);
 
@@ -38,7 +38,7 @@ int ua_dict::load()
         if (ptr == NULL || *ptr == '\0'|| *ptr == '#')
             continue;
 
-        string * str = new string(ptr);
+        string str = string(ptr);
         _ua_vec.push_back(str);
     }
 
@@ -81,13 +81,6 @@ int ua_dict::dump()
 
 int ua_dict::destroy()
 {
-    vector<string *>::iterator it;
-
-    for (it = _ua_vec.begin(); it != _ua_vec.begin(); it++)
-    {
-        delete *it;
-    }
-    
     _ua_vec.clear();
 
     return 0;

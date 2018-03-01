@@ -9,7 +9,8 @@ class sk_conf: public reload_inf
         sk_conf(const char * sk_conf);
 
         string ua_path;
-        uint32_t ua_num;
+
+        string id_path;
 
         string local_strategy_path;
         uint32_t http_req_thread_num;
