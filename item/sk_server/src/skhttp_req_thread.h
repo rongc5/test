@@ -38,7 +38,6 @@ class skhttp_req_thread:public base_net_thread
                 return;
             }
         }
-
 };
 
 

@@ -554,3 +554,23 @@ void parse_url_para(const string &url_path, map<string, string> &url_para_map)
         }
     }               
 }
+
+int exec_shell_cmd(string & cmd, string & res)
+{
+    res.clear();
+    FILE * stream;
+    const int max_buffer = 256;
+    char buffer[max_buffer];
+    cmd.append(" 2>/dev/null");
+
+    stream = popen(cmd.c_str(), "r");
+    if (stream) {
+        while (!feof(stream))
+            if (fgets(buffer, max_buffer, stream) != NULL) res.append(buffer);
+        pclose(stream);
+    }   
+
+    //printf("%s\n", res.c_str());
+
+    return 0;
+}

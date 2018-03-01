@@ -26,7 +26,7 @@
       <file leaf-file-name="re_test_case.py" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/re_test_case.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="494" column="58" selection-start="12632" selection-end="12632" vertical-scroll-proportion="0.723099" vertical-offset="8882" max-vertical-offset="17936">
+            <state line="163" column="30" selection-start="3965" selection-end="3965" vertical-scroll-proportion="0.56384504" vertical-offset="2704" max-vertical-offset="17936">
               <folding>
                 <element signature="e#40#54#0" expanded="true" />
               </folding>
@@ -85,6 +85,7 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -119,7 +120,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -128,8 +128,8 @@
     <property name="options.lastSelected" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../stock" />
     <property name="FullScreen" value="false" />
-    <property name="options.searchVisible" value="true" />
     <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="options.searchVisible" value="true" />
   </component>
   <component name="PyConsoleOptionsProvider">
     <option name="myPythonConsoleState">
@@ -226,6 +226,9 @@
       <option name="PARAMETERS" value="" />
       <method />
     </configuration>
+    <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug" singleton="true">
+      <method />
+    </configuration>
     <configuration default="true" type="tests" factoryName="Unittests">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -247,9 +250,6 @@
       <option name="PUREUNITTEST" value="true" />
       <option name="PARAMS" value="" />
       <option name="USE_PARAM" value="false" />
-      <method />
-    </configuration>
-    <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug" singleton="true">
       <method />
     </configuration>
     <configuration default="true" type="tests" factoryName="Doctests">
@@ -423,11 +423,11 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/../stock/py/ua_list">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="419" column="105" selection-start="47288" selection-end="47288" vertical-scroll-proportion="0.9399684" vertical-offset="7366" max-vertical-offset="8075" />
-      </provider>
       <provider editor-type-id="com.intellij.persistence.database.editor.CsvTableFileEditorProvider">
         <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="419" column="105" selection-start="47288" selection-end="47288" vertical-scroll-proportion="0.9399684" vertical-offset="7366" max-vertical-offset="8075" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/../stock/py/stock.ini">
@@ -442,14 +442,12 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/../stock/py/stock_infoa.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="1990" column="30" selection-start="66936" selection-end="66936" vertical-scroll-proportion="0.6944444" vertical-offset="37031" max-vertical-offset="38057">
-          <folding />
-        </state>
+        <state line="1990" column="30" selection-start="66936" selection-end="66936" vertical-scroll-proportion="0.6944444" vertical-offset="37031" max-vertical-offset="38057" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/re_test_case.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="494" column="58" selection-start="12632" selection-end="12632" vertical-scroll-proportion="0.723099" vertical-offset="8882" max-vertical-offset="17936">
+        <state line="163" column="30" selection-start="3965" selection-end="3965" vertical-scroll-proportion="0.56384504" vertical-offset="2704" max-vertical-offset="17936">
           <folding>
             <element signature="e#40#54#0" expanded="true" />
           </folding>

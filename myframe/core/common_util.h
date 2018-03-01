@@ -198,5 +198,7 @@ bool has_key(const map<T, U> & query, const T & key)
     return true;
 }
 
+int exec_shell_cmd(string & cmd, string & res);
+
 
 #endif
