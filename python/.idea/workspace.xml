@@ -26,7 +26,7 @@
       <file leaf-file-name="re_test_case.py" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/re_test_case.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="163" column="30" selection-start="3965" selection-end="3965" vertical-scroll-proportion="0.56384504" vertical-offset="2704" max-vertical-offset="17936">
+            <state line="389" column="0" selection-start="10044" selection-end="10044" vertical-scroll-proportion="0.98363096" vertical-offset="6730" max-vertical-offset="17936">
               <folding>
                 <element signature="e#40#54#0" expanded="true" />
               </folding>
@@ -128,8 +128,8 @@
     <property name="options.lastSelected" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../stock" />
     <property name="FullScreen" value="false" />
-    <property name="options.splitter.details.proportions" value="0.2" />
     <property name="options.searchVisible" value="true" />
+    <property name="options.splitter.details.proportions" value="0.2" />
   </component>
   <component name="PyConsoleOptionsProvider">
     <option name="myPythonConsoleState">
@@ -226,9 +226,6 @@
       <option name="PARAMETERS" value="" />
       <method />
     </configuration>
-    <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug" singleton="true">
-      <method />
-    </configuration>
     <configuration default="true" type="tests" factoryName="Unittests">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -250,6 +247,9 @@
       <option name="PUREUNITTEST" value="true" />
       <option name="PARAMS" value="" />
       <option name="USE_PARAM" value="false" />
+      <method />
+    </configuration>
+    <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug" singleton="true">
       <method />
     </configuration>
     <configuration default="true" type="tests" factoryName="Doctests">
@@ -304,8 +304,8 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="0" width="1440" height="860" extended-state="0" />
-    <editor active="false" />
+    <frame x="0" y="0" width="1440" height="860" extended-state="1" />
+    <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -447,7 +447,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/re_test_case.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="163" column="30" selection-start="3965" selection-end="3965" vertical-scroll-proportion="0.56384504" vertical-offset="2704" max-vertical-offset="17936">
+        <state line="389" column="0" selection-start="10044" selection-end="10044" vertical-scroll-proportion="0.98363096" vertical-offset="6730" max-vertical-offset="17936">
           <folding>
             <element signature="e#40#54#0" expanded="true" />
           </folding>

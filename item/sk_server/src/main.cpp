@@ -1,25 +1,47 @@
 #include "base_def.h"
 #include "log_helper.h"
 #include "skhttp_req_thread.h"
+#include "realod_thread.h"
+#include "sk_conf.h"
+#include "proc_data.h"
+#include "listen_thread.h"
+
+
+void do_init(char *argv)
+{
+    log_conf lg_conf;
+    sk_conf * conf = new (std::nothrow)sk_conf(argv);
+    conf->load();
+
+    lg_conf.type = conf->log_type;
+    LOG_INIT(conf);
+
+    proc_data::instance()->init(conf);
+    proc_data::instance()->load();
+
+    reload_thread * master_thread = new reload_thread();
+    skhttp_req_thread * req_thread = new skhttp_req_thread();
+
+    proc_data::instance()->_http_req_vec.push_back(req_thread);
+
+    master_thread->start();
+    req_thread->start();
+
+
+    base_thread::join_all_thread();
+}
 
 
 int main(int argc, char *argv[])
 {
-    log_conf conf;
-
-    //conf.type = LOGWARNING;
-    LOG_INIT(conf);
-
-
-    skhttp_master_thread * master_thread = new skhttp_master_thread();
-    master_thread->start();
-
-    for (int i = 0; i < 3; i++)
+    if (argc < 2)
     {
-        skhttp_req_thread * req_thread = new skhttp_req_thread();
-        master_thread->add_worker_thread(req_thread->get_thread_index());
-        req_thread->start();
+        return -1;
     }
+
+    do_init(argv);
+
+
 
 
     http_req_msg * req_msg = new http_req_msg();
@@ -32,7 +54,6 @@ int main(int argc, char *argv[])
 
     req_thread->put_msg(id, req_msg);
 
-    base_thread::join_all_thread();
 
     return 0;
 }

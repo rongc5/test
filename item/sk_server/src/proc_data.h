@@ -3,6 +3,7 @@
 
 #include "base_reload.h"
 #include "sk_conf.h"
+#include "base_net_thread.h"
 
 class ua_dict;
 class strategy_dict;
@@ -24,10 +25,12 @@ class proc_data:public reload_inf
         reload_mgr<ua_dict> * _ua_dict;
         reload_mgr<ua_dict> * _id_dict;
         reload_mgr<strategy_dict> * _strategy_dict;
+        sk_conf * _conf;
+
+        vector<base_net_thread *> _http_req_vec;
 
     private:
         static proc_data* _singleton;
-        sk_conf * _conf;
 };
 
 
