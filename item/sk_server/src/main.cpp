@@ -5,6 +5,7 @@
 #include "sk_conf.h"
 #include "proc_data.h"
 #include "listen_thread.h"
+#include "listen_thread.h"
 
 
 void do_init(char *argv)

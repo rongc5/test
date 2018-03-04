@@ -200,5 +200,46 @@ bool has_key(const map<T, U> & query, const T & key)
 
 int exec_shell_cmd(string & cmd, string & res);
 
+template<typename T>
+class ToBufferMgr
+{
+    public:
+        ToBufferMgr()
+        {
+            _curr = 0;
+        }
+
+        T* current()
+        {
+            if(_curr == 0 || _curr == 1)
+            {
+                return &(_objects[_curr]);
+            }
+
+            return NULL;
+        }
+
+        T * idle()
+        {
+            if(_curr == 0 || _curr == 1)
+            {
+                return &(_objects[1 - _curr]);
+            }
+
+            return NULL;
+        }
+
+        void idle_2_current()
+        {
+            if(_curr == 0 || _curr == 1)
+            {
+                _curr = 1 - _curr;
+            }
+        }
+
+    private:
+        T _objects[2];
+        int16_t _curr;
+}
 
 #endif
