@@ -3,6 +3,8 @@
 
 sk_conf::sk_conf(const char * sk_conf)
 {
+    id_num = 2000;
+
     http_req_thread_num = 3;
     
     http_server_port = 8080;
@@ -20,12 +22,17 @@ sk_conf::sk_conf(const char * sk_conf)
 
 int sk_conf::load()
 {
+    string tmp;
     common_cfgparser cfg(_filename.c_str());
 
     cfg.get_vale("server", "ua_path", ua_path);
-    cfg.get_vale("server", "id_path", id_path);
 
-    string tmp;
+    cfg.get_vale("server", "id_path", id_path);
+    cfg.get_vale("server", "id_num", tmp);
+    id_num = atoi(tmp.c_str());
+
+    cfg.get_vale("server", "id_financie_path", id_financie_path);
+
     cfg.get_vale("server", "local_strategy_path", local_strategy_path);
 
     cfg.get_vale("server", "http_req_thread_num", tmp);

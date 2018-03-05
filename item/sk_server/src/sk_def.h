@@ -40,109 +40,107 @@ class http_res_msg: public normal_msg
         string response;
 };
 
-struct sk_t
+struct finance_t
 {
     string id;
-    ToBufferMgr<string> date;
-    ToBufferMgr<string> name;
+    string date;
 
-    ToBufferMgr<float> start;
-    ToBufferMgr<float> end;
-    ToBufferMgr<float> high;
-    ToBufferMgr<float> low;
-    ToBufferMgr<float> last_closed;
+    float mgxj;
+    float mgsy;
 
-    ToBufferMgr<uint64_t> vol;
-    ToBufferMgr<uint64_t> sell_vol;
-    ToBufferMgr<uint64_t> buy_vol;
+    float mgsygr;
+    float mgxjgr;
+    float zysrgr;
+    float yylrgr;
+    float jlrgr;
 
-    ToBufferMgr<int> pe;
-    ToBufferMgr<int> pb;
+    finance_t()
+    {
+        mgxj = 0;
+        mgsy = 0;
 
-    ToBufferMgr<float> swing;
+        mgsygr = 0;
+        mgxjgr = 0;
+        zysrgr = 0;
+        yylrgr = 0;
+        jlrgr = 0;
+    }
+};
 
-    ToBufferMgr<float> change_rate;
-    ToBufferMgr<float> range_percent;
+struct single_t
+{
+    string id;
 
-    ToBufferMgr<uint32_t> value;
-    ToBufferMgr<uint32_t> cir_value;
+    deque<uint32_t> king_single_in;
+    deque<uint32_t> king_single_out;
+    deque<uint32_t> king_single_inflow;
 
+    deque<uint32_t> large_single_in;
+    deque<uint32_t> large_single_out;
+    deque<uint32_t> large_single_inflow;
 
-    ToBufferMgr<float> mgxj;
-    ToBufferMgr<float> mgsy;
+    deque<uint32_t> middle_single_in;
+    deque<uint32_t> middle_single_out;
+    deque<uint32_t> middle_single_inflow;
+};
 
-    ToBufferMgr<float> mgsygr;
-    ToBufferMgr<float> mgxjgr;
-    ToBufferMgr<float> zysrgr;
-    ToBufferMgr<float> yylrgr;
-    ToBufferMgr<float> jlrgr;
+struct history_single_t
+{
+    string id;
+    map<string, single_t> date_single_map;
+};
 
-    ToBufferMgr<string> lbdata;
+struct quotation_t
+{
+    string id;
+    string name;
 
-    ToBufferMgr<deque<uint32_t> > king_single_in;
-    ToBufferMgr<deque<uint32_t> > king_single_out;
-    ToBufferMgr<deque<uint32_t> > king_single_inflow;
+    float start;
+    float end;
+    float high;
+    float low;
+    float last_closed;
 
-    ToBufferMgr<deque<uint32_t> > large_single_in;
-    ToBufferMgr<deque<uint32_t> > large_single_out;
-    ToBufferMgr<define<uint32_t> >large_single_inflow;
+    uint64_t vol;
+    uint64_t sell_vol;
+    uint64_t buy_vol;
 
-    ToBufferMgr<deque<uint32_t> > middle_single_in;
-    ToBufferMgr<deque<uint32_t> > middle_single_out;
-    ToBufferMgr<deque<uint32_t> > middle_single_inflow;
+    int pe;
+    int pb;
 
-    ToBufferMgr<deque<uint32_t> > main_force;
+    float swing;
 
+    float change_rate;
+    float range_percent;
+
+    uint32_t value;
+    uint32_t cir_value;
 
     void reset()
     {
         id.clear();
-        date.current()->clear();
-        name.current()->clear();
 
-        *start.current() = 0;
-        *end.current() = 0;
-        *high.current() = 0;
-        *low.current() = 0;
-        *last_closed.current() = 0;
+        name.clear();
 
-        *vol.current() = 0;
-        *sell_vol.current() = 0;
-        *buy_vol.current() = 0;
+        start = 0;
+        end = 0;
+        high = 0;
+        low = 0;
+        last_closed = 0;
 
-        *pe.current() = 0;
-        *pb.current() = 0;
+        vol = 0;
+        sell_vol = 0;
+        buy_vol = 0;
 
-        *swing.current() = 0;
-        *change_rate.current() = 0;
-        *range_percent.current() = 0;
+        pe = 0;
+        pb = 0;
 
-        *value.current() = 0;
-        *cir_value.current() = 0;
-        
-        *mgxj.current() = 0;
-        *mgsy.current() = 0;
+        swing = 0;
+        change_rate = 0;
+        range_percent = 0;
 
-        *mgsygr.current() = 0;
-        *mgxjgr.current() = 0;
-        *zysrgr.current() = 0;
-        *yylrgr.current() = 0;
-        *jlrgr.current() = 0;
-
-        lbdata.current()->clear();
-        king_single_in.current()->clear();
-        king_single_out.current()->clear();
-        king_single_inflow.current()->clear();
-
-        large_single_in.current()->clear();
-        large_single_out.current()->clear();
-        large_single_inflow.current()->clear();
-        
-        middle_single_in.current()->clear();
-        middle_single_out.current()->clear();
-        middle_single_inflow.current()->clear();
-
-        main_force.current()->clear();
+        value = 0;
+        cir_value = 0;
     }
 };
 

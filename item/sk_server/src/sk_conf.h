@@ -11,6 +11,9 @@ class sk_conf: public reload_inf
         string ua_path;
 
         string id_path;
+        uint32_t id_num;
+        
+        string id_financie_path;
 
         string local_strategy_path;
         uint32_t http_req_thread_num;
