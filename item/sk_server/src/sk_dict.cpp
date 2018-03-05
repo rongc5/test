@@ -1,18 +1,24 @@
-#include "ua_dict.h"
+#include "sk_dict.h"
 #include "base_def.h"
 #include "log_helper.h"
+#include "ul_sign.h"
 
-ua_dict::ua_dict()
+sk_dict::sk_dict()
 {
 }
 
-ua_dict::~ua_dict()
+sk_dict::~sk_dict()
 {
     destroy();
 }
 
-int ua_dict::init(const char * path)
+int sk_dict::init(const char * path, uint32_t query_num)
 {
+    if(_id_dict.create(query_num * 3, query_num * 2) < 0) {
+        LOG_WARNING("failed to allocate memory for query_dict");
+        return NULL;
+    }
+
     snprintf(_fullpath, sizeof(_fullpath), "%s", path);
 
     destroy();
@@ -20,26 +26,30 @@ int ua_dict::init(const char * path)
     return 0;
 }
 
-int ua_dict::load()
+int sk_dict::load()
 {
     FILE * fp = fopen(tmp_path, "r");
     ASSERT_WARNING(fp != NULL,"open query dict failed. path[%s]", _fullpath);
 
     char line[SIZE_LEN_1024];
     char * ptr = NULL;
+    uint32_t query_sign[2];
 
     while (fgets(line, 1024, fp)) 
     {
         if('\0' == line[0]){
             continue;
         }
-        line[strlen(line) - 1] = '\0';
+        //line[strlen(line) - 1] = '\0';
         ptr = im_chomp(line);
         if (ptr == NULL || *ptr == '\0'|| *ptr == '#')
             continue;
 
-        string str = string(ptr);
-        _ua_vec.push_back(str);
+        sk_t sk;
+        sk.reset();
+
+        create_sign_fs64(ptr, strlen(ptr), query_sign, query_sign+1);
+        _id_dict.add_node(query_sign, &sk);
     }
 
     fclose(fp);
@@ -50,18 +60,18 @@ int ua_dict::load()
     return 0;
 }
 
-int ua_dict::reload()
+int sk_dict::reload()
 {
-    destroy();
+    _id_dict.renew();
     return load();
 }
 
-void ua_dict::set_path (const char* path)
+void sk_dict::set_path (const char* path)
 {
     snprintf(_fullpath, sizeof(_fullpath), "%s", path);
 }
 
-bool ua_dict::need_reload()
+bool sk_dict::need_reload()
 {
     struct stat st;
 
@@ -73,15 +83,14 @@ bool ua_dict::need_reload()
     return false;
 }
 
-int ua_dict::dump()
+int sk_dict::dump()
 {
 
     return 0;
 }
 
-int ua_dict::destroy()
+int sk_dict::destroy()
 {
-    _ua_vec.clear();
 
     return 0;
 }
