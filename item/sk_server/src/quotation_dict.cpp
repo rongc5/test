@@ -1,18 +1,18 @@
-#include "sk_dict.h"
+#include "quotation_dict.h"
 #include "base_def.h"
 #include "log_helper.h"
 #include "ul_sign.h"
 
-sk_dict::sk_dict()
+quotation_dict::quotation_dict()
 {
 }
 
-sk_dict::~sk_dict()
+quotation_dict::~quotation_dict()
 {
     destroy();
 }
 
-int sk_dict::init(const char * path, uint32_t query_num)
+int quotation_dict::init(const char * path, uint32_t query_num)
 {
     if(_id_dict.create(query_num * 3, query_num * 2) < 0) {
         LOG_WARNING("failed to allocate memory for query_dict");
@@ -26,7 +26,7 @@ int sk_dict::init(const char * path, uint32_t query_num)
     return 0;
 }
 
-int sk_dict::load()
+int quotation_dict::load()
 {
     FILE * fp = fopen(tmp_path, "r");
     ASSERT_WARNING(fp != NULL,"open query dict failed. path[%s]", _fullpath);
@@ -60,18 +60,18 @@ int sk_dict::load()
     return 0;
 }
 
-int sk_dict::reload()
+int quotation_dict::reload()
 {
     _id_dict.renew();
     return load();
 }
 
-void sk_dict::set_path (const char* path)
+void quotation_dict::set_path (const char* path)
 {
     snprintf(_fullpath, sizeof(_fullpath), "%s", path);
 }
 
-bool sk_dict::need_reload()
+bool quotation_dict::need_reload()
 {
     struct stat st;
 
@@ -83,13 +83,13 @@ bool sk_dict::need_reload()
     return false;
 }
 
-int sk_dict::dump()
+int quotation_dict::dump()
 {
 
     return 0;
 }
 
-int sk_dict::destroy()
+int quotation_dict::destroy()
 {
 
     return 0;

@@ -54,6 +54,12 @@ struct finance_t
     float yylrgr;
     float jlrgr;
 
+    int pe;
+    int pb;
+
+    uint32_t value;
+    uint32_t cir_value;
+
     finance_t()
     {
         mgxj = 0;
@@ -64,7 +70,19 @@ struct finance_t
         zysrgr = 0;
         yylrgr = 0;
         jlrgr = 0;
+
+        pe = 0;
+        pb = 0;
+
+        value = 0;
+        cir_value = 0;
     }
+};
+
+struct ban_t
+{
+    string id;
+    string date;
 };
 
 struct single_t
@@ -82,6 +100,38 @@ struct single_t
     deque<uint32_t> middle_single_in;
     deque<uint32_t> middle_single_out;
     deque<uint32_t> middle_single_inflow;
+};
+
+struct last_single_t
+{
+    uint32_t king_single_in;
+    float king_single_in_avg_price;
+    uint32_t king_single_out;
+    float king_single_out_avg_price;
+    uint32_t king_single_inflow;
+    float king_single_inflow_avg_price;
+
+    uint32_t large_single_in;
+    float large_single_in_avg_price;
+    uint32_t large_single_out;
+    float large_single_out_avg_price;
+    uint32_t large_single_inflow;
+    float large_single_inflow_avg_price;
+
+    uint32_t middle_single_in;
+    float middle_single_in_avg_price;
+    uint32_t middle_single_out;
+    float middle_single_out_avg_price;
+    uint32_t middle_single_inflow;
+    float middle_single_inflow_avg_price;
+
+    float start;
+    float end;
+    float high;
+    float low;
+
+    float downpointer;
+    float uppointer;
 };
 
 struct history_single_t
@@ -105,16 +155,13 @@ struct quotation_t
     uint64_t sell_vol;
     uint64_t buy_vol;
 
-    int pe;
-    int pb;
 
     float swing;
 
     float change_rate;
     float range_percent;
 
-    uint32_t value;
-    uint32_t cir_value;
+    deque<float> avg_price; 
 
     void reset()
     {
@@ -132,15 +179,11 @@ struct quotation_t
         sell_vol = 0;
         buy_vol = 0;
 
-        pe = 0;
-        pb = 0;
-
         swing = 0;
         change_rate = 0;
         range_percent = 0;
 
-        value = 0;
-        cir_value = 0;
+        avg_price.clear();
     }
 };
 

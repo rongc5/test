@@ -7,6 +7,9 @@
 
 class ua_dict;
 class strategy_dict;
+class finance_dict;
+class ban_dict;
+class quotation_dict;
 class proc_data:public reload_inf
 {
     public:
@@ -28,6 +31,17 @@ class proc_data:public reload_inf
         sk_conf * _conf;
 
         vector<base_net_thread *> _http_req_vec;
+
+    public:
+        reload_mgr<finance_dict> * _finance_dict;
+
+        reload_mgr<ban_dict> * _ban_dict;
+
+        ToBufferMgr<inc_dict_t<ToBufferMgr<quotation_t> > > * _quotation_dict;
+
+        ToBufferMgr<inc_dict_t<ToBufferMgr<single_t> > > * _single_dict;
+
+        ToBufferMgr<inc_dict_t<ToBufferMgr<single_t> > > * _single_dict;
 
     private:
         static proc_data* _singleton;
