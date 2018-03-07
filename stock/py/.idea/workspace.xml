@@ -22,19 +22,7 @@
     <favorites_list name="py" />
   </component>
   <component name="FileEditorManager">
-    <leaf>
-      <file leaf-file-name="load_detail.py" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/load_detail.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="450" column="19" selection-start="12425" selection-end="12425" vertical-scroll-proportion="0.8438356" vertical-offset="8242" max-vertical-offset="8683">
-              <folding>
-                <element signature="e#39#50#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+    <leaf />
   </component>
   <component name="FindManager">
     <FindUsagesManager>
@@ -47,6 +35,7 @@
         <option value="$PROJECT_DIR$/stock.ini" />
         <option value="$PROJECT_DIR$/stock_infoa.py" />
         <option value="$PROJECT_DIR$/load_detail.py" />
+        <option value="$PROJECT_DIR$/load_finance.py" />
       </list>
     </option>
   </component>
@@ -82,7 +71,6 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -103,6 +91,7 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -111,8 +100,8 @@
     <property name="options.lastSelected" value="File.Encoding" />
     <property name="last_opened_file_path" value="D:/Python27/python.exe" />
     <property name="FullScreen" value="false" />
-    <property name="options.searchVisible" value="true" />
     <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="options.searchVisible" value="true" />
   </component>
   <component name="RunManager">
     <configuration default="true" type="DjangoTestsConfigurationType" factoryName="Django tests">
@@ -199,6 +188,9 @@
       <option name="PARAMETERS" value="" />
       <method />
     </configuration>
+    <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug" singleton="true">
+      <method />
+    </configuration>
     <configuration default="true" type="tests" factoryName="Unittests">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -220,9 +212,6 @@
       <option name="PUREUNITTEST" value="true" />
       <option name="PARAMS" value="" />
       <option name="USE_PARAM" value="false" />
-      <method />
-    </configuration>
-    <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug" singleton="true">
       <method />
     </configuration>
     <configuration default="true" type="tests" factoryName="Doctests">
@@ -277,18 +266,18 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1382" height="744" extended-state="7" />
-    <editor active="true" />
+    <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
+    <editor active="false" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.25757575" sideWeight="0.6700855" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.26136363" sideWeight="0.6700855" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32991454" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32991454" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -312,13 +301,21 @@
     <breakpoint-manager />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/load_detail.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="77" column="19" selection-start="8636" selection-end="8636" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1577">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/stock_infoa.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="1708" column="18" selection-start="54996" selection-end="54996" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="37848">
           <folding>
-            <element signature="e#40#51#0" expanded="true" />
-            <element signature="e#7542#11592#0" expanded="false" />
-            <element signature="e#11654#14792#0" expanded="false" />
+            <element signature="e#18514#19588#0" expanded="false" />
+            <element signature="e#19631#20705#0" expanded="false" />
+            <element signature="e#32915#36327#0" expanded="false" />
+            <element signature="e#38661#41150#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -328,22 +325,28 @@
         <state line="133" column="0" selection-start="2103" selection-end="2103" vertical-scroll-proportion="0.93189967" vertical-offset="2007" max-vertical-offset="2641" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/stock_infoa.py">
+    <entry file="file://$PROJECT_DIR$/load_detail.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="1344" column="8" selection-start="41288" selection-end="41300" vertical-scroll-proportion="-4.72" vertical-offset="21409" max-vertical-offset="34352">
-          <folding>
-            <element signature="e#40#51#0" expanded="true" />
-            <element signature="e#7542#11592#0" expanded="false" />
-            <element signature="e#11654#14792#0" expanded="false" />
-          </folding>
+        <state line="397" column="20" selection-start="11181" selection-end="11181" vertical-scroll-proportion="0.8958904" vertical-offset="6950" max-vertical-offset="8493">
+          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/load_detail.py">
+    <entry file="file://$PROJECT_DIR$/load_finance.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="450" column="19" selection-start="12425" selection-end="12425" vertical-scroll-proportion="0.8438356" vertical-offset="8242" max-vertical-offset="8683">
+        <state line="348" column="4" selection-start="10758" selection-end="10758" vertical-scroll-proportion="0.33211008" vertical-offset="6165" max-vertical-offset="7657">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/stock_infoa.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="538" column="12" selection-start="15429" selection-end="15613" vertical-scroll-proportion="0.3326923" vertical-offset="9745" max-vertical-offset="33212">
           <folding>
-            <element signature="e#39#50#0" expanded="true" />
+            <element signature="e#18514#19588#0" expanded="false" />
+            <element signature="e#19631#20705#0" expanded="false" />
+            <element signature="e#32915#36327#0" expanded="false" />
+            <element signature="e#38661#41150#0" expanded="false" />
           </folding>
         </state>
       </provider>
