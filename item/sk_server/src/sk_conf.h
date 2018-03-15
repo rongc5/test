@@ -14,6 +14,7 @@ class sk_conf: public reload_inf
         uint32_t id_num;
         
         string financie_path;
+        string financie_file;
         uint32_t financie_num;
 
         string ban_path;

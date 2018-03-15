@@ -43,7 +43,7 @@ class http_res_msg: public normal_msg
 struct finance_t
 {
     string id;
-    string date;
+    string time_str;
 
     float mgxj;
     float mgsy;
