@@ -26,7 +26,7 @@
       <file leaf-file-name="re_test_case.py" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/re_test_case.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="297" column="72" selection-start="7738" selection-end="7751" vertical-scroll-proportion="0.16369048" vertical-offset="5533" max-vertical-offset="17936">
+            <state line="342" column="28" selection-start="8930" selection-end="8930" vertical-scroll-proportion="0.58779764" vertical-offset="6103" max-vertical-offset="17936">
               <folding>
                 <element signature="e#40#54#0" expanded="true" />
               </folding>
@@ -52,6 +52,7 @@
         <option value="$PROJECT_DIR$/../stock/py/stock_infoe.py" />
         <option value="$PROJECT_DIR$/../stock/py/grepx.py" />
         <option value="$PROJECT_DIR$/../stock/py/stock_infoa.py" />
+        <option value="$PROJECT_DIR$/../stock/py/count_detail.py" />
       </list>
     </option>
   </component>
@@ -304,7 +305,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="0" width="1440" height="860" extended-state="1" />
+    <frame x="0" y="0" width="1440" height="860" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -339,15 +340,6 @@
     <breakpoint-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/re_test_case.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="17" column="28" selection-start="335" selection-end="335" vertical-scroll-proportion="0.0" vertical-offset="95" max-vertical-offset="17936">
-          <folding>
-            <element signature="e#40#54#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../stock/py/stock_infoa.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="1640" column="21" selection-start="52805" selection-end="52805" vertical-scroll-proportion="0.0" vertical-offset="31160" max-vertical-offset="38361" />
@@ -447,9 +439,16 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/../stock/py/count_detail.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="56" column="20" selection-start="998" selection-end="998" vertical-scroll-proportion="0.46341464" vertical-offset="684" max-vertical-offset="2565">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/re_test_case.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="297" column="72" selection-start="7738" selection-end="7751" vertical-scroll-proportion="0.16369048" vertical-offset="5533" max-vertical-offset="17936">
+        <state line="342" column="28" selection-start="8930" selection-end="8930" vertical-scroll-proportion="0.58779764" vertical-offset="6103" max-vertical-offset="17936">
           <folding>
             <element signature="e#40#54#0" expanded="true" />
           </folding>
