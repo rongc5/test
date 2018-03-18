@@ -240,6 +240,6 @@ class ToBufferMgr
     private:
         T _objects[2];
         int16_t _curr;
-}
+};
 
 #endif

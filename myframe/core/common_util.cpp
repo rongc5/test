@@ -297,7 +297,7 @@ int SplitString(const char *srcStr, const char *delim, vector<string> * strVec, 
         return 0;
     }
 
-    strVec.clear();
+    strVec->clear();
 
     char *pstart = const_cast<char *>(srcStr);
     char * pend = NULL;

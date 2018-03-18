@@ -12,7 +12,7 @@ quotation_dict::~quotation_dict()
     destroy();
 }
 
-int quotation_dict::init(const char * path, uint32_t query_num)
+int quotation_dict::init(const char * path, const char * file, uint32_t query_num, const char *dump_dir)
 {
     if(_id_dict.create(query_num * 3, query_num * 2) < 0) {
         LOG_WARNING("failed to allocate memory for query_dict");
@@ -20,6 +20,7 @@ int quotation_dict::init(const char * path, uint32_t query_num)
     }
 
     snprintf(_fullpath, sizeof(_fullpath), "%s", path);
+    snprintf(_dumppath, sizeof(_dumppath), "%s/%s", dump_dir, file);
 
     destroy();
 
@@ -45,11 +46,37 @@ int quotation_dict::load()
         if (ptr == NULL || *ptr == '\0'|| *ptr == '#')
             continue;
 
-        sk_t sk;
-        sk.reset();
+        ToBufferMgr<quotation_t> qt;
+        qt.current()->reset();
+        qt.idle()->reset();
 
-        create_sign_fs64(ptr, strlen(ptr), query_sign, query_sign+1);
-        _id_dict.add_node(query_sign, &sk);
+        //vector<string> tmp_vec;
+        //SplitString(ptr, "\t", &tmp_vec, SPLIT_MODE_ALL);
+        //if (tmp_vec.size() < 13)
+        //{
+            //continue;
+        //}
+        
+        //qt.id = tmp_vec[0];
+        //qt.name = tmp_vec[1];
+
+        //qt.start = atof(tmp_vec[5].c_str());
+        //qt.end = atof(tmp_vec[3].c_str());
+        //qt.high = atof(tmp_vec[33].c_str());
+        //qt.low = atof(tmp_vec[34].c_str());
+        //qt.last_closed = atof(tmp_vec[4].c_str());
+
+        //qt.vol = atoll(tmp_vec[36].c_str());
+        //qt.sell_vol = atoll(tmp_vec[8].c_str());
+        //qt.buy_vol = atoll(tmp_vec[7].c_str());
+        
+        //qt.swing = atof(tmp_vec[43].c_str());
+        //qt.change_rate = atof(tmp_vec[38].c_str());
+        //qt.range_percent = atof(tmp_vec[32].c_str());
+        //qt.total_price = atof(tmp_vec[37].c_str());
+
+        create_sign_fs64(qt.id.c_str(), qt.id.size(), query_sign, query_sign+1);
+        _id_dict.add_node(query_sign, &qt);
     }
 
     fclose(fp);
@@ -85,6 +112,26 @@ bool quotation_dict::need_reload()
 
 int quotation_dict::dump()
 {
+    FILE * fp = fopen(_dumppath, "w");
+    ASSERT_FATAL(fp != NULL, "finance_dict dump_data failed, open file [%s] error", _dumppath);
+
+    uint32_t sign[2];
+    finance_t * p_data = NULL;                                                                                                        
+
+    inc_dict_t<finance_t>::travel_info_t m_tranverse;
+    memset(&m_tranverse, 0, sizeof(m_tranverse));
+
+    for(p_data = current->get_begin(&m_tranverse, sign);
+            p_data != current->get_end(&m_tranverse);
+            p_data = current->get_next(&m_tranverse, sign)) {
+
+        fprintf(fp,"sign[%u-%u]\tid[%s]\tpe[%.2f]\tpb[%.2f]\t",sign[0],sign[1],p_data->id,p_data->pe,p_data->pb);
+        fprintf(fp, "cir_value[%.2f]\tvalue[%.2f]\tmgsy[%.2f]\tmgxj[%.2f]\tmgsygr[%.2f]\t", p_data->cir_value, 
+                p_data->value, p_data->mgsy, p_data->mgxj, p_data->mgsygr);
+        fprintf(fp, "mgxjgr[%.2f]\tzysrgr[%.2f]\tyylrgr[%.2f]\tjlrgr[%.2f]time_str[%s]\n", 
+                p_data->mgxjgr, p_data->zysrgr, p_data->yylrgr, p_data->jlrgr, p_data->time_str);
+    }
+    fclose(fp);
 
     return 0;
 }

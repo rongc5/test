@@ -161,6 +161,8 @@ struct quotation_t
     float change_rate;
     float range_percent;
 
+    float total_price;
+
     deque<float> avg_price; 
 
     void reset()
