@@ -87,57 +87,42 @@ struct ban_t
 
 struct single_t
 {
+    deque<uint32_t> single_in;
+    deque<uint32_t> single_out;
+    deque<uint32_t> single_inflow;
+};
+
+struct real_single
+{
     string id;
+    vector<single_t> re_single;
 
-    deque<uint32_t> king_single_in;
-    deque<uint32_t> king_single_out;
-    deque<uint32_t> king_single_inflow;
-
-    deque<uint32_t> large_single_in;
-    deque<uint32_t> large_single_out;
-    deque<uint32_t> large_single_inflow;
-
-    deque<uint32_t> middle_single_in;
-    deque<uint32_t> middle_single_out;
-    deque<uint32_t> middle_single_inflow;
+    void reset()
+    {
+        real_single.clear();
+        id.clear();
+    }
 };
 
 struct last_single_t
 {
-    uint32_t king_single_in;
-    float king_single_in_avg_price;
-    uint32_t king_single_out;
-    float king_single_out_avg_price;
-    uint32_t king_single_inflow;
-    float king_single_inflow_avg_price;
+    uint32_t single_in;
+    float in_price;
 
-    uint32_t large_single_in;
-    float large_single_in_avg_price;
-    uint32_t large_single_out;
-    float large_single_out_avg_price;
-    uint32_t large_single_inflow;
-    float large_single_inflow_avg_price;
-
-    uint32_t middle_single_in;
-    float middle_single_in_avg_price;
-    uint32_t middle_single_out;
-    float middle_single_out_avg_price;
-    uint32_t middle_single_inflow;
-    float middle_single_inflow_avg_price;
-
-    float start;
-    float end;
-    float high;
-    float low;
-
-    float downpointer;
-    float uppointer;
+    uint32_t single_out;
+    float out_price;
 };
 
 struct history_single_t
 {
     string id;
-    map<string, single_t> date_single_map;
+    map<string, vector<last_single_t> > date_single_map;
+};
+
+struct history_quotation_t
+{
+    string id;
+    map<string, quotation_t> date_quotation_map;
 };
 
 struct quotation_t
@@ -154,7 +139,6 @@ struct quotation_t
     uint64_t vol;
     uint64_t sell_vol;
     uint64_t buy_vol;
-
 
     float swing;
 

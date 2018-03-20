@@ -1,18 +1,18 @@
-#include "quotation_dict.h"
+#include "id_rdict.h"
 #include "base_def.h"
 #include "log_helper.h"
 #include "ul_sign.h"
 
-quotation_dict::quotation_dict()
+id_rdict::id_rdict()
 {
 }
 
-quotation_dict::~quotation_dict()
+id_rdict::~id_rdict()
 {
     destroy();
 }
 
-int quotation_dict::init(const char * path, const char * file, uint32_t query_num, const char *dump_dir)
+int id_rdict::init(const char * path, const char * file, uint32_t query_num, const char *dump_dir)
 {
     if(_id_dict.create(query_num * 3, query_num * 2) < 0) {
         LOG_WARNING("failed to allocate memory for query_dict");
@@ -27,7 +27,7 @@ int quotation_dict::init(const char * path, const char * file, uint32_t query_nu
     return 0;
 }
 
-int quotation_dict::load()
+int id_rdict::load()
 {
     FILE * fp = fopen(tmp_path, "r");
     ASSERT_WARNING(fp != NULL,"open query dict failed. path[%s]", _fullpath);
@@ -46,9 +46,8 @@ int quotation_dict::load()
         if (ptr == NULL || *ptr == '\0'|| *ptr == '#')
             continue;
 
-        ToBufferMgr<quotation_t> qt;
-        qt.current()->reset();
-        qt.idle()->reset();
+
+        id_rdict_t id_r;
 
         //vector<string> tmp_vec;
         //SplitString(ptr, "\t", &tmp_vec, SPLIT_MODE_ALL);
@@ -75,8 +74,8 @@ int quotation_dict::load()
         //qt.range_percent = atof(tmp_vec[32].c_str());
         //qt.total_price = atof(tmp_vec[37].c_str());
 
-        create_sign_fs64(qt.id.c_str(), qt.id.size(), query_sign, query_sign+1);
-        _id_dict.add_node(query_sign, &qt);
+        create_sign_fs64(ptr, strlen(ptr), query_sign, query_sign+1);
+        _id_dict.add_node(query_sign, &id_r);
     }
 
     fclose(fp);
@@ -87,18 +86,18 @@ int quotation_dict::load()
     return 0;
 }
 
-int quotation_dict::reload()
+int id_rdict::reload()
 {
     _id_dict.renew();
     return load();
 }
 
-void quotation_dict::set_path (const char* path)
+void id_rdict::set_path (const char* path)
 {
     snprintf(_fullpath, sizeof(_fullpath), "%s", path);
 }
 
-bool quotation_dict::need_reload()
+bool id_rdict::need_reload()
 {
     struct stat st;
 
@@ -110,7 +109,7 @@ bool quotation_dict::need_reload()
     return false;
 }
 
-int quotation_dict::dump()
+int id_rdict::dump()
 {
     FILE * fp = fopen(_dumppath, "w");
     ASSERT_FATAL(fp != NULL, "finance_dict dump_data failed, open file [%s] error", _dumppath);
@@ -136,7 +135,7 @@ int quotation_dict::dump()
     return 0;
 }
 
-int quotation_dict::destroy()
+int id_rdict::destroy()
 {
 
     return 0;

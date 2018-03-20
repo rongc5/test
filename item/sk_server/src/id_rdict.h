@@ -1,15 +1,30 @@
-#ifndef __QUOTATION_DICT_H_
-#define __QUOTATION_DICT_H_
+#ifndef __ID_RDICT_H_
+#define __ID_RDICT_H_
 
 #include "base_reload.h"
 #include "inc_dict.h"
 #include "sk_def.h"
 #include "common_util.h"
 
-class quotation_dict:public reload_inf
+struct id_rdict_t
+{
+    ToBufferMgr<quotation_t> quotation;
+    ToBufferMgr<real_single> rsingle;
+
+    id_rdict_t()
+    {
+        quotation.current()->reset();
+        quotation.idle()->reset();
+
+        rsingle.current()->reset();
+        rsingle.idle()->reset();
+    }
+};
+
+class id_rdict:public reload_inf
 {
     public:
-        virtual ~quotation_dict(){}
+        virtual ~id_rdict(){}
 
         virtual int init(const char * path, const char * file, uint32_t query_num, const char *dump_dir);
         virtual int load();
@@ -26,7 +41,7 @@ class quotation_dict:public reload_inf
         char _dumppath[SIZE_LEN_512];
         time_t _last_load;
     public:
-        inc_dict_t<ToBufferMgr<quotation_t> > _id_dict;
+        inc_dict_t<id_rdict_t> _id_dict;
 };
 
 

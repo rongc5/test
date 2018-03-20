@@ -9,8 +9,10 @@ class sk_conf: public reload_inf
         sk_conf(const char * sk_conf);
 
         string ua_path;
+        string ua_file;
 
         string id_path;
+        string id_file;
         uint32_t id_num;
         
         string financie_path;
@@ -18,6 +20,7 @@ class sk_conf: public reload_inf
         uint32_t financie_num;
 
         string ban_path;
+        string ban_file;
         uint32_t ban_num;
 
         string local_strategy_path;
