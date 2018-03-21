@@ -174,6 +174,7 @@ struct quotation_t
 };
 
 
+#define TIMER_TYPE_RELOAD_CONF 10000
 
 
 

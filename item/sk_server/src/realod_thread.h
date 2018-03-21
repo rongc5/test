@@ -6,39 +6,51 @@
 #include "common_util.h"
 #include "common_def.h"
 #include "log_helper.h"
-#include "skhttp_req_data_process.h"
-#include "http_req_process.h"
-#include "out_connect.h"
+#include "proc_data.h"
 
 class reload_thread:public base_net_thread
 {
     public:
-        virtual void handle_msg(normal_msg * p_msg)
+        reload_thread()
         {
-            if (!p_msg) 
-            {
-                return;
-            }
+            _is_first =  false;
+        }
 
-            if (p_msg->_msg_op == MSG_HTTP_REQ) 
+        virtual void run_process()
+        {
+            if (!_is_first)
             {
-                http_req_msg * req_msg = dynamic_cast<http_req_msg *>(p_msg);
-                if (!req_msg) {
-                    REC_OBJ<normal_msg> rc(p_msg);
-                    return;
-                }
-
-                base_net_obj * connect = skhttp_req_data_process::gen_net_obj(req_msg);
-                connect->set_net_container(_base_container);
-                LOG_DEBUG("set http_req_process");
+                _is_first = true;
+                reload_timer_start();
             }
-            else
+            
+        }
+
+        virtual bool handle_timeout(timer_msg & t_msg)
+        {
+            proc_data* p_data = proc_data::instance();
+            if (t_msg._timer_type == TIMER_TYPE_RELOAD_CONF && p_data && p_data->_conf)
             {
-                REC_OBJ<normal_msg> rc(p_msg);
-                return;
+                LOG_DEBUG("handle_timeout timer_type:%d, time_length:%d", t_msg._timer_type, t_msg._time_length);
+                p_data->reload();
             }
         }
 
+        void reload_timer_start()
+        {
+                proc_data* p_data = proc_data::instance();
+
+                if (p_data && p_data->_conf)
+                {
+                    timer_msg t_msg;
+
+                    t_msg._timer_type = TIMER_TYPE_RELOAD_CONF;
+                    t_msg._time_length = p_data->_conf->reload_second;
+                    add_timer(timer_msg & t_msg);
+                }
+        }
+    private:
+        bool _is_first;
 };
 
 

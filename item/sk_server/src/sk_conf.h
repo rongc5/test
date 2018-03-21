@@ -24,6 +24,18 @@ class sk_conf: public reload_inf
         uint32_t ban_num;
 
         string local_strategy_path;
+        string local_strategy_file;
+
+        string history_single_path;
+        string history_single_file;
+        uint32_t history_single_num;
+
+        
+        string history_quotation_path;
+        string history_quotation_file;
+        uint32_t history_quotation_num;
+
+
         uint32_t http_req_thread_num;
 
         uint32_t http_server_port;

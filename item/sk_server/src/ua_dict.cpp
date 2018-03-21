@@ -14,6 +14,7 @@ ua_dict::~ua_dict()
 int ua_dict::init(const char * path)
 {
     snprintf(_fullpath, sizeof(_fullpath), "%s", path);
+    snprintf(_dumppath, sizeof(_dumppath), "%s/%s", dump_dir, file);
 
     destroy();
 

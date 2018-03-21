@@ -11,9 +11,10 @@ strategy_dict::~strategy_dict()
     destroy();
 }
 
-int strategy_dict::init(const char * path, uint32_t ua_num)
+int strategy_dict::init(const char * path, const char * file, const char *dump_dir)
 {
     snprintf(_fullpath, sizeof(_fullpath), "%s", path);
+    snprintf(_dumppath, sizeof(_dumppath), "%s/%s", dump_dir, file);
 
     destroy();
 

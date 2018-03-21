@@ -26,14 +26,35 @@ int sk_conf::load()
     common_cfgparser cfg(_filename.c_str());
 
     cfg.get_vale("server", "ua_path", ua_path);
+    cfg.get_vale("server", "ua_file", ua_file);
 
     cfg.get_vale("server", "id_path", id_path);
+    cfg.get_vale("server", "id_file", id_file);
     cfg.get_vale("server", "id_num", tmp);
     id_num = atoi(tmp.c_str());
 
-    cfg.get_vale("server", "id_financie_path", id_financie_path);
+    cfg.get_vale("server", "financie_path", financie_path);
+    cfg.get_vale("server", "financie_file", financie_file);
+    cfg.get_vale("server", "financie_num", tmp);
+    financie_num = atoi(tmp.c_str());
+
+    cfg.get_vale("server", "ban_path", ban_path);
+    cfg.get_vale("server", "ban_file", ban_file);
+    cfg.get_vale("server", "ban_num", tmp);
+    ban_num = atoi(tmp.c_str());
 
     cfg.get_vale("server", "local_strategy_path", local_strategy_path);
+    cfg.get_vale("server", "local_strategy_file", local_strategy_file);
+
+    cfg.get_vale("server", "history_single_path", history_single_path);
+    cfg.get_vale("server", "history_single_file", history_single_file);
+    cfg.get_vale("server", "history_single_num", tmp);
+    history_single_num = atoi(tmp.c_str());
+
+    cfg.get_vale("server", "history_quotation_path", history_quotation_path);
+    cfg.get_vale("server", "history_quotation_file", history_quotation_file);
+    cfg.get_vale("server", "history_quotation_num", tmp);
+    history_quotation_num = atoi(tmp.c_str());
 
     cfg.get_vale("server", "http_req_thread_num", tmp);
     http_req_thread_num = atoi(tmp.c_str());

@@ -240,6 +240,12 @@ size_t log_thread::process_recv_buf(const char *buf, const size_t len)
     return k;
 }
 
+void log_thread::set_type(LogType type)
+{
+    _conf.type = type;
+}
+
+
 void log_thread::obj_process()
 {
     int  nfds = ::epoll_wait(_epoll_fd, _epoll_events, _epoll_size, DEFAULT_EPOLL_WAITE);

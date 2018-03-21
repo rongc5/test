@@ -9,7 +9,7 @@ int main(int argc, char *argv[])
 
     SplitString(url.c_str(), "://", &strList, SPLIT_MODE_ONE);
 
-    for (int i = 0; i< strList.size(); i++){
+    for (uint32_t i = 0; i< strList.size(); i++){
         printf("%s\n", strList[i].c_str());
     }
     
