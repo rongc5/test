@@ -49,6 +49,12 @@ class sk_conf: public reload_inf
 
         LogType log_type;
 
+        string real_morning_stime;
+        string real_morning_etime;
+
+        string real_afternoon_stime;
+        string real_afternoon_etime;
+
     public:
 
         virtual int load();

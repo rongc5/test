@@ -87,6 +87,12 @@ int sk_conf::load()
         log_type = LOGFATAL;
     }
 
+    cfg.get_vale("server", "real_morning_stime", real_morning_stime);
+    cfg.get_vale("server", "real_morning_etime", real_morning_etime);
+
+    cfg.get_vale("server", "real_afternoon_stime", real_afternoon_stime);
+    cfg.get_vale("server", "real_afternoon_stime", real_afternoon_stime);
+
     return 0;
 }
 

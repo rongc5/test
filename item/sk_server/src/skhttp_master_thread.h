@@ -13,6 +13,8 @@
 class skhttp_master_thread:public base_net_thread
 {
     public:
+        skhttp_master_thread();
+
         virtual void handle_msg(normal_msg * p_msg);
 
         virtual void run_process();
@@ -21,6 +23,7 @@ class skhttp_master_thread:public base_net_thread
 
     protected:
         vector<uint32_t> _req_thread_vec;
+        bool _is_first;
 };
 
 

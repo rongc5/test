@@ -175,6 +175,7 @@ struct quotation_t
 
 
 #define TIMER_TYPE_RELOAD_CONF 10000
+#define TIMER_TYPE_REAL_REQ 10001
 
 
 
