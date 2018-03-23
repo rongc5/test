@@ -26,7 +26,7 @@
       <file leaf-file-name="re_test_case.py" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/re_test_case.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="651" column="13" selection-start="19026" selection-end="19026" vertical-scroll-proportion="0.36160713" vertical-offset="12126" max-vertical-offset="17936">
+            <state line="414" column="60" selection-start="10686" selection-end="10686" vertical-scroll-proportion="0.33333334" vertical-offset="7642" max-vertical-offset="17936">
               <folding>
                 <element signature="e#40#54#0" expanded="true" />
               </folding>
@@ -305,7 +305,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="0" width="1440" height="860" extended-state="0" />
+    <frame x="0" y="0" width="1440" height="860" extended-state="1" />
     <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -444,7 +444,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/re_test_case.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="651" column="13" selection-start="19026" selection-end="19026" vertical-scroll-proportion="0.36160713" vertical-offset="12126" max-vertical-offset="17936">
+        <state line="414" column="60" selection-start="10686" selection-end="10686" vertical-scroll-proportion="0.33333334" vertical-offset="7642" max-vertical-offset="17936">
           <folding>
             <element signature="e#40#54#0" expanded="true" />
           </folding>
