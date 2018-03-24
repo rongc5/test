@@ -42,6 +42,7 @@ void base_net_obj::set_net_container(base_net_container *p_net_container)
     try {
         p_epoll->add_to_epoll(this);
         _p_net_container->insert(this);
+        add_timer();
     }
     catch (std::exception &e)
     {
@@ -137,6 +138,34 @@ void base_net_obj::add_timer(timer_msg & t_msg)
     if (_p_net_container)
     {
         _p_net_container->add_timer(t_msg);
+        add_timer();
+    }
+    else
+    {
+        _timer_vec.push_back(t_msg);
+    }
+}
+void base_net_obj::add_timer()
+{
+    vector<timer_msg>::iterator it;
+
+    bool flag = false;
+    for (it = _timer_vec.begin(); it != _timer_vec.end(); it++)
+    {
+        if (_p_net_container)
+        {
+            _p_net_container->add_timer(*it);
+            flag = true;
+        }
+        else 
+        {
+            break;
+        }
+    }
+
+    if (flag)
+    {
+        _timer_vec.clear();
     }
 }
 

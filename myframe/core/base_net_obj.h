@@ -41,6 +41,8 @@ class base_net_obj: public normal_msg
         virtual void before_destory();
 
         int destroy();
+    protected:
+        void add_timer();
 
     protected:
         base_net_container *_p_net_container;
@@ -48,6 +50,7 @@ class base_net_obj: public normal_msg
         int _fd;	
         ObjId _id_str;
         bool _real_net;
+        vector<timer_msg> _timer_vec;
 };
 
 
