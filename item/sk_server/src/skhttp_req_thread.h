@@ -38,7 +38,31 @@ class skhttp_req_thread:public base_net_thread
                 return;
             }
         }
+
+        void get_domain(string & domain, vector<string> & vip)
+        {
+            map<string, vector<string> >::iterator it;
+            it = _domain_cache.find(domain);
+            if (it != _domain_cache.end())
+            {
+                vip = it->second;
+            }
+        }
+
+        void add_domain(string & domain, vector<string> & vip)
+        {
+            _domain_cache[domain] = vip;
+        }
+
+        void delete_domain(string & domain)
+        {
+            _domain_cache.erase(domain);
+        }
+
+    protected:
+        map<string, vector<string> > _domain_cache;
 };
+
 
 
 
