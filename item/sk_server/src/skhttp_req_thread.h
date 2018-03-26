@@ -28,7 +28,35 @@ class skhttp_req_thread:public base_net_thread
                     return;
                 }
 
-                base_net_obj * connect = skhttp_req_data_process::gen_net_obj(req_msg);
+                bool flag = false; 
+                url_info info;
+                parse_url(req_msg->url, info);
+                
+                vector<string> vIp;
+
+                get_domain(info.domain, vIp);
+                if (!vIp.size())
+                {
+                    parse_domain(info.domain, vIp);
+                    flag = true;
+                }
+
+                if (flag && vIp.size())
+                {
+                    add_domain(info.domain, vIp);
+                }
+
+                if (!vIp.size())
+                {
+                    REC_OBJ<normal_msg> rc(p_msg);
+                    return 0;
+                }
+
+                srand(p_msg);
+                int index = rand() % vIp.size();
+                info.ip = vIp[index];
+
+                base_net_obj * connect = skhttp_req_data_process::gen_net_obj(req_msg, info);
                 connect->set_net_container(_base_container);
                 LOG_DEBUG("set http_req_process");
             }

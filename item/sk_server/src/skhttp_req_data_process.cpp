@@ -113,7 +113,7 @@ size_t skhttp_req_data_process::process_recv_body(const char *buf, size_t len, i
     return len;
 }
 
-base_net_obj * skhttp_req_data_process::gen_net_obj(http_req_msg * req_msg)
+base_net_obj * skhttp_req_data_process::gen_net_obj(url_info & info)
 {
     url_info info; 
     parse_url(req_msg->url, info);

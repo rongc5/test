@@ -97,6 +97,7 @@ struct url_info
 {
     string protocol_type;
     string domain;
+    string ip;
     int port;
     string path;
     string query;
