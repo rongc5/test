@@ -10,6 +10,7 @@ class strategy_dict;
 class finance_dict;
 class ban_dict;
 class id_rdict;
+class id_dict;
 class proc_data:public reload_inf
 {
     public:
@@ -26,7 +27,8 @@ class proc_data:public reload_inf
 
     public:
         reload_mgr<ua_dict> * _ua_dict;
-        reload_mgr<id_rdict> * _id_dict;
+        reload_mgr<id_dict> * _id_dict;
+        reload_mgr<real_rdict> * _real_dict;
         reload_mgr<strategy_dict> * _strategy_dict;
         sk_conf * _conf;
 

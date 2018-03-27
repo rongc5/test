@@ -73,6 +73,7 @@ int id_rdict::load()
         //qt.change_rate = atof(tmp_vec[38].c_str());
         //qt.range_percent = atof(tmp_vec[32].c_str());
         //qt.total_price = atof(tmp_vec[37].c_str());
+        id_r.id = ptr;
 
         create_sign_fs64(ptr, strlen(ptr), query_sign, query_sign+1);
         _id_dict.add_node(query_sign, &id_r);
@@ -115,9 +116,9 @@ int id_rdict::dump()
     ASSERT_FATAL(fp != NULL, "finance_dict dump_data failed, open file [%s] error", _dumppath);
 
     uint32_t sign[2];
-    finance_t * p_data = NULL;                                                                                                        
+    id_rdict_t * p_data = NULL;
 
-    inc_dict_t<finance_t>::travel_info_t m_tranverse;
+    inc_dict_t<id_rdict_t>::travel_info_t m_tranverse;
     memset(&m_tranverse, 0, sizeof(m_tranverse));
 
     for(p_data = current->get_begin(&m_tranverse, sign);

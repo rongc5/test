@@ -22,8 +22,6 @@ class reload_thread:public base_net_thread
             {
                 _is_first = true;
                 reload_timer_start();
-                real_req_start();
-                real_timer_start();
             }
             
         }
@@ -36,11 +34,6 @@ class reload_thread:public base_net_thread
             {
                 p_data->reload();
                 reload_timer_start();
-            }
-            else if (t_msg._timer_type == TIMER_TYPE_REAL_REQ)
-            {
-                real_req_start();
-                real_timer_start();
             }
         }
 
@@ -58,62 +51,7 @@ class reload_thread:public base_net_thread
             }
         }
 
-        void real_req_start()
-        {
-            proc_data* p_data = proc_data::instance();
-            if (is_real_time() && p_data && p_data->_id_dict)
-            {
-                inc_dict_t<id_rdict_t> id_map = p_data->_id_dict->current();
-                ;
-            }
-
-        }
-
-        bool is_real_time()
-        {
-            char time_str[SIZE_LEN_64] = {'\0'};
-            get_timestr(time_str, sizeof(time_str), "%H:%M:%S");
-
-            proc_data* p_data = proc_data::instance();
-
-            if (strlen(time_str) && p_data && p_data->_conf)
-            {
-                if (strncmp(time_str, p_data->_conf->real_morning_stime.c_str(), strlen("09:30")) > 0 &&
-                            strncmp(time_str, p_data->_conf->real_morning_etime.c_str(), strlen("09:30")) < 0)
-                    return true;
-                
-                if (strncmp(time_str, p_data->_conf->real_morning_etime.c_str(), strlen("09:30")) < 0 && 
-                        strncmp(time_str, p_data->_conf->real_afternoon_etime.c_str(), strlen("09:30")) < 0)
-                    return true;
-            }
-
-            return false;
-        }
-
-        void real_timer_start()
-        {
-            proc_data* p_data = proc_data::instance();
-
-            if (p_data && p_data->_conf)
-            {
-                timer_msg t_msg;
-
-                t_msg._timer_type = TIMER_TYPE_REAL_REQ;
-                t_msg._time_length = p_data->_conf->reload_second;
-                add_timer(timer_msg & t_msg);
-            }
-
-        }
-        
-        int add_req_thread(uint32_t thread_index)
-        {
-            _req_thread_vec.push_back(thread_index);
-
-            return 0;
-        }
-
     private:
-        vector<uint32_t> _req_thread_vec;
         bool _is_first;
 };
 

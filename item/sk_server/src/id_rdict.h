@@ -8,6 +8,7 @@
 
 struct id_rdict_t
 {
+    string id;
     ToBufferMgr<quotation_t> quotation;
     ToBufferMgr<real_single> rsingle;
 

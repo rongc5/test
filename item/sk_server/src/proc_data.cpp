@@ -1,6 +1,7 @@
 #include "ua_dict.h"
 #include "strategy_dict.h"
 #include "log_helper.h"
+#include "id_dict.h"
 
 int Proc_data::init(sk_conf * conf)
 {
@@ -16,6 +17,15 @@ int Proc_data::init(sk_conf * conf)
 
     _ua_dict = new (std::nothrow)reload_mgr<ua_dict>(ua_dict1, ua_dict2);
 
+    id_dict *id_dict1 = new (std::nothrow)id_dict();
+    ASSERT_WARNING(id_dict1 != NULL, "allocate id_dict fail");
+    id_dict1->init(_conf->id_path.c_str(), _conf->id_file.c_str(), _conf->dump_dir.c_str());
+    
+    id_dict *id_dict2 = new (std::nothrow)id_dict();
+    ASSERT_WARNING(id_dict2 != NULL, "allocate id_dict fail");
+    id_dict2->init(_conf->id_path.c_str(), _conf->id_file.c_str(), _conf->dump_dir.c_str());
+
+    _id_dict = new (std::nothrow)reload_mgr<id_dict>(id_dict1, id_dict2);
 
 
     strategy_dict *strategy_dict1 = new (std::nothrow)strategy_dict();
