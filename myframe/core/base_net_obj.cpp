@@ -154,6 +154,9 @@ void base_net_obj::add_timer()
     {
         if (_p_net_container)
         {
+            if (!it->_id._id && !it->_id._thread_index)
+                it->_id = _id_str;
+
             _p_net_container->add_timer(*it);
             flag = true;
         }

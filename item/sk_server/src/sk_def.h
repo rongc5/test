@@ -7,21 +7,21 @@
 #define MSG_HTTP_RES 1003
 
 
-class http_req_msg:public normal_msg
+class http_req_msg
 {
     public:
-        http_req_msg()
-        {
-            _msg_op = MSG_HTTP_REQ;
-        }
-        virtual ~http_req_msg(){}
 
         http_cmd_type cmd_type;
-
+        uint32_t time_out;
         string sid;
         string  url;
         string post_data;
         map<string, string> headers;
+
+        http_req_msg()
+        {
+            time_out = 0;
+        }
 };
 
 
@@ -177,6 +177,7 @@ struct quotation_t
 #define TIMER_TYPE_RELOAD_CONF 10000
 #define TIMER_TYPE_REAL_REQ 10001
 
+#define TIMER_TYPE_HTTP_REQ 10002
 
 
 #endif
