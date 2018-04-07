@@ -12,13 +12,8 @@ finance_dict::~finance_dict()
     destroy();
 }
 
-int finance_dict::init(const char * path, const char * file, uint32_t query_num, const char *dump_dir)
+int finance_dict::init(const char * path, const char * file, const char *dump_dir)
 {
-    if(_id_dict.create(query_num * 3, query_num * 2) < 0) {
-        LOG_WARNING("failed to allocate memory for query_dict");
-        return NULL;
-    }
-
     snprintf(_fullpath, sizeof(_fullpath), "%s/%s", path, file);
     snprintf(_dumppath, sizeof(_dumppath), "%s/%s", dump_dir, file);
 
@@ -68,8 +63,8 @@ int finance_dict::load()
         ft.yylrgr = atof(tmp_vec[10].c_str());
         ft.jlrgr = atof(tmp_vec[11].c_str());
         ft.time_str = tmp_vec[12];
-        create_sign_fs64(ft.id.c_str(), ft.id.size(), query_sign, query_sign+1);
-        _id_dict.add_node(query_sign, &ft);
+        
+        _id_dict.insert(make_pair<string, finance_t>(ft.id, ft))
     }
 
     fclose(fp);
@@ -82,7 +77,8 @@ int finance_dict::load()
 
 int finance_dict::reload()
 {
-    _id_dict.renew();
+    unordered_map<string, finance_t, str_hasher> tmp;
+    _id_dict.swap(tmp);
     return load();
 }
 
@@ -114,11 +110,9 @@ int finance_dict::dump()
     inc_dict_t<finance_t>::travel_info_t m_tranverse;
     memset(&m_tranverse, 0, sizeof(m_tranverse));
 
-    for(p_data = current->get_begin(&m_tranverse, sign);
-            p_data != current->get_end(&m_tranverse);
-            p_data = current->get_next(&m_tranverse, sign)) {
-
-        fprintf(fp,"sign[%u-%u]\tid[%s]\tpe[%.2f]\tpb[%.2f]\t",sign[0],sign[1],p_data->id,p_data->pe,p_data->pb);
+    for (auto &p_data: _id_dict)
+    {
+        fprintf(fp,"id[%s]\tpe[%.2f]\tpb[%.2f]\t",p_data->id,p_data->pe,p_data->pb);
         fprintf(fp, "cir_value[%.2f]\tvalue[%.2f]\tmgsy[%.2f]\tmgxj[%.2f]\tmgsygr[%.2f]\t", p_data->cir_value, 
                 p_data->value, p_data->mgsy, p_data->mgxj, p_data->mgsygr);
         fprintf(fp, "mgxjgr[%.2f]\tzysrgr[%.2f]\tyylrgr[%.2f]\tjlrgr[%.2f]time_str[%s]\n", 

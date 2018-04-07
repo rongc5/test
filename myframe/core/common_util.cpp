@@ -121,7 +121,7 @@ uint64_t ntohl64(uint64_t src)
 }
 
 
-int GetStringByLabel(const string &sSrc,const string &sLabel1,const string &sLabel2, string &sOut, unsigned int nBeginPos, int nIfRetPos)
+int GetStringByLabel(const std::string &sSrc,const std::string &sLabel1,const std::string &sLabel2, std::string &sOut, unsigned int nBeginPos, int nIfRetPos)
 {
     if (nBeginPos >= sSrc.length())
     {
@@ -152,11 +152,11 @@ int GetStringByLabel(const string &sSrc,const string &sLabel1,const string &sLab
         }
 
         ret=pTmp1+sLabel2.length()-sSrc.c_str();
-        sOut=string(pTmp0+sLabel1.length(), pTmp1-pTmp0-sLabel1.length());
+        sOut=std::string(pTmp0+sLabel1.length(), pTmp1-pTmp0-sLabel1.length());
     }
     else
     {
-        sOut = string(pTmp0+sLabel1.length());
+        sOut = std::string(pTmp0+sLabel1.length());
         ret=sSrc.length();
     }
     if (nIfRetPos == 0)
@@ -167,7 +167,7 @@ int GetStringByLabel(const string &sSrc,const string &sLabel1,const string &sLab
 }
 
 
-int GetCaseStringByLabel(const string &sSrc,const string &sLabel1,const string &sLabel2, string &sOut, unsigned int nBeginPos, int nIfRetPos)
+int GetCaseStringByLabel(const std::string &sSrc,const std::string &sLabel1,const std::string &sLabel2, std::string &sOut, unsigned int nBeginPos, int nIfRetPos)
 {
     if (nBeginPos >= sSrc.length())
     {
@@ -196,11 +196,11 @@ int GetCaseStringByLabel(const string &sSrc,const string &sLabel1,const string &
             return -1;
         }
         ret=pTmp1+sLabel2.length()-sSrc.c_str();
-        sOut=string(pTmp0+sLabel1.length(), pTmp1-pTmp0-sLabel1.length());
+        sOut=std::string(pTmp0+sLabel1.length(), pTmp1-pTmp0-sLabel1.length());
     }
     else
     {
-        sOut = string(pTmp0+sLabel1.length());
+        sOut = std::string(pTmp0+sLabel1.length());
         ret=sSrc.length();
     }
     if (nIfRetPos == 0)
@@ -210,7 +210,7 @@ int GetCaseStringByLabel(const string &sSrc,const string &sLabel1,const string &
     return ret;
 }
 
-void StringTrim(string &sSrc)
+void StringTrim(std::string &sSrc)
 {       
     int i = 0;
     while ((sSrc[i] == ' ' || sSrc[i] == '\t' || sSrc[i] == '\r' || sSrc[i] == '\n') && i < (int)sSrc.length())
@@ -227,7 +227,7 @@ void StringTrim(string &sSrc)
     sSrc = sSrc.substr(nBeginPos, nEnd - nBeginPos + 1);        
 }
 
-string trim(const char * source, char const* delims)
+std::string trim(const char * source, char const* delims)
 {
     std::string result(source);
     std::string::size_type index = result.find_last_not_of(delims);
@@ -243,7 +243,7 @@ string trim(const char * source, char const* delims)
     return result;
 }
 
-int stringStrip(const char *srcStr, const char *delim, string *dest, int s_mode)
+int stringStrip(const char *srcStr, const char *delim, std::string *dest, int s_mode)
 {
     if (!srcStr || !dest)
     {
@@ -290,7 +290,7 @@ int stringStrip(const char *srcStr, const char *delim, string *dest, int s_mode)
     return 0;
 }
 
-int SplitString(const char *srcStr, const char *delim, vector<string> * strVec, int s_mode)
+int SplitString(const char *srcStr, const char *delim, std::vector<std::string> * strVec, int s_mode)
 {
     if (!srcStr || !delim || !strVec)
     {
@@ -309,7 +309,7 @@ int SplitString(const char *srcStr, const char *delim, vector<string> * strVec, 
         pend = strstr(pstart, delim);
         if (pend)
         {
-            string str(pstart, pend);
+            std::string str(pstart, pend);
             strVec->push_back(str);
             pstart =  pend + dlen;
             count += 1;
@@ -326,7 +326,7 @@ int SplitString(const char *srcStr, const char *delim, vector<string> * strVec, 
 
     if (*pstart != '\0' && pstart != srcStr)
     {
-        string str(pstart);
+        std::string str(pstart);
         strVec->push_back(str);
         count += 1;
     }
@@ -352,7 +352,7 @@ int get_prime_num(int num)
 }
 
 
-int UrlEncode(const string &sSrc, string &sDest)
+int UrlEncode(const std::string &sSrc, std::string &sDest)
 {
     int nLen = sSrc.length();
     int i=0;
@@ -376,7 +376,7 @@ int UrlEncode(const string &sSrc, string &sDest)
 }
 
 
-int UrlDecode(const string &sSrc, string &sDest)
+int UrlDecode(const std::string &sSrc, std::string &sDest)
 {
     int nLen = sSrc.length();
     for (int i = 0; i < nLen; )
@@ -405,28 +405,28 @@ int UrlDecode(const string &sSrc, string &sDest)
 }
 
 
-string GetMonStr(int nMonth)
+std::string GetMonStr(int nMonth)
 {
-    string sMonth;
+    std::string sMonth;
     if (nMonth >=1 && nMonth <=12)
     {
-        sMonth = string(MONTHARRAY[nMonth-1].sMonth);
+        sMonth = std::string(MONTHARRAY[nMonth-1].sMonth);
     }
     return sMonth;
 }
 
-string GetWeekStr(int nWeek)
+std::string GetWeekStr(int nWeek)
 {
-    string sWeek;
+    std::string sWeek;
     if (nWeek >=0 && nWeek <=6)
     {
-        sWeek = string(WEEKARRAY[nWeek].sWeek);
+        sWeek = std::string(WEEKARRAY[nWeek].sWeek);
     }
     return sWeek;
 }
 
 
-string SecToHttpTime(time_t tmpTime)
+std::string SecToHttpTime(time_t tmpTime)
 {
     struct timeval tm1;
     struct timezone tz1;        
@@ -441,7 +441,7 @@ string SecToHttpTime(time_t tmpTime)
     snprintf(sTime, sizeof(sTime),"%s, %d %s %d %02d:%02d:%02d GMT ", GetWeekStr(tmpTm.tm_wday).c_str(),  tmpTm.tm_mday, 
             GetMonStr(tmpTm.tm_mon + 1).c_str(), 
             tmpTm.tm_year+1900, tmpTm.tm_hour, tmpTm.tm_min,   tmpTm.tm_sec);
-    return string(sTime);
+    return std::string(sTime);
 }
 
 
@@ -460,7 +460,7 @@ char * strncasestr(const char *p, int nLen, const char *pattern)
     return ret;
 }
 
-int parse_domain(const string &sDomain, vector<string> & vIp)
+int parse_domain(const std::string &sDomain, std::vector<std::string> & vIp)
 {
     char ipbuf[SIZE_LEN_16];
 
@@ -486,16 +486,16 @@ int parse_domain(const string &sDomain, vector<string> & vIp)
     return 0;
 }
 
-int parse_url(const string &url, url_info & info)
+int parse_url(const std::string &url, url_info & info)
 {
-    vector<string> tmp_vec;
+    std::vector<std::string> tmp_vec;
     SplitString(url.c_str(), "://", &tmp_vec, SPLIT_MODE_ONE);
     if (tmp_vec.size()) 
     {
         info.protocol_type = tmp_vec[0];
     }
 
-    vector<string> t_vec;
+    std::vector<std::string> t_vec;
     SplitString(tmp_vec[1].c_str(), "/", &t_vec, SPLIT_MODE_ONE);
     if (t_vec.size()) 
     {
@@ -531,33 +531,33 @@ int parse_url(const string &url, url_info & info)
     return 0;
 }
 
-void parse_url_para(const string &url_path, map<string, string> &url_para_map)
+void parse_url_para(const std::string &url_path, std::map<std::string, std::string> &url_para_map)
 {
     size_t pos = url_path.find("?");
-    if (pos == string::npos)
+    if (pos == std::string::npos)
     {
         return;
     }
 
-    vector<string> vec_str;
+    std::vector<std::string> vec_str;
     SplitString(url_path.substr(pos + 1).c_str(), "&", &vec_str, SPLIT_MODE_ALL);
     size_t num = vec_str.size();
     for (size_t ii = 0; ii < num; ii ++)
     {
-        vector<string> tmp_vec;
+        std::vector<std::string> tmp_vec;
         SplitString(vec_str[ii].c_str(), "=", &tmp_vec, SPLIT_MODE_ONE);
         if (tmp_vec.size() == 2)
         {
             StringTrim(tmp_vec[0]);
             StringTrim(tmp_vec[1]);
-            string tmp_para;
+            std::string tmp_para;
             UrlDecode(tmp_vec[1], tmp_para);
-            url_para_map.insert(make_pair(tmp_vec[0], tmp_para));
+            url_para_map.insert(std::make_pair(tmp_vec[0], tmp_para));
         }
     }               
 }
 
-int exec_shell_cmd(string & cmd, string & res)
+int exec_shell_cmd(std::string & cmd, std::string & res)
 {
     res.clear();
     FILE * stream;

@@ -6,7 +6,7 @@ INCLUDE = -I./${INC_DIR}/
 
 LIB = -L$(LIB_DIR) -lmyframe -lpthread
 
-CPPFLAGS = -g -msse3 -Wall $(INCLUDE) -DDEBUG=1
+CPPFLAGS = -g -msse3 -Wall $(INCLUDE) -DDEBUG=1 -std=c++0x
 CC  = g++ $(CPPFLAGS)
 
 

@@ -4,9 +4,10 @@
 #include "common_obj_container.h"
 #include "base_net_obj.h"
 #include "base_connect.h"
+#include "common_util.h"
 
-base_net_thread::base_net_thread(int channel_num, uint32_t obj_num):_channel_num(channel_num), _base_container(NULL){
-    _base_container = new common_obj_container(this, obj_num);
+base_net_thread::base_net_thread(int channel_num):_channel_num(channel_num), _base_container(NULL){
+    _base_container = new common_obj_container(this);
     net_thread_init();
 }
 
@@ -73,7 +74,7 @@ void base_net_thread::handle_msg(normal_msg * p_msg)
 
 base_net_thread * base_net_thread::get_base_net_thread_obj(uint32_t thread_index)
 {
-    map<uint32_t, base_net_thread *>::iterator it = _base_net_thread_map.find(thread_index);
+    std::unordered_map<uint32_t, base_net_thread *>::const_iterator it = _base_net_thread_map.find(thread_index);
     if (it != _base_net_thread_map.end()){
         return it->second;
     }
@@ -107,5 +108,5 @@ bool base_net_thread::handle_timeout(timer_msg & t_msg)
 }
 
 
-map<uint32_t, base_net_thread *> base_net_thread::_base_net_thread_map;
+std::unordered_map<uint32_t, base_net_thread *> base_net_thread::_base_net_thread_map;
 

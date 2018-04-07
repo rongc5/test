@@ -24,16 +24,16 @@ class web_socket_process: public base_data_process
 
         virtual bool handle_timeout(timer_msg & t_msg);
 
-		virtual string* get_send_buf();
+		virtual std::string* get_send_buf();
 
 		virtual void set_para();
 
 		virtual void peer_close();
 
-		virtual void send_ping(const char op_code, const string &ping_data);
+		virtual void send_ping(const char op_code, const std::string &ping_data);
 
 		/************************************************************/
-		string get_web_accept_key(const string &ws_key);
+        std::string get_web_accept_key(const std::string &ws_key);
 
 		web_socket_frame_header &get_recent_recv_frame_header();
 
@@ -41,19 +41,19 @@ class web_socket_process: public base_data_process
 
 		void notice_send();
 
-		const string &get_recv_header();
+		const std::string &get_recv_header();
 
-		const string &get_send_header();
+		const std::string &get_send_header();
 
 	protected:
 		virtual void  parse_header() = 0;        
 
 		virtual bool check_head_finish();
 
-		virtual string* SEND_WB_HEAD_FINISH_PROCESS() = 0;
-		virtual string* SEND_WB_INIT_STAUTS_PROCESS() = 0;			
+		virtual std::string* SEND_WB_HEAD_FINISH_PROCESS() = 0;
+		virtual std::string* SEND_WB_INIT_STAUTS_PROCESS() = 0;			
 
-		virtual string *SEND_WB_HANDSHAKE_OK_PROCESS();
+		virtual std::string *SEND_WB_HANDSHAKE_OK_PROCESS();
 
 		size_t RECV_WB_HANDSHAKE_OK_PROCESS(const char *buf, const size_t len);
 
@@ -63,14 +63,14 @@ class web_socket_process: public base_data_process
 	protected:		
 		web_socket_frame_header _recent_recv_web_header;
 		web_socket_frame_header _recent_send_web_header;
-		string _recv_header;
-		string _send_header;
+        std::string _recv_header;
+        std::string _send_header;
 		WEB_SOCKET_STATUS _wb_status;
 		web_socket_data_process*  _p_data_process;
 		bool _if_send_mask;		
 
-		string _ping_data;
-		list<string*> _p_tmp_str;
+        std::string _ping_data;
+        std::list<std::string*> _p_tmp_str;
 };
 
 #endif

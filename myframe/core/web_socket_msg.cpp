@@ -137,12 +137,12 @@ void web_socket_frame_header::process(char* &buf,   uint32_t &len)
     len = ret_len;
 }
 
-string web_socket_frame_header::gen_ping_header(const int8_t op_code/*0x09 or  0x10*/, const string &ping_data)//ping or pung
+std::string web_socket_frame_header::gen_ping_header(const int8_t op_code/*0x09 or  0x10*/, const std::string &ping_data)//ping or pung
 {
     char aa = 0;
     aa = aa | (0x01 << 7);
     aa = aa | op_code;
-    string frame_header;
+    std::string frame_header;
     frame_header.append(1, aa);
     char bb = 0;
     bb = bb | (char)ping_data.length();
@@ -152,7 +152,7 @@ string web_socket_frame_header::gen_ping_header(const int8_t op_code/*0x09 or  0
     return frame_header;
 }
 
-string web_socket_frame_header::gen_frame_header(const uint64_t data_len, const string &mask_key, const int8_t content_type)
+std::string web_socket_frame_header::gen_frame_header(const uint64_t data_len, const std::string &mask_key, const int8_t content_type)
 {	
     if (!mask_key.empty())
     {
@@ -166,7 +166,7 @@ string web_socket_frame_header::gen_frame_header(const uint64_t data_len, const 
 
     _op_code = content_type;
     _payload_len = data_len;
-    string frame_header;
+    std::string frame_header;
 
     char aa = 0;
     aa = aa | (0x01 << 7);
@@ -236,9 +236,9 @@ bool web_socket_frame_header::if_finish()
     return ret && (_more_flag == 0);
 }	
 
-string web_socket_frame_header::mask_code(const char *p_buf, const size_t len)
+std::string web_socket_frame_header::mask_code(const char *p_buf, const size_t len)
 {		
-    string ret;
+    std::string ret;
     ret.resize(len);
     for (uint32_t ii=0; ii < len; ++ii)
     {

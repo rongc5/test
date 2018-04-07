@@ -45,10 +45,10 @@
    +---------------------------+
 
 */	
-const string WEB_SOCKET_GUID = "258EAFA5-E914-47DA-95CA-C5AB0DC85B11";
+const std::string WEB_SOCKET_GUID = "258EAFA5-E914-47DA-95CA-C5AB0DC85B11";
 //const uint64_t MAX_INT32_NUM = 4294967295;
 const uint64_t MAX_INT16_NUM = 65535;
-const string WEB_SOCKET_NONCE_KEY = "AQIDBAUGBwgJCgsMDQ4PEC==";
+const std::string WEB_SOCKET_NONCE_KEY = "AQIDBAUGBwgJCgsMDQ4PEC==";
 const uint32_t WS_CONNECT_TIMEOUT = 20*60*1000; //20分钟
 const uint32_t MAX_PAYLOAD_LEN = 100*1024;
 
@@ -78,23 +78,23 @@ class web_socket_frame_header
 
 		void process(char* &buf,   uint32_t &len);
 
-		static string gen_ping_header(const int8_t op_code/*0x09 or  0x10*/, const string &ping_data);//ping or pung
+		static std::string gen_ping_header(const int8_t op_code/*0x09 or  0x10*/, const std::string &ping_data);//ping or pung
 
-		string gen_frame_header(const uint64_t data_len, const string &mask_key, const int8_t content_type);
+        std::string gen_frame_header(const uint64_t data_len, const std::string &mask_key, const int8_t content_type);
 
 		uint32_t update(const uint32_t len);
 
 		bool if_finish();
 
-		string mask_code(const char *p_buf, const size_t len);
+        std::string mask_code(const char *p_buf, const size_t len);
 
-		string _s_header;
+        std::string _s_header;
 		WEB_SOCKET_FRAME_STATUS _wb_body_status;
 		uint64_t _payload_len;
 		uint8_t _e_p_len;
 		int8_t _mask_flag;
 		int8_t _more_flag;
-		string _mask_key;
+        std::string _mask_key;
 		uint64_t _process_body_len;		
 		uint32_t _mask_offset;
 		int8_t _op_code;
@@ -105,7 +105,7 @@ class web_socket_frame_header
 
 struct ws_msg_type
 {
-	string *_p_msg;
+    std::string *_p_msg;
 	int8_t _con_type;
 	ws_msg_type();
 
@@ -114,10 +114,10 @@ struct ws_msg_type
 
 struct ws_req_head_para
 {
-	string _s_path;
-	string _s_host;
-	string _s_websocket_key;
-	string _origin;
+    std::string _s_path;
+    std::string _s_host;
+    std::string _s_websocket_key;
+    std::string _origin;
 	uint32_t _version;
 	ws_req_head_para();
 };

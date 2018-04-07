@@ -147,7 +147,7 @@ void base_net_obj::add_timer(timer_msg & t_msg)
 }
 void base_net_obj::add_timer()
 {
-    vector<timer_msg>::iterator it;
+    std::vector<timer_msg>::iterator it;
 
     bool flag = false;
     for (it = _timer_vec.begin(); it != _timer_vec.end(); it++)

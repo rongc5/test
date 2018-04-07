@@ -2,6 +2,7 @@
 #define __SK_DEF_H__
 
 #include "common_util.h"
+#include "ul_sign.h"
 
 #define MSG_HTTP_REQ 1002
 #define MSG_HTTP_RES 1003
@@ -173,6 +174,17 @@ struct quotation_t
     }
 };
 
+struct str_hasher
+{
+    size_t operator()(const string & k) const
+    {   
+        uint64_t key = 0;
+
+        create_sign_fs64(k.c_str(), k.length(), &key);
+
+        return key;
+    }   
+};
 
 #define TIMER_TYPE_RELOAD_CONF 10000
 #define TIMER_TYPE_REAL_REQ 10001

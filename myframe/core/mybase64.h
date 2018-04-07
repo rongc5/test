@@ -15,14 +15,14 @@ public:
     * @param bChangeLine: 是否需要在最终编码数据加入换行符(RFC中建议每76个字符后加入回车换行)，默认为不添加换行
     * @return string :    编码后的数据
     */
-    static string encode(const string &data, bool bChangeLine = false);
+    static std::string encode(const std::string &data, bool bChangeLine = false);
     
     /**
     * 对字符串进行base64解码
     * @param data :    需要解码的数据
     * @return string : 解码后的数据
     */    
-    static string decode(const string &data);
+    static std::string decode(const std::string &data);
 
     /**
     * 对字符串进行base64编码 

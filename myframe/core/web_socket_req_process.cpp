@@ -26,14 +26,14 @@ void web_socket_req_process::ping_process(const int8_t op_code)//øÕªß∂À≤ª”√¥¶¿Ì∑
     LOG_DEBUG("recv server ping res");
 }
 
-string* web_socket_req_process::SEND_WB_HEAD_FINISH_PROCESS()
+std::string* web_socket_req_process::SEND_WB_HEAD_FINISH_PROCESS()
 {
     return NULL;
 }
 
-string* web_socket_req_process::SEND_WB_INIT_STAUTS_PROCESS()
+std::string* web_socket_req_process::SEND_WB_INIT_STAUTS_PROCESS()
 {
-    string *p_str = new string();
+    std::string *p_str = new std::string();
     *p_str = gen_send_http_head();
     _wb_status = WB_HEAD_FINISH;
     _send_header = *p_str;
@@ -62,9 +62,9 @@ Origin: http://example.com
 Sec-WebSocket-Protocol: chat, superchat
 Sec-WebSocket-Version: 13
 */      
-string web_socket_req_process::gen_send_http_head()
+std::string web_socket_req_process::gen_send_http_head()
 {
-    stringstream ss;
+    std::stringstream ss;
     ss << "GET "<< _req_para._s_path <<" HTTP/1.1\r\n"
         << "Host:" << _req_para._s_host << "\r\n"
         << "Upgrade: websocket\r\n"
@@ -79,7 +79,7 @@ string web_socket_req_process::gen_send_http_head()
 
 void  web_socket_req_process::parse_header()
 {
-    string ret_code;
+    std::string ret_code;
     GetCaseStringByLabel(_recv_header, "HTTP/1.1 ", " ", ret_code);
     if (ret_code != "101")
     {
@@ -89,7 +89,7 @@ void  web_socket_req_process::parse_header()
     GetCaseStringByLabel(_recv_header, "Sec-WebSocket-Accept:", "\r\n", _s_accept_key);			
     StringTrim(_s_accept_key);
     //–£—Èœ¬
-    string tmp = get_web_accept_key(_req_para._s_websocket_key);			
+    std::string tmp = get_web_accept_key(_req_para._s_websocket_key);			
     if (tmp != _s_accept_key)
     {
         THROW_COMMON_EXCEPT("parse_header recv _s_accept_key "<< _s_accept_key << " is not right , it should be " 

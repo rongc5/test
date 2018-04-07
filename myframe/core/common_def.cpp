@@ -29,10 +29,10 @@ bool operator==(const ObjId & oj1, const ObjId & oj2)
 
 http_response_code http_response_code::response;
 
-string http_response_code::get_response_str(int status_code)
+std::string http_response_code::get_response_str(int status_code)
 {
-    string str;
-    map<int, string>::iterator tmp_itr = _response_list.find(status_code);
+    std::string str;
+    std::map<int, std::string>::iterator tmp_itr = _response_list.find(status_code);
     if (tmp_itr == _response_list.end())
     {
         LOG_DEBUG("http response code not found:%d", status_code);
@@ -43,7 +43,7 @@ string http_response_code::get_response_str(int status_code)
 }
 
 
-void http_req_head_para::to_head_str(string * head)
+void http_req_head_para::to_head_str(std::string * head)
 {
     if (!head) 
     {
@@ -64,7 +64,7 @@ void http_req_head_para::to_head_str(string * head)
         head->append("Cookie");
         head->append(": ");
         int ii = 0;
-        for (map<string, string>::iterator itr = _cookie_list.begin(); 
+        for (std::map<std::string, std::string>::iterator itr = _cookie_list.begin(); 
                 itr != _cookie_list.end(); ++itr)
         {
             if (ii > 0)
@@ -78,7 +78,7 @@ void http_req_head_para::to_head_str(string * head)
     }
 
     //other para
-    for (map<string, string>::iterator itr = _headers.begin();itr != _headers.end(); ++itr)
+    for (std::map<std::string, std::string>::iterator itr = _headers.begin();itr != _headers.end(); ++itr)
     {
         head->append(itr->first);
         head->append(": ");
@@ -91,7 +91,7 @@ void http_req_head_para::to_head_str(string * head)
 
 }
 
-void http_res_head_para::to_head_str(string * head)
+void http_res_head_para::to_head_str(std::string * head)
 {
     if (!head) {
         return;
@@ -114,7 +114,7 @@ void http_res_head_para::to_head_str(string * head)
     //cookie
     if (_cookie_list.size() > 0)
     {
-        for (map<string, set_cookie_item>::iterator itr = _cookie_list.begin(); 
+        for (std::map<std::string, set_cookie_item>::iterator itr = _cookie_list.begin(); 
                 itr != _cookie_list.end(); ++itr)
         {
             head->append("Set-Cookie: ");
@@ -143,7 +143,7 @@ void http_res_head_para::to_head_str(string * head)
     }
 
     //other para
-    for (map<string, string>::iterator itr = _headers.begin(); 
+    for (std::map<std::string, std::string>::iterator itr = _headers.begin(); 
             itr != _headers.end(); ++itr)
     {
         head->append(itr->first);

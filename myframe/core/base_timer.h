@@ -18,7 +18,7 @@ class base_timer
         bool is_empty();
 
 	protected:
-		map<uint64_t, vector<timer_msg> > _timer_list;
+        std::map<uint64_t, std::vector<timer_msg> > _timer_list;
         base_net_container * _net_container;
 };
 #endif

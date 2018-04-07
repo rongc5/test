@@ -48,7 +48,7 @@ void * base_thread::base_thread_proc(void *arg)
 
 void base_thread::stop_all_thread()
 {
-    vector<base_thread*>::iterator it;
+    std::vector<base_thread*>::iterator it;
     for (it = _thread_vec.begin(); it != _thread_vec.end(); it++){
         (*it)->stop();
     }
@@ -56,7 +56,7 @@ void base_thread::stop_all_thread()
 
 void base_thread::join_all_thread()
 {
-    vector<base_thread*>::iterator it;
+    std::vector<base_thread*>::iterator it;
     for (it = _thread_vec.begin(); it != _thread_vec.end(); it++){
         (*it)->join_thread();
     }
@@ -84,7 +84,7 @@ uint32_t base_thread::get_thread_index()
 }
 
 
-vector<base_thread*> base_thread::_thread_vec;
+std::vector<base_thread*> base_thread::_thread_vec;
 
 uint32_t base_thread::_thread_index_start;
 

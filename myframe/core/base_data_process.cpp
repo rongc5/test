@@ -20,7 +20,7 @@ void base_data_process::peer_close()
     LOG_DEBUG("%p", this);
 }
 
-string * base_data_process::get_send_buf()
+std::string * base_data_process::get_send_buf()
 {
     LOG_DEBUG("%p", this);
     if (_send_list.begin() == _send_list.end()) {
@@ -28,7 +28,7 @@ string * base_data_process::get_send_buf()
         return NULL;
     }
 
-    string *p = *(_send_list.begin());
+    std::string *p = *(_send_list.begin());
     _send_list.erase(_send_list.begin());
 
     return p;
@@ -66,7 +66,7 @@ bool base_data_process::process_recv_msg(ObjId & id, normal_msg * p_msg)
 
 void base_data_process::clear_send_list()
 {
-    for (list<string*>::iterator itr = _send_list.begin(); itr != _send_list.end(); ++itr)
+    for (std::list<std::string*>::iterator itr = _send_list.begin(); itr != _send_list.end(); ++itr)
     {
         delete *itr;
     }
@@ -74,7 +74,7 @@ void base_data_process::clear_send_list()
     _send_list.clear();
 }
 
-void base_data_process::put_send_buf(string * str)
+void base_data_process::put_send_buf(std::string * str)
 {
     _send_list.push_back(str);
     _p_connect->notice_send();  

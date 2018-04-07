@@ -26,7 +26,7 @@ const char  CBase64::DeBase64Tab[] =
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 };
 
-string CBase64::encode(const string &data, bool bChangeLine/* = false*/)
+std::string CBase64::encode(const std::string &data, bool bChangeLine/* = false*/)
 {
     if(data.empty())
         return "";    
@@ -37,12 +37,12 @@ string CBase64::encode(const string &data, bool bChangeLine/* = false*/)
     if(pDst == NULL)
         return "";   
     int iDstLen = encode((unsigned char*)data.c_str(), data.size(), pDst, bChangeLine);
-    string ret(pDst,iDstLen);
+    std::string ret(pDst,iDstLen);
     delete [] pDst;
     return ret;
 }
 
-string CBase64::decode(const string &data)
+std::string CBase64::decode(const std::string &data)
 {
     if(data.empty())
         return "";
@@ -51,7 +51,7 @@ string CBase64::decode(const string &data)
     if(pDst == NULL)
         return "";
     int iDstLen = decode(data.c_str(), data.size(), pDst);
-    string ret((char*)pDst,iDstLen);
+    std::string ret((char*)pDst,iDstLen);
     delete [] pDst;
     return ret;
 }

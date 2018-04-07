@@ -32,9 +32,9 @@ void web_socket_res_process::on_connect_comming()
     add_timer(t_msg);
 }
 
-string* web_socket_res_process::SEND_WB_HEAD_FINISH_PROCESS()
+std::string* web_socket_res_process::SEND_WB_HEAD_FINISH_PROCESS()
 {
-    string *p_str = new string;
+    std::string *p_str = new std::string;
     *p_str = gen_send_http_head();
     _send_header = *p_str;
     if (!_if_upgrade)
@@ -54,7 +54,7 @@ string* web_socket_res_process::SEND_WB_HEAD_FINISH_PROCESS()
     return p_str;
 }
 
-string* web_socket_res_process::SEND_WB_INIT_STAUTS_PROCESS()
+std::string* web_socket_res_process::SEND_WB_INIT_STAUTS_PROCESS()
 {
     THROW_COMMON_EXCEPT("web_socket_process_res can't send data in WB_INIT_STATUS)");
 }
@@ -78,9 +78,9 @@ Connection: Upgrade
 Sec-WebSocket-Accept: s3pPLMBiTxaQ9kYGzzhZRbK+xOo=
 Sec-WebSocket-Protocol: chat
 */
-string web_socket_res_process::gen_send_http_head()
+std::string web_socket_res_process::gen_send_http_head()
 {		
-    stringstream ss;
+    std::stringstream ss;
     if (!_if_upgrade)
     {
         _s_accept_key = get_web_accept_key(_s_websocket_key);	    	
@@ -106,7 +106,7 @@ void  web_socket_res_process::parse_header()
     GetCaseStringByLabel(_recv_header, "Sec-WebSocket-Key:", "\r\n", _s_websocket_key);
     StringTrim(_s_websocket_key);
     GetCaseStringByLabel(_recv_header, "Sec-WebSocket-Protocol:", "\r\n", _s_ws_protocol);
-    string tmp;
+    std::string tmp;
     GetCaseStringByLabel(_recv_header, "Sec-WebSocket-Version:", "\r\n", tmp);
     _wb_version = strtoull(tmp.c_str(), 0, 10);
     if (_wb_version != 13)

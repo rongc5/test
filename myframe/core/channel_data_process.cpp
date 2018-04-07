@@ -4,7 +4,7 @@
 #include "base_connect.h"
 #include "log_helper.h"
 #include "base_net_obj.h"
-
+#include "common_util.h"
 
 channel_data_process::channel_data_process(base_net_obj *p):base_data_process(p)
 {
@@ -17,7 +17,7 @@ size_t channel_data_process::process_recv_buf(const char *buf, size_t len)
     thread_lock lock(&_mutex);
 
     size_t i = 0;
-    deque<normal_obj_msg >::iterator it;
+    std::deque<normal_obj_msg >::iterator it;
     for (it = _queue.begin(); it != _queue.end() && i<k;){
         if (it->p_msg->_msg_op == MSG_CONNECT) {
             base_net_obj * p_connect = dynamic_cast<base_net_obj *> (it->p_msg); 

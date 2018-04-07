@@ -15,7 +15,7 @@ web_socket_data_process::web_socket_data_process(web_socket_process *p):base_dat
 web_socket_data_process::~web_socket_data_process()
 {
     LOG_DEBUG("%p", this);
-    for(list<ws_msg_type>::iterator itr = _send_list.begin(); itr != _send_list.end(); ++itr)
+    for(std::list<ws_msg_type>::iterator itr = _send_list.begin(); itr != _send_list.end(); ++itr)
     {
         delete itr->_p_msg;
     }	
@@ -26,7 +26,7 @@ void web_socket_data_process::on_handshake_ok()
     LOG_DEBUG("%p", this);
 }
 
-void web_socket_data_process::on_ping(const char op_code, const string &ping_data)
+void web_socket_data_process::on_ping(const char op_code, const std::string &ping_data)
 {			
     LOG_DEBUG("%p", this);
 }
@@ -36,9 +36,9 @@ uint64_t web_socket_data_process::get_timeout_len()
     return WS_CONNECT_TIMEOUT;
 }
 
-string *web_socket_data_process::get_send_buf()
+std::string *web_socket_data_process::get_send_buf()
 {	
-    string *p_ret = NULL;
+    std::string *p_ret = NULL;
     ws_msg_type tmp = get_send_msg();
     p_ret = tmp._p_msg;
     return p_ret;

@@ -13,7 +13,7 @@ class channel_data_process:public base_data_process
 
         virtual ~channel_data_process()
         {
-            deque<normal_obj_msg >::iterator it;
+            std::deque<normal_obj_msg >::iterator it;
             for (it = _queue.begin(); it != _queue.end(); it++) {
                 delete it->p_msg;
             }
@@ -26,7 +26,7 @@ class channel_data_process:public base_data_process
 
     protected:
         thread_mutex_t _mutex;
-        deque<normal_obj_msg > _queue;
+        std::deque<normal_obj_msg > _queue;
 };
 
 #endif

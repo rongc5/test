@@ -2,7 +2,6 @@
 #define __FINANCE_DICT_H_
 
 #include "base_reload.h"
-#include "inc_dict.h"
 #include "sk_def.h"
 
 class finance_dict:public reload_inf
@@ -10,7 +9,7 @@ class finance_dict:public reload_inf
     public:
         virtual ~finance_dict(){}
 
-        virtual int init(const char * path, const char * file, uint32_t query_num, const char *dump_dir);
+        virtual int init(const char * path, const char * file, const char *dump_dir);
         virtual int load();
         virtual int reload();
         virtual bool need_reload();
@@ -25,7 +24,7 @@ class finance_dict:public reload_inf
         char _dumppath[SIZE_LEN_512];
         time_t _last_load;
     public:
-        inc_dict_t<finance_t> _id_dict;
+        unordered_map<string, finance_t, str_hasher> _id_dict;
 };
 
 

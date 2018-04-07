@@ -42,7 +42,7 @@ void common_epoll::mod_from_epoll(base_net_obj *p_obj)
         THROW_COMMON_EXCEPT("mod from epoll fail "<< strerror(errno));
 }
 
-int common_epoll::epoll_wait(map<ObjId, base_net_obj*> &expect_list, map<ObjId, base_net_obj*> &remove_list, uint32_t num)
+int common_epoll::epoll_wait(std::map<ObjId, base_net_obj*> &expect_list, std::map<ObjId, base_net_obj*> &remove_list, uint32_t num)
 {
     int wait_time = _epoll_wait_time;
     if (num > 0)
@@ -72,16 +72,16 @@ int common_epoll::epoll_wait(map<ObjId, base_net_obj*> &expect_list, map<ObjId, 
                     //LOG_DEBUG("get_sock[%d]\n", p->get_sfd());
                     p->event_process(_epoll_events[i].events);
                     if (p->get_real_net()) {
-                        remove_list.insert(make_pair(p->get_id(), p));
+                        remove_list.insert(std::make_pair(p->get_id(), p));
                     }
                 }
                 catch(CMyCommonException &e)
                 {
-                    expect_list.insert(make_pair(p->get_id(), p));
+                    expect_list.insert(std::make_pair(p->get_id(), p));
                 }
                 catch(std::exception &e)
                 {
-                    expect_list.insert(make_pair(p->get_id(), p));
+                    expect_list.insert(std::make_pair(p->get_id(), p));
                 }
             }
         }

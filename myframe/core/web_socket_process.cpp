@@ -19,7 +19,7 @@ web_socket_process::~web_socket_process()
     if (_p_data_process != NULL)
         delete _p_data_process;
 
-    for (list<string*>::iterator itr = _p_tmp_str.begin(); itr != _p_tmp_str.end(); ++itr)
+    for (std::list<std::string*>::iterator itr = _p_tmp_str.begin(); itr != _p_tmp_str.end(); ++itr)
     {
         if (*itr != NULL)
             delete *itr;
@@ -89,9 +89,9 @@ bool web_socket_process::process_recv_msg(ObjId & id, normal_msg * p_msg)
     return true;
 }
 
-string* web_socket_process::get_send_buf()
+std::string* web_socket_process::get_send_buf()
 {
-    string *p_str = NULL;
+    std::string *p_str = NULL;
     if (WB_HEAD_FINISH == _wb_status) //发送头
     {								
         p_str = SEND_WB_HEAD_FINISH_PROCESS();
@@ -123,25 +123,25 @@ void web_socket_process::peer_close()
         _p_data_process->peer_close();
 }
 
-void web_socket_process::send_ping(const char op_code, const string &ping_data)
+void web_socket_process::send_ping(const char op_code, const std::string &ping_data)
 {
     if (ping_data.length() < 125) //大于125字节的ping包不让发出去了
     {
         LOG_DEBUG("send  ping to server");
-        string *p_str = new string;
+        std::string *p_str = new std::string;
         *p_str = web_socket_frame_header::gen_ping_header(op_code, ping_data);
         _p_tmp_str.push_back(p_str);
         notice_send();
     }
 }
 /************************************************************/
-string web_socket_process::get_web_accept_key(const string &ws_key)
+std::string web_socket_process::get_web_accept_key(const std::string &ws_key)
 {
-    string accept_key;
-    string tmp_key = ws_key + WEB_SOCKET_GUID;			
+    std::string accept_key;
+    std::string tmp_key = ws_key + WEB_SOCKET_GUID;			
     unsigned char md[20];
     SHA1((unsigned char*)tmp_key.c_str(), tmp_key.length(), md);
-    string aa = string((char*)md, 20);
+    std::string aa = std::string((char*)md, 20);
     accept_key = CBase64::encode(aa);
     return accept_key;
 }
@@ -163,12 +163,12 @@ void web_socket_process::notice_send()
         _p_connect->notice_send();
 }
 
-const string &web_socket_process::get_recv_header()
+const std::string &web_socket_process::get_recv_header()
 {
     return _recv_header;
 }
 
-const string &web_socket_process::get_send_header()
+const std::string &web_socket_process::get_send_header()
 {
     return _send_header;
 }		
@@ -177,7 +177,7 @@ bool web_socket_process::check_head_finish()
 {
     bool ret = false;
     size_t pos =  _recv_header.find("\r\n\r\n");
-    if (pos != string::npos)
+    if (pos != std::string::npos)
     {
         _recv_header.erase(pos + 4);
         parse_header();                     
@@ -194,9 +194,9 @@ bool web_socket_process::check_head_finish()
 }
 
 
-string *web_socket_process::SEND_WB_HANDSHAKE_OK_PROCESS()
+std::string *web_socket_process::SEND_WB_HANDSHAKE_OK_PROCESS()
 {    
-    string *p_str = NULL;   
+    std::string *p_str = NULL;   
     if (_p_tmp_str.begin() != _p_tmp_str.end())
     {
         p_str = _p_tmp_str.front();
@@ -211,8 +211,8 @@ string *web_socket_process::SEND_WB_HANDSHAKE_OK_PROCESS()
             uint64_t len = _p_data_process->get_next_send_len(content_type);
             if (len > 0)
             {
-                p_str = new string();					
-                string mask_key;					
+                p_str = new std::string();					
+                std::string mask_key;					
                 if (_if_send_mask)
                 {
                     int32_t r = rand();
@@ -270,7 +270,7 @@ size_t web_socket_process::RECV_WB_HANDSHAKE_OK_PROCESS(const char *buf, const s
                 {
                     if (_recent_recv_web_header._mask_flag == 1)
                     {
-                        string tmp_ret = _recent_recv_web_header.mask_code(left_buf, left_len - tmp_left);						
+                        std::string tmp_ret = _recent_recv_web_header.mask_code(left_buf, left_len - tmp_left);						
                         _p_data_process->process_recv_buf(tmp_ret.c_str(), tmp_ret.length());
                     }
                     else

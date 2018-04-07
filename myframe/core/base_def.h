@@ -44,7 +44,8 @@
 #include <fstream>
 
 
-using namespace std;
+#include <unordered_map>
+#include <functional>
 
 
 #define DAFAULT_EPOLL_SIZE 1000

@@ -225,8 +225,8 @@ class base_connect:public base_net_obj
         }
 
     protected:
-        string _recv_buf;
-        string* _p_send_buf;	
+        std::string _recv_buf;
+        std::string* _p_send_buf;	
         PROCESS *_process;
 };
 

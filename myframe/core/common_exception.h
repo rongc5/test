@@ -3,12 +3,11 @@
 
 #include "common_def.h"
 
-
 class CMyCommonException : public std::exception 
 {
     public:
 
-        CMyCommonException(const string &sErrStr)
+        CMyCommonException(const std::string &sErrStr)
         {
             m_sErrStr = sErrStr;
         }
@@ -22,13 +21,13 @@ class CMyCommonException : public std::exception
         }
 
     protected:
-        string			m_sErrStr;		
+        std::string			m_sErrStr;		
 };
 
 
 #define THROW_COMMON_EXCEPT(errorstr) \
 do { \
-    stringstream ss; \
+    std::stringstream ss; \
     ss << errorstr; \
     throw CMyCommonException(ss.str());\
 } while (0)

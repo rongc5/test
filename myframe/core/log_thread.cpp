@@ -15,7 +15,7 @@ log_thread::~log_thread()
     if (_epoll_events != NULL)
         delete [] _epoll_events;
 
-    deque<log_msg *>::iterator it;
+    std::deque<log_msg *>::iterator it;
     for (it = _queue[_current].begin(); it != _queue[_current].end(); it++) {
         delete *it;
     }
@@ -48,7 +48,7 @@ void log_thread::log_write(log_prefix & prefix, const char *format, ...)
 
     log_msg * lmsg = new log_msg();
     if (lmsg) {
-        lmsg->_buf = new vector<char>(SIZE_LEN_64+ prefix_len + vsnprintf(NULL, 0, format, args1));
+        lmsg->_buf = new std::vector<char>(SIZE_LEN_64+ prefix_len + vsnprintf(NULL, 0, format, args1));
         va_end(args1);
 
         uint32_t ret = snprintf(lmsg->_buf->data(), lmsg->_buf->size(), "[%s]:[%s]:[%lu]:[%d:%s:%s] ", 
@@ -214,7 +214,7 @@ size_t log_thread::process_recv_buf(const char *buf, const size_t len)
     size_t k = len /sizeof(CHANNEL_MSG_TAG);
     size_t i = 0, m = 0;
     bool flag = true;
-    deque<log_msg * >::iterator it;
+    std::deque<log_msg * >::iterator it;
     for (; m < 2; m++) {
         {
             thread_lock lock(&_mutex[_current]); 
