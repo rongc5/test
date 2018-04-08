@@ -66,7 +66,7 @@ void log_thread::log_write(log_prefix & prefix, const char *format, ...)
 void log_thread::put_msg(log_msg * p_msg)
 {
     int idle = 1 - _current;
-    thread_lock lock(&_mutex[idle]);
+    std::lock_guard<std::mutex> lck (_mutex[idle]);
     _queue[idle].push_back(p_msg);
     write(_channelid, CHANNEL_MSG_TAG, sizeof(CHANNEL_MSG_TAG));
 }
@@ -217,7 +217,7 @@ size_t log_thread::process_recv_buf(const char *buf, const size_t len)
     std::deque<log_msg * >::iterator it;
     for (; m < 2; m++) {
         {
-            thread_lock lock(&_mutex[_current]); 
+            std::lock_guard<std::mutex> lck (_mutex[_current]);
             for (it = _queue[_current].begin(); it != _queue[_current].end() && i < k;) {
                 handle_msg(*it);
                 it = _queue[_current].erase(it);

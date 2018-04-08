@@ -14,7 +14,7 @@ size_t channel_data_process::process_recv_buf(const char *buf, size_t len)
 {
     LOG_DEBUG("start1");
     size_t k = len /sizeof(CHANNEL_MSG_TAG);
-    thread_lock lock(&_mutex);
+    std::lock_guard<std::mutex> lck (_mutex);
 
     size_t i = 0;
     std::deque<normal_obj_msg >::iterator it;
@@ -50,7 +50,7 @@ bool channel_data_process::process_recv_msg(ObjId & id, normal_msg * p_msg)
         return 1;
     }
 
-    thread_lock lock(&_mutex);
+    std::lock_guard<std::mutex> lck (_mutex);
     normal_obj_msg nbj_msg;
     nbj_msg.p_msg = p_msg;
     nbj_msg._id = id;

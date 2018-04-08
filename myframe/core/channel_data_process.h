@@ -2,7 +2,6 @@
 #define _CHANNEL_DATA_PROCESS_H_
 
 #include "common_def.h"
-#include "thread_helper.h"
 #include "base_data_process.h"
 
 class base_net_obj;
@@ -25,7 +24,7 @@ class channel_data_process:public base_data_process
     
 
     protected:
-        thread_mutex_t _mutex;
+        std::mutex _mutex;
         std::deque<normal_obj_msg > _queue;
 };
 

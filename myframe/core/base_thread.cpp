@@ -1,10 +1,9 @@
 #include "base_thread.h"
-#include "thread_helper.h"
 
 
 base_thread::base_thread():_thread_id(0), _run_flag(true)
 {
-    thread_lock lock(&base_thread::_mutex);
+    std::lock_guard<std::mutex> lck(base_thread::_mutex);
     _thread_index_start++;
     _thread_index = _thread_index_start;
 }
@@ -88,4 +87,4 @@ std::vector<base_thread*> base_thread::_thread_vec;
 
 uint32_t base_thread::_thread_index_start;
 
-thread_mutex_t base_thread::_mutex;
+std::mutex base_thread::_mutex;

@@ -2,14 +2,13 @@
 #define __LOG__PROCESS_H__
 
 #include "base_def.h"
-#include "thread_helper.h"
 #include "common_util.h"
 #include "common_def.h"
 
 struct log_write_name
 {
     char _name[SIZE_LEN_512];
-    thread_mutex_t _mutex;
+    std::mutex _mutex;
 };
 
 class log_process

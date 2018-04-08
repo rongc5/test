@@ -9,7 +9,7 @@ void log_process::log_write(LogType type, const char *format, ...)
         return;
     }
 
-    thread_lock lock(&(_log_name[type]._mutex));
+    std::lock_guard<std::mutex> lck (_log_name[type]._mutex);
 
     va_list ap;
 
@@ -92,8 +92,8 @@ void log_process::init()
 
 	int i = LOGFATAL;
 	for (; i<LOGSIZE; i++) {
-        thread_lock lock(&(_log_name[i]._mutex));
-		get_file_name((LogType)i, _log_name[i]._name, sizeof(_log_name[i]._name));
+        std::lock_guard<std::mutex> lck (_log_name[i]._mutex);
+        get_file_name((LogType)i, _log_name[i]._name, sizeof(_log_name[i]._name));
 	}
 }
 

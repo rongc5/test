@@ -16,7 +16,6 @@ OBJ	= ${SRC_DIR}/base_net_container.o                        \
     ${SRC_DIR}/common_epoll.o                        \
     ${SRC_DIR}/log_thread.o                        \
     ${SRC_DIR}/base_net_obj.o                        \
-    ${SRC_DIR}/thread_helper.o                        \
     ${SRC_DIR}/common_obj_container.o                        \
     ${SRC_DIR}/channel_data_process.o                        \
     ${SRC_DIR}/common_util.o                        \
