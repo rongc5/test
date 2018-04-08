@@ -12,13 +12,8 @@ ban_dict::~ban_dict()
     destroy();
 }
 
-int ban_dict::init(const char * path, const char * file, uint32_t query_num, const char *dump_dir)
+int ban_dict::init(const char * path, const char * file, const char *dump_dir)
 {
-    if(_id_dict.create(query_num * 3, query_num * 2) < 0) {
-        LOG_WARNING("failed to allocate memory for query_dict");
-        return NULL;
-    }
-
     snprintf(_fullpath, sizeof(_fullpath), "%s", path);
     snprintf(_dumppath, sizeof(_dumppath), "%s/%s", dump_dir, file);
 
@@ -47,7 +42,7 @@ int ban_dict::load()
             continue;
 
         ban_t bt;
-        vector<string> tmp_vec;
+        std::vector<std::string> tmp_vec;
         SplitString(ptr, "\t", &tmp_vec, SPLIT_MODE_ALL);
         if (tmp_vec.size() < 2) 
         {   
@@ -56,8 +51,7 @@ int ban_dict::load()
         bt.id = tmp_vec[0];
         bt.date = tmp_vec[1];
 
-        create_sign_fs64(bt.id.c_str(), bt.id.size(), query_sign, query_sign+1);
-        _id_dict.add_node(query_sign, &bt);
+        _id_dict.insert(std::make_pair<std::string, ban_t>(bt.id, bt));
     }
 
     fclose(fp);
@@ -70,7 +64,8 @@ int ban_dict::load()
 
 int ban_dict::reload()
 {
-    _id_dict.renew();
+    std::unordered_map<std::string, finance_t, str_hasher> tmp;
+    _id_dict.swap(tmp);
     return load();
 }
 
@@ -96,17 +91,9 @@ int ban_dict::dump()
     FILE * fp = fopen(_dumppath, "w");
     ASSERT_FATAL(fp != NULL, "finance_dict dump_data failed, open file [%s] error", _dumppath);
 
-    uint32_t sign[2];
-    finance_t * p_data = NULL;
-
-    inc_dict_t<finance_t>::travel_info_t m_tranverse;
-    memset(&m_tranverse, 0, sizeof(m_tranverse));
-
-    for(p_data = current->get_begin(&m_tranverse, sign);
-            p_data != current->get_end(&m_tranverse);
-            p_data = current->get_next(&m_tranverse, sign)) {
-
-        fprintf(fp, "id[%s]\tdate[%s]\n", p_data->id.c_str(), p_data->date.c_str());
+    for (const auto & u :  _id_dict)
+    {
+        fprintf(fp, "id[%s]\tdate[%s]\n", u.second.id.c_str(), u.second.date.c_str());
     }
     fclose(fp);
 

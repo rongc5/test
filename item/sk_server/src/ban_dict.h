@@ -10,7 +10,7 @@ class ban_dict:public reload_inf
     public:
         virtual ~ban_dict(){}
 
-        virtual int init(const char * path, const char * file, uint32_t query_num, const char *dump_dir);
+        virtual int init(const char * path, const char * file, const char *dump_dir);
         virtual int load();
         virtual int reload();
         virtual bool need_reload();
@@ -25,7 +25,7 @@ class ban_dict:public reload_inf
         char _dumppath[SIZE_LEN_512];
         time_t _last_load;
     public:
-        inc_dict_t<ban_t> _id_dict;
+        std::unordered_map<std::string, finance_t, str_hasher> _id_dict;
 };
 
 

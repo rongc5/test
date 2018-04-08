@@ -43,7 +43,7 @@ int finance_dict::load()
 
         finance_t ft;
 
-        vector<string> tmp_vec;
+        std::vector<std::string> tmp_vec;
         SplitString(ptr, "\t", &tmp_vec, SPLIT_MODE_ALL);
         if (tmp_vec.size() < 13)
         {
@@ -64,7 +64,7 @@ int finance_dict::load()
         ft.jlrgr = atof(tmp_vec[11].c_str());
         ft.time_str = tmp_vec[12];
         
-        _id_dict.insert(make_pair<string, finance_t>(ft.id, ft))
+        _id_dict.insert(std::make_pair<std::string, finance_t>(ft.id, ft))
     }
 
     fclose(fp);
@@ -77,7 +77,7 @@ int finance_dict::load()
 
 int finance_dict::reload()
 {
-    unordered_map<string, finance_t, str_hasher> tmp;
+    std::unordered_map<std::string, finance_t, str_hasher> tmp;
     _id_dict.swap(tmp);
     return load();
 }
@@ -104,19 +104,17 @@ int finance_dict::dump()
     FILE * fp = fopen(_dumppath, "w");
     ASSERT_FATAL(fp != NULL, "finance_dict dump_data failed, open file [%s] error", _dumppath);
 
-    uint32_t sign[2];
-    finance_t * p_data = NULL;
-
-    inc_dict_t<finance_t>::travel_info_t m_tranverse;
-    memset(&m_tranverse, 0, sizeof(m_tranverse));
-
     for (auto &p_data: _id_dict)
     {
-        fprintf(fp,"id[%s]\tpe[%.2f]\tpb[%.2f]\t",p_data->id,p_data->pe,p_data->pb);
-        fprintf(fp, "cir_value[%.2f]\tvalue[%.2f]\tmgsy[%.2f]\tmgxj[%.2f]\tmgsygr[%.2f]\t", p_data->cir_value, 
-                p_data->value, p_data->mgsy, p_data->mgxj, p_data->mgsygr);
+        fprintf(fp,"id[%s]\tpe[%.2f]\tpb[%.2f]\t",p_data.second.id,p_data.second.pe,p_data.second.pb);
+
+        fprintf(fp, "cir_value[%.2f]\tvalue[%.2f]\tmgsy[%.2f]\tmgxj[%.2f]\tmgsygr[%.2f]\t", 
+                p_data.second.cir_value, 
+                p_data.second.value, p_data.second.mgsy, p_data.second.mgxj, p_data.second.mgsygr);
+
         fprintf(fp, "mgxjgr[%.2f]\tzysrgr[%.2f]\tyylrgr[%.2f]\tjlrgr[%.2f]time_str[%s]\n", 
-                p_data->mgxjgr, p_data->zysrgr, p_data->yylrgr, p_data->jlrgr, p_data->time_str);
+                p_data.second.mgxjgr, p_data.second.zysrgr, p_data.second.yylrgr, p_data.second.jlrgr, 
+                p_data.second.time_str);
     }
     fclose(fp);
 

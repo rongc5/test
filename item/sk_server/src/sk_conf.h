@@ -13,27 +13,22 @@ class sk_conf: public reload_inf
 
         string id_path;
         string id_file;
-        uint32_t id_num;
         
         string financie_path;
         string financie_file;
-        uint32_t financie_num;
 
         string ban_path;
         string ban_file;
-        uint32_t ban_num;
 
         string local_strategy_path;
         string local_strategy_file;
 
         string history_single_path;
         string history_single_file;
-        uint32_t history_single_num;
 
         
         string history_quotation_path;
         string history_quotation_file;
-        uint32_t history_quotation_num;
 
 
         uint32_t http_req_thread_num;

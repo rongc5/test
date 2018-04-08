@@ -45,15 +45,15 @@ int main(int argc, char *argv[])
 
 
 
-    http_req_msg * req_msg = new http_req_msg();
-    ObjId  id;
+    //http_req_msg * req_msg = new http_req_msg();
+    //ObjId  id;
     
-    req_msg->sid = "123456789";
-    req_msg->url = "http://web.sqt.gtimg.cn/q=sz300699";
-    req_msg->headers.insert(make_pair("User-Agent", "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Mobile Safari/537.36"));
-    id._thread_index = req_thread->get_thread_index();
+    //req_msg->sid = "123456789";
+    //req_msg->url = "http://web.sqt.gtimg.cn/q=sz300699";
+    //req_msg->headers.insert(make_pair("User-Agent", "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Mobile Safari/537.36"));
+    //id._thread_index = req_thread->get_thread_index();
 
-    req_thread->put_msg(id, req_msg);
+    //req_thread->put_msg(id, req_msg);
 
 
     return 0;
