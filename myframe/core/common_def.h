@@ -15,17 +15,6 @@ struct ObjId
     ObjId():_id(0), _thread_index(0){}
 };
 
-namespace std
-{
-template <> 
-struct std::hash<ObjId> // denotes a specialization of hash<...>
-{
-    std::size_t operator() (const ObjId& id) const
-    {
-        return (std::size_t)id._id | id._thread_index << 32;
-    }
-};
-}
 
 bool operator < (const ObjId & oj1, const ObjId & oj2);
 

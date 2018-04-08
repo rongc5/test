@@ -50,7 +50,7 @@ size_t http_base_process::process_recv_buf(const char *buf, size_t len)
 
     size_t ret = 0;
     bool staus_change = false;
-    string left_str, recv_head;
+    std::string left_str, recv_head;
     if (_http_status == RECV_HEAD && strstr(buf, CRLF2))
     {
         recv_head.append(buf, len);
@@ -82,7 +82,7 @@ size_t http_base_process::process_recv_buf(const char *buf, size_t len)
     return ret;
 }
 
-string* http_base_process::get_send_buf()
+std::string* http_base_process::get_send_buf()
 {
     if (_http_status < SEND_HEAD)
     {
@@ -90,7 +90,7 @@ string* http_base_process::get_send_buf()
         return NULL;
     }
 
-    string *ret_str = NULL;
+    std::string *ret_str = NULL;
     if (_http_status == SEND_HEAD)
     {
         ret_str = _data_process->get_send_head();
@@ -133,10 +133,10 @@ http_base_data_process * http_base_process::get_process()
     return _data_process;
 }
 
-void http_base_process::check_head_finish(string & recv_head, string &left_str)
+void http_base_process::check_head_finish(std::string & recv_head, std::string &left_str)
 {
     size_t pos =  recv_head.find(CRLF2);
-    if (pos != string::npos)
+    if (pos != std::string::npos)
     {
         left_str = recv_head.substr(pos + 4);
         recv_head.erase(pos + 4);				

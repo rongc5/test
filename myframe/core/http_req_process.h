@@ -29,15 +29,15 @@ class http_req_process:public http_base_process
 
         void send_finish();
         
-        virtual void parse_first_line(const string & line);
+        virtual void parse_first_line(const std::string & line);
 
-        virtual void parse_header(string & recv_head);
+        virtual void parse_header(std::string & recv_head);
 
     protected:
 
 		int64_t _cur_chunked_len;
 		int64_t _cur_chunked_rec_len;
-		string _chunked_body;
+        std::string _chunked_body;
 		size_t _recv_body_length;
 
 		HTTP_RECV_TYPE _recv_type;

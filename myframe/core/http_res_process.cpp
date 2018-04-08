@@ -51,7 +51,7 @@ size_t http_res_process::process_recv_body(const char *buf, size_t len, int &res
 
 
             uint64_t content_length = 0;
-            string *tmp_str = _req_head_para.get_header("Content-Length");
+            std::string *tmp_str = _req_head_para.get_header("Content-Length");
             if (tmp_str) 
             {
                 content_length = strtoull(tmp_str->c_str(), 0, 10);
@@ -72,9 +72,9 @@ size_t http_res_process::process_recv_body(const char *buf, size_t len, int &res
 }
 
 
-void http_res_process::parse_first_line(const string & line)
+void http_res_process::parse_first_line(const std::string & line)
 {
-    vector<string> tmp_vec;
+    std::vector<std::string> tmp_vec;
     SplitString(line.c_str(), " ", &tmp_vec, SPLIT_MODE_ALL);
     if (tmp_vec.size() != 3) {
         THROW_COMMON_EXCEPT("http first line");
@@ -85,16 +85,16 @@ void http_res_process::parse_first_line(const string & line)
 }
 
 
-void http_res_process::parse_header(string & recv_head)
+void http_res_process::parse_header(std::string & recv_head)
 {
-    string &head_str = recv_head;
-    vector<string> strList;
+    std::string &head_str = recv_head;
+    std::vector<std::string> strList;
     SplitString(head_str.c_str(), CRLF, &strList, SPLIT_MODE_ALL);
     for (uint32_t i = 0; i < strList.size(); i++) {
         if (!i) {
             parse_first_line(strList[i]);
         }else {
-            vector<string> tmp_vec;
+            std::vector<std::string> tmp_vec;
             SplitString(strList[i].c_str(), ":", &tmp_vec, SPLIT_MODE_ONE);
             if (2 == tmp_vec.size()) {
                 _req_head_para._headers.insert(make_pair(tmp_vec[0], tmp_vec[1]));
@@ -103,15 +103,15 @@ void http_res_process::parse_header(string & recv_head)
         }
     }
 
-    string * cookie_str = _req_head_para.get_header("Cookie");
+    std::string * cookie_str = _req_head_para.get_header("Cookie");
     if (cookie_str)
     {
-        vector<string> cookie_vec;
+        std::vector<std::string> cookie_vec;
         SplitString(cookie_str->c_str(), ";", &cookie_vec, SPLIT_MODE_ALL);
         size_t c_num = cookie_vec.size();
         for (size_t ii = 0; ii < c_num; ii++)
         {
-            vector<string> c_tmp_vec;
+            std::vector<std::string> c_tmp_vec;
             SplitString(cookie_vec[ii].c_str(), "=", &c_tmp_vec, SPLIT_MODE_ONE);
             if (c_tmp_vec.size() == 2)
             {
@@ -123,7 +123,7 @@ void http_res_process::parse_header(string & recv_head)
     }
 
 
-    string *tmp_str = NULL;
+    std::string *tmp_str = NULL;
     if (_req_head_para._method == "POST" || _req_head_para._method == "PUT")
     {
         //parse content_type
@@ -153,7 +153,7 @@ void http_res_process::send_finish()
 size_t http_res_process::get_boundary(const char *buf, size_t len, int &result)
 {	
     uint64_t content_length = 0;
-    string *tmp_str = _req_head_para.get_header("Content-Length");
+    std::string *tmp_str = _req_head_para.get_header("Content-Length");
     if (tmp_str) 
     {
         content_length = strtoull(tmp_str->c_str(), 0, 10);
@@ -172,11 +172,11 @@ size_t http_res_process::get_boundary(const char *buf, size_t len, int &result)
     {				
         _recv_boundary_head.append(buf, len);
         size_t pos = _recv_boundary_head.find("\r\n\r\n");
-        if (pos != string::npos)
+        if (pos != std::string::npos)
         {					
             _boundary_para._boundary_content_length = content_length - (_boundary_para._boundary_str.length() + BOUNDARY_EXTRA_LEN)
                 - (pos+4);	
-            string left_str;
+            std::string left_str;
             if (_recv_body_length == content_length)
             {											
                 left_str = _recv_boundary_head.substr(pos+4, _boundary_para._boundary_content_length);

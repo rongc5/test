@@ -17,15 +17,13 @@ common_obj_container::~common_obj_container()
 {
     for (const auto & k :_obj_map)
     {
-        k->second->destroy();
+        k.second->destroy();
     }
 }
 
 bool common_obj_container::push_real_net(base_net_obj *p_obj)
 {
-    ObjId id;
-    id._id = p_obj->get_id()._id;
-    id._thread_index = p_obj->get_id()._thread_index;
+    uint64_t id = p_obj->get_id()._id | static_cast<uint64_t>(p_obj->get_id()._thread_index) << 32;
 
     _obj_net_map[id] = p_obj;
 
@@ -34,9 +32,7 @@ bool common_obj_container::push_real_net(base_net_obj *p_obj)
 
 bool common_obj_container::remove_real_net(base_net_obj *p_obj)
 {
-    ObjId id;
-    id._id = p_obj->get_id()._id;
-    id._thread_index = p_obj->get_id()._thread_index;
+    uint64_t id = p_obj->get_id()._id | static_cast<uint64_t>(p_obj->get_id()._thread_index) << 32;
 
     _obj_net_map.erase(id);
 
@@ -47,9 +43,8 @@ bool common_obj_container::remove_real_net(base_net_obj *p_obj)
 bool common_obj_container::insert(base_net_obj *p_obj)
 {
     p_obj->set_id(gen_id_str());
-    ObjId id;
-    id._id = p_obj->get_id()._id;
-    id._thread_index = p_obj->get_id()._thread_index;
+
+    uint64_t id = p_obj->get_id()._id | static_cast<uint64_t>(p_obj->get_id()._thread_index) << 32;
 
     _obj_map[id] = p_obj;
 
@@ -58,12 +53,9 @@ bool common_obj_container::insert(base_net_obj *p_obj)
 
 base_net_obj* common_obj_container::find(const ObjId * obj_id)
 {
-    ObjId id;
-    id._id = p_obj->get_id()._id;
-    id._thread_index = p_obj->get_id()._thread_index;
-
-    std::unordered_map<ObjId, base_net_obj *>::const_iterator it;
-    it = _obj_map->find(id);
+    std::unordered_map<uint64_t, base_net_obj *>::const_iterator it;
+    uint64_t id = obj_id->_id | static_cast<uint64_t>(obj_id->_thread_index) << 32;
+    it = _obj_map.find(id);
     if (it == _obj_map.end()){
         return NULL;
     }else {
@@ -82,8 +74,9 @@ bool common_obj_container::erase(const ObjId *obj_id)
     p_obj = find(obj_id);
     if (p_obj != NULL)
     {
-        _obj_net_map->erase(*obj_id);
-        _obj_map->erase(*obj_id);
+        uint64_t id = obj_id->_id | static_cast<uint64_t>(obj_id->_thread_index) << 32;
+        _obj_net_map.erase(id);
+        _obj_map.erase(id);
         ret = true;
     }
 
@@ -113,20 +106,20 @@ void common_obj_container::obj_process()
         try
         {
             //LOG_DEBUG("step1: _id:%d, _thread_index:%d", aa_itr->second->get_id()._id, aa_itr->second->get_id()._thread_index);            
-            u->second->real_net_process();            
-            if (!u->second->get_real_net()) {
-                real_net_vec.push_back();
+            u.second->real_net_process();            
+            if (!u.second->get_real_net()) {
+                real_net_vec.push_back(u.second);
             }
 
             tmp_num++;
         }
         catch(CMyCommonException &e)
         {
-            exception_vec.push_back(u->second);
+            exception_vec.push_back(u.second);
         }
         catch(std::exception &e)
         {
-            exception_vec.push_back(u->second);
+            exception_vec.push_back(u.second);
         }
     }
 

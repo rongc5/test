@@ -274,7 +274,7 @@ int stringStrip(const char *srcStr, const char *delim, std::string *dest, int s_
             break;
     }
 
-    while (s_mode & STRIP_MODE_RIGHT && pend - start >= dlen)
+    while (s_mode & STRIP_MODE_RIGHT && pend - start >= (int)dlen)
     {
         pend = pend - dlen;
         if (!strncmp(pend, delim, dlen))

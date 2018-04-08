@@ -17,7 +17,7 @@ class http_base_data_process: public base_data_process
 
 		//result:0 正常返回  1: 结束获取发送包， 一般情况下上层自动会判断
 		//return NULL 底层就删除写事件, 正常返回将要发送的包体
-        virtual string *get_send_body(int &result);
+        virtual std::string *get_send_body(int &result);
 
         //头部接收完处理
         virtual void header_recv_finish(); 
@@ -28,7 +28,7 @@ class http_base_data_process: public base_data_process
 
 
         //生成发送头
-        virtual string * get_send_head();      	
+        virtual std::string * get_send_head();      	
 
 
         //处理接收的数据

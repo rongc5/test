@@ -26,8 +26,8 @@ class common_obj_container:public base_net_container
         virtual void obj_process();
 
     protected:
-        std::unordered_map<ObjId, base_net_obj*> *_obj_map;
-        std::unordered_map<ObjId, base_net_obj*> *_obj_net_map;
+        std::unordered_map<uint64_t, base_net_obj*> _obj_map;
+        std::unordered_map<uint64_t, base_net_obj*> _obj_net_map;
 };
 
 #endif

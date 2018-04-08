@@ -43,9 +43,9 @@ void http_req_process::peer_close()
     }
 }
 
-void http_req_process::parse_first_line(const string & line)
+void http_req_process::parse_first_line(const std::string & line)
 {
-    vector<string> tmp_vec;
+    std::vector<std::string> tmp_vec;
     SplitString(line.c_str(), " ", &tmp_vec, SPLIT_MODE_ALL);
     if (tmp_vec.size() != 3) {
         THROW_COMMON_EXCEPT("http first line");
@@ -55,17 +55,17 @@ void http_req_process::parse_first_line(const string & line)
     _res_head_para._response_str = tmp_vec[2];
 }
 
-void http_req_process::parse_header(string & recv_head)
+void http_req_process::parse_header(std::string & recv_head)
 {
     LOG_DEBUG("recv_head:%s", recv_head.c_str());
-    string &head_str = recv_head;
-    vector<string> strList;
+    std::string &head_str = recv_head;
+    std::vector<std::string> strList;
     SplitString(head_str.c_str(), CRLF, &strList, SPLIT_MODE_ALL);
     for (uint32_t i = 0; i < strList.size(); i++) {
         if (!i) {
             parse_first_line(strList[i]);
         }else {
-            vector<string> tmp_vec;
+            std::vector<std::string> tmp_vec;
             SplitString(strList[i].c_str(), ":", &tmp_vec, SPLIT_MODE_ONE);
             if (2 == tmp_vec.size()) {
                 //THROW_COMMON_EXCEPT("http headers parms error");
@@ -76,7 +76,7 @@ void http_req_process::parse_header(string & recv_head)
     }
 
     //parse chunked
-    string * tmp_str= _res_head_para.get_header("Transfer-Encoding");
+    std::string * tmp_str= _res_head_para.get_header("Transfer-Encoding");
     if (tmp_str)
     {	
         _res_head_para._chunked = *tmp_str;
@@ -90,7 +90,7 @@ size_t http_req_process::process_recv_body(const char *buf, size_t len, int &res
     result = 0;
     size_t ret  = 0;
     uint64_t content_length = 0;
-    string *tmp_str = _res_head_para.get_header("Content-Length");
+    std::string *tmp_str = _res_head_para.get_header("Content-Length");
     if (tmp_str) 
     {
         content_length = strtoull(tmp_str->c_str(), 0, 10);
@@ -133,7 +133,7 @@ size_t http_req_process::get_chuncked(const char *buf, size_t len, int &result)
     {
         if (_cur_chunked_len == -1)
         {   
-            string sTmp;
+            std::string sTmp;
             int nRet= GetStringByLabel(_chunked_body, "", "\r\n", sTmp, 0, 1);            
             if (nRet != -1)
             {
