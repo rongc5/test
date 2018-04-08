@@ -23,7 +23,7 @@ class ua_dict:public reload_inf
         char _dumppath[SIZE_LEN_512];
         time_t _last_load;
     public:
-        vector<string> _ua_vec;
+        std::vector<std::string> _ua_vec;
 };
 
 

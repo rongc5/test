@@ -2,7 +2,6 @@
 #define __BAN_DICT_H_
 
 #include "base_reload.h"
-#include "inc_dict.h"
 #include "sk_def.h"
 
 class ban_dict:public reload_inf

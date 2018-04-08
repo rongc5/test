@@ -23,7 +23,6 @@ class reload_thread:public base_net_thread
                 _is_first = true;
                 reload_timer_start();
             }
-            
         }
 
         virtual bool handle_timeout(timer_msg & t_msg)
@@ -35,6 +34,8 @@ class reload_thread:public base_net_thread
                 p_data->reload();
                 reload_timer_start();
             }
+
+            return true;
         }
 
         void reload_timer_start()

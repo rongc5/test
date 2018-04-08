@@ -39,7 +39,7 @@ int ua_dict::load()
         if (ptr == NULL || *ptr == '\0'|| *ptr == '#')
             continue;
 
-        string str = string(ptr);
+        std::string str = std::string(ptr);
         _ua_vec.push_back(str);
     }
 

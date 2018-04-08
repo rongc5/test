@@ -14,7 +14,7 @@ LIB = -L$(LIB_DIR)/ -lmyframe -lrt -lpthread \
 	  /usr/lib/libssl.a \
 
 
-CPPFLAGS = -gdwarf-2 -msse3 -W $(INCLUDE) -DDEBUG=1 -O0
+CPPFLAGS = -gdwarf-2 -msse3 -W $(INCLUDE) -DDEBUG=1 -O0 -std=c++11
 CC  = g++ $(CPPFLAGS)
 
 
