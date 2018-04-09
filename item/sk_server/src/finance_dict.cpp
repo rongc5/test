@@ -2,6 +2,7 @@
 #include "base_def.h"
 #include "log_helper.h"
 #include "ul_sign.h"
+#include "common_util.h"
 
 finance_dict::finance_dict()
 {
@@ -24,7 +25,7 @@ int finance_dict::init(const char * path, const char * file, const char *dump_di
 
 int finance_dict::load()
 {
-    FILE * fp = fopen(tmp_path, "r");
+    FILE * fp = fopen(_fullpath, "r");
     ASSERT_WARNING(fp != NULL,"open query dict failed. path[%s]", _fullpath);
 
     char line[SIZE_LEN_1024];
@@ -64,13 +65,13 @@ int finance_dict::load()
         ft.jlrgr = atof(tmp_vec[11].c_str());
         ft.time_str = tmp_vec[12];
         
-        _id_dict.insert(std::make_pair<std::string, finance_t>(ft.id, ft))
+        _id_dict.insert(std::make_pair(ft.id, ft));
     }
 
     fclose(fp);
     struct stat st;
     stat(_fullpath, &st);
-    last_load_ = st.st_mtime;
+    _last_load = st.st_mtime;
 
     return 0;
 }
@@ -102,11 +103,11 @@ bool finance_dict::need_reload()
 int finance_dict::dump()
 {
     FILE * fp = fopen(_dumppath, "w");
-    ASSERT_FATAL(fp != NULL, "finance_dict dump_data failed, open file [%s] error", _dumppath);
+    ASSERT_WARNING(fp != NULL, "finance_dict dump_data failed, open file [%s] error", _dumppath);
 
     for (auto &p_data: _id_dict)
     {
-        fprintf(fp,"id[%s]\tpe[%.2f]\tpb[%.2f]\t",p_data.second.id,p_data.second.pe,p_data.second.pb);
+        fprintf(fp,"id[%s]\tpe[%.2f]\tpb[%.2f]\t",p_data.second.id.c_str(), p_data.second.pe, p_data.second.pb);
 
         fprintf(fp, "cir_value[%.2f]\tvalue[%.2f]\tmgsy[%.2f]\tmgxj[%.2f]\tmgsygr[%.2f]\t", 
                 p_data.second.cir_value, 
@@ -114,7 +115,7 @@ int finance_dict::dump()
 
         fprintf(fp, "mgxjgr[%.2f]\tzysrgr[%.2f]\tyylrgr[%.2f]\tjlrgr[%.2f]time_str[%s]\n", 
                 p_data.second.mgxjgr, p_data.second.zysrgr, p_data.second.yylrgr, p_data.second.jlrgr, 
-                p_data.second.time_str);
+                p_data.second.time_str.c_str());
     }
     fclose(fp);
 

@@ -2,6 +2,7 @@
 #define __BASE_RELOAD_H_
 
 #include "base_def.h"
+#include "log_helper.h"
 
 
 /**

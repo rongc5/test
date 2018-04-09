@@ -2,8 +2,6 @@
 #define __BASE_THREAD_H__
 
 #include "common_def.h"
-#include "thread_helper.h"
-
 
 class base_thread
 {
@@ -51,10 +49,10 @@ class base_thread
         pthread_t _thread_id;
         bool _run_flag;
 
-        static vector<base_thread*>	_thread_vec;
+        static std::vector<base_thread*>	_thread_vec;
 
         static uint32_t _thread_index_start;
-        static thread_mutex_t _mutex;;
+        static std::mutex _mutex;;
 };
 
 

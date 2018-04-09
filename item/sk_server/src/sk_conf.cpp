@@ -3,8 +3,6 @@
 
 sk_conf::sk_conf(const char * sk_conf)
 {
-    id_num = 2000;
-
     http_req_thread_num = 3;
     
     http_server_port = 8080;
@@ -22,7 +20,7 @@ sk_conf::sk_conf(const char * sk_conf)
 
 int sk_conf::load()
 {
-    string tmp;
+    std::string tmp;
     common_cfgparser cfg(_filename.c_str());
 
     cfg.get_vale("server", "ua_path", ua_path);
@@ -88,7 +86,7 @@ int sk_conf::load()
 
 int sk_conf::reload()
 {
-    return Load();
+    return load();
 }
 
 bool sk_conf::need_reload()

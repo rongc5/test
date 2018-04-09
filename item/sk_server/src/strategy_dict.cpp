@@ -27,7 +27,7 @@ int strategy_dict::load()
 
     struct stat st;
     stat(_fullpath, &st);
-    last_load_ = st.st_mtime;
+    _last_load = st.st_mtime;
 
     return 0;
 }

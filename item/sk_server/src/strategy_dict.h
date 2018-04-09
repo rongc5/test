@@ -7,9 +7,10 @@
 class strategy_dict:public reload_inf
 {
     public:
-        virtual ~strategy_dict(){}
+        virtual ~strategy_dict();
+        strategy_dict();
 
-        virtual int init(const char * path, const char * file, const char *dump_dir);
+        int init(const char * path, const char * file, const char *dump_dir);
         virtual int load();
         virtual int reload();
         virtual bool need_reload();

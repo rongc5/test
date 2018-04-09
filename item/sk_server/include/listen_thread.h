@@ -21,7 +21,7 @@ class listen_thread: public base_net_thread
         {
         }
 
-        void init(const string &ip, unsigned short port)
+        void init(const std::string &ip, unsigned short port)
         { 
             _ip = ip;
             _port = port;
@@ -39,7 +39,7 @@ class listen_thread: public base_net_thread
 
     protected:
 
-        string _ip;
+        std::string _ip;
         unsigned short _port;
         listen_connect<listen_process<PROCESS> > *_listen_connect;
         listen_process<PROCESS> * _process;

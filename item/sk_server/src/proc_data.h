@@ -9,12 +9,11 @@ class ua_dict;
 class strategy_dict;
 class finance_dict;
 class ban_dict;
-class id_rdict;
 class id_dict;
 class proc_data:public reload_inf
 {
     public:
-        ~proc_data();
+        virtual ~proc_data(){}
         
         static proc_data * instance();
 
@@ -28,8 +27,10 @@ class proc_data:public reload_inf
     public:
         reload_mgr<ua_dict> * _ua_dict;
         reload_mgr<id_dict> * _id_dict;
-        reload_mgr<real_rdict> * _real_dict;
+        //reload_mgr<real_rdict> * _real_dict;
+
         reload_mgr<strategy_dict> * _strategy_dict;
+
         sk_conf * _conf;
 
     public:
@@ -37,9 +38,9 @@ class proc_data:public reload_inf
 
         reload_mgr<ban_dict> * _ban_dict;
 
-        reload_mgr<history_single_t> * _hsingle_dict;
+        //reload_mgr<history_single_t> * _hsingle_dict;
 
-        reload_mgr<history_quotation_t> * _hquoation_dict;
+        //reload_mgr<history_quotation_t> * _hquoation_dict;
 
 
     private:

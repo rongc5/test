@@ -22,6 +22,8 @@ class common_cfgparser
 
         void get_sections(std::vector<std::string> & sections) const;
 
+        void clear();
+
     private:
         std::map<std::string, std::map<std::string, std::string> > entry;
 };

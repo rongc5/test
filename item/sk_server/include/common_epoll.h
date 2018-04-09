@@ -41,7 +41,7 @@ class common_epoll
 
         void mod_from_epoll(base_net_obj *p_obj);
 
-        int epoll_wait(map<ObjId, base_net_obj*> &expect_list, map<ObjId, base_net_obj*> &remove_list, uint32_t num);
+        int epoll_wait(std::map<ObjId, base_net_obj*> &expect_list, std::map<ObjId, base_net_obj*> &remove_list, uint32_t num);
 
     private:
         int _epoll_fd;

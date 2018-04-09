@@ -113,7 +113,7 @@ bool id_rdict::need_reload()
 int id_rdict::dump()
 {
     FILE * fp = fopen(_dumppath, "w");
-    ASSERT_FATAL(fp != NULL, "finance_dict dump_data failed, open file [%s] error", _dumppath);
+    ASSERT_WARNING(fp != NULL, "finance_dict dump_data failed, open file [%s] error", _dumppath);
 
     uint32_t sign[2];
     id_rdict_t * p_data = NULL;

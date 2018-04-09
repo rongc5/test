@@ -4,8 +4,6 @@
 #include "base_def.h"
 
 #define MSG_CONNECT 1
-#define MSG_HTTP_REQ 2
-#define MSG_HTTP_RES 3
 #define MSG_LOG 4
 #define PASS_NEW_MSG 5
 
@@ -16,6 +14,7 @@ struct ObjId
 
     ObjId():_id(0), _thread_index(0){}
 };
+
 
 bool operator < (const ObjId & oj1, const ObjId & oj2);
 
@@ -92,16 +91,17 @@ class log_msg
         }
 
         LogType _type;
-        vector<char> * _buf;
+        std::vector<char> * _buf;
 };
 
 struct url_info
 {
-    string protocol_type;
-    string domain;
+    std::string protocol_type;
+    std::string domain;
+    std::string ip;
     int port;
-    string path;
-    string query;
+    std::string path;
+    std::string query;
 };
 
 enum http_cmd_type {
@@ -116,38 +116,6 @@ enum http_cmd_type {
     HTTP_REQ_PATCH   = 1 << 8
 };
 
-class http_req_msg:public normal_msg
-{
-    public:
-        http_req_msg()
-        {
-            _msg_op = MSG_HTTP_REQ;
-        }
-        virtual ~http_req_msg(){}
-
-        http_cmd_type cmd_type;
-
-        string sid;
-        string  url;
-        string post_data;
-        map<string, string> headers;
-};
-
-class http_res_msg: public normal_msg
-{
-    public:
-        http_res_msg()
-        {
-            _msg_op = MSG_HTTP_RES;
-        }
-
-        virtual ~http_res_msg(){}
-
-        string sid;
-        string url;
-        string response;
-};
-
 enum HTTP_STATUS
 {
     RECV_HEAD = 0,
@@ -160,35 +128,35 @@ struct http_response_code
 {
         http_response_code()
         {
-            _response_list.insert(make_pair(200, "OK"));
-            _response_list.insert(make_pair(206, "Partial Content"));
-            _response_list.insert(make_pair(301, "Moved Temporarily"));
-            _response_list.insert(make_pair(302, "the uri moved temporarily"));
-            _response_list.insert(make_pair(304, "page was not modified from las"));
-            _response_list.insert(make_pair(400, "Bad Request"));
-            _response_list.insert(make_pair(404, "Not Found"));
-            _response_list.insert(make_pair(403, "Forbidden"));
-            _response_list.insert(make_pair(409, "Conflict"));
-            _response_list.insert(make_pair(500, "Internal Server Error"));
-            _response_list.insert(make_pair(501, "not implemented"));
-            _response_list.insert(make_pair(503, "the server is not available"));
+            _response_list.insert(std::make_pair(200, "OK"));
+            _response_list.insert(std::make_pair(206, "Partial Content"));
+            _response_list.insert(std::make_pair(301, "Moved Temporarily"));
+            _response_list.insert(std::make_pair(302, "the uri moved temporarily"));
+            _response_list.insert(std::make_pair(304, "page was not modified from las"));
+            _response_list.insert(std::make_pair(400, "Bad Request"));
+            _response_list.insert(std::make_pair(404, "Not Found"));
+            _response_list.insert(std::make_pair(403, "Forbidden"));
+            _response_list.insert(std::make_pair(409, "Conflict"));
+            _response_list.insert(std::make_pair(500, "Internal Server Error"));
+            _response_list.insert(std::make_pair(501, "not implemented"));
+            _response_list.insert(std::make_pair(503, "the server is not available"));
         }
 
         ~http_response_code()
         {
         }
 
-        string get_response_str(int status_code);
+        std::string get_response_str(int status_code);
 
-        map<int, string> _response_list;
+        std::map<int, std::string> _response_list;
         static http_response_code response;
 };
 
 struct set_cookie_item
 {
-    string _value;
-    string _path;
-    string _domain;
+    std::string _value;
+    std::string _path;
+    std::string _domain;
     uint64_t _expire;
     set_cookie_item()
     {
@@ -214,14 +182,14 @@ struct http_req_head_para
         _cookie_list.clear();
     }
 
-    string * get_header(const char * str)
+    std::string * get_header(const char * str)
     {
-        string * ptr = NULL;
+        std::string * ptr = NULL;
         if (!str) {
             return ptr;
         }
 
-        map<string, string>::iterator it;
+        std::map<std::string, std::string>::iterator it;
         for (it = _headers.begin(); it != _headers.end(); it++) {
             if (strcasestr(it->first.c_str(), str)) {
                 ptr = &(it->second);
@@ -232,15 +200,15 @@ struct http_req_head_para
         return ptr;
     }
 
-    void to_head_str(string * head);
+    void to_head_str(std::string * head);
 
 
-    string _method;
-    string _url_path;
-    string _version;
+    std::string _method;
+    std::string _url_path;
+    std::string _version;
 
-    map<string, string> _headers;    
-    map<string, string> _cookie_list;
+    std::map<std::string, std::string> _headers;    
+    std::map<std::string, std::string> _cookie_list;
 };
 
 
@@ -264,14 +232,14 @@ struct http_res_head_para
         _chunked.clear();
     }
 
-    string * get_header(const char * str)
+    std::string * get_header(const char * str)
     {
-        string * ptr = NULL;
+        std::string * ptr = NULL;
         if (!str) {
             return ptr;
         }
 
-        map<string, string>::iterator it;
+        std::map<std::string, std::string>::iterator it;
         for (it = _headers.begin(); it != _headers.end(); it++) {
             if (strcasestr(it->first.c_str(), str)) {
                 ptr = &(it->second);
@@ -283,14 +251,14 @@ struct http_res_head_para
     }
 
 
-    void to_head_str(string * head);
+    void to_head_str(std::string * head);
 
     int _response_code;
-    string _response_str;
-    string _version;
-    map<string, set_cookie_item> _cookie_list;
-    map<string, string> _headers;
-    string _chunked;
+    std::string _response_str;
+    std::string _version;
+    std::map<std::string, set_cookie_item> _cookie_list;
+    std::map<std::string, std::string> _headers;
+    std::string _chunked;
 }; 
 
 
@@ -303,7 +271,7 @@ enum HTTP_RECV_TYPE
 
 struct boundary_para
 {
-    string _boundary_str;
+    std::string _boundary_str;
     uint32_t _boundary_content_length;
     boundary_para()
     {

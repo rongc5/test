@@ -1,6 +1,7 @@
 #include "id_dict.h"
 #include "base_def.h"
 #include "log_helper.h"
+#include "common_util.h"
 
 id_dict::id_dict()
 {
@@ -11,7 +12,7 @@ id_dict::~id_dict()
     destroy();
 }
 
-int id_dict::init(const char * path)
+int id_dict::init(const char * path, const char * file, const char *dump_dir)
 {
     snprintf(_fullpath, sizeof(_fullpath), "%s", path);
     snprintf(_dumppath, sizeof(_dumppath), "%s/%s", dump_dir, file);
@@ -23,7 +24,7 @@ int id_dict::init(const char * path)
 
 int id_dict::load()
 {
-    FILE * fp = fopen(tmp_path, "r");
+    FILE * fp = fopen(_fullpath, "r");
     ASSERT_WARNING(fp != NULL,"open query dict failed. path[%s]", _fullpath);
 
     char line[SIZE_LEN_1024];
@@ -40,13 +41,13 @@ int id_dict::load()
             continue;
 
         std::string str = std::string(ptr);
-        _ua_vec.push_back(str);
+        _id_vec.push_back(str);
     }
 
     fclose(fp);
     struct stat st;
     stat(_fullpath, &st);
-    last_load_ = st.st_mtime;
+    _last_load = st.st_mtime;
 
     return 0;
 }

@@ -49,7 +49,7 @@ class listen_process
     protected:	
         base_net_obj * _p_connect;
         base_net_thread * _listen_thread;
-        vector<uint32_t> _worker_thd_vec;
+        std::vector<uint32_t> _worker_thd_vec;
 };
 
 #endif

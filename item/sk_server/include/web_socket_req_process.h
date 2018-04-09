@@ -19,15 +19,15 @@ class web_socket_req_process:public web_socket_process
     protected:	   
         virtual void ping_process(const int8_t op_code);//客户端不用处理服务器的ping
 
-        virtual string* SEND_WB_HEAD_FINISH_PROCESS();
+        virtual std::string* SEND_WB_HEAD_FINISH_PROCESS();
 
-        virtual string* SEND_WB_INIT_STAUTS_PROCESS();
+        virtual std::string* SEND_WB_INIT_STAUTS_PROCESS();
 
         virtual size_t RECV_WB_HEAD_FINISH_PROCESS(const char *buf, const size_t len);
 
         virtual size_t RECV_WB_INIT_STAUTS_PROCESS(const char *buf, const size_t len);
 
-        string gen_send_http_head();
+        std::string gen_send_http_head();
 
         virtual void  parse_header();
 
@@ -35,7 +35,7 @@ class web_socket_req_process:public web_socket_process
 
     protected:
         ws_req_head_para _req_para;
-        string _s_accept_key;
+        std::string _s_accept_key;
 };
 
 

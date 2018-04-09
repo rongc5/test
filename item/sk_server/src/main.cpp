@@ -5,17 +5,16 @@
 #include "sk_conf.h"
 #include "proc_data.h"
 #include "listen_thread.h"
-#include "listen_thread.h"
 
 
-void do_init(char *argv)
+void do_init(char **argv)
 {
     log_conf lg_conf;
-    sk_conf * conf = new (std::nothrow)sk_conf(argv);
+    sk_conf * conf = new (std::nothrow)sk_conf(argv[0]);
     conf->load();
 
     lg_conf.type = conf->log_type;
-    LOG_INIT(conf);
+    LOG_INIT(lg_conf);
 
     proc_data::instance()->init(conf);
     proc_data::instance()->load();
@@ -23,11 +22,8 @@ void do_init(char *argv)
     reload_thread * master_thread = new reload_thread();
     skhttp_req_thread * req_thread = new skhttp_req_thread();
 
-    proc_data::instance()->_http_req_vec.push_back(req_thread);
-
     master_thread->start();
     req_thread->start();
-
 
     base_thread::join_all_thread();
 }
@@ -41,8 +37,6 @@ int main(int argc, char *argv[])
     }
 
     do_init(argv);
-
-
 
 
     //http_req_msg * req_msg = new http_req_msg();

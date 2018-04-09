@@ -4,8 +4,6 @@
 #include "log_thread.h"
 #include "base_def.h"
 #include "base_singleton.h"
-#include "common_util.h"
-
 
 #define LOG_INIT(log_conf) \
     do { \
@@ -13,10 +11,18 @@
         if (thread) { \
             break; \
         } \
-        thread = new log_thread(conf); \
+        thread = new log_thread(log_conf); \
         base_singleton<log_thread>::set_instance(thread); \
         thread->start(); \
         sleep(3); \
+    }  while (0)
+
+#define LOG_SET_TYPE(type) \
+    do { \
+        log_thread * thread = base_singleton<log_thread>::get_instance(); \
+        if (thread) { \
+            thread->set_type(LogType(type));\
+        } \
     }  while (0)
 
 #define LOG_WARNING(fmt, arg...) \

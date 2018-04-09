@@ -8,9 +8,9 @@ struct log_prefix
 {
     pthread_t tid;
     uint32_t line;
-    string fun;
-    string file;
-    string typestr;
+    std::string fun;
+    std::string file;
+    std::string typestr;
     LogType type;
 };
 
@@ -30,6 +30,8 @@ class log_thread:public base_thread
         void handle_msg(log_msg * p_msg);
 
         const log_conf & get_log_conf();
+
+        void set_type(LogType type);
 
         virtual void *run();
 
@@ -53,12 +55,12 @@ class log_thread:public base_thread
         log_write_name _log_name[LOGSIZE];
         log_conf _conf;
         int _epoll_fd; 
-        thread_mutex_t _mutex[2];
-        deque<log_msg *> _queue[2];
+        std::mutex _mutex[2];
+        std::deque<log_msg *> _queue[2];
         int _channelid;
         struct epoll_event *_epoll_events;
         uint32_t _epoll_size;
-        string _recv_buf;
+        std::string _recv_buf;
         int _current;
 };
 

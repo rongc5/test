@@ -2,6 +2,7 @@
 #include "base_def.h"
 #include "log_helper.h"
 #include "ul_sign.h"
+#include "common_util.h"
 
 ban_dict::ban_dict()
 {
@@ -24,7 +25,7 @@ int ban_dict::init(const char * path, const char * file, const char *dump_dir)
 
 int ban_dict::load()
 {
-    FILE * fp = fopen(tmp_path, "r");
+    FILE * fp = fopen(_fullpath, "r");
     ASSERT_WARNING(fp != NULL,"open query dict failed. path[%s]", _fullpath);
 
     char line[SIZE_LEN_1024];
@@ -51,20 +52,20 @@ int ban_dict::load()
         bt.id = tmp_vec[0];
         bt.date = tmp_vec[1];
 
-        _id_dict.insert(std::make_pair<std::string, ban_t>(bt.id, bt));
+        _id_dict.insert(std::make_pair(bt.id, bt));
     }
 
     fclose(fp);
     struct stat st;
     stat(_fullpath, &st);
-    last_load_ = st.st_mtime;
+    _last_load = st.st_mtime;
 
     return 0;
 }
 
 int ban_dict::reload()
 {
-    std::unordered_map<std::string, finance_t, str_hasher> tmp;
+    std::unordered_map<std::string, ban_t, str_hasher> tmp;
     _id_dict.swap(tmp);
     return load();
 }
@@ -89,7 +90,7 @@ bool ban_dict::need_reload()
 int ban_dict::dump()
 {
     FILE * fp = fopen(_dumppath, "w");
-    ASSERT_FATAL(fp != NULL, "finance_dict dump_data failed, open file [%s] error", _dumppath);
+    ASSERT_WARNING(fp != NULL, "finance_dict dump_data failed, open file [%s] error", _dumppath);
 
     for (const auto & u :  _id_dict)
     {

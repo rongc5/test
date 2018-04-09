@@ -10,7 +10,7 @@ template<class PROCESS>
 class listen_connect:public base_net_obj
 {
     public:
-        listen_connect(const string &ip, unsigned short port)
+        listen_connect(const std::string &ip, unsigned short port)
         {
             _process = NULL;
 
@@ -96,7 +96,7 @@ class listen_connect:public base_net_obj
 
 
     private:
-        string _ip;
+        std::string _ip;
         unsigned short _port;
         PROCESS *_process;
 };

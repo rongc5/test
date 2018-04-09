@@ -41,9 +41,13 @@
 #include <sstream>
 #include <exception>
 #include <memory>
+#include <fstream>
 
 
-using namespace std;
+#include <unordered_map>
+#include <functional>
+#include <mutex>
+#include <stdexcept>
 
 
 #define DAFAULT_EPOLL_SIZE 1000

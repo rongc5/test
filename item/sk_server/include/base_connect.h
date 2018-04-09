@@ -74,10 +74,21 @@ class base_connect:public base_net_obj
             return ret;
         }
 
+        virtual void before_destory()
+        {
+            if (_process)
+            {
+                _process->before_destory();
+            }
+        }
+
         void set_process(PROCESS *p)
         {
             if (_process != NULL)
+            {
+                _process->before_destory();
                 delete _process;
+            }
             _process = p;
 
             _process->set_para();
@@ -214,8 +225,8 @@ class base_connect:public base_net_obj
         }
 
     protected:
-        string _recv_buf;
-        string* _p_send_buf;	
+        std::string _recv_buf;
+        std::string* _p_send_buf;	
         PROCESS *_process;
 };
 

@@ -14,10 +14,10 @@ class http_req_msg
 
         http_cmd_type cmd_type;
         uint32_t time_out;
-        string sid;
-        string  url;
-        string post_data;
-        map<string, string> headers;
+        std::string sid;
+        std::string  url;
+        std::string post_data;
+        std::map<std::string, std::string> headers;
 
         http_req_msg()
         {
@@ -36,15 +36,15 @@ class http_res_msg: public normal_msg
 
         virtual ~http_res_msg(){}
 
-        string sid;
-        string url;
-        string response;
+        std::string sid;
+        std::string url;
+        std::string response;
 };
 
 struct finance_t
 {
-    string id;
-    string time_str;
+    std::string id;
+    std::string time_str;
 
     float mgxj;
     float mgsy;
@@ -82,25 +82,25 @@ struct finance_t
 
 struct ban_t
 {
-    string id;
-    string date;
+    std::string id;
+    std::string date;
 };
 
 struct single_t
 {
-    deque<uint32_t> single_in;
-    deque<uint32_t> single_out;
-    deque<uint32_t> single_inflow;
+    std::deque<uint32_t> single_in;
+    std::deque<uint32_t> single_out;
+    std::deque<uint32_t> single_inflow;
 };
 
 struct real_single
 {
-    string id;
-    vector<single_t> re_single;
+    std::string id;
+    std::vector<single_t> re_single;
 
     void reset()
     {
-        real_single.clear();
+        re_single.clear();
         id.clear();
     }
 };
@@ -116,20 +116,15 @@ struct last_single_t
 
 struct history_single_t
 {
-    string id;
-    map<string, vector<last_single_t> > date_single_map;
+    std::string id;
+    std::map<std::string, std::vector<last_single_t> > date_single_map;
 };
 
-struct history_quotation_t
-{
-    string id;
-    map<string, quotation_t> date_quotation_map;
-};
 
 struct quotation_t
 {
-    string id;
-    string name;
+    std::string id;
+    std::string name;
 
     float start;
     float end;
@@ -148,7 +143,7 @@ struct quotation_t
 
     float total_price;
 
-    deque<float> avg_price; 
+    std::deque<float> avg_price; 
 
     void reset()
     {
@@ -174,9 +169,15 @@ struct quotation_t
     }
 };
 
+struct history_quotation_t
+{
+    std::string id;
+    std::map<std::string, quotation_t> date_quotation_map;
+};
+
 struct str_hasher
 {
-    size_t operator()(const string & k) const
+    size_t operator()(const std::string & k) const
     {   
         uint64_t key = 0;
 

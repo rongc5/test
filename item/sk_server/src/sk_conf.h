@@ -2,33 +2,33 @@
 #define __CORE_CONF_H__
 
 #include "base_reload.h"
+#include "log_helper.h"
 
 class sk_conf: public reload_inf
 {
     public:
         sk_conf(const char * sk_conf);
 
-        string ua_path;
-        string ua_file;
+        std::string ua_path;
+        std::string ua_file;
 
-        string id_path;
-        string id_file;
+        std::string id_path;
+        std::string id_file;
         
-        string financie_path;
-        string financie_file;
+        std::string financie_path;
+        std::string financie_file;
 
-        string ban_path;
-        string ban_file;
+        std::string ban_path;
+        std::string ban_file;
 
-        string local_strategy_path;
-        string local_strategy_file;
+        std::string local_strategy_path;
+        std::string local_strategy_file;
 
-        string history_single_path;
-        string history_single_file;
+        std::string history_single_path;
+        std::string history_single_file;
 
-        
-        string history_quotation_path;
-        string history_quotation_file;
+        std::string history_quotation_path;
+        std::string history_quotation_file;
 
 
         uint32_t http_req_thread_num;
@@ -36,19 +36,19 @@ class sk_conf: public reload_inf
         uint32_t http_server_port;
         uint32_t http_server_thread_num;
 
-        string ip_deny_path;
+        std::string ip_deny_path;
         uint32_t ip_deny_num;
 
-        string dump_dir;
+        std::string dump_dir;
         uint32_t reload_second;
 
         LogType log_type;
 
-        string real_morning_stime;
-        string real_morning_etime;
+        std::string real_morning_stime;
+        std::string real_morning_etime;
 
-        string real_afternoon_stime;
-        string real_afternoon_etime;
+        std::string real_afternoon_stime;
+        std::string real_afternoon_etime;
 
     public:
 
@@ -59,7 +59,7 @@ class sk_conf: public reload_inf
         virtual int destroy();
 
     private:
-        string _filename;
+        std::string _filename;
 };
 
 

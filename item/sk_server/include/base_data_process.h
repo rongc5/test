@@ -13,7 +13,7 @@ class base_data_process
 
         virtual void peer_close();
 
-        virtual string *get_send_buf();
+        virtual std::string *get_send_buf();
 
         virtual void reset();
 
@@ -29,16 +29,18 @@ class base_data_process
 
         virtual bool handle_timeout(timer_msg & t_msg);
 
-        void put_send_buf(string * str);
+        void put_send_buf(std::string * str);
 
         base_net_obj * get_base_net();
+
+        virtual void before_destory();
 
     protected:
         void clear_send_list();
 
     protected:
         base_net_obj *_p_connect;
-        list<string*> _send_list;
+        std::list<std::string*> _send_list;
 };
 
 #endif

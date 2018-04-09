@@ -6,9 +6,10 @@
 class id_dict:public reload_inf
 {
     public:
-        virtual ~id_dict(){}
+        virtual ~id_dict();
+        id_dict();
 
-        virtual int init(const char * path, const char * file, const char *dump_dir);
+        int init(const char * path, const char * file, const char *dump_dir);
         virtual int load();
         virtual int reload();
         virtual bool need_reload();

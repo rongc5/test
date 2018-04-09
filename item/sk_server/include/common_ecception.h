@@ -15,7 +15,7 @@ namespace MYFRAMECOMMON{
 class CMyException:public std::exception
 {
 public:
-        CMyException(const string &sErrMsg)
+        CMyException(const std::string &sErrMsg)
         {
                 m_sErrMsg = sErrMsg;
         }
@@ -24,7 +24,7 @@ public:
                 
         }
         
-        string &GetErrMsg()
+        std::string &GetErrMsg()
         {
                 return m_sErrMsg;
         }
@@ -34,13 +34,13 @@ public:
 			return m_sErrMsg.c_str();
 		}
 protected:
-        string m_sErrMsg;
+        std::string m_sErrMsg;
 };
 
 class CMyCommonException : public std::exception 
 {
 public:
-	CMyCommonException(const int32_t uiErrCode, const string &sErrStr)
+	CMyCommonException(const int32_t uiErrCode, const std::string &sErrStr)
 	{
 		m_uiErrCode = uiErrCode;
 		m_sErrStr = sErrStr;
@@ -60,12 +60,12 @@ public:
 
 protected:
 	int32_t			m_uiErrCode;
-	string			m_sErrStr;		
+    std::string			m_sErrStr;		
 };
 
 #define THROW_COMMON_EXCEPT(errorid, errorstr) \
 	{\
-		stringstream ss; \
+        std::stringstream ss; \
 		ss << errorstr; \
 		if (errorid < 100) \
 		{\

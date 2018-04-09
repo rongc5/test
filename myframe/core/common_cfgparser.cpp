@@ -129,3 +129,8 @@ void common_cfgparser::get_sections(std::vector<std::string> & sections) const
         sections.push_back(it->first);
     }
 }
+
+void common_cfgparser::clear()
+{
+    entry.clear();
+}

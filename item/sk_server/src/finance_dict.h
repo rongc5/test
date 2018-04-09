@@ -7,7 +7,8 @@
 class finance_dict:public reload_inf
 {
     public:
-        virtual ~finance_dict(){}
+        virtual ~finance_dict();
+        finance_dict();
 
         virtual int init(const char * path, const char * file, const char *dump_dir);
         virtual int load();

@@ -21,7 +21,7 @@ class http_base_process: public base_data_process
 
         virtual size_t process_recv_buf(const char *buf, size_t len);
 
-        virtual string* get_send_buf();
+        virtual std::string* get_send_buf();
 
         virtual bool process_recv_msg(ObjId & id, normal_msg * p_msg);
 		
@@ -40,14 +40,14 @@ class http_base_process: public base_data_process
     protected:		
 		virtual size_t process_recv_body(const char *buf, size_t len, int &result) = 0;	
 		
-        virtual void parse_header(string & recv_head) = 0;
+        virtual void parse_header(std::string & recv_head) = 0;
 
-        virtual void parse_first_line(const string & line) = 0;
+        virtual void parse_first_line(const std::string & line) = 0;
 
         virtual void recv_finish() = 0;
         virtual void send_finish() = 0;
 
-        void check_head_finish(string & recv_head, string &left_str);
+        void check_head_finish(std::string & recv_head, std::string &left_str);
 
         HTTP_STATUS _http_status;
         http_base_data_process *_data_process;

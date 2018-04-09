@@ -8,7 +8,7 @@ JSON_DIR=./
 INCLUDE = -I./${INC_DIR}/ -I./$(JSON_DIR)
 
 #LIB = -L$(LIB_DIR) -lrt -libmyframe -lpthread 
-LIB = -L$(LIB_DIR)/ -lmyframe -lrt -lpthread \
+LIB = -L$(LIB_DIR)/ -lmyframe -lsign -lrt -lpthread \
 	  /usr/lib/libcrypt.a \
 	  /usr/lib/libcrypto.a \
 	  /usr/lib/libssl.a \
@@ -19,7 +19,13 @@ CC  = g++ $(CPPFLAGS)
 
 
 OBJ	= $(LOC_DIR)/main.o     \
-	  $(LOC_DIR)/skhttp_req_data_process.o \
+	  $(LOC_DIR)/ban_dict.o \
+	  $(LOC_DIR)/finance_dict.o \
+	  $(LOC_DIR)/id_dict.o \
+	  $(LOC_DIR)/ua_dict.o \
+	  $(LOC_DIR)/strategy_dict.o \
+	  $(LOC_DIR)/sk_conf.o \
+	  $(LOC_DIR)/proc_data.o \
 
 
 AR=ar

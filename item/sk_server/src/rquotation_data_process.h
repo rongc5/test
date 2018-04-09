@@ -5,6 +5,7 @@
 #include "http_base_process.h"
 #include "http_base_data_process.h"
 #include "base_net_obj.h"
+#include "sk_def.h"
 
 class rquotation_data_process: public http_base_data_process
 {
@@ -15,13 +16,13 @@ class rquotation_data_process: public http_base_data_process
         {
         }
 
-        virtual string *get_send_body(int &result);
+        virtual std::string *get_send_body(int &result);
 
         virtual void header_recv_finish();
 
         virtual void msg_recv_finish();
 
-        virtual string * get_send_head();
+        virtual std::string * get_send_head();
 
         virtual size_t process_recv_body(const char *buf, size_t len, int& result);
 
@@ -38,7 +39,7 @@ class rquotation_data_process: public http_base_data_process
         virtual bool handle_timeout(timer_msg & t_msg);
 
     protected:
-        string _recv_buf;
+        std::string _recv_buf;
         http_req_msg _req_msg;
         url_info _url_info;
         bool _is_ok;

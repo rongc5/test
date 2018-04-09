@@ -11,7 +11,7 @@
         if (thread) { \
             break; \
         } \
-        thread = new log_thread(conf); \
+        thread = new log_thread(log_conf); \
         base_singleton<log_thread>::set_instance(thread); \
         thread->start(); \
         sleep(3); \
