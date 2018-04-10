@@ -23,7 +23,7 @@ class base_data_process
 
         virtual size_t process_recv_buf(const char *buf, size_t len);
 
-        virtual bool process_recv_msg(ObjId & id, normal_msg * p_msg);
+        virtual bool process_recv_msg(ObjId & id, std::shared_ptr<normal_msg> & p_msg);
 
         void add_timer(timer_msg & t_msg);
 

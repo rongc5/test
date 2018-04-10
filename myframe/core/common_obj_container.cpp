@@ -83,11 +83,10 @@ bool common_obj_container::erase(const ObjId *obj_id)
     return ret;
 }
 
-void common_obj_container::put_msg(ObjId & id, normal_msg * p_msg)
+void common_obj_container::put_msg(ObjId & id, std::shared_ptr<normal_msg> & p_msg)
 {
     base_net_obj * net_obj = find(&id);
     if (!net_obj) {
-        REC_OBJ<normal_msg> rec(p_msg);
         return;
     }
 

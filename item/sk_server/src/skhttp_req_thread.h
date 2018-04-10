@@ -21,17 +21,9 @@ class skhttp_req_thread:public base_net_thread
             _id_index = 0;
         }
 
-        virtual void handle_msg(normal_msg * p_msg)
+        virtual void handle_msg(std::shared_ptr<normal_msg> & p_msg)
         {
-            if (!p_msg) 
-            {
-                return;
-            }
-
-            {
-                REC_OBJ<normal_msg> rc(p_msg);
-                return;
-            }
+            return;
         }
 
         void get_domain(std::string & domain, std::vector<std::string> & vip)

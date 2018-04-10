@@ -23,7 +23,7 @@ class http_base_process: public base_data_process
 
         virtual std::string* get_send_buf();
 
-        virtual bool process_recv_msg(ObjId & id, normal_msg * p_msg);
+        virtual bool process_recv_msg(ObjId & id, std::shared_ptr<normal_msg> & p_msg);
 		
 		/****************************以上是五个口子，以下是供底层调用********************************************/
 

@@ -21,7 +21,7 @@ class common_obj_container:public base_net_container
         virtual bool insert(base_net_obj *p_obj);
         virtual bool erase(const ObjId *obj_id);
 
-        virtual void put_msg(ObjId & id, normal_msg * p_msg);
+        virtual void put_msg(ObjId & id, std::shared_ptr<normal_msg> & p_msg);
 
         virtual void obj_process();
 

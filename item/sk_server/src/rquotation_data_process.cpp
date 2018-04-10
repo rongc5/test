@@ -51,7 +51,7 @@ void rquotation_data_process::header_recv_finish()
     res_head_para.to_head_str(str);
     LOG_DEBUG("header: %s", str->c_str());
 
-    REC_OBJ<string> rc(str);
+    std::shared_ptr<string> rc(str);
 }
 
 void rquotation_data_process::msg_recv_finish()
@@ -142,13 +142,7 @@ bool rquotation_data_process::handle_timeout(timer_msg & t_msg)
     }
 }
 
-bool rquotation_data_process::process_recv_msg(ObjId & id, normal_msg * p_msg)
+bool rquotation_data_process::process_recv_msg(ObjId & id, std::shared_ptr<normal_msg> & p_msg)
 {
-    if (!p_msg)
-    {
-        return true;
-    }
-
-    REC_OBJ<normal_msg> rc(p_msg);
-
+    return true;
 }

@@ -78,10 +78,9 @@ bool web_socket_process::handle_timeout(timer_msg & t_msg)
     return _p_data_process->handle_timeout(t_msg);
 }
 
-bool web_socket_process::process_recv_msg(ObjId & id, normal_msg * p_msg)
+bool web_socket_process::process_recv_msg(ObjId & id, std::shared_ptr<normal_msg> & p_msg)
 {
     if (!_p_data_process) {
-        REC_OBJ<normal_msg> rc(p_msg);
         return true;
     }
 

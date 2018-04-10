@@ -7,20 +7,6 @@
 
 void get_proc_name(char buf[], size_t buf_len);
 
-template<class OBJ>
-class REC_OBJ
-{
-    public:
-        REC_OBJ(OBJ * p_obj):_p_obj(p_obj){}
-        ~REC_OBJ(){
-            if (_p_obj){
-                delete _p_obj;
-            }   
-        }   
-    private:
-        OBJ *_p_obj;
-};
-
 #define DEL_PTR(PTR) \
     do {\
         delete PTR; \

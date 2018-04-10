@@ -20,7 +20,7 @@ class web_socket_process: public base_data_process
 		//处理接收的数据
 		size_t process_recv_buf(const char *buf, const size_t len);
 
-        virtual bool process_recv_msg(ObjId & id, normal_msg * p_msg);
+        virtual bool process_recv_msg(ObjId & id, std::shared_ptr<normal_msg> & p_msg);
 
         virtual bool handle_timeout(timer_msg & t_msg);
 

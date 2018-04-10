@@ -59,17 +59,16 @@ void base_net_thread::net_thread_init()
 }
 
 
-void base_net_thread::put_msg(ObjId & id, normal_msg * p_msg)
+void base_net_thread::put_msg(ObjId & id, std::shared_ptr<normal_msg> & p_msg)
 {
-    int index = (unsigned long) p_msg % _channel_msg_vec.size();
+    int index = (unsigned long) (&p_msg) % _channel_msg_vec.size();
     event_channel_msg * msg = _channel_msg_vec[index];
     msg->_base_obj->process_recv_msg(id, p_msg);
     write(msg->_channelid, CHANNEL_MSG_TAG, sizeof(CHANNEL_MSG_TAG));
 }
 
-void base_net_thread::handle_msg(normal_msg * p_msg)
+void base_net_thread::handle_msg(std::shared_ptr<normal_msg> & p_msg)
 {
-    REC_OBJ<normal_msg> rec(p_msg);
 }
 
 base_net_thread * base_net_thread::get_base_net_thread_obj(uint32_t thread_index)
@@ -87,15 +86,10 @@ void base_net_thread::add_timer(timer_msg & t_msg)
     _base_container->add_timer(t_msg);
 }
 
-void base_net_thread::put_obj_msg(ObjId & id, normal_msg * p_msg)
+void base_net_thread::put_obj_msg(ObjId & id, std::shared_ptr<normal_msg> & p_msg)
 {
-    if (!p_msg) {
-        return;
-    }
-
     base_net_thread * net_thread = get_base_net_thread_obj(id._thread_index);
     if (!net_thread) {
-        REC_OBJ<normal_msg> rec(p_msg); 
         return;
     }
 

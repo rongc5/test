@@ -29,16 +29,6 @@ class normal_msg
 };
 
 
-class normal_obj_msg //内部传递的消息
-{
-    public:
-        ObjId _id;
-        normal_msg * p_msg;
-
-        virtual ~normal_obj_msg(){
-        }
-};
-
 #define NONE_TIMER_TYPE 1
 #define DELAY_CLOSE_TIMER_TYPE 2
 #define WEB_SOCKET_HANDSHAKE_OK_TIMER_TYPE 3

@@ -19,7 +19,7 @@ class listen_process
 
         void process(int fd)
         {
-            base_net_obj * net_obj = PROCESS::gen_listen_obj(fd);
+            std::shared_ptr<base_net_obj>  net_obj(PROCESS::gen_listen_obj(fd));
 
             ObjId id;
             if (_worker_thd_vec.size()) {
@@ -28,7 +28,8 @@ class listen_process
             } else {
                 id._thread_index = _listen_thread->get_thread_index(); 
             }
-            base_net_thread::put_obj_msg(id, net_obj);		
+            std::shared_ptr<normal_msg> ng = std::static_pointer_cast<normal_msg>(net_obj);
+            base_net_thread::put_obj_msg(id, ng);		
         }
 
         void add_worker_thread(uint32_t thread_index)

@@ -19,11 +19,11 @@ class base_net_thread:public base_thread
 
         virtual void net_thread_init();
 
-        virtual void put_msg(ObjId & id, normal_msg * p_msg);
+        virtual void put_msg(ObjId & id, std::shared_ptr<normal_msg> & p_msg);
 
-        static void put_obj_msg(ObjId & id, normal_msg * p_msg);
+        static void put_obj_msg(ObjId & id, std::shared_ptr<normal_msg> & p_msg);
 
-        virtual void handle_msg(normal_msg * p_msg);
+        virtual void handle_msg(std::shared_ptr<normal_msg> & p_msg);
 
         static base_net_thread * get_base_net_thread_obj(uint32_t thread_index);
 

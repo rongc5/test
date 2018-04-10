@@ -21,7 +21,7 @@ class base_net_container
         virtual bool insert(base_net_obj *p_obj) = 0;
         virtual bool erase(const ObjId *_obj_id) = 0;
         virtual void obj_process() = 0;
-        virtual void put_msg(ObjId & id, normal_msg * p_msg) = 0;
+        virtual void put_msg(ObjId & id, std::shared_ptr<normal_msg> & p_msg) = 0;
 
         common_epoll *get_epoll();
         base_net_thread * get_net_thread();

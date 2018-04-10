@@ -4,6 +4,17 @@
 #include "common_def.h"
 #include "base_data_process.h"
 
+class normal_obj_msg //内部传递的消息
+{
+    public:
+        ObjId _id;
+        std::shared_ptr<normal_msg>  p_msg;
+
+        virtual ~normal_obj_msg(){
+        }   
+};
+
+
 class base_net_obj;
 class channel_data_process:public base_data_process
 {
@@ -12,15 +23,12 @@ class channel_data_process:public base_data_process
 
         virtual ~channel_data_process()
         {
-            std::deque<normal_obj_msg >::iterator it;
-            for (it = _queue.begin(); it != _queue.end(); it++) {
-                delete it->p_msg;
-            }
+            _queue.clear();
         }	
 
         virtual size_t process_recv_buf(const char *buf, size_t len);
 
-        virtual bool process_recv_msg(ObjId & id, normal_msg * p_msg);
+        virtual bool process_recv_msg(ObjId & id, std::shared_ptr<normal_msg> & p_msg);
     
 
     protected:

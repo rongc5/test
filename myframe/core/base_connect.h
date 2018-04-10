@@ -115,7 +115,7 @@ class base_connect:public base_net_obj
             return _process->handle_timeout(t_msg);
         }
 
-        virtual bool process_recv_msg(ObjId & id, normal_msg * p_msg)
+        virtual bool process_recv_msg(ObjId & id, std::shared_ptr<normal_msg> & p_msg)
         {
             return _process->process_recv_msg(id, p_msg);
         }

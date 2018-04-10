@@ -108,9 +108,8 @@ const ObjId & base_net_obj::get_id()
     return _id_str;
 }
 
-bool base_net_obj::process_recv_msg(ObjId & id, normal_msg * p_msg)
+bool base_net_obj::process_recv_msg(ObjId & id, std::shared_ptr<normal_msg> & p_msg)
 {
-    REC_OBJ<normal_msg> rc(p_msg);
 
     return true;
 }

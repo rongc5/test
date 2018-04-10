@@ -20,12 +20,10 @@ size_t channel_data_process::process_recv_buf(const char *buf, size_t len)
     std::deque<normal_obj_msg >::iterator it;
     for (it = _queue.begin(); it != _queue.end() && i<k;){
         if (it->p_msg->_msg_op == MSG_CONNECT) {
-            base_net_obj * p_connect = dynamic_cast<base_net_obj *> (it->p_msg); 
-            if (p_connect) {
+            std::shared_ptr<base_net_obj>  p_connect = std::dynamic_pointer_cast<base_net_obj> (it->p_msg); 
+            if (p_connect.use_count()) {
                 p_connect->set_net_container(_p_connect->get_net_container());
-            } else {
-                REC_OBJ<normal_msg> rc(it->p_msg);
-            }
+            } 
         } else {
             if (it->_id._id > OBJ_ID_BEGIN) {
                 _p_connect->get_net_container()->put_msg(it->_id, it->p_msg);
@@ -44,12 +42,8 @@ size_t channel_data_process::process_recv_buf(const char *buf, size_t len)
 }
 
 
-bool channel_data_process::process_recv_msg(ObjId & id, normal_msg * p_msg)
+bool channel_data_process::process_recv_msg(ObjId & id, std::shared_ptr<normal_msg> & p_msg)
 {
-    if (!p_msg) {
-        return 1;
-    }
-
     std::lock_guard<std::mutex> lck (_mutex);
     normal_obj_msg nbj_msg;
     nbj_msg.p_msg = p_msg;
