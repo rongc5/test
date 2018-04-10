@@ -15,14 +15,8 @@ log_thread::~log_thread()
     if (_epoll_events != NULL)
         delete [] _epoll_events;
 
-    std::deque<log_msg *>::iterator it;
-    for (it = _queue[_current].begin(); it != _queue[_current].end(); it++) {
-        delete *it;
-    }
-
-    for (it = _queue[1- _current].begin(); it != _queue[1 - _current].end(); it++) {
-        delete *it;
-    }
+    _queue[_current].clear();
+    _queue[1- _current].clear();
 }
 
 void log_thread::log_write(log_prefix & prefix, const char *format, ...)
@@ -46,7 +40,7 @@ void log_thread::log_write(log_prefix & prefix, const char *format, ...)
     va_start(args1, format);
     va_copy(args2, args1);
 
-    log_msg * lmsg = new log_msg();
+    std::shared_ptr<log_msg> lmsg(new log_msg());
     if (lmsg) {
         lmsg->_buf = new std::vector<char>(SIZE_LEN_64+ prefix_len + vsnprintf(NULL, 0, format, args1));
         va_end(args1);
@@ -63,7 +57,7 @@ void log_thread::log_write(log_prefix & prefix, const char *format, ...)
     }
 }
 
-void log_thread::put_msg(log_msg * p_msg)
+void log_thread::put_msg(std::shared_ptr<log_msg> & p_msg)
 {
     int idle = 1 - _current;
     std::lock_guard<std::mutex> lck (_mutex[idle]);
@@ -71,13 +65,8 @@ void log_thread::put_msg(log_msg * p_msg)
     write(_channelid, CHANNEL_MSG_TAG, sizeof(CHANNEL_MSG_TAG));
 }
 
-void log_thread::handle_msg(log_msg * p_msg)
+void log_thread::handle_msg(std::shared_ptr<log_msg> & p_msg)
 {
-    REC_OBJ<log_msg> rc(p_msg);
-    if (!p_msg) {
-        return;
-    }
-
     check_to_renmae(_log_name[p_msg->_type]._name, _conf.file_max_size);
     FILE * fp = fopen(_log_name[p_msg->_type]._name, "a+");
     if (!fp){
@@ -214,7 +203,7 @@ size_t log_thread::process_recv_buf(const char *buf, const size_t len)
     size_t k = len /sizeof(CHANNEL_MSG_TAG);
     size_t i = 0, m = 0;
     bool flag = true;
-    std::deque<log_msg * >::iterator it;
+    std::deque<std::shared_ptr<log_msg> >::iterator it;
     for (; m < 2; m++) {
         {
             std::lock_guard<std::mutex> lck (_mutex[_current]);

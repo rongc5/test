@@ -27,7 +27,7 @@ class log_thread:public base_thread
 
         static void log_write(log_prefix & prefix, const char *format, ...);
 
-        void handle_msg(log_msg * p_msg);
+        void handle_msg(std::shared_ptr<log_msg> & p_msg);
 
         const log_conf & get_log_conf();
 
@@ -37,7 +37,7 @@ class log_thread:public base_thread
 
         void obj_process();
 
-        void put_msg(log_msg * p_msg);
+        void put_msg(std::shared_ptr<log_msg> & p_msg);
         
      private:
         
@@ -56,7 +56,7 @@ class log_thread:public base_thread
         log_conf _conf;
         int _epoll_fd; 
         std::mutex _mutex[2];
-        std::deque<log_msg *> _queue[2];
+        std::deque<std::shared_ptr<log_msg> > _queue[2];
         int _channelid;
         struct epoll_event *_epoll_events;
         uint32_t _epoll_size;
