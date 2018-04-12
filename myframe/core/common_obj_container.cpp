@@ -21,7 +21,7 @@ common_obj_container::~common_obj_container()
     }
 }
 
-bool common_obj_container::push_real_net(base_net_obj *p_obj)
+bool common_obj_container::push_real_net(std::shared_ptr<base_net_obj> & p_obj)
 {
     uint64_t id = p_obj->get_id()._id | static_cast<uint64_t>(p_obj->get_id()._thread_index) << 32;
 
@@ -30,7 +30,7 @@ bool common_obj_container::push_real_net(base_net_obj *p_obj)
     return true;
 }
 
-bool common_obj_container::remove_real_net(base_net_obj *p_obj)
+bool common_obj_container::remove_real_net(std::shared_ptr<base_net_obj> & p_obj)
 {
     uint64_t id = p_obj->get_id()._id | static_cast<uint64_t>(p_obj->get_id()._thread_index) << 32;
 
@@ -40,7 +40,7 @@ bool common_obj_container::remove_real_net(base_net_obj *p_obj)
 }
 
 
-bool common_obj_container::insert(base_net_obj *p_obj)
+bool common_obj_container::insert(std::shared_ptr<base_net_obj> &p_obj)
 {
     p_obj->set_id(gen_id_str());
 
@@ -129,9 +129,8 @@ void common_obj_container::obj_process()
 
     for (std::vector<base_net_obj*>::iterator tmp_itr = exception_vec.begin(); 
             tmp_itr != exception_vec.end(); tmp_itr++) {
-        remove_real_net(*tmp_itr);
+        remove_real_net(*tmp_itr->);
         erase(&(*tmp_itr)->get_id());
-        (*tmp_itr)->destroy();
     }
 
     std::map<ObjId, base_net_obj*> exp_list;
@@ -141,7 +140,7 @@ void common_obj_container::obj_process()
     for (std::map<ObjId, base_net_obj*>::iterator itr = exp_list.begin(); itr != exp_list.end(); ++itr)
     {         	
         LOG_DEBUG("step2: _id:%d, _thread_index:%d", itr->second->get_id()._id, itr->second->get_id()._thread_index);            
-        remove_real_net(itr->second);
+        remove_real_net(itr->second.shared_from_this());
         erase(&itr->first);
         itr->second->destroy();
     }
@@ -149,7 +148,7 @@ void common_obj_container::obj_process()
     for (std::map<ObjId, base_net_obj*>::iterator itr = remove_list.begin(); itr != remove_list.end(); ++itr)
     {
         itr->second->set_real_net(false);
-        remove_real_net(itr->second);
+        remove_real_net(itr->second.shared_from_this());
     }
 
 

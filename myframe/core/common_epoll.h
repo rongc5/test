@@ -35,13 +35,13 @@ class common_epoll
 
         }
 
-        void add_to_epoll(base_net_obj *p_obj);
+        void add_to_epoll(std::shared_ptr<base_net_obj> & p_obj);
 
-        void del_from_epoll(base_net_obj *p_obj);
+        void del_from_epoll(std::shared_ptr<base_net_obj> & p_obj);
 
-        void mod_from_epoll(base_net_obj *p_obj);
+        void mod_from_epoll(std::shared_ptr<base_net_obj> &p_obj);
 
-        int epoll_wait(std::map<ObjId, base_net_obj*> &expect_list, std::map<ObjId, base_net_obj*> &remove_list, uint32_t num);
+        int epoll_wait(std::map<ObjId, std::shared_ptr<base_net_obj> > &expect_list, std::map<ObjId, std::shared_ptr<base_net_obj> > &remove_list, uint32_t num);
 
     private:
         int _epoll_fd;

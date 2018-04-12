@@ -39,19 +39,19 @@ void base_net_obj::set_net_container(base_net_container *p_net_container)
     _p_net_container = p_net_container;
     common_epoll * p_epoll = _p_net_container->get_epoll();
 
+    std::shared_ptr<base_net_obj> p=std::dynamic_pointer_cast<base_net_obj>(shared_from_this());
+
     try {
-        p_epoll->add_to_epoll(this);
-        _p_net_container->insert(this);
+        p_epoll->add_to_epoll(p.get());
+        _p_net_container->insert(p);
         add_timer();
     }
     catch (std::exception &e)
     {
         LOG_WARNING("%s", e.what());
-        delete this;
     }
     catch (...)
     {
-        delete this;
     }
 }
 
