@@ -26,6 +26,7 @@ OBJ	= $(LOC_DIR)/main.o     \
 	  $(LOC_DIR)/strategy_dict.o \
 	  $(LOC_DIR)/sk_conf.o \
 	  $(LOC_DIR)/proc_data.o \
+	  $(LOC_DIR)/rquotation_data_process.o \
 
 
 AR=ar

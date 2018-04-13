@@ -14,13 +14,13 @@ rquotation_data_process::rquotation_data_process(http_base_process * _p_process)
 {
 }
 
-string * rquotation_data_process::get_send_body(int &result)
+std::string * rquotation_data_process::get_send_body(int &result)
 {
     result = 1;
 
     if (!_req_msg.post_data.empty())
     {
-        return new string(_req_msg->post_data);
+        return new std::string(_req_msg.post_data);
     }
 
     return NULL;
@@ -47,24 +47,25 @@ void rquotation_data_process::header_recv_finish()
 {
     //base_net_container * net_container = get_base_net()->get_net_container();
     http_res_head_para & res_head_para = _base_process->get_res_head_para();
-    string * str = new string;
+    std::string * str = new std::string;
     res_head_para.to_head_str(str);
     LOG_DEBUG("header: %s", str->c_str());
 
-    std::shared_ptr<string> rc(str);
+    std::shared_ptr<std::string> rc(str);
 }
 
 void rquotation_data_process::msg_recv_finish()
 {
     LOG_DEBUG("recv_buf: %s", _recv_buf.c_str());
+
     _recv_buf.clear();
 }
 
-string * rquotation_data_process::get_send_head()
+std::string * rquotation_data_process::get_send_head()
 {
     http_req_head_para & req_head = _base_process->get_req_head_para();
 
-    req_head._headers = _req_msg->headers;
+    req_head._headers = _req_msg.headers;
     
     if (!_req_msg.sid.empty()) 
     {
@@ -84,18 +85,18 @@ string * rquotation_data_process::get_send_head()
     req_head._url_path = _req_msg.url;
     req_head._version = "HTTP/1.1";
 
-    req_head._headers.insert(make_pair("Host", _url_info.domain));
+    req_head._headers.insert(std::make_pair("Host", _url_info.domain));
     if (!_req_msg.post_data.empty())
     {
-        req_head._headers.insert(make_pair("content-length", _req_msg.post_data));
+        req_head._headers.insert(std::make_pair("content-length", _req_msg.post_data));
     }
 
     if (req_head.get_header("Accept"))
     {
-        req_head._headers.insert(make_pair("Accept", "*/*"));
+        req_head._headers.insert(std::make_pair("Accept", "*/*"));
     }
 
-    string * str = new string;
+    std::string * str = new std::string;
     req_head.to_head_str(str);
     LOG_DEBUG("%s", str->c_str());
 
@@ -123,10 +124,10 @@ base_net_obj * rquotation_data_process::gen_net_obj(url_info & info, http_req_ms
 
     sk_process->set_url_info(info);
     sk_process->set_req_msg(req_msg);
-    if (req_msg->time_out)
+    if (req_msg.time_out)
     {
         timer_msg  t_msg;
-        t_msg._time_length = req_msg->time_out;
+        t_msg._time_length = req_msg.time_out;
         t_msg._timer_type = TIMER_TYPE_HTTP_REQ; 
         sk_process->add_timer(t_msg);
     }

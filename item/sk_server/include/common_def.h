@@ -20,7 +20,7 @@ bool operator < (const ObjId & oj1, const ObjId & oj2);
 
 bool operator==(const ObjId & oj1, const ObjId & oj2);
 
-class normal_msg 
+class normal_msg : public std::enable_shared_from_this<normal_msg>
 {
     public:
         normal_msg(){}

@@ -19,6 +19,10 @@ class skhttp_req_thread:public base_net_thread
         skhttp_req_thread()
         {
             _id_index = 0;
+            if (is_real_time())
+                _real_req = true;
+            else
+                _real_req = false;
         }
 
         virtual void handle_msg(std::shared_ptr<normal_msg> & p_msg)
@@ -49,14 +53,23 @@ class skhttp_req_thread:public base_net_thread
         void real_req_start()
         {
             proc_data* p_data = proc_data::instance();
-            if (is_real_time() && p_data && p_data->_id_dict)
+            if (_real_req && p_data && p_data->_id_dict)
             {
                 id_dict * id_dic = p_data->_id_dict->current();
                 if (id_dic && _id_index < id_dic->_id_vec.size())
                 {
                     std::string id = id_dic->_id_vec[_id_index];
+                    req_real_quotation(id);
                     _id_index++;
                 }
+                else
+                {
+                    real_timer_start();
+                }
+            }
+            else
+            {
+                real_timer_start();
             }
         }
 
@@ -66,6 +79,7 @@ class skhttp_req_thread:public base_net_thread
 
             if (p_data && p_data->_conf)
             {   
+                _real_req = false;
                 timer_msg t_msg;
 
                 t_msg._timer_type = TIMER_TYPE_REAL_REQ;
@@ -110,10 +124,12 @@ class skhttp_req_thread:public base_net_thread
             {
                 ua_dict * ua_dic = p_data->_ua_dict->current();
                 req_msg.headers.insert(std::make_pair("User-Agent", 
-                            ua_dic->_ua_vec[rand() % ua_dic->_ua_vec.size()]));
+                            ua_dic->_ua_vec[_id_index % ua_dic->_ua_vec.size()]));
             }
 
-            base_net_obj * connect = rquotation_data_process::gen_net_obj(info, req_msg);
+            std::shared_ptr<base_net_obj>  connect = 
+                std::shared_ptr<base_net_obj>(rquotation_data_process::gen_net_obj(info, req_msg));
+
             connect->set_net_container(_base_container);
         }
 
@@ -151,8 +167,10 @@ class skhttp_req_thread:public base_net_thread
             if (t_msg._timer_type == TIMER_TYPE_REAL_REQ)
             {
                 _id_index = 0;
+                if (is_real_time())
+                    _real_req = true;
+
                 real_req_start();
-                real_timer_start();
             }
         }
 
@@ -164,6 +182,7 @@ class skhttp_req_thread:public base_net_thread
     protected:
         std::map<std::string, std::vector<std::string> > _domain_cache;
         uint32_t _id_index;
+        bool _real_req;
 };
 
 

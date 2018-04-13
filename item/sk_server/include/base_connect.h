@@ -74,11 +74,11 @@ class base_connect:public base_net_obj
             return ret;
         }
 
-        virtual void before_destory()
+        virtual void destory()
         {
             if (_process)
             {
-                _process->before_destory();
+                _process->destory();
             }
         }
 
@@ -86,7 +86,7 @@ class base_connect:public base_net_obj
         {
             if (_process != NULL)
             {
-                _process->before_destory();
+                _process->destory();
                 delete _process;
             }
             _process = p;

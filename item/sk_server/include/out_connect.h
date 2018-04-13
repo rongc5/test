@@ -22,7 +22,7 @@ class out_connect:public base_connect<PROCESS>
 {
     public:
 
-        out_connect(const string &ip, unsigned short port)
+        out_connect(const std::string &ip, unsigned short port)
         {
             _status = CLOSED;
             _ip = ip;
@@ -127,7 +127,7 @@ class out_connect:public base_connect<PROCESS>
         }
 
     protected:
-        string _ip;
+        std::string _ip;
         unsigned short _port;
         CONNECT_STATUS _status;
 };

@@ -143,7 +143,7 @@ struct quotation_t
 
     float total_price;
 
-    std::deque<float> avg_price; 
+    float avg_price; 
 
     void reset()
     {
@@ -165,7 +165,7 @@ struct quotation_t
         change_rate = 0;
         range_percent = 0;
 
-        avg_price.clear();
+        avg_price = 0;
     }
 };
 
