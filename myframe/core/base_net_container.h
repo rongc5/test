@@ -14,11 +14,11 @@ class base_net_container
         base_net_container(base_net_thread * thread);
         virtual ~base_net_container();
 
-        virtual bool push_real_net(base_net_obj *p_obj) = 0;
-        virtual base_net_obj* find(const ObjId * obj_id) = 0;
-        virtual bool remove_real_net(base_net_obj *p_obj) = 0;
+        virtual bool push_real_net(std::shared_ptr<base_net_obj> & p_obj) = 0;
+        virtual std::shared_ptr<base_net_obj> find(const ObjId * obj_id) = 0;
+        virtual bool remove_real_net(std::shared_ptr<base_net_obj> & p_obj) = 0;
 
-        virtual bool insert(base_net_obj *p_obj) = 0;
+        virtual bool insert(std::shared_ptr<base_net_obj> & p_obj) = 0;
         virtual bool erase(const ObjId *_obj_id) = 0;
         virtual void obj_process() = 0;
         virtual void put_msg(ObjId & id, std::shared_ptr<normal_msg> & p_msg) = 0;

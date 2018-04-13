@@ -65,7 +65,8 @@ void base_net_obj::set_real_net(bool real_net)
     
     _real_net = real_net;
     if (_real_net) {
-        _p_net_container->push_real_net(this);
+    std::shared_ptr<base_net_obj> p=std::dynamic_pointer_cast<base_net_obj>(shared_from_this());
+        _p_net_container->push_real_net(p);
     }
 }
 
@@ -118,18 +119,8 @@ void base_net_obj::notice_send()
 {
 }
 
-void base_net_obj::before_destory()
+void base_net_obj::destroy()
 {
-
-}
-
-int base_net_obj::destroy()
-{
-    before_destory();
-
-    delete this;
-
-    return 0;
 }
 
 void base_net_obj::add_timer(timer_msg & t_msg)

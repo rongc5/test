@@ -85,7 +85,7 @@ base_net_obj * base_data_process::get_base_net()
     return _p_connect;
 }
 
-void base_data_process::before_destory()
+void base_data_process::destory()
 {
 
 }

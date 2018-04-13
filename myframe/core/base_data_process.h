@@ -33,7 +33,7 @@ class base_data_process
 
         base_net_obj * get_base_net();
 
-        virtual void before_destory();
+        virtual void destory();
 
     protected:
         void clear_send_list();

@@ -51,9 +51,9 @@ bool common_obj_container::insert(std::shared_ptr<base_net_obj> &p_obj)
     return true;
 }
 
-base_net_obj* common_obj_container::find(const ObjId * obj_id)
+std::shared_ptr<base_net_obj> common_obj_container::find(const ObjId * obj_id)
 {
-    std::unordered_map<uint64_t, base_net_obj *>::const_iterator it;
+    std::unordered_map<uint64_t, std::shared_ptr<base_net_obj> >::const_iterator it;
     uint64_t id = obj_id->_id | static_cast<uint64_t>(obj_id->_thread_index) << 32;
     it = _obj_map.find(id);
     if (it == _obj_map.end()){
@@ -65,14 +65,14 @@ base_net_obj* common_obj_container::find(const ObjId * obj_id)
 
 bool common_obj_container::erase(const ObjId *obj_id)
 {
-    base_net_obj *p_obj = NULL;
+    std::shared_ptr<base_net_obj> p_obj;
     bool ret = false;
     if (!obj_id){
         return ret;
     }
 
     p_obj = find(obj_id);
-    if (p_obj != NULL)
+    if (p_obj.use_count())
     {
         uint64_t id = obj_id->_id | static_cast<uint64_t>(obj_id->_thread_index) << 32;
         _obj_net_map.erase(id);
@@ -85,8 +85,8 @@ bool common_obj_container::erase(const ObjId *obj_id)
 
 void common_obj_container::put_msg(ObjId & id, std::shared_ptr<normal_msg> & p_msg)
 {
-    base_net_obj * net_obj = find(&id);
-    if (!net_obj) {
+    std::shared_ptr<base_net_obj>  net_obj = find(&id);
+    if (!net_obj.use_count()) {
         return;
     }
 
@@ -97,8 +97,8 @@ void common_obj_container::obj_process()
 {   
     uint32_t tmp_num = 0;
 
-    std::vector<base_net_obj *> exception_vec;
-    std::vector<base_net_obj *> real_net_vec;
+    std::vector<std::shared_ptr<base_net_obj> > exception_vec;
+    std::vector<std::shared_ptr<base_net_obj> > real_net_vec;
 
     for (const auto & u: _obj_net_map)
     {
@@ -122,33 +122,33 @@ void common_obj_container::obj_process()
         }
     }
 
-    for (std::vector<base_net_obj*>::iterator tmp_itr = real_net_vec.begin(); 
+    for (std::vector<std::shared_ptr<base_net_obj> >::iterator tmp_itr = real_net_vec.begin(); 
             tmp_itr != real_net_vec.end(); tmp_itr++) {
         remove_real_net(*tmp_itr);
     }
 
-    for (std::vector<base_net_obj*>::iterator tmp_itr = exception_vec.begin(); 
+    for (std::vector<std::shared_ptr<base_net_obj> >::iterator tmp_itr = exception_vec.begin(); 
             tmp_itr != exception_vec.end(); tmp_itr++) {
-        remove_real_net(*tmp_itr->);
+        remove_real_net(*tmp_itr);
         erase(&(*tmp_itr)->get_id());
     }
 
-    std::map<ObjId, base_net_obj*> exp_list;
-    std::map<ObjId, base_net_obj*> remove_list;
+    std::map<ObjId, std::shared_ptr<base_net_obj> > exp_list;
+    std::map<ObjId, std::shared_ptr<base_net_obj> > remove_list;
 
     _p_epoll->epoll_wait(exp_list, remove_list, tmp_num);
-    for (std::map<ObjId, base_net_obj*>::iterator itr = exp_list.begin(); itr != exp_list.end(); ++itr)
+    for (std::map<ObjId, std::shared_ptr<base_net_obj> >::iterator itr = exp_list.begin(); itr != exp_list.end(); ++itr)
     {         	
         LOG_DEBUG("step2: _id:%d, _thread_index:%d", itr->second->get_id()._id, itr->second->get_id()._thread_index);            
-        remove_real_net(itr->second.shared_from_this());
+        remove_real_net(itr->second);
         erase(&itr->first);
         itr->second->destroy();
     }
 
-    for (std::map<ObjId, base_net_obj*>::iterator itr = remove_list.begin(); itr != remove_list.end(); ++itr)
+    for (std::map<ObjId, std::shared_ptr<base_net_obj> >::iterator itr = remove_list.begin(); itr != remove_list.end(); ++itr)
     {
         itr->second->set_real_net(false);
-        remove_real_net(itr->second.shared_from_this());
+        remove_real_net(itr->second);
     }
 
 

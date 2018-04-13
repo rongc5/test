@@ -16,7 +16,7 @@ class common_obj_container:public base_net_container
         virtual bool push_real_net(std::shared_ptr<base_net_obj> & p_obj);
         virtual bool remove_real_net(std::shared_ptr<base_net_obj> & p_obj);
 
-        virtual base_net_obj* find(const ObjId * obj_id);
+        virtual std::shared_ptr<base_net_obj> find(const ObjId * obj_id);
 
         virtual bool insert(std::shared_ptr<base_net_obj> & p_obj);
         virtual bool erase(const ObjId *obj_id);
