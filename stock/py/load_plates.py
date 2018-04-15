@@ -10,15 +10,21 @@ import unicodedata
 import os
 import sys
 import random
-import subprocess
-import ast
 
 from time import strftime, localtime
 from datetime import timedelta, date
-import datetime
 import calendar
 
+from bs4 import BeautifulSoup as bsp
+
 __author__ = 'rong'
+
+user_agent_list = []
+user_agent_dic = {}
+user_agent_cookie = {}
+MAX_RESPONSE_KB = 10*1024
+DATAPATH = './data/plates'
+id_all = {}
 
 class Day():
     def __init__(self):
@@ -185,13 +191,13 @@ class Day():
       arr = (y, m, self.day)
      return "-".join("%s" % i for i in arr)
 
+
 def log_write(filename, str):
     file = open(filename, 'a')
     file.write(str)
     file.write('\n')
     file.flush()
     file.close()
-
 
 class HTTPError(Exception):
     """Exception that is wrapped around all exceptions that are raised
@@ -319,19 +325,32 @@ class CurlHTTPFetcher(object):
             data.close()
             c.close()
 
+def load_ua_list():
+    id_dic = {}
+    if not os.path.isfile('ua_list'):
+        return id_dic
 
-def load_stockid_detail(date, id, filename):
-    url = 'http://market.finance.sina.com.cn/downxls.php?date=%s&symbol=%s' % (date, id)
+    file = open("ua_list")
+    while 1:
+        line = file.readline().strip('\n')
+        if not line:
+            break
+        user_agent_list.append(line)
 
+    file.close()
+    print 'user_agent_list:', len(user_agent_list)
+    return user_agent_list
+
+
+def load_stockid_plate(id, filename):
+    url = 'http://vip.stock.finance.sina.com.cn/corp/go.php/vCI_CorpOtherInfo/stockid/%s/menu_num/5.phtml' % (id)
     #print url
     #url = 'http://vip.stock.finance.sina.com.cn/quotes_service/view/cn_bill_download.php?' \
     #      'symbol=%s&num=600&page=1&sort=ticktime&asc=0&volume=40000&amount=0&type=0&day=%s' % (id, date)
 
-    filename = '%s/%s' % (filename, id)
-
     if os.path.isfile(filename):
+        os.remove(filename)
         print filename, url
-        return 0
 
     header = {}
     index = random.randint(0, len(user_agent_list) -1)
@@ -355,110 +374,19 @@ def load_stockid_detail(date, id, filename):
 
     res_str = ''
     if res.has_key('body') and res['body'].strip():
-        items = res['body'].split('\n')
-        #print res['body']
-        for key in items:
-            subitems = key.split('\t');
-            if len(subitems) == 6:
-                if not subitems[4].isdigit():
-                    continue
+        soup = bsp(res['body'], "html.parser")
 
-                if u'买盘' in  subitems[5].decode('gbk'):
-                    flag = 'B'
-                elif u'卖盘' in subitems[5].decode('gbk'):
-                    flag = 'S'
-                elif u'中性盘' in subitems[5].decode('gbk'):
-                    flag = 'M'
-                else:
-                    continue
+        res =  soup.find_all('table', class_='comInfo1')
 
-                res_str = '%s\t%s\t%s\t%s' % (subitems[0], subitems[1], subitems[3], flag)
-                log_write(filename, res_str)
+        for key in res:
+            print key
+        #res_str = '%s\t%s\t%s\t%s' % (subitems[0], subitems[1], subitems[3], flag)
+        #log_write(filename, res_str)
     return 1
 
-def load_ua_list():
-    id_dic = {}
-    if not os.path.isfile('ua_list'):
-        return id_dic
-
-    file = open("ua_list")
-    while 1:
-        line = file.readline().strip('\n')
-        if not line:
-            break
-        user_agent_list.append(line)
-
-    file.close()
-    print 'user_agent_list:', len(user_agent_list)
-    return user_agent_list
-
-
-def get_day_type(query_date):
-    url = 'http://tool.bitefu.net/jiari/?d=' + query_date
-    curl =  CurlHTTPFetcher()
-    curl.ALLOWED_TIME = 2
-
-    header = {}
-    index = random.randint(0, len(user_agent_list) -1)
-    header['User-Agent'] = user_agent_list[index]
-
-
-    try:
-        res = curl.fetch(url, None, header)
-        day_type = int(res['body'])
-        return day_type
-    except BaseException, e:
-        return -1
-
-    return -1
-
-def is_tradeday(query_date):
-    weekday = datetime.datetime.strptime(query_date, '%Y%m%d').isoweekday()
-    if weekday <= 5 and get_day_type(query_date) == 0:
-        return 1
-    else:
-        return 0
-
-
-def load_days(days_num):
-    day = Day()
-    day_list = []
-
-    date = day.today()
-    if int(day.hour) >=16 and is_tradeday(date.replace('-', '')):
-        day_list.append(date)
-
-    lastday = 0
-    for id_day in range(days_num):
-        date = ''
-        lastday = lastday - 1
-        while 1:
-            date =  '%s' % (day.get_day_of_day(lastday), )
-            if is_tradeday(date.replace('-', '')):
-                day_list.append(date)
-                break
-            lastday = lastday - 1
-
-    return  day_list
-
-
-def load_details(days_num, deal_dic):
-    if len(deal_dic) == 0:
-        return
-
-    day_list = load_days(days_num)
-    print day_list
-
-    for date in day_list:
-        path = '%s/%s' % (DATAPATH, date.replace('-', ''))
-        cmd = ['mkdir', '-p', path]
-        subprocess.Popen(cmd, stdout=subprocess.PIPE).communicate()[0]
-
-        for key in deal_dic:
-            if load_stockid_detail(date, key, path):
-                index = random.randint(1, 5)
-                time.sleep(index)
-
+def load_plates(id_dic):
+    for key in id_dic:
+        load_stockid_plate(key, DATAPATH)
 
 def load_coad_all():
     if not os.path.isfile('code_all'):
@@ -473,14 +401,9 @@ def load_coad_all():
         id_all[line] = line
     file.close()
 
-user_agent_list = []
-user_agent_dic = {}
-user_agent_cookie = {}
-MAX_RESPONSE_KB = 10*1024
-DATAPATH = './data/details'
-id_all = {}
 
 if __name__ == '__main__':
     load_ua_list()
     load_coad_all()
-    load_details(1, id_all)
+    #load_plates(id_all)
+    load_stockid_plate('sz002285', DATAPATH)
