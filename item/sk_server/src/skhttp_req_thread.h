@@ -19,10 +19,7 @@ class skhttp_req_thread:public base_net_thread
         skhttp_req_thread()
         {
             _id_index = 0;
-            if (is_real_time())
-                _real_req = true;
-            else
-                _real_req = false;
+            _real_req = true;
         }
 
         virtual void handle_msg(std::shared_ptr<normal_msg> & p_msg)
@@ -55,6 +52,7 @@ class skhttp_req_thread:public base_net_thread
             proc_data* p_data = proc_data::instance();
             if (_real_req && p_data && p_data->_id_dict)
             {
+                req_real_quotation("sz002285");
                 id_dict * id_dic = p_data->_id_dict->current();
                 if (id_dic && _id_index < id_dic->_id_vec.size())
                 {
@@ -66,10 +64,6 @@ class skhttp_req_thread:public base_net_thread
                 {
                     real_timer_start();
                 }
-            }
-            else
-            {
-                real_timer_start();
             }
         }
 
@@ -109,7 +103,7 @@ class skhttp_req_thread:public base_net_thread
             return false;
         }
 
-        void req_real_quotation(std::string & id)
+        void req_real_quotation(const std::string & id)
         {
             char t_url[SIZE_LEN_64];
             snprintf(t_url, sizeof(t_url), "http://web.sqt.gtimg.cn/q=%s", id.c_str());

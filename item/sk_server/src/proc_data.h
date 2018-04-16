@@ -4,6 +4,7 @@
 #include "base_reload.h"
 #include "sk_conf.h"
 #include "base_net_thread.h"
+#include "common_util.h"
 
 class ua_dict;
 class strategy_dict;
@@ -38,6 +39,9 @@ class proc_data:public reload_inf
         sk_conf * _conf;
 
     public:
+
+        std::unordered_map<std::string, ToBufferMgr<quotation_t>,str_hasher> _quotation_dict;
+
 
         //reload_mgr<history_single_t> * _hsingle_dict;
 

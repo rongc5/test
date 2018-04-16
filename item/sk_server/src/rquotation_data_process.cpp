@@ -61,6 +61,14 @@ void rquotation_data_process::msg_recv_finish()
 {
     LOG_DEBUG("recv_buf: %s", _recv_buf.c_str());
     
+    std::vector<std::string> strVec;
+    SplitString(_recv_buf.c_str(), "=", &strVec, SPLIT_MODE_ONE);
+    if (strVec.size() >= 2)
+    {
+        std::string value = trim(strVec[1].c_str(), ";\n");
+        SplitString(value.c_str(), "~", &strVec, SPLIT_MODE_ALL);
+
+    }
 
     _recv_buf.clear();
 }
