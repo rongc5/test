@@ -323,7 +323,7 @@ class CurlHTTPFetcher(object):
 def load_stockid_detail(date, id, filename):
     url = 'http://market.finance.sina.com.cn/downxls.php?date=%s&symbol=%s' % (date, id)
 
-    #print url
+    print url
     #url = 'http://vip.stock.finance.sina.com.cn/quotes_service/view/cn_bill_download.php?' \
     #      'symbol=%s&num=600&page=1&sort=ticktime&asc=0&volume=40000&amount=0&type=0&day=%s' % (id, date)
 
@@ -424,9 +424,13 @@ def load_days(days_num):
     day = Day()
     day_list = []
 
-    date = day.today()
-    if int(day.hour) >=16 and is_tradeday(date.replace('-', '')):
-        day_list.append(date)
+    #date = day.today()
+    #date = '%s' % (date)
+    #if int(day.hour) >= 16 and is_tradeday(date.replace('-', '')):
+            #day_list.append(date)
+            #if days_num > 0:
+                #days_num = days_num - 1
+
 
     lastday = 0
     for id_day in range(days_num):

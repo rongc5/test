@@ -31,12 +31,13 @@ class proc_data:public reload_inf
 
         reload_mgr<strategy_dict> * _strategy_dict;
 
-        sk_conf * _conf;
-
-    public:
         reload_mgr<finance_dict> * _finance_dict;
 
         reload_mgr<ban_dict> * _ban_dict;
+
+        sk_conf * _conf;
+
+    public:
 
         //reload_mgr<history_single_t> * _hsingle_dict;
 

@@ -9,9 +9,11 @@
 #include "base_def.h"
 #include "http_req_process.h"
 
+#include "proc_data.h"
 
 rquotation_data_process::rquotation_data_process(http_base_process * _p_process):http_base_data_process(_p_process)
 {
+    _is_ok = false;
 }
 
 std::string * rquotation_data_process::get_send_body(int &result)
@@ -52,11 +54,13 @@ void rquotation_data_process::header_recv_finish()
     LOG_DEBUG("header: %s", str->c_str());
 
     std::shared_ptr<std::string> rc(str);
+    _is_ok = true;
 }
 
 void rquotation_data_process::msg_recv_finish()
 {
     LOG_DEBUG("recv_buf: %s", _recv_buf.c_str());
+    
 
     _recv_buf.clear();
 }
@@ -139,8 +143,13 @@ bool rquotation_data_process::handle_timeout(timer_msg & t_msg)
 {
     if (t_msg._timer_type == TIMER_TYPE_HTTP_REQ)
     {
-
+        if (!_is_ok)
+        {
+            throw CMyCommonException("TIMER_TYPE_HTTP_REQ");
+        }
     }
+
+    return true;
 }
 
 bool rquotation_data_process::process_recv_msg(ObjId & id, std::shared_ptr<normal_msg> & p_msg)
