@@ -5,12 +5,19 @@
 #include "sk_conf.h"
 #include "proc_data.h"
 #include "listen_thread.h"
+#include "common_util.h"
 
 
-void do_init(char **argv)
+void do_init()
 {
+    char conf_path[SIZE_LEN_128];
+    char proc_name[SIZE_LEN_128];
+    get_proc_name(proc_name, sizeof(proc_name));
+    
+    snprintf(conf_path, sizeof(conf_path), "./conf/%s.conf", proc_name);
+
     log_conf lg_conf;
-    sk_conf * conf = new (std::nothrow)sk_conf(argv[0]);
+    sk_conf * conf = new (std::nothrow)sk_conf(conf_path);
     conf->load();
 
     lg_conf.type = conf->log_type;
@@ -31,12 +38,7 @@ void do_init(char **argv)
 
 int main(int argc, char *argv[])
 {
-    if (argc < 2)
-    {
-        return -1;
-    }
-
-    do_init(argv);
+    do_init();
 
 
     //http_req_msg * req_msg = new http_req_msg();

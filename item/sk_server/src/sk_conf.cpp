@@ -8,9 +8,11 @@ sk_conf::sk_conf(const char * sk_conf)
     http_server_port = 8080;
     http_server_thread_num = 3;
 
-    ip_deny_num = 100;
+    //ip_deny_num = 100;
 
     reload_second = 5;
+
+    req_interval_second = 20;
 
     log_type = LOGDEBUG;
 
@@ -38,11 +40,11 @@ int sk_conf::load()
     cfg.get_vale("server", "local_strategy_path", local_strategy_path);
     cfg.get_vale("server", "local_strategy_file", local_strategy_file);
 
-    cfg.get_vale("server", "history_single_path", history_single_path);
-    cfg.get_vale("server", "history_single_file", history_single_file);
+    //cfg.get_vale("server", "history_single_path", history_single_path);
+    //cfg.get_vale("server", "history_single_file", history_single_file);
 
-    cfg.get_vale("server", "history_quotation_path", history_quotation_path);
-    cfg.get_vale("server", "history_quotation_file", history_quotation_file);
+    //cfg.get_vale("server", "history_quotation_path", history_quotation_path);
+    //cfg.get_vale("server", "history_quotation_file", history_quotation_file);
 
     cfg.get_vale("server", "http_req_thread_num", tmp);
     http_req_thread_num = atoi(tmp.c_str());
@@ -53,15 +55,15 @@ int sk_conf::load()
     cfg.get_vale("server", "http_server_thread_num", tmp);
     http_server_thread_num = atoi(tmp.c_str());
 
-    cfg.get_vale("server", "ip_deny_path", ip_deny_path);
-
-    cfg.get_vale("server", "ip_deny_num", tmp);
-    ip_deny_num = atoi(tmp.c_str());
+    //cfg.get_vale("server", "ip_deny_path", ip_deny_path);
 
     cfg.get_vale("server", "dump_dir", dump_dir);
 
     cfg.get_vale("server", "reload_second", tmp);
     reload_second = atoi(tmp.c_str());
+
+    cfg.get_vale("server", "req_interval_second", tmp);
+    req_interval_second = atoi(tmp.c_str());
 
     cfg.get_vale("server", "log_type", tmp);
     int ret = atoi(tmp.c_str());

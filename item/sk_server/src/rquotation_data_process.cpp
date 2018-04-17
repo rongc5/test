@@ -67,7 +67,6 @@ void rquotation_data_process::msg_recv_finish()
     {
         std::string value = trim(strVec[1].c_str(), ";\n");
         SplitString(value.c_str(), "~", &strVec, SPLIT_MODE_ALL);
-
     }
 
     _recv_buf.clear();
