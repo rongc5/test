@@ -26,6 +26,8 @@ MAX_RESPONSE_KB = 10*1024
 DATAPATH = './data/plates'
 id_all = {}
 
+remove_dic = {u'所属概念板块':'', u'备注：此为证监会行业分类':'',  u'所属行业板块':''}
+
 class Day():
     def __init__(self):
         self.year = strftime("%Y", localtime())
@@ -375,11 +377,23 @@ def load_stockid_plate(id, filename):
     res_str = ''
     if res.has_key('body') and res['body'].strip():
         soup = bsp(res['body'], "html.parser")
+        #soup = bsp(res['body'], "lxml")
 
-        res =  soup.find_all('table', class_='comInfo1')
+        #table = soup.find_all('table', class_="comInfo1")
+        #print table
+        ##children = table.findChildren()
+        #for key in table:
+        #    print key
 
-        for key in res:
-            print key
+        #x = soup.find('div', id="con02-0")
+        #print x.table
+        tds = soup.find_all('tr')
+        for key in tds:
+            #if key.text.strip():
+            #    print key.text
+            if key.find('td',  class_="ct"):
+                if  key.td.get_text() not in remove_dic:
+                    print key.td.get_text()
         #res_str = '%s\t%s\t%s\t%s' % (subitems[0], subitems[1], subitems[3], flag)
         #log_write(filename, res_str)
     return 1
