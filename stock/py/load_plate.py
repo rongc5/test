@@ -10,6 +10,7 @@ import unicodedata
 import os
 import sys
 import random
+import subprocess
 
 from time import strftime, localtime
 from datetime import timedelta, date
@@ -23,7 +24,7 @@ user_agent_list = []
 user_agent_dic = {}
 user_agent_cookie = {}
 MAX_RESPONSE_KB = 10*1024
-DATAPATH = './data/plates'
+DATAPATH = './data/plate_dict'
 id_all = {}
 
 remove_dic = {u'所属概念板块':'', u'备注：此为证监会行业分类':'',  u'所属行业板块':''}
@@ -194,8 +195,8 @@ class Day():
      return "-".join("%s" % i for i in arr)
 
 
-def log_write(filename, str):
-    file = open(filename, 'a')
+def log_write(filename, str, mode='a'):
+    file = open(filename, mode)
     file.write(str)
     file.write('\n')
     file.flush()
@@ -350,10 +351,6 @@ def load_stockid_plate(id, filename):
     #url = 'http://vip.stock.finance.sina.com.cn/quotes_service/view/cn_bill_download.php?' \
     #      'symbol=%s&num=600&page=1&sort=ticktime&asc=0&volume=40000&amount=0&type=0&day=%s' % (id, date)
 
-    if os.path.isfile(filename):
-        os.remove(filename)
-        print filename, url
-
     header = {}
     index = random.randint(0, len(user_agent_list) -1)
     header['User-Agent'] = user_agent_list[index]
@@ -376,31 +373,45 @@ def load_stockid_plate(id, filename):
 
     res_str = ''
     if res.has_key('body') and res['body'].strip():
-        soup = bsp(res['body'], "html.parser")
-        #soup = bsp(res['body'], "lxml")
-
-        #table = soup.find_all('table', class_="comInfo1")
-        #print table
-        ##children = table.findChildren()
-        #for key in table:
-        #    print key
+        soup = bsp(res['body'], "html.parser", from_encoding="gb18030")
 
         #x = soup.find('div', id="con02-0")
         #print x.table
+        tmp_str = ''
         tds = soup.find_all('tr')
         for key in tds:
             #if key.text.strip():
             #    print key.text
             if key.find('td',  class_="ct"):
                 if  key.td.get_text() not in remove_dic:
-                    print key.td.get_text()
-        #res_str = '%s\t%s\t%s\t%s' % (subitems[0], subitems[1], subitems[3], flag)
-        #log_write(filename, res_str)
+                    tmp_str +=key.td.get_text()
+                    tmp_str += '\t'
+                    #print tmp_str
+
+        if tmp_str:
+            res_str = '%s\t' % (id)
+            res_str += tmp_str
+            res_str.strip('\t')
+            print res_str
+            log_write(filename, res_str.encode('gb18030'))
     return 1
 
 def load_plates(id_dic):
+    file_name = DATAPATH
+
     for key in id_dic:
-        load_stockid_plate(key, DATAPATH)
+        flag = False
+        cmd = ['grep', key, file_name]
+        res_str = subprocess.Popen(cmd, stdout=subprocess.PIPE).communicate()[0]
+        if not os.path.isfile(file_name) or not res_str.strip():
+            flag = True
+
+        if not flag:
+            continue
+
+        load_stockid_plate(key, file_name)
+        index = random.randint(1, 6)
+        time.sleep(index)
 
 def load_coad_all():
     if not os.path.isfile('code_all'):
@@ -420,4 +431,4 @@ if __name__ == '__main__':
     load_ua_list()
     load_coad_all()
     #load_plates(id_all)
-    load_stockid_plate('sz002285', DATAPATH)
+    load_stockid_plate('sz002752', 'plate')
