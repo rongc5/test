@@ -24,10 +24,9 @@ user_agent_list = []
 user_agent_dic = {}
 user_agent_cookie = {}
 MAX_RESPONSE_KB = 10*1024
-DATAPATH = '/data3/mingz/.script/stock/data/plate_dict'
+DATAPATH = '/data3/mingz/.script/stock/data'
 id_all = {}
 
-remove_dic = {u'所属概念板块':'', u'备注：此为证监会行业分类':'',  u'所属行业板块':''}
 
 class Day():
     def __init__(self):
@@ -345,8 +344,8 @@ def load_ua_list():
     return user_agent_list
 
 
-def load_stockid_plate(id, filename):
-    url = 'http://vip.stock.finance.sina.com.cn/corp/go.php/vCI_CorpOtherInfo/stockid/%s/menu_num/5.phtml' % (id[2:])
+def load_stockid_brief(id, filename):
+    url = 'http://vip.stock.finance.sina.com.cn/corp/go.php/vCI_CorpInfo/stockid/%s.phtml' % (id[2:])
     #print url
     #url = 'http://vip.stock.finance.sina.com.cn/quotes_service/view/cn_bill_download.php?' \
     #      'symbol=%s&num=600&page=1&sort=ticktime&asc=0&volume=40000&amount=0&type=0&day=%s' % (id, date)
@@ -378,23 +377,29 @@ def load_stockid_plate(id, filename):
         #x = soup.find('div', id="con02-0")
         #print x.table
         tmp_str = ''
-        tds = soup.find_all('tr')
-        for key in tds:
-            #if key.text.strip():
-            #    print key.text
-            if key.find('td',  class_="ct"):
-                if  key.td.get_text() not in remove_dic:
-                    tmp_str +=key.td.get_text()
-                    tmp_str += '\t'
-                    #print tmp_str
 
-        if tmp_str:
-            res_str = '%s\t' % (id)
-            res_str += tmp_str
-            res_str.strip('\t')
-            print res_str
-            #log_write(filename, res_str.encode('utf8'))
-            log_write(filename, res_str.encode('gb18030'))
+        table = soup.find('table', id='comInfo1')
+        rows = table.find_all('td', class_="ccl")
+
+        if len(rows) >= 7:
+            tmp_name = '%s/%s' % (filename, 'address_dict')
+            tmp_str = '%s\t' % (id)
+            tmp_str += rows[4].text
+            #print tmp_str
+            log_write(tmp_name, tmp_str.encode('gb18030'))
+
+            tmp_name = '%s/%s' % (filename, 'brief_dict')
+            tmp_str = '%s\t' % (id)
+            tmp_str += rows[5].text
+            #print tmp_str
+            log_write(tmp_name, tmp_str.encode('gb18030'))
+
+            tmp_name = '%s/%s' % (filename, 'business_scope_dict')
+            tmp_str = '%s\t' % (id)
+            tmp_str += rows[6].text
+            #print tmp_str
+            log_write(tmp_name, tmp_str.encode('gb18030'))
+
     return 1
 
 def load_plates(id_dic):
@@ -402,15 +407,16 @@ def load_plates(id_dic):
 
     for key in id_dic:
         flag = False
-        cmd = ['grep', key, file_name]
+        tmp_name = '%s/%s' % (file_name, 'address_dict')
+        cmd = ['grep', key, tmp_name]
         res_str = subprocess.Popen(cmd, stdout=subprocess.PIPE).communicate()[0]
-        if not os.path.isfile(file_name) or not res_str.strip():
+        if not os.path.isfile(tmp_name) or not res_str.strip():
             flag = True
 
         if not flag:
             continue
 
-        load_stockid_plate(key, file_name)
+        load_stockid_brief(key, file_name)
         #index = random.randint(1, 6)
         time.sleep(1)
 
@@ -432,4 +438,4 @@ if __name__ == '__main__':
     load_ua_list()
     load_coad_all()
     load_plates(id_all)
-    #load_stockid_plate('sz002752', 'plate')
+    #load_stockid_brief('sz002752', '.')

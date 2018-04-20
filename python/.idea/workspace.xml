@@ -12,7 +12,9 @@
   </component>
   <component name="ChangesViewManager" flattened_view="true" show_ignored="false" />
   <component name="CoverageDataManager">
-    <SUITE FILE_PATH="coverage/python$load_plates.coverage" NAME="load_plates Coverage Results" MODIFIED="1524133950914" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/../stock/py" />
+    <SUITE FILE_PATH="coverage/python$load_plates.coverage" NAME="load_plates Coverage Results" MODIFIED="1524190972280" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/../stock/py" />
+    <SUITE FILE_PATH="coverage/python$load_address.coverage" NAME="load_address Coverage Results" MODIFIED="1524211397884" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/../stock/py" />
+    <SUITE FILE_PATH="coverage/python$load_lifted.coverage" NAME="load_lifted Coverage Results" MODIFIED="1524213975783" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/../stock/py" />
   </component>
   <component name="CreatePatchCommitExecutor">
     <option name="PATCH_PATH" value="" />
@@ -29,10 +31,8 @@
       <file leaf-file-name="re_test_case.py" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/re_test_case.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="902" column="31" selection-start="26444" selection-end="26450" vertical-scroll-proportion="0.33179724" vertical-offset="16994" max-vertical-offset="17936">
-              <folding>
-                <element signature="e#40#54#0" expanded="true" />
-              </folding>
+            <state line="925" column="21" selection-start="26914" selection-end="26914" vertical-scroll-proportion="0.21350762" vertical-offset="17382" max-vertical-offset="17841">
+              <folding />
             </state>
           </provider>
         </entry>
@@ -58,6 +58,8 @@
         <option value="$PROJECT_DIR$/../stock/py/count_detail.py" />
         <option value="$PROJECT_DIR$/../stock/py/load_detail.py" />
         <option value="$PROJECT_DIR$/../stock/py/load_plates.py" />
+        <option value="$PROJECT_DIR$/../stock/py/load_address.py" />
+        <option value="$PROJECT_DIR$/../stock/py/load_lifted.py" />
       </list>
     </option>
   </component>
@@ -148,7 +150,7 @@
       <recent name="D:\work\self\test\stock\py" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.load_plates">
+  <component name="RunManager" selected="Python.load_lifted">
     <configuration default="false" name="load_plates" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -163,6 +165,44 @@
       <module name="stock" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/../stock/py/load_plates.py" />
+      <option name="PARAMETERS" value="" />
+      <RunnerSettings RunnerId="PythonRunner" />
+      <ConfigurationWrapper RunnerId="PythonRunner" />
+      <method />
+    </configuration>
+    <configuration default="false" name="load_address" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/../stock/py" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="stock" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/../stock/py/load_address.py" />
+      <option name="PARAMETERS" value="" />
+      <RunnerSettings RunnerId="PythonRunner" />
+      <ConfigurationWrapper RunnerId="PythonRunner" />
+      <method />
+    </configuration>
+    <configuration default="false" name="load_lifted" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/../stock/py" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="stock" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/../stock/py/load_lifted.py" />
       <option name="PARAMETERS" value="" />
       <RunnerSettings RunnerId="PythonRunner" />
       <ConfigurationWrapper RunnerId="PythonRunner" />
@@ -318,12 +358,16 @@
       <option name="USE_PATTERN" value="false" />
       <method />
     </configuration>
-    <list size="1">
+    <list size="3">
       <item index="0" class="java.lang.String" itemvalue="Python.load_plates" />
+      <item index="1" class="java.lang.String" itemvalue="Python.load_address" />
+      <item index="2" class="java.lang.String" itemvalue="Python.load_lifted" />
     </list>
     <recent_temporary>
-      <list size="1">
-        <item index="0" class="java.lang.String" itemvalue="Python.load_plates" />
+      <list size="3">
+        <item index="0" class="java.lang.String" itemvalue="Python.load_lifted" />
+        <item index="1" class="java.lang.String" itemvalue="Python.load_address" />
+        <item index="2" class="java.lang.String" itemvalue="Python.load_plates" />
       </list>
     </recent_temporary>
   </component>
@@ -374,15 +418,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/re_test_case.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="851" column="0" selection-start="25157" selection-end="25157" vertical-scroll-proportion="0.0" vertical-offset="15903" max-vertical-offset="17936">
-          <folding>
-            <element signature="e#40#54#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../stock/py/stock_infoa.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="1788" column="41" selection-start="58469" selection-end="58482" vertical-scroll-proportion="0.0" vertical-offset="33972" max-vertical-offset="38627" />
@@ -396,36 +431,28 @@
     <entry file="file://$PROJECT_DIR$/re_test_case.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="849" column="0" selection-start="25155" selection-end="25155" vertical-scroll-proportion="0.0" vertical-offset="16074" max-vertical-offset="17936">
-          <folding>
-            <element signature="e#40#54#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/re_test_case.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="849" column="0" selection-start="25155" selection-end="25155" vertical-scroll-proportion="0.0" vertical-offset="15979" max-vertical-offset="17936">
-          <folding>
-            <element signature="e#40#54#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/re_test_case.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="840" column="20" selection-start="24916" selection-end="24916" vertical-scroll-proportion="0.0" vertical-offset="95" max-vertical-offset="17936">
-          <folding>
-            <element signature="e#40#54#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/re_test_case.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="792" column="0" selection-start="23605" selection-end="23605" vertical-scroll-proportion="0.0" vertical-offset="14623" max-vertical-offset="16777">
-          <folding>
-            <element signature="e#40#54#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -462,26 +489,31 @@
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../stock/py/load_ids.py">
+    <entry file="file://$PROJECT_DIR$/../stock/py/load_lifted.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="13" column="10" selection-start="188" selection-end="188" vertical-scroll-proportion="-7.7776184" vertical-offset="5668" max-vertical-offset="8303">
+        <state line="453" column="4" selection-start="12415" selection-end="12415" vertical-scroll-proportion="0.6688453" vertical-offset="8015" max-vertical-offset="8474">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../stock/py/load_plates.py">
+    <entry file="file://$PROJECT_DIR$/../stock/py/load_brief.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="395" column="43" selection-start="11137" selection-end="11137" vertical-scroll-proportion="0.37472767" vertical-offset="7067" max-vertical-offset="7866">
+        <state line="360" column="12" selection-start="10014" selection-end="10014" vertical-scroll-proportion="-2.0827887" vertical-offset="7511" max-vertical-offset="8208">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../stock/py/load_ids.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="13" column="10" selection-start="781" selection-end="781" vertical-scroll-proportion="0.042600896" vertical-offset="228" max-vertical-offset="2166">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/re_test_case.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="902" column="31" selection-start="26444" selection-end="26450" vertical-scroll-proportion="0.33179724" vertical-offset="16994" max-vertical-offset="17936">
-          <folding>
-            <element signature="e#40#54#0" expanded="true" />
-          </folding>
+        <state line="925" column="21" selection-start="26914" selection-end="26914" vertical-scroll-proportion="0.21350762" vertical-offset="17382" max-vertical-offset="17841">
+          <folding />
         </state>
       </provider>
     </entry>
