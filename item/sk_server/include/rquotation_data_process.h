@@ -34,7 +34,7 @@ class rquotation_data_process: public http_base_data_process
 
         void set_url_info(url_info & info);
 
-        static base_net_obj * gen_net_obj(url_info & info, http_req_msg & req_msg);
+        static std::shared_ptr<base_net_obj>  gen_net_obj(url_info & info, http_req_msg & req_msg);
 
         virtual bool handle_timeout(timer_msg & t_msg);
 

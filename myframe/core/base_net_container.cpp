@@ -77,7 +77,7 @@ void base_net_container::handle_timeout(timer_msg & t_msg)
     }
 
     std::shared_ptr<base_net_obj>  net_obj = find(&t_msg._id);
-    if (!net_obj.use_count())
+    if (!net_obj)
     {
         return;
     }

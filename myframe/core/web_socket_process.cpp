@@ -7,7 +7,7 @@
 #include "common_util.h"
 
 
-web_socket_process::web_socket_process(base_net_obj *p):base_data_process(p)
+web_socket_process::web_socket_process(std::shared_ptr<base_net_obj> p):base_data_process(p)
 {
     _wb_status = WB_INIT_STAUTS;
     _if_send_mask = true;
@@ -158,8 +158,9 @@ web_socket_frame_header &web_socket_process::get_recent_send_frame_header()
 
 void web_socket_process::notice_send()
 {
-    if (_wb_status == WB_HANDSHAKE_OK)
-        _p_connect->notice_send();
+    auto sp = _p_connect.lock();
+    if (_wb_status == WB_HANDSHAKE_OK && sp) 
+        sp->notice_send();
 }
 
 const std::string &web_socket_process::get_recv_header()

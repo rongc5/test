@@ -27,66 +27,33 @@
 
 #define LOG_WARNING(fmt, arg...) \
     do { \
-        log_prefix prefix; \
-        prefix.tid = pthread_self(); \
-        prefix.line = __LINE__; \
-        prefix.fun = __func__; \
-        prefix.file = __FILE__; \
-        prefix.typestr = "WARNING"; \
-        prefix.type = LOGWARNING; \
-        log_thread::log_write(prefix, fmt, ##arg); \
+        LOG_WRITE(LOGDEBUG, "WARNING:[%lu]:[%d:%s:%s] " fmt, pthread_self(), __LINE__, __func__, __FILE__, ##arg); \
     } while (0)
 
 
 #define LOG_FATAL(fmt, arg...) \
     do { \
-        log_prefix prefix; \
-        prefix.tid = pthread_self(); \
-        prefix.line = __LINE__; \
-        prefix.fun = __func__; \
-        prefix.file = __FILE__; \
-        prefix.typestr = "FATAL"; \
-        prefix.type = LOGFATAL; \
-        log_thread::log_write(prefix, fmt, ##arg); \
+        LOG_WRITE(LOGDEBUG, "FATAL:[%lu]:[%d:%s:%s] " fmt, pthread_self(), __LINE__, __func__, __FILE__, ##arg); \
     } while (0)
 
 
 #define LOG_NOTICE(fmt, arg...) \
       do { \
-        log_prefix prefix; \
-        prefix.tid = pthread_self(); \
-        prefix.line = __LINE__; \
-        prefix.fun = __func__; \
-        prefix.file = __FILE__; \
-        prefix.typestr = "NOTICE"; \
-        prefix.type = LOGNOTICE; \
-        log_thread::log_write(prefix, fmt, ##arg); \
+        LOG_WRITE(LOGDEBUG, "NOTICE:[%lu]:[%d:%s:%s] " fmt, pthread_self(), __LINE__, __func__, __FILE__, ##arg);\
     } while (0)
 
 
 #define LOG_TRACE(fmt, arg...) \
     do { \
-        log_prefix prefix; \
-        prefix.tid = pthread_self(); \
-        prefix.line = __LINE__; \
-        prefix.fun = __func__; \
-        prefix.file = __FILE__; \
-        prefix.typestr = "TRACE"; \
-        prefix.type = LOGTRACE; \
-        log_thread::log_write(prefix, fmt, ##arg); \
+        LOG_WRITE(LOGDEBUG, "TRACE:[%lu]:[%d:%s:%s] " fmt, pthread_self(), __LINE__, __func__, __FILE__, ##arg); \
     } while (0)
 
 
 #define LOG_DEBUG(fmt, arg...) \
     do { \
-        log_prefix prefix; \
-        prefix.tid = pthread_self(); \
-        prefix.line = __LINE__; \
-        prefix.fun = __func__; \
-        prefix.file = __FILE__; \
-        prefix.typestr = "DEBUG"; \
-        prefix.type = LOGDEBUG; \
-        log_thread::log_write(prefix, fmt, ##arg); \
+        LOG_WRITE(LOGDEBUG, "DEBUG:[%lu]:[%d:%s:%s] " fmt, pthread_self(), __LINE__, __func__, __FILE__, ##arg); \
     } while (0)
+
+#define LOG_WRITE(t, fmt...) log_thread::log_write(t, ##fmt)
 
 #endif

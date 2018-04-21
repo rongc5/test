@@ -48,11 +48,11 @@ struct timer_msg
 };
 
 enum LogType {
-    LOGFATAL,
-    LOGWARNING,
-    LOGNOTICE,
-    LOGTRACE,
-    LOGDEBUG,
+    LOGFATAL = 1,
+    LOGWARNING = 2,
+    LOGNOTICE = 4,
+    LOGTRACE = 8,
+    LOGDEBUG = 16,
     LOGSIZE
 };
 

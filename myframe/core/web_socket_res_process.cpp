@@ -12,7 +12,7 @@
 
 
 
-web_socket_res_process::web_socket_res_process(base_net_obj *p):web_socket_process(p)
+web_socket_res_process::web_socket_res_process(std::shared_ptr<base_net_obj> p):web_socket_process(p)
 {
     _wb_version = 0;		
     _if_send_mask = false;
@@ -117,12 +117,13 @@ void  web_socket_res_process::parse_header()
 
 bool web_socket_res_process::check_head_finish()
 {
+    auto sp = _p_connect.lock();
     bool ret = web_socket_process::check_head_finish();
-    if (ret)
+    if (ret && sp)
     {			    
         _wb_status = WB_HEAD_FINISH;
         //设置可以发送数据
-        _p_connect->notice_send();
+        sp->notice_send();
     }
     return ret;
 }

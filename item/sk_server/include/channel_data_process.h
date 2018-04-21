@@ -19,7 +19,7 @@ class base_net_obj;
 class channel_data_process:public base_data_process
 {
     public:
-        channel_data_process(base_net_obj *p);
+        channel_data_process(std::shared_ptr<base_net_obj> p);
 
         virtual ~channel_data_process()
         {

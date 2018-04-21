@@ -10,7 +10,7 @@ class base_net_obj;
 class web_socket_res_process:public web_socket_process
 {
 	public:		
-		web_socket_res_process(base_net_obj *p);
+		web_socket_res_process(std::shared_ptr<base_net_obj> p);
 
 		virtual ~web_socket_res_process();
 

@@ -8,7 +8,7 @@
 #include "http_base_data_process.h"
 #include "common_util.h"
 
-http_req_process::http_req_process(base_net_obj *p):http_base_process(p)
+http_req_process::http_req_process(std::shared_ptr<base_net_obj> p):http_base_process(p)
 {
     http_base_process::change_http_status(SEND_HEAD);
     _cur_chunked_len = -1;

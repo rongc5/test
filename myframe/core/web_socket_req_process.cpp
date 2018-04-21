@@ -8,7 +8,7 @@
 #include "base_net_obj.h"
 
 
-web_socket_req_process::web_socket_req_process(base_net_obj *p):web_socket_process(p)
+web_socket_req_process::web_socket_req_process(std::shared_ptr<base_net_obj> p):web_socket_process(p)
 {			
 }
 

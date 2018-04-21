@@ -46,7 +46,7 @@ void base_net_thread::net_thread_init()
         _channel_msg_vec.push_back(msg);
         msg->_channelid = fd[1];
 
-        base_connect<channel_data_process> * channel_connect = new base_connect<channel_data_process>(fd[0]);
+        std::shared_ptr<base_connect<channel_data_process> >  channel_connect(new base_connect<channel_data_process>(fd[0]));
         channel_data_process * data_process = new channel_data_process(channel_connect);
         channel_connect->set_process(data_process);
         channel_connect->set_net_container(_base_container);

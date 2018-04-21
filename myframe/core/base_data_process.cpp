@@ -3,7 +3,7 @@
 #include "log_helper.h"
 
 
-base_data_process::base_data_process(base_net_obj *p)
+base_data_process::base_data_process(std::shared_ptr<base_net_obj> p)
 {
     _p_connect = p;
     LOG_DEBUG("%p", this);
@@ -77,12 +77,15 @@ void base_data_process::clear_send_list()
 void base_data_process::put_send_buf(std::string * str)
 {
     _send_list.push_back(str);
-    _p_connect->notice_send();  
+    if (auto sp = _p_connect.lock())
+    {
+        sp->notice_send();  
+    }
 }
 
-base_net_obj * base_data_process::get_base_net()
+std::shared_ptr<base_net_obj>  base_data_process::get_base_net()
 {
-    return _p_connect;
+    return _p_connect.lock();
 }
 
 void base_data_process::destory()
@@ -92,8 +95,8 @@ void base_data_process::destory()
 
 void base_data_process::add_timer(timer_msg & t_msg)
 {
-    if (_p_connect)
-        _p_connect->add_timer(t_msg);
+    if (auto sp = _p_connect.lock())
+        sp->add_timer(t_msg);
 }
 
 bool base_data_process::handle_timeout(timer_msg & t_msg)

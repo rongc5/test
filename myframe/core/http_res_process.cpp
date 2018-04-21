@@ -10,7 +10,7 @@
 #include "common_util.h"
 
 
-http_res_process::http_res_process(base_net_obj * p):http_base_process(p)
+http_res_process::http_res_process(std::shared_ptr<base_net_obj>  p):http_base_process(p)
 {
     change_http_status(RECV_HEAD);
     _recv_body_length = 0;

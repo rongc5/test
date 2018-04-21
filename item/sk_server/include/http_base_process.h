@@ -13,7 +13,7 @@ class http_base_data_process;
 class http_base_process: public base_data_process
 {
     public:
-        http_base_process(base_net_obj *p);
+        http_base_process(std::shared_ptr<base_net_obj> p);
 
         virtual ~http_base_process();
 

@@ -12,7 +12,7 @@
 class http_req_process:public http_base_process
 {
     public:
-        http_req_process(base_net_obj *p);
+        http_req_process(std::shared_ptr<base_net_obj> p);
 
         virtual ~http_req_process();
 

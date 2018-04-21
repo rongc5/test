@@ -4,16 +4,6 @@
 #include "base_thread.h"
 #include "common_def.h"
 
-struct log_prefix
-{
-    pthread_t tid;
-    uint32_t line;
-    std::string fun;
-    std::string file;
-    std::string typestr;
-    LogType type;
-};
-
 struct log_write_name
 {
     char _name[SIZE_LEN_512];
@@ -25,7 +15,7 @@ class log_thread:public base_thread
         log_thread(log_conf & conf);
         virtual ~log_thread();
 
-        static void log_write(log_prefix & prefix, const char *format, ...);
+        static void log_write(LogType type, const char *format, ...);
 
         void handle_msg(std::shared_ptr<log_msg> & p_msg);
 
@@ -51,6 +41,8 @@ class log_thread:public base_thread
            
         size_t process_recv_buf(const char *buf, const size_t len);
 
+     public:
+        std::string _proc_name;
     private:
         log_write_name _log_name[LOGSIZE];
         log_conf _conf;

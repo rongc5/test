@@ -4,7 +4,7 @@
 #include "http_base_data_process.h"
 #include "log_helper.h"
 
-http_base_process::http_base_process(base_net_obj *p):base_data_process(p)
+http_base_process::http_base_process(std::shared_ptr<base_net_obj> p):base_data_process(p)
 {
     _data_process = NULL;
 }
@@ -121,10 +121,11 @@ bool http_base_process::process_recv_msg(ObjId & id, std::shared_ptr<normal_msg>
 
 void http_base_process::change_http_status(HTTP_STATUS status, bool if_change_send)
 {
+    auto sp = _p_connect.lock();
     _http_status = status;
-    if (status == SEND_HEAD && if_change_send)
+    if (status == SEND_HEAD && if_change_send && sp)
     {
-        _p_connect->notice_send();
+        sp->notice_send();
     }
 }
 

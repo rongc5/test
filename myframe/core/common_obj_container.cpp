@@ -72,7 +72,7 @@ bool common_obj_container::erase(const ObjId *obj_id)
     }
 
     p_obj = find(obj_id);
-    if (p_obj.use_count())
+    if (p_obj)
     {
         uint64_t id = obj_id->_id | static_cast<uint64_t>(obj_id->_thread_index) << 32;
         _obj_net_map.erase(id);
@@ -86,7 +86,7 @@ bool common_obj_container::erase(const ObjId *obj_id)
 void common_obj_container::put_msg(ObjId & id, std::shared_ptr<normal_msg> & p_msg)
 {
     std::shared_ptr<base_net_obj>  net_obj = find(&id);
-    if (!net_obj.use_count()) {
+    if (!net_obj) {
         return;
     }
 

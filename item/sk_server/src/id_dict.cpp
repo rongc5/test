@@ -14,7 +14,7 @@ id_dict::~id_dict()
 
 int id_dict::init(const char * path, const char * file, const char *dump_dir)
 {
-    snprintf(_fullpath, sizeof(_fullpath), "%s", path);
+    snprintf(_fullpath, sizeof(_fullpath), "%s/%s", path, file);
     snprintf(_dumppath, sizeof(_dumppath), "%s/%s", dump_dir, file);
 
     destroy();

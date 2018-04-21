@@ -12,7 +12,7 @@
 class http_res_process:public http_base_process
 {
     public:
-        http_res_process(base_net_obj *p);
+        http_res_process(std::shared_ptr<base_net_obj> p);
 
         virtual ~http_res_process();
 

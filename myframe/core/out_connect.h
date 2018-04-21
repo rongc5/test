@@ -123,6 +123,7 @@ class out_connect:public base_connect<PROCESS>
 
         virtual void connect_ok_process()
         {
+            LOG_DEBUG("CONNECT OK");
             return;
         }
 

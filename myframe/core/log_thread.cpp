@@ -19,7 +19,7 @@ log_thread::~log_thread()
     _queue[1- _current].clear();
 }
 
-void log_thread::log_write(log_prefix & prefix, const char *format, ...)
+void log_thread::log_write(LogType type, const char *format, ...)
 {
 
     log_thread * thread = base_singleton<log_thread>::get_instance();
@@ -27,14 +27,13 @@ void log_thread::log_write(log_prefix & prefix, const char *format, ...)
         return;
     }
 
-    if (prefix.type > thread->get_log_conf().type){
+    if (type > thread->get_log_conf().type){
         return;
     }
 
     char log_common_tmp[SIZE_LEN_64];
     get_timestr_millSecond(log_common_tmp, sizeof(log_common_tmp), LOG_DATE_FORMAT);
-    uint32_t prefix_len = sizeof(prefix.tid) + sizeof(prefix.line) + prefix.fun.length()
-        + prefix.file.length() + prefix.typestr.length() + sizeof(prefix.type);
+    uint32_t prefix_len = thread->_proc_name.size() + strlen(log_common_tmp) + SIZE_LEN_16;
     
     va_list args1, args2;
     va_start(args1, format);
@@ -42,17 +41,16 @@ void log_thread::log_write(log_prefix & prefix, const char *format, ...)
 
     std::shared_ptr<log_msg> lmsg(new log_msg());
     if (lmsg) {
-        lmsg->_buf = new std::vector<char>(SIZE_LEN_64+ prefix_len + vsnprintf(NULL, 0, format, args1));
+        lmsg->_buf = new std::vector<char>(prefix_len + vsnprintf(NULL, 0, format, args1));
         va_end(args1);
 
-        uint32_t ret = snprintf(lmsg->_buf->data(), lmsg->_buf->size(), "[%s]:[%s]:[%lu]:[%d:%s:%s] ", 
-                prefix.typestr.c_str(), log_common_tmp, prefix.tid, prefix.line, 
-                prefix.fun.c_str(), prefix.file.c_str());
+        uint32_t ret = snprintf(lmsg->_buf->data(), lmsg->_buf->size(), "[%s]:[%s] ", 
+                thread->_proc_name.c_str(), log_common_tmp);
         vsnprintf(lmsg->_buf->data() + ret, lmsg->_buf->size() - ret, format, args2);
         //printf("11 %s\n", lmsg->_buf->data());
         va_end(args2);
         
-        lmsg->_type = prefix.type;
+        lmsg->_type = type;
         thread->put_msg(lmsg);
     }
 }
@@ -68,13 +66,22 @@ void log_thread::put_msg(std::shared_ptr<log_msg> & p_msg)
 void log_thread::handle_msg(std::shared_ptr<log_msg> & p_msg)
 {
     check_to_renmae(_log_name[p_msg->_type]._name, _conf.file_max_size);
-    FILE * fp = fopen(_log_name[p_msg->_type]._name, "a+");
+    FILE * fp = fopen(_log_name[p_msg->_type]._name, "a");
     if (!fp){
         return;
     }   
 
     fprintf(fp, "%s\n", p_msg->_buf->data());
     fclose(fp);
+
+    //int fd = open(_log_name[p_msg->_type]._name, O_WRONLY | O_CREAT | O_APPEND, 0666);
+    //if (fd < 0)
+    //{
+        //return;
+    //}
+    //write(fd, p_msg->_buf->data(), p_msg->_buf->size());
+    //write(fd, "\n", sizeof("\n"));
+    //close(fd);
 }
 
 void log_thread::get_file_name(LogType type, char dest[], size_t dest_len)
@@ -165,6 +172,10 @@ void log_thread::log_thread_init()
     if (ret != 0) {
         THROW_COMMON_EXCEPT("add to epoll fail " << strerror(errno));
     }
+    
+    char tmp_buff[SIZE_LEN_128];
+    get_proc_name(tmp_buff, sizeof(tmp_buff));
+    _proc_name.append(tmp_buff);
 }
 
 void * log_thread::run()

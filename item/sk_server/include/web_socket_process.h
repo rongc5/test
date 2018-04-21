@@ -11,7 +11,7 @@ class web_socket_data_process;
 class web_socket_process: public base_data_process
 {
 	public:
-		web_socket_process(base_net_obj *p);
+		web_socket_process(std::shared_ptr<base_net_obj> p);
 
 		virtual ~web_socket_process();
         

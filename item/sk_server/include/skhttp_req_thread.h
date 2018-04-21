@@ -121,8 +121,7 @@ class skhttp_req_thread:public base_net_thread
                             ua_dic->_ua_vec[_id_index % ua_dic->_ua_vec.size()]));
             }
 
-            std::shared_ptr<base_net_obj>  connect = 
-                std::shared_ptr<base_net_obj>(rquotation_data_process::gen_net_obj(info, req_msg));
+            std::shared_ptr<base_net_obj>  connect = rquotation_data_process::gen_net_obj(info, req_msg);
 
             connect->set_net_container(_base_container);
         }

@@ -124,9 +124,9 @@ size_t rquotation_data_process::process_recv_body(const char *buf, size_t len, i
     return len;
 }
 
-base_net_obj * rquotation_data_process::gen_net_obj(url_info & info, http_req_msg & req_msg)
+std::shared_ptr<base_net_obj>  rquotation_data_process::gen_net_obj(url_info & info, http_req_msg & req_msg)
 {
-    out_connect<http_req_process> * connect = new out_connect<http_req_process>(info.ip, info.port);
+    std::shared_ptr<out_connect<http_req_process> >  connect(new out_connect<http_req_process>(info.ip, info.port));
     http_req_process * req_process = new http_req_process(connect);
     rquotation_data_process * sk_process = new rquotation_data_process(req_process);
     req_process->set_process(sk_process);

@@ -7,7 +7,7 @@ class base_net_obj;
 class base_data_process
 {
     public:
-        base_data_process(base_net_obj *p);
+        base_data_process(std::shared_ptr<base_net_obj> p);
 
         virtual ~base_data_process();
 
@@ -31,7 +31,7 @@ class base_data_process
 
         void put_send_buf(std::string * str);
 
-        base_net_obj * get_base_net();
+        std::shared_ptr<base_net_obj>  get_base_net();
 
         virtual void destory();
 
@@ -39,7 +39,7 @@ class base_data_process
         void clear_send_list();
 
     protected:
-        base_net_obj *_p_connect;
+        std::weak_ptr<base_net_obj> _p_connect;
         std::list<std::string*> _send_list;
 };
 
