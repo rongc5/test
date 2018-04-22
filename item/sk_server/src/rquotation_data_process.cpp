@@ -92,8 +92,7 @@ std::string * rquotation_data_process::get_send_head()
         req_head._method = "POST";
     }
 
-
-    req_head._url_path = _req_msg.url;
+    req_head._url_path = _url_info.path;
     req_head._version = "HTTP/1.1";
 
     req_head._headers.insert(std::make_pair("Host", _url_info.domain));
@@ -102,10 +101,7 @@ std::string * rquotation_data_process::get_send_head()
         req_head._headers.insert(std::make_pair("content-length", _req_msg.post_data));
     }
 
-    if (req_head.get_header("Accept"))
-    {
-        req_head._headers.insert(std::make_pair("Accept", "*/*"));
-    }
+    req_head._headers.insert(std::make_pair("Accept", "*/*"));
 
     std::string * str = new std::string;
     req_head.to_head_str(str);

@@ -73,15 +73,6 @@ void log_thread::handle_msg(std::shared_ptr<log_msg> & p_msg)
 
     fprintf(fp, "%s\n", p_msg->_buf->data());
     fclose(fp);
-
-    //int fd = open(_log_name[p_msg->_type]._name, O_WRONLY | O_CREAT | O_APPEND, 0666);
-    //if (fd < 0)
-    //{
-        //return;
-    //}
-    //write(fd, p_msg->_buf->data(), p_msg->_buf->size());
-    //write(fd, "\n", sizeof("\n"));
-    //close(fd);
 }
 
 void log_thread::get_file_name(LogType type, char dest[], size_t dest_len)
@@ -125,8 +116,8 @@ void log_thread::check_to_renmae(const char *filename, int max_size)
     struct stat statBuf;
     stat(filename, &statBuf);
 
-    get_timestr(tmp, sizeof(tmp), "%Y%m%d%H%M%S");
     if (max_size && statBuf.st_size >= max_size){
+        get_timestr(tmp, sizeof(tmp), "%Y%m%d%H%M%S");
         snprintf(path, sizeof(path), "%s.%s", filename, tmp);
         rename(filename, path);
     }
@@ -235,7 +226,6 @@ size_t log_thread::process_recv_buf(const char *buf, const size_t len)
         }
     }
     k =  i * sizeof(CHANNEL_MSG_TAG);
-
 
     return k;
 }
