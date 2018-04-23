@@ -26,8 +26,6 @@ class web_socket_process: public base_data_process
 
 		virtual std::string* get_send_buf();
 
-		virtual void set_para();
-
 		virtual void peer_close();
 
 		virtual void send_ping(const char op_code, const std::string &ping_data);

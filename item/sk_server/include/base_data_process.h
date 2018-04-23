@@ -17,10 +17,6 @@ class base_data_process
 
         virtual void reset();
 
-        virtual void set_para();
-
-        virtual void on_connect_comming();
-
         virtual size_t process_recv_buf(const char *buf, size_t len);
 
         virtual bool process_recv_msg(ObjId & id, std::shared_ptr<normal_msg> & p_msg);

@@ -90,8 +90,6 @@ class base_connect:public base_net_obj
                 delete _process;
             }
             _process = p;
-
-            _process->set_para();
         }
 
         virtual void notice_send()

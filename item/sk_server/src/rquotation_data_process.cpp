@@ -92,7 +92,7 @@ std::string * rquotation_data_process::get_send_head()
         req_head._method = "POST";
     }
 
-    req_head._url_path = _url_info.path;
+    req_head._url_path = "/q=sz002285";
     req_head._version = "HTTP/1.1";
 
     req_head._headers.insert(std::make_pair("Host", _url_info.domain));

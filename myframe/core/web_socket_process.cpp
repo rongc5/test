@@ -110,11 +110,6 @@ std::string* web_socket_process::get_send_buf()
     return p_str;
 }
 
-void web_socket_process::set_para()
-{	
-    //_p_connect->set_timeout_len(_p_data_process->get_timeout_len());
-}
-
 
 void web_socket_process::peer_close()
 {

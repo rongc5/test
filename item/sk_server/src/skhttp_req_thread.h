@@ -52,7 +52,13 @@ class skhttp_req_thread:public base_net_thread
             proc_data* p_data = proc_data::instance();
             if (_real_req && p_data && p_data->_id_dict)
             {
-                req_real_quotation("sz002285");
+                if (!_id_index)
+                {
+                    req_real_quotation("sz002285");
+                    _id_index += 1;
+                }
+                return;
+
                 id_dict * id_dic = p_data->_id_dict->current();
                 if (id_dic && _id_index < id_dic->_id_vec.size())
                 {
@@ -107,6 +113,8 @@ class skhttp_req_thread:public base_net_thread
         {
             char t_url[SIZE_LEN_64];
             snprintf(t_url, sizeof(t_url), "http://web.sqt.gtimg.cn/q=%s", id.c_str());
+            char refer[SIZE_LEN_64];
+            snprintf(refer, sizeof(refer), "http://gu.qq.com/%s/gp", id.c_str());
             
             url_info info;
             get_url_info(t_url, info);
@@ -117,8 +125,8 @@ class skhttp_req_thread:public base_net_thread
             if (p_data)
             {
                 ua_dict * ua_dic = p_data->_ua_dict->current();
-                req_msg.headers.insert(std::make_pair("User-Agent", 
-                            ua_dic->_ua_vec[_id_index % ua_dic->_ua_vec.size()]));
+                req_msg.headers.insert(std::make_pair("User-Agent", ua_dic->_ua_vec[_id_index % ua_dic->_ua_vec.size()]));
+                req_msg.headers.insert(std::make_pair("Referer", refer));
             }
 
             std::shared_ptr<base_net_obj>  connect = rquotation_data_process::gen_net_obj(info, req_msg);
