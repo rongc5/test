@@ -1,6 +1,5 @@
 #include "base_net_thread.h"
 #include "channel_data_process.h"
-#include "base_net_container.h"
 #include "common_obj_container.h"
 #include "base_net_obj.h"
 #include "base_connect.h"
@@ -69,6 +68,7 @@ void base_net_thread::put_msg(ObjId & id, std::shared_ptr<normal_msg> & p_msg)
 
 void base_net_thread::handle_msg(std::shared_ptr<normal_msg> & p_msg)
 {
+
 }
 
 base_net_thread * base_net_thread::get_base_net_thread_obj(uint32_t thread_index)

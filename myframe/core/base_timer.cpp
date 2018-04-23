@@ -2,9 +2,9 @@
 #include "base_timer.h"
 #include "common_util.h"
 #include "base_net_thread.h"
-#include "base_net_container.h"
+#include "common_obj_container.h"
 
-base_timer::base_timer(base_net_container * net_container)
+base_timer::base_timer(common_obj_container * net_container)
 {
     _net_container = net_container;
 }

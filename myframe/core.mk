@@ -7,7 +7,7 @@ LIB = -L/usr/lib/libpthread.a \
 CPPFLAGS = -gdwarf-2 -msse3 -Wall $(INCLUDE) -DDEBUG=1 -O0 -std=c++11
 CC  = g++ $(CPPFLAGS)
 
-OBJ	= ${SRC_DIR}/base_net_container.o                        \
+OBJ	= ${SRC_DIR}/common_obj_container.o                \
     ${SRC_DIR}/base_thread.o                        \
     ${SRC_DIR}/base_net_thread.o                        \
     ${SRC_DIR}/base_data_process.o                        \
@@ -16,7 +16,6 @@ OBJ	= ${SRC_DIR}/base_net_container.o                        \
     ${SRC_DIR}/common_epoll.o                        \
     ${SRC_DIR}/log_thread.o                        \
     ${SRC_DIR}/base_net_obj.o                        \
-    ${SRC_DIR}/common_obj_container.o                        \
     ${SRC_DIR}/channel_data_process.o                        \
     ${SRC_DIR}/common_util.o                        \
     ${SRC_DIR}/base_timer.o                        \

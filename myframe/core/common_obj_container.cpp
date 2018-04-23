@@ -1,6 +1,5 @@
 #include "common_def.h"
 #include "common_epoll.h"
-#include "base_net_container.h"
 #include "common_obj_container.h"
 #include "base_net_thread.h"
 #include "base_timer.h"
@@ -8,9 +7,15 @@
 #include "common_util.h"
 
 
-common_obj_container::common_obj_container(base_net_thread * thread):base_net_container(thread)
+common_obj_container::common_obj_container(uint32_t thread_index, uint32_t epoll_size)
 {
-    base_net_container::init();
+    _p_epoll = new common_epoll();
+    _p_epoll->init(epoll_size);
+
+    _timer = new base_timer(this);
+
+    _id_str._id = OBJ_ID_BEGIN;
+    _id_str._thread_index = thread_index;
 }
 
 common_obj_container::~common_obj_container()
@@ -19,7 +24,36 @@ common_obj_container::~common_obj_container()
     {
         k.second->destroy();
     }
+
+    if (_p_epoll != NULL)
+        delete _p_epoll;
+
+    if (_timer) 
+        delete _timer;
 }
+
+
+common_epoll * common_obj_container::get_epoll()
+{
+        return _p_epoll;
+}
+
+base_timer * common_obj_container::get_timer()
+{
+        return _timer;
+}
+
+const ObjId & common_obj_container::gen_id_str()
+{
+    uint32_t obj_id = _id_str._id;
+    do {
+        obj_id++;
+        _id_str._id = obj_id;
+    } while (find(&_id_str) || obj_id <= OBJ_ID_BEGIN);
+
+    return _id_str;
+}
+
 
 bool common_obj_container::push_real_net(std::shared_ptr<base_net_obj> & p_obj)
 {
@@ -50,6 +84,41 @@ bool common_obj_container::insert(std::shared_ptr<base_net_obj> &p_obj)
 
     return true;
 }
+
+uint32_t common_obj_container::get_thread_index()
+{
+    return _id_str._thread_index;
+}
+
+void common_obj_container::handle_timeout(timer_msg & t_msg)
+{
+    bool flag = false;
+    base_net_thread * get_base_net_thread_obj(uint32_t thread_index);
+    if (t_msg._id._id <= OBJ_ID_BEGIN)
+    {
+        flag = _net_thread->handle_timeout(t_msg);
+        return;
+    }
+
+    std::shared_ptr<base_net_obj>  net_obj = find(&t_msg._id);
+    if (!net_obj)
+    {
+        return;
+    }
+
+    flag = net_obj->handle_timeout(t_msg);
+    if (!flag)
+    {
+        return;
+    }
+}
+
+void common_obj_container::add_timer(timer_msg & t_msg)
+{
+    if (_timer)
+        _timer->add_timer(t_msg); 
+}
+
 
 std::shared_ptr<base_net_obj> common_obj_container::find(const ObjId * obj_id)
 {
