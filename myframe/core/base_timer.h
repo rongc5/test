@@ -17,9 +17,12 @@ class base_timer
 
         bool is_empty();
 
+        uint64_t gen_timerid();
+
 	protected:
         std::map<uint64_t, std::vector<timer_msg> > _timer_list;
         common_obj_container * _net_container;
+        uint64_t _timerid;
 };
 #endif
 

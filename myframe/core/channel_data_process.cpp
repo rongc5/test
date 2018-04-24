@@ -6,8 +6,10 @@
 #include "base_net_obj.h"
 #include "common_util.h"
 
-channel_data_process::channel_data_process(std::shared_ptr<base_net_obj> p):base_data_process(p)
+channel_data_process::channel_data_process(std::shared_ptr<base_net_obj> p, int channelid):base_data_process(p),
+    _channelid(channelid)
 {
+
 }
 
 size_t channel_data_process::process_recv_buf(const char *buf, size_t len)
@@ -26,10 +28,13 @@ size_t channel_data_process::process_recv_buf(const char *buf, size_t len)
                 p_connect->set_net_container(sp->get_net_container());
             } 
         } else {
-            if (it->_id._id > OBJ_ID_BEGIN && sp) {
+            if (it->_id > OBJ_ID_BEGIN && sp) {
                  sp->get_net_container()->put_msg(it->_id, it->p_msg);
             } else if (sp){
-                sp->get_net_container()->get_net_thread()->handle_msg(it->p_msg);
+                base_net_thread * net_thread = base_net_thread::get_base_net_thread_obj(
+                        sp->get_net_container()->get_thread_index());
+                if (net_thread)
+                    net_thread->handle_msg(it->p_msg);
             }
         } 
 
@@ -43,14 +48,16 @@ size_t channel_data_process::process_recv_buf(const char *buf, size_t len)
 }
 
 
-bool channel_data_process::process_recv_msg(ObjId & id, std::shared_ptr<normal_msg> & p_msg)
+void channel_data_process::put_msg(uint32_t obj_id, std::shared_ptr<normal_msg> & p_msg)
 {
     std::lock_guard<std::mutex> lck (_mutex);
     normal_obj_msg nbj_msg;
     nbj_msg.p_msg = p_msg;
-    nbj_msg._id = id;
+    nbj_msg._id = obj_id;
     _queue.push_back(nbj_msg);
 
-    return true;
+    write(_channelid, CHANNEL_MSG_TAG, sizeof(CHANNEL_MSG_TAG));
+
+    return ;
 }
 

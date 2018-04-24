@@ -34,7 +34,7 @@ base_net_obj::~base_net_obj()
     }
 }
 
-void base_net_obj::set_net_container(base_net_container *p_net_container)
+void base_net_obj::set_net_container(common_obj_container *p_net_container)
 {
     _p_net_container = p_net_container;
     common_epoll * p_epoll = _p_net_container->get_epoll();
@@ -70,7 +70,7 @@ void base_net_obj::set_real_net(bool real_net)
     }
 }
 
-base_net_container * base_net_obj::get_net_container()
+common_obj_container * base_net_obj::get_net_container()
 {
     return _p_net_container;
 }
@@ -109,10 +109,10 @@ const ObjId & base_net_obj::get_id()
     return _id_str;
 }
 
-bool base_net_obj::process_recv_msg(ObjId & id, std::shared_ptr<normal_msg> & p_msg)
+void base_net_obj::process_recv_msg(std::shared_ptr<normal_msg> & p_msg)
 {
 
-    return true;
+    return;
 }
 
 void base_net_obj::notice_send()
@@ -144,9 +144,6 @@ void base_net_obj::add_timer()
     {
         if (_p_net_container)
         {
-            if (!it->_id._id && !it->_id._thread_index)
-                it->_id = _id_str;
-
             _p_net_container->add_timer(*it);
             flag = true;
         }

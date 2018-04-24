@@ -45,11 +45,12 @@ base_timer * common_obj_container::get_timer()
 
 const ObjId & common_obj_container::gen_id_str()
 {
-    uint32_t obj_id = _id_str._id;
     do {
-        obj_id++;
-        _id_str._id = obj_id;
-    } while (find(&_id_str) || obj_id <= OBJ_ID_BEGIN);
+        if (_id_str._id <= OBJ_ID_BEGIN)
+            _id_str._id = OBJ_ID_BEGIN;
+
+        _id_str._id++;
+    } while (find(_id_str._id));
 
     return _id_str;
 }
@@ -57,18 +58,14 @@ const ObjId & common_obj_container::gen_id_str()
 
 bool common_obj_container::push_real_net(std::shared_ptr<base_net_obj> & p_obj)
 {
-    uint64_t id = p_obj->get_id()._id | static_cast<uint64_t>(p_obj->get_id()._thread_index) << 32;
-
-    _obj_net_map[id] = p_obj;
+    _obj_net_map[p_obj->get_id()._id] = p_obj;
 
     return true;
 }
 
 bool common_obj_container::remove_real_net(std::shared_ptr<base_net_obj> & p_obj)
 {
-    uint64_t id = p_obj->get_id()._id | static_cast<uint64_t>(p_obj->get_id()._thread_index) << 32;
-
-    _obj_net_map.erase(id);
+    _obj_net_map.erase(p_obj->get_id()._id);
 
     return true;
 }
@@ -78,9 +75,7 @@ bool common_obj_container::insert(std::shared_ptr<base_net_obj> &p_obj)
 {
     p_obj->set_id(gen_id_str());
 
-    uint64_t id = p_obj->get_id()._id | static_cast<uint64_t>(p_obj->get_id()._thread_index) << 32;
-
-    _obj_map[id] = p_obj;
+    _obj_map[p_obj->get_id()._id] = p_obj;
 
     return true;
 }
@@ -92,25 +87,28 @@ uint32_t common_obj_container::get_thread_index()
 
 void common_obj_container::handle_timeout(timer_msg & t_msg)
 {
-    bool flag = false;
-    base_net_thread * get_base_net_thread_obj(uint32_t thread_index);
-    if (t_msg._id._id <= OBJ_ID_BEGIN)
-    {
-        flag = _net_thread->handle_timeout(t_msg);
-        return;
-    }
 
-    std::shared_ptr<base_net_obj>  net_obj = find(&t_msg._id);
-    if (!net_obj)
+    switch (t_msg._obj_id)
     {
-        return;
+        case OBJ_ID_THREAD:
+            {
+                base_net_thread * net_thread = base_net_thread::get_base_net_thread_obj(_id_str._thread_index);
+                if (net_thread)
+                {
+                    net_thread->handle_timeout(t_msg);
+                    return;
+                }
+            }
+            break;
+        default:
+            {
+                std::shared_ptr<base_net_obj>  net_obj = find(t_msg._obj_id);
+                if (net_obj)
+                    net_obj->handle_timeout(t_msg);
+            }
     }
+    //OBJ_ID_DOMAIN
 
-    flag = net_obj->handle_timeout(t_msg);
-    if (!flag)
-    {
-        return;
-    }
 }
 
 void common_obj_container::add_timer(timer_msg & t_msg)
@@ -120,11 +118,9 @@ void common_obj_container::add_timer(timer_msg & t_msg)
 }
 
 
-std::shared_ptr<base_net_obj> common_obj_container::find(const ObjId * obj_id)
+std::shared_ptr<base_net_obj> common_obj_container::find(uint32_t obj_id)
 {
-    std::unordered_map<uint64_t, std::shared_ptr<base_net_obj> >::const_iterator it;
-    uint64_t id = obj_id->_id | static_cast<uint64_t>(obj_id->_thread_index) << 32;
-    it = _obj_map.find(id);
+    auto it = _obj_map.find(obj_id);
     if (it == _obj_map.end()){
         return NULL;
     }else {
@@ -132,34 +128,22 @@ std::shared_ptr<base_net_obj> common_obj_container::find(const ObjId * obj_id)
     }
 }
 
-bool common_obj_container::erase(const ObjId *obj_id)
+void common_obj_container::erase(uint32_t obj_id)
 {
-    std::shared_ptr<base_net_obj> p_obj;
-    bool ret = false;
-    if (!obj_id){
-        return ret;
-    }
+    _obj_net_map.erase(obj_id);
+    _obj_map.erase(obj_id);
 
-    p_obj = find(obj_id);
-    if (p_obj)
-    {
-        uint64_t id = obj_id->_id | static_cast<uint64_t>(obj_id->_thread_index) << 32;
-        _obj_net_map.erase(id);
-        _obj_map.erase(id);
-        ret = true;
-    }
-
-    return ret;
+    return;
 }
 
-void common_obj_container::put_msg(ObjId & id, std::shared_ptr<normal_msg> & p_msg)
+void common_obj_container::put_msg(uint32_t obj_id, std::shared_ptr<normal_msg> & p_msg)
 {
-    std::shared_ptr<base_net_obj>  net_obj = find(&id);
+    std::shared_ptr<base_net_obj>  net_obj = find(obj_id);
     if (!net_obj) {
         return;
     }
 
-    net_obj->process_recv_msg(id, p_msg);
+    net_obj->process_recv_msg(p_msg);
 }
 
 void common_obj_container::obj_process()
@@ -199,7 +183,7 @@ void common_obj_container::obj_process()
     for (std::vector<std::shared_ptr<base_net_obj> >::iterator tmp_itr = exception_vec.begin(); 
             tmp_itr != exception_vec.end(); tmp_itr++) {
         remove_real_net(*tmp_itr);
-        erase(&(*tmp_itr)->get_id());
+        erase((*tmp_itr)->get_id()._id);
     }
 
     std::map<ObjId, std::shared_ptr<base_net_obj> > exp_list;
@@ -210,7 +194,7 @@ void common_obj_container::obj_process()
     {         	
         LOG_DEBUG("step2: _id:%d, _thread_index:%d", itr->second->get_id()._id, itr->second->get_id()._thread_index);            
         remove_real_net(itr->second);
-        erase(&itr->first);
+        erase(itr->first._id);
         itr->second->destroy();
     }
 

@@ -33,7 +33,7 @@ class base_net_obj: public normal_msg
         void set_id(const ObjId & id_str);
         const ObjId & get_id();
 
-        virtual bool process_recv_msg(ObjId & id, std::shared_ptr<normal_msg> & p_msg);
+        virtual void process_recv_msg(std::shared_ptr<normal_msg> & p_msg);
 
         void add_timer(timer_msg & t_msg);
         virtual bool handle_timeout(timer_msg & t_msg);

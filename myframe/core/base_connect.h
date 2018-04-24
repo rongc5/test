@@ -82,6 +82,11 @@ class base_connect:public base_net_obj
             }
         }
 
+        PROCESS * process()
+        {
+            return _process;
+        }
+
         void set_process(PROCESS *p)
         {
             if (_process != NULL)
@@ -113,9 +118,9 @@ class base_connect:public base_net_obj
             return _process->handle_timeout(t_msg);
         }
 
-        virtual bool process_recv_msg(ObjId & id, std::shared_ptr<normal_msg> & p_msg)
+        virtual void process_recv_msg(std::shared_ptr<normal_msg> & p_msg)
         {
-            return _process->process_recv_msg(id, p_msg);
+            _process->process_recv_msg(p_msg);
         }
 
     protected:

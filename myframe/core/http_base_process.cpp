@@ -112,9 +112,10 @@ std::string* http_base_process::get_send_buf()
     return ret_str;
 }
 
-bool http_base_process::process_recv_msg(ObjId & id, std::shared_ptr<normal_msg> & p_msg)
+void http_base_process::process_recv_msg(std::shared_ptr<normal_msg> & p_msg)
 {
-    return _data_process->process_recv_msg(id, p_msg);
+    _data_process->process_recv_msg(p_msg);
+    return;
 }
 
 /****************************以上是五个口子，以下是供底层调用********************************************/

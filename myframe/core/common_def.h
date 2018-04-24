@@ -40,9 +40,12 @@ struct timer_msg
         {
             _timer_type = NONE_TIMER_TYPE;
             _time_length = 0;
+            _timer_id = 0;
+            _obj_id = 0;
         };
 
-        ObjId _id;
+        uint32_t _obj_id;
+        uint64_t _timer_id;
         int _timer_type;
         uint64_t _time_length;
 };

@@ -6,7 +6,7 @@
 #include "common_util.h"
 
 base_net_thread::base_net_thread(int channel_num):_channel_num(channel_num), _base_container(NULL){
-    _base_container = new common_obj_container(this);
+    _base_container = new common_obj_container(get_thread_index());
     net_thread_init();
 }
 
@@ -41,16 +41,12 @@ void base_net_thread::net_thread_init()
             return ;
         }   
 
-        event_channel_msg * msg = new event_channel_msg();
-        _channel_msg_vec.push_back(msg);
-        msg->_channelid = fd[1];
-
         std::shared_ptr<base_connect<channel_data_process> >  channel_connect(new base_connect<channel_data_process>(fd[0]));
-        channel_data_process * data_process = new channel_data_process(channel_connect);
+        channel_data_process * data_process = new channel_data_process(channel_connect, fd[1]);
         channel_connect->set_process(data_process);
         channel_connect->set_net_container(_base_container);
 
-        msg->_base_obj = channel_connect;
+        _channel_msg_vec.push_back(channel_connect);
     }
 
 
@@ -58,12 +54,15 @@ void base_net_thread::net_thread_init()
 }
 
 
-void base_net_thread::put_msg(ObjId & id, std::shared_ptr<normal_msg> & p_msg)
+void base_net_thread::put_msg(uint32_t obj_id, std::shared_ptr<normal_msg> & p_msg)
 {
     int index = (unsigned long) (&p_msg) % _channel_msg_vec.size();
-    event_channel_msg * msg = _channel_msg_vec[index];
-    msg->_base_obj->process_recv_msg(id, p_msg);
-    write(msg->_channelid, CHANNEL_MSG_TAG, sizeof(CHANNEL_MSG_TAG));
+    std::shared_ptr<base_connect<channel_data_process> >  channel_connect = _channel_msg_vec[index];
+    channel_data_process * data_process = channel_connect->process();
+    if (data_process)
+    {
+        data_process->put_msg(obj_id, p_msg);
+    }
 }
 
 void base_net_thread::handle_msg(std::shared_ptr<normal_msg> & p_msg)
@@ -93,7 +92,7 @@ void base_net_thread::put_obj_msg(ObjId & id, std::shared_ptr<normal_msg> & p_ms
         return;
     }
 
-    net_thread->put_msg(id, p_msg);
+    net_thread->put_msg(id._id, p_msg);
 }
 
 bool base_net_thread::handle_timeout(timer_msg & t_msg)

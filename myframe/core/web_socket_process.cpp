@@ -78,14 +78,14 @@ bool web_socket_process::handle_timeout(timer_msg & t_msg)
     return _p_data_process->handle_timeout(t_msg);
 }
 
-bool web_socket_process::process_recv_msg(ObjId & id, std::shared_ptr<normal_msg> & p_msg)
+void web_socket_process::process_recv_msg(std::shared_ptr<normal_msg> & p_msg)
 {
     if (!_p_data_process) {
-        return true;
+        return ;
     }
 
-    _p_data_process->process_recv_msg(id, p_msg);
-    return true;
+    _p_data_process->process_recv_msg(p_msg);
+    return ;
 }
 
 std::string* web_socket_process::get_send_buf()

@@ -47,11 +47,9 @@ size_t base_data_process::process_recv_buf(const char *buf, size_t len)
     return len;
 }
 
-bool base_data_process::process_recv_msg(ObjId & id, std::shared_ptr<normal_msg> & p_msg)
+void base_data_process::process_recv_msg(std::shared_ptr<normal_msg> & p_msg)
 {
     LOG_DEBUG("%p", this);
-
-    return true;
 }
 
 void base_data_process::clear_send_list()

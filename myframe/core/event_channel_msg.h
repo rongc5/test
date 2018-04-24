@@ -6,7 +6,7 @@
 
 struct event_channel_msg{
     int _channelid;
-    std::shared_ptr<base_net_obj>  _base_obj;
+    std::shared_ptr<base_connect<channel_data_process> >  _base_obj;
 
     event_channel_msg():_channelid(0), _base_obj(NULL){};
     ~event_channel_msg(){
