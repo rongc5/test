@@ -95,9 +95,9 @@ void base_net_thread::put_obj_msg(ObjId & id, std::shared_ptr<normal_msg> & p_ms
     net_thread->put_msg(id._id, p_msg);
 }
 
-bool base_net_thread::handle_timeout(timer_msg & t_msg)
+void base_net_thread::handle_timeout(timer_msg & t_msg)
 {
-    return false;
+    return ;
 }
 
 

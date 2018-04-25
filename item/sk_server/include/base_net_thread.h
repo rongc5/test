@@ -4,7 +4,9 @@
 #include "common_def.h"
 #include "base_thread.h"
 #include "common_obj_container.h"
-#include "event_channel_msg.h"
+#include "base_connect.h"
+#include "channel_data_process.h"
+
 
 class base_net_container;
 class base_net_thread:public base_thread
@@ -19,7 +21,7 @@ class base_net_thread:public base_thread
 
         virtual void net_thread_init();
 
-        virtual void put_msg(ObjId & id, std::shared_ptr<normal_msg> & p_msg);
+        virtual void put_msg(uint32_t obj_id, std::shared_ptr<normal_msg> & p_msg);
 
         static void put_obj_msg(ObjId & id, std::shared_ptr<normal_msg> & p_msg);
 
@@ -29,15 +31,16 @@ class base_net_thread:public base_thread
 
         void add_timer(timer_msg & t_msg);
 
-        //true /false
-        virtual bool handle_timeout(timer_msg & t_msg);
+        virtual void handle_timeout(timer_msg & t_msg);
+
+        common_obj_container * get_net_container();
 
     protected:
 
         int _channel_num;
-        std::vector<event_channel_msg *> _channel_msg_vec;
+        std::vector< std::shared_ptr<base_connect<channel_data_process> > > _channel_msg_vec;
 
-        base_net_container * _base_container;
+        common_obj_container * _base_container;
 
         static std::unordered_map<uint32_t, base_net_thread *> _base_net_thread_map;
 };

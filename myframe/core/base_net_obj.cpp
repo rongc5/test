@@ -135,6 +135,7 @@ void base_net_obj::add_timer(timer_msg & t_msg)
         _timer_vec.push_back(t_msg);
     }
 }
+
 void base_net_obj::add_timer()
 {
     std::vector<timer_msg>::iterator it;
@@ -159,7 +160,6 @@ void base_net_obj::add_timer()
     }
 }
 
-bool base_net_obj::handle_timeout(timer_msg & t_msg)
+void base_net_obj::handle_timeout(timer_msg & t_msg)
 {
-    return false;
 }

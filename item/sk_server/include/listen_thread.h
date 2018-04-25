@@ -2,7 +2,6 @@
 #define __LISTEN_THREAD_H__
 
 #include "base_net_thread.h"
-#include "base_net_container.h"
 #include "common_obj_container.h"
 #include "listen_connect.h"
 #include "common_def.h"

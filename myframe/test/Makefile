@@ -1,5 +1,5 @@
 HOME_DIR=../
-INC_DIR=${HOME_DIR}core
+INC_DIR=${HOME_DIR}/include
 LIB_DIR=../lib
 
 INCLUDE = -I./${INC_DIR}/ 

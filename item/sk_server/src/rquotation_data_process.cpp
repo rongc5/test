@@ -20,29 +20,13 @@ std::string * rquotation_data_process::get_send_body(int &result)
 {
     result = 1;
 
-    if (!_req_msg.post_data.empty())
-    {
-        return new std::string(_req_msg.post_data);
-    }
-
     return NULL;
-}
-
-void rquotation_data_process::set_req_msg(http_req_msg & req_msg)
-{
-    _req_msg = req_msg;
 }
 
 
 url_info & rquotation_data_process::get_url_info()
 {
     return _url_info;
-}
-
-
-void rquotation_data_process::set_url_info(url_info & info)
-{
-    _url_info = info;
 }
 
 void rquotation_data_process::header_recv_finish()
@@ -76,32 +60,6 @@ std::string * rquotation_data_process::get_send_head()
 {
     http_req_head_para & req_head = _base_process->get_req_head_para();
 
-    req_head._headers = _req_msg.headers;
-    
-    if (!_req_msg.sid.empty()) 
-    {
-        LOG_DEBUG("sid: %s", _req_msg.sid.c_str());
-    }
-
-    if (_req_msg.cmd_type == HTTP_REQ_GET)
-    {
-        req_head._method = "GET";
-    }
-    else if (_req_msg.cmd_type == HTTP_REQ_POST)
-    {
-        req_head._method = "POST";
-    }
-
-    req_head._url_path = "/q=sz002285";
-    req_head._version = "HTTP/1.1";
-
-    req_head._headers.insert(std::make_pair("Host", _url_info.domain));
-    if (!_req_msg.post_data.empty())
-    {
-        req_head._headers.insert(std::make_pair("content-length", _req_msg.post_data));
-    }
-
-    req_head._headers.insert(std::make_pair("Accept", "*/*"));
 
     std::string * str = new std::string;
     req_head.to_head_str(str);
@@ -120,17 +78,64 @@ size_t rquotation_data_process::process_recv_body(const char *buf, size_t len, i
     return len;
 }
 
-std::shared_ptr<base_net_obj>  rquotation_data_process::gen_net_obj(url_info & info, http_req_msg & req_msg)
+void rquotation_data_process::gen_net_obj(std::string id, common_obj_container * net_container, td::map<std::string, std::string> & headers)
 {
-    std::shared_ptr<out_connect<http_req_process> >  connect(new out_connect<http_req_process>(info.ip, info.port));
+    if (!net_container || id.empty())
+        return;
+
+    string url = "http://web.sqt.gtimg.cn/q=";
+    url.append(id);
+
+    string refer = "http://gu.qq.com/";
+    refer.append(id);
+    refer.append("/gp");
+
+    url_info u_info;
+    parse_url(url, _url_info);
+
+    std::string<std::string> VP;
+    std::vector<std::string> *vIp = net_container->get_domain()->get_domain(_url_info.domain);
+    if (!vIp)
+    {
+        parse_domain(_url_info.domain, VP);
+        vIp = Vp;
+        if (!VP.empty())
+        {
+            net_container->get_domain()->add_domain(_url_info.domain, VP);
+        }
+    }
+
+    if (!vIp || vIp.empty())
+    {
+        return;
+    }
+
+    srand((uint32_t)&id);
+    int index = rand() % vIp->size();
+    _url_info.ip = vIp[index];
+
+    std::shared_ptr<out_connect<http_req_process> >  
+        connect(new out_connect<http_req_process>(_url_info.ip, _url_info.port));
     http_req_process * req_process = new http_req_process(connect);
     rquotation_data_process * sk_process = new rquotation_data_process(req_process);
     req_process->set_process(sk_process);
     connect->set_process(req_process);
-    connect->connect();
 
-    sk_process->set_url_info(info);
-    sk_process->set_req_msg(req_msg);
+    http_req_head_para & req_head = req_process->get_req_head_para();
+
+    req_head._method = "GET";
+    req_head._url_path = _url_info.full_path;
+    req_head._version = "HTTP/1.1";
+
+    req_head._headers.insert(std::make_pair("Host", _url_info.domain));
+    req_head._headers.insert(std::make_pair("Accept", "*/*"));
+
+    req_head._headers = headers;
+    req_head._headers["Referer"] = refer;
+
+    connect->connect();
+    connect->set_net_container(net_container);
+
     if (req_msg.time_out)
     {
         timer_msg  t_msg;
@@ -139,10 +144,10 @@ std::shared_ptr<base_net_obj>  rquotation_data_process::gen_net_obj(url_info & i
         sk_process->add_timer(t_msg);
     }
 
-    return connect;
+    return ;
 }
 
-bool rquotation_data_process::handle_timeout(timer_msg & t_msg)
+void rquotation_data_process::handle_timeout(timer_msg & t_msg)
 {
     if (t_msg._timer_type == TIMER_TYPE_HTTP_REQ)
     {
@@ -155,7 +160,3 @@ bool rquotation_data_process::handle_timeout(timer_msg & t_msg)
     return true;
 }
 
-bool rquotation_data_process::process_recv_msg(ObjId & id, std::shared_ptr<normal_msg> & p_msg)
-{
-    return true;
-}

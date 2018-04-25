@@ -3,11 +3,11 @@
 
 #include "common_def.h"
 
-class base_net_container;
+class common_obj_container;
 class base_timer
 {
 	public:
-		base_timer(base_net_container * net_container);
+		base_timer(common_obj_container * net_container);
 
 		virtual ~base_timer();
 		
@@ -17,9 +17,12 @@ class base_timer
 
         bool is_empty();
 
+        uint64_t gen_timerid();
+
 	protected:
         std::map<uint64_t, std::vector<timer_msg> > _timer_list;
-        base_net_container * _net_container;
+        common_obj_container * _net_container;
+        uint64_t _timerid;
 };
 #endif
 

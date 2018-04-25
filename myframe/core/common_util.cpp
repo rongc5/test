@@ -488,6 +488,7 @@ int parse_domain(const std::string &sDomain, std::vector<std::string> & vIp)
 
 int parse_url(const std::string &url, url_info & info)
 {
+    info.url.append(url);
     std::vector<std::string> tmp_vec;
     SplitString(url.c_str(), "://", &tmp_vec, SPLIT_MODE_ONE);
     if (tmp_vec.size()) 
@@ -497,6 +498,8 @@ int parse_url(const std::string &url, url_info & info)
 
     std::vector<std::string> t_vec;
     SplitString(tmp_vec[1].c_str(), "/", &t_vec, SPLIT_MODE_ONE);
+    info.full_path.append("/");
+    info.path.append("/");
     if (t_vec.size()) 
     {
         tmp_vec.clear();
@@ -516,15 +519,18 @@ int parse_url(const std::string &url, url_info & info)
         }
 
         tmp_vec.clear();
+
+        info.full_path.append(t_vec[1]);
+
         SplitString(t_vec[1].c_str(), "?", &tmp_vec, SPLIT_MODE_ONE);
         if (tmp_vec.size()) 
         {
-            info.path = tmp_vec[0];
-            info.query = tmp_vec[1];
+            info.path.append(tmp_vec[0]);
+            info.query.append(tmp_vec[1]);
         } 
         else 
         {
-            info.path = t_vec[1];
+            info.path.append(t_vec[1]);
         }
     }
 

@@ -32,6 +32,7 @@ class normal_msg : public std::enable_shared_from_this<normal_msg>
 #define NONE_TIMER_TYPE 1
 #define DELAY_CLOSE_TIMER_TYPE 2
 #define WEB_SOCKET_HANDSHAKE_OK_TIMER_TYPE 3
+#define DOMAIN_CACHE_TIMER_TYPE 5
 
 
 struct timer_msg
@@ -89,12 +90,26 @@ class log_msg
 
 struct url_info
 {
+    std::string url;
     std::string protocol_type;
     std::string domain;
     std::string ip;
     int port;
+    std::string full_path;
     std::string path;
     std::string query;
+
+    void reset()
+    {
+        url.clear();
+        protocol_type.clear();
+        domain.clear();
+        ip.clear();
+        port = 80;
+        full_path.clear();
+        path.clear();
+        query.clear();
+    }
 };
 
 enum http_cmd_type {

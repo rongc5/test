@@ -5,7 +5,7 @@
 #include "base_timer.h"
 #include "log_helper.h"
 #include "common_util.h"
-
+#include "common_domain.h"
 
 common_obj_container::common_obj_container(uint32_t thread_index, uint32_t epoll_size)
 {
@@ -13,6 +13,8 @@ common_obj_container::common_obj_container(uint32_t thread_index, uint32_t epoll
     _p_epoll->init(epoll_size);
 
     _timer = new base_timer(this);
+
+    _domain = new common_domain(this);
 
     _id_str._id = OBJ_ID_BEGIN;
     _id_str._thread_index = thread_index;
@@ -30,6 +32,9 @@ common_obj_container::~common_obj_container()
 
     if (_timer) 
         delete _timer;
+
+    if (_domain)
+        delete _domain;
 }
 
 
@@ -114,9 +119,15 @@ void common_obj_container::handle_timeout(timer_msg & t_msg)
 void common_obj_container::add_timer(timer_msg & t_msg)
 {
     if (_timer)
+    {
         _timer->add_timer(t_msg); 
+    }
 }
 
+common_domain * common_obj_container::get_domain()
+{
+    return _domain;
+}
 
 std::shared_ptr<base_net_obj> common_obj_container::find(uint32_t obj_id)
 {

@@ -31,8 +31,9 @@ class base_net_thread:public base_thread
 
         void add_timer(timer_msg & t_msg);
 
-        //true /false
-        virtual bool handle_timeout(timer_msg & t_msg);
+        virtual void handle_timeout(timer_msg & t_msg);
+
+        common_obj_container * get_net_container();
 
     protected:
 

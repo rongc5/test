@@ -32,6 +32,7 @@ class normal_msg : public std::enable_shared_from_this<normal_msg>
 #define NONE_TIMER_TYPE 1
 #define DELAY_CLOSE_TIMER_TYPE 2
 #define WEB_SOCKET_HANDSHAKE_OK_TIMER_TYPE 3
+#define DOMAIN_CACHE_TIMER_TYPE 5
 
 
 struct timer_msg
@@ -40,9 +41,12 @@ struct timer_msg
         {
             _timer_type = NONE_TIMER_TYPE;
             _time_length = 0;
+            _timer_id = 0;
+            _obj_id = 0;
         };
 
-        ObjId _id;
+        uint32_t _obj_id;
+        uint64_t _timer_id;
         int _timer_type;
         uint64_t _time_length;
 };

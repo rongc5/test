@@ -1,8 +1,8 @@
 HOME_DIR=./
 SRC_DIR=${HOME_DIR}core
 
-INCLUDE = -I./${SRC_DIR}/
-LIB = -L/usr/lib/libpthread.a \
+INCLUDE = -I./include/
+LIB = -L/usr/lib/libpthread.a -L./lib/ -lsign\
 
 CPPFLAGS = -gdwarf-2 -msse3 -Wall $(INCLUDE) -DDEBUG=1 -O0 -std=c++11
 CC  = g++ $(CPPFLAGS)
@@ -29,6 +29,7 @@ OBJ	= ${SRC_DIR}/common_obj_container.o                \
     ${SRC_DIR}/http_res_process.o                        \
     ${SRC_DIR}/http_req_process.o                        \
     ${SRC_DIR}/mybase64.o                        \
+    ${SRC_DIR}/common_domain.o                        \
     ${SRC_DIR}/common_cfgparser.o                        \
 
 OBJ_INCLUDE=

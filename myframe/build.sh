@@ -19,13 +19,14 @@ if [ $# == 0 ]; then
     do
         cd  ${arr[$i]} && ./build.sh all
         cp lib/lib*.a ../lib
-        cp core/*.h include
+        cp core/*.h ../include
         let i+=1
         cd ..
     done
-    make -f $mk clean && make -j8 -f $mk
-    cp core/lib*.a lib
     cp core/*.h include
+    make -f $mk clean && make -j8 -f $mk
+    rm -rf lib/lib*.a
+    cp core/lib*.a lib
     (cd test && make clean && make)
 elif [ $# == 1 ];then
     if [ $1 == "clean" ];then

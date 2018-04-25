@@ -5,6 +5,7 @@
 #include "common_epoll.h"
 
 class base_timer;
+class common_domain;
 class common_obj_container
 {
     public:
@@ -28,6 +29,8 @@ class common_obj_container
 
         base_timer * get_timer();
 
+        common_domain * get_domain();
+
         void add_timer(timer_msg & t_msg);
 
         void handle_timeout(timer_msg & t_msg);
@@ -43,6 +46,7 @@ class common_obj_container
 
         common_epoll *_p_epoll;
         base_timer * _timer;
+        common_domain * _domain;
         ObjId _id_str;
 };
 

@@ -3,7 +3,7 @@
 
 #include "common_def.h"
 #include "base_net_obj.h"
-#include "base_net_container.h"
+#include "common_obj_container.h"
 #include "log_helper.h"
 #include "common_exception.h"
 #include "common_epoll.h"
@@ -82,6 +82,11 @@ class base_connect:public base_net_obj
             }
         }
 
+        PROCESS * process()
+        {
+            return _process;
+        }
+
         void set_process(PROCESS *p)
         {
             if (_process != NULL)
@@ -102,20 +107,19 @@ class base_connect:public base_net_obj
             }
         }
 
-        virtual bool handle_timeout(timer_msg & t_msg)
+        virtual void handle_timeout(timer_msg & t_msg)
         {
             if (t_msg._timer_type == DELAY_CLOSE_TIMER_TYPE) 
             {
                 THROW_COMMON_EXCEPT("the connect obj delay close, delete it");
-                return true;
             }
             
-            return _process->handle_timeout(t_msg);
+            _process->handle_timeout(t_msg);
         }
 
-        virtual bool process_recv_msg(ObjId & id, std::shared_ptr<normal_msg> & p_msg)
+        virtual void process_recv_msg(std::shared_ptr<normal_msg> & p_msg)
         {
-            return _process->process_recv_msg(id, p_msg);
+            _process->process_recv_msg(p_msg);
         }
 
     protected:

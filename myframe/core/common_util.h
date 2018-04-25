@@ -5,7 +5,21 @@
 #include "common_def.h"
 #include "log_helper.h"
 
+#include "ul_sign.h"
+
 void get_proc_name(char buf[], size_t buf_len);
+
+struct str_hasher
+{
+    size_t operator()(const std::string & k) const
+    {   
+        uint64_t key = 0;
+
+        create_sign_fs64(k.c_str(), k.length(), &key);
+
+        return key;
+    }   
+};
 
 #define DEL_PTR(PTR) \
     do {\

@@ -137,9 +137,13 @@ const int URLESCAPE[] =
         1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1//240~255
 };
 
+#define OBJ_ID_THREAD 1
+#define OBJ_ID_DOMAIN 2
 
-#define OBJ_ID_BEGIN 100
+#define OBJ_ID_BEGIN 1000
+#define TIMER_ID_BEGIN 1000
 
+#define MAX_DOMAIN_TIMEOUT (3 * 60 * 60 * 1000)
 
 #define CRLF "\r\n"
 #define CRLF2 "\r\n\r\n"

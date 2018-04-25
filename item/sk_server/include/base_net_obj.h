@@ -4,7 +4,7 @@
 #include "common_def.h"
 
 class base_data_process;
-class base_net_container;
+class common_obj_container;
 class base_net_obj: public normal_msg
 {
     public:
@@ -19,9 +19,9 @@ class base_net_obj: public normal_msg
 
         virtual int real_net_process()=0;
 
-        virtual void set_net_container(base_net_container *p_net_container);
+        virtual void set_net_container(common_obj_container *p_net_container);
 
-        base_net_container * get_net_container();
+        common_obj_container * get_net_container();
 
         virtual void update_event(int event);    
         int get_event();
@@ -33,17 +33,17 @@ class base_net_obj: public normal_msg
         void set_id(const ObjId & id_str);
         const ObjId & get_id();
 
-        virtual bool process_recv_msg(ObjId & id, std::shared_ptr<normal_msg> & p_msg);
+        virtual void process_recv_msg(std::shared_ptr<normal_msg> & p_msg);
 
         void add_timer(timer_msg & t_msg);
-        virtual bool handle_timeout(timer_msg & t_msg);
+        virtual void handle_timeout(timer_msg & t_msg);
 
         virtual void destroy();
     protected:
         void add_timer();
 
     protected:
-        base_net_container *_p_net_container;
+        common_obj_container *_p_net_container;
         int _epoll_event;
         int _fd;	
         ObjId _id_str;

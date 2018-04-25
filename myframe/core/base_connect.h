@@ -107,15 +107,14 @@ class base_connect:public base_net_obj
             }
         }
 
-        virtual bool handle_timeout(timer_msg & t_msg)
+        virtual void handle_timeout(timer_msg & t_msg)
         {
             if (t_msg._timer_type == DELAY_CLOSE_TIMER_TYPE) 
             {
                 THROW_COMMON_EXCEPT("the connect obj delay close, delete it");
-                return true;
             }
             
-            return _process->handle_timeout(t_msg);
+            _process->handle_timeout(t_msg);
         }
 
         virtual void process_recv_msg(std::shared_ptr<normal_msg> & p_msg)
