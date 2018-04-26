@@ -28,13 +28,8 @@ size_t channel_data_process::process_recv_buf(const char *buf, size_t len)
                 p_connect->set_net_container(sp->get_net_container());
             } 
         } else {
-            if (it->_id > OBJ_ID_BEGIN && sp) {
-                 sp->get_net_container()->put_msg(it->_id, it->p_msg);
-            } else if (sp){
-                base_net_thread * net_thread = base_net_thread::get_base_net_thread_obj(
-                        sp->get_net_container()->get_thread_index());
-                if (net_thread)
-                    net_thread->handle_msg(it->p_msg);
+            if (sp) {
+                 sp->get_net_container()->handle_msg(it->_id, it->p_msg);
             }
         } 
 

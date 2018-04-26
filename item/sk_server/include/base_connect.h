@@ -74,11 +74,11 @@ class base_connect:public base_net_obj
             return ret;
         }
 
-        virtual void destory()
+        virtual void destroy()
         {
             if (_process)
             {
-                _process->destory();
+                _process->destroy();
             }
         }
 
@@ -91,7 +91,7 @@ class base_connect:public base_net_obj
         {
             if (_process != NULL)
             {
-                _process->destory();
+                _process->destroy();
                 delete _process;
             }
             _process = p;
@@ -117,9 +117,9 @@ class base_connect:public base_net_obj
             _process->handle_timeout(t_msg);
         }
 
-        virtual void process_recv_msg(std::shared_ptr<normal_msg> & p_msg)
+        virtual void handle_msg(std::shared_ptr<normal_msg> & p_msg)
         {
-            _process->process_recv_msg(p_msg);
+            _process->handle_msg(p_msg);
         }
 
     protected:

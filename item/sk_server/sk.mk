@@ -8,7 +8,7 @@ JSON_DIR=./
 INCLUDE = -I./${INC_DIR}/ -I./$(JSON_DIR)
 
 #LIB = -L$(LIB_DIR) -lrt -libmyframe -lpthread 
-LIB = -L$(LIB_DIR)/ -lmyframe -lsign -lrt -lpthread \
+LIB = -L$(LIB_DIR)/ -lmyframe -lrt -lsign -lpthread \
 	  /usr/lib/libcrypt.a \
 	  /usr/lib/libcrypto.a \
 	  /usr/lib/libssl.a \

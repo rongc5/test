@@ -13,6 +13,7 @@ sk_conf::sk_conf(const char * sk_conf)
     reload_second = 5;
 
     req_interval_second = 20;
+    req_http_timeout = 300;
 
     log_type = LOGDEBUG;
 
@@ -64,6 +65,10 @@ int sk_conf::load()
 
     cfg.get_vale("server", "req_interval_second", tmp);
     req_interval_second = atoi(tmp.c_str());
+
+
+    cfg.get_vale("server", "req_http_timeout", tmp);
+    req_http_timeout = atoi(tmp.c_str());
 
     cfg.get_vale("server", "log_type", tmp);
     int ret = atoi(tmp.c_str());

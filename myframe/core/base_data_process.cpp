@@ -47,7 +47,7 @@ size_t base_data_process::process_recv_buf(const char *buf, size_t len)
     return len;
 }
 
-void base_data_process::process_recv_msg(std::shared_ptr<normal_msg> & p_msg)
+void base_data_process::handle_msg(std::shared_ptr<normal_msg> & p_msg)
 {
     LOG_DEBUG("%p", this);
 }
@@ -76,7 +76,7 @@ std::shared_ptr<base_net_obj>  base_data_process::get_base_net()
     return _p_connect.lock();
 }
 
-void base_data_process::destory()
+void base_data_process::destroy()
 {
 
 }
@@ -87,7 +87,6 @@ void base_data_process::add_timer(timer_msg & t_msg)
         sp->add_timer(t_msg);
 }
 
-bool base_data_process::handle_timeout(timer_msg & t_msg)
+void base_data_process::handle_timeout(timer_msg & t_msg)
 {
-    return false;
 }

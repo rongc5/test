@@ -21,7 +21,7 @@ class common_obj_container
         bool insert(std::shared_ptr<base_net_obj> & p_obj);
         void erase(uint32_t obj_id);
 
-        void put_msg(uint32_t obj_id, std::shared_ptr<normal_msg> & p_msg);
+        void handle_msg(uint32_t obj_id, std::shared_ptr<normal_msg> & p_msg);
 
         void obj_process();
 

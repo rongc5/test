@@ -112,9 +112,9 @@ std::string* http_base_process::get_send_buf()
     return ret_str;
 }
 
-void http_base_process::process_recv_msg(std::shared_ptr<normal_msg> & p_msg)
+void http_base_process::handle_msg(std::shared_ptr<normal_msg> & p_msg)
 {
-    _data_process->process_recv_msg(p_msg);
+    _data_process->handle_msg(p_msg);
     return;
 }
 

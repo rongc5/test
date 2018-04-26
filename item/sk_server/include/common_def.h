@@ -90,12 +90,26 @@ class log_msg
 
 struct url_info
 {
+    std::string url;
     std::string protocol_type;
     std::string domain;
     std::string ip;
     int port;
+    std::string full_path;
     std::string path;
     std::string query;
+
+    void reset()
+    {
+        url.clear();
+        protocol_type.clear();
+        domain.clear();
+        ip.clear();
+        port = 80;
+        full_path.clear();
+        path.clear();
+        query.clear();
+    }
 };
 
 enum http_cmd_type {

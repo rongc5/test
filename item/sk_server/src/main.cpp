@@ -1,7 +1,7 @@
 #include "base_def.h"
 #include "log_helper.h"
 #include "skhttp_req_thread.h"
-#include "realod_thread.h"
+#include "reload_thread.h"
 #include "sk_conf.h"
 #include "proc_data.h"
 #include "listen_thread.h"

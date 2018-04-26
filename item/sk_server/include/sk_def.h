@@ -2,44 +2,7 @@
 #define __SK_DEF_H__
 
 #include "common_util.h"
-#include "ul_sign.h"
 
-#define MSG_HTTP_REQ 1002
-#define MSG_HTTP_RES 1003
-
-
-class http_req_msg
-{
-    public:
-
-        http_cmd_type cmd_type;
-        uint32_t time_out;
-        std::string sid;
-        std::string  url;
-        std::string post_data;
-        std::map<std::string, std::string> headers;
-
-        http_req_msg()
-        {
-            time_out = 0;
-        }
-};
-
-
-class http_res_msg: public normal_msg
-{
-    public:
-        http_res_msg()
-        {   
-            _msg_op = MSG_HTTP_RES;
-        }   
-
-        virtual ~http_res_msg(){}
-
-        std::string sid;
-        std::string url;
-        std::string response;
-};
 
 struct finance_t
 {
@@ -175,17 +138,6 @@ struct history_quotation_t
     std::map<std::string, quotation_t> date_quotation_map;
 };
 
-struct str_hasher
-{
-    size_t operator()(const std::string & k) const
-    {   
-        uint64_t key = 0;
-
-        create_sign_fs64(k.c_str(), k.length(), &key);
-
-        return key;
-    }   
-};
 
 #define TIMER_TYPE_RELOAD_CONF 10000
 #define TIMER_TYPE_REAL_REQ 10001

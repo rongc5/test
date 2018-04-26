@@ -27,11 +27,15 @@ class rquotation_data_process: public http_base_data_process
 
         virtual size_t process_recv_body(const char *buf, size_t len, int& result);
 
+        void set_url_info(url_info & u_info);
+
         url_info & get_url_info();
 
-        static void gen_net_obj(std::string id, common_obj_container * net_container, td::map<std::string, std::string> & headers);
+        static void gen_net_obj(std::string id, common_obj_container * net_container, std::map<std::string, std::string> & headers);
 
         virtual void handle_timeout(timer_msg & t_msg);
+
+        virtual void destroy();
 
     protected:
         std::string _recv_buf;

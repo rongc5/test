@@ -101,8 +101,13 @@ void common_obj_container::handle_timeout(timer_msg & t_msg)
                 if (net_thread)
                 {
                     net_thread->handle_timeout(t_msg);
-                    return;
                 }
+            }
+            break;
+        case OBJ_ID_DOMAIN:
+            {
+                if (_domain)
+                    _domain->handle_timeout(t_msg);
             }
             break;
         default:
@@ -147,14 +152,27 @@ void common_obj_container::erase(uint32_t obj_id)
     return;
 }
 
-void common_obj_container::put_msg(uint32_t obj_id, std::shared_ptr<normal_msg> & p_msg)
+void common_obj_container::handle_msg(uint32_t obj_id, std::shared_ptr<normal_msg> & p_msg)
 {
-    std::shared_ptr<base_net_obj>  net_obj = find(obj_id);
-    if (!net_obj) {
-        return;
-    }
+    switch (obj_id)
+    {
+        case OBJ_ID_THREAD:
+            {
+                base_net_thread * net_thread = base_net_thread::get_base_net_thread_obj(_id_str._thread_index);
+                if (net_thread)
+                {
+                    net_thread->handle_msg(p_msg);
+                }
+            }
+            break;
+        default:
+            {
 
-    net_obj->process_recv_msg(p_msg);
+                std::shared_ptr<base_net_obj>  net_obj = find(obj_id);
+                if (net_obj)
+                    net_obj->handle_msg(p_msg);
+            }
+    }
 }
 
 void common_obj_container::obj_process()

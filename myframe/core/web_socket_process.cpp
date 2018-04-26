@@ -59,7 +59,7 @@ size_t web_socket_process::process_recv_buf(const char *buf, const size_t len)
     return len;
 }
 
-bool web_socket_process::handle_timeout(timer_msg & t_msg)
+void web_socket_process::handle_timeout(timer_msg & t_msg)
 {
     if (t_msg._timer_type == WEB_SOCKET_HANDSHAKE_OK_TIMER_TYPE)
     {
@@ -72,19 +72,19 @@ bool web_socket_process::handle_timeout(timer_msg & t_msg)
             LOG_DEBUG("web socket handshake timer arrive, status ok");
         }
 
-        return true;
+        return ;
     }
 
-    return _p_data_process->handle_timeout(t_msg);
+    _p_data_process->handle_timeout(t_msg);
 }
 
-void web_socket_process::process_recv_msg(std::shared_ptr<normal_msg> & p_msg)
+void web_socket_process::handle_msg(std::shared_ptr<normal_msg> & p_msg)
 {
     if (!_p_data_process) {
         return ;
     }
 
-    _p_data_process->process_recv_msg(p_msg);
+    _p_data_process->handle_msg(p_msg);
     return ;
 }
 

@@ -11,8 +11,8 @@
 #include "sk_def.h"
 #include "ua_dict.h"
 #include "id_dict.h"
+#include "common_obj_container.h"
 
-class common_obj_container;
 class skhttp_req_thread:public base_net_thread
 {
     public:
@@ -95,7 +95,7 @@ class skhttp_req_thread:public base_net_thread
             proc_data* p_data = proc_data::instance();
             if (p_data)
             {
-                map<std::string, std::string> headers;
+                std::map<std::string, std::string> headers;
                 ua_dict * ua_dic = p_data->_ua_dict->current();
 
                 headers.insert(std::make_pair("User-Agent", ua_dic->_ua_vec[_id_index % ua_dic->_ua_vec.size()]));
@@ -105,7 +105,7 @@ class skhttp_req_thread:public base_net_thread
 
         }
 
-        virtual bool handle_timeout(timer_msg & t_msg)
+        virtual void handle_timeout(timer_msg & t_msg)
         {
             if (t_msg._timer_type == TIMER_TYPE_REAL_REQ)
             {

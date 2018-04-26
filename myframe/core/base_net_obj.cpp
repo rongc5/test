@@ -109,10 +109,8 @@ const ObjId & base_net_obj::get_id()
     return _id_str;
 }
 
-void base_net_obj::process_recv_msg(std::shared_ptr<normal_msg> & p_msg)
+void base_net_obj::handle_msg(std::shared_ptr<normal_msg> & p_msg)
 {
-
-    return;
 }
 
 void base_net_obj::notice_send()

@@ -19,17 +19,17 @@ class base_data_process
 
         virtual size_t process_recv_buf(const char *buf, size_t len);
 
-        virtual void process_recv_msg(std::shared_ptr<normal_msg> & p_msg);
+        virtual void handle_msg(std::shared_ptr<normal_msg> & p_msg);
 
         void add_timer(timer_msg & t_msg);
 
-        virtual bool handle_timeout(timer_msg & t_msg);
+        virtual void handle_timeout(timer_msg & t_msg);
 
         void put_send_buf(std::string * str);
 
         std::shared_ptr<base_net_obj>  get_base_net();
 
-        virtual void destory();
+        virtual void destroy();
 
     protected:
         void clear_send_list();

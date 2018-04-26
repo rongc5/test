@@ -100,6 +100,10 @@ void base_net_thread::handle_timeout(timer_msg & t_msg)
     return ;
 }
 
+common_obj_container * base_net_thread::get_net_container()
+{
+    return _base_container;
+}
 
 std::unordered_map<uint32_t, base_net_thread *> base_net_thread::_base_net_thread_map;
 

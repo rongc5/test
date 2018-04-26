@@ -42,6 +42,7 @@ class sk_conf: public reload_inf
         uint32_t reload_second;
 
         uint32_t req_interval_second;
+        uint32_t req_http_timeout;
 
         LogType log_type;
 

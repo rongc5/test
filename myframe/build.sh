@@ -25,7 +25,6 @@ if [ $# == 0 ]; then
     done
     cp core/*.h include
     make -f $mk clean && make -j8 -f $mk
-    rm -rf lib/lib*.a
     cp core/lib*.a lib
     (cd test && make clean && make)
 elif [ $# == 1 ];then

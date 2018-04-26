@@ -7,6 +7,7 @@
 #include "base_net_obj.h"
 #include "sk_def.h"
 
+class common_obj_container;
 class rquotation_data_process: public http_base_data_process
 {
     public:
@@ -26,21 +27,18 @@ class rquotation_data_process: public http_base_data_process
 
         virtual size_t process_recv_body(const char *buf, size_t len, int& result);
 
-        virtual bool process_recv_msg(ObjId & id, std::shared_ptr<normal_msg> & p_msg);
-
-        void set_req_msg(http_req_msg & req_msg);
+        void set_url_info(url_info & u_info);
 
         url_info & get_url_info();
 
-        void set_url_info(url_info & info);
+        static void gen_net_obj(std::string id, common_obj_container * net_container, std::map<std::string, std::string> & headers);
 
-        static std::shared_ptr<base_net_obj>  gen_net_obj(url_info & info, http_req_msg & req_msg);
+        virtual void handle_timeout(timer_msg & t_msg);
 
-        virtual bool handle_timeout(timer_msg & t_msg);
+        virtual void destroy();
 
     protected:
         std::string _recv_buf;
-        http_req_msg _req_msg;
         url_info _url_info;
         bool _is_ok;
 
