@@ -55,6 +55,8 @@ void rquotation_data_process::msg_recv_finish()
     }
 
     _recv_buf.clear();
+
+    throw CMyCommonException("msg_recv_finish");
 }
 
 std::string * rquotation_data_process::get_send_head()
@@ -164,10 +166,8 @@ void rquotation_data_process::handle_timeout(timer_msg & t_msg)
     if (t_msg._timer_type == TIMER_TYPE_HTTP_REQ)
     {
         LOG_NOTICE("timeout TIMER_TYPE_HTTP_REQ");
-        if (!_is_ok)
-        {
-            throw CMyCommonException("TIMER_TYPE_HTTP_REQ");
-        }
+
+        throw CMyCommonException("TIMER_TYPE_HTTP_REQ");
     }
 }
 

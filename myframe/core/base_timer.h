@@ -13,7 +13,7 @@ class base_timer
 		
 		uint32_t add_timer(timer_msg & t_msg);
 
-		void check_timer();
+		void check_timer(std::vector<uint32_t> &expect_list);
 
         bool is_empty();
 

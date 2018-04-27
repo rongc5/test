@@ -210,7 +210,6 @@ void common_obj_container::obj_process()
 
     for (std::vector<std::shared_ptr<base_net_obj> >::iterator tmp_itr = exception_vec.begin(); 
             tmp_itr != exception_vec.end(); tmp_itr++) {
-        remove_real_net(*tmp_itr);
         erase((*tmp_itr)->get_id()._id);
     }
 
@@ -221,7 +220,6 @@ void common_obj_container::obj_process()
     for (std::map<ObjId, std::shared_ptr<base_net_obj> >::iterator itr = exp_list.begin(); itr != exp_list.end(); ++itr)
     {         	
         LOG_DEBUG("step2: _id:%d, _thread_index:%d", itr->second->get_id()._id, itr->second->get_id()._thread_index);            
-        remove_real_net(itr->second);
         erase(itr->first._id);
         itr->second->destroy();
     }
@@ -232,8 +230,19 @@ void common_obj_container::obj_process()
         remove_real_net(itr->second);
     }
 
+    std::vector<uint32_t> exp_vec;
 
-    get_timer()->check_timer();
+    get_timer()->check_timer(exp_vec);
+
+    for (auto it = exp_vec.begin(); it != exp_vec.end(); it++)
+    {
+        std::shared_ptr<base_net_obj>  net_obj = find(*it);
+        if (net_obj)
+        {
+            erase(*it);
+            net_obj->destroy();
+        }
+    }
 }
 
 

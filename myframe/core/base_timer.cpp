@@ -41,7 +41,7 @@ uint32_t base_timer::add_timer(timer_msg & t_msg)
     return t_msg._timer_id;
 }
 
-void base_timer::check_timer()
+void base_timer::check_timer(std::vector<uint32_t> &expect_list)
 {
     uint64_t now = 	GetMilliSecond();
 
@@ -52,7 +52,18 @@ void base_timer::check_timer()
         for (it = _timer_list.begin(); it != itup; it++) {
             std::vector<timer_msg>::iterator itvec;
             for (itvec = it->second.begin(); itvec != it->second.end(); itvec++) {
-                _net_container->handle_timeout(*itvec);
+                try
+                {
+                    _net_container->handle_timeout(*itvec);
+                }
+                catch(CMyCommonException &e) 
+                {
+                    expect_list.push_back(itvec->_obj_id);
+                }
+                catch(std::exception &e) 
+                {   
+                    expect_list.push_back(itvec->_obj_id);
+                } 
             }
         }
 
