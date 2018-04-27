@@ -13,7 +13,6 @@ base_net_obj::base_net_obj()
     _fd = 0;
     _epoll_event = EPOLLIN | EPOLLERR | EPOLLHUP;
     _p_net_container = NULL;
-    _msg_op = MSG_CONNECT;
     _real_net = false;
 }
 

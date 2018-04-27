@@ -114,7 +114,7 @@ int UrlDecode(const std::string &sSrc, std::string &sDest);
 #ifdef DEBUG
 #define PDEBUG(format, arg...) \
     do { \
-        printf("tid:[%lu],line:[%d] ,func:[%s],file:[%s] " format, pthread_self(), __LINE__, __func__, __FILE__, ##arg); \
+        printf("tid:[%lu],line:[%d] ,func:[%s],file:[%s] \n" format, pthread_self(), __LINE__, __func__, __FILE__, ##arg); \
 } while (0)
 #else
     #define PDEBUG(format, arg...) 

@@ -21,17 +21,12 @@ size_t channel_data_process::process_recv_buf(const char *buf, size_t len)
     size_t i = 0;
     auto sp = _p_connect.lock();
     std::deque<normal_obj_msg >::iterator it;
-    for (it = _queue.begin(); it != _queue.end() && i<k;){
-        if (it->p_msg->_msg_op == MSG_CONNECT) {
-            std::shared_ptr<base_net_obj>  p_connect = std::dynamic_pointer_cast<base_net_obj> (it->p_msg); 
-            if (p_connect && sp) {
-                p_connect->set_net_container(sp->get_net_container());
-            } 
-        } else {
-            if (sp) {
-                 sp->get_net_container()->handle_msg(it->_id, it->p_msg);
-            }
-        } 
+    for (it = _queue.begin(); it != _queue.end() && i<k;)
+    {
+        if (sp) 
+        {
+            sp->get_net_container()->handle_msg(it->_id, it->p_msg);
+        }
 
         it = _queue.erase(it);
         i++;

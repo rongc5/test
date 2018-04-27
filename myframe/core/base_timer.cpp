@@ -15,17 +15,18 @@ base_timer::~base_timer()
     _timer_list.clear();
 }
 
-uint64_t base_timer::gen_timerid()
+uint32_t base_timer::gen_timerid()
 {
     _timerid++;
     return _timerid;
 }
 
-uint64_t base_timer::add_timer(timer_msg & t_msg)
+uint32_t base_timer::add_timer(timer_msg & t_msg)
 {
     uint64_t reach_time = GetMilliSecond() + t_msg._time_length;
     t_msg._timer_id = gen_timerid();
-    LOG_DEBUG("set time_length:%lu reach_time:%lu timer_id:%lu", t_msg._time_length, reach_time, t_msg._timer_id);
+    LOG_DEBUG("set time_length:%u reach_time:%llu timer_id:%u", t_msg._time_length, reach_time, t_msg._timer_id);
+    //PDEBUG("set time_length:%u reach_time:%llu timer_id:%u", t_msg._time_length, reach_time, t_msg._timer_id);
 
     std::map<uint64_t, std::vector<timer_msg> >::iterator it;
     it = _timer_list.find(reach_time);

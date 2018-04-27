@@ -81,6 +81,11 @@ int sk_conf::load()
     {
         log_type = LOGFATAL;
     }
+    else 
+    {
+        log_type = (LogType) ret;
+    }
+        
 
     cfg.get_vale("server", "real_morning_stime", real_morning_stime);
     cfg.get_vale("server", "real_morning_etime", real_morning_etime);

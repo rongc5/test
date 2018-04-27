@@ -27,25 +27,25 @@
 
 #define LOG_WARNING(fmt, arg...) \
     do { \
-        LOG_WRITE(LOGDEBUG, "WARNING:[%lu]:[%d:%s:%s] " fmt, pthread_self(), __LINE__, __func__, __FILE__, ##arg); \
+        LOG_WRITE(LOGWARNING, "WARNING:[%lu]:[%d:%s:%s] " fmt, pthread_self(), __LINE__, __func__, __FILE__, ##arg); \
     } while (0)
 
 
 #define LOG_FATAL(fmt, arg...) \
     do { \
-        LOG_WRITE(LOGDEBUG, "FATAL:[%lu]:[%d:%s:%s] " fmt, pthread_self(), __LINE__, __func__, __FILE__, ##arg); \
+        LOG_WRITE(LOGFATAL, "FATAL:[%lu]:[%d:%s:%s] " fmt, pthread_self(), __LINE__, __func__, __FILE__, ##arg); \
     } while (0)
 
 
 #define LOG_NOTICE(fmt, arg...) \
       do { \
-        LOG_WRITE(LOGDEBUG, "NOTICE:[%lu]:[%d:%s:%s] " fmt, pthread_self(), __LINE__, __func__, __FILE__, ##arg);\
+        LOG_WRITE(LOGNOTICE, "NOTICE:[%lu]:[%d:%s:%s] " fmt, pthread_self(), __LINE__, __func__, __FILE__, ##arg);\
     } while (0)
 
 
 #define LOG_TRACE(fmt, arg...) \
     do { \
-        LOG_WRITE(LOGDEBUG, "TRACE:[%lu]:[%d:%s:%s] " fmt, pthread_self(), __LINE__, __func__, __FILE__, ##arg); \
+        LOG_WRITE(LOGTRACE, "TRACE:[%lu]:[%d:%s:%s] " fmt, pthread_self(), __LINE__, __func__, __FILE__, ##arg); \
     } while (0)
 
 

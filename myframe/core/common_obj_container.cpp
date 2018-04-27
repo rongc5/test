@@ -92,7 +92,6 @@ uint32_t common_obj_container::get_thread_index()
 
 void common_obj_container::handle_timeout(timer_msg & t_msg)
 {
-
     switch (t_msg._obj_id)
     {
         case OBJ_ID_THREAD:

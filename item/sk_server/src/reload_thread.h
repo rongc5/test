@@ -47,6 +47,7 @@ class reload_thread:public base_net_thread
 
                 t_msg._timer_type = TIMER_TYPE_RELOAD_CONF;
                 t_msg._time_length = p_data->_conf->reload_second;
+                t_msg._obj_id = OBJ_ID_THREAD;
                 add_timer(t_msg);
             }
         }

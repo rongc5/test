@@ -47,7 +47,6 @@ void log_thread::log_write(LogType type, const char *format, ...)
         uint32_t ret = snprintf(lmsg->_buf->data(), lmsg->_buf->size(), "[%s]:[%s] ", 
                 thread->_proc_name.c_str(), log_common_tmp);
         vsnprintf(lmsg->_buf->data() + ret, lmsg->_buf->size() - ret, format, args2);
-        //printf("11 %s\n", lmsg->_buf->data());
         va_end(args2);
         
         lmsg->_type = type;

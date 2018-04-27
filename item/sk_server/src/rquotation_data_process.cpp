@@ -3,7 +3,7 @@
 #include "http_base_data_process.h"
 #include "log_helper.h"
 #include "out_connect.h"
-#include "base_net_container.h"
+#include "common_obj_container.h"
 #include "base_net_thread.h"
 
 #include "base_def.h"
@@ -151,7 +151,9 @@ void rquotation_data_process::gen_net_obj(std::string id, common_obj_container *
         timer_msg  t_msg;
         t_msg._time_length = p_data->_conf->req_http_timeout;
         t_msg._timer_type = TIMER_TYPE_HTTP_REQ; 
+        t_msg._obj_id = connect->get_id()._id;
         sk_process->add_timer(t_msg);
+        LOG_NOTICE("add_timer TIMER_TYPE_HTTP_REQ");
     }
 
     return ;
@@ -161,6 +163,7 @@ void rquotation_data_process::handle_timeout(timer_msg & t_msg)
 {
     if (t_msg._timer_type == TIMER_TYPE_HTTP_REQ)
     {
+        LOG_NOTICE("timeout TIMER_TYPE_HTTP_REQ");
         if (!_is_ok)
         {
             throw CMyCommonException("TIMER_TYPE_HTTP_REQ");

@@ -11,18 +11,18 @@ class base_timer
 
 		virtual ~base_timer();
 		
-		uint64_t add_timer(timer_msg & t_msg);
+		uint32_t add_timer(timer_msg & t_msg);
 
 		void check_timer();
 
         bool is_empty();
 
-        uint64_t gen_timerid();
+        uint32_t gen_timerid();
 
 	protected:
         std::map<uint64_t, std::vector<timer_msg> > _timer_list;
         common_obj_container * _net_container;
-        uint64_t _timerid;
+        uint32_t _timerid;
 };
 #endif
 

@@ -6,7 +6,6 @@
 #include "common_util.h"
 
 base_net_thread::base_net_thread(int channel_num):_channel_num(channel_num), _base_container(NULL){
-    _base_container = new common_obj_container(get_thread_index());
     net_thread_init();
 }
 
@@ -33,6 +32,8 @@ void base_net_thread::run_process()
 
 void base_net_thread::net_thread_init()
 {
+    _base_container = new common_obj_container(get_thread_index());
+
     for (int i = 0; i < _channel_num; i++) {
 
         int fd[2];

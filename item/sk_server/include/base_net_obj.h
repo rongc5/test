@@ -5,7 +5,7 @@
 
 class base_data_process;
 class common_obj_container;
-class base_net_obj: public normal_msg
+class base_net_obj: public std::enable_shared_from_this<base_net_obj>
 {
     public:
         base_net_obj();

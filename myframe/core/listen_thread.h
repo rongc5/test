@@ -8,7 +8,6 @@
 #include "listen_process.h"
 
 
-template<class PROCESS>
 class listen_thread: public base_net_thread
 {
     public:
@@ -24,8 +23,8 @@ class listen_thread: public base_net_thread
         { 
             _ip = ip;
             _port = port;
-            _listen_connect = new listen_connect<listen_process<PROCESS> >(ip, port);
-            _process =  new listen_process<PROCESS>(_listen_connect);
+            _listen_connect = new listen_connect<listen_process>(ip, port);
+            _process =  new listen_process(_listen_connect);
             _process->set_listen_thread(this);
             _listen_connect->set_process(_process);
             _listen_connect->set_net_container(_base_container);
@@ -40,8 +39,8 @@ class listen_thread: public base_net_thread
 
         std::string _ip;
         unsigned short _port;
-        listen_connect<listen_process<PROCESS> > *_listen_connect;
-        listen_process<PROCESS> * _process;
+        listen_connect<listen_process> *_listen_connect;
+        listen_process * _process;
 };
 
 #endif

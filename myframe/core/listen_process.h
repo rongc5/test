@@ -5,7 +5,6 @@
 #include "base_net_thread.h"
 #include "base_net_obj.h"
 
-template<class PROCESS>
 class listen_process
 {
     public:
@@ -19,11 +18,13 @@ class listen_process
 
         void process(int fd)
         {
-            std::shared_ptr<base_net_obj>  net_obj(PROCESS::gen_listen_obj(fd));
+            std::shared_ptr<content_msg>  net_obj(new content_msg);
+            net_obj->fd = fd;
 
             ObjId id;
+            id._id = OBJ_ID_THREAD;
             if (_worker_thd_vec.size()) {
-                int index = (unsigned long) net_obj % _worker_thd_vec.size();
+                int index = (unsigned long) net_obj.get() % _worker_thd_vec.size();
                 id._thread_index = _worker_thd_vec[index]; 
             } else {
                 id._thread_index = _listen_thread->get_thread_index(); 

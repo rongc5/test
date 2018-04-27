@@ -4,8 +4,6 @@
 #include "base_def.h"
 
 #define MSG_CONNECT 1
-#define MSG_LOG 4
-#define PASS_NEW_MSG 5
 
 struct ObjId
 {
@@ -28,6 +26,19 @@ class normal_msg : public std::enable_shared_from_this<normal_msg>
         int _msg_op;
 };
 
+class content_msg: public normal_msg
+{
+    public:
+        content_msg()
+        {
+            _msg_op = MSG_CONNECT;
+            fd = 0;
+        }
+
+        virtual ~content_msg(){}
+        int fd;
+};
+
 
 #define NONE_TIMER_TYPE 1
 #define DELAY_CLOSE_TIMER_TYPE 2
@@ -46,9 +57,9 @@ struct timer_msg
         };
 
         uint32_t _obj_id;
-        uint64_t _timer_id;
-        int _timer_type;
-        uint64_t _time_length;
+        uint32_t _timer_type;
+        uint32_t _timer_id;
+        uint32_t _time_length;
 };
 
 enum LogType {
