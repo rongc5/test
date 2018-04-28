@@ -29,9 +29,9 @@ class base_net_thread:public base_thread
 
         static base_net_thread * get_base_net_thread_obj(uint32_t thread_index);
 
-        void add_timer(timer_msg & t_msg);
+        void add_timer(std::shared_ptr<timer_msg> & t_msg);
 
-        virtual void handle_timeout(timer_msg & t_msg);
+        virtual void handle_timeout(std::shared_ptr<timer_msg> & t_msg);
 
         common_obj_container * get_net_container();
 

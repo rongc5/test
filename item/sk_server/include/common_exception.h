@@ -7,21 +7,21 @@ class CMyCommonException : public std::exception
 {
     public:
 
-        CMyCommonException(const std::string &sErrStr)
+        CMyCommonException(const std::string &err_str)
         {
-            m_sErrStr = sErrStr;
+            _errstr = err_str;
         }
-
+        
         virtual ~CMyCommonException() throw(){};    
 
     public:
         virtual const char* what() const throw()
         {
-            return m_sErrStr.c_str();
+            return _errstr.c_str();
         }
 
     protected:
-        std::string			m_sErrStr;		
+        std::string _errstr;
 };
 
 

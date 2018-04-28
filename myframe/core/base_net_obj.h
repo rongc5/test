@@ -35,8 +35,8 @@ class base_net_obj: public std::enable_shared_from_this<base_net_obj>
 
         virtual void handle_msg(std::shared_ptr<normal_msg> & p_msg);
 
-        void add_timer(timer_msg & t_msg);
-        virtual void handle_timeout(timer_msg & t_msg);
+        void add_timer(std::shared_ptr<timer_msg> & t_msg);
+        virtual void handle_timeout(std::shared_ptr<timer_msg> & t_msg);
 
         virtual void destroy();
     protected:
@@ -48,7 +48,7 @@ class base_net_obj: public std::enable_shared_from_this<base_net_obj>
         int _fd;	
         ObjId _id_str;
         bool _real_net;
-        std::vector<timer_msg> _timer_vec;
+        std::vector<std::shared_ptr<timer_msg> > _timer_vec;
 };
 
 

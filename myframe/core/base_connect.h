@@ -16,6 +16,9 @@ class base_connect:public base_net_obj
         base_connect(const int32_t sock)
         {
             _fd = sock;
+            int bReuseAddr = 1;
+            setsockopt(_fd, IPPROTO_TCP, TCP_NODELAY, &bReuseAddr, sizeof(bReuseAddr));
+
             _p_send_buf = NULL;
             _process = NULL;
         }
@@ -107,9 +110,9 @@ class base_connect:public base_net_obj
             }
         }
 
-        virtual void handle_timeout(timer_msg & t_msg)
+        virtual void handle_timeout(std::shared_ptr<timer_msg> & t_msg)
         {
-            if (t_msg._timer_type == DELAY_CLOSE_TIMER_TYPE) 
+            if (t_msg->_timer_type == DELAY_CLOSE_TIMER_TYPE) 
             {
                 THROW_COMMON_EXCEPT("the connect obj delay close, delete it");
             }

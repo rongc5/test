@@ -21,9 +21,9 @@ class base_data_process
 
         virtual void handle_msg(std::shared_ptr<normal_msg> & p_msg);
 
-        void add_timer(timer_msg & t_msg);
+        void add_timer(std::shared_ptr<timer_msg> & t_msg);
 
-        virtual void handle_timeout(timer_msg & t_msg);
+        virtual void handle_timeout(std::shared_ptr<timer_msg> & t_msg);
 
         void put_send_buf(std::string * str);
 

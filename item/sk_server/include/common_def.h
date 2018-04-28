@@ -3,8 +3,6 @@
 
 #include "base_def.h"
 
-#define MSG_CONNECT 1
-
 struct ObjId
 {
     uint32_t _id;
@@ -31,19 +29,13 @@ class content_msg: public normal_msg
     public:
         content_msg()
         {
-            _msg_op = MSG_CONNECT;
+            _msg_op = NORMAL_MSG_CONNECT;
             fd = 0;
         }
 
         virtual ~content_msg(){}
         int fd;
 };
-
-
-#define NONE_TIMER_TYPE 1
-#define DELAY_CLOSE_TIMER_TYPE 2
-#define WEB_SOCKET_HANDSHAKE_OK_TIMER_TYPE 3
-#define DOMAIN_CACHE_TIMER_TYPE 5
 
 
 struct timer_msg
@@ -56,6 +48,7 @@ struct timer_msg
             _obj_id = 0;
         };
 
+        /** _obj_id, _timer_type, _time_length 必须传入 , _time_length 为毫秒级别**/
         uint32_t _obj_id;
         uint32_t _timer_type;
         uint32_t _timer_id;

@@ -81,12 +81,12 @@ void base_data_process::destroy()
 
 }
 
-void base_data_process::add_timer(timer_msg & t_msg)
+void base_data_process::add_timer(std::shared_ptr<timer_msg> & t_msg)
 {
     if (auto sp = _p_connect.lock())
         sp->add_timer(t_msg);
 }
 
-void base_data_process::handle_timeout(timer_msg & t_msg)
+void base_data_process::handle_timeout(std::shared_ptr<timer_msg> & t_msg)
 {
 }

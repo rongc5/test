@@ -17,6 +17,7 @@
 #include <fcntl.h>
 #include <stdlib.h>
 
+#include <netinet/tcp.h>
 #include <sys/stat.h>
 #include <unistd.h>
 #include <string.h>
@@ -136,18 +137,34 @@ const int URLESCAPE[] =
         1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,//224~239
         1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1//240~255
 };
-
+/** obj_id **/
 #define OBJ_ID_THREAD 1
 #define OBJ_ID_DOMAIN 2
 
+
+
+/** 外边业务用起始的obj id **/
 #define OBJ_ID_BEGIN 1000
+
+/** 外边业务用起始的timer id **/
 #define TIMER_ID_BEGIN 1000
 
+/** 域名缓存默认超时时间 单位是毫秒***/
 #define MAX_DOMAIN_TIMEOUT (3 * 60 * 60 * 1000)
 
 #define CRLF "\r\n"
 #define CRLF2 "\r\n\r\n"
 
+
+/** normal_msg op**/
+#define NORMAL_MSG_CONNECT 1
+
+
+/*** timer type ***/
+#define NONE_TIMER_TYPE 1
+#define DELAY_CLOSE_TIMER_TYPE 2
+#define WEB_SOCKET_HANDSHAKE_OK_TIMER_TYPE 3
+#define DOMAIN_CACHE_TIMER_TYPE 5
 
 
 #endif

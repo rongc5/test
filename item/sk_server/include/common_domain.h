@@ -16,7 +16,7 @@ class common_domain
 
         void delete_domain(std::string & domain);
 
-        void handle_timeout(timer_msg & t_msg);
+        void handle_timeout(std::shared_ptr<timer_msg> & t_msg);
 
     protected:
         std::unordered_map<std::string, std::vector<std::string>, str_hasher> _domain_cache;

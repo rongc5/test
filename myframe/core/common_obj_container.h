@@ -31,9 +31,9 @@ class common_obj_container
 
         common_domain * get_domain();
 
-        void add_timer(timer_msg & t_msg);
+        void add_timer(std::shared_ptr<timer_msg> & t_msg);
 
-        void handle_timeout(timer_msg & t_msg);
+        void handle_timeout(std::shared_ptr<timer_msg> & t_msg);
 
         uint32_t get_thread_index();
 

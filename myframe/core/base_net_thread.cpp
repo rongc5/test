@@ -81,7 +81,7 @@ base_net_thread * base_net_thread::get_base_net_thread_obj(uint32_t thread_index
     return NULL;
 }
 
-void base_net_thread::add_timer(timer_msg & t_msg)
+void base_net_thread::add_timer(std::shared_ptr<timer_msg> & t_msg)
 {
     _base_container->add_timer(t_msg);
 }
@@ -96,7 +96,7 @@ void base_net_thread::put_obj_msg(ObjId & id, std::shared_ptr<normal_msg> & p_ms
     net_thread->put_msg(id._id, p_msg);
 }
 
-void base_net_thread::handle_timeout(timer_msg & t_msg)
+void base_net_thread::handle_timeout(std::shared_ptr<timer_msg> & t_msg)
 {
     return ;
 }

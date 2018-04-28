@@ -90,9 +90,9 @@ uint32_t common_obj_container::get_thread_index()
     return _id_str._thread_index;
 }
 
-void common_obj_container::handle_timeout(timer_msg & t_msg)
+void common_obj_container::handle_timeout(std::shared_ptr<timer_msg> & t_msg)
 {
-    switch (t_msg._obj_id)
+    switch (t_msg->_obj_id)
     {
         case OBJ_ID_THREAD:
             {
@@ -111,7 +111,7 @@ void common_obj_container::handle_timeout(timer_msg & t_msg)
             break;
         default:
             {
-                std::shared_ptr<base_net_obj>  net_obj = find(t_msg._obj_id);
+                std::shared_ptr<base_net_obj>  net_obj = find(t_msg->_obj_id);
                 if (net_obj)
                     net_obj->handle_timeout(t_msg);
             }
@@ -120,7 +120,7 @@ void common_obj_container::handle_timeout(timer_msg & t_msg)
 
 }
 
-void common_obj_container::add_timer(timer_msg & t_msg)
+void common_obj_container::add_timer(std::shared_ptr<timer_msg> & t_msg)
 {
     if (_timer)
     {
@@ -185,7 +185,6 @@ void common_obj_container::obj_process()
     {
         try
         {
-            //LOG_DEBUG("step1: _id:%d, _thread_index:%d", aa_itr->second->get_id()._id, aa_itr->second->get_id()._thread_index);            
             u.second->real_net_process();            
             if (!u.second->get_real_net()) {
                 real_net_vec.push_back(u.second);

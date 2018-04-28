@@ -26,10 +26,15 @@ web_socket_res_process::~web_socket_res_process()
 
 void web_socket_res_process::on_connect_comming()
 {
-    timer_msg t_msg;
-    t_msg._timer_type = WEB_SOCKET_HANDSHAKE_OK_TIMER_TYPE;
-    t_msg._time_length = WEB_SOCKET_HANDSHAKE_OK_TIMER_LENGTH;
-    add_timer(t_msg);
+    std::shared_ptr<base_net_obj> connect = get_base_net();
+    if (connect)
+    {
+        std::shared_ptr<timer_msg> t_msg(new timer_msg);
+        t_msg->_timer_type = WEB_SOCKET_HANDSHAKE_OK_TIMER_TYPE;
+        t_msg->_time_length = WEB_SOCKET_HANDSHAKE_OK_TIMER_LENGTH;
+        t_msg->_obj_id = connect->get_id()._id;
+        add_timer(t_msg);
+    }
 }
 
 std::string* web_socket_res_process::SEND_WB_HEAD_FINISH_PROCESS()
@@ -46,10 +51,15 @@ std::string* web_socket_res_process::SEND_WB_HEAD_FINISH_PROCESS()
     {
         _wb_status  = WB_HANDSHAKE_FAIL;
 
-        timer_msg t_msg;
-        t_msg._timer_type = DELAY_CLOSE_TIMER_TYPE;
-        t_msg._time_length = 3000;
-        add_timer(t_msg);
+        std::shared_ptr<base_net_obj> connect = get_base_net();
+        if (connect)
+        {
+            std::shared_ptr<timer_msg> t_msg(new timer_msg);
+            t_msg->_timer_type = DELAY_CLOSE_TIMER_TYPE;
+            t_msg->_time_length = 3000;
+            t_msg->_obj_id = connect->get_id()._id;
+            add_timer(t_msg);
+        }
     }
     return p_str;
 }

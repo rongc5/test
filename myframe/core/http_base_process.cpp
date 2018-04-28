@@ -115,7 +115,7 @@ void http_base_process::handle_msg(std::shared_ptr<normal_msg> & p_msg)
     return;
 }
 
-void http_base_process::handle_timeout(timer_msg & t_msg)
+void http_base_process::handle_timeout(std::shared_ptr<timer_msg> & t_msg)
 {
     _data_process->handle_timeout(t_msg);
 }

@@ -61,12 +61,12 @@ class skhttp_req_thread:public base_net_thread
             if (p_data && p_data->_conf)
             {   
                 _real_req = false;
-                timer_msg t_msg;
+                std::shared_ptr<timer_msg> t_msg(new timer_msg);
 
-                t_msg._timer_type = TIMER_TYPE_REAL_REQ;
+                t_msg->_timer_type = TIMER_TYPE_REAL_REQ;
                 //t_msg._time_length = p_data->_conf->req_interval_second;
-                t_msg._time_length = 3;
-                t_msg._obj_id = OBJ_ID_THREAD;
+                t_msg->_time_length = 3;
+                t_msg->_obj_id = OBJ_ID_THREAD;
                 add_timer(t_msg);
             }
         }
