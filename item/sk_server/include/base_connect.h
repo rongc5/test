@@ -143,7 +143,7 @@ class base_connect:public base_net_obj
                 ret = 0;
             }
 
-            LOG_DEBUG("recv:%s", buf);
+            //LOG_DEBUG("recv:%s", buf);
 
             return ret;
         }
@@ -155,7 +155,7 @@ class base_connect:public base_net_obj
                 THROW_COMMON_EXCEPT("close the socket " << _fd);
             }
 
-            LOG_DEBUG("send:%s", buf);
+            //LOG_DEBUG("send:%s", buf);
             ssize_t ret =  send(_fd, buf, len, MSG_DONTWAIT | MSG_NOSIGNAL);
             if (ret < 0)
             {
