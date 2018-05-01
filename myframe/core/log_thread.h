@@ -16,6 +16,7 @@ class log_thread:public base_thread
         virtual ~log_thread();
 
         static void log_write(LogType type, const char *format, ...);
+        static void log_write(const char * filename, const char *format, ...);
 
         void handle_msg(std::shared_ptr<log_msg> & p_msg);
 

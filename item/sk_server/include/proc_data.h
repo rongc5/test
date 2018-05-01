@@ -47,6 +47,9 @@ class proc_data:public reload_inf
 
         //reload_mgr<history_quotation_t> * _hquoation_dict;
 
+    public:
+        //search index;
+        std::unordered_set<std::string, str_hasher> _block_set;
 
     private:
         static proc_data* _singleton;

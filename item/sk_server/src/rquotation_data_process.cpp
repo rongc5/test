@@ -45,6 +45,7 @@ void rquotation_data_process::header_recv_finish()
 void rquotation_data_process::msg_recv_finish()
 {
     LOG_DEBUG("recv_buf: %s", _recv_buf.c_str());
+    //FILE_WRITE("123", _recv_buf.c_str());
     
     std::vector<std::string> strVec;
     SplitString(_recv_buf.c_str(), "=", &strVec, SPLIT_MODE_ONE);
@@ -55,8 +56,45 @@ void rquotation_data_process::msg_recv_finish()
     }
 
     _recv_buf.clear();
+    proc_data * p_data = proc_data::instance();
+    if (strVec.size() <= 45)
+    {
+        return;
+    }
 
-    throw CMyCommonException("msg_recv_finish");
+    auto it = p_data->_quotation_dict.find(_id);
+    if (it == p_data->_quotation_dict.end())
+    {
+        ToBufferMgr<quotation_t> tq;
+        p_data->_quotation_dict[_id] = tq;
+        it = p_data->_quotation_dict.find(_id);
+    }
+
+    quotation_t * qt = it->second.idle();
+    
+    qt->name = strVec[1];
+    qt->start = atof(strVec[5].c_str());
+    qt->end = atof(strVec[3].c_str());
+    qt->high = atof(strVec[33].c_str());
+    qt->low = atof(strVec[34].c_str());
+    qt->last_closed = atof(strVec[4].c_str());
+    qt->vol = atoi(strVec[36].c_str());
+    qt->sell_vol = atoi(strVec[8].c_str());
+    qt->buy_vol = atoi(strVec[7].c_str());
+    qt->swing = atof(strVec[43].c_str());
+    qt->change_rate = atof(strVec[38].c_str());
+    qt->range_percent = atof(strVec[32].c_str());
+    qt->total_price = atoi(strVec[37].c_str());
+
+    if (qt->start <= 1)
+    {
+        p_data->_block_set.insert(_id);
+    }
+
+
+    it->second.idle_2_current();
+
+    //throw CMyCommonException("msg_recv_finish");
 }
 
 std::string * rquotation_data_process::get_send_head()
@@ -84,6 +122,11 @@ size_t rquotation_data_process::process_recv_body(const char *buf, size_t len, i
 void rquotation_data_process::set_url_info(url_info & u_info)
 {
     _url_info = u_info;
+}
+
+void rquotation_data_process::set_id(std::string id)
+{
+    _id = id;
 }
 
 void rquotation_data_process::gen_net_obj(std::string id, common_obj_container * net_container, std::map<std::string, std::string> & headers)
@@ -130,6 +173,7 @@ void rquotation_data_process::gen_net_obj(std::string id, common_obj_container *
     connect->set_process(req_process);
 
     sk_process->set_url_info(u_info);
+    sk_process->set_id(id);
 
     http_req_head_para & req_head = req_process->get_req_head_para();
 
@@ -143,6 +187,7 @@ void rquotation_data_process::gen_net_obj(std::string id, common_obj_container *
     req_head._headers.insert(std::make_pair("Accept", "*/*"));
 
     req_head._headers["Referer"] = refer;
+    req_head._headers["Connection"] = "close";
 
     connect->connect();
     connect->set_net_container(net_container);

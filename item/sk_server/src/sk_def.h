@@ -51,9 +51,9 @@ struct ban_t
 
 struct single_t
 {
-    std::deque<uint32_t> single_in;
-    std::deque<uint32_t> single_out;
-    std::deque<uint32_t> single_inflow;
+    uint32_t middle;
+    uint32_t large;
+    uint32_t kingle;
 };
 
 struct real_single
@@ -106,8 +106,6 @@ struct quotation_t
 
     float total_price;
 
-    float avg_price; 
-
     void reset()
     {
         id.clear();
@@ -127,8 +125,6 @@ struct quotation_t
         swing = 0;
         change_rate = 0;
         range_percent = 0;
-
-        avg_price = 0;
     }
 };
 

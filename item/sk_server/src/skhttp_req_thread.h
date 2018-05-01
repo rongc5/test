@@ -97,6 +97,13 @@ class skhttp_req_thread:public base_net_thread
             proc_data* p_data = proc_data::instance();
             if (p_data)
             {
+                auto it = p_data->_block_set.find(id);
+                if (it != p_data->_block_set.end())
+                {
+                    LOG_DEBUG("id: %s is blocked", id.c_str());
+                    return;
+                }
+
                 std::map<std::string, std::string> headers;
                 ua_dict * ua_dic = p_data->_ua_dict->current();
 

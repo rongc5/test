@@ -42,11 +42,15 @@ class proc_data:public reload_inf
 
         std::unordered_map<std::string, ToBufferMgr<quotation_t>,str_hasher> _quotation_dict;
 
+        std::unordered_map<std::string, ToBufferMgr<std::deque<std::vector<uint32_t> > >,str_hasher> _single_dict;
 
         //reload_mgr<history_single_t> * _hsingle_dict;
 
         //reload_mgr<history_quotation_t> * _hquoation_dict;
 
+    public:
+        //search index;
+        std::unordered_set<std::string, str_hasher> _block_set;
 
     private:
         static proc_data* _singleton;

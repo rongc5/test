@@ -19,6 +19,30 @@ log_thread::~log_thread()
     _queue[1- _current].clear();
 }
 
+void log_thread::log_write(const char * filename, const char *format, ...)
+{
+    log_thread * thread = base_singleton<log_thread>::get_instance();
+    if (!thread) {
+        return;
+    }
+
+    va_list args1, args2;
+    va_start(args1, format);
+    va_copy(args2, args1);
+
+    std::shared_ptr<log_msg> lmsg(new log_msg());
+    if (lmsg) {
+        lmsg->_buf = new std::vector<char>(vsnprintf(NULL, 0, format, args1));
+        va_end(args1);
+
+        vsnprintf(lmsg->_buf->data(), lmsg->_buf->size(), format, args2);
+        va_end(args2);
+        
+        lmsg->_fname.append(filename);
+        thread->put_msg(lmsg);
+    }
+}
+
 void log_thread::log_write(LogType type, const char *format, ...)
 {
 
@@ -64,8 +88,28 @@ void log_thread::put_msg(std::shared_ptr<log_msg> & p_msg)
 
 void log_thread::handle_msg(std::shared_ptr<log_msg> & p_msg)
 {
-    check_to_renmae(_log_name[p_msg->_type]._name, _conf.file_max_size);
-    FILE * fp = fopen(_log_name[p_msg->_type]._name, "a");
+    FILE * fp = NULL;
+    if (p_msg->_fname.empty())
+    {
+        check_to_renmae(_log_name[p_msg->_type]._name, _conf.file_max_size);
+        fp = fopen(_log_name[p_msg->_type]._name, "a");
+    }
+    else
+    {
+        if (p_msg->_fname[0] == '/')
+        {
+            fp = fopen(p_msg->_fname.c_str(), "a");
+        }
+        else
+        {
+            std::string path;
+            path.append(_conf.log_path);
+            path.append("/");
+            path.append(p_msg->_fname);
+            fp = fopen(path.c_str(), "a");
+        }
+    }
+
     if (!fp){
         return;
     }   

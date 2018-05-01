@@ -106,8 +106,6 @@ struct quotation_t
 
     float total_price;
 
-    float avg_price; 
-
     void reset()
     {
         id.clear();
@@ -127,8 +125,6 @@ struct quotation_t
         swing = 0;
         change_rate = 0;
         range_percent = 0;
-
-        avg_price = 0;
     }
 };
 

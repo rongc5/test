@@ -56,4 +56,7 @@
 
 #define LOG_WRITE(t, fmt...) log_thread::log_write(t, ##fmt)
 
+
+#define FILE_WRITE(f, fmt...) log_thread::log_write(f, ##fmt)
+
 #endif

@@ -37,8 +37,11 @@ class rquotation_data_process: public http_base_data_process
 
         virtual void destroy();
 
+        void set_id(std::string id);
+
     protected:
         std::string _recv_buf;
+        std::string _id;
         url_info _url_info;
         bool _is_ok;
 

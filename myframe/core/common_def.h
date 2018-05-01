@@ -89,6 +89,7 @@ class log_msg
         }
 
         LogType _type;
+        std::string _fname;
         std::vector<char> * _buf;
 };
 

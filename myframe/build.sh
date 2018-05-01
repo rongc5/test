@@ -1,7 +1,7 @@
 #/bin/sh
 
 
-arr=('str2sign')
+arr=('utils/str2sign')
 
 
 rm -rf lib include
@@ -18,10 +18,10 @@ if [ $# == 0 ]; then
     while [ $i -lt ${#arr[@]} ]
     do
         cd  ${arr[$i]} && ./build.sh all
-        cp lib/lib*.a ../lib
-        cp core/*.h ../include
+        cp lib/lib*.a ../../lib
+        cp core/*.h ../../include
         let i+=1
-        cd ..
+        cd ../../
     done
     cp core/*.h include
     make -f $mk clean && make -j8 -f $mk
@@ -37,7 +37,7 @@ elif [ $# == 1 ];then
         do
             cd  ${arr[$i]} && ./build.sh clean
             let i+=1
-            cd ..
+            cd ../../
         done
     fi
 fi
