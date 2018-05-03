@@ -42,7 +42,7 @@ class proc_data:public reload_inf
 
         std::unordered_map<std::string, ToBufferMgr<quotation_t>,str_hasher> _quotation_dict;
 
-        std::unordered_map<std::string, ToBufferMgr<std::deque<std::vector<uint32_t> > >,str_hasher> _single_dict;
+        std::unordered_map<std::string, ToBufferMgr<single_deque>,str_hasher> _single_dict;
 
         //reload_mgr<history_single_t> * _hsingle_dict;
 

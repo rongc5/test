@@ -51,22 +51,25 @@ struct ban_t
 
 struct single_t
 {
-    uint32_t middle;
-    uint32_t large;
-    uint32_t kingle;
-};
-
-struct real_single
-{
     std::string id;
-    std::vector<single_t> re_single;
+    std::vector<int> singles;
 
     void reset()
     {
-        re_single.clear();
+        singles.clear();
         id.clear();
     }
 };
+
+struct single_deque
+{
+    std::deque<single_t> s_deque;
+
+    void reset()
+    {
+        s_deque.clear();
+    }
+}
 
 struct last_single_t
 {
