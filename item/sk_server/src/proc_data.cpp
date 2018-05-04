@@ -4,6 +4,8 @@
 #include "id_dict.h"
 #include "finance_dict.h"
 #include "ban_dict.h"
+#include "real_single_dict.h"
+#include "real_quotation_dict.h"
 #include "proc_data.h"
 
 int proc_data::init(sk_conf * conf)
@@ -29,6 +31,27 @@ int proc_data::init(sk_conf * conf)
     id_dict2->init(_conf->id_path.c_str(), _conf->id_file.c_str(), _conf->dump_dir.c_str());
 
     _id_dict = new (std::nothrow)reload_mgr<id_dict>(id_dict1, id_dict2);
+
+
+    real_quotation_dict *rq_dict1 = new (std::nothrow)real_quotation_dict();
+    ASSERT_WARNING(rq_dict1 != NULL, "allocate id_dict fail");
+    rq_dict1->init(_conf->id_path.c_str(), _conf->id_file.c_str(), _conf->dump_dir.c_str());
+    
+    real_quotation_dict *rq_dict2 = new (std::nothrow)real_quotation_dict();
+    ASSERT_WARNING(rq_dict2 != NULL, "allocate id_dict fail");
+    rq_dict2->init(_conf->id_path.c_str(), _conf->id_file.c_str(), _conf->dump_dir.c_str());
+
+    _rquoation_dict = new (std::nothrow)reload_mgr<real_quotation_dict>(rq_dict1, rq_dict2);
+
+    real_single_dict *rs_dict1 = new (std::nothrow)real_single_dict();
+    ASSERT_WARNING(rs_dict1 != NULL, "allocate id_dict fail");
+    rs_dict1->init(_conf->id_path.c_str(), _conf->id_file.c_str(), _conf->dump_dir.c_str());
+    
+    real_single_dict *rs_dict2 = new (std::nothrow)real_single_dict();
+    ASSERT_WARNING(rs_dict2 != NULL, "allocate id_dict fail");
+    rs_dict2->init(_conf->id_path.c_str(), _conf->id_file.c_str(), _conf->dump_dir.c_str());
+
+    _rsingle_dict = new (std::nothrow)reload_mgr<real_single_dict>(rs_dict1, rs_dict2);
 
 
     strategy_dict *strategy_dict1 = new (std::nothrow)strategy_dict();
@@ -132,6 +155,10 @@ int proc_data::load()
 
     _ban_dict->load();
 
+    _rsingle_dict->load();
+
+    _rquoation_dict->load();
+
     //_hsingle_dict->load();
 
     //_hquoation_dict->load();
@@ -165,6 +192,16 @@ int proc_data::reload()
         _ban_dict->reload();
     }
 
+    if (_rsingle_dict)
+    {
+        _rsingle_dict->reload();
+    }
+
+    if (_rquoation_dict)
+    {
+        _rquoation_dict->reload();
+    }
+
     //if (_hsingle_dict->need_reload())
     //{
         //_hsingle_dict->reload();
@@ -193,6 +230,10 @@ int proc_data::dump()
 
     _ban_dict->dump();
 
+    _rsingle_dict->dump();
+
+    _rquoation_dict->dump();
+
     //_hsingle_dict->dump();
 
     //_hquoation_dict->dump();
@@ -210,6 +251,10 @@ int proc_data::destroy()
     _finance_dict->destroy();
 
     _ban_dict->destroy();
+
+    _rsingle_dict->destroy();
+
+    _rquoation_dict->destroy();
 
     //_hsingle_dict->destroy();
 

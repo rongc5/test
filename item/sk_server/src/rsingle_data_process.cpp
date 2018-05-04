@@ -62,12 +62,10 @@ void rsingle_data_process::msg_recv_finish()
         return;
     }
 
-    auto it = p_data->_single_dict.find(_id);
-    if (it == p_data->_single_dict.end())
+    auto it = p_data->_rsingle_dict->current()->_id_dict.find(_id);
+    if (it == p_data->_rsingle_dict->current()->_id_dict.end())
     {
-        ToBufferMgr<std::deque<single_t> > tq;
-        p_data->_single_dict[_id] = tq;
-        it = p_data->_single_dict.find(_id);
+        return;
     }
 
     single_t * qt = it->second.idle();

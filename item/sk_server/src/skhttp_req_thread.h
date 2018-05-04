@@ -97,8 +97,14 @@ class skhttp_req_thread:public base_net_thread
             proc_data* p_data = proc_data::instance();
             if (p_data)
             {
-                auto it = p_data->_block_set.find(id);
-                if (it != p_data->_block_set.end())
+                auto it = p_data->_rquoation_dict->current()->_id_dict.find(id);
+                if (it == p_data->_rquoation_dict->current->_id_dict.end())
+                {
+                    LOG_DEBUG("id: %s is not in _rquoation_dict", id.c_str());
+                    return;
+                }
+
+                if (it->second.current()->blocked)
                 {
                     LOG_DEBUG("id: %s is blocked", id.c_str());
                     return;

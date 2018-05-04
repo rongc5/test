@@ -62,12 +62,10 @@ void rquotation_data_process::msg_recv_finish()
         return;
     }
 
-    auto it = p_data->_quotation_dict.find(_id);
-    if (it == p_data->_quotation_dict.end())
+    auto it = p_data->_quotation_dict->current()->_id_dict.find(_id);
+    if (it == p_data->_quotation_dict->current()->_id_dict.end())
     {
-        ToBufferMgr<quotation_t> tq;
-        p_data->_quotation_dict[_id] = tq;
-        it = p_data->_quotation_dict.find(_id);
+        return;
     }
 
     quotation_t * qt = it->second.idle();
@@ -88,7 +86,7 @@ void rquotation_data_process::msg_recv_finish()
 
     if (qt->start <= 1)
     {
-        p_data->_block_set.insert(_id);
+        qt->blocked = true;
     }
 
 

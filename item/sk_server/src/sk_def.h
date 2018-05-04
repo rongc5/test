@@ -24,7 +24,12 @@ struct finance_t
     uint32_t value;
     uint32_t cir_value;
 
-    finance_t()
+    void finance_t()
+    {
+        reset();
+    }
+
+    reset()
     {
         mgxj = 0;
         mgsy = 0;
@@ -54,6 +59,11 @@ struct single_t
     std::string id;
     std::vector<int> singles;
 
+    single_t()
+    {
+        reset();
+    }
+
     void reset()
     {
         singles.clear();
@@ -64,6 +74,11 @@ struct single_t
 struct single_deque
 {
     std::deque<single_t> s_deque;
+
+    single_deque()
+    {
+        reset();
+    }
 
     void reset()
     {
@@ -108,6 +123,12 @@ struct quotation_t
     float range_percent;
 
     float total_price;
+    bool blocked;
+
+    quotation_t()
+    {
+        reset();
+    }
 
     void reset()
     {
@@ -128,6 +149,7 @@ struct quotation_t
         swing = 0;
         change_rate = 0;
         range_percent = 0;
+        blocked = false;
     }
 };
 

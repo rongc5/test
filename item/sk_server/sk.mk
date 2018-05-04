@@ -19,6 +19,8 @@ CC  = g++ $(CPPFLAGS)
 
 
 OBJ	= $(LOC_DIR)/main.o     \
+	  $(LOC_DIR)/real_single_dict.o \
+	  $(LOC_DIR)/real_quotation_dict.o \
 	  $(LOC_DIR)/ban_dict.o \
 	  $(LOC_DIR)/finance_dict.o \
 	  $(LOC_DIR)/id_dict.o \
