@@ -11,6 +11,8 @@
 #include "proc_data.h"
 #include "common_domain.h"
 #include "sk_conf.h"
+#include "real_single_dict.h"
+
 
 rsingle_data_process::rsingle_data_process(http_base_process * _p_process):http_base_data_process(_p_process)
 {
@@ -49,18 +51,13 @@ void rsingle_data_process::msg_recv_finish()
     
     std::vector<std::string> strVec;
     SplitString(_recv_buf.c_str(), "=", &strVec, SPLIT_MODE_ONE);
-    if (strVec.size() >= 2)
+    if (strVec.size() < 2)
     {
-        std::string value = trim(strVec[1].c_str(), ";\n");
-        SplitString(value.c_str(), "~", &strVec, SPLIT_MODE_ALL);
+        return;
     }
 
     _recv_buf.clear();
     proc_data * p_data = proc_data::instance();
-    if (strVec.size() <= 45)
-    {
-        return;
-    }
 
     auto it = p_data->_rsingle_dict->current()->_id_dict.find(_id);
     if (it == p_data->_rsingle_dict->current()->_id_dict.end())
@@ -68,27 +65,34 @@ void rsingle_data_process::msg_recv_finish()
         return;
     }
 
-    single_t * qt = it->second.idle();
+    single_deque * st = it->second.idle();
+    std::vector<int> single;
+    //不是标准json
     
-    qt->name = strVec[1];
-    qt->start = atof(strVec[5].c_str());
-    qt->end = atof(strVec[3].c_str());
-    qt->high = atof(strVec[33].c_str());
-    qt->low = atof(strVec[34].c_str());
-    qt->last_closed = atof(strVec[4].c_str());
-    qt->vol = atoi(strVec[36].c_str());
-    qt->sell_vol = atoi(strVec[8].c_str());
-    qt->buy_vol = atoi(strVec[7].c_str());
-    qt->swing = atof(strVec[43].c_str());
-    qt->change_rate = atof(strVec[38].c_str());
-    qt->range_percent = atof(strVec[32].c_str());
-    qt->total_price = atoi(strVec[37].c_str());
+    int ttmp;
+    std::vector<std::string> ssVec;
+    SplitString(strVec[1].c_str(), ",", &ssVec, SPLIT_MODE_ALL);
+    
 
-    if (qt->start <= 1)
+    for (uint32_t i = 3; i < ssVec.size(); i++)
     {
-        p_data->_block_set.insert(_id);
+        SplitString(ssVec[i].c_str(), ",", &strVec, SPLIT_MODE_ALL);
+        if (strVec.size() >= 7)
+        {
+            ttmp = atoi(strVec[4]) - atoi(strVec[5]);
+            single.push_back(ttmp);
+        }
+    }
+    if (single.empty())
+    {
+        return;
     }
 
+
+    if (st->empty() || *(st->rbegin())[0] != single[0])
+    {
+        st->push_back(single);
+    }
 
     it->second.idle_2_current();
 

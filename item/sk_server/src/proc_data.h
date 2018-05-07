@@ -3,16 +3,14 @@
 
 #include "base_reload.h"
 #include "sk_conf.h"
-#include "base_net_thread.h"
-#include "common_util.h"
+#include "real_single_dict.h"
+#include "real_quotation_dict.h"
 
 class ua_dict;
 class strategy_dict;
 class finance_dict;
 class ban_dict;
 class id_dict;
-class real_quotation_dict;
-class real_single_dict;
 class proc_data:public reload_inf
 {
     public:
@@ -52,6 +50,7 @@ class proc_data:public reload_inf
 
     public:
         //search index;
+        ToBufferMgr<std::unordered_set<std::string, str_hasher> > _block_set;
 
     private:
         static proc_data* _singleton;

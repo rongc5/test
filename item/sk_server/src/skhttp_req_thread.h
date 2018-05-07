@@ -12,6 +12,8 @@
 #include "ua_dict.h"
 #include "id_dict.h"
 #include "common_obj_container.h"
+#include "real_quotation_dict.h"
+#include "rsingle_data_process.h"
 
 class skhttp_req_thread:public base_net_thread
 {
@@ -36,6 +38,7 @@ class skhttp_req_thread:public base_net_thread
                 if (!_id_index)
                 {
                     req_real_quotation("sz002285");
+                    req_real_single("sz002285");
                     _id_index += 1;
                 }
                 return;
@@ -45,6 +48,7 @@ class skhttp_req_thread:public base_net_thread
                 {
                     std::string id = id_dic->_id_vec[_id_index];
                     req_real_quotation(id);
+                    req_real_single(id);
                     _id_index++;
                 }
                 else
@@ -97,17 +101,22 @@ class skhttp_req_thread:public base_net_thread
             proc_data* p_data = proc_data::instance();
             if (p_data)
             {
-                auto it = p_data->_rquoation_dict->current()->_id_dict.find(id);
-                if (it == p_data->_rquoation_dict->current->_id_dict.end())
                 {
-                    LOG_DEBUG("id: %s is not in _rquoation_dict", id.c_str());
-                    return;
+                    auto it = p_data->_rquoation_dict->current()->_id_dict.find(id);
+                    if (it == p_data->_rquoation_dict->current()->_id_dict.end())
+                    {
+                        LOG_DEBUG("id: %s is not in _rquoation_dict", id.c_str());
+                        return;
+                    }
                 }
 
-                if (it->second.current()->blocked)
                 {
-                    LOG_DEBUG("id: %s is blocked", id.c_str());
-                    return;
+                    auto it = p_data->_block_set.current()->find(id);
+                    if (it != p_data->_block_set.current()->end())
+                    {
+                        LOG_DEBUG("id: %s is blocked", id.c_str());
+                        return;
+                    }
                 }
 
                 std::map<std::string, std::string> headers;
@@ -117,7 +126,38 @@ class skhttp_req_thread:public base_net_thread
 
                 rquotation_data_process::gen_net_obj(id, get_net_container(), headers);
             }
+        }
 
+        void req_real_single(const std::string & id)
+        {
+            proc_data* p_data = proc_data::instance();
+            if (p_data)
+            {
+                {
+                    auto it = p_data->_rsingle_dict->current()->_id_dict.find(id);
+                    if (it == p_data->_rsingle_dict->current()->_id_dict.end())
+                    {
+                        LOG_DEBUG("id: %s is not in _rsingle_dict", id.c_str());
+                        return;
+                    }
+                }
+
+                {
+                    auto it = p_data->_block_set.current()->find(id);
+                    if (it != p_data->_block_set.current()->end())
+                    {
+                        LOG_DEBUG("id: %s is blocked", id.c_str());
+                        return;
+                    }
+                }
+
+                std::map<std::string, std::string> headers;
+                ua_dict * ua_dic = p_data->_ua_dict->current();
+
+                headers.insert(std::make_pair("User-Agent", ua_dic->_ua_vec[_id_index % ua_dic->_ua_vec.size()]));
+
+                rsingle_data_process::gen_net_obj(id, get_net_container(), headers);
+            }
         }
 
         virtual void handle_timeout(timer_msg & t_msg)

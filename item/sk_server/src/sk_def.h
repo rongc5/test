@@ -24,12 +24,12 @@ struct finance_t
     uint32_t value;
     uint32_t cir_value;
 
-    void finance_t()
+    finance_t()
     {
         reset();
     }
 
-    reset()
+    void reset()
     {
         mgxj = 0;
         mgsy = 0;
@@ -54,26 +54,9 @@ struct ban_t
     std::string date;
 };
 
-struct single_t
-{
-    std::string id;
-    std::vector<int> singles;
-
-    single_t()
-    {
-        reset();
-    }
-
-    void reset()
-    {
-        singles.clear();
-        id.clear();
-    }
-};
-
 struct single_deque
 {
-    std::deque<single_t> s_deque;
+    std::deque<std::vector<int> > s_deque;
 
     single_deque()
     {
@@ -84,7 +67,7 @@ struct single_deque
     {
         s_deque.clear();
     }
-}
+};
 
 struct last_single_t
 {

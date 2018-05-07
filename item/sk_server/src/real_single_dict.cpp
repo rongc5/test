@@ -44,7 +44,7 @@ int real_single_dict::load()
 
         ToBufferMgr<single_deque> st;
         std::string str = std::string(ptr);
-        _id_dict[str] = qt;
+        _id_dict[str] = st;
     }
 
     fclose(fp);

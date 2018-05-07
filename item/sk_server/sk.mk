@@ -3,7 +3,7 @@ INC_DIR=${HOME_DIR}include
 LIB_DIR=$(HOME_DIR)/lib
 LOC_DIR=./src
 #JSON_DIR=${HOME_DIR}json 
-JSON_DIR=./
+JSON_DIR=./json/rapidjson
 
 INCLUDE = -I./${INC_DIR}/ -I./$(JSON_DIR)
 
@@ -29,6 +29,7 @@ OBJ	= $(LOC_DIR)/main.o     \
 	  $(LOC_DIR)/sk_conf.o \
 	  $(LOC_DIR)/proc_data.o \
 	  $(LOC_DIR)/rquotation_data_process.o \
+	  $(LOC_DIR)/rsingle_data_process.o \
 
 
 AR=ar

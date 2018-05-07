@@ -11,6 +11,7 @@
 #include "proc_data.h"
 #include "common_domain.h"
 #include "sk_conf.h"
+#include "real_quotation_dict.h"
 
 rquotation_data_process::rquotation_data_process(http_base_process * _p_process):http_base_data_process(_p_process)
 {
@@ -62,9 +63,10 @@ void rquotation_data_process::msg_recv_finish()
         return;
     }
 
-    auto it = p_data->_quotation_dict->current()->_id_dict.find(_id);
-    if (it == p_data->_quotation_dict->current()->_id_dict.end())
+    auto it = p_data->_rquoation_dict->current()->_id_dict.find(_id);
+    if (it == p_data->_rquoation_dict->current()->_id_dict.end())
     {
+        LOG_WARNING("id: %s is not in _quotation_dict", _id.c_str());
         return;
     }
 
@@ -87,6 +89,7 @@ void rquotation_data_process::msg_recv_finish()
     if (qt->start <= 1)
     {
         qt->blocked = true;
+        p_data->_block_set.idle()->insert(_id);
     }
 
 

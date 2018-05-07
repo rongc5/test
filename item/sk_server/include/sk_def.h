@@ -26,6 +26,11 @@ struct finance_t
 
     finance_t()
     {
+        reset();
+    }
+
+    void reset()
+    {
         mgxj = 0;
         mgsy = 0;
 
@@ -51,20 +56,33 @@ struct ban_t
 
 struct single_t
 {
-    std::deque<uint32_t> single_in;
-    std::deque<uint32_t> single_out;
-    std::deque<uint32_t> single_inflow;
-};
-
-struct real_single
-{
     std::string id;
-    std::vector<single_t> re_single;
+    std::vector<int> singles;
+
+    single_t()
+    {
+        reset();
+    }
 
     void reset()
     {
-        re_single.clear();
+        singles.clear();
         id.clear();
+    }
+};
+
+struct single_deque
+{
+    std::deque<single_t> s_deque;
+
+    single_deque()
+    {
+        reset();
+    }
+
+    void reset()
+    {
+        s_deque.clear();
     }
 };
 
@@ -105,6 +123,12 @@ struct quotation_t
     float range_percent;
 
     float total_price;
+    bool blocked;
+
+    quotation_t()
+    {
+        reset();
+    }
 
     void reset()
     {
@@ -125,6 +149,7 @@ struct quotation_t
         swing = 0;
         change_rate = 0;
         range_percent = 0;
+        blocked = false;
     }
 };
 
