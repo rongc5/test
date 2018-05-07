@@ -42,7 +42,7 @@ int real_single_dict::load()
         if (ptr == NULL || *ptr == '\0'|| *ptr == '#')
             continue;
 
-        ToBufferMgr<single_deque> st;
+        ToBufferMgr<std::deque<std::vector<int> > > st;
         std::string str = std::string(ptr);
         _id_dict[str] = st;
     }
@@ -57,7 +57,7 @@ int real_single_dict::load()
 
 int real_single_dict::reload()
 {
-    std::unordered_map<std::string, ToBufferMgr<single_deque>,str_hasher> tmp;
+    std::unordered_map<std::string, ToBufferMgr<std::deque<std::vector<int> > >,str_hasher> tmp;
     _id_dict.swap(tmp);
     return load();
 }

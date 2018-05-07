@@ -179,6 +179,7 @@ class skhttp_req_thread:public base_net_thread
         }
 
     protected:
+        std::string _req_date;
         uint32_t _id_index;
         bool _real_req;
 };

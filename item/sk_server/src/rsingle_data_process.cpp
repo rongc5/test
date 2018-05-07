@@ -65,7 +65,7 @@ void rsingle_data_process::msg_recv_finish()
         return;
     }
 
-    single_deque * st = it->second.idle();
+    std::deque<std::vector<int> > * st = it->second.idle();
     std::vector<int> single;
     //不是标准json
     
@@ -79,7 +79,7 @@ void rsingle_data_process::msg_recv_finish()
         SplitString(ssVec[i].c_str(), ",", &strVec, SPLIT_MODE_ALL);
         if (strVec.size() >= 7)
         {
-            ttmp = atoi(strVec[4]) - atoi(strVec[5]);
+            ttmp = atoi(strVec[4].c_str()) - atoi(strVec[5].c_str());
             single.push_back(ttmp);
         }
     }
@@ -89,7 +89,7 @@ void rsingle_data_process::msg_recv_finish()
     }
 
 
-    if (st->empty() || *(st->rbegin())[0] != single[0])
+    if (st->empty() || (*(st->rbegin()))[0] != single[0])
     {
         st->push_back(single);
     }

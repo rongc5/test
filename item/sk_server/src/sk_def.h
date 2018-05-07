@@ -54,21 +54,6 @@ struct ban_t
     std::string date;
 };
 
-struct single_deque
-{
-    std::deque<std::vector<int> > s_deque;
-
-    single_deque()
-    {
-        reset();
-    }
-
-    void reset()
-    {
-        s_deque.clear();
-    }
-};
-
 struct last_single_t
 {
     uint32_t single_in;
