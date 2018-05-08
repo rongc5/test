@@ -66,6 +66,7 @@ void rsingle_data_process::msg_recv_finish()
     }
 
     std::deque<std::vector<int> > * st = it->second.idle();
+    *st = *it->second.current();
     std::vector<int> single;
     //不是标准json
     
@@ -96,7 +97,7 @@ void rsingle_data_process::msg_recv_finish()
 
     it->second.idle_2_current();
 
-    //throw CMyCommonException("msg_recv_finish");
+    throw CMyCommonException("msg_recv_finish");
 }
 
 std::string * rsingle_data_process::get_send_head()
@@ -184,7 +185,7 @@ void rsingle_data_process::gen_net_obj(std::string id, common_obj_container * ne
     req_head._headers.insert(std::make_pair("Host", u_info.domain));
     req_head._headers.insert(std::make_pair("Accept", "*/*"));
 
-    req_head._headers["Connection"] = "close";
+    //req_head._headers["Connection"] = "close";
 
     connect->connect();
     connect->set_net_container(net_container);

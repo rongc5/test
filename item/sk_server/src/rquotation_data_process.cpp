@@ -12,6 +12,7 @@
 #include "common_domain.h"
 #include "sk_conf.h"
 #include "real_quotation_dict.h"
+#include "id_dict.h"
 
 rquotation_data_process::rquotation_data_process(http_base_process * _p_process):http_base_data_process(_p_process)
 {
@@ -95,7 +96,7 @@ void rquotation_data_process::msg_recv_finish()
 
     it->second.idle_2_current();
 
-    //throw CMyCommonException("msg_recv_finish");
+    throw CMyCommonException("msg_recv_finish");
 }
 
 std::string * rquotation_data_process::get_send_head()
@@ -188,7 +189,7 @@ void rquotation_data_process::gen_net_obj(std::string id, common_obj_container *
     req_head._headers.insert(std::make_pair("Accept", "*/*"));
 
     req_head._headers["Referer"] = refer;
-    req_head._headers["Connection"] = "close";
+    //req_head._headers["Connection"] = "close";
 
     connect->connect();
     connect->set_net_container(net_container);
@@ -226,6 +227,14 @@ void rquotation_data_process::destroy()
         {
             common_obj_container * net_container = connect->get_net_container();
             net_container->get_domain()->delete_domain(_url_info.domain);
+        }
+
+        proc_data* p_data = proc_data::instance();
+        id_dict * id_dic = p_data->_id_dict->current(); 
+        if (id_dic && id_dic->_id_vec.size() && id_dic->_id_vec[id_dic->_id_vec.size() - 1] == _id)
+        {
+            p_data->_block_set.idle_2_current();
+            LOG_DEBUG("_block_set idle_2_current");
         }
     }
 }

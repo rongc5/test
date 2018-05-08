@@ -23,6 +23,7 @@ class skhttp_req_thread:public base_net_thread
         {
             _id_index = 0;
             _real_req = true;
+            _is_first = true;
         }
 
         virtual void handle_msg(std::shared_ptr<normal_msg> & p_msg)
@@ -35,24 +36,32 @@ class skhttp_req_thread:public base_net_thread
             proc_data* p_data = proc_data::instance();
             if (_real_req && p_data && p_data->_id_dict)
             {
-                if (!_id_index)
+                //if (!_id_index)
+                //{
+                    //req_real_quotation("sz002285");
+                    //req_real_single("sz002285");
+                    //_id_index += 1;
+                //}
+                //return;
+                if (_base_container && _base_container->size() > p_data->_conf->max_reqhttp_num && p_data->_conf->max_reqhttp_num)
                 {
-                    req_real_quotation("sz002285");
-                    req_real_single("sz002285");
-                    _id_index += 1;
+                    //LOG_DEBUG("the _base_container size > %d", p_data->_conf->max_reqhttp_num);
+                    return;
                 }
-                return;
+                
 
                 id_dict * id_dic = p_data->_id_dict->current();
                 if (id_dic && _id_index < id_dic->_id_vec.size())
                 {
                     std::string id = id_dic->_id_vec[_id_index];
+                    LOG_DEBUG("%d %d %s", _id_index, id_dic->_id_vec.size(), id.c_str());
                     req_real_quotation(id);
                     req_real_single(id);
                     _id_index++;
                 }
                 else
                 {
+                    _is_first = false;
                     real_timer_start();
                 }
             }
@@ -69,21 +78,47 @@ class skhttp_req_thread:public base_net_thread
 
                 t_msg->_timer_type = TIMER_TYPE_REAL_REQ;
                 //t_msg._time_length = p_data->_conf->req_interval_second;
-                t_msg->_time_length = 3;
+                t_msg->_time_length = 300000;
                 t_msg->_obj_id = OBJ_ID_THREAD;
                 add_timer(t_msg);
             }
         }
 
+        void first_in_day()
+        {
+            proc_data* p_data = proc_data::instance();
+            if (p_data && p_data->_conf)
+            {
+                std::unordered_set<std::string, str_hasher> t_block;
+                p_data->_block_set.idle()->swap(t_block);
+                p_data->_block_set.idle_2_current();
+                _is_first = true;
+            }
+
+        }
+
         bool is_real_time()
         {
+            char date[SIZE_LEN_64] = {'\0'};
             char time_str[SIZE_LEN_64] = {'\0'};
+
             get_timestr(time_str, sizeof(time_str), "%H:%M:%S");
+            get_timestr(date, sizeof(date), "%Y%m%d");
+
 
             proc_data* p_data = proc_data::instance();
 
             if (strlen(time_str) && p_data && p_data->_conf)
             {
+                if (strncmp(date, _req_date.c_str(), _req_date.size()) &&
+                        strncmp(time_str, p_data->_conf->real_morning_stime.c_str(), strlen("09:30")) > 0)
+                {
+                    _req_date.assign(date);
+                    first_in_day();
+
+                    return true;
+                }
+
                 if (strncmp(time_str, p_data->_conf->real_morning_stime.c_str(), strlen("09:30")) > 0 &&
                         strncmp(time_str, p_data->_conf->real_morning_etime.c_str(), strlen("09:30")) < 0)
                     return true;
@@ -112,7 +147,7 @@ class skhttp_req_thread:public base_net_thread
 
                 {
                     auto it = p_data->_block_set.current()->find(id);
-                    if (it != p_data->_block_set.current()->end())
+                    if (!_is_first && it != p_data->_block_set.current()->end())
                     {
                         LOG_DEBUG("id: %s is blocked", id.c_str());
                         return;
@@ -144,7 +179,7 @@ class skhttp_req_thread:public base_net_thread
 
                 {
                     auto it = p_data->_block_set.current()->find(id);
-                    if (it != p_data->_block_set.current()->end())
+                    if (!_is_first && it != p_data->_block_set.current()->end())
                     {
                         LOG_DEBUG("id: %s is blocked", id.c_str());
                         return;
@@ -182,6 +217,7 @@ class skhttp_req_thread:public base_net_thread
         std::string _req_date;
         uint32_t _id_index;
         bool _real_req;
+        bool _is_first;
 };
 
 

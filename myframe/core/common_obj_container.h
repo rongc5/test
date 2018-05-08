@@ -37,6 +37,8 @@ class common_obj_container
 
         uint32_t get_thread_index();
 
+        uint32_t size();
+
     protected:
         const ObjId & gen_id_str();
 

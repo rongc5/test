@@ -30,6 +30,7 @@ OBJ	= $(LOC_DIR)/main.o     \
 	  $(LOC_DIR)/proc_data.o \
 	  $(LOC_DIR)/rquotation_data_process.o \
 	  $(LOC_DIR)/rsingle_data_process.o \
+	  $(LOC_DIR)/skhttp_res_data_process.o \
 
 
 AR=ar

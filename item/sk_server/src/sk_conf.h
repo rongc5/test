@@ -30,9 +30,6 @@ class sk_conf: public reload_inf
         std::string history_quotation_path;
         std::string history_quotation_file;
 
-
-        uint32_t http_req_thread_num;
-
         uint32_t http_server_port;
         uint32_t http_server_thread_num;
 
@@ -43,6 +40,8 @@ class sk_conf: public reload_inf
 
         uint32_t req_interval_second;
         uint32_t req_http_timeout;
+
+        uint32_t max_reqhttp_num;
 
         LogType log_type;
 

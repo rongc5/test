@@ -246,28 +246,20 @@ int log_thread::RECV(int fd, void *buf, size_t len)
 size_t log_thread::process_recv_buf(const char *buf, const size_t len)
 {
     size_t k = len /sizeof(CHANNEL_MSG_TAG);
-    size_t i = 0, m = 0;
-    bool flag = true;
+    size_t i = 0;
     std::deque<std::shared_ptr<log_msg> >::iterator it;
-    for (; m < 2; m++) {
-        {
-            std::lock_guard<std::mutex> lck (_mutex[_current]);
-            for (it = _queue[_current].begin(); it != _queue[_current].end() && i < k;) {
-                handle_msg(*it);
-                it = _queue[_current].erase(it);
-                i++;
-            }
 
-            if (_queue[_current].begin() == _queue[_current].end()){
-                _current = 1 - _current;
-                flag = false;
-            }
-        }
-
-        if (flag){
-            break;
-        }
+    std::lock_guard<std::mutex> lck (_mutex[_current]);
+    for (it = _queue[_current].begin(); it != _queue[_current].end() && i < k;) {
+        handle_msg(*it);
+        it = _queue[_current].erase(it);
+        i++;
     }
+
+    if (_queue[_current].begin() == _queue[_current].end()){
+        _current = 1 - _current;
+    }
+
     k =  i * sizeof(CHANNEL_MSG_TAG);
 
     return k;

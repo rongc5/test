@@ -3,8 +3,6 @@
 
 sk_conf::sk_conf(const char * sk_conf)
 {
-    http_req_thread_num = 3;
-    
     http_server_port = 8080;
     http_server_thread_num = 3;
 
@@ -14,6 +12,7 @@ sk_conf::sk_conf(const char * sk_conf)
 
     req_interval_second = 20;
     req_http_timeout = 300;
+    max_reqhttp_num = 10;
 
     log_type = LOGDEBUG;
 
@@ -47,9 +46,6 @@ int sk_conf::load()
     //cfg.get_vale("server", "history_quotation_path", history_quotation_path);
     //cfg.get_vale("server", "history_quotation_file", history_quotation_file);
 
-    cfg.get_vale("server", "http_req_thread_num", tmp);
-    http_req_thread_num = atoi(tmp.c_str());
-
     cfg.get_vale("server", "http_server_port", tmp);
     http_server_port = atoi(tmp.c_str());
 
@@ -69,6 +65,9 @@ int sk_conf::load()
 
     cfg.get_vale("server", "req_http_timeout", tmp);
     req_http_timeout = atoi(tmp.c_str());
+
+    cfg.get_vale("server", "max_reqhttp_num", tmp);
+    max_reqhttp_num = atoi(tmp.c_str());
 
     cfg.get_vale("server", "log_type", tmp);
     int ret = atoi(tmp.c_str());

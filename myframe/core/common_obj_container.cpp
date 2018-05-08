@@ -75,6 +75,10 @@ bool common_obj_container::remove_real_net(std::shared_ptr<base_net_obj> & p_obj
     return true;
 }
 
+uint32_t common_obj_container::size()
+{
+    return _obj_map.size();
+}
 
 bool common_obj_container::insert(std::shared_ptr<base_net_obj> &p_obj)
 {

@@ -6,6 +6,7 @@
 #include "proc_data.h"
 #include "listen_thread.h"
 #include "common_util.h"
+#include "skhttp_res_thread.h"
 
 
 void do_init()
@@ -31,6 +32,18 @@ void do_init()
 
     master_thread->start();
     req_thread->start();
+
+    listen_thread *lthread = new listen_thread();
+    lthread->init("0.0.0.0", conf->http_server_port);
+
+    for (uint32_t i = 0; i<= conf->http_server_thread_num; i++)
+    {
+        skhttp_res_thread * net_thread = new skhttp_res_thread();
+        lthread->add_worker_thread(net_thread->get_thread_index());
+        net_thread->start();
+    }
+
+    lthread->start();
 
     base_thread::join_all_thread();
 }
