@@ -15,6 +15,9 @@ import subprocess
 from time import strftime, localtime
 from datetime import timedelta, date
 import calendar
+import jieba
+import jieba.analyse
+import jieba.posseg as pseg
 
 from bs4 import BeautifulSoup as bsp
 
@@ -24,9 +27,11 @@ user_agent_list = []
 user_agent_dic = {}
 user_agent_cookie = {}
 MAX_RESPONSE_KB = 10*1024
-DATAPATH = '/data3/mingz/.script/stock/data'
+DATAPATH = './data'
 id_all = {}
+stopwords = {}
 
+STOPWORDPATH = './data/stopword'
 
 class Day():
     def __init__(self):
@@ -402,6 +407,108 @@ def load_stockid_brief(id, filename):
 
     return 1
 
+def load_business_scope_split():
+    filename = '%s/%s' % (DATAPATH, 'business_scope_dict')
+    if not os.path.isfile(filename):
+        return
+
+    split_file = '%s/%s' % (DATAPATH, 'business_scope_dict_split')
+    file = open(filename)
+    while 1:
+        line = file.readline().strip()
+        if not line:
+            break
+
+        items = line.strip('\n').split('\t')
+        if len(items) < 2:
+            continue
+
+        flag = False
+        cmd = ['grep', items[0], split_file]
+        res_str = subprocess.Popen(cmd, stdout=subprocess.PIPE).communicate()[0]
+        if not os.path.isfile(split_file) or not res_str.strip():
+            flag = True
+
+        if not flag:
+            continue
+
+        res_list = []
+        res_list.append(items[0])
+        for i in range(len(items)):
+            if not i:
+                continue
+
+            jieba.analyse.set_stop_words(STOPWORDPATH)
+            cut_list = jieba.analyse.extract_tags(items[i], allowPOS=['n'])
+            #cut_list = jieba.analyse.textrank(items[i].decode('gb18030'), 2)
+            for key in cut_list:
+                if key is not None:
+                    if key.encode('gb18030') not in res_list:
+                        print items[i], key
+                        res_list.append(key.encode('gb18030'))
+
+        if not len(res_list):
+            continue;
+
+        str1 = '\t'.join(res_list)
+        log_write(split_file, str1)
+
+def load_address_split():
+    filename = '%s/%s' % (DATAPATH, 'address_dict')
+    if not os.path.isfile(filename):
+        return
+
+    split_file = '%s/%s' % (DATAPATH, 'address_dict_split')
+    file = open(filename)
+    while 1:
+        line = file.readline().strip()
+        if not line:
+            break
+
+        items = line.strip('\n').split('\t')
+        if len(items) < 2:
+            continue
+
+        flag = False
+        cmd = ['grep', items[0], split_file]
+        res_str = subprocess.Popen(cmd, stdout=subprocess.PIPE).communicate()[0]
+        if not os.path.isfile(split_file) or not res_str.strip():
+            flag = True
+
+        if not flag:
+            continue
+
+        res_list = []
+        res_list.append(items[0])
+        for i in range(len(items)):
+            if not i:
+                continue
+
+            cut_list = pseg.cut(items[i].decode('gb18030'))
+            #print cut_list
+            for key , flag in cut_list:
+                if key is not None and key not  in stopwords:
+                    if flag =='ns' and key.encode('gb18030') not in res_list and len(res_list) < 3:
+                        #print items[i].decode('GBK'), key, flag
+                        res_list.append(key.encode('gb18030'))
+
+        if not len(res_list):
+            continue;
+
+        str1 = '\t'.join(res_list)
+        log_write(split_file, str1)
+
+def load_stopwords():
+    file = open(STOPWORDPATH)
+    while 1:
+        line = file.readline().strip()
+        if not line:
+            break
+        stopwords[line.strip('\r\n').decode('UTF-8')] = line.strip('\r\n').decode('UTF-8')
+    file.close()
+
+    return stopwords
+
 def load_plates(id_dic):
     file_name = DATAPATH
 
@@ -437,5 +544,8 @@ def load_coad_all():
 if __name__ == '__main__':
     load_ua_list()
     load_coad_all()
+    load_stopwords()
     load_plates(id_all)
+    load_address_split()
+    load_business_scope_split()
     #load_stockid_brief('sz002752', '.')

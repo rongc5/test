@@ -15,6 +15,9 @@ import subprocess
 from time import strftime, localtime
 from datetime import timedelta, date
 import calendar
+import jieba
+import jieba.analyse
+
 
 from bs4 import BeautifulSoup as bsp
 
@@ -24,10 +27,19 @@ user_agent_list = []
 user_agent_dic = {}
 user_agent_cookie = {}
 MAX_RESPONSE_KB = 10*1024
-DATAPATH = '/data3/mingz/.script/stock/data/plate_dict'
+
+DATAPATH = './data/plate_dict'
+DATAPATH_SPLIT = './data/plate_dict_split'
+
+#DATAPATH = './plate'
+#DATAPATH_SPLIT = './plate_dict_split'
+
+STOPWORDPATH = './data/stopword'
 id_all = {}
+stopwords = {}
 
 remove_dic = {u'所属概念板块':'', u'备注：此为证监会行业分类':'',  u'所属行业板块':''}
+remove_words = [u'重仓', u'概念', u'持股', u'动态', u'集团', u'及其']
 
 class Day():
     def __init__(self):
@@ -414,11 +426,74 @@ def load_plates(id_dic):
         #index = random.randint(1, 6)
         time.sleep(1)
 
+def load_plates_split():
+    if not os.path.isfile(DATAPATH):
+        return
+
+    file = open(DATAPATH)
+    while 1:
+        line = file.readline().strip()
+        if not line:
+            break
+
+        items = line.strip('\n').split('\t')
+        if len(items) < 2:
+            continue
+
+        flag = False
+        cmd = ['grep', items[0], DATAPATH_SPLIT]
+        res_str = subprocess.Popen(cmd, stdout=subprocess.PIPE).communicate()[0]
+        if not os.path.isfile(DATAPATH_SPLIT) or not res_str.strip():
+            flag = True
+
+        if not flag:
+            continue
+
+        res_list = []
+        res_list.append(items[0])
+        for i in range(len(items)):
+            if not i:
+                continue
+            res_list.append(items[i])
+            #cut_list = jieba.cut(items[i].decode('gb18030'))
+            ##print cut_list
+            #for key in cut_list:
+                #if key is not None and key not  in stopwords:
+                    #print items[i].decode('GBK'), key
+                    #res_list.append(key.encode('gb18030'))
+            jieba.analyse.set_stop_words(STOPWORDPATH)
+            cut_list = jieba.analyse.extract_tags(items[i].decode('gb18030'))
+            #cut_list = jieba.analyse.textrank(items[i].decode('gb18030'), 2)
+            for key in cut_list:
+                if key is not None and key not  in remove_words:
+                    #print items[i].decode('gb18030'), key
+                    if key.encode('gb18030') not in res_list:
+                        res_list.append(key.encode('gb18030'))
+
+        if not len(res_list):
+            continue;
+
+        str1 = '\t'.join(res_list)
+        log_write(DATAPATH_SPLIT, str1)
+
+            ##print(", ".join(cut_list))
+
+def load_stopwords():
+    file = open(STOPWORDPATH)
+    while 1:
+        line = file.readline().strip()
+        if not line:
+            break
+        stopwords[line.strip('\r\n').decode('UTF-8')] = line.strip('\r\n').decode('UTF-8')
+    file.close()
+
+    return stopwords
+
+
 def load_coad_all():
     if not os.path.isfile('code_all'):
         return
 
-    id_list = []
     file = open("code_all")
     while 1:
         line = file.readline().strip()
@@ -431,5 +506,6 @@ def load_coad_all():
 if __name__ == '__main__':
     load_ua_list()
     load_coad_all()
+    #load_stopwords()
     load_plates(id_all)
-    #load_stockid_plate('sz002752', 'plate')
+    load_plates_split()
