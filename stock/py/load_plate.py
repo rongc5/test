@@ -17,6 +17,7 @@ from datetime import timedelta, date
 import calendar
 import jieba
 import jieba.analyse
+import jieba.posseg as pseg
 
 
 from bs4 import BeautifulSoup as bsp
@@ -35,6 +36,7 @@ DATAPATH_SPLIT = './data/plate_dict_split'
 #DATAPATH_SPLIT = './plate_dict_split'
 
 STOPWORDPATH = './data/stopword'
+WORD_CUT_DIRCT_PATH = './data/dict.txt'
 id_all = {}
 stopwords = {}
 
@@ -430,6 +432,7 @@ def load_plates_split():
     if not os.path.isfile(DATAPATH):
         return
 
+    #jieba.set_dictionary(WORD_CUT_DIRCT_PATH)
     file = open(DATAPATH)
     while 1:
         line = file.readline().strip()
@@ -456,17 +459,21 @@ def load_plates_split():
                 continue
             res_list.append(items[i])
             #cut_list = jieba.cut(items[i].decode('gb18030'))
-            ##print cut_list
-            #for key in cut_list:
-                #if key is not None and key not  in stopwords:
+            #cut_list = pseg.cut(items[i].decode('gb18030'), HMM=True)
+            ###print cut_list
+            #for key , flag in cut_list:
+            #    if key is not None and key not  in stopwords and key not  in remove_words:
+            #        if key.encode('gb18030') not in res_list and flag in ["ns", "n", "vn", "nr", "nt", "nz", "eng", "j", "nrt"]:
+            #            print items[i], key.encode('gb18030'), flag
+            #            res_list.append(key.encode('gb18030'))
                     #print items[i].decode('GBK'), key
                     #res_list.append(key.encode('gb18030'))
-            jieba.analyse.set_stop_words(STOPWORDPATH)
-            cut_list = jieba.analyse.extract_tags(items[i].decode('gb18030'))
-            #cut_list = jieba.analyse.textrank(items[i].decode('gb18030'), 2)
+            #jieba.analyse.set_stop_words(STOPWORDPATH)
+            cut_list = jieba.analyse.extract_tags(items[i].decode('gb18030'), allowPOS=["ns", "n", "vn", "nr", "nt", "nz", "eng", "j", "nrt"])
+            ##cut_list = jieba.analyse.textrank(items[i].decode('gb18030'), 2)
             for key in cut_list:
                 if key is not None and key not  in remove_words:
-                    #print items[i].decode('gb18030'), key
+                    print items[i], key.encode('gb18030')
                     if key.encode('gb18030') not in res_list:
                         res_list.append(key.encode('gb18030'))
 
@@ -490,6 +497,21 @@ def load_stopwords():
     return stopwords
 
 
+def add_words():
+    file = open(WORD_CUT_DIRCT_PATH)
+    while 1:
+        line = file.readline().strip()
+        if not line:
+            break
+
+        items = line.split(' ')
+        print len(items)
+        if len(items) < 3:
+            continue
+        print line
+        jieba.add_word(items[0].strip(' '), int(items[1]), items[2])
+    file.close()
+
 def load_coad_all():
     if not os.path.isfile('code_all'):
         return
@@ -506,6 +528,7 @@ def load_coad_all():
 if __name__ == '__main__':
     load_ua_list()
     load_coad_all()
-    #load_stopwords()
-    load_plates(id_all)
+    add_words()
+    load_stopwords()
+    #load_plates(id_all)
     load_plates_split()
