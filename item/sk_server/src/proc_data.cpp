@@ -7,65 +7,99 @@
 #include "real_single_dict.h"
 #include "real_quotation_dict.h"
 #include "proc_data.h"
+#include "address_dict.h"
+#include "plate_dict.h"
 
 int proc_data::init(sk_conf * conf)
 {
     _conf = conf;
     
-    ua_dict *ua_dict1 = new (std::nothrow)ua_dict();
-    ASSERT_WARNING(ua_dict1 != NULL, "allocate ua_dict fail");
-    ua_dict1->init(_conf->ua_path.c_str(), _conf->ua_file.c_str(), _conf->dump_dir.c_str());
-    
-    ua_dict *ua_dict2 = new (std::nothrow)ua_dict();
-    ASSERT_WARNING(ua_dict2 != NULL, "allocate ua_dict fail");
-    ua_dict2->init(_conf->ua_path.c_str(), _conf->ua_file.c_str(), _conf->dump_dir.c_str());
+    {
+        ua_dict *ua_dict1 = new (std::nothrow)ua_dict();
+        ASSERT_WARNING(ua_dict1 != NULL, "allocate ua_dict fail");
+        ua_dict1->init(_conf->ua_path.c_str(), _conf->ua_file.c_str(), _conf->dump_dir.c_str());
 
-    _ua_dict = new (std::nothrow)reload_mgr<ua_dict>(ua_dict1, ua_dict2);
+        ua_dict *ua_dict2 = new (std::nothrow)ua_dict();
+        ASSERT_WARNING(ua_dict2 != NULL, "allocate ua_dict fail");
+        ua_dict2->init(_conf->ua_path.c_str(), _conf->ua_file.c_str(), _conf->dump_dir.c_str());
 
-    id_dict *id_dict1 = new (std::nothrow)id_dict();
-    ASSERT_WARNING(id_dict1 != NULL, "allocate id_dict fail");
-    id_dict1->init(_conf->id_path.c_str(), _conf->id_file.c_str(), _conf->dump_dir.c_str());
-    
-    id_dict *id_dict2 = new (std::nothrow)id_dict();
-    ASSERT_WARNING(id_dict2 != NULL, "allocate id_dict fail");
-    id_dict2->init(_conf->id_path.c_str(), _conf->id_file.c_str(), _conf->dump_dir.c_str());
+        _ua_dict = new (std::nothrow)reload_mgr<ua_dict>(ua_dict1, ua_dict2);
+    }
 
-    _id_dict = new (std::nothrow)reload_mgr<id_dict>(id_dict1, id_dict2);
+    {
+        id_dict *id_dict1 = new (std::nothrow)id_dict();
+        ASSERT_WARNING(id_dict1 != NULL, "allocate id_dict fail");
+        id_dict1->init(_conf->id_path.c_str(), _conf->id_file.c_str(), _conf->dump_dir.c_str());
 
+        id_dict *id_dict2 = new (std::nothrow)id_dict();
+        ASSERT_WARNING(id_dict2 != NULL, "allocate id_dict fail");
+        id_dict2->init(_conf->id_path.c_str(), _conf->id_file.c_str(), _conf->dump_dir.c_str());
 
-    real_quotation_dict *rq_dict1 = new (std::nothrow)real_quotation_dict();
-    ASSERT_WARNING(rq_dict1 != NULL, "allocate id_dict fail");
-    rq_dict1->init(_conf->id_path.c_str(), _conf->id_file.c_str(), _conf->dump_dir.c_str());
-    
-    real_quotation_dict *rq_dict2 = new (std::nothrow)real_quotation_dict();
-    ASSERT_WARNING(rq_dict2 != NULL, "allocate id_dict fail");
-    rq_dict2->init(_conf->id_path.c_str(), _conf->id_file.c_str(), _conf->dump_dir.c_str());
+        _id_dict = new (std::nothrow)reload_mgr<id_dict>(id_dict1, id_dict2);
+    }
 
-    _rquoation_dict = new (std::nothrow)reload_mgr<real_quotation_dict>(rq_dict1, rq_dict2);
+    {
+        real_quotation_dict *rq_dict1 = new (std::nothrow)real_quotation_dict();
+        ASSERT_WARNING(rq_dict1 != NULL, "allocate id_dict fail");
+        rq_dict1->init(_conf->id_path.c_str(), _conf->id_file.c_str(), _conf->dump_dir.c_str());
 
-    real_single_dict *rs_dict1 = new (std::nothrow)real_single_dict();
-    ASSERT_WARNING(rs_dict1 != NULL, "allocate id_dict fail");
-    rs_dict1->init(_conf->id_path.c_str(), _conf->id_file.c_str(), _conf->dump_dir.c_str());
-    
-    real_single_dict *rs_dict2 = new (std::nothrow)real_single_dict();
-    ASSERT_WARNING(rs_dict2 != NULL, "allocate id_dict fail");
-    rs_dict2->init(_conf->id_path.c_str(), _conf->id_file.c_str(), _conf->dump_dir.c_str());
+        real_quotation_dict *rq_dict2 = new (std::nothrow)real_quotation_dict();
+        ASSERT_WARNING(rq_dict2 != NULL, "allocate id_dict fail");
+        rq_dict2->init(_conf->id_path.c_str(), _conf->id_file.c_str(), _conf->dump_dir.c_str());
 
-    _rsingle_dict = new (std::nothrow)reload_mgr<real_single_dict>(rs_dict1, rs_dict2);
+        _rquoation_dict = new (std::nothrow)reload_mgr<real_quotation_dict>(rq_dict1, rq_dict2);
+    }
 
+    {
+        real_single_dict *rs_dict1 = new (std::nothrow)real_single_dict();
+        ASSERT_WARNING(rs_dict1 != NULL, "allocate id_dict fail");
+        rs_dict1->init(_conf->id_path.c_str(), _conf->id_file.c_str(), _conf->dump_dir.c_str());
 
-    strategy_dict *strategy_dict1 = new (std::nothrow)strategy_dict();
-    ASSERT_WARNING(strategy_dict1 != NULL, "allocate strategy_dict fail");
-    strategy_dict1->init(_conf->local_strategy_path.c_str(), _conf->local_strategy_file.c_str(), _conf->dump_dir.c_str());
-    
-    strategy_dict *strategy_dict2 = new (std::nothrow)strategy_dict();
-    ASSERT_WARNING(strategy_dict2 != NULL, "allocate strategy_dict fail");
-    strategy_dict2->init(_conf->local_strategy_path.c_str(), _conf->local_strategy_file.c_str(), _conf->dump_dir.c_str());
+        real_single_dict *rs_dict2 = new (std::nothrow)real_single_dict();
+        ASSERT_WARNING(rs_dict2 != NULL, "allocate id_dict fail");
+        rs_dict2->init(_conf->id_path.c_str(), _conf->id_file.c_str(), _conf->dump_dir.c_str());
 
-    _strategy_dict = new (std::nothrow)reload_mgr<strategy_dict>(strategy_dict1, strategy_dict2);
+        _rsingle_dict = new (std::nothrow)reload_mgr<real_single_dict>(rs_dict1, rs_dict2);
+    }
 
 
+    {
+        strategy_dict *strategy_dict1 = new (std::nothrow)strategy_dict();
+        ASSERT_WARNING(strategy_dict1 != NULL, "allocate strategy_dict fail");
+        strategy_dict1->init(_conf->local_strategy_path.c_str(), _conf->local_strategy_file.c_str(), _conf->dump_dir.c_str());
 
+        strategy_dict *strategy_dict2 = new (std::nothrow)strategy_dict();
+        ASSERT_WARNING(strategy_dict2 != NULL, "allocate strategy_dict fail");
+        strategy_dict2->init(_conf->local_strategy_path.c_str(), _conf->local_strategy_file.c_str(), _conf->dump_dir.c_str());
+
+        _strategy_dict = new (std::nothrow)reload_mgr<strategy_dict>(strategy_dict1, strategy_dict2);
+    }
+
+
+    {
+        address_dict *addr_dict1 = new (std::nothrow)address_dict();
+        ASSERT_WARNING(addr_dict1 != NULL, "allocate address_dict fail");
+        addr_dict1->init(_conf->address_dict_path.c_str(), _conf->address_dict_file.c_str(), _conf->dump_dir.c_str());
+
+        address_dict *addr_dict2 = new (std::nothrow)address_dict();
+        ASSERT_WARNING(addr_dict2 != NULL, "allocate address_dict fail");
+        addr_dict2->init(_conf->address_dict_path.c_str(), _conf->address_dict_file.c_str(), _conf->dump_dir.c_str());
+
+        _address_dict = new (std::nothrow)reload_mgr<address_dict>(addr_dict1, addr_dict2);
+    }
+
+
+    {
+        plate_dict *addr_dict1 = new (std::nothrow)plate_dict();
+        ASSERT_WARNING(addr_dict1 != NULL, "allocate plate_dict fail");
+        addr_dict1->init(_conf->plate_dict_path.c_str(), _conf->plate_dict_file.c_str(), _conf->dump_dir.c_str());
+
+        plate_dict *addr_dict2 = new (std::nothrow)plate_dict();
+        ASSERT_WARNING(addr_dict2 != NULL, "allocate plate_dict fail");
+        addr_dict2->init(_conf->plate_dict_path.c_str(), _conf->plate_dict_file.c_str(), _conf->dump_dir.c_str());
+
+        _plate_dict = new (std::nothrow)reload_mgr<plate_dict>(addr_dict1, addr_dict2);
+    }
 
     //id_rdict *id_dict1 = new (std::nothrow)id_rdict();
     //ASSERT_WARNING(id_dict1 != NULL, "allocate id_dict fail");
@@ -159,6 +193,10 @@ int proc_data::load()
 
     _rquoation_dict->load();
 
+    _address_dict->load();
+
+    _plate_dict->load();
+
     //_hsingle_dict->load();
 
     //_hquoation_dict->load();
@@ -202,6 +240,16 @@ int proc_data::reload()
         _rquoation_dict->reload();
     }
 
+    if (_address_dict)
+    {
+        _address_dict->reload();
+    }
+
+    if (_plate_dict)
+    {
+        _plate_dict->reload();
+    }
+
     //if (_hsingle_dict->need_reload())
     //{
         //_hsingle_dict->reload();
@@ -234,6 +282,10 @@ int proc_data::dump()
 
     _rquoation_dict->dump();
 
+    _address_dict->dump();
+
+    _plate_dict->dump();
+
     //_hsingle_dict->dump();
 
     //_hquoation_dict->dump();
@@ -255,6 +307,10 @@ int proc_data::destroy()
     _rsingle_dict->destroy();
 
     _rquoation_dict->destroy();
+
+    _address_dict->destroy();
+
+    _plate_dict->destroy();
 
     //_hsingle_dict->destroy();
 

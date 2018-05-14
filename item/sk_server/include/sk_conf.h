@@ -30,6 +30,13 @@ class sk_conf: public reload_inf
         std::string history_quotation_path;
         std::string history_quotation_file;
 
+        std::string plate_dict_path;
+        std::string plate_dict_file;
+
+        std::string address_dict_path;
+        std::string address_dict_file;
+
+
         uint32_t http_server_port;
         uint32_t http_server_thread_num;
 

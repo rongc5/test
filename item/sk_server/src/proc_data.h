@@ -11,6 +11,8 @@ class strategy_dict;
 class finance_dict;
 class ban_dict;
 class id_dict;
+class address_dict;
+class plate_dict;
 class proc_data:public reload_inf
 {
     public:
@@ -28,13 +30,16 @@ class proc_data:public reload_inf
     public:
         reload_mgr<ua_dict> * _ua_dict;
         reload_mgr<id_dict> * _id_dict;
-        //reload_mgr<real_rdict> * _real_dict;
 
         reload_mgr<strategy_dict> * _strategy_dict;
 
         reload_mgr<finance_dict> * _finance_dict;
 
         reload_mgr<ban_dict> * _ban_dict;
+
+        reload_mgr<address_dict> * _address_dict;
+
+        reload_mgr<plate_dict> * _plate_dict;
         
         reload_mgr<real_single_dict> * _rsingle_dict;
 

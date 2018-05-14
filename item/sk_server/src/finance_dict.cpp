@@ -66,6 +66,161 @@ int finance_dict::load()
         ft.time_str = tmp_vec[12];
         
         _id_dict.insert(std::make_pair(ft.id, ft));
+
+        {
+            auto iii =  _pe_index.find(ft.pe);
+            if (iii != _pe_index.end())
+            {
+                iii->second.push_back(ft.id);
+            }   
+            else
+            {   
+                std::vector<std::string> id_vec;
+                id_vec.push_back(ft.id);
+                _pe_index.insert(std::make_pair(ft.pe, id_vec));
+            }
+        }
+
+        {
+            auto iii =  _pb_index.find(ft.pb);
+            if (iii != _pb_index.end())
+            {
+                iii->second.push_back(ft.id);
+            }   
+            else
+            {   
+                std::vector<std::string> id_vec;
+                id_vec.push_back(ft.id);
+                _pb_index.insert(std::make_pair(ft.pb, id_vec));
+            }
+        }
+
+        {
+            auto iii =  _value_index.find(ft.value);
+            if (iii != _value_index.end())
+            {
+                iii->second.push_back(ft.id);
+            }   
+            else
+            {   
+                std::vector<std::string> id_vec;
+                id_vec.push_back(ft.id);
+                _value_index.insert(std::make_pair(ft.value, id_vec));
+            }
+        }
+
+        {
+            auto iii =  _cir_value_index.find(ft.cir_value);
+            if (iii != _cir_value_index.end())
+            {
+                iii->second.push_back(ft.id);
+            }   
+            else
+            {   
+                std::vector<std::string> id_vec;
+                id_vec.push_back(ft.id);
+                _cir_value_index.insert(std::make_pair(ft.cir_value, id_vec));
+            }
+        }
+
+        {
+            auto iii =  _mgxj_index.find(ft.mgxj);
+            if (iii != _mgxj_index.end())
+            {
+                iii->second.push_back(ft.id);
+            }   
+            else
+            {   
+                std::vector<std::string> id_vec;
+                id_vec.push_back(ft.id);
+                _mgxj_index.insert(std::make_pair(ft.mgxj, id_vec));
+            }
+        }
+
+        {
+            auto iii =  _mgsy_index.find(ft.mgsy);
+            if (iii != _mgsy_index.end())
+            {
+                iii->second.push_back(ft.id);
+            }   
+            else
+            {   
+                std::vector<std::string> id_vec;
+                id_vec.push_back(ft.id);
+                _mgsy_index.insert(std::make_pair(ft.mgsy, id_vec));
+            }
+        }
+
+        {
+            auto iii =  _mgsygr_index.find(ft.mgsygr);
+            if (iii != _mgsygr_index.end())
+            {
+                iii->second.push_back(ft.id);
+            }   
+            else
+            {   
+                std::vector<std::string> id_vec;
+                id_vec.push_back(ft.id);
+                _mgsygr_index.insert(std::make_pair(ft.mgsygr, id_vec));
+            }
+        }
+
+        {
+            auto iii =  _mgxjgr_index.find(ft.mgxjgr);
+            if (iii != _mgxjgr_index.end())
+            {
+                iii->second.push_back(ft.id);
+            }   
+            else
+            {   
+                std::vector<std::string> id_vec;
+                id_vec.push_back(ft.id);
+                _mgxjgr_index.insert(std::make_pair(ft.mgxjgr, id_vec));
+            }
+        }
+
+        {
+            auto iii =  _zysrgr_index.find(ft.zysrgr);
+            if (iii != _zysrgr_index.end())
+            {
+                iii->second.push_back(ft.id);
+            }   
+            else
+            {   
+                std::vector<std::string> id_vec;
+                id_vec.push_back(ft.id);
+                _zysrgr_index.insert(std::make_pair(ft.zysrgr, id_vec));
+            }
+        }
+
+        {
+            auto iii =  _yylrgr_index.find(ft.yylrgr);
+            if (iii != _yylrgr_index.end())
+            {
+                iii->second.push_back(ft.id);
+            }   
+            else
+            {   
+                std::vector<std::string> id_vec;
+                id_vec.push_back(ft.id);
+                _yylrgr_index.insert(std::make_pair(ft.yylrgr, id_vec));
+            }
+        }
+        
+        {
+            auto iii =  _jlrgr_index.find(ft.jlrgr);
+            if (iii != _jlrgr_index.end())
+            {
+                iii->second.push_back(ft.id);
+            }   
+            else
+            {   
+                std::vector<std::string> id_vec;
+                id_vec.push_back(ft.id);
+                _jlrgr_index.insert(std::make_pair(ft.jlrgr, id_vec));
+            }
+        }
+
     }
 
     fclose(fp);
@@ -78,8 +233,66 @@ int finance_dict::load()
 
 int finance_dict::reload()
 {
-    std::unordered_map<std::string, finance_t, str_hasher> tmp;
-    _id_dict.swap(tmp);
+    {
+        std::unordered_map<std::string, finance_t, str_hasher> tmp;
+        _id_dict.swap(tmp);
+    }
+
+    {
+        std::unordered_map<int, std::vector<std::string> > tmp;
+        _pe_index.swap(tmp);
+    }
+
+    {
+        std::unordered_map<int, std::vector<std::string> > tmp;
+        _pb_index.swap(tmp);
+    }
+
+    {
+        std::unordered_map<int, std::vector<std::string> > tmp;
+        _value_index.swap(tmp);
+    }
+
+    {
+        std::unordered_map<int, std::vector<std::string> > tmp;
+        _cir_value_index.swap(tmp);
+    }
+    
+    {
+        std::unordered_map<float, std::vector<std::string> > tmp;
+        _mgxj_index.swap(tmp);
+    }
+
+    {
+        std::unordered_map<float, std::vector<std::string> > tmp;
+        _mgsy_index.swap(tmp);
+    }
+
+    {
+        std::unordered_map<float, std::vector<std::string> > tmp;
+        _mgsygr_index.swap(tmp);
+    }
+
+    {
+        std::unordered_map<float, std::vector<std::string> > tmp;
+        _mgxjgr_index.swap(tmp);
+    }
+
+    {
+        std::unordered_map<float, std::vector<std::string> > tmp;
+        _zysrgr_index.swap(tmp);
+    }
+
+    {
+        std::unordered_map<float, std::vector<std::string> > tmp;
+        _yylrgr_index.swap(tmp);
+    }
+
+    {
+        std::unordered_map<float, std::vector<std::string> > tmp;
+        _jlrgr_index.swap(tmp);
+    }
+
     return load();
 }
 

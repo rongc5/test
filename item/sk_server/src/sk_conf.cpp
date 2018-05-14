@@ -40,6 +40,12 @@ int sk_conf::load()
     cfg.get_vale("server", "local_strategy_path", local_strategy_path);
     cfg.get_vale("server", "local_strategy_file", local_strategy_file);
 
+    cfg.get_vale("server", "plate_dict_path", plate_dict_path);
+    cfg.get_vale("server", "plate_dict_file", plate_dict_file);
+
+    cfg.get_vale("server", "address_dict_path", address_dict_path);
+    cfg.get_vale("server", "address_dict_file", address_dict_file);
+
     //cfg.get_vale("server", "history_single_path", history_single_path);
     //cfg.get_vale("server", "history_single_file", history_single_file);
 

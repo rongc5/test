@@ -26,6 +26,19 @@ class finance_dict:public reload_inf
         time_t _last_load;
     public:
         std::unordered_map<std::string, finance_t, str_hasher> _id_dict;
+
+        std::unordered_map<int, std::vector<std::string> > _pe_index;
+        std::unordered_map<int, std::vector<std::string> > _pb_index;
+        std::unordered_map<int, std::vector<std::string> > _value_index;
+        std::unordered_map<int, std::vector<std::string> > _cir_value_index;
+
+        std::unordered_map<float, std::vector<std::string> > _mgxj_index;
+        std::unordered_map<float, std::vector<std::string> > _mgsy_index;
+        std::unordered_map<float, std::vector<std::string> > _mgsygr_index;
+        std::unordered_map<float, std::vector<std::string> > _mgxjgr_index;
+        std::unordered_map<float, std::vector<std::string> > _zysrgr_index;
+        std::unordered_map<float, std::vector<std::string> > _yylrgr_index;
+        std::unordered_map<float, std::vector<std::string> > _jlrgr_index;
 };
 
 

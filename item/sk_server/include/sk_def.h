@@ -21,8 +21,8 @@ struct finance_t
     int pe;
     int pb;
 
-    uint32_t value;
-    uint32_t cir_value;
+    int value;
+    int cir_value;
 
     finance_t()
     {
