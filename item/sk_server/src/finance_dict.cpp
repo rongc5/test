@@ -239,57 +239,57 @@ int finance_dict::reload()
     }
 
     {
-        std::unordered_map<int, std::vector<std::string> > tmp;
+        std::map<int, std::vector<std::string> > tmp;
         _pe_index.swap(tmp);
     }
 
     {
-        std::unordered_map<int, std::vector<std::string> > tmp;
+        std::map<int, std::vector<std::string> > tmp;
         _pb_index.swap(tmp);
     }
 
     {
-        std::unordered_map<int, std::vector<std::string> > tmp;
+        std::map<int, std::vector<std::string> > tmp;
         _value_index.swap(tmp);
     }
 
     {
-        std::unordered_map<int, std::vector<std::string> > tmp;
+        std::map<int, std::vector<std::string> > tmp;
         _cir_value_index.swap(tmp);
     }
     
     {
-        std::unordered_map<float, std::vector<std::string> > tmp;
+        std::map<float, std::vector<std::string> > tmp;
         _mgxj_index.swap(tmp);
     }
 
     {
-        std::unordered_map<float, std::vector<std::string> > tmp;
+        std::map<float, std::vector<std::string> > tmp;
         _mgsy_index.swap(tmp);
     }
 
     {
-        std::unordered_map<float, std::vector<std::string> > tmp;
+        std::map<float, std::vector<std::string> > tmp;
         _mgsygr_index.swap(tmp);
     }
 
     {
-        std::unordered_map<float, std::vector<std::string> > tmp;
+        std::map<float, std::vector<std::string> > tmp;
         _mgxjgr_index.swap(tmp);
     }
 
     {
-        std::unordered_map<float, std::vector<std::string> > tmp;
+        std::map<float, std::vector<std::string> > tmp;
         _zysrgr_index.swap(tmp);
     }
 
     {
-        std::unordered_map<float, std::vector<std::string> > tmp;
+        std::map<float, std::vector<std::string> > tmp;
         _yylrgr_index.swap(tmp);
     }
 
     {
-        std::unordered_map<float, std::vector<std::string> > tmp;
+        std::map<float, std::vector<std::string> > tmp;
         _jlrgr_index.swap(tmp);
     }
 

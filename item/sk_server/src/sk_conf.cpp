@@ -46,11 +46,17 @@ int sk_conf::load()
     cfg.get_vale("server", "address_dict_path", address_dict_path);
     cfg.get_vale("server", "address_dict_file", address_dict_file);
 
-    //cfg.get_vale("server", "history_single_path", history_single_path);
-    //cfg.get_vale("server", "history_single_file", history_single_file);
+    cfg.get_vale("server", "history_single_path", history_single_path);
+    cfg.get_vale("server", "history_single_file", history_single_file);
 
-    //cfg.get_vale("server", "history_quotation_path", history_quotation_path);
-    //cfg.get_vale("server", "history_quotation_file", history_quotation_file);
+    cfg.get_vale("server", "history_single_day", tmp);
+    history_single_day = atoi(tmp.c_str());
+
+    cfg.get_vale("server", "history_quotation_path", history_quotation_path);
+    cfg.get_vale("server", "history_quotation_file", history_quotation_file);
+
+    cfg.get_vale("server", "history_quotation_day", tmp);
+    history_quotation_day = atoi(tmp.c_str());
 
     cfg.get_vale("server", "http_server_port", tmp);
     http_server_port = atoi(tmp.c_str());
