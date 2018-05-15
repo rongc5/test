@@ -13,14 +13,12 @@ history_single_dict::~history_single_dict()
     destroy();
 }
 
-int history_single_dict::init(const char * path, const char * file, uint32_t day_num, const char *dump_dir)
+int history_single_dict::init(const char * path, const char * file, const char *dump_dir)
 {
     snprintf(_fullpath, sizeof(_fullpath), "%s/%s", path, file);
     snprintf(_dumppath, sizeof(_dumppath), "%s/%s", dump_dir, file);
 
     destroy();
-
-    _day_num = day_num;
 
     return 0;
 }

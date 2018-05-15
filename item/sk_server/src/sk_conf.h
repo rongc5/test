@@ -27,12 +27,8 @@ class sk_conf: public reload_inf
         std::string history_single_path;
         std::string history_single_file;
 
-        uint32_t history_single_day;
-
         std::string history_quotation_path;
         std::string history_quotation_file;
-
-        uint32_t history_quotation_day;
 
         std::string plate_dict_path;
         std::string plate_dict_file;
