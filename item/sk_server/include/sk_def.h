@@ -54,21 +54,6 @@ struct ban_t
     std::string date;
 };
 
-struct last_single_t
-{
-    uint32_t single_in;
-    float in_price;
-
-    uint32_t single_out;
-    float out_price;
-};
-
-struct history_single_t
-{
-    std::string id;
-    std::map<std::string, std::vector<last_single_t> > date_single_map;
-};
-
 
 struct quotation_t
 {

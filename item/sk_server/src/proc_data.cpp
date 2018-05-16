@@ -9,6 +9,7 @@
 #include "proc_data.h"
 #include "address_dict.h"
 #include "plate_dict.h"
+#include "history_single_dict.h"
 
 int proc_data::init(sk_conf * conf)
 {
@@ -113,40 +114,42 @@ int proc_data::init(sk_conf * conf)
 
 
     
-    finance_dict *fin_dict1 = new (std::nothrow)finance_dict();
-    ASSERT_WARNING(fin_dict1 != NULL, "allocate finance_dict fail");
-    fin_dict1->init(_conf->financie_path.c_str(), _conf->financie_file.c_str(), conf->dump_dir.c_str());
+    {
+        finance_dict *fin_dict1 = new (std::nothrow)finance_dict();
+        ASSERT_WARNING(fin_dict1 != NULL, "allocate finance_dict fail");
+        fin_dict1->init(_conf->financie_path.c_str(), _conf->financie_file.c_str(), conf->dump_dir.c_str());
+
+        finance_dict *fin_dict2 = new (std::nothrow)finance_dict();
+        ASSERT_WARNING(fin_dict2 != NULL, "allocate finance_dict fail");
+        fin_dict2->init(_conf->financie_path.c_str(), conf->financie_file.c_str(), conf->dump_dir.c_str());
+
+        _finance_dict = new (std::nothrow)reload_mgr<finance_dict>(fin_dict1, fin_dict2);
+    }
+
+
+    {
+        ban_dict *b_dict1 = new (std::nothrow)ban_dict();
+        ASSERT_WARNING(b_dict1 != NULL, "allocate ban_dict fail");
+        b_dict1->init(_conf->ban_path.c_str(), _conf->ban_file.c_str(), conf->dump_dir.c_str());
+
+        ban_dict *b_dict2 = new (std::nothrow)ban_dict();
+        ASSERT_WARNING(b_dict2 != NULL, "allocate ban_dict fail");
+        b_dict2->init(_conf->ban_path.c_str(), _conf->ban_file.c_str(), conf->dump_dir.c_str());
+
+        _ban_dict = new (std::nothrow)reload_mgr<ban_dict>(b_dict1, b_dict2);
+    }
     
-    finance_dict *fin_dict2 = new (std::nothrow)finance_dict();
-    ASSERT_WARNING(fin_dict2 != NULL, "allocate finance_dict fail");
-    fin_dict2->init(_conf->financie_path.c_str(), conf->financie_file.c_str(), conf->dump_dir.c_str());
+    {
+        history_single_t *hs_dict1 = new (std::nothrow)history_single_t();
+        ASSERT_WARNING(hs_dict1 != NULL, "allocate history_single_t fail");
+        hs_dict1->init(_conf->history_single_path.c_str(), _conf->history_single_file.c_str(), conf->dump_dir.c_str());
 
-    _finance_dict = new (std::nothrow)reload_mgr<finance_dict>(fin_dict1, fin_dict2);
+        history_single_t *hs_dict2 = new (std::nothrow)history_single_t();
+        ASSERT_WARNING(hs_dict2 != NULL, "allocate history_single_t fail");
+        hs_dict2->init(_conf->history_single_path.c_str(), _conf->history_single_file.c_str(), conf->dump_dir.c_str());
 
-
-
-    ban_dict *b_dict1 = new (std::nothrow)ban_dict();
-    ASSERT_WARNING(b_dict1 != NULL, "allocate ban_dict fail");
-    b_dict1->init(_conf->ban_path.c_str(), _conf->ban_file.c_str(), conf->dump_dir.c_str());
-    
-    ban_dict *b_dict2 = new (std::nothrow)ban_dict();
-    ASSERT_WARNING(b_dict2 != NULL, "allocate ban_dict fail");
-    b_dict2->init(_conf->ban_path.c_str(), _conf->ban_file.c_str(), conf->dump_dir.c_str());
-
-    _ban_dict = new (std::nothrow)reload_mgr<ban_dict>(b_dict1, b_dict2);
-
-    
-
-    //history_single_t *hs_dict1 = new (std::nothrow)history_single_t();
-    //ASSERT_WARNING(id_dict1 != NULL, "allocate history_single_t fail");
-    //hs_dict1->init(_conf->history_single_path.c_str(), _conf->history_single_file.c_str(), _conf->history_single_num, _conf->dump_dir.c_str());
-    
-    //history_single_t *hs_dict2 = new (std::nothrow)history_single_t();
-    //ASSERT_WARNING(hs_dict2_dict2 != NULL, "allocate history_single_t fail");
-    //hs_dict2->init(_conf->history_single_path.c_str(), _conf->history_single_file.c_str(), _conf->history_single_num, _conf->dump_dir.c_str());
-
-    //_hsingle_dict = new (std::nothrow)reload_mgr<history_single_t>(hs_dict1, hs_dict2);
-
+        _hsingle_dict = new (std::nothrow)reload_mgr<history_single_t>(hs_dict1, hs_dict2);
+    }
 
 
     //history_quotation_t *hq_dict1 = new (std::nothrow)history_quotation_t();
@@ -197,7 +200,7 @@ int proc_data::load()
 
     _plate_dict->load();
 
-    //_hsingle_dict->load();
+    _hsingle_dict->load();
 
     //_hquoation_dict->load();
 
@@ -250,10 +253,10 @@ int proc_data::reload()
         _plate_dict->reload();
     }
 
-    //if (_hsingle_dict->need_reload())
-    //{
-        //_hsingle_dict->reload();
-    //}
+    if (_hsingle_dict->need_reload())
+    {
+        _hsingle_dict->reload();
+    }
 
     //if (_hquoation_dict->need_reload())
     //{
@@ -286,7 +289,7 @@ int proc_data::dump()
 
     _plate_dict->dump();
 
-    //_hsingle_dict->dump();
+    _hsingle_dict->dump();
 
     //_hquoation_dict->dump();
 
@@ -312,7 +315,7 @@ int proc_data::destroy()
 
     _plate_dict->destroy();
 
-    //_hsingle_dict->destroy();
+    _hsingle_dict->destroy();
 
     //_hquoation_dict->destroy();
 

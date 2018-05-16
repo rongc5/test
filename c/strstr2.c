@@ -4,10 +4,13 @@
 
 int main(void)
 {
-    char buf[120] = "31;"; 
+    char buf[120] = "31    5678    999"; 
+    char * ptr = NULL;
 
-    if (strstr(buf, "31")) {
-        printf("hello world\n");
+    ptr = strstr(buf, " ");
+
+    if (ptr) {
+        printf("%s\n", ptr);
     }
 
 
@@ -17,8 +20,6 @@ int main(void)
         printf("%c", *(src + i));
     }
 #endif
-
-    printf("\n");
 
     return 0;
 }

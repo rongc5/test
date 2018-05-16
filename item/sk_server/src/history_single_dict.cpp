@@ -23,16 +23,81 @@ int history_single_dict::init(const char * path, const char * file, const char *
     return 0;
 }
 
+int history_single_dict::load_history_single(const char * file)
+{
+    if (!file)
+    {
+        return -1;
+    }
+    
+    std::vector<std::string> strVec;
+    SplitString(file, "_", &strVec, SPLIT_MODE_ALL); 
+    if (strVec.size() != 2)
+    {
+        LOG_WARNING("file:%s, SplitString failed", file);
+        return -1;
+    }
+
+    std::string date = strVec[1];
+    auto ii = _id_dict.find(date);
+    if (ii != _id_dict.end())
+    {
+        LOG_WARNING("file:%s, date:%s has loaded", file, date.c_str());
+        return -1;
+    }
+
+    FILE * fp = fopen(file, "r");
+    ASSERT_WARNING(fp != NULL,"open file failed. file[%s]", file);
+
+
+    char line[SIZE_LEN_1024];
+    char * ptr = NULL;
+    while (fgets(line, sizeof(line), fp))
+    {
+        if('\0' == line[0])
+        {
+            continue;
+        }
+
+        ptr = im_chomp(line); 
+        if (ptr == NULL || *ptr == '\0'|| *ptr == '#')
+            continue;
+        
+        SplitString(file, " ", &strVec, SPLIT_MODE_ALL); 
+
+        std::vector<int> single;
+        for (uint32_t i = 1; i < strVec.size(); i++)
+        {
+            single.push_back(atoi(strVec[i].c_str()));
+        }
+        
+        auto ii = _id_dict.find(date);
+        if (ii == _id_dict.end())
+        {
+            std::unordered_map<std::string, std::vector<int>, str_hasher> id_map;
+            id_map[strVec[1]] = single;
+
+            _id_dict.insert(std::make_pair(date, id_map));
+        }
+        else
+        {
+            ii->second.insert(std::make_pair(strVec[1], single));
+        }
+    }
+
+    return 0;
+}
+
 int history_single_dict::load()
 {
     FILE * fp = fopen(_fullpath, "r");
     ASSERT_WARNING(fp != NULL,"open query dict failed. path[%s]", _fullpath);
 
     char line[SIZE_LEN_1024];
-    char * ptr = NULL;
+    char * ptr = NULL, *bname;
     uint32_t query_sign[2];
 
-    while (fgets(line, 1024, fp)) 
+    while (fgets(line, sizeof(line), fp)) 
     {
         if('\0' == line[0]){
             continue;
@@ -42,9 +107,8 @@ int history_single_dict::load()
         if (ptr == NULL || *ptr == '\0'|| *ptr == '#')
             continue;
 
-        ToBufferMgr<std::deque<std::vector<int> > > st;
-        std::string str = std::string(ptr);
-        _id_dict[str] = st;
+        bname = basename(ptr);
+        load_history_single(bname);
     }
 
     fclose(fp);
@@ -57,7 +121,7 @@ int history_single_dict::load()
 
 int history_single_dict::reload()
 {
-    std::unordered_map<std::string, ToBufferMgr<std::deque<std::vector<int> > >,str_hasher> tmp;
+    std::map<std::string, std::unordered_map<std::string, std::vector<int>, str_hasher> > tmp;
     _id_dict.swap(tmp);
     return load();
 }

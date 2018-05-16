@@ -11,7 +11,7 @@ class history_single_dict:public reload_inf
         virtual ~history_single_dict();
         history_single_dict();
 
-        virtual int init(const char * path, const char * file, uint32_t day_num, const char *dump_dir);
+        virtual int init(const char * path, const char * file, const char *dump_dir);
         virtual int load();
         virtual int reload();
         virtual bool need_reload();
@@ -20,15 +20,15 @@ class history_single_dict:public reload_inf
 
     private:
         void set_path (const char* path);
+        int load_history_single(const char * file);
 
     private:
         char _fullpath[SIZE_LEN_512];
         char _dumppath[SIZE_LEN_512];
-        uint32_t _day_num;
-        std::string _last_date;;
+        time_t _last_load;
     public:
-        // <id, <date, single> >
-        std::unordered_map<std::string, std::map<std::string, std::vector<int> >, str_hasher> _id_dict;
+        // <date, <id, single> >
+        std::map<std::string, std::unordered_map<std::string, std::vector<int>, str_hasher> > _id_dict;
 };
 
 
