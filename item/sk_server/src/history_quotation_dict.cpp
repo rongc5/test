@@ -23,7 +23,7 @@ int load_history_quoation::init(const char * path, const char * file, const char
     return 0;
 }
 
-int load_history_quoation::load_history_single(const char * file)
+int load_history_quoation::load_history_quoation(const char * file)
 {
     if (!file)
     {
@@ -65,11 +65,7 @@ int load_history_quoation::load_history_single(const char * file)
         
         SplitString(file, " ", &strVec, SPLIT_MODE_ALL); 
 
-        std::vector<int> single;
-        for (uint32_t i = 1; i < strVec.size(); i++)
-        {
-            single.push_back(atoi(strVec[i].c_str()));
-        }
+        quotation_t qt;
         
         auto ii = _id_dict.find(date);
         if (ii == _id_dict.end())
@@ -108,7 +104,7 @@ int load_history_quoation::load()
             continue;
 
         bname = basename(ptr);
-        load_history_single(bname);
+        load_history_quoation(bname);
     }
 
     fclose(fp);
@@ -121,7 +117,7 @@ int load_history_quoation::load()
 
 int load_history_quoation::reload()
 {
-    std::map<std::string, std::unordered_map<std::string, std::vector<int>, str_hasher> > tmp;
+    std::map<std::string, std::unordered_map<std::string, quotation_t, str_hasher> > tmp;
     _id_dict.swap(tmp);
     return load();
 }

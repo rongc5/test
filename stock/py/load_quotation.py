@@ -319,62 +319,132 @@ class CurlHTTPFetcher(object):
             data.close()
             c.close()
 
+def init_stockid(id):
+    stockdict = {}
 
-def load_stockid_detail(date, id, filename):
-    url = 'http://market.finance.sina.com.cn/downxls.php?date=%s&symbol=%s' % (date, id)
+    stockdict['id'] = id
+    stockdict['code'] = id[2:]                           # 股票代码
+    stockdict['last_closing'] = 0    # 昨日收盘价格
+    stockdict['start'] = 0           # 开盘价格
+    stockdict['block'] = False
+    stockdict['end'] = 0             # 当前收盘价格（可以是当前价格）
+    stockdict['high'] = 0           # 最高价格
+    stockdict['low'] = 0           # 最低价格
+    stockdict['buyvol'] = 0            # 外盘
+    stockdict['sellvol'] = 0           # 内盘
 
-    print url
-    #url = 'http://vip.stock.finance.sina.com.cn/quotes_service/view/cn_bill_download.php?' \
-    #      'symbol=%s&num=600&page=1&sort=ticktime&asc=0&volume=40000&amount=0&type=0&day=%s' % (id, date)
+    stockdict['range_price'] = 0    # 涨跌价格
+    stockdict['range_percent'] = 0  # 涨跌比%
 
-    filename = '%s/%s' % (filename, id)
+    stockdict['vol'] = 0            # 成交量（手）
+    stockdict['total_price'] = 0      # 成交额（万元）
 
-    if os.path.isfile(filename):
-        print filename, url
-        return 0
+    stockdict['change_rate'] = 0
+    stockdict['pe'] = 0         # 市盈率
+    stockdict['swing'] = 0          # 振幅
 
-    header = {}
-    index = random.randint(0, len(user_agent_list) -1)
-    header['User-Agent'] = user_agent_list[index]
+    stockdict['pb'] = 0              # 股票市净率
+    stockdict['date'] = ''               # 时间
+    stockdict['circulation_market_value'] = 0
+    stockdict['total_value'] = 0
+    #stockdict['high_limit'] = float(stocklist[47])
+    #stockdict['low_limit'] = float(stocklist[48])
+    return stockdict
 
-    cookie_key = '%d_sina' % (index,)
-    if user_agent_cookie.has_key(cookie_key):
-        header['Cookie'] = user_agent_cookie[cookie_key]
+#实时行情
+def get_stockid_real_time(id):
+    #url = 'http://qt.gtimg.cn/q=%s' % (id)
+    #favicon = 'http://qt.gtimg.cn/favicon.ico
+    url = 'http://web.sqt.gtimg.cn/q=%s' % (id)
+    refer = 'http://gu.qq.com/%s/gp' % (id)
+    #url = 'http://sqt.gtimg.cn/utf8/q=%s' % (id)
+    #favicon = 'http://sqt.gtimg.cn/favicon.ico'
+    i = 0
+    imax = 2
+    stocklist = []
+    stockdict = init_stockid(id)
 
     res = {}
-    try:
-        curl =  CurlHTTPFetcher()
-        curl.ALLOWED_TIME = 2
-        res = curl.fetch(url, None, header)
-        #print res
-    except BaseException, e:
-        print e.message
+    deal_dic = {}
 
-    if res.has_key('head') and res['head'].has_key('set-cookie'):
-        user_agent_cookie[cookie_key] = res['head']['set-cookie'].split(';')[0]
+    while 1:
+        header = {}
+        index = random.randint(0, len(user_agent_list) -1)
+        header['User-Agent'] = user_agent_list[index]
+        header['Referer'] = refer
+        #if user_agent_dic.has_key(index):
+        #    req_header.extend(['If-None-Match: %s' % (user_agent_dic[index])])
+        i = i + 1
+        try:
+            curl =  CurlHTTPFetcher()
+            curl.ALLOWED_TIME = 2
+            res = curl.fetch(url, None, header)
+        except BaseException, e:
+            print e.message
 
-    res_str = ''
-    if res.has_key('body') and res['body'].strip():
-        items = res['body'].split('\n')
-        #print res['body']
-        for key in items:
-            subitems = key.split('\t');
-            if len(subitems) == 6:
-                if not subitems[4].isdigit():
-                    continue
+        if len(res) < 2:
+            print url, sys._getframe().f_lineno, res
+            if i > imax:
+                break;
+            #time.sleep(1)
+        else:
+            value = res['body'].split('=')[1].strip(';\n')
+            stocklist = value.split('~')
+            if len(stocklist) < 45:
+                print url, sys._getframe().f_lineno, res['body'], stocklist
+                print value
+                if i > imax:
+                    break;
+                #time.sleep(1)
+                continue
+            break
+    #不知道是不是反爬虫， 先请求吧
+    #httpGetContent(favicon, 'Referer: %s' % (url))
+    #print stocklist
 
-                if u'买盘' in  subitems[5].decode('gbk'):
-                    flag = 'B'
-                elif u'卖盘' in subitems[5].decode('gbk'):
-                    flag = 'S'
-                elif u'中性盘' in subitems[5].decode('gbk'):
-                    flag = 'M'
-                else:
-                    continue
+    if len(stocklist) < 45:
+        return stockdict
 
-                res_str = '%s\t%s\t%s\t%s' % (subitems[0], subitems[1], subitems[3], flag)
-                log_write(filename, res_str)
-    return 1
+    stockdict['id'] = id
+    stockdict['code'] = stocklist[2]                           # 股票代码
+    #stockdict['name'] = unicode(stocklist[1], 'gbk')  # 股票名称
+    stockdict['last_closing'] = float(stocklist[4])    # 昨日收盘价格
+    stockdict['start'] = float(stocklist[5])           # 开盘价格
+    if stockdict['start'] <= 1:
+        stockdict['block'] = True
+        return stockdict
+    stockdict['end'] = float(stocklist[3])             # 当前收盘价格（可以是当前价格）
+    stockdict['high'] = float(stocklist[33])           # 最高价格
+    stockdict['low'] = float(stocklist[34])            # 最低价格
+    stockdict['buyvol'] = int(stocklist[7])             # 外盘
+    stockdict['sellvol'] = int(stocklist[8])           # 内盘
+
+    #stockdict['range_price'] = float(stocklist[31])    # 涨跌价格
+    stockdict['range_percent'] = float(stocklist[32])  # 涨跌比%
+
+    stockdict['vol'] = int(stocklist[36])            # 成交量（手）
+    stockdict['total_price'] = int(stocklist[37])      # 成交额（万元）
+    #print 'change_rate', stocklist
+    if stocklist[38].strip():
+        stockdict['change_rate'] = float(stocklist[38]) # 换手率
+    else:
+        stockdict['change_rate'] = 0
+    stockdict['pe'] = float(stocklist[39])          # 市盈率
+    stockdict['swing'] = float(stocklist[43])           # 振幅
+
+    stockdict['pb'] = float(stocklist[46])              # 股票市净率
+    stockdict['date'] = stocklist[30][:8]               # 时间
+    stockdict['block'] = False if stockdict['start'] else True #股票是否停牌
+    stockdict['circulation_market_value'] = float(stocklist[44])
+    stockdict['total_value'] = float(stocklist[45])
+    #stockdict['high_limit'] = float(stocklist[47])
+    #stockdict['low_limit'] = float(stocklist[48])
+    if 'Etag:' in res['head']:
+        key = '%d_%s' % (index, id)
+        user_agent_dic[key]  = res['head'].split('Etag:')[1].strip()
+
+    #print stockdict
+    return stockdict
 
 def load_ua_list():
     id_dic = {}
@@ -446,22 +516,87 @@ def load_days(days_num):
     return  day_list
 
 
-def load_details(days_num, deal_dic):
+def load_quotation(deal_dic):
     if len(deal_dic) == 0:
         return
 
-    day_list = load_days(days_num)
-    print day_list
 
-    for date in day_list:
-        path = '%s/%s' % (DATAPATH, date.replace('-', ''))
-        cmd = ['mkdir', '-p', path]
-        subprocess.Popen(cmd, stdout=subprocess.PIPE).communicate()[0]
+    day_list = []
 
-        for key in deal_dic:
-            if load_stockid_detail(date, key, path):
-                index = random.randint(1, 5)
-                time.sleep(index)
+    day = Day()
+    date = day.todaystr()
+
+    if not is_tradeday(date):
+        day_list = load_days(1)
+        date = day_list[0]
+    elif int(day.hour) < 15:
+        return
+
+
+    path = '%s' % (DATAPATH)
+    cmd = ['mkdir', '-p', path]
+    subprocess.Popen(cmd, stdout=subprocess.PIPE).communicate()[0]
+    tmp_name = '%s/quotation_%s' % (path, date)
+
+    for key in deal_dic:
+        flag = False
+
+        cmd = ['grep', key, tmp_name]
+        res_str = subprocess.Popen(cmd, stdout=subprocess.PIPE).communicate()[0]
+        if not os.path.isfile(tmp_name) or not res_str.strip():
+            flag = True
+
+        if not flag:
+            continue
+
+        res = get_stockid_real_time(key)
+
+        res_str = str(res['id'])
+        res_str += '\t'
+
+        res_str += str(res['start'])
+        res_str += '\t'
+
+        res_str += str(res['end'])
+        res_str += '\t'
+
+        res_str += str(res['high'])
+        res_str += '\t'
+
+        res_str += str(res['low'])
+        res_str += '\t'
+
+        res_str += str(res['last_closing'])
+        res_str += '\t'
+
+        res_str += str(res['vol'])
+        res_str += '\t'
+
+        res_str += str(res['buyvol'])
+        res_str += '\t'
+
+        res_str += str(res['sellvol'])
+        res_str += '\t'
+
+        res_str += str(res['swing'])
+        res_str += '\t'
+
+        res_str += str(res['change_rate'])
+        res_str += '\t'
+
+        res_str += str(res['range_percent'])
+        res_str += '\t'
+
+        res_str += str(res['total_price'])
+        res_str += '\t'
+
+        if res['block']:
+            res_str += str(1)
+        else:
+            res_str += str(0)
+
+        log_write(tmp_name, res_str)
+        time.sleep(0.01)
 
 
 def load_coad_all():
@@ -481,10 +616,32 @@ user_agent_list = []
 user_agent_dic = {}
 user_agent_cookie = {}
 MAX_RESPONSE_KB = 10*1024
-DATAPATH = './data/details'
+DATAPATH = './data/quotation'
+QUOTATION_DICT_PATH_TMP = './data/quotation_dict_tmp'
+QUOTATION_DICT_PATH = './data/quotation_dict'
+
 id_all = {}
 
 if __name__ == '__main__':
     load_ua_list()
     load_coad_all()
-    load_details(1, id_all)
+    load_quotation(id_all)
+
+    day_list = load_days(5)
+    day_arr = []
+    for day in day_list:
+        day_arr.append(day.replace('-', ''))
+    #print day_arr
+
+
+    for day  in day_arr:
+        path = '%s/%s' % (DATAPATH, day)
+        #print os.path.abspath(path)
+
+        single_path = '%s/quotation_%s' % (DATAPATH, day)
+        log_write(QUOTATION_DICT_PATH_TMP, os.path.abspath(single_path))
+
+    if os.path.isfile(QUOTATION_DICT_PATH_TMP):
+        cmd = ['mv', QUOTATION_DICT_PATH_TMP, QUOTATION_DICT_PATH]
+        subprocess.Popen(cmd, stdout=subprocess.PIPE).communicate()[0]
+

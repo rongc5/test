@@ -28,7 +28,7 @@ class history_quotation_dict:public reload_inf
         time_t _last_load;
     public:
         // <date, <id, single> >
-        std::map<std::string, std::unordered_map<std::string, std::vector<int>, str_hasher> > _id_dict;
+        std::map<std::string, std::unordered_map<std::string, quotation_t, str_hasher> > _id_dict;
 };
 
 

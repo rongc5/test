@@ -29,30 +29,10 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="re_test_case.py" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="re_test_case.py" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/re_test_case.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="925" column="21" selection-start="26914" selection-end="26914" vertical-scroll-proportion="0.0" vertical-offset="17575" max-vertical-offset="17936">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="load_plate.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../stock/py/load_plate.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="32" column="42" selection-start="556" selection-end="556" vertical-scroll-proportion="0.0" vertical-offset="9563" max-vertical-offset="10260">
-              <folding>
-                <element signature="e#39#50#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="load_brief.py" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/../stock/py/load_brief.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="441" column="12" selection-start="12384" selection-end="12447" vertical-scroll-proportion="0.9756098" vertical-offset="7357" max-vertical-offset="10241">
+            <state line="925" column="21" selection-start="26914" selection-end="26914" vertical-scroll-proportion="0.482066" vertical-offset="17144" max-vertical-offset="17841">
               <folding />
             </state>
           </provider>
@@ -76,13 +56,14 @@
         <option value="$PROJECT_DIR$/../stock/py/stock_infoe.py" />
         <option value="$PROJECT_DIR$/../stock/py/grepx.py" />
         <option value="$PROJECT_DIR$/../stock/py/stock_infoa.py" />
-        <option value="$PROJECT_DIR$/../stock/py/load_detail.py" />
         <option value="$PROJECT_DIR$/../stock/py/load_plates.py" />
         <option value="$PROJECT_DIR$/../stock/py/load_address.py" />
         <option value="$PROJECT_DIR$/../stock/py/load_lifted.py" />
         <option value="$PROJECT_DIR$/../stock/py/load_brief.py" />
         <option value="$PROJECT_DIR$/../stock/py/load_plate.py" />
         <option value="$PROJECT_DIR$/../stock/py/count_detail.py" />
+        <option value="$PROJECT_DIR$/../stock/py/load_detail.py" />
+        <option value="$PROJECT_DIR$/../stock/py/load_quotation.py" />
       </list>
     </option>
   </component>
@@ -156,12 +137,12 @@
   <component name="PropertiesComponent">
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="options.lastSelected" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
     <property name="recentsLimit" value="5" />
+    <property name="options.lastSelected" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../stock" />
     <property name="FullScreen" value="false" />
-    <property name="options.splitter.details.proportions" value="0.2" />
     <property name="options.searchVisible" value="true" />
+    <property name="options.splitter.details.proportions" value="0.2" />
   </component>
   <component name="PyConsoleOptionsProvider">
     <option name="myPythonConsoleState">
@@ -334,9 +315,6 @@
       <option name="PARAMETERS" value="" />
       <method />
     </configuration>
-    <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug" singleton="true">
-      <method />
-    </configuration>
     <configuration default="true" type="tests" factoryName="Unittests">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -358,6 +336,9 @@
       <option name="PUREUNITTEST" value="true" />
       <option name="PARAMS" value="" />
       <option name="USE_PARAM" value="false" />
+      <method />
+    </configuration>
+    <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug" singleton="true">
       <method />
     </configuration>
     <configuration default="true" type="tests" factoryName="Doctests">
@@ -462,20 +443,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/re_test_case.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="840" column="20" selection-start="24916" selection-end="24916" vertical-scroll-proportion="0.0" vertical-offset="95" max-vertical-offset="17936">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/re_test_case.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="792" column="0" selection-start="23605" selection-end="23605" vertical-scroll-proportion="0.0" vertical-offset="14623" max-vertical-offset="16777">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../stock/py/api">
       <provider selected="true" editor-type-id="text-editor">
         <state line="141" column="126" selection-start="5406" selection-end="5577" vertical-scroll-proportion="0.7777778" vertical-offset="2147" max-vertical-offset="2831" />
@@ -504,13 +471,6 @@
         <state line="13" column="10" selection-start="781" selection-end="781" vertical-scroll-proportion="0.042600896" vertical-offset="228" max-vertical-offset="2166" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/re_test_case.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="925" column="21" selection-start="26914" selection-end="26914" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="17841">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../stock/py/load_lifted.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="453" column="4" selection-start="12415" selection-end="12415" vertical-scroll-proportion="4.346405" vertical-offset="6327" max-vertical-offset="8474" />
@@ -523,44 +483,59 @@
     </entry>
     <entry file="file://D:/Python27/Lib/site-packages/jieba/analyse/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="11" column="44" selection-start="271" selection-end="271" vertical-scroll-proportion="0.37254903" vertical-offset="0" max-vertical-offset="459">
+        <state line="11" column="44" selection-start="271" selection-end="271" vertical-scroll-proportion="0.37254903" vertical-offset="0" max-vertical-offset="459" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../stock/py/count_detail.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="31" column="40" selection-start="3500" selection-end="3500" vertical-scroll-proportion="0.8333333" vertical-offset="19" max-vertical-offset="703" />
+      </provider>
+    </entry>
+    <entry file="file://D:/Python27/Lib/subprocess.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="647" column="8" selection-start="20658" selection-end="20658" vertical-scroll-proportion="-2.2840745" vertical-offset="13885" max-vertical-offset="30894">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../stock/py/load_plate.py">
+    <entry file="file://$PROJECT_DIR$/../stock/py/load_detail.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="32" column="42" selection-start="556" selection-end="556" vertical-scroll-proportion="0.0" vertical-offset="9563" max-vertical-offset="10260">
-          <folding>
-            <element signature="e#39#50#0" expanded="true" />
-          </folding>
+        <state line="133" column="10" selection-start="13777" selection-end="13777" vertical-scroll-proportion="-101.08" vertical-offset="0" max-vertical-offset="2641">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../stock/py/load_quotation.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="593" column="29" selection-start="16693" selection-end="16693" vertical-scroll-proportion="0.8091822" vertical-offset="10418" max-vertical-offset="12122">
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/../stock/py/stock_infoa.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="521" column="12" selection-start="66537" selection-end="66537" vertical-scroll-proportion="0.5833333" vertical-offset="9500" max-vertical-offset="10184">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../stock/py/count_detail11111.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2660">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../stock/py/count_detail.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="31" column="40" selection-start="3500" selection-end="3500" vertical-scroll-proportion="0.8333333" vertical-offset="19" max-vertical-offset="703">
+        <state line="1156" column="20" selection-start="35873" selection-end="35878" vertical-scroll-proportion="0.70713204" vertical-offset="21194" max-vertical-offset="38399">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/../stock/py/load_brief.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="441" column="12" selection-start="12384" selection-end="12447" vertical-scroll-proportion="0.9756098" vertical-offset="7357" max-vertical-offset="10241">
+        <state line="515" column="12" selection-start="14756" selection-end="14933" vertical-scroll-proportion="0.2998565" vertical-offset="9234" max-vertical-offset="10241">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../stock/py/load_plate.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="32" column="42" selection-start="556" selection-end="556" vertical-scroll-proportion="-12.847919" vertical-offset="9202" max-vertical-offset="9899">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/re_test_case.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="925" column="21" selection-start="26914" selection-end="26914" vertical-scroll-proportion="0.482066" vertical-offset="17144" max-vertical-offset="17841">
           <folding />
         </state>
       </provider>
