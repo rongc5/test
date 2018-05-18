@@ -67,8 +67,8 @@ struct quotation_t
     float last_closed;
 
     uint64_t vol;
-    uint64_t sell_vol;
     uint64_t buy_vol;
+    uint64_t sell_vol;
 
     float swing;
 
@@ -104,12 +104,6 @@ struct quotation_t
         range_percent = 0;
         blocked = false;
     }
-};
-
-struct history_quotation_t
-{
-    std::string id;
-    std::map<std::string, quotation_t> date_quotation_map;
 };
 
 

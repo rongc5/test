@@ -34,6 +34,7 @@ OBJ	= $(LOC_DIR)/main.o     \
 	  $(LOC_DIR)/address_dict.o \
 	  $(LOC_DIR)/plate_dict.o \
 	  $(LOC_DIR)/history_single_dict.o \
+	  $(LOC_DIR)/history_quotation_dict.o \
 
 
 AR=ar

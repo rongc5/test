@@ -50,9 +50,13 @@ char* im_chomp(char *data);
 
 int stringStrip(const char *srcStr, const char *delim, std::string *dest, int s_mode);
 
-#define SPLIT_MODE_ONE 0x1
-#define SPLIT_MODE_ALL 0x2
+#define SPLIT_MODE_ONE 1
+#define SPLIT_MODE_ALL 1<<1 
+#define SPLIT_MODE_TRIM 1<<2
+//delim 字符串
 int SplitString(const char *srcStr, const char *delim, std::vector<std::string> * strVec, int s_mode);
+//delim 字符
+int SplitString(const char *srcStr, char delim, std::vector<std::string> * strVec, int s_mode);
 
 void StringTrim(std::string &sSrc);
 

@@ -10,6 +10,7 @@
 #include "address_dict.h"
 #include "plate_dict.h"
 #include "history_single_dict.h"
+#include "history_quotation_dict.h"
 
 int proc_data::init(sk_conf * conf)
 {
@@ -140,27 +141,29 @@ int proc_data::init(sk_conf * conf)
     }
     
     {
-        history_single_t *hs_dict1 = new (std::nothrow)history_single_t();
+        history_single_dict *hs_dict1 = new (std::nothrow)history_single_dict();
         ASSERT_WARNING(hs_dict1 != NULL, "allocate history_single_t fail");
         hs_dict1->init(_conf->history_single_path.c_str(), _conf->history_single_file.c_str(), conf->dump_dir.c_str());
 
-        history_single_t *hs_dict2 = new (std::nothrow)history_single_t();
+        history_single_dict *hs_dict2 = new (std::nothrow)history_single_dict();
         ASSERT_WARNING(hs_dict2 != NULL, "allocate history_single_t fail");
         hs_dict2->init(_conf->history_single_path.c_str(), _conf->history_single_file.c_str(), conf->dump_dir.c_str());
 
-        _hsingle_dict = new (std::nothrow)reload_mgr<history_single_t>(hs_dict1, hs_dict2);
+        _hsingle_dict = new (std::nothrow)reload_mgr<history_single_dict>(hs_dict1, hs_dict2);
     }
 
 
-    //history_quotation_t *hq_dict1 = new (std::nothrow)history_quotation_t();
-    //ASSERT_WARNING(hq_dict1 != NULL, "allocate history_quotation_t fail");
-    //id_dict1->init(_conf->history_quotation_path.c_str(), _conf->history_quotation_file.c_str(), _conf->history_quotation_num, _conf->dump_dir.c_str());
-    
-    //history_quotation_t *hq_dict2 = new (std::nothrow)history_quotation_t();
-    //ASSERT_WARNING(hq_dict2 != NULL, "allocate history_quotation_t fail");
-    //hq_dict2->init(_conf->history_quotation_path.c_str(), _conf->history_quotation_file.c_str(), _conf->history_quotation_num, _conf->dump_dir.c_str());
+    {
+        history_quotation_dict *hq_dict1 = new (std::nothrow)history_quotation_dict();
+        ASSERT_WARNING(hq_dict1 != NULL, "allocate history_quotation_t fail");
+        hq_dict1->init(_conf->history_quotation_path.c_str(), _conf->history_quotation_file.c_str(), conf->dump_dir.c_str());
 
-    //_hquoation_dict = new (std::nothrow)reload_mgr<history_quotation_t>(hq_dict1, hq_dict2);
+        history_quotation_dict *hq_dict2 = new (std::nothrow)history_quotation_dict();
+        ASSERT_WARNING(hq_dict2 != NULL, "allocate history_quotation_t fail");
+        hq_dict2->init(_conf->history_quotation_path.c_str(), _conf->history_quotation_file.c_str(), conf->dump_dir.c_str());
+
+        _hquoation_dict = new (std::nothrow)reload_mgr<history_quotation_dict>(hq_dict1, hq_dict2);
+    }
 }
 
 proc_data* proc_data::_singleton;
@@ -202,7 +205,7 @@ int proc_data::load()
 
     _hsingle_dict->load();
 
-    //_hquoation_dict->load();
+    _hquoation_dict->load();
 
     return 0;
 }
@@ -253,15 +256,15 @@ int proc_data::reload()
         _plate_dict->reload();
     }
 
-    if (_hsingle_dict->need_reload())
+    if (_hsingle_dict)
     {
         _hsingle_dict->reload();
     }
 
-    //if (_hquoation_dict->need_reload())
-    //{
-        //_hquoation_dict->reload();
-    //}
+    if (_hquoation_dict)
+    {
+        _hquoation_dict->reload();
+    }
 
     return 0;
 }
@@ -291,7 +294,7 @@ int proc_data::dump()
 
     _hsingle_dict->dump();
 
-    //_hquoation_dict->dump();
+    _hquoation_dict->dump();
 
     return 0;
 }
@@ -317,7 +320,7 @@ int proc_data::destroy()
 
     _hsingle_dict->destroy();
 
-    //_hquoation_dict->destroy();
+    _hquoation_dict->destroy();
 
     return 0;
 }

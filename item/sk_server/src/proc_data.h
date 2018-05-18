@@ -14,6 +14,7 @@ class id_dict;
 class address_dict;
 class plate_dict;
 class history_single_dict;
+class history_quotation_dict;
 class proc_data:public reload_inf
 {
     public:
@@ -48,12 +49,10 @@ class proc_data:public reload_inf
 
         reload_mgr<history_single_dict> * _hsingle_dict;
 
+        reload_mgr<history_quotation_dict> * _hquoation_dict;
+
         sk_conf * _conf;
 
-    public:
-
-
-        //reload_mgr<history_quotation_t> * _hquoation_dict;
 
     public:
         //search index;

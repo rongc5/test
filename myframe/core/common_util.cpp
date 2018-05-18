@@ -310,10 +310,78 @@ int SplitString(const char *srcStr, const char *delim, std::vector<std::string> 
         if (pend)
         {
             std::string str(pstart, pend);
-            strVec->push_back(str);
             pstart =  pend + dlen;
+
+            if (str.empty())
+            {
+                continue;
+            }
+
+            if (s_mode & SPLIT_MODE_TRIM)
+            {
+                if (!strncmp(str.c_str(), delim, dlen))
+                    continue;
+            }
+
+            strVec->push_back(str);
             count += 1;
-            if (SPLIT_MODE_ONE == s_mode)
+            if (SPLIT_MODE_ONE & s_mode)
+            {
+                break;
+            }
+        }
+        else 
+        {
+            break;
+        }
+    }
+
+    if (*pstart != '\0' && pstart != srcStr)
+    {
+        std::string str(pstart);
+        strVec->push_back(str);
+        count += 1;
+    }
+
+    return count;
+}
+
+int SplitString(const char *srcStr, char delim, std::vector<std::string> * strVec, int s_mode)
+{
+    if (!srcStr || !delim || !strVec)
+    {
+        return 0;
+    }
+
+    strVec->clear();
+
+    char *pstart = const_cast<char *>(srcStr);
+    char * pend = NULL;
+    int count = 0;
+
+    size_t dlen = sizeof(delim);
+    while (1)
+    {
+        pend = strchr(pstart, delim);
+        if (pend)
+        {
+            std::string str(pstart, pend);
+            pstart =  pend + dlen;
+
+            if (str.empty())
+            {
+                continue;
+            }
+
+            if (s_mode & SPLIT_MODE_TRIM)
+            {
+                if (str.length() == dlen && str[0] == delim)
+                    continue;
+            }
+
+            strVec->push_back(str);
+            count += 1;
+            if (SPLIT_MODE_ONE & s_mode)
             {
                 break;
             }
