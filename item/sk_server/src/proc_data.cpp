@@ -11,6 +11,7 @@
 #include "plate_dict.h"
 #include "history_single_dict.h"
 #include "history_quotation_dict.h"
+#include "trade_date_dict.h"
 
 int proc_data::init(sk_conf * conf)
 {
@@ -164,6 +165,19 @@ int proc_data::init(sk_conf * conf)
 
         _hquoation_dict = new (std::nothrow)reload_mgr<history_quotation_dict>(hq_dict1, hq_dict2);
     }
+
+    {
+        trade_date_dict *td_dict1 = new (std::nothrow)trade_date_dict();
+        ASSERT_WARNING(td_dict1 != NULL, "allocate trade_date_dict fail");
+        td_dict1->init(_conf->trade_date_path.c_str(), _conf->trade_date_file.c_str(), conf->dump_dir.c_str());
+
+        trade_date_dict *td_dict2 = new (std::nothrow)trade_date_dict();
+        ASSERT_WARNING(td_dict2 != NULL, "allocate trade_date_dict fail");
+        td_dict2->init(_conf->trade_date_path.c_str(), _conf->trade_date_file.c_str(), conf->dump_dir.c_str());
+
+        _tdate_dict = new (std::nothrow)reload_mgr<trade_date_dict>(td_dict1, td_dict2);
+
+    }
 }
 
 proc_data* proc_data::_singleton;
@@ -206,6 +220,8 @@ int proc_data::load()
     _hsingle_dict->load();
 
     _hquoation_dict->load();
+
+    _tdate_dict->load();
 
     return 0;
 }
@@ -266,6 +282,10 @@ int proc_data::reload()
         _hquoation_dict->reload();
     }
 
+    if (_tdate_dict)
+    {
+        _tdate_dict->reload();
+    }
     return 0;
 }
 bool proc_data::need_reload()
@@ -296,6 +316,8 @@ int proc_data::dump()
 
     _hquoation_dict->dump();
 
+    _tdate_dict->dump();
+
     return 0;
 }
 int proc_data::destroy()
@@ -321,6 +343,8 @@ int proc_data::destroy()
     _hsingle_dict->destroy();
 
     _hquoation_dict->destroy();
+
+    _tdate_dict->destroy();
 
     return 0;
 }

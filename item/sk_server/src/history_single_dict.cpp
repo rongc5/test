@@ -31,7 +31,7 @@ int history_single_dict::load_history_single(const char * file)
     }
     
     std::vector<std::string> strVec;
-    SplitString(file, "_", &strVec, SPLIT_MODE_ALL); 
+    SplitString(file, '_', &strVec, SPLIT_MODE_ALL | SPLIT_MODE_TRIM); 
     if (strVec.size() != 2)
     {
         LOG_WARNING("file:%s, SplitString failed", file);
@@ -63,7 +63,7 @@ int history_single_dict::load_history_single(const char * file)
         if (ptr == NULL || *ptr == '\0'|| *ptr == '#')
             continue;
         
-        SplitString(file, " ", &strVec, SPLIT_MODE_ALL); 
+        SplitString(file, '\t', &strVec, SPLIT_MODE_ALL | SPLIT_MODE_TRIM); 
 
         std::vector<int> single;
         for (uint32_t i = 1; i < strVec.size(); i++)

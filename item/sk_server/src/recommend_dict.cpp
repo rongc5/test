@@ -1,17 +1,17 @@
-#include "strategy_dict.h"
+#include "recommend_dict.h"
 #include "base_def.h"
 #include "log_helper.h"
 
-strategy_dict::strategy_dict()
+recommend_dict::recommend_dict()
 {
 }
 
-strategy_dict::~strategy_dict()
+recommend_dict::~recommend_dict()
 {
     destroy();
 }
 
-int strategy_dict::init(const char * path, const char * file, const char *dump_dir)
+int recommend_dict::init(const char * path, const char * file, const char *dump_dir)
 {
     snprintf(_fullpath, sizeof(_fullpath), "%s/%s", path, file);
     snprintf(_dumppath, sizeof(_dumppath), "%s/%s", dump_dir, file);
@@ -21,7 +21,7 @@ int strategy_dict::init(const char * path, const char * file, const char *dump_d
     return 0;
 }
 
-int strategy_dict::load()
+int recommend_dict::load()
 {
     _cfg.load_cfg(_fullpath);
 
@@ -32,18 +32,18 @@ int strategy_dict::load()
     return 0;
 }
 
-int strategy_dict::reload()
+int recommend_dict::reload()
 {
     destroy();
     return load();
 }
 
-void strategy_dict::set_path (const char* path)
+void recommend_dict::set_path (const char* path)
 {
     snprintf(_fullpath, sizeof(_fullpath), "%s", path);
 }
 
-bool strategy_dict::need_reload()
+bool recommend_dict::need_reload()
 {
     struct stat st;
 
@@ -55,13 +55,13 @@ bool strategy_dict::need_reload()
     return false;
 }
 
-int strategy_dict::dump()
+int recommend_dict::dump()
 {
 
     return 0;
 }
 
-int strategy_dict::destroy()
+int recommend_dict::destroy()
 {
     _cfg.clear();
 

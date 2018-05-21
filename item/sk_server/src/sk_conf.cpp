@@ -52,6 +52,12 @@ int sk_conf::load()
     cfg.get_vale("server", "history_quotation_path", history_quotation_path);
     cfg.get_vale("server", "history_quotation_file", history_quotation_file);
 
+    cfg.get_vale("server", "trade_date_path", trade_date_path);
+    cfg.get_vale("server", "trade_date_file", trade_date_file);
+
+    cfg.get_vale("server", "recommend_dict_path", recommend_dict_path);
+    cfg.get_vale("server", "recommend_dict_file", recommend_dict_file);
+
     cfg.get_vale("server", "http_server_port", tmp);
     http_server_port = atoi(tmp.c_str());
 
