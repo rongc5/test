@@ -8,7 +8,7 @@
 class listen_process
 {
     public:
-        listen_process(base_net_obj *p)
+        listen_process(std::shared_ptr<base_net_obj> p)
         {
             _listen_thread = NULL;
             _p_connect = p;
@@ -49,7 +49,7 @@ class listen_process
         }
 
     protected:	
-        base_net_obj * _p_connect;
+        std::weak_ptr<base_net_obj> _p_connect;
         base_net_thread * _listen_thread;
         std::vector<uint32_t> _worker_thd_vec;
 };

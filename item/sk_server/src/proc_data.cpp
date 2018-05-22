@@ -1,6 +1,5 @@
 #include "log_helper.h"
 #include "ua_dict.h"
-#include "strategy_dict.h"
 #include "id_dict.h"
 #include "finance_dict.h"
 #include "ban_dict.h"
@@ -12,9 +11,12 @@
 #include "history_single_dict.h"
 #include "history_quotation_dict.h"
 #include "trade_date_dict.h"
+#include "recommend_dict.h"
 
 int proc_data::init(sk_conf * conf)
 {
+    get_proc_name(proc_name, sizeof(proc_name));
+
     _conf = conf;
     
     {
@@ -67,15 +69,15 @@ int proc_data::init(sk_conf * conf)
 
 
     {
-        strategy_dict *strategy_dict1 = new (std::nothrow)strategy_dict();
-        ASSERT_WARNING(strategy_dict1 != NULL, "allocate strategy_dict fail");
-        strategy_dict1->init(_conf->local_strategy_path.c_str(), _conf->local_strategy_file.c_str(), _conf->dump_dir.c_str());
+        recommend_dict *recommend_dict1 = new (std::nothrow)recommend_dict();
+        ASSERT_WARNING(recommend_dict1 != NULL, "allocate recommend_dict fail");
+        recommend_dict1->init(_conf->local_strategy_path.c_str(), _conf->local_strategy_file.c_str(), _conf->dump_dir.c_str());
 
-        strategy_dict *strategy_dict2 = new (std::nothrow)strategy_dict();
-        ASSERT_WARNING(strategy_dict2 != NULL, "allocate strategy_dict fail");
-        strategy_dict2->init(_conf->local_strategy_path.c_str(), _conf->local_strategy_file.c_str(), _conf->dump_dir.c_str());
+        recommend_dict *recommend_dict2 = new (std::nothrow)recommend_dict();
+        ASSERT_WARNING(recommend_dict2 != NULL, "allocate recommend_dict fail");
+        recommend_dict2->init(_conf->local_strategy_path.c_str(), _conf->local_strategy_file.c_str(), _conf->dump_dir.c_str());
 
-        _strategy_dict = new (std::nothrow)reload_mgr<strategy_dict>(strategy_dict1, strategy_dict2);
+        _recommend_dict = new (std::nothrow)reload_mgr<recommend_dict>(recommend_dict1, recommend_dict2);
     }
 
 
@@ -203,8 +205,6 @@ int proc_data::load()
 
     _id_dict->load();
 
-    _strategy_dict->load();
-
     _finance_dict->load();
 
     _ban_dict->load();
@@ -235,11 +235,6 @@ int proc_data::reload()
     if (_id_dict)
     {
         _id_dict->reload();
-    }
-
-    if (_strategy_dict)
-    {
-        _strategy_dict->reload();
     }
 
     if (_finance_dict)
@@ -298,8 +293,6 @@ int proc_data::dump()
 
     _id_dict->dump();
 
-    _strategy_dict->dump();
-
     _finance_dict->dump();
 
     _ban_dict->dump();
@@ -325,8 +318,6 @@ int proc_data::destroy()
     _ua_dict->destroy();
 
     _id_dict->destroy();
-
-    _strategy_dict->destroy();
 
     _finance_dict->destroy();
 

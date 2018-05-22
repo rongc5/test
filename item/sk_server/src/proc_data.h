@@ -7,7 +7,7 @@
 #include "real_quotation_dict.h"
 
 class ua_dict;
-class strategy_dict;
+class recommend_dict;
 class finance_dict;
 class ban_dict;
 class id_dict;
@@ -34,7 +34,7 @@ class proc_data:public reload_inf
         reload_mgr<ua_dict> * _ua_dict;
         reload_mgr<id_dict> * _id_dict;
 
-        reload_mgr<strategy_dict> * _strategy_dict;
+        reload_mgr<recommend_dict> * _recommend_dict;
 
         reload_mgr<finance_dict> * _finance_dict;
 
@@ -60,6 +60,8 @@ class proc_data:public reload_inf
     public:
         //search index;
         ToBufferMgr<std::unordered_set<std::string, str_hasher> > _block_set;
+
+        char proc_name[SIZE_LEN_256];
 
     private:
         static proc_data* _singleton;

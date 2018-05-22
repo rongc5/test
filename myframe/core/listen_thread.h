@@ -23,7 +23,8 @@ class listen_thread: public base_net_thread
         { 
             _ip = ip;
             _port = port;
-            _listen_connect = new listen_connect<listen_process>(ip, port);
+            std::shared_ptr<listen_connect<listen_process> > p(new listen_connect<listen_process>(ip, port));
+            _listen_connect = p;
             _process =  new listen_process(_listen_connect);
             _process->set_listen_thread(this);
             _listen_connect->set_process(_process);
@@ -39,7 +40,7 @@ class listen_thread: public base_net_thread
 
         std::string _ip;
         unsigned short _port;
-        listen_connect<listen_process> *_listen_connect;
+        std::shared_ptr<listen_connect<listen_process> > _listen_connect;
         listen_process * _process;
 };
 

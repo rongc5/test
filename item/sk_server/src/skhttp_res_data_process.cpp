@@ -8,7 +8,7 @@
 #include "common_util.h"
 #include "base_def.h"
 #include "http_res_process.h"
-
+#include "proc_data.h"
 
 skhttp_res_data_process::skhttp_res_data_process(http_base_process * _p_process):http_base_data_process(_p_process)
 {
@@ -28,6 +28,16 @@ std::string * skhttp_res_data_process::get_send_body(int &result)
 
 void skhttp_res_data_process::header_recv_finish()
 {
+}
+
+void skhttp_res_data_process::do_query_id(string & id, string & res)
+{
+    
+}
+
+void skhttp_res_data_process::do_select()
+{
+
 }
 
 void skhttp_res_data_process::msg_recv_finish()
@@ -56,10 +66,10 @@ std::string * skhttp_res_data_process::get_send_head()
     http_res_head_para & res_head = _base_process->get_res_head_para();
     
     char proc_name[SIZE_LEN_256] = {'\0'};
-    get_proc_name(proc_name, sizeof(proc_name));
+    proc_data* p_data = proc_data::instance();
 
     res_head._headers.insert(std::make_pair("Date", SecToHttpTime(time(NULL))));
-    res_head._headers.insert(std::make_pair("Server", proc_name));
+    res_head._headers.insert(std::make_pair("Server", p_data->proc_name));
     res_head._headers.insert(std::make_pair("Connection", "keep-alive"));
     snprintf(proc_name, sizeof(proc_name), "%d", _body.length());
     res_head._headers.insert(std::make_pair("Content-Length", proc_name));

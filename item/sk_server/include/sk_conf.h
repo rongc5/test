@@ -33,6 +33,9 @@ class sk_conf: public reload_inf
         std::string trade_date_path;
         std::string trade_date_file;
 
+        std::string recommend_dict_path;
+        std::string recommend_dict_file;
+
         std::string plate_dict_path;
         std::string plate_dict_file;
 

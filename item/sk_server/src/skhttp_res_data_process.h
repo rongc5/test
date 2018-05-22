@@ -24,6 +24,10 @@ class skhttp_res_data_process:public http_base_data_process
         
         static void gen_listen_obj(int fd, common_obj_container * net_container);
 
+        void do_query_id(string & id, string & res);
+
+        void do_select();
+
     protected:
         std::string _body;
         std::string _recv_buf;

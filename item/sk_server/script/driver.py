@@ -25,6 +25,26 @@ __author__ = 'rong'
 
 MAX_RESPONSE_KB = 10*1024
 
+user_agent_list = [
+        "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/536.3 "
+        "(KHTML, like Gecko) Chrome/19.0.1061.1 Safari/536.3",
+        "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/536.3 "
+        "(KHTML, like Gecko) Chrome/19.0.1061.1 Safari/536.3",
+        "Mozilla/5.0 (Windows NT 6.2) AppleWebKit/536.3 "
+        "(KHTML, like Gecko) Chrome/19.0.1061.0 Safari/536.3",
+        "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/535.24 "
+        "(KHTML, like Gecko) Chrome/19.0.1055.1 Safari/535.24",
+        "Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/535.24 "
+        "(KHTML, like Gecko) Chrome/19.0.1055.1 Safari/535.24"
+]
+
+def log_write(filename, str):
+    file = open(filename, 'a')
+    file.write(str)
+    file.write('\n')
+    file.flush()
+    file.close()
+
 class HTTPError(Exception):
     """Exception that is wrapped around all exceptions that are raised
     by the underlying fetcher when using the ExceptionWrappingFetcher
@@ -151,10 +171,66 @@ class CurlHTTPFetcher(object):
             data.close()
             c.close()
 
+def do_query_id(parser):
+    url = 'http://%s:%s/queryid?id=%s&history_days=%d' % (parser.ip, parser.port, parser.id, parser.history_days)
+
+    header = {}
+    index = random.randint(0, len(user_agent_list) -1)
+    header['User-Agent'] = user_agent_list[index]
+
+    try:
+        curl =  CurlHTTPFetcher()
+        curl.ALLOWED_TIME = 2
+        res = curl.fetch(url, None, header)
+    except BaseException, e:
+        print e.message
+
+    res_str = res['body'].strip()
+    if res_str:
+        print res_str
+
+        if not parser.file:
+            log_write(parser.file, res_str)
+
+
+def do_select(parser):
+    if not os.path.isfile(parser.select):
+        print 'slect ini file not exist'
+
+    url = 'http://%s:%s/select?' % (parser.ip, parser.port)
+
+    body = ''
+    file = open(parser.select)
+    while 1:
+        line = file.readline().strip('\n')
+        if not line:
+            break
+        if line.startwith('#'):
+            continue
+        body += line
+        body += '\n'
+
+
+    header = {}
+    index = random.randint(0, len(user_agent_list) -1)
+    header['User-Agent'] = user_agent_list[index]
+
+    try:
+        curl =  CurlHTTPFetcher()
+        curl.ALLOWED_TIME = 2
+        res = curl.fetch(url, body, header)
+    except BaseException, e:
+        print e.message
+
+    res_str = res['body'].strip()
+    if res_str:
+        print res_str
+
+        if not parser.file:
+            log_write(parser.file, res_str)
+
 
 def do_search():
-    usage = "usage: %prog [options] arg1 arg2"
-
     parser = optparse.OptionParser()
     parser.add_option("-t", "--time",
                   action="store", dest="time", type="int",default=0,
@@ -165,13 +241,41 @@ def do_search():
               help="http server ip")
 
     parser.add_option("-p", "--port",
-                  action="store", dest="port", type="string", default="8808",
+                  action="store", dest="port", type="string", default="8081",
               help="http server port")
+
+    parser.add_option("-q", "--id",
+                  action="store", dest="id",type="string",default="",
+              help="stock id like sh601318")
+
+    parser.add_option("-n", "--num",
+                  action="store", dest="history_days",type="int",default=5,
+              help="history trade days")
+
+    parser.add_option("-f", "--file",
+                  action="store", dest="file",type="string",default="",
+              help="log write res to file")
+
+    parser.add_option("-s", "--select",
+                  action="store", dest="select",type="string",default="",
+              help="select ini file")
 
     options, args = parser.parse_args()
     print options
-    print 'Query string:', options.time
-    parser.print_help()
+    #print 'Query string:', options.time
+
+    while 1:
+        if options.id:
+            do_query_id(options)
+
+        if options.select:
+            do_select()
+
+        if options.time:
+            time.sleep(options.time)
+        else:
+            break
+    #parser.print_help()
 
 if __name__ == '__main__':
     do_search()

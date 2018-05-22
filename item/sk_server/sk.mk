@@ -25,7 +25,6 @@ OBJ	= $(LOC_DIR)/main.o     \
 	  $(LOC_DIR)/finance_dict.o \
 	  $(LOC_DIR)/id_dict.o \
 	  $(LOC_DIR)/ua_dict.o \
-	  $(LOC_DIR)/strategy_dict.o \
 	  $(LOC_DIR)/sk_conf.o \
 	  $(LOC_DIR)/proc_data.o \
 	  $(LOC_DIR)/rquotation_data_process.o \

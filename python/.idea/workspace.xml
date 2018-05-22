@@ -29,36 +29,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="re_test_case.py" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="re_test_case.py" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/re_test_case.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="925" column="21" selection-start="26914" selection-end="26914" vertical-scroll-proportion="0.0" vertical-offset="16859" max-vertical-offset="17841">
+            <state line="925" column="21" selection-start="26914" selection-end="26914" vertical-scroll-proportion="0.482066" vertical-offset="17144" max-vertical-offset="17841">
               <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="stock_infoa.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../stock/py/stock_infoa.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="2034" column="0" selection-start="68764" selection-end="68812" vertical-scroll-proportion="0.0" vertical-offset="34618" max-vertical-offset="35302">
-              <folding>
-                <element signature="e#40#51#0" expanded="true" />
-                <element signature="e#5042#7175#0" expanded="false" />
-                <element signature="e#7209#7505#0" expanded="false" />
-                <element signature="e#7542#11592#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="driver.py" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/../item/sk_server/script/driver.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="164" column="36" selection-start="5194" selection-end="5194" vertical-scroll-proportion="0.59110475" vertical-offset="2704" max-vertical-offset="3477">
-              <folding>
-                <element signature="e#39#50#0" expanded="true" />
-              </folding>
             </state>
           </provider>
         </entry>
@@ -172,12 +147,12 @@
   <component name="PropertiesComponent">
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="options.lastSelected" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
     <property name="recentsLimit" value="5" />
+    <property name="options.lastSelected" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../item/sk_server/script" />
     <property name="FullScreen" value="false" />
-    <property name="options.splitter.details.proportions" value="0.2" />
     <property name="options.searchVisible" value="true" />
+    <property name="options.splitter.details.proportions" value="0.2" />
   </component>
   <component name="PyConsoleOptionsProvider">
     <option name="myPythonConsoleState">
@@ -350,9 +325,6 @@
       <option name="PARAMETERS" value="" />
       <method />
     </configuration>
-    <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug" singleton="true">
-      <method />
-    </configuration>
     <configuration default="true" type="tests" factoryName="Unittests">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -374,6 +346,9 @@
       <option name="PUREUNITTEST" value="true" />
       <option name="PARAMS" value="" />
       <option name="USE_PARAM" value="false" />
+      <method />
+    </configuration>
+    <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug" singleton="true">
       <method />
     </configuration>
     <configuration default="true" type="tests" factoryName="Doctests">
@@ -442,7 +417,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1440" height="860" extended-state="0" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -478,22 +453,17 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/../stock/py/stock.ini">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="94" column="0" selection-start="1408" selection-end="1408" vertical-scroll-proportion="0.0" vertical-offset="1659" max-vertical-offset="2603" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/wjad.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="130" column="28" selection-start="4478" selection-end="4478" vertical-scroll-proportion="0.30555555" vertical-offset="2204" max-vertical-offset="2888" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/../stock/py/20161116.in">
-      <provider editor-type-id="com.intellij.persistence.database.editor.CsvTableFileEditorProvider">
-        <state />
-      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="-0.08494784" vertical-offset="57" max-vertical-offset="2128" />
+      </provider>
+      <provider editor-type-id="com.intellij.persistence.database.editor.CsvTableFileEditorProvider">
+        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/../stock/py/load_ids.py">
@@ -546,31 +516,33 @@
         <state line="32" column="42" selection-start="556" selection-end="556" vertical-scroll-proportion="-12.847919" vertical-offset="9202" max-vertical-offset="9899" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/re_test_case.py">
+    <entry file="file://$PROJECT_DIR$/../item/sk_server/script/driver.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="925" column="21" selection-start="26914" selection-end="26914" vertical-scroll-proportion="0.0" vertical-offset="16859" max-vertical-offset="17841">
+        <state line="210" column="20" selection-start="6551" selection-end="6551" vertical-scroll-proportion="0.7819225" vertical-offset="3445" max-vertical-offset="5453">
+          <folding>
+            <element signature="e#39#50#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../stock/py/monitor.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="483" column="24" selection-start="15294" selection-end="15294" vertical-scroll-proportion="1.7718794" vertical-offset="7695" max-vertical-offset="10412">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/../stock/py/stock_infoa.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="2034" column="0" selection-start="68764" selection-end="68812" vertical-scroll-proportion="0.0" vertical-offset="34618" max-vertical-offset="35302">
-          <folding>
-            <element signature="e#40#51#0" expanded="true" />
-            <element signature="e#5042#7175#0" expanded="false" />
-            <element signature="e#7209#7505#0" expanded="false" />
-            <element signature="e#7542#11592#0" expanded="false" />
-          </folding>
+        <state line="1355" column="4" selection-start="41554" selection-end="41588" vertical-scroll-proportion="3.3055556" vertical-offset="23180" max-vertical-offset="38494">
+          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../item/sk_server/script/driver.py">
+    <entry file="file://$PROJECT_DIR$/re_test_case.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="164" column="36" selection-start="5194" selection-end="5194" vertical-scroll-proportion="0.59110475" vertical-offset="2704" max-vertical-offset="3477">
-          <folding>
-            <element signature="e#39#50#0" expanded="true" />
-          </folding>
+        <state line="925" column="21" selection-start="26914" selection-end="26914" vertical-scroll-proportion="0.482066" vertical-offset="17144" max-vertical-offset="17841">
+          <folding />
         </state>
       </provider>
     </entry>
