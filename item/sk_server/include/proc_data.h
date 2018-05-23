@@ -61,6 +61,8 @@ class proc_data:public reload_inf
         //search index;
         ToBufferMgr<std::unordered_set<std::string, str_hasher> > _block_set;
 
+        char proc_name[SIZE_LEN_256];
+
     private:
         static proc_data* _singleton;
 };

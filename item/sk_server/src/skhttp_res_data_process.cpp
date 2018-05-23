@@ -9,6 +9,10 @@
 #include "base_def.h"
 #include "http_res_process.h"
 #include "proc_data.h"
+#include "writer.h"
+#include "stringbuffer.h"
+
+using namespace rapidjson;
 
 skhttp_res_data_process::skhttp_res_data_process(http_base_process * _p_process):http_base_data_process(_p_process)
 {
@@ -28,14 +32,53 @@ std::string * skhttp_res_data_process::get_send_body(int &result)
 
 void skhttp_res_data_process::header_recv_finish()
 {
+
 }
 
-void skhttp_res_data_process::do_query_id(string & id, string & res)
+void skhttp_res_data_process::do_query_id(url_info & u_info, std::string & res)
 {
+    proc_data* p_data = proc_data::instance();
+
+    std::map<std::string, std::string> url_para_map;
+    parse_url_para(u_info.query, url_para_map);
+
+    {
+        auto ii = url_para_map.find("id");
+        if (ii == url_para_map.end())
+        {
+            do_req_err();
+            return;
+        }
+    }
     
+    if (!p_data)
+    {
+        do_req_err();
+        return;
+    }
+    
+
+    StringBuffer s;
+    Writer<StringBuffer> writer(s);
+
+    writer.StartObject();
+
+    {
+        auto ii = p_data->_finance_dict->current()->_id_dict.find(url_para_map["id"]);
+        if (ii != p_data->_finance_dict->current()->_id_dict.end())
+        {
+            
+        }
+    }
+    writer.EndObject();
 }
 
-void skhttp_res_data_process::do_select()
+void skhttp_res_data_process::do_select(url_info & u_info, std::string & res)
+{
+
+}
+
+void skhttp_res_data_process::do_req_err(std::string & res)
 {
 
 }
@@ -48,12 +91,14 @@ void skhttp_res_data_process::msg_recv_finish()
     
     parse_url(req_head_para._url_path, u_info);
 
-    std::map<std::string, std::string> url_para_map;
-    parse_url_para(u_info.query, url_para_map);
+    if (!strncmp(u_info.path.c_str(), "queryid", strlen("queryid"))){
+        do_query_id(u_info, _body);
+    }else if (!strncmp(u_info.path.c_str(), "select", strlen("select"))){
+        do_select(u_info, _body);
+    }else {
+        do_req_err(_body);    
+    }
 
-    std::map<std::string, std::string>::iterator it;
-    for (it = url_para_map.begin(); it != url_para_map.end(); it++)
-        LOG_DEBUG("query:%s %s", it->first.c_str(), it->second.c_str());
 
     _recv_buf.clear();
 

@@ -833,14 +833,23 @@ def get_single_analysis(id, vol, deal_dic):
 
     return stockdict
 
+def get_single_index(deal_dic, num):
+    arr = [100, 200, 300, 400, 500, 800, 1000, 1500, 2000]
+    a = -1
+    if not deal_dic.has_key('end'):
+        return a
+    for i in range(0, len(arr)):
+        if deal_dic['end']* arr[i] *100 >= num:
+            a = i
+            break
+    return a
 
-def get_single_analysis3(id, vol, deal_dic):
+def get_single_analysis3(id, deal_dic):
 
     stockdict = {}
-    if int(vol) <= 0:
-        print vol, 'err'
-        return stockdict
 
+    if not deal_dic.has_key('end'):
+        return stockdict
     url = 'http://stock.gtimg.cn/data/index.php?appn=dadan&action=summary&c=%s' % (id)
 
     stocklist = ''
@@ -884,7 +893,9 @@ def get_single_analysis3(id, vol, deal_dic):
 
     #print stocklist
 
-
+    stockdict['vol_1'] = 0
+    stockdict['vol_2'] = 0
+    stockdict['vol_3'] = 0
     #items = stocklist.split('^')
     try:
         #print type(stocklist)
@@ -892,11 +903,17 @@ def get_single_analysis3(id, vol, deal_dic):
         #print '111111'
 
         #>=300
-        stockdict['vol_1'] = int(float(items[2 + 3][4])) - int(float(items[2 + 2][5]))
+        i = get_single_index(deal_dic, 300000)
+        if i != -1:
+            stockdict['vol_1'] = int(float(items[3 + i][4])) - int(float(items[3 + i][5]))
         #>=1000
-        stockdict['vol_2'] = int(float(items[2 + 7][4])) - int(float(items[2 + 7][5]))
+        i = get_single_index(deal_dic, 1000000)
+        if i != -1:
+            stockdict['vol_2'] = int(float(items[3 + i][4])) - int(float(items[3 + i][5]))
         #>=2000
-        stockdict['vol_3'] = int(float(items[2 + 9][4])) - int(float(items[2 + 9][5]))
+        i = get_single_index(deal_dic, 2000000)
+        if i != -1:
+            stockdict['vol_3'] = int(float(items[3 + i][4])) - int(float(items[3 + i][5]))
 
         #print stockdict, id
 
@@ -904,33 +921,33 @@ def get_single_analysis3(id, vol, deal_dic):
         print e
         return {}
 
-    if not deal_dic.has_key('vol_1'):
-        deal_dic['vol_1'] = []
-        deal_dic['vol_2'] = []
-        deal_dic['vol_3'] = []
-        deal_dic['diff_vol_1'] = []
-        deal_dic['diff_vol_2'] = []
-        deal_dic['diff_vol_3'] = []
+    if not deal_dic['single'].has_key('vol_1'):
+        deal_dic['single']['vol_1'] = []
+        deal_dic['single']['vol_2'] = []
+        deal_dic['single']['vol_3'] = []
+        deal_dic['single']['diff_vol_1'] = []
+        deal_dic['single']['diff_vol_2'] = []
+        deal_dic['single']['diff_vol_3'] = []
 
-    if len(deal_dic['vol_1']) >= 10:
-        deal_dic['vol_1'].pop(0)
-        deal_dic['vol_2'].pop(0)
-        deal_dic['vol_3'].pop(0)
-        deal_dic['diff_vol_1'].pop(0)
-        deal_dic['diff_vol_2'].pop(0)
-        deal_dic['diff_vol_3'].pop(0)
+    if len(deal_dic['single']['vol_1']) >= 10:
+        deal_dic['single']['vol_1'].pop(0)
+        deal_dic['single']['vol_2'].pop(0)
+        deal_dic['single']['vol_3'].pop(0)
+        deal_dic['single']['diff_vol_1'].pop(0)
+        deal_dic['single']['diff_vol_2'].pop(0)
+        deal_dic['single']['diff_vol_3'].pop(0)
 
-    if len(deal_dic['vol_1']) >=1 and abs(deal_dic['vol_1'][-1] - stockdict['vol_1']) < 400:
+    if len(deal_dic['single']['vol_1']) >=1 and abs(deal_dic['single']['vol_1'][-1] - stockdict['vol_1']) < 400:
         return stockdict
 
-    deal_dic['vol_1'].append(stockdict['vol_1'])
-    deal_dic['vol_2'].append(stockdict['vol_2'])
-    deal_dic['vol_3'].append(stockdict['vol_3'])
+    deal_dic['single']['vol_1'].append(stockdict['vol_1'])
+    deal_dic['single']['vol_2'].append(stockdict['vol_2'])
+    deal_dic['single']['vol_3'].append(stockdict['vol_3'])
 
-    if len(deal_dic['vol_1']) >= 2:
-        deal_dic['diff_vol_1'].append(stockdict['vol_1'] - deal_dic['vol_1'][0])
-        deal_dic['diff_vol_2'].append(stockdict['vol_2'] - deal_dic['vol_2'][0])
-        deal_dic['diff_vol_3'].append(stockdict['vol_3'] - deal_dic['vol_3'][0])
+    if len(deal_dic['single']['vol_1']) >= 2:
+        deal_dic['single']['diff_vol_1'].append(stockdict['vol_1'] - deal_dic['single']['vol_1'][0])
+        deal_dic['single']['diff_vol_2'].append(stockdict['vol_2'] - deal_dic['single']['vol_2'][0])
+        deal_dic['single']['diff_vol_3'].append(stockdict['vol_3'] - deal_dic['single']['vol_3'][0])
 
     return stockdict
 
@@ -1467,7 +1484,7 @@ def log_single_analysis(id_dic):
         if not id_dic[key].has_key('single'):
             id_dic[key]['single'] = {}
 
-        if len(get_single_analysis3(key, id_dic[key]['vol'], id_dic[key]['single'])) == 0:
+        if len(get_single_analysis3(key, id_dic[key])) == 0:
             #get_single_analysis2(toady, key, id_dic[key]['vol'], id_dic[key]['single'])
             if len(id_dic[key]['single']) == 0:
                 continue
@@ -1553,20 +1570,20 @@ def get_last_singles(days_num, deal_dic):
                         deal_dic[subitems[0]]['last_single']['vol_2'].append(int(subitems[2]))
                         deal_dic[subitems[0]]['last_single']['vol_3'].append(int(subitems[3]))
 
-                        if not len(deal_dic[subitems[0]]['last_single']['sum_vol_1']):
-                            deal_dic[subitems[0]]['last_single']['sum_vol_1'].append(int(subitems[1]))
-                        else:
-                            deal_dic[subitems[0]]['last_single']['sum_vol_1'].append(int(subitems[1]) + deal_dic[subitems[0]]['last_single']['sum_vol_1'][-1])
+                        #if not len(deal_dic[subitems[0]]['last_single']['sum_vol_1']):
+                        deal_dic[subitems[0]]['last_single']['sum_vol_1'].append(int(subitems[1]))
+                        #else:
+                        #    deal_dic[subitems[0]]['last_single']['sum_vol_1'].append(int(subitems[1]) + deal_dic[subitems[0]]['last_single']['sum_vol_1'][-1])
 
-                        if not len(deal_dic[subitems[0]]['last_single']['sum_vol_2']):
-                            deal_dic[subitems[0]]['last_single']['sum_vol_2'].append(int(subitems[2]))
-                        else:
-                            deal_dic[subitems[0]]['last_single']['sum_vol_2'].append(int(subitems[2]) + deal_dic[subitems[0]]['last_single']['sum_vol_2'][-1])
+                        #if not len(deal_dic[subitems[0]]['last_single']['sum_vol_2']):
+                        deal_dic[subitems[0]]['last_single']['sum_vol_2'].append(int(subitems[2]))
+                        #else:
+                        #    deal_dic[subitems[0]]['last_single']['sum_vol_2'].append(int(subitems[2]) + deal_dic[subitems[0]]['last_single']['sum_vol_2'][-1])
 
-                        if not len(deal_dic[subitems[0]]['last_single']['sum_vol_3']):
-                            deal_dic[subitems[0]]['last_single']['sum_vol_3'].append(int(subitems[3]))
-                        else:
-                            deal_dic[subitems[0]]['last_single']['sum_vol_3'].append(int(subitems[3]) + deal_dic[subitems[0]]['last_single']['sum_vol_3'][-1])
+                        #if not len(deal_dic[subitems[0]]['last_single']['sum_vol_3']):
+                        deal_dic[subitems[0]]['last_single']['sum_vol_3'].append(int(subitems[3]))
+                        #else:
+                        #    deal_dic[subitems[0]]['last_single']['sum_vol_3'].append(int(subitems[3]) + deal_dic[subitems[0]]['last_single']['sum_vol_3'][-1])
 
                         deal_dic[subitems[0]]['last_single']['main_force'].append(float(subitems[5]))
                         deal_dic[subitems[0]]['last_single']['total_vol'].append(int(subitems[6]))
@@ -1990,7 +2007,7 @@ def do_search_short():
             if not id_dic[key].has_key('single'):
                 id_dic[key]['single'] = {}
 
-            if len(get_single_analysis3(key, id_dic[key]['vol'], id_dic[key]['single'])) == 0:
+            if len(get_single_analysis3(key, id_dic[key])) == 0:
                 #get_single_analysis2(toady, key, id_dic[key]['vol'], id_dic[key]['single'])
                 if len(id_dic[key]['single']) == 0:
                     continue
@@ -2012,7 +2029,8 @@ def do_search_short():
             #file_name = log_print_res(id_dic[key], 'singles_tmp')
 
         time.sleep(TIME_DIFF)
-        os.rename('singles_tmp', 'singles%s' % time.strftime('%Y%m%d',time.localtime(time.time())))
+        if os.path.isfile('singles_tmp'):
+            os.rename('singles_tmp', 'singles%s' % time.strftime('%Y%m%d',time.localtime(time.time())))
 
 #A股就是个坑， 技术指标低位了， 仍然可以再砸
 #技术指标高位了， 有资金接盘仍然可以涨, 高位始终是危险
