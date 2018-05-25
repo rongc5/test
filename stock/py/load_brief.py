@@ -19,6 +19,9 @@ import jieba
 import jieba.analyse
 import jieba.posseg as pseg
 
+
+
+
 from bs4 import BeautifulSoup as bsp
 
 __author__ = 'rong'
@@ -347,7 +350,6 @@ def load_ua_list():
     file.close()
     print 'user_agent_list:', len(user_agent_list)
     return user_agent_list
-
 
 def load_stockid_brief(id, filename):
     url = 'http://vip.stock.finance.sina.com.cn/corp/go.php/vCI_CorpInfo/stockid/%s.phtml' % (id[2:])
