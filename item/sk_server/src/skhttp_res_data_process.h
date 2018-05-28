@@ -30,6 +30,10 @@ class skhttp_res_data_process:public http_base_data_process
 
         void do_req_err(std::string & res);
 
+        void query_finance(std::string &id, StringBuffer & ss);
+
+        void query_quotation(std::string &id, StringBuffer & ss);
+
     protected:
         std::string _body;
         std::string _recv_buf;

@@ -11,6 +11,8 @@
 #include "proc_data.h"
 #include "writer.h"
 #include "stringbuffer.h"
+#include "real_quotation_dict.h"
+#include "finance_dict.h"
 
 using namespace rapidjson;
 
@@ -33,6 +35,59 @@ std::string * skhttp_res_data_process::get_send_body(int &result)
 void skhttp_res_data_process::header_recv_finish()
 {
 
+}
+
+void skhttp_res_data_process::query_quotation(std::string &id, StringBuffer & ss)
+{
+    auto ii = p_data->_rquoation_dict->current()->_id_dict.find(id);
+    if (ii != p_data->_finance_dict->current()->_id_dict.end())
+    {
+        Writer<StringBuffer> ws(ss);
+    }
+}
+
+void skhttp_res_data_process::query_finance(std::string &id, StringBuffer & ss)
+{
+    auto ii = p_data->_finance_dict->current()->_id_dict.find(id);
+    if (ii != p_data->_finance_dict->current()->_id_dict.end())
+    {
+        Writer<StringBuffer> ws(ss);
+
+        ws.StartObject();
+        ws.Key("mgxj");
+        ws.Double(ii->second.mgxj);
+
+        ws.Key("mgsy");
+        ws.Double(ii->second.mgsy);
+
+        ws.Key("mgsygr");
+        ws.Double(ii->second.mgsygr);
+
+        ws.Key("mgxjgr");
+        ws.Double(ii->second.mgxjgr);
+
+        ws.Key("zysrgr");
+        ws.Double(ii->second.zysrgr);
+
+        ws.Key("yylrgr");
+        ws.Double(ii->second.yylrgr);
+
+        ws.Key("jlrgr");
+        ws.Double(ii->second.jlrgr);
+
+        ws.Key("pe");
+        ws.Uint(ii->second.pe);
+
+        ws.Key("pb");
+        ws.Uint(ii->second.pb);
+
+        ws.Key("value");
+        ws.Uint(ii->second.value);
+
+        ws.Key("cir_value");
+        ws.Uint(ii->second.cir_value);
+        ws.EndObject();
+    }
 }
 
 void skhttp_res_data_process::do_query_id(url_info & u_info, std::string & res)
@@ -64,12 +119,15 @@ void skhttp_res_data_process::do_query_id(url_info & u_info, std::string & res)
     writer.StartObject();
 
     {
-        auto ii = p_data->_finance_dict->current()->_id_dict.find(url_para_map["id"]);
-        if (ii != p_data->_finance_dict->current()->_id_dict.end())
+        StringBuffer ss;
+        query_finance(url_para_map["id"], ss);
+        if (!ss.GetString().empty())
         {
-            
+            writer.Key("finance");
+            writer.String(ss.GetString());
         }
     }
+
     writer.EndObject();
 }
 
