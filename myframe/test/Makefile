@@ -2,7 +2,7 @@ HOME_DIR=../
 INC_DIR=${HOME_DIR}/include
 LIB_DIR=../lib
 
-INCLUDE = -I./${INC_DIR}/ 
+INCLUDE = -I${INC_DIR}/ 
 
 LIB = -L$(LIB_DIR) -lmyframe -lpthread
 
@@ -10,7 +10,7 @@ CPPFLAGS = -g -msse3 -Wall $(INCLUDE) -DDEBUG=1 -std=c++0x
 CC  = g++ $(CPPFLAGS)
 
 
-OBJ	= ./test_split.o     \
+OBJ	= ./test_split1.o     \
 
 
 AR=ar

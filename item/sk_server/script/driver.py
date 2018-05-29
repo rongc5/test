@@ -189,7 +189,7 @@ def do_query_id(parser):
     if res_str:
         print res_str
 
-        if not parser.file:
+        if parser.file:
             log_write(parser.file, res_str)
 
 
@@ -226,7 +226,7 @@ def do_select(parser):
     if res_str:
         print res_str
 
-        if not parser.file:
+        if parser.file:
             log_write(parser.file, res_str)
 
 

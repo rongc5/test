@@ -186,9 +186,6 @@ int parse_url(const std::string &url, url_info & info);
 
 void parse_url_para(const std::string &url_path, std::map<std::string, std::string> &url_para_map);
 
-template <class T, class U>  
-bool has_key(const std::map<T, U> & query, const T &key);
-
 template <class T, class U>
 bool has_key(const std::map<T, U> & query, const T & key)
 {

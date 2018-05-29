@@ -9,12 +9,10 @@
 #include "base_def.h"
 #include "http_res_process.h"
 #include "proc_data.h"
-#include "writer.h"
-#include "stringbuffer.h"
 #include "real_quotation_dict.h"
 #include "finance_dict.h"
 
-using namespace rapidjson;
+
 
 skhttp_res_data_process::skhttp_res_data_process(http_base_process * _p_process):http_base_data_process(_p_process)
 {
@@ -39,23 +37,68 @@ void skhttp_res_data_process::header_recv_finish()
 
 void skhttp_res_data_process::query_quotation(std::string &id, StringBuffer & ss)
 {
+    proc_data* p_data = proc_data::instance();
     auto ii = p_data->_rquoation_dict->current()->_id_dict.find(id);
-    if (ii != p_data->_finance_dict->current()->_id_dict.end())
+    if (ii != p_data->_rquoation_dict->current()->_id_dict.end())
     {
         Writer<StringBuffer> ws(ss);
+
+        ws.StartObject();
+
+        ws.Key("start");
+        ws.Double(ii->second.current()->start);
+
+        ws.Key("end");
+        ws.Double(ii->second.current()->end);
+
+        ws.Key("high");
+        ws.Double(ii->second.current()->high);
+
+        ws.Key("low");
+        ws.Double(ii->second.current()->low);
+
+        ws.Key("last_closed");
+        ws.Double(ii->second.current()->last_closed);
+
+        ws.Key("vol");
+        ws.Uint64(ii->second.current()->vol);
+
+        ws.Key("buy_vol");
+        ws.Uint64(ii->second.current()->buy_vol);
+
+        ws.Key("sell_vol");
+        ws.Uint64(ii->second.current()->sell_vol);
+
+        ws.Key("swing");
+        ws.Double(ii->second.current()->swing);
+
+        ws.Key("change_rate");
+        ws.Double(ii->second.current()->change_rate);
+
+        ws.Key("range_percent");
+        ws.Double(ii->second.current()->range_percent);
+
+        ws.Key("total_price");
+        ws.Double(ii->second.current()->total_price);
+
+        ws.EndObject();
     }
 }
 
 void skhttp_res_data_process::query_finance(std::string &id, StringBuffer & ss)
 {
+    proc_data* p_data = proc_data::instance();
     auto ii = p_data->_finance_dict->current()->_id_dict.find(id);
     if (ii != p_data->_finance_dict->current()->_id_dict.end())
     {
         Writer<StringBuffer> ws(ss);
 
         ws.StartObject();
+
         ws.Key("mgxj");
-        ws.Double(ii->second.mgxj);
+        ws.String(ii->second.mgxj);
+
+        LOG_DEBUG("mgxj:%f", ii->second.mgxj);
 
         ws.Key("mgsy");
         ws.Double(ii->second.mgsy);
@@ -86,81 +129,111 @@ void skhttp_res_data_process::query_finance(std::string &id, StringBuffer & ss)
 
         ws.Key("cir_value");
         ws.Uint(ii->second.cir_value);
+
         ws.EndObject();
     }
 }
 
-void skhttp_res_data_process::do_query_id(url_info & u_info, std::string & res)
+int skhttp_res_data_process::do_query_id(std::map<std::string, std::string> & url_para_map, StringBuffer & s)
 {
     proc_data* p_data = proc_data::instance();
-
-    std::map<std::string, std::string> url_para_map;
-    parse_url_para(u_info.query, url_para_map);
 
     {
         auto ii = url_para_map.find("id");
         if (ii == url_para_map.end())
         {
-            do_req_err();
-            return;
+            return HTPP_RES_ERR;
         }
     }
     
     if (!p_data)
     {
-        do_req_err();
-        return;
+        return HTPP_RES_ERR;
     }
     
 
-    StringBuffer s;
     Writer<StringBuffer> writer(s);
 
     writer.StartObject();
 
     {
+        writer.Key("id");
+        writer.String(url_para_map["id"].c_str());
+    }
+
+    {
         StringBuffer ss;
         query_finance(url_para_map["id"], ss);
-        if (!ss.GetString().empty())
+        if (ss.GetString() != NULL)
         {
             writer.Key("finance");
             writer.String(ss.GetString());
         }
     }
 
+    {
+        StringBuffer ss;
+        query_quotation(url_para_map["id"], ss);
+        if (ss.GetString() != NULL)
+        {
+            writer.Key("quotation");
+            writer.String(ss.GetString());
+        }
+    }
+
     writer.EndObject();
+
+    return HTPP_RES_OK;
 }
 
-void skhttp_res_data_process::do_select(url_info & u_info, std::string & res)
+int skhttp_res_data_process::do_select(std::map<std::string, std::string> & url_para_map, StringBuffer & s)
 {
-
-}
-
-void skhttp_res_data_process::do_req_err(std::string & res)
-{
-
+    return HTPP_RES_OK;
 }
 
 void skhttp_res_data_process::msg_recv_finish()
 {
     http_req_head_para & req_head_para = _base_process->get_req_head_para();
     LOG_DEBUG("url_path:%s", req_head_para._url_path.c_str());
-    url_info u_info;
     
-    parse_url(req_head_para._url_path, u_info);
+    std::map<std::string, std::string> url_para_map;
+    parse_url_para(req_head_para._url_path, url_para_map);
 
-    if (!strncmp(u_info.path.c_str(), "queryid", strlen("queryid"))){
-        do_query_id(u_info, _body);
-    }else if (!strncmp(u_info.path.c_str(), "select", strlen("select"))){
-        do_select(u_info, _body);
-    }else {
-        do_req_err(_body);    
+    Document document;
+    int recode;
+    StringBuffer s;
+    if (!strncmp(req_head_para._url_path.c_str(), "/queryid", strlen("/queryid"))){
+        recode = do_query_id(url_para_map, s);
+    }else if (!strncmp(req_head_para._url_path.c_str(), "/select", strlen("/select"))){
+        recode = do_select(url_para_map, s);
+    } else {
+        recode = HTPP_REQ_PATH_ERR;
     }
 
+    StringBuffer ss;
+    Writer<StringBuffer> writer(ss);
 
-    _recv_buf.clear();
+    writer.StartObject();
 
-    _body.append("I have recved, I am Server\n");
+    writer.Key("recode");
+    writer.Uint(recode);
+
+    writer.Key("data");
+
+    if (recode == HTPP_RES_OK)
+    {
+        writer.String(s.GetString());
+    }
+    else
+    {
+        writer.String("{}");
+    }
+    writer.EndObject();
+
+    //_recv_buf.clear();
+
+    LOG_DEBUG("response:%s", ss.GetString());
+    _body.append(ss.GetString());
 }
 
 std::string * skhttp_res_data_process::get_send_head()

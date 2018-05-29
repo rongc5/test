@@ -112,5 +112,8 @@ struct quotation_t
 
 #define TIMER_TYPE_HTTP_REQ 10002
 
+#define HTPP_RES_OK 1000
+#define HTPP_RES_ERR 1001
+#define HTPP_REQ_PATH_ERR 1002
 
 #endif

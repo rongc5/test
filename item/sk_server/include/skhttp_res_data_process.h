@@ -4,7 +4,10 @@
 #include "base_def.h"
 #include "http_base_process.h"
 #include "http_base_data_process.h"
+#include "stringbuffer.h"
+#include "writer.h"
 
+using namespace rapidjson;
 
 class skhttp_res_data_process:public http_base_data_process
 {
@@ -24,11 +27,13 @@ class skhttp_res_data_process:public http_base_data_process
         
         static void gen_listen_obj(int fd, common_obj_container * net_container);
 
-        void do_query_id(url_info & u_info, std::string & res);
+        int do_query_id(std::map<std::string, std::string> & url_para_map, StringBuffer & s);
 
-        void do_select(url_info & u_info, std::string & res);
+        int do_select(std::map<std::string, std::string> & url_para_map, StringBuffer & s);
 
-        void do_req_err(std::string & res);
+        void query_finance(std::string &id, StringBuffer & ss);
+
+        void query_quotation(std::string &id, StringBuffer & ss);
 
     protected:
         std::string _body;
