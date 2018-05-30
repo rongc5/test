@@ -21,8 +21,8 @@ class sk_conf: public reload_inf
         std::string ban_path;
         std::string ban_file;
 
-        std::string local_strategy_path;
-        std::string local_strategy_file;
+        std::string strategy_path;
+        std::string strategy_file;
 
         std::string history_single_path;
         std::string history_single_file;

@@ -71,25 +71,24 @@ void rquotation_data_process::msg_recv_finish()
         return;
     }
 
-    quotation_t * qt = it->second.idle();
+    std::map<std::string, std::string> * qt = it->second.idle();
     
-    qt->name = strVec[1];
-    qt->start = atof(strVec[5].c_str());
-    qt->end = atof(strVec[3].c_str());
-    qt->high = atof(strVec[33].c_str());
-    qt->low = atof(strVec[34].c_str());
-    qt->last_closed = atof(strVec[4].c_str());
-    qt->vol = atoi(strVec[36].c_str());
-    qt->sell_vol = atoi(strVec[8].c_str());
-    qt->buy_vol = atoi(strVec[7].c_str());
-    qt->swing = atof(strVec[43].c_str());
-    qt->change_rate = atof(strVec[38].c_str());
-    qt->range_percent = atof(strVec[32].c_str());
-    qt->total_price = atoi(strVec[37].c_str());
+    qt->insert(std::make_pair("name", strVec[1]));
+    qt->insert(std::make_pair("start", strVec[5]));
+    qt->insert(std::make_pair("end", strVec[3]));
+    qt->insert(std::make_pair("high", strVec[33]));
+    qt->insert(std::make_pair("low",  strVec[34]));
+    qt->insert(std::make_pair("last_closed", strVec[4]));
+    qt->insert(std::make_pair("vol",strVec[36]));
+    qt->insert(std::make_pair("sell_vol", strVec[8]));
+    qt->insert(std::make_pair("buy_vol", strVec[7]));
+    qt->insert(std::make_pair("swing", strVec[43]));
+    qt->insert(std::make_pair("change_rate", strVec[38]));
+    qt->insert(std::make_pair("range_percent", strVec[32]));
+    qt->insert(std::make_pair("total_price", strVec[37]));
 
-    if (qt->start <= 1)
+    if (atof((*qt)["start"].c_str()) <= 1)
     {
-        qt->blocked = true;
         p_data->_block_set.idle()->insert(_id);
     }
 

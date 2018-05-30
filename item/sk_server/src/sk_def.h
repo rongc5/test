@@ -4,50 +4,6 @@
 #include "common_util.h"
 
 
-struct finance_t
-{
-    std::string id;
-    std::string time_str;
-
-    float mgxj;
-    float mgsy;
-
-    float mgsygr;
-    float mgxjgr;
-    float zysrgr;
-    float yylrgr;
-    float jlrgr;
-
-    int pe;
-    int pb;
-
-    int value;
-    int cir_value;
-
-    finance_t()
-    {
-        reset();
-    }
-
-    void reset()
-    {
-        mgxj = 0;
-        mgsy = 0;
-
-        mgsygr = 0;
-        mgxjgr = 0;
-        zysrgr = 0;
-        yylrgr = 0;
-        jlrgr = 0;
-
-        pe = 0;
-        pb = 0;
-
-        value = 0;
-        cir_value = 0;
-    }
-};
-
 struct ban_t
 {
     std::string id;

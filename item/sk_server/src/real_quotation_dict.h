@@ -25,7 +25,7 @@ class real_quotation_dict:public reload_inf
         char _dumppath[SIZE_LEN_512];
         time_t _last_load;
     public:
-        std::unordered_map<std::string, ToBufferMgr<quotation_t>,str_hasher> _id_dict;
+        std::unordered_map<std::string, ToBufferMgr<std::map<std::string, std::string> >,str_hasher> _id_dict;
 };
 
 

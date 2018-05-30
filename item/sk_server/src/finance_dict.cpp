@@ -65,11 +65,11 @@ int finance_dict::load()
         ft["jlrgr"] = tmp_vec[11];
         ft["time_str"] = tmp_vec[12];
         
-        _id_dict.insert(std::make_pair(ft.id, ft));
+        _id_dict.insert(std::make_pair(ft["id"], ft));
 
         if (has_key<std::string, std::string>(ft, "pb"))
         {
-            int pe = atoi(ft["pe"].c_str())
+            int pe = atoi(ft["pe"].c_str());
             auto iii =  _pe_index.find(pe);
             if (iii != _pe_index.end())
             {
@@ -85,7 +85,7 @@ int finance_dict::load()
 
         if (has_key<std::string, std::string>(ft, "pb"))    
         {
-            int pb = atoi(ft["pb"].c_str())
+            int pb = atoi(ft["pb"].c_str());
             auto iii =  _pb_index.find(pb);
             if (iii != _pb_index.end())
             {
@@ -99,9 +99,9 @@ int finance_dict::load()
             }
         }
 
-        if (has_key<std::string, std::string>(ft, "value"))    
+        if (has_key<std::string, std::string>(ft, "value"))
         {
-            int value = atoi(ft["value"].c_str())
+            int value = atoi(ft["value"].c_str());
             auto iii =  _value_index.find(value);
             if (iii != _value_index.end())
             {
@@ -117,7 +117,7 @@ int finance_dict::load()
 
         if (has_key<std::string, std::string>(ft, "cir_value"))    
         {
-            int cir_value = atoi(ft["cir_value"].c_str())
+            int cir_value = atoi(ft["cir_value"].c_str());
             auto iii =  _cir_value_index.find(cir_value);
             if (iii != _cir_value_index.end())
             {
@@ -133,8 +133,8 @@ int finance_dict::load()
 
         if (has_key<std::string, std::string>(ft, "mgxj"))    
         {
-            float mgxj = atof(ft["mgxj"].c_str())
-            auto iii =  _mgxj_index.find(ft.mgxj);
+            float mgxj = atof(ft["mgxj"].c_str());
+            auto iii =  _mgxj_index.find(mgxj);
             if (iii != _mgxj_index.end())
             {
                 iii->second.push_back(ft["id"]);
@@ -149,7 +149,7 @@ int finance_dict::load()
 
         if (has_key<std::string, std::string>(ft, "mgsy"))    
         {
-            float mgsy = atof(ft["mgsy"].c_str())
+            float mgsy = atof(ft["mgsy"].c_str());
             auto iii =  _mgsy_index.find(mgsy);
             if (iii != _mgsy_index.end())
             {
@@ -165,7 +165,7 @@ int finance_dict::load()
 
         if (has_key<std::string, std::string>(ft, "mgsygr"))    
         {
-            float mgsygr = atof(ft["mgsygr"].c_str())
+            float mgsygr = atof(ft["mgsygr"].c_str());
             auto iii =  _mgsygr_index.find(mgsygr);
             if (iii != _mgsygr_index.end())
             {
@@ -181,7 +181,7 @@ int finance_dict::load()
 
         if (has_key<std::string, std::string>(ft, "mgxjgr"))    
         {
-            float mgxjgr = atof(ft["mgxjgr"].c_str())
+            float mgxjgr = atof(ft["mgxjgr"].c_str());
             auto iii =  _mgxjgr_index.find(mgxjgr);
             if (iii != _mgxjgr_index.end())
             {
@@ -197,7 +197,7 @@ int finance_dict::load()
 
         if (has_key<std::string, std::string>(ft, "zysrgr"))    
         {
-            float zysrgr = atof(ft["zysrgr"].c_str())
+            float zysrgr = atof(ft["zysrgr"].c_str());
             auto iii =  _zysrgr_index.find(zysrgr);
             if (iii != _zysrgr_index.end())
             {
@@ -213,7 +213,7 @@ int finance_dict::load()
 
         if (has_key<std::string, std::string>(ft, "yylrgr"))    
         {
-            float yylrgr = atof(ft["yylrgr"].c_str())
+            float yylrgr = atof(ft["yylrgr"].c_str());
             auto iii =  _yylrgr_index.find(yylrgr);
             if (iii != _yylrgr_index.end())
             {
@@ -229,7 +229,7 @@ int finance_dict::load()
 
         if (has_key<std::string, std::string>(ft, "jlrgr"))    
         {
-            float jlrgr = atof(ft["jlrgr"].c_str())
+            float jlrgr = atof(ft["jlrgr"].c_str());
             auto iii =  _jlrgr_index.find(jlrgr);
             if (iii != _jlrgr_index.end())
             {

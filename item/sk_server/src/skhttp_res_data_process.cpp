@@ -35,106 +35,54 @@ void skhttp_res_data_process::header_recv_finish()
 
 }
 
-void skhttp_res_data_process::query_quotation(std::string &id, StringBuffer & ss)
+void skhttp_res_data_process::query_quotation(std::string &id, Value & root, Document::AllocatorType & allocator)
 {
+    Value key(kStringType);
+    Value value(kStringType);
+
     proc_data* p_data = proc_data::instance();
     auto ii = p_data->_rquoation_dict->current()->_id_dict.find(id);
     if (ii != p_data->_rquoation_dict->current()->_id_dict.end())
     {
-        Writer<StringBuffer> ws(ss);
+        for (auto ft: *(ii->second.current()))
+        {
+            if (!strncmp(ft.first.c_str(), "id", strlen("id")))
+                continue;
 
-        ws.StartObject();
+            key.SetString(ft.first.c_str(), allocator); 
+            value.SetString(ft.second.c_str(), allocator); 
 
-        ws.Key("start");
-        ws.Double(ii->second.current()->start);
-
-        ws.Key("end");
-        ws.Double(ii->second.current()->end);
-
-        ws.Key("high");
-        ws.Double(ii->second.current()->high);
-
-        ws.Key("low");
-        ws.Double(ii->second.current()->low);
-
-        ws.Key("last_closed");
-        ws.Double(ii->second.current()->last_closed);
-
-        ws.Key("vol");
-        ws.Uint64(ii->second.current()->vol);
-
-        ws.Key("buy_vol");
-        ws.Uint64(ii->second.current()->buy_vol);
-
-        ws.Key("sell_vol");
-        ws.Uint64(ii->second.current()->sell_vol);
-
-        ws.Key("swing");
-        ws.Double(ii->second.current()->swing);
-
-        ws.Key("change_rate");
-        ws.Double(ii->second.current()->change_rate);
-
-        ws.Key("range_percent");
-        ws.Double(ii->second.current()->range_percent);
-
-        ws.Key("total_price");
-        ws.Double(ii->second.current()->total_price);
-
-        ws.EndObject();
+            root.AddMember(key, value, allocator);
+        }
     }
 }
 
-void skhttp_res_data_process::query_finance(std::string &id, StringBuffer & ss)
+void skhttp_res_data_process::query_finance(std::string &id, Value & root, Document::AllocatorType & allocator)
 {
+    Value key(kStringType);
+    Value value(kStringType);
+
     proc_data* p_data = proc_data::instance();
     auto ii = p_data->_finance_dict->current()->_id_dict.find(id);
     if (ii != p_data->_finance_dict->current()->_id_dict.end())
     {
-        Writer<StringBuffer> ws(ss);
+        for (auto ft:ii->second)
+        {
+            if (!strncmp(ft.first.c_str(), "id", strlen("id")))
+                continue;
 
-        ws.StartObject();
+            if (!strncmp(ft.first.c_str(), "time_str", strlen("time_str")))
+                continue;
 
-        ws.Key("mgxj");
-        ws.String(ii->second.mgxj);
+            key.SetString(ft.first.c_str(), allocator); 
+            value.SetString(ft.second.c_str(), allocator); 
 
-        LOG_DEBUG("mgxj:%f", ii->second.mgxj);
-
-        ws.Key("mgsy");
-        ws.Double(ii->second.mgsy);
-
-        ws.Key("mgsygr");
-        ws.Double(ii->second.mgsygr);
-
-        ws.Key("mgxjgr");
-        ws.Double(ii->second.mgxjgr);
-
-        ws.Key("zysrgr");
-        ws.Double(ii->second.zysrgr);
-
-        ws.Key("yylrgr");
-        ws.Double(ii->second.yylrgr);
-
-        ws.Key("jlrgr");
-        ws.Double(ii->second.jlrgr);
-
-        ws.Key("pe");
-        ws.Uint(ii->second.pe);
-
-        ws.Key("pb");
-        ws.Uint(ii->second.pb);
-
-        ws.Key("value");
-        ws.Uint(ii->second.value);
-
-        ws.Key("cir_value");
-        ws.Uint(ii->second.cir_value);
-
-        ws.EndObject();
+            root.AddMember(key, value, allocator);
+        }
     }
 }
 
-int skhttp_res_data_process::do_query_id(std::map<std::string, std::string> & url_para_map, StringBuffer & s)
+int skhttp_res_data_process::do_query_id(std::map<std::string, std::string> & url_para_map, Value & root, Document::AllocatorType & allocator)
 {
     proc_data* p_data = proc_data::instance();
 
@@ -151,42 +99,37 @@ int skhttp_res_data_process::do_query_id(std::map<std::string, std::string> & ur
         return HTPP_RES_ERR;
     }
     
-
-    Writer<StringBuffer> writer(s);
-
-    writer.StartObject();
+    Value key(kStringType);
+    Value value(kStringType);
+    
 
     {
-        writer.Key("id");
-        writer.String(url_para_map["id"].c_str());
+        key.SetString("id", allocator);
+        value.SetString(url_para_map["id"].c_str(), allocator);
+
+        root.AddMember(key, value, allocator);
     }
 
     {
-        StringBuffer ss;
-        query_finance(url_para_map["id"], ss);
-        if (ss.GetString() != NULL)
-        {
-            writer.Key("finance");
-            writer.String(ss.GetString());
-        }
+        Value child(kObjectType);
+        query_finance(url_para_map["id"], child, allocator);
+
+        key.SetString("finance", allocator);
+        root.AddMember(key, child, allocator);
     }
 
     {
-        StringBuffer ss;
-        query_quotation(url_para_map["id"], ss);
-        if (ss.GetString() != NULL)
-        {
-            writer.Key("quotation");
-            writer.String(ss.GetString());
-        }
-    }
+        Value child(kObjectType);
+        query_quotation(url_para_map["id"], child, allocator);
 
-    writer.EndObject();
+        key.SetString("quotation", allocator);
+        root.AddMember(key, child, allocator);
+    }
 
     return HTPP_RES_OK;
 }
 
-int skhttp_res_data_process::do_select(std::map<std::string, std::string> & url_para_map, StringBuffer & s)
+int skhttp_res_data_process::do_select(std::map<std::string, std::string> & url_para_map, Value & root, Document::AllocatorType & allocator)
 {
     return HTPP_RES_OK;
 }
@@ -200,40 +143,36 @@ void skhttp_res_data_process::msg_recv_finish()
     parse_url_para(req_head_para._url_path, url_para_map);
 
     Document document;
+    Document::AllocatorType& allocator = document.GetAllocator(); 
+    Value root(kObjectType); 
+    Value child(kObjectType);
+
     int recode;
-    StringBuffer s;
     if (!strncmp(req_head_para._url_path.c_str(), "/queryid", strlen("/queryid"))){
-        recode = do_query_id(url_para_map, s);
+        recode = do_query_id(url_para_map, child, allocator);
     }else if (!strncmp(req_head_para._url_path.c_str(), "/select", strlen("/select"))){
-        recode = do_select(url_para_map, s);
+        recode = do_select(url_para_map, child, allocator);
     } else {
         recode = HTPP_REQ_PATH_ERR;
     }
+    
+    Value key(kStringType);    
+    Value value(kStringType); 
 
-    StringBuffer ss;
-    Writer<StringBuffer> writer(ss);
+    key.SetString("recode", allocator);
+    root.AddMember(key, recode, allocator);
 
-    writer.StartObject();
+    key.SetString("data", allocator);
 
-    writer.Key("recode");
-    writer.Uint(recode);
+    root.AddMember(key, child, allocator);
 
-    writer.Key("data");
-
-    if (recode == HTPP_RES_OK)
-    {
-        writer.String(s.GetString());
-    }
-    else
-    {
-        writer.String("{}");
-    }
-    writer.EndObject();
-
+    StringBuffer buffer;    
+    Writer<StringBuffer> writer(buffer);    
+    root.Accept(writer);
     //_recv_buf.clear();
 
-    LOG_DEBUG("response:%s", ss.GetString());
-    _body.append(ss.GetString());
+    LOG_DEBUG("response:%s", buffer.GetString());
+    _body.append(buffer.GetString());
 }
 
 std::string * skhttp_res_data_process::get_send_head()

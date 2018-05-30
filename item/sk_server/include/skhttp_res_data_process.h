@@ -6,6 +6,10 @@
 #include "http_base_data_process.h"
 #include "stringbuffer.h"
 #include "writer.h"
+#include "document.h"
+#include "memorystream.h"
+#include "prettywriter.h"
+#include "rapidjson.h"
 
 using namespace rapidjson;
 
@@ -27,13 +31,13 @@ class skhttp_res_data_process:public http_base_data_process
         
         static void gen_listen_obj(int fd, common_obj_container * net_container);
 
-        int do_query_id(std::map<std::string, std::string> & url_para_map, StringBuffer & s);
+        int do_query_id(std::map<std::string, std::string> & url_para_map, Value & root, Document::AllocatorType & allocator);
 
-        int do_select(std::map<std::string, std::string> & url_para_map, StringBuffer & s);
+        int do_select(std::map<std::string, std::string> & url_para_map, Value & root, Document::AllocatorType & allocator);
 
-        void query_finance(std::string &id, StringBuffer & ss);
+        void query_finance(std::string &id, Value & root, Document::AllocatorType & allocator);
 
-        void query_quotation(std::string &id, StringBuffer & ss);
+        void query_quotation(std::string &id, Value & root, Document::AllocatorType & allocator);
 
     protected:
         std::string _body;

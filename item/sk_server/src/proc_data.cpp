@@ -71,11 +71,11 @@ int proc_data::init(sk_conf * conf)
     {
         recommend_dict *recommend_dict1 = new (std::nothrow)recommend_dict();
         ASSERT_WARNING(recommend_dict1 != NULL, "allocate recommend_dict fail");
-        recommend_dict1->init(_conf->local_strategy_path.c_str(), _conf->local_strategy_file.c_str(), _conf->dump_dir.c_str());
+        recommend_dict1->init(_conf->recommend_dict_path.c_str(), _conf->recommend_dict_file.c_str(), _conf->dump_dir.c_str());
 
         recommend_dict *recommend_dict2 = new (std::nothrow)recommend_dict();
         ASSERT_WARNING(recommend_dict2 != NULL, "allocate recommend_dict fail");
-        recommend_dict2->init(_conf->local_strategy_path.c_str(), _conf->local_strategy_file.c_str(), _conf->dump_dir.c_str());
+        recommend_dict2->init(_conf->recommend_dict_path.c_str(), _conf->recommend_dict_file.c_str(), _conf->dump_dir.c_str());
 
         _recommend_dict = new (std::nothrow)reload_mgr<recommend_dict>(recommend_dict1, recommend_dict2);
     }

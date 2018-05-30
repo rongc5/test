@@ -243,4 +243,7 @@ class ToBufferMgr
         int16_t _curr;
 };
 
+uint32_t common_random(uint32_t *seed);
+
+
 #endif

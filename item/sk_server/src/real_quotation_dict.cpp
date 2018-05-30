@@ -30,7 +30,6 @@ int real_quotation_dict::load()
 
     char line[SIZE_LEN_1024];
     char * ptr = NULL;
-    uint32_t query_sign[2];
 
     while (fgets(line, 1024, fp)) 
     {
@@ -42,7 +41,7 @@ int real_quotation_dict::load()
         if (ptr == NULL || *ptr == '\0'|| *ptr == '#')
             continue;
 
-        ToBufferMgr<quotation_t> qt;
+        ToBufferMgr<std::map<std::string, std::string> > qt;
         std::string str = std::string(ptr);
         _id_dict[str] = qt;
     }
@@ -57,7 +56,7 @@ int real_quotation_dict::load()
 
 int real_quotation_dict::reload()
 {
-    std::unordered_map<std::string, ToBufferMgr<quotation_t>,str_hasher> tmp;
+    std::unordered_map<std::string, ToBufferMgr<std::map<std::string, std::string> >,str_hasher> tmp;
     _id_dict.swap(tmp);
     return load();
 }

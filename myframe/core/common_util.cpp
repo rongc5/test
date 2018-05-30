@@ -650,3 +650,10 @@ int exec_shell_cmd(std::string & cmd, std::string & res)
 
     return 0;
 }
+
+uint32_t common_random(uint32_t *seed)
+{
+    uint32_t r;
+    r = *seed = *seed * 1103515245 + 12345;
+    return (r << 16) | ((r >> 16) & 0xffff);
+}

@@ -25,7 +25,7 @@ class finance_dict:public reload_inf
         char _dumppath[SIZE_LEN_512];
         time_t _last_load;
     public:
-        std::unordered_map<std::string, finance_t, str_hasher> _id_dict;
+        std::unordered_map<std::string, std::map<std::string, std::string>, str_hasher> _id_dict;
 
         std::map<int, std::vector<std::string> > _pe_index;
         std::map<int, std::vector<std::string> > _pb_index;
