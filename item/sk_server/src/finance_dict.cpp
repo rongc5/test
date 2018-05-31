@@ -30,7 +30,6 @@ int finance_dict::load()
 
     char line[SIZE_LEN_1024];
     char * ptr = NULL;
-    uint32_t query_sign[2];
 
     while (fgets(line, 1024, fp)) 
     {

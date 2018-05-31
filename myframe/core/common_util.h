@@ -199,6 +199,18 @@ bool has_key(const std::map<T, U> & query, const T & key)
     return true;
 }
 
+template <class T, class U>
+bool has_key(const std::unordered_map<T, U> & query, const T & key)
+{
+    auto it = query.find(key);
+    if (it == query.end())
+    {
+        return false;
+    }
+
+    return true;
+}
+
 int exec_shell_cmd(std::string & cmd, std::string & res);
 
 template<typename T>

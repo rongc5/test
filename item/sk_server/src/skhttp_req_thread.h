@@ -43,7 +43,9 @@ class skhttp_req_thread:public base_net_thread
                     //_id_index += 1;
                 //}
                 //return;
-                if (_base_container && _base_container->size() > p_data->_conf->max_reqhttp_num && p_data->_conf->max_reqhttp_num)
+                if (_base_container && _base_container->size() > 
+                        p_data->_conf->_strategy->current()->max_reqhttp_num && 
+                        p_data->_conf->_strategy->current()->max_reqhttp_num)
                 {
                     //LOG_DEBUG("the _base_container size > %d", p_data->_conf->max_reqhttp_num);
                     return;
@@ -111,7 +113,8 @@ class skhttp_req_thread:public base_net_thread
             if (strlen(time_str) && p_data && p_data->_conf)
             {
                 if (strncmp(date, _req_date.c_str(), _req_date.size()) &&
-                        strncmp(time_str, p_data->_conf->real_morning_stime.c_str(), strlen("09:30")) > 0)
+                        strncmp(time_str, p_data->_conf->_strategy->current()->real_morning_stime.c_str(),
+                            strlen("09:30")) > 0)
                 {
                     _req_date.assign(date);
                     first_in_day();
@@ -119,12 +122,16 @@ class skhttp_req_thread:public base_net_thread
                     return true;
                 }
 
-                if (strncmp(time_str, p_data->_conf->real_morning_stime.c_str(), strlen("09:30")) > 0 &&
-                        strncmp(time_str, p_data->_conf->real_morning_etime.c_str(), strlen("09:30")) < 0)
+                if (strncmp(time_str, p_data->_conf->_strategy->current()->real_morning_stime.c_str(), 
+                            strlen("09:30")) > 0 &&
+                        strncmp(time_str, p_data->_conf->_strategy->current()->real_morning_etime.c_str(),
+                            strlen("09:30")) < 0)
                     return true;
 
-                if (strncmp(time_str, p_data->_conf->real_morning_etime.c_str(), strlen("09:30")) < 0 && 
-                        strncmp(time_str, p_data->_conf->real_afternoon_etime.c_str(), strlen("09:30")) < 0)
+                if (strncmp(time_str, p_data->_conf->_strategy->current()->real_morning_etime.c_str(), 
+                            strlen("09:30")) < 0 && 
+                        strncmp(time_str, p_data->_conf->_strategy->current()->real_afternoon_etime.c_str(), 
+                            strlen("09:30")) < 0)
                     return true;
             }
 

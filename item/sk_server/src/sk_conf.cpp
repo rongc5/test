@@ -8,55 +8,17 @@ sk_conf::sk_conf(const char * sk_conf)
 
     //ip_deny_num = 100;
 
-    reload_second = 5;
-
-    req_interval_second = 20;
-    req_http_timeout = 300;
-    max_reqhttp_num = 10;
-
     log_type = LOGDEBUG;
 
     _filename.append(sk_conf); 
-}
+    
+    _strategy = NULL;
 
-
-int sk_conf::load()
-{
     std::string tmp;
     common_cfgparser cfg(_filename.c_str());
 
-    cfg.get_vale("server", "ua_path", ua_path);
-    cfg.get_vale("server", "ua_file", ua_file);
-
-    cfg.get_vale("server", "id_path", id_path);
-    cfg.get_vale("server", "id_file", id_file);
-
-    cfg.get_vale("server", "financie_path", financie_path);
-    cfg.get_vale("server", "financie_file", financie_file);
-
-    cfg.get_vale("server", "ban_path", ban_path);
-    cfg.get_vale("server", "ban_file", ban_file);
-
     cfg.get_vale("server", "strategy_path", strategy_path);
     cfg.get_vale("server", "strategy_file", strategy_file);
-
-    cfg.get_vale("server", "plate_dict_path", plate_dict_path);
-    cfg.get_vale("server", "plate_dict_file", plate_dict_file);
-
-    cfg.get_vale("server", "address_dict_path", address_dict_path);
-    cfg.get_vale("server", "address_dict_file", address_dict_file);
-
-    cfg.get_vale("server", "history_single_path", history_single_path);
-    cfg.get_vale("server", "history_single_file", history_single_file);
-
-    cfg.get_vale("server", "history_quotation_path", history_quotation_path);
-    cfg.get_vale("server", "history_quotation_file", history_quotation_file);
-
-    cfg.get_vale("server", "trade_date_path", trade_date_path);
-    cfg.get_vale("server", "trade_date_file", trade_date_file);
-
-    cfg.get_vale("server", "recommend_dict_path", recommend_dict_path);
-    cfg.get_vale("server", "recommend_dict_file", recommend_dict_file);
 
     cfg.get_vale("server", "http_server_port", tmp);
     http_server_port = atoi(tmp.c_str());
@@ -67,19 +29,6 @@ int sk_conf::load()
     //cfg.get_vale("server", "ip_deny_path", ip_deny_path);
 
     cfg.get_vale("server", "dump_dir", dump_dir);
-
-    cfg.get_vale("server", "reload_second", tmp);
-    reload_second = atoi(tmp.c_str());
-
-    cfg.get_vale("server", "req_interval_second", tmp);
-    req_interval_second = atoi(tmp.c_str());
-
-
-    cfg.get_vale("server", "req_http_timeout", tmp);
-    req_http_timeout = atoi(tmp.c_str());
-
-    cfg.get_vale("server", "max_reqhttp_num", tmp);
-    max_reqhttp_num = atoi(tmp.c_str());
 
     cfg.get_vale("server", "log_type", tmp);
     int ret = atoi(tmp.c_str());
@@ -96,13 +45,23 @@ int sk_conf::load()
     {
         log_type = (LogType) ret;
     }
-        
 
-    cfg.get_vale("server", "real_morning_stime", real_morning_stime);
-    cfg.get_vale("server", "real_morning_etime", real_morning_etime);
+    {
+        strategy_conf *ua_dict1 = new (std::nothrow)strategy_conf();
+        ua_dict1->init(strategy_path.c_str(), strategy_file.c_str(), dump_dir.c_str());
 
-    cfg.get_vale("server", "real_afternoon_stime", real_afternoon_stime);
-    cfg.get_vale("server", "real_afternoon_stime", real_afternoon_stime);
+        strategy_conf *ua_dict2 = new (std::nothrow)strategy_conf();
+        ua_dict2->init(strategy_path.c_str(), strategy_file.c_str(), dump_dir.c_str());
+
+        _strategy = new (std::nothrow)reload_mgr<strategy_conf>(ua_dict1, ua_dict2);
+    }
+}
+
+
+int sk_conf::load()
+{
+    if (_strategy)
+        _strategy->reload();
 
     return 0;
 }

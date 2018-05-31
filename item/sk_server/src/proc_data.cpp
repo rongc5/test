@@ -22,11 +22,13 @@ int proc_data::init(sk_conf * conf)
     {
         ua_dict *ua_dict1 = new (std::nothrow)ua_dict();
         ASSERT_WARNING(ua_dict1 != NULL, "allocate ua_dict fail");
-        ua_dict1->init(_conf->ua_path.c_str(), _conf->ua_file.c_str(), _conf->dump_dir.c_str());
+        ua_dict1->init(_conf->_strategy->current()->ua_path.c_str(), 
+                _conf->_strategy->current()->ua_file.c_str(), _conf->dump_dir.c_str());
 
         ua_dict *ua_dict2 = new (std::nothrow)ua_dict();
         ASSERT_WARNING(ua_dict2 != NULL, "allocate ua_dict fail");
-        ua_dict2->init(_conf->ua_path.c_str(), _conf->ua_file.c_str(), _conf->dump_dir.c_str());
+        ua_dict2->init(_conf->_strategy->current()->ua_path.c_str(),
+                _conf->_strategy->current()->ua_file.c_str(), _conf->dump_dir.c_str());
 
         _ua_dict = new (std::nothrow)reload_mgr<ua_dict>(ua_dict1, ua_dict2);
     }
@@ -34,11 +36,13 @@ int proc_data::init(sk_conf * conf)
     {
         id_dict *id_dict1 = new (std::nothrow)id_dict();
         ASSERT_WARNING(id_dict1 != NULL, "allocate id_dict fail");
-        id_dict1->init(_conf->id_path.c_str(), _conf->id_file.c_str(), _conf->dump_dir.c_str());
+        id_dict1->init(_conf->_strategy->current()->id_path.c_str(), 
+                _conf->_strategy->current()->id_file.c_str(), _conf->dump_dir.c_str());
 
         id_dict *id_dict2 = new (std::nothrow)id_dict();
         ASSERT_WARNING(id_dict2 != NULL, "allocate id_dict fail");
-        id_dict2->init(_conf->id_path.c_str(), _conf->id_file.c_str(), _conf->dump_dir.c_str());
+        id_dict2->init(_conf->_strategy->current()->id_path.c_str(), 
+                _conf->_strategy->current()->id_file.c_str(), _conf->dump_dir.c_str());
 
         _id_dict = new (std::nothrow)reload_mgr<id_dict>(id_dict1, id_dict2);
     }
@@ -46,11 +50,13 @@ int proc_data::init(sk_conf * conf)
     {
         real_quotation_dict *rq_dict1 = new (std::nothrow)real_quotation_dict();
         ASSERT_WARNING(rq_dict1 != NULL, "allocate id_dict fail");
-        rq_dict1->init(_conf->id_path.c_str(), _conf->id_file.c_str(), _conf->dump_dir.c_str());
+        rq_dict1->init(_conf->_strategy->current()->id_path.c_str(), 
+                _conf->_strategy->current()->id_file.c_str(), _conf->dump_dir.c_str());
 
         real_quotation_dict *rq_dict2 = new (std::nothrow)real_quotation_dict();
         ASSERT_WARNING(rq_dict2 != NULL, "allocate id_dict fail");
-        rq_dict2->init(_conf->id_path.c_str(), _conf->id_file.c_str(), _conf->dump_dir.c_str());
+        rq_dict2->init(_conf->_strategy->current()->id_path.c_str(), 
+                _conf->_strategy->current()->id_file.c_str(), _conf->dump_dir.c_str());
 
         _rquoation_dict = new (std::nothrow)reload_mgr<real_quotation_dict>(rq_dict1, rq_dict2);
     }
@@ -58,11 +64,13 @@ int proc_data::init(sk_conf * conf)
     {
         real_single_dict *rs_dict1 = new (std::nothrow)real_single_dict();
         ASSERT_WARNING(rs_dict1 != NULL, "allocate id_dict fail");
-        rs_dict1->init(_conf->id_path.c_str(), _conf->id_file.c_str(), _conf->dump_dir.c_str());
+        rs_dict1->init(_conf->_strategy->current()->id_path.c_str(), 
+                _conf->_strategy->current()->id_file.c_str(), _conf->dump_dir.c_str());
 
         real_single_dict *rs_dict2 = new (std::nothrow)real_single_dict();
         ASSERT_WARNING(rs_dict2 != NULL, "allocate id_dict fail");
-        rs_dict2->init(_conf->id_path.c_str(), _conf->id_file.c_str(), _conf->dump_dir.c_str());
+        rs_dict2->init(_conf->_strategy->current()->id_path.c_str(),
+                _conf->_strategy->current()->id_file.c_str(), _conf->dump_dir.c_str());
 
         _rsingle_dict = new (std::nothrow)reload_mgr<real_single_dict>(rs_dict1, rs_dict2);
     }
@@ -71,11 +79,13 @@ int proc_data::init(sk_conf * conf)
     {
         recommend_dict *recommend_dict1 = new (std::nothrow)recommend_dict();
         ASSERT_WARNING(recommend_dict1 != NULL, "allocate recommend_dict fail");
-        recommend_dict1->init(_conf->recommend_dict_path.c_str(), _conf->recommend_dict_file.c_str(), _conf->dump_dir.c_str());
+        recommend_dict1->init(_conf->_strategy->current()->recommend_dict_path.c_str(), 
+                _conf->_strategy->current()->recommend_dict_file.c_str(), _conf->dump_dir.c_str());
 
         recommend_dict *recommend_dict2 = new (std::nothrow)recommend_dict();
         ASSERT_WARNING(recommend_dict2 != NULL, "allocate recommend_dict fail");
-        recommend_dict2->init(_conf->recommend_dict_path.c_str(), _conf->recommend_dict_file.c_str(), _conf->dump_dir.c_str());
+        recommend_dict2->init(_conf->_strategy->current()->recommend_dict_path.c_str(),
+                _conf->_strategy->current()->recommend_dict_file.c_str(), _conf->dump_dir.c_str());
 
         _recommend_dict = new (std::nothrow)reload_mgr<recommend_dict>(recommend_dict1, recommend_dict2);
     }
@@ -84,11 +94,13 @@ int proc_data::init(sk_conf * conf)
     {
         address_dict *addr_dict1 = new (std::nothrow)address_dict();
         ASSERT_WARNING(addr_dict1 != NULL, "allocate address_dict fail");
-        addr_dict1->init(_conf->address_dict_path.c_str(), _conf->address_dict_file.c_str(), _conf->dump_dir.c_str());
+        addr_dict1->init(_conf->_strategy->current()->address_dict_path.c_str(),
+                _conf->_strategy->current()->address_dict_file.c_str(), _conf->dump_dir.c_str());
 
         address_dict *addr_dict2 = new (std::nothrow)address_dict();
         ASSERT_WARNING(addr_dict2 != NULL, "allocate address_dict fail");
-        addr_dict2->init(_conf->address_dict_path.c_str(), _conf->address_dict_file.c_str(), _conf->dump_dir.c_str());
+        addr_dict2->init(_conf->_strategy->current()->address_dict_path.c_str(),
+                _conf->_strategy->current()->address_dict_file.c_str(), _conf->dump_dir.c_str());
 
         _address_dict = new (std::nothrow)reload_mgr<address_dict>(addr_dict1, addr_dict2);
     }
@@ -97,11 +109,13 @@ int proc_data::init(sk_conf * conf)
     {
         plate_dict *addr_dict1 = new (std::nothrow)plate_dict();
         ASSERT_WARNING(addr_dict1 != NULL, "allocate plate_dict fail");
-        addr_dict1->init(_conf->plate_dict_path.c_str(), _conf->plate_dict_file.c_str(), _conf->dump_dir.c_str());
+        addr_dict1->init(_conf->_strategy->current()->plate_dict_path.c_str(),
+                _conf->_strategy->current()->plate_dict_file.c_str(), _conf->dump_dir.c_str());
 
         plate_dict *addr_dict2 = new (std::nothrow)plate_dict();
         ASSERT_WARNING(addr_dict2 != NULL, "allocate plate_dict fail");
-        addr_dict2->init(_conf->plate_dict_path.c_str(), _conf->plate_dict_file.c_str(), _conf->dump_dir.c_str());
+        addr_dict2->init(_conf->_strategy->current()->plate_dict_path.c_str(),
+                _conf->_strategy->current()->plate_dict_file.c_str(), _conf->dump_dir.c_str());
 
         _plate_dict = new (std::nothrow)reload_mgr<plate_dict>(addr_dict1, addr_dict2);
     }
@@ -121,11 +135,13 @@ int proc_data::init(sk_conf * conf)
     {
         finance_dict *fin_dict1 = new (std::nothrow)finance_dict();
         ASSERT_WARNING(fin_dict1 != NULL, "allocate finance_dict fail");
-        fin_dict1->init(_conf->financie_path.c_str(), _conf->financie_file.c_str(), conf->dump_dir.c_str());
+        fin_dict1->init(_conf->_strategy->current()->financie_path.c_str(),
+                _conf->_strategy->current()->financie_file.c_str(), conf->dump_dir.c_str());
 
         finance_dict *fin_dict2 = new (std::nothrow)finance_dict();
         ASSERT_WARNING(fin_dict2 != NULL, "allocate finance_dict fail");
-        fin_dict2->init(_conf->financie_path.c_str(), conf->financie_file.c_str(), conf->dump_dir.c_str());
+        fin_dict2->init(_conf->_strategy->current()->financie_path.c_str(),
+                conf->_strategy->current()->financie_file.c_str(), conf->dump_dir.c_str());
 
         _finance_dict = new (std::nothrow)reload_mgr<finance_dict>(fin_dict1, fin_dict2);
     }
@@ -134,11 +150,13 @@ int proc_data::init(sk_conf * conf)
     {
         ban_dict *b_dict1 = new (std::nothrow)ban_dict();
         ASSERT_WARNING(b_dict1 != NULL, "allocate ban_dict fail");
-        b_dict1->init(_conf->ban_path.c_str(), _conf->ban_file.c_str(), conf->dump_dir.c_str());
+        b_dict1->init(_conf->_strategy->current()->ban_path.c_str(), 
+                _conf->_strategy->current()->ban_file.c_str(), conf->dump_dir.c_str());
 
         ban_dict *b_dict2 = new (std::nothrow)ban_dict();
         ASSERT_WARNING(b_dict2 != NULL, "allocate ban_dict fail");
-        b_dict2->init(_conf->ban_path.c_str(), _conf->ban_file.c_str(), conf->dump_dir.c_str());
+        b_dict2->init(_conf->_strategy->current()->ban_path.c_str(), 
+                _conf->_strategy->current()->ban_file.c_str(), conf->dump_dir.c_str());
 
         _ban_dict = new (std::nothrow)reload_mgr<ban_dict>(b_dict1, b_dict2);
     }
@@ -146,11 +164,13 @@ int proc_data::init(sk_conf * conf)
     {
         history_single_dict *hs_dict1 = new (std::nothrow)history_single_dict();
         ASSERT_WARNING(hs_dict1 != NULL, "allocate history_single_t fail");
-        hs_dict1->init(_conf->history_single_path.c_str(), _conf->history_single_file.c_str(), conf->dump_dir.c_str());
+        hs_dict1->init(_conf->_strategy->current()->history_single_path.c_str(), 
+                _conf->_strategy->current()->history_single_file.c_str(), conf->dump_dir.c_str());
 
         history_single_dict *hs_dict2 = new (std::nothrow)history_single_dict();
         ASSERT_WARNING(hs_dict2 != NULL, "allocate history_single_t fail");
-        hs_dict2->init(_conf->history_single_path.c_str(), _conf->history_single_file.c_str(), conf->dump_dir.c_str());
+        hs_dict2->init(_conf->_strategy->current()->history_single_path.c_str(), 
+                _conf->_strategy->current()->history_single_file.c_str(), conf->dump_dir.c_str());
 
         _hsingle_dict = new (std::nothrow)reload_mgr<history_single_dict>(hs_dict1, hs_dict2);
     }
@@ -159,11 +179,13 @@ int proc_data::init(sk_conf * conf)
     {
         history_quotation_dict *hq_dict1 = new (std::nothrow)history_quotation_dict();
         ASSERT_WARNING(hq_dict1 != NULL, "allocate history_quotation_t fail");
-        hq_dict1->init(_conf->history_quotation_path.c_str(), _conf->history_quotation_file.c_str(), conf->dump_dir.c_str());
+        hq_dict1->init(_conf->_strategy->current()->history_quotation_path.c_str(),
+                _conf->_strategy->current()->history_quotation_file.c_str(), conf->dump_dir.c_str());
 
         history_quotation_dict *hq_dict2 = new (std::nothrow)history_quotation_dict();
         ASSERT_WARNING(hq_dict2 != NULL, "allocate history_quotation_t fail");
-        hq_dict2->init(_conf->history_quotation_path.c_str(), _conf->history_quotation_file.c_str(), conf->dump_dir.c_str());
+        hq_dict2->init(_conf->_strategy->current()->history_quotation_path.c_str(),
+                _conf->_strategy->current()->history_quotation_file.c_str(), conf->dump_dir.c_str());
 
         _hquoation_dict = new (std::nothrow)reload_mgr<history_quotation_dict>(hq_dict1, hq_dict2);
     }
@@ -171,11 +193,13 @@ int proc_data::init(sk_conf * conf)
     {
         trade_date_dict *td_dict1 = new (std::nothrow)trade_date_dict();
         ASSERT_WARNING(td_dict1 != NULL, "allocate trade_date_dict fail");
-        td_dict1->init(_conf->trade_date_path.c_str(), _conf->trade_date_file.c_str(), conf->dump_dir.c_str());
+        td_dict1->init(_conf->_strategy->current()->trade_date_path.c_str(), 
+                _conf->_strategy->current()->trade_date_file.c_str(), conf->dump_dir.c_str());
 
         trade_date_dict *td_dict2 = new (std::nothrow)trade_date_dict();
         ASSERT_WARNING(td_dict2 != NULL, "allocate trade_date_dict fail");
-        td_dict2->init(_conf->trade_date_path.c_str(), _conf->trade_date_file.c_str(), conf->dump_dir.c_str());
+        td_dict2->init(_conf->_strategy->current()->trade_date_path.c_str(),
+                _conf->_strategy->current()->trade_date_file.c_str(), conf->dump_dir.c_str());
 
         _tdate_dict = new (std::nothrow)reload_mgr<trade_date_dict>(td_dict1, td_dict2);
 

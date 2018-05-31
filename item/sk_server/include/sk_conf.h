@@ -3,45 +3,15 @@
 
 #include "base_reload.h"
 #include "log_helper.h"
+#include "strategy_conf.h"
 
 class sk_conf: public reload_inf
 {
     public:
         sk_conf(const char * sk_conf);
 
-        std::string ua_path;
-        std::string ua_file;
-
-        std::string id_path;
-        std::string id_file;
-        
-        std::string financie_path;
-        std::string financie_file;
-
-        std::string ban_path;
-        std::string ban_file;
-
-        std::string local_strategy_path;
-        std::string local_strategy_file;
-
-        std::string history_single_path;
-        std::string history_single_file;
-
-        std::string history_quotation_path;
-        std::string history_quotation_file;
-
-        std::string trade_date_path;
-        std::string trade_date_file;
-
-        std::string recommend_dict_path;
-        std::string recommend_dict_file;
-
-        std::string plate_dict_path;
-        std::string plate_dict_file;
-
-        std::string address_dict_path;
-        std::string address_dict_file;
-
+        std::string strategy_path;
+        std::string strategy_file;
 
         uint32_t http_server_port;
         uint32_t http_server_thread_num;
@@ -49,20 +19,10 @@ class sk_conf: public reload_inf
         //std::string ip_deny_path;
 
         std::string dump_dir;
-        uint32_t reload_second;
-
-        uint32_t req_interval_second;
-        uint32_t req_http_timeout;
-
-        uint32_t max_reqhttp_num;
 
         LogType log_type;
 
-        std::string real_morning_stime;
-        std::string real_morning_etime;
-
-        std::string real_afternoon_stime;
-        std::string real_afternoon_etime;
+        reload_mgr<strategy_conf> * _strategy;
 
     public:
 
