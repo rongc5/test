@@ -12,6 +12,7 @@ import sys
 import random
 import subprocess
 import ast
+import json
 
 from time import strftime, localtime
 from datetime import timedelta, date
@@ -171,6 +172,57 @@ class CurlHTTPFetcher(object):
             data.close()
             c.close()
 
+def print_res(res, parser):
+    if res.has_key('recode'):
+        print res['recode']
+
+    if res.has_key('data'):
+        for item in res['data']:
+            if item.has_key('id'):
+                tmp_str = 'id='
+                tmp_str += item['id']
+                print tmp_str
+                if parser.file:
+                    log_write(parser.file, tmp_str)
+
+            if item.has_key('finance'):
+                tmp_str = 'finance='
+                myjson = json.dumps(item['finance'], ensure_ascii=False)
+                tmp_str += myjson
+                print tmp_str
+                if parser.file:
+                    log_write(parser.file, tmp_str)
+
+            if item.has_key('quotation'):
+                tmp_str = 'quotation='
+                myjson = json.dumps(item['quotation'], ensure_ascii=False)
+                tmp_str += myjson
+                print tmp_str
+                if parser.file:
+                    log_write(parser.file, tmp_str)
+
+            if item.has_key('plate'):
+                tmp_str = 'plate='
+                myjson = json.dumps(item['plate'], ensure_ascii=False)
+                tmp_str += myjson
+                print tmp_str
+                if parser.file:
+                    log_write(parser.file, tmp_str)
+
+            if item.has_key('block'):
+                tmp_str = 'block='
+                myjson = json.dumps(item['block'], ensure_ascii=False)
+                tmp_str += myjson
+                print tmp_str
+                if parser.file:
+                    log_write(parser.file, tmp_str)
+
+            print '\n'
+            if parser.file:
+                log_write(parser.file, '\n')
+
+
+
 def do_query_id(parser):
     url = 'http://%s:%s/queryid?id=%s&history_days=%d' % (parser.ip, parser.port, parser.id, parser.history_days)
 
@@ -186,11 +238,11 @@ def do_query_id(parser):
         print e.message
 
     res_str = res['body'].strip()
+    res_str = res_str.decode('gb18030')
+    #res_str = json.loads(res_str, encoding="GB2312")
+    res_str = json.loads(res_str)
     if res_str:
-        print res_str
-
-        if parser.file:
-            log_write(parser.file, res_str)
+        print print_res(res_str, parser)
 
 
 def do_select(parser):

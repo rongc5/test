@@ -145,6 +145,16 @@ void strategy_conf::do_parse()
         ban_file = _cfg["ban_file"];
     }
 
+    if (has_key<std::string, std::string>(_cfg, "plate_dict_split_path"))
+    {
+        plate_dict_split_path = _cfg["plate_dict_split_path"];
+    }
+
+    if (has_key<std::string, std::string>(_cfg, "plate_dict_split_file"))
+    {
+        plate_dict_split_file = _cfg["plate_dict_split_file"];
+    }
+
     if (has_key<std::string, std::string>(_cfg, "plate_dict_path"))
     {
         plate_dict_path = _cfg["plate_dict_path"];

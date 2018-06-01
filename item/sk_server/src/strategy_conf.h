@@ -51,6 +51,9 @@ class strategy_conf:public reload_inf
         std::string recommend_dict_path;
         std::string recommend_dict_file;
 
+        std::string plate_dict_split_path;
+        std::string plate_dict_split_file;
+
         std::string plate_dict_path;
         std::string plate_dict_file;
 

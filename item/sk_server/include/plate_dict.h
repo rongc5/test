@@ -1,5 +1,5 @@
-#ifndef __PLATE_DICT_H_
-#define __PLATE_DICT_H_
+#ifndef _PLATE_DICT_H_
+#define _PLATE_DICT_H_
 
 #include "base_reload.h"
 #include "sk_def.h"
@@ -26,8 +26,6 @@ class plate_dict:public reload_inf
         time_t _last_load;
     public:
         std::unordered_map<std::string, std::vector<std::string>, str_hasher> _id_dict;
-
-        std::unordered_map<std::string, std::vector<std::string>, str_hasher> _plate_index;
 };
 
 

@@ -39,6 +39,10 @@ class skhttp_res_data_process:public http_base_data_process
 
         void query_quotation(std::string &id, Value & root, Document::AllocatorType & allocator);
 
+        void query_plate(std::string &id, Value & root, Document::AllocatorType & allocator);
+
+        void query_blocked(std::string &id, Value & root, Document::AllocatorType & allocator);
+
     protected:
         std::string _body;
         std::string _recv_buf;

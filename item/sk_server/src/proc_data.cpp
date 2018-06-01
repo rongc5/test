@@ -7,6 +7,7 @@
 #include "real_quotation_dict.h"
 #include "proc_data.h"
 #include "address_dict.h"
+#include "plate_dict_split.h"
 #include "plate_dict.h"
 #include "history_single_dict.h"
 #include "history_quotation_dict.h"
@@ -105,6 +106,20 @@ int proc_data::init(sk_conf * conf)
         _address_dict = new (std::nothrow)reload_mgr<address_dict>(addr_dict1, addr_dict2);
     }
 
+
+    {
+        plate_dict_split *addr_dict1 = new (std::nothrow)plate_dict_split();
+        ASSERT_WARNING(addr_dict1 != NULL, "allocate plate_dict_split fail");
+        addr_dict1->init(_conf->_strategy->current()->plate_dict_split_path.c_str(),
+                _conf->_strategy->current()->plate_dict_split_file.c_str(), _conf->dump_dir.c_str());
+
+        plate_dict_split *addr_dict2 = new (std::nothrow)plate_dict_split();
+        ASSERT_WARNING(addr_dict2 != NULL, "allocate plate_dict_split fail");
+        addr_dict2->init(_conf->_strategy->current()->plate_dict_split_path.c_str(),
+                _conf->_strategy->current()->plate_dict_split_file.c_str(), _conf->dump_dir.c_str());
+
+        _plate_dict_split = new (std::nothrow)reload_mgr<plate_dict_split>(addr_dict1, addr_dict2);
+    }
 
     {
         plate_dict *addr_dict1 = new (std::nothrow)plate_dict();
@@ -239,6 +254,8 @@ int proc_data::load()
 
     _address_dict->load();
 
+    _plate_dict_split->load();
+
     _plate_dict->load();
 
     _hsingle_dict->load();
@@ -286,6 +303,11 @@ int proc_data::reload()
         _address_dict->reload();
     }
 
+    if (_plate_dict_split)
+    {
+        _plate_dict_split->reload();
+    }
+
     if (_plate_dict)
     {
         _plate_dict->reload();
@@ -327,6 +349,8 @@ int proc_data::dump()
 
     _address_dict->dump();
 
+    _plate_dict_split->dump();
+
     _plate_dict->dump();
 
     _hsingle_dict->dump();
@@ -352,6 +376,8 @@ int proc_data::destroy()
     _rquoation_dict->destroy();
 
     _address_dict->destroy();
+
+    _plate_dict_split->destroy();
 
     _plate_dict->destroy();
 

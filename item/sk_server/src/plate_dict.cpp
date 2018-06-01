@@ -43,7 +43,7 @@ int plate_dict::load()
             continue;
 
         std::vector<std::string> tmp_vec;
-        SplitString(ptr, "\t", &tmp_vec, SPLIT_MODE_ALL);
+        SplitString(ptr, '\t', &tmp_vec, SPLIT_MODE_ALL);
         if (tmp_vec.size() < 2)
         {
             continue;
@@ -53,21 +53,6 @@ int plate_dict::load()
         tmp_vec.erase(tmp_vec.begin());
 
         _id_dict.insert(std::make_pair(id, tmp_vec));
-
-        for (auto iit = tmp_vec.begin(); iit != tmp_vec.begin(); iit++)
-        {
-            auto iii =  _plate_index.find(*iit);
-            if (iii != _plate_index.end())
-            {
-                iii->second.push_back(id);
-            }
-            else
-            {
-                std::vector<std::string> id_vec;
-                id_vec.push_back(id);
-                _plate_index.insert(std::make_pair(*iit, id_vec));
-            }
-        }
 
     }
 
@@ -84,11 +69,6 @@ int plate_dict::reload()
     {
         std::unordered_map<std::string, std::vector<std::string>, str_hasher> tmp;
         _id_dict.swap(tmp);
-    }
-
-    {
-        std::unordered_map<std::string, std::vector<std::string>, str_hasher> tmp;
-        _plate_index.swap(tmp);
     }
 
     return load();

@@ -43,7 +43,7 @@ int address_dict::load()
             continue;
 
         std::vector<std::string> tmp_vec;
-        SplitString(ptr, "\t", &tmp_vec, SPLIT_MODE_ALL);
+        SplitString(ptr, '\t', &tmp_vec, SPLIT_MODE_ALL);
         if (tmp_vec.size() < 2)
         {
             continue;

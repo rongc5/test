@@ -12,6 +12,7 @@ class finance_dict;
 class ban_dict;
 class id_dict;
 class address_dict;
+class plate_dict_split;
 class plate_dict;
 class history_single_dict;
 class history_quotation_dict;
@@ -41,6 +42,8 @@ class proc_data:public reload_inf
         reload_mgr<ban_dict> * _ban_dict;
 
         reload_mgr<address_dict> * _address_dict;
+
+        reload_mgr<plate_dict_split> * _plate_dict_split;
 
         reload_mgr<plate_dict> * _plate_dict;
         

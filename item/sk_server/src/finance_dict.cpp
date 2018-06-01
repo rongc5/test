@@ -44,7 +44,7 @@ int finance_dict::load()
         std::map<std::string, std::string> ft;
 
         std::vector<std::string> tmp_vec;
-        SplitString(ptr, "\t", &tmp_vec, SPLIT_MODE_ALL);
+        SplitString(ptr, '\t', &tmp_vec, SPLIT_MODE_ALL);
         if (tmp_vec.size() < 13)
         {
             continue;

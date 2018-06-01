@@ -31,7 +31,7 @@ int history_quotation_dict::load_history_quoation(const char * file)
     }
     
     std::vector<std::string> strVec;
-    SplitString(file, "_", &strVec, SPLIT_MODE_ALL); 
+    SplitString(file, '_', &strVec, SPLIT_MODE_ALL); 
     if (strVec.size() != 2)
     {
         LOG_WARNING("file:%s, SplitString failed", file);

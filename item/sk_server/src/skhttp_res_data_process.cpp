@@ -11,6 +11,7 @@
 #include "proc_data.h"
 #include "real_quotation_dict.h"
 #include "finance_dict.h"
+#include "plate_dict.h"
 
 
 
@@ -57,6 +58,40 @@ void skhttp_res_data_process::query_quotation(std::string &id, Value & root, Doc
     }
 }
 
+void skhttp_res_data_process::query_plate(std::string &id, Value & root, Document::AllocatorType & allocator)
+{
+    Value value(kStringType);
+    proc_data* p_data = proc_data::instance();
+    auto ii = p_data->_plate_dict->current()->_id_dict.find(id);
+    if (ii != p_data->_plate_dict->current()->_id_dict.end())
+    {
+        for (auto ft: ii->second)
+        {
+            value.SetString(ft.c_str(), allocator); 
+            root.PushBack(value, allocator);
+        }
+    }
+}
+void skhttp_res_data_process::query_blocked(std::string &id, Value & root, Document::AllocatorType & allocator)
+{
+    Value key(kStringType);
+    Value value(kStringType);
+
+    key.SetString("block");
+    proc_data* p_data = proc_data::instance();
+    auto ii = p_data->_block_set.current()->find(id);
+    if (ii != p_data->_block_set.current()->end())
+    {
+        root.AddMember(key, 1, allocator);
+    }
+    else
+    {
+        root.AddMember(key, 0, allocator);
+    }
+
+}
+
+
 void skhttp_res_data_process::query_finance(std::string &id, Value & root, Document::AllocatorType & allocator)
 {
     Value key(kStringType);
@@ -82,7 +117,7 @@ void skhttp_res_data_process::query_finance(std::string &id, Value & root, Docum
     }
 }
 
-int skhttp_res_data_process::do_query_id(std::map<std::string, std::string> & url_para_map, Value & root, Document::AllocatorType & allocator)
+int skhttp_res_data_process::do_query_id(std::map<std::string, std::string> & url_para_map, Value & data_array, Document::AllocatorType & allocator)
 {
     proc_data* p_data = proc_data::instance();
 
@@ -98,6 +133,7 @@ int skhttp_res_data_process::do_query_id(std::map<std::string, std::string> & ur
     {
         return HTPP_RES_ERR;
     }
+    Value root(kObjectType);
     
     Value key(kStringType);
     Value value(kStringType);
@@ -126,6 +162,20 @@ int skhttp_res_data_process::do_query_id(std::map<std::string, std::string> & ur
         root.AddMember(key, child, allocator);
     }
 
+    {
+        Value child(kArrayType);
+        query_plate(url_para_map["id"], child, allocator);
+
+        key.SetString("plate", allocator);
+        root.AddMember(key, child, allocator);
+    }
+
+    {
+        query_blocked(url_para_map["id"], root, allocator);
+    }
+
+    data_array.PushBack(root, allocator);
+
     return HTPP_RES_OK;
 }
 
@@ -145,13 +195,13 @@ void skhttp_res_data_process::msg_recv_finish()
     Document document;
     Document::AllocatorType& allocator = document.GetAllocator(); 
     Value root(kObjectType); 
-    Value child(kObjectType);
+    Value data_array(kArrayType);
 
     int recode;
     if (!strncmp(req_head_para._url_path.c_str(), "/queryid", strlen("/queryid"))){
-        recode = do_query_id(url_para_map, child, allocator);
+        recode = do_query_id(url_para_map, data_array, allocator);
     }else if (!strncmp(req_head_para._url_path.c_str(), "/select", strlen("/select"))){
-        recode = do_select(url_para_map, child, allocator);
+        recode = do_select(url_para_map, data_array, allocator);
     } else {
         recode = HTPP_REQ_PATH_ERR;
     }
@@ -164,7 +214,7 @@ void skhttp_res_data_process::msg_recv_finish()
 
     key.SetString("data", allocator);
 
-    root.AddMember(key, child, allocator);
+    root.AddMember(key, data_array, allocator);
 
     StringBuffer buffer;    
     Writer<StringBuffer> writer(buffer);    
