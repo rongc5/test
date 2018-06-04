@@ -12,6 +12,7 @@
 #include "common_domain.h"
 #include "sk_conf.h"
 #include "real_single_dict.h"
+#include "strategy_conf.h"
 
 
 rsingle_data_process::rsingle_data_process(http_base_process * _p_process):http_base_data_process(_p_process)
@@ -75,14 +76,10 @@ void rsingle_data_process::msg_recv_finish()
     SplitString(strVec[1].c_str(), ",", &ssVec, SPLIT_MODE_ALL);
     
 
-    for (uint32_t i = 3; i < ssVec.size(); i++)
+    for (uint32_t i = 3; i < ssVec.size() & i + 7 <= ssVec.size(); i += 7)
     {
-        SplitString(ssVec[i].c_str(), ",", &strVec, SPLIT_MODE_ALL);
-        if (strVec.size() >= 7)
-        {
-            ttmp = atoi(strVec[4].c_str()) - atoi(strVec[5].c_str());
-            single.push_back(ttmp);
-        }
+        ttmp = atoi(ssVec[i + 4].c_str()) - atoi(ssVec[i + 5].c_str());
+        single.push_back(ttmp);
     }
     if (single.empty())
     {
@@ -93,6 +90,12 @@ void rsingle_data_process::msg_recv_finish()
     if (st->empty() || (*(st->rbegin()))[0] != single[0])
     {
         st->push_back(single);
+    }
+
+    if (p_data->_conf->_strategy->current()->real_single_deque_length && 
+            st->size() > p_data->_conf->_strategy->current()->real_single_deque_length)
+    {
+        st->pop_front();
     }
 
     it->second.idle_2_current();

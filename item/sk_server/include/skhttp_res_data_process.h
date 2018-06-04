@@ -43,6 +43,10 @@ class skhttp_res_data_process:public http_base_data_process
 
         void query_blocked(std::string &id, Value & root, Document::AllocatorType & allocator);
 
+        void query_single(std::string &id, Value & root, Document::AllocatorType & allocator);
+
+        int get_single_index(std::string &id, uint32_t num);
+
     protected:
         std::string _body;
         std::string _recv_buf;

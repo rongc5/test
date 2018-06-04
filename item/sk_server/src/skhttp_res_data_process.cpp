@@ -72,12 +72,75 @@ void skhttp_res_data_process::query_plate(std::string &id, Value & root, Documen
         }
     }
 }
+
+int skhttp_res_data_process::get_single_index(std::string &id, uint32_t num)
+{
+    int arr[] = {100, 200, 300, 400, 500, 800, 1000, 1500, 2000};
+    int index = -1;
+    proc_data* p_data = proc_data::instance();
+    auto it = p_data->_rquoation_dict->current()->_id_dict.find(id); 
+    if (it != p_data->_rquoation_dict->current()->_id_dict.end())
+    {
+        if (has_key<std::string, std::string>(*(it->second.current()), "end"))
+        {
+            float end = atof((*(it->second.current()))["end"].c_str());
+             
+            for (uint32_t i = 0; i< sizeof(arr)/sizeof(arr[0]); i++)
+            {
+                if (end * arr[i] * 100 >= num)
+                {
+                    index = i;
+                    break;
+                }
+            }
+        }
+    }
+
+    return index;
+}
+
+void skhttp_res_data_process::query_single(std::string &id, Value & root, Document::AllocatorType & allocator)
+{
+
+    int index = 0;
+    char t_buf[SIZE_LEN_64];
+    proc_data* p_data = proc_data::instance();
+    strategy_conf * strategy = p_data->_conf->_strategy->current();
+    auto ii = p_data->_rsingle_dict->current()->_id_dict.find(id);
+
+    if (ii != p_data->_rsingle_dict->current()->_id_dict.end())
+    {
+        for (uint32_t i = 0; i < strategy->real_single_scale.size(); i++)
+        {
+            index = get_single_index(id, strategy->real_single_scale[i]);
+            if (index < 0)
+                break;
+
+            
+            Value key(kStringType);
+            Value child(kArrayType);
+
+            snprintf(t_buf, sizeof(t_buf), "vol_%d", i);
+            key.SetString(t_buf, allocator);
+
+            for (auto ft: *(ii->second.current()))
+            {
+                if (index < (int)ft.size())
+                {
+                    child.PushBack(Value().SetInt(ft[index]), allocator);
+                }
+            }
+            root.AddMember(key, child, allocator);
+        }
+    }
+}
+
 void skhttp_res_data_process::query_blocked(std::string &id, Value & root, Document::AllocatorType & allocator)
 {
     Value key(kStringType);
     Value value(kStringType);
 
-    key.SetString("block");
+    key.SetString("block", allocator);
     proc_data* p_data = proc_data::instance();
     auto ii = p_data->_block_set.current()->find(id);
     if (ii != p_data->_block_set.current()->end())
@@ -167,6 +230,14 @@ int skhttp_res_data_process::do_query_id(std::map<std::string, std::string> & ur
         query_plate(url_para_map["id"], child, allocator);
 
         key.SetString("plate", allocator);
+        root.AddMember(key, child, allocator);
+    }
+
+    {
+        Value child(kObjectType);
+        query_single(url_para_map["id"], child, allocator);
+
+        key.SetString("single", allocator);
         root.AddMember(key, child, allocator);
     }
 

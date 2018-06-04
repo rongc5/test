@@ -219,6 +219,20 @@ void strategy_conf::do_parse()
     {
         max_reqhttp_num = atoi(_cfg["max_reqhttp_num"].c_str());
     }
+
+    if (has_key<std::string, std::string>(_cfg, "real_single_deque_length"))
+    {
+        real_single_deque_length = atoi(_cfg["real_single_deque_length"].c_str());
+    }
+
+    real_single_scale.clear();
+    if (has_key<std::string, std::string>(_cfg, "real_single_scale"))
+    {
+        std::vector<std::string> strVec;
+        SplitString(_cfg["real_single_scale"].c_str(), ",", &strVec, SPLIT_MODE_ALL);
+        for (uint32_t i = 0; i < strVec.size(); i++)
+        real_single_scale.push_back(atoi(strVec[i].c_str()));
+    }
 }
 
 int strategy_conf::reload()

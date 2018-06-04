@@ -23,7 +23,6 @@ class skhttp_req_thread:public base_net_thread
         {
             _id_index = 0;
             _real_req = true;
-            _is_first = true;
         }
 
         virtual void handle_msg(std::shared_ptr<normal_msg> & p_msg)
@@ -63,7 +62,6 @@ class skhttp_req_thread:public base_net_thread
                 }
                 else
                 {
-                    _is_first = false;
                     real_timer_start();
                 }
             }
@@ -79,8 +77,8 @@ class skhttp_req_thread:public base_net_thread
                 std::shared_ptr<timer_msg> t_msg(new timer_msg);
 
                 t_msg->_timer_type = TIMER_TYPE_REAL_REQ;
-                //t_msg._time_length = p_data->_conf->req_interval_second;
-                t_msg->_time_length = 300000;
+                t_msg->_time_length = p_data->_conf->_strategy->current()->req_interval_millisecond;
+                //t_msg->_time_length = 300000;
                 t_msg->_obj_id = OBJ_ID_THREAD;
                 add_timer(t_msg);
             }
@@ -94,7 +92,12 @@ class skhttp_req_thread:public base_net_thread
                 std::unordered_set<std::string, str_hasher> t_block;
                 p_data->_block_set.idle()->swap(t_block);
                 p_data->_block_set.idle_2_current();
-                _is_first = true;
+
+                real_morning_stime = get_real_time(p_data->_conf->_strategy->current()->real_morning_stime.c_str());
+                real_morning_etime = get_real_time(p_data->_conf->_strategy->current()->real_morning_etime.c_str());
+
+                real_afternoon_stime = get_real_time(p_data->_conf->_strategy->current()->real_afternoon_stime.c_str());
+                real_afternoon_etime = get_real_time(p_data->_conf->_strategy->current()->real_afternoon_etime.c_str());
             }
 
         }
@@ -102,36 +105,29 @@ class skhttp_req_thread:public base_net_thread
         bool is_real_time()
         {
             char date[SIZE_LEN_64] = {'\0'};
-            char time_str[SIZE_LEN_64] = {'\0'};
-
-            get_timestr(time_str, sizeof(time_str), "%H:%M:%S");
-            get_timestr(date, sizeof(date), "%Y%m%d");
+            time_t now = get_timestr(date, sizeof(date), "%Y%m%d");
 
 
             proc_data* p_data = proc_data::instance();
 
-            if (strlen(time_str) && p_data && p_data->_conf)
+            if (p_data && p_data->_conf)
             {
-                if (strncmp(date, _req_date.c_str(), _req_date.size()) &&
-                        strncmp(time_str, p_data->_conf->_strategy->current()->real_morning_stime.c_str(),
-                            strlen("09:30")) > 0)
+                if (strncmp(date, _req_date.c_str(), _req_date.size()))
                 {
-                    _req_date.assign(date);
-                    first_in_day();
+                    time_t stime = get_real_time("09:15");
+                    if (now >= stime)
+                    {
+                        _req_date.assign(date);
+                        first_in_day();
 
-                    return true;
+                        return true;
+                    }
                 }
 
-                if (strncmp(time_str, p_data->_conf->_strategy->current()->real_morning_stime.c_str(), 
-                            strlen("09:30")) > 0 &&
-                        strncmp(time_str, p_data->_conf->_strategy->current()->real_morning_etime.c_str(),
-                            strlen("09:30")) < 0)
+                if (now >= real_morning_stime && now <= real_morning_etime)
                     return true;
 
-                if (strncmp(time_str, p_data->_conf->_strategy->current()->real_morning_etime.c_str(), 
-                            strlen("09:30")) < 0 && 
-                        strncmp(time_str, p_data->_conf->_strategy->current()->real_afternoon_etime.c_str(), 
-                            strlen("09:30")) < 0)
+                if (now >= real_afternoon_stime && now <= real_afternoon_etime)
                     return true;
             }
 
@@ -154,7 +150,7 @@ class skhttp_req_thread:public base_net_thread
 
                 {
                     auto it = p_data->_block_set.current()->find(id);
-                    if (!_is_first && it != p_data->_block_set.current()->end())
+                    if (it != p_data->_block_set.current()->end())
                     {
                         LOG_DEBUG("id: %s is blocked", id.c_str());
                         return;
@@ -186,7 +182,7 @@ class skhttp_req_thread:public base_net_thread
 
                 {
                     auto it = p_data->_block_set.current()->find(id);
-                    if (!_is_first && it != p_data->_block_set.current()->end())
+                    if (it != p_data->_block_set.current()->end())
                     {
                         LOG_DEBUG("id: %s is blocked", id.c_str());
                         return;
@@ -211,7 +207,6 @@ class skhttp_req_thread:public base_net_thread
                     _real_req = true;
 
                 LOG_DEBUG("handle_timeout: TIMER_TYPE_REAL_REQ");
-                real_req_start();
             }
         }
 
@@ -221,10 +216,30 @@ class skhttp_req_thread:public base_net_thread
         }
 
     protected:
+        time_t get_real_time(const char * time)
+        {
+            struct tm tmp_time;
+            memset(&tmp_time, 0, sizeof(tmp_time));
+            char t_buf[SIZE_LEN_64];
+            snprintf(t_buf, sizeof(t_buf), "%s %s", _req_date.c_str(), time);
+
+            strptime(t_buf,"%Y%m%d %H:%M", &tmp_time);
+            time_t t = mktime(&tmp_time);
+
+            return t;
+        }
+
+    protected:
         std::string _req_date;
         uint32_t _id_index;
         bool _real_req;
-        bool _is_first;
+
+        time_t real_morning_stime;
+        time_t real_morning_etime;
+        
+        time_t real_afternoon_stime;
+        time_t real_afternoon_etime;
+
 };
 
 

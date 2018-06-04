@@ -217,6 +217,14 @@ def print_res(res, parser):
                 if parser.file:
                     log_write(parser.file, tmp_str)
 
+            if item.has_key('single'):
+                tmp_str = 'single='
+                myjson = json.dumps(item['single'], ensure_ascii=False)
+                tmp_str += myjson
+                print tmp_str
+                if parser.file:
+                    log_write(parser.file, tmp_str)
+
             print '\n'
             if parser.file:
                 log_write(parser.file, '\n')

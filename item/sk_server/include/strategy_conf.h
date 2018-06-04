@@ -73,6 +73,10 @@ class strategy_conf:public reload_inf
         uint32_t reload_millisecond;
 
         uint32_t max_reqhttp_num;
+
+        uint32_t real_single_deque_length;
+
+        std::vector<uint32_t> real_single_scale;
 };
 
 
