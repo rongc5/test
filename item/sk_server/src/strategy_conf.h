@@ -57,8 +57,11 @@ class strategy_conf:public reload_inf
         std::string plate_dict_path;
         std::string plate_dict_file;
 
-        std::string address_dict_path;
-        std::string address_dict_file;
+        std::string addr_dict_split_path;
+        std::string addr_dict_split_file;
+
+        std::string addr_dict_path;
+        std::string addr_dict_file;
 
     public:
         std::string real_morning_stime;
@@ -67,7 +70,9 @@ class strategy_conf:public reload_inf
         std::string real_afternoon_stime;
         std::string real_afternoon_etime;
 
-        uint32_t req_interval_millisecond;
+        uint32_t req_quotation_millisecond;
+        uint32_t req_single_millisecond;
+
         uint32_t req_http_timeout;
 
         uint32_t reload_millisecond;

@@ -21,8 +21,11 @@ class skhttp_req_thread:public base_net_thread
 
         skhttp_req_thread()
         {
-            _id_index = 0;
-            _real_req = true;
+            _quotation_index = 0;
+            _single_index = 0;
+
+            _req_quotation = true;
+            _req_single = true;
         }
 
         virtual void handle_msg(std::shared_ptr<normal_msg> & p_msg)
@@ -33,55 +36,87 @@ class skhttp_req_thread:public base_net_thread
         void real_req_start()
         {
             proc_data* p_data = proc_data::instance();
-            if (_real_req && p_data && p_data->_id_dict)
-            {
-                //if (!_id_index)
-                //{
-                    //req_real_quotation("sz002285");
-                    //req_real_single("sz002285");
-                    //_id_index += 1;
-                //}
-                //return;
-                if (_base_container && _base_container->size() > 
-                        p_data->_conf->_strategy->current()->max_reqhttp_num && 
-                        p_data->_conf->_strategy->current()->max_reqhttp_num)
-                {
-                    //LOG_DEBUG("the _base_container size > %d", p_data->_conf->max_reqhttp_num);
-                    return;
-                }
-                
+            if (!p_data || !p_data->_id_dict)
+                return;
 
-                id_dict * id_dic = p_data->_id_dict->current();
-                if (id_dic && _id_index < id_dic->_id_vec.size())
-                {
-                    std::string id = id_dic->_id_vec[_id_index];
-                    LOG_DEBUG("%d %d %s", _id_index, id_dic->_id_vec.size(), id.c_str());
-                    req_real_quotation(id);
-                    req_real_single(id);
-                    _id_index++;
-                }
-                else
-                {
-                    real_timer_start();
-                }
+            if (_base_container && _base_container->size() > 
+                    p_data->_conf->_strategy->current()->max_reqhttp_num && 
+                    p_data->_conf->_strategy->current()->max_reqhttp_num)
+            {
+                //LOG_DEBUG("the _base_container size > %d", p_data->_conf->max_reqhttp_num);
+                return;
+            }
+
+            if (_req_quotation)
+            {
+                do_quotation();
+            }
+
+            if (_req_single)
+            {
+                do_single();
             }
         }
-
-        void real_timer_start()
-        {   
+    
+        void do_single()
+        {
             proc_data* p_data = proc_data::instance();
 
-            if (p_data && p_data->_conf)
+            if (!p_data || !p_data->_conf || !p_data->_id_dict)
             {   
-                _real_req = false;
+                return;
+            }
+
+            id_dict * id_dic = p_data->_id_dict->current();
+            if (id_dic && _quotation_index < id_dic->_id_vec.size())
+            {
+                std::string id = id_dic->_id_vec[_single_index];
+                LOG_DEBUG("%d %d %s", _single_index, id_dic->_id_vec.size(), id.c_str());
+                req_real_single(id);
+                _single_index++;
+            }
+            else
+            {
+                _req_single = false;
                 std::shared_ptr<timer_msg> t_msg(new timer_msg);
 
-                t_msg->_timer_type = TIMER_TYPE_REAL_REQ;
-                t_msg->_time_length = p_data->_conf->_strategy->current()->req_interval_millisecond;
-                //t_msg->_time_length = 300000;
+                t_msg->_timer_type = TIMER_TYPE_REQ_SINGLE;
+                t_msg->_time_length = p_data->_conf->_strategy->current()->req_single_millisecond;
                 t_msg->_obj_id = OBJ_ID_THREAD;
                 add_timer(t_msg);
             }
+
+        }
+
+
+        void do_quotation()
+        {   
+            proc_data* p_data = proc_data::instance();
+
+            if (!p_data || !p_data->_conf || !p_data->_id_dict)
+            {   
+                return;
+            }
+
+            id_dict * id_dic = p_data->_id_dict->current();
+            if (id_dic && _quotation_index < id_dic->_id_vec.size())
+            {
+                std::string id = id_dic->_id_vec[_quotation_index];
+                LOG_DEBUG("%d %d %s", _quotation_index, id_dic->_id_vec.size(), id.c_str());
+                req_real_quotation(id);
+                _quotation_index++;
+            }
+            else
+            {
+                _req_quotation = false;
+                std::shared_ptr<timer_msg> t_msg(new timer_msg);
+
+                t_msg->_timer_type = TIMER_TYPE_REQ_QUOTATION;
+                t_msg->_time_length = p_data->_conf->_strategy->current()->req_quotation_millisecond;
+                t_msg->_obj_id = OBJ_ID_THREAD;
+                add_timer(t_msg);
+            }
+
         }
 
         void first_in_day()
@@ -160,7 +195,8 @@ class skhttp_req_thread:public base_net_thread
                 std::map<std::string, std::string> headers;
                 ua_dict * ua_dic = p_data->_ua_dict->current();
 
-                headers.insert(std::make_pair("User-Agent", ua_dic->_ua_vec[_id_index % ua_dic->_ua_vec.size()]));
+                headers.insert(std::make_pair("User-Agent", 
+                            ua_dic->_ua_vec[_quotation_index % ua_dic->_ua_vec.size()]));
 
                 rquotation_data_process::gen_net_obj(id, get_net_container(), headers);
             }
@@ -192,7 +228,8 @@ class skhttp_req_thread:public base_net_thread
                 std::map<std::string, std::string> headers;
                 ua_dict * ua_dic = p_data->_ua_dict->current();
 
-                headers.insert(std::make_pair("User-Agent", ua_dic->_ua_vec[_id_index % ua_dic->_ua_vec.size()]));
+                headers.insert(std::make_pair("User-Agent", 
+                            ua_dic->_ua_vec[_single_index % ua_dic->_ua_vec.size()]));
 
                 rsingle_data_process::gen_net_obj(id, get_net_container(), headers);
             }
@@ -200,13 +237,21 @@ class skhttp_req_thread:public base_net_thread
 
         virtual void handle_timeout(timer_msg & t_msg)
         {
-            if (t_msg._timer_type == TIMER_TYPE_REAL_REQ)
+            if (t_msg._timer_type == TIMER_TYPE_REQ_QUOTATION)
             {
-                _id_index = 0;
+                _quotation_index = 0;
                 if (is_real_time())
-                    _real_req = true;
+                    _req_quotation = true;
 
-                LOG_DEBUG("handle_timeout: TIMER_TYPE_REAL_REQ");
+                LOG_DEBUG("handle_timeout: TIMER_TYPE_REQ_QUOTATION");
+            }
+            else if (t_msg._timer_type == TIMER_TYPE_REQ_SINGLE)
+            {
+                _single_index = 0;
+                if (is_real_time())
+                    _req_single = true;
+
+                LOG_DEBUG("handle_timeout: TIMER_TYPE_REQ_SINGLE");
             }
         }
 
@@ -231,8 +276,11 @@ class skhttp_req_thread:public base_net_thread
 
     protected:
         std::string _req_date;
-        uint32_t _id_index;
-        bool _real_req;
+        uint32_t _quotation_index;
+        bool _req_quotation;
+
+        uint32_t _single_index;
+        bool _req_single;
 
         time_t real_morning_stime;
         time_t real_morning_etime;

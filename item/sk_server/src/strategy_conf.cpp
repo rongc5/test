@@ -80,19 +80,19 @@ void strategy_conf::do_parse()
         real_afternoon_etime = _cfg["real_afternoon_etime"];
     }
 
-    if (has_key<std::string, std::string>(_cfg, "req_interval_millisecond"))
-    {
-        req_interval_millisecond = atoi(_cfg["req_interval_millisecond"].c_str());
-    }
-
     if (has_key<std::string, std::string>(_cfg, "req_http_timeout"))
     {
         req_http_timeout = atoi(_cfg["req_http_timeout"].c_str());
     }
 
-    if (has_key<std::string, std::string>(_cfg, "req_interval_millisecond"))
+    if (has_key<std::string, std::string>(_cfg, "req_quotation_millisecond"))
     {
-        req_interval_millisecond = atoi(_cfg["req_interval_millisecond"].c_str());
+        req_quotation_millisecond = atoi(_cfg["req_quotation_millisecond"].c_str());
+    }
+
+    if (has_key<std::string, std::string>(_cfg, "req_single_millisecond"))
+    {
+        req_single_millisecond = atoi(_cfg["req_single_millisecond"].c_str());
     }
 
     if (has_key<std::string, std::string>(_cfg, "reload_millisecond"))
@@ -165,14 +165,24 @@ void strategy_conf::do_parse()
         plate_dict_file = _cfg["plate_dict_file"];
     }
 
-    if (has_key<std::string, std::string>(_cfg, "address_dict_path"))
+    if (has_key<std::string, std::string>(_cfg, "addr_dict_split_path"))
     {
-        address_dict_path = _cfg["address_dict_path"];
+        addr_dict_split_path = _cfg["addr_dict_split_path"];
     }
 
-    if (has_key<std::string, std::string>(_cfg, "address_dict_file"))
+    if (has_key<std::string, std::string>(_cfg, "addr_dict_split_file"))
     {
-        address_dict_file = _cfg["address_dict_file"];
+        addr_dict_split_file = _cfg["addr_dict_split_file"];
+    }
+
+    if (has_key<std::string, std::string>(_cfg, "addr_dict_path"))
+    {
+        addr_dict_path = _cfg["addr_dict_path"];
+    }
+
+    if (has_key<std::string, std::string>(_cfg, "addr_dict_file"))
+    {
+        addr_dict_file = _cfg["addr_dict_file"];
     }
 
     if (has_key<std::string, std::string>(_cfg, "history_single_path"))

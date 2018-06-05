@@ -38,13 +38,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="load_brief.py" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="load_brief.py" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/../stock/py/load_brief.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="523" column="0" selection-start="14893" selection-end="14893" vertical-scroll-proportion="0.0" vertical-offset="9924" max-vertical-offset="10621">
-              <folding>
-                <element signature="e#39#50#0" expanded="true" />
-              </folding>
+            <state line="469" column="17" selection-start="13247" selection-end="13247" vertical-scroll-proportion="0.26398852" vertical-offset="8328" max-vertical-offset="10507">
+              <folding />
             </state>
           </provider>
         </entry>
@@ -61,18 +59,19 @@
       <file leaf-file-name="load_plate.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/../stock/py/load_plate.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="463" column="25" selection-start="13016" selection-end="13041" vertical-scroll-proportion="0.0" vertical-offset="8797" max-vertical-offset="10260">
+            <state line="463" column="25" selection-start="13016" selection-end="13041" vertical-scroll-proportion="0.0" vertical-offset="8284" max-vertical-offset="9899">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="driver.py" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="driver.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/../item/sk_server/script/driver.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="218" column="32" selection-start="6873" selection-end="6873" vertical-scroll-proportion="-0.9756098" vertical-offset="4822" max-vertical-offset="6004">
+            <state line="249" column="32" selection-start="8073" selection-end="8073" vertical-scroll-proportion="0.0" vertical-offset="5411" max-vertical-offset="6593">
               <folding>
                 <element signature="e#39#50#0" expanded="true" />
+                <marker date="1528109213027" expanded="true" signature="5608:5780" placeholder="..." />
               </folding>
             </state>
           </provider>
@@ -101,9 +100,9 @@
         <option value="$PROJECT_DIR$/../stock/py/load_detail.py" />
         <option value="$PROJECT_DIR$/../stock/py/load_quotation.py" />
         <option value="$PROJECT_DIR$/../stock/py/stock_infoa.py" />
-        <option value="$PROJECT_DIR$/../stock/py/load_brief.py" />
         <option value="$PROJECT_DIR$/tf_idf.py" />
         <option value="$PROJECT_DIR$/../item/sk_server/script/driver.py" />
+        <option value="$PROJECT_DIR$/../stock/py/load_brief.py" />
       </list>
     </option>
   </component>
@@ -137,7 +136,6 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -192,17 +190,18 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="recentsLimit" value="5" />
     <property name="options.lastSelected" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+    <property name="recentsLimit" value="5" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../item/sk_server/script" />
     <property name="FullScreen" value="false" />
-    <property name="options.searchVisible" value="true" />
     <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="options.searchVisible" value="true" />
   </component>
   <component name="PyConsoleOptionsProvider">
     <option name="myPythonConsoleState">
@@ -375,6 +374,9 @@
       <option name="PARAMETERS" value="" />
       <method />
     </configuration>
+    <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug" singleton="true">
+      <method />
+    </configuration>
     <configuration default="true" type="tests" factoryName="Unittests">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -396,9 +398,6 @@
       <option name="PUREUNITTEST" value="true" />
       <option name="PARAMS" value="" />
       <option name="USE_PARAM" value="false" />
-      <method />
-    </configuration>
-    <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug" singleton="true">
       <method />
     </configuration>
     <configuration default="true" type="tests" factoryName="Doctests">
@@ -575,6 +574,16 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/../item/sk_server/script/driver.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="249" column="32" selection-start="8073" selection-end="8073" vertical-scroll-proportion="0.0" vertical-offset="5411" max-vertical-offset="6593">
+          <folding>
+            <element signature="e#39#50#0" expanded="true" />
+            <marker date="1528109213027" expanded="true" signature="5608:5780" placeholder="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/../stock/py/load_plate.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="463" column="25" selection-start="13016" selection-end="13041" vertical-scroll-proportion="0.0" vertical-offset="8797" max-vertical-offset="10260">
@@ -584,19 +593,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/../stock/py/load_brief.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="523" column="0" selection-start="14893" selection-end="14893" vertical-scroll-proportion="0.0" vertical-offset="9924" max-vertical-offset="10621">
-          <folding>
-            <element signature="e#39#50#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../item/sk_server/script/driver.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="218" column="32" selection-start="6873" selection-end="6873" vertical-scroll-proportion="-0.9756098" vertical-offset="4822" max-vertical-offset="6004">
-          <folding>
-            <element signature="e#39#50#0" expanded="true" />
-          </folding>
+        <state line="469" column="17" selection-start="13247" selection-end="13247" vertical-scroll-proportion="0.26398852" vertical-offset="8328" max-vertical-offset="10507">
+          <folding />
         </state>
       </provider>
     </entry>

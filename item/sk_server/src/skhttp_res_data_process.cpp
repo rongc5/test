@@ -12,6 +12,7 @@
 #include "real_quotation_dict.h"
 #include "finance_dict.h"
 #include "plate_dict.h"
+#include "addr_dict.h"
 
 
 
@@ -151,7 +152,30 @@ void skhttp_res_data_process::query_blocked(std::string &id, Value & root, Docum
     {
         root.AddMember(key, 0, allocator);
     }
+}
 
+void skhttp_res_data_process::query_addr(std::string &id, Value & root, Document::AllocatorType & allocator)
+{
+    Value key(kStringType);
+    Value value(kStringType);
+
+    key.SetString("addr", allocator);
+    proc_data* p_data = proc_data::instance();
+    auto ii = p_data->_addr_dict->current()->_id_dict.find(id);
+    if (ii != p_data->_addr_dict->current()->_id_dict.end())
+    {
+        std::string str;
+        for (auto ft:ii->second)
+        {
+            str.append(ft);
+        }
+        value.SetString(str.c_str(), allocator);
+        root.AddMember(key, value, allocator);
+    }
+    else
+    {
+        root.AddMember(key, value, allocator);
+    }
 }
 
 
@@ -243,6 +267,10 @@ int skhttp_res_data_process::do_query_id(std::map<std::string, std::string> & ur
 
     {
         query_blocked(url_para_map["id"], root, allocator);
+    }
+
+    {
+        query_addr(url_para_map["id"], root, allocator);
     }
 
     data_array.PushBack(root, allocator);

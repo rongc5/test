@@ -65,10 +65,13 @@ int history_single_dict::load_history_single(const char * file)
         
         SplitString(file, '\t', &strVec, SPLIT_MODE_ALL | SPLIT_MODE_TRIM); 
 
-        std::vector<int> single;
-        for (uint32_t i = 1; i < strVec.size(); i++)
+        std::vector<history_single> single;
+        for (uint32_t i = 1; i < strVec.size() && i+1 < strVec.size(); i += 2)
         {
-            single.push_back(atoi(strVec[i].c_str()));
+            history_single hs;
+            hs.single = strVec[i];
+            hs.price = strVec[i+1];
+            single.push_back(hs);
         }
         
         auto ii = _id_dict.find(date);

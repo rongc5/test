@@ -460,7 +460,9 @@ def load_address_split():
     if not os.path.isfile(filename):
         return
 
-    split_file = '%s/%s' % (DATAPATH, 'address_dict_split')
+    addr_file = '%s/%s' % (DATAPATH, 'addr_dict')
+
+    split_file = '%s/%s' % (DATAPATH, 'addr_dict_split')
     file = open(filename)
     while 1:
         line = file.readline().strip()
@@ -481,6 +483,7 @@ def load_address_split():
             continue
 
         res_list = []
+        tmp_list = []
         res_list.append(items[0])
         for i in range(len(items)):
             if not i:
@@ -490,15 +493,27 @@ def load_address_split():
             #print cut_list
             for key , flag in cut_list:
                 if key is not None and key not  in stopwords:
-                    if flag =='ns' and key.encode('gb18030') not in res_list and len(res_list) < 3:
+                    if flag =='ns' and key.encode('gb18030') not in tmp_list and len(tmp_list) < 2:
+                        tmp_list.append(key.encode('gb18030'))
+
+        for key in tmp_list:
+            seg_list = jieba.cut_for_search(key)
+            for seg_key in seg_list:
+                if seg_key not in stopwords:
                         #print items[i].decode('GBK'), key, flag
-                        res_list.append(key.encode('gb18030'))
+                    res_list.append(seg_key.encode('gb18030'))
+
 
         if not len(res_list):
             continue;
 
         str1 = '\t'.join(res_list)
         log_write(split_file, str1)
+
+        str2 = items[0]
+        str2 += '\t'
+        str2 += '\t'.join(tmp_list)
+        log_write(addr_file, str2)
 
 def load_stopwords():
     file = open(STOPWORDPATH)
@@ -511,7 +526,7 @@ def load_stopwords():
 
     return stopwords
 
-def load_plates(id_dic):
+def load_brief_dict(id_dic):
     file_name = DATAPATH
 
     for key in id_dic:
@@ -547,7 +562,7 @@ if __name__ == '__main__':
     load_ua_list()
     load_coad_all()
     load_stopwords()
-    load_plates(id_all)
+    load_brief_dict(id_all)
     load_address_split()
     load_business_scope_split()
     #load_stockid_brief('sz002752', '.')

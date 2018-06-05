@@ -30,7 +30,8 @@ OBJ	= $(LOC_DIR)/main.o     \
 	  $(LOC_DIR)/rquotation_data_process.o \
 	  $(LOC_DIR)/rsingle_data_process.o \
 	  $(LOC_DIR)/skhttp_res_data_process.o \
-	  $(LOC_DIR)/address_dict.o \
+	  $(LOC_DIR)/addr_dict_split.o \
+	  $(LOC_DIR)/addr_dict.o \
 	  $(LOC_DIR)/plate_dict_split.o \
 	  $(LOC_DIR)/plate_dict.o \
 	  $(LOC_DIR)/history_single_dict.o \

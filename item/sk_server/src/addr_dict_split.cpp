@@ -1,19 +1,19 @@
-#include "address_dict.h"
+#include "addr_dict_split.h"
 #include "base_def.h"
 #include "log_helper.h"
 #include "ul_sign.h"
 #include "common_util.h"
 
-address_dict::address_dict()
+addr_dict_split::addr_dict_split()
 {
 }
 
-address_dict::~address_dict()
+addr_dict_split::~addr_dict_split()
 {
     destroy();
 }
 
-int address_dict::init(const char * path, const char * file, const char *dump_dir)
+int addr_dict_split::init(const char * path, const char * file, const char *dump_dir)
 {
     snprintf(_fullpath, sizeof(_fullpath), "%s/%s", path, file);
     snprintf(_dumppath, sizeof(_dumppath), "%s/%s", dump_dir, file);
@@ -23,7 +23,7 @@ int address_dict::init(const char * path, const char * file, const char *dump_di
     return 0;
 }
 
-int address_dict::load()
+int addr_dict_split::load()
 {
     FILE * fp = fopen(_fullpath, "r");
     ASSERT_WARNING(fp != NULL,"open query dict failed. path[%s]", _fullpath);
@@ -78,7 +78,7 @@ int address_dict::load()
     return 0;
 }
 
-int address_dict::reload()
+int addr_dict_split::reload()
 {
     {
         std::unordered_map<std::string, std::vector<std::string>, str_hasher> tmp;
@@ -93,12 +93,12 @@ int address_dict::reload()
     return load();
 }
 
-void address_dict::set_path (const char* path)
+void addr_dict_split::set_path (const char* path)
 {
     snprintf(_fullpath, sizeof(_fullpath), "%s", path);
 }
 
-bool address_dict::need_reload()
+bool addr_dict_split::need_reload()
 {
     struct stat st;
 
@@ -110,10 +110,10 @@ bool address_dict::need_reload()
     return false;
 }
 
-int address_dict::dump()
+int addr_dict_split::dump()
 {
     FILE * fp = fopen(_dumppath, "w");
-    ASSERT_WARNING(fp != NULL, "address_dict dump_data failed, open file [%s] error", _dumppath);
+    ASSERT_WARNING(fp != NULL, "addr_dict_split dump_data failed, open file [%s] error", _dumppath);
 
     for (auto &p_data: _id_dict)
     {
@@ -131,7 +131,7 @@ int address_dict::dump()
     return 0;
 }
 
-int address_dict::destroy()
+int addr_dict_split::destroy()
 {
 
     return 0;

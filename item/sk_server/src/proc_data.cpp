@@ -6,7 +6,8 @@
 #include "real_single_dict.h"
 #include "real_quotation_dict.h"
 #include "proc_data.h"
-#include "address_dict.h"
+#include "addr_dict_split.h"
+#include "addr_dict.h"
 #include "plate_dict_split.h"
 #include "plate_dict.h"
 #include "history_single_dict.h"
@@ -93,19 +94,32 @@ int proc_data::init(sk_conf * conf)
 
 
     {
-        address_dict *addr_dict1 = new (std::nothrow)address_dict();
-        ASSERT_WARNING(addr_dict1 != NULL, "allocate address_dict fail");
-        addr_dict1->init(_conf->_strategy->current()->address_dict_path.c_str(),
-                _conf->_strategy->current()->address_dict_file.c_str(), _conf->dump_dir.c_str());
+        addr_dict_split *addr_dict1 = new (std::nothrow)addr_dict_split();
+        ASSERT_WARNING(addr_dict1 != NULL, "allocate addr_dict_split fail");
+        addr_dict1->init(_conf->_strategy->current()->addr_dict_split_path.c_str(),
+                _conf->_strategy->current()->addr_dict_split_file.c_str(), _conf->dump_dir.c_str());
 
-        address_dict *addr_dict2 = new (std::nothrow)address_dict();
-        ASSERT_WARNING(addr_dict2 != NULL, "allocate address_dict fail");
-        addr_dict2->init(_conf->_strategy->current()->address_dict_path.c_str(),
-                _conf->_strategy->current()->address_dict_file.c_str(), _conf->dump_dir.c_str());
+        addr_dict_split *addr_dict2 = new (std::nothrow)addr_dict_split();
+        ASSERT_WARNING(addr_dict2 != NULL, "allocate addr_dict_split fail");
+        addr_dict2->init(_conf->_strategy->current()->addr_dict_split_path.c_str(),
+                _conf->_strategy->current()->addr_dict_split_file.c_str(), _conf->dump_dir.c_str());
 
-        _address_dict = new (std::nothrow)reload_mgr<address_dict>(addr_dict1, addr_dict2);
+        _addr_dict_split = new (std::nothrow)reload_mgr<addr_dict_split>(addr_dict1, addr_dict2);
     }
 
+    {
+        addr_dict *addr_dict1 = new (std::nothrow)addr_dict();
+        ASSERT_WARNING(addr_dict1 != NULL, "allocate addr_dict fail");
+        addr_dict1->init(_conf->_strategy->current()->addr_dict_path.c_str(),
+                _conf->_strategy->current()->addr_dict_file.c_str(), _conf->dump_dir.c_str());
+
+        addr_dict *addr_dict2 = new (std::nothrow)addr_dict();
+        ASSERT_WARNING(addr_dict2 != NULL, "allocate addr_dict fail");
+        addr_dict2->init(_conf->_strategy->current()->addr_dict_path.c_str(),
+                _conf->_strategy->current()->addr_dict_file.c_str(), _conf->dump_dir.c_str());
+
+        _addr_dict = new (std::nothrow)reload_mgr<addr_dict>(addr_dict1, addr_dict2);
+    }
 
     {
         plate_dict_split *addr_dict1 = new (std::nothrow)plate_dict_split();
@@ -252,7 +266,9 @@ int proc_data::load()
 
     _rquoation_dict->load();
 
-    _address_dict->load();
+    _addr_dict_split->load();
+
+    _addr_dict->load();
 
     _plate_dict_split->load();
 
@@ -298,9 +314,14 @@ int proc_data::reload()
         _rquoation_dict->reload();
     }
 
-    if (_address_dict)
+    if (_addr_dict_split)
     {
-        _address_dict->reload();
+        _addr_dict_split->reload();
+    }
+
+    if (_addr_dict)
+    {
+        _addr_dict->reload();
     }
 
     if (_plate_dict_split)
@@ -347,7 +368,9 @@ int proc_data::dump()
 
     _rquoation_dict->dump();
 
-    _address_dict->dump();
+    _addr_dict_split->dump();
+
+    _addr_dict->dump();
 
     _plate_dict_split->dump();
 
@@ -375,7 +398,9 @@ int proc_data::destroy()
 
     _rquoation_dict->destroy();
 
-    _address_dict->destroy();
+    _addr_dict_split->destroy();
+
+    _addr_dict->destroy();
 
     _plate_dict_split->destroy();
 

@@ -11,7 +11,8 @@ class recommend_dict;
 class finance_dict;
 class ban_dict;
 class id_dict;
-class address_dict;
+class addr_dict_split;
+class addr_dict;
 class plate_dict_split;
 class plate_dict;
 class history_single_dict;
@@ -41,7 +42,9 @@ class proc_data:public reload_inf
 
         reload_mgr<ban_dict> * _ban_dict;
 
-        reload_mgr<address_dict> * _address_dict;
+        reload_mgr<addr_dict_split> * _addr_dict_split;
+
+        reload_mgr<addr_dict> * _addr_dict;
 
         reload_mgr<plate_dict_split> * _plate_dict_split;
 

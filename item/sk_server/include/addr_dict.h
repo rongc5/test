@@ -1,14 +1,14 @@
-#ifndef __address_dict_H_
-#define __address_dict_H_
+#ifndef __ADDR_DICT_H__
+#define __ADDR_DICT_H__
 
 #include "base_reload.h"
 #include "sk_def.h"
 
-class address_dict:public reload_inf
+class addr_dict:public reload_inf
 {
     public:
-        virtual ~address_dict();
-        address_dict();
+        virtual ~addr_dict();
+        addr_dict();
 
         virtual int init(const char * path, const char * file, const char *dump_dir);
         virtual int load();
@@ -26,8 +26,6 @@ class address_dict:public reload_inf
         time_t _last_load;
     public:
         std::unordered_map<std::string, std::vector<std::string>, str_hasher> _id_dict;
-
-        std::unordered_map<std::string, std::vector<std::string>, str_hasher> _address_index;
 };
 
 

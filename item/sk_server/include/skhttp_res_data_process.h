@@ -47,6 +47,8 @@ class skhttp_res_data_process:public http_base_data_process
 
         int get_single_index(std::string &id, uint32_t num);
 
+        void query_addr(std::string &id, Value & root, Document::AllocatorType & allocator);
+
     protected:
         std::string _body;
         std::string _recv_buf;
