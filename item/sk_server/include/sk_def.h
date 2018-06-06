@@ -10,6 +10,11 @@ struct ban_t
     std::string date;
 };
 
+struct history_single
+{
+    std::string single;
+    std::string price;
+};
 
 struct quotation_t
 {

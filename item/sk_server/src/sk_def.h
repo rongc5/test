@@ -16,6 +16,57 @@ struct history_single
     std::string price;
 };
 
+struct quotation_t
+{
+    std::string id;
+    std::string name;
+
+    float start;
+    float end;
+    float high;
+    float low;
+    float last_closed;
+
+    uint64_t vol;
+    uint64_t buy_vol;
+    uint64_t sell_vol;
+
+    float swing;
+
+    float change_rate;
+    float range_percent;
+
+    float total_price;
+    bool blocked;
+
+    quotation_t()
+    {
+        reset();
+    }
+
+    void reset()
+    {
+        id.clear();
+
+        name.clear();
+
+        start = 0;
+        end = 0;
+        high = 0;
+        low = 0;
+        last_closed = 0;
+
+        vol = 0;
+        sell_vol = 0;
+        buy_vol = 0;
+
+        swing = 0;
+        change_rate = 0;
+        range_percent = 0;
+        blocked = false;
+    }
+};
+
 
 #define TIMER_TYPE_RELOAD_CONF 10000
 #define TIMER_TYPE_REQ_QUOTATION 10001

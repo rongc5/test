@@ -39,8 +39,8 @@ int history_single_dict::load_history_single(const char * file)
     }
 
     std::string date = strVec[1];
-    auto ii = _id_dict.find(date);
-    if (ii != _id_dict.end())
+    auto ii = _date_dict.find(date);
+    if (ii != _date_dict.end())
     {
         LOG_WARNING("file:%s, date:%s has loaded", file, date.c_str());
         return -1;
@@ -73,19 +73,37 @@ int history_single_dict::load_history_single(const char * file)
             hs.price = strVec[i+1];
             single.push_back(hs);
         }
-        
-        auto ii = _id_dict.find(date);
-        if (ii == _id_dict.end())
-        {
-            std::unordered_map<std::string, std::vector<int>, str_hasher> id_map;
-            id_map[strVec[1]] = single;
 
-            _id_dict.insert(std::make_pair(date, id_map));
-        }
-        else
         {
-            ii->second.insert(std::make_pair(strVec[1], single));
+            auto ii = _date_dict.find(date);
+            if (ii == _date_dict.end())
+            {
+                std::unordered_map<std::string, std::vector<history_single>, str_hasher> id_map;
+                id_map[strVec[0]] = single;
+
+                _date_dict.insert(std::make_pair(date, id_map));
+            }
+            else
+            {
+                ii->second.insert(std::make_pair(strVec[0], single));
+            }
         }
+
+        {
+            auto ii = _id_dict.find(strVec[0]);
+            if (ii == _id_dict.end())
+            {
+                std::map<std::string, std::vector<history_single> date_map;
+                date_map[date] = single;
+
+                _id_dict.insert(std::make_pair(strVec[0], date_map));
+            }
+            else
+            {
+                ii->second.insert(std::make_pair(date, single));
+            }
+        }
+
     }
 
     return 0;
@@ -124,8 +142,15 @@ int history_single_dict::load()
 
 int history_single_dict::reload()
 {
-    std::map<std::string, std::unordered_map<std::string, std::vector<int>, str_hasher> > tmp;
-    _id_dict.swap(tmp);
+    {
+        std::map<std::string, std::unordered_map<std::string, std::vector<history_single>, str_hasher> > tmp;
+        _date_dict.swap(tmp);
+    }
+
+    {
+        std::unordered_map<std::string, std::map<std::string, std::vector<history_single>, str_hasher> > tmp;
+        _id_dict.swap(tmp);
+    }
     return load();
 }
 

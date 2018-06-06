@@ -14,6 +14,7 @@
 #include "common_obj_container.h"
 #include "real_quotation_dict.h"
 #include "rsingle_data_process.h"
+#include "trade_date_dict.h"
 
 class skhttp_req_thread:public base_net_thread
 {
@@ -157,6 +158,12 @@ class skhttp_req_thread:public base_net_thread
 
                         return true;
                     }
+                }
+
+                auto it = p_data->_tdate_dict->current()->_date_dict.find(date);
+                if (it == p_data->_tdate_dict->current()->_date_dict.end())
+                {
+                    return false;
                 }
 
                 if (now >= real_morning_stime && now <= real_morning_etime)

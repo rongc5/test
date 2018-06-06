@@ -49,6 +49,8 @@ class skhttp_res_data_process:public http_base_data_process
 
         void query_addr(std::string &id, Value & root, Document::AllocatorType & allocator);
 
+        void query_history_single(uint32_t last_day_num, std::string &id, Value & root, Document::AllocatorType & allocator);
+
     protected:
         std::string _body;
         std::string _recv_buf;

@@ -240,7 +240,7 @@ def print_res(res, parser):
 
 
 def do_query_id(parser):
-    url = 'http://%s:%s/queryid?id=%s&history_days=%d' % (parser.ip, parser.port, parser.id, parser.history_days)
+    url = 'http://%s:%s/queryid?id=%s&last_day_num=%d' % (parser.ip, parser.port, parser.id, parser.last_day_num)
 
     header = {}
     index = random.randint(0, len(user_agent_list) -1)
@@ -317,8 +317,8 @@ def do_search():
               help="stock id like sh601318")
 
     parser.add_option("-n", "--num",
-                  action="store", dest="history_days",type="int",default=5,
-              help="history trade days")
+                  action="store", dest="last_day_num",type="int",default=5,
+              help="last trade days num")
 
     parser.add_option("-f", "--file",
                   action="store", dest="file",type="string",default="",

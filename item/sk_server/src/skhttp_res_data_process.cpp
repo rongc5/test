@@ -204,6 +204,13 @@ void skhttp_res_data_process::query_finance(std::string &id, Value & root, Docum
     }
 }
 
+void skhttp_res_data_process::query_history_single(uint32_t last_day_num, std::string &id, Value & root, Document::AllocatorType & allocator)
+{
+    Value key(kStringType);
+    key.SetString("addr", allocator);
+
+}
+
 int skhttp_res_data_process::do_query_id(std::map<std::string, std::string> & url_para_map, Value & data_array, Document::AllocatorType & allocator)
 {
     proc_data* p_data = proc_data::instance();
