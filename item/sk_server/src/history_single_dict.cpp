@@ -93,10 +93,10 @@ int history_single_dict::load_history_single(const char * file)
             auto ii = _id_dict.find(strVec[0]);
             if (ii == _id_dict.end())
             {
-                std::map<std::string, std::vector<history_single> date_map;
+                std::map<std::string, std::vector<history_single> > date_map;
                 date_map[date] = single;
 
-                _id_dict.insert(std::make_pair(strVec[0], date_map));
+                _id_dict[strVec[0]]= date_map;
             }
             else
             {
@@ -148,7 +148,7 @@ int history_single_dict::reload()
     }
 
     {
-        std::unordered_map<std::string, std::map<std::string, std::vector<history_single>, str_hasher> > tmp;
+        std::unordered_map<std::string, std::map<std::string, std::vector<history_single> >, str_hasher> tmp;
         _id_dict.swap(tmp);
     }
     return load();

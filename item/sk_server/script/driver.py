@@ -233,6 +233,17 @@ def print_res(res, parser):
                 if parser.file:
                     log_write(parser.file, tmp_str)
 
+            if item.has_key('last_single'):
+                tmp_str = 'last_single='
+                print tmp_str
+                if parser.file:
+                    log_write(parser.file, tmp_str)
+                for kk in item['last_single']:
+                    myjson = json.dumps(kk, ensure_ascii=False)
+                    print myjson
+                    if parser.file:
+                        log_write(parser.file, myjson)
+
             print '\n'
             if parser.file:
                 log_write(parser.file, '\n')
@@ -253,6 +264,9 @@ def do_query_id(parser):
     except BaseException, e:
         print e.message
 
+    if not res.has_key('body'):
+        print 'net not ok'
+        return
     res_str = res['body'].strip()
     res_str = res_str.decode('gb18030')
     #res_str = json.loads(res_str, encoding="GB2312")

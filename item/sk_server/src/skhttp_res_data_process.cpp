@@ -13,6 +13,7 @@
 #include "finance_dict.h"
 #include "plate_dict.h"
 #include "addr_dict.h"
+#include "history_single_dict.h"
 
 
 
@@ -206,9 +207,38 @@ void skhttp_res_data_process::query_finance(std::string &id, Value & root, Docum
 
 void skhttp_res_data_process::query_history_single(uint32_t last_day_num, std::string &id, Value & root, Document::AllocatorType & allocator)
 {
-    Value key(kStringType);
-    key.SetString("addr", allocator);
+    proc_data* p_data = proc_data::instance();
+    char t_buf[SIZE_LEN_64];
 
+    Value v(kObjectType);
+    Value k(kStringType);
+    k.SetString("last_single", allocator);
+    
+    auto ii = p_data->_hsingle_dict->current()->_id_dict.find(id);
+    if (ii != p_data->_hsingle_dict->current()->_id_dict.end())
+    {
+        uint32_t i = 0;
+        for (auto iii = ii->second.rbegin(); 
+                iii != ii->second.rend() && i < last_day_num; iii++, i++)
+        {
+            Value key(kStringType);
+            key.SetString(iii->first.c_str(), allocator);
+            Value child(kArrayType);
+            for (auto kk: iii->second)
+            {
+                Value single(kObjectType);
+                Value key1(kStringType);
+                Value value1(kStringType);
+
+                key1.SetString(kk.single.c_str(), allocator);
+                value1.SetString(kk.price.c_str(), allocator);
+                single.AddMember(key1, value1, allocator);
+                child.PushBack(single, allocator);
+            }
+            v.AddMember(key, child, allocator);  
+        }
+    }
+    root.AddMember(k, v, allocator);
 }
 
 int skhttp_res_data_process::do_query_id(std::map<std::string, std::string> & url_para_map, Value & data_array, Document::AllocatorType & allocator)
@@ -278,6 +308,11 @@ int skhttp_res_data_process::do_query_id(std::map<std::string, std::string> & ur
 
     {
         query_addr(url_para_map["id"], root, allocator);
+    }
+    
+    if (has_key<std::string, std::string>(url_para_map, "last_day_num"))
+    {
+        query_history_single(atoi(url_para_map["last_day_num"].c_str()), url_para_map["id"], root, allocator);
     }
 
     data_array.PushBack(root, allocator);
