@@ -67,6 +67,29 @@ class proc_data:public reload_inf
         //search index;
         ToBufferMgr<std::unordered_set<std::string, str_hasher> > _block_set;
 
+        ToBufferMgr<std::map<float, std::vector<std::string> > > _end_index;
+        ToBufferMgr<std::map<float, std::vector<std::string> > > _change_rate_index;
+        ToBufferMgr<std::map<float, std::vector<std::string> > > _range_percent_index;
+
+        ToBufferMgr<std::map<int, std::vector<std::string> > > _pe_index;
+        ToBufferMgr<std::map<int, std::vector<std::string> > > _pb_index;
+        ToBufferMgr<std::map<int, std::vector<std::string> > > _value_index;
+        ToBufferMgr<std::map<int, std::vector<std::string> > > _cir_value_index;
+
+        ToBufferMgr<std::map<float, std::vector<std::string> > > _mgxj_index;
+        ToBufferMgr<std::map<float, std::vector<std::string> > > _mgsy_index;
+        ToBufferMgr<std::map<float, std::vector<std::string> > > _mgsygr_index;
+        ToBufferMgr<std::map<float, std::vector<std::string> > > _mgxjgr_index;
+        ToBufferMgr<std::map<float, std::vector<std::string> > > _zysrgr_index;
+        ToBufferMgr<std::map<float, std::vector<std::string> > > _yylrgr_index;
+        ToBufferMgr<std::map<float, std::vector<std::string> > > _jlrgr_index;
+
+        ToBufferMgr<std::unordered_map<std::string, std::vector<std::string>, str_hasher> > _address_index;
+        ToBufferMgr<std::unordered_map<std::string, std::vector<std::string>, str_hasher> > _plate_index;
+
+
+
+    public:
         char proc_name[SIZE_LEN_256];
 
     private:

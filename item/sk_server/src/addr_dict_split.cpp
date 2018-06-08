@@ -3,6 +3,7 @@
 #include "log_helper.h"
 #include "ul_sign.h"
 #include "common_util.h"
+#include "proc_data.h"
 
 addr_dict_split::addr_dict_split()
 {
@@ -25,6 +26,7 @@ int addr_dict_split::init(const char * path, const char * file, const char *dump
 
 int addr_dict_split::load()
 {
+    proc_data* p_data = proc_data::instance();
     FILE * fp = fopen(_fullpath, "r");
     ASSERT_WARNING(fp != NULL,"open query dict failed. path[%s]", _fullpath);
 
@@ -52,12 +54,10 @@ int addr_dict_split::load()
         std::string id = *(tmp_vec.begin());
         tmp_vec.erase(tmp_vec.begin());
 
-        _id_dict.insert(std::make_pair(id, tmp_vec));
-
         for (auto iit = tmp_vec.begin(); iit != tmp_vec.begin(); iit++) 
         {   
-            auto iii =  _address_index.find(*iit);
-            if (iii != _address_index.end())
+            auto iii =  p_data->_address_index.idle()->find(*iit);
+            if (iii != p_data->_address_index.idle()->end())
             {   
                 iii->second.push_back(id);
             }   
@@ -65,7 +65,7 @@ int addr_dict_split::load()
             {   
                 std::vector<std::string> id_vec;
                 id_vec.push_back(id);
-                _address_index.insert(std::make_pair(*iit, id_vec));
+                p_data->_address_index.idle()->insert(std::make_pair(*iit, id_vec));
             }   
         }
     }
@@ -75,19 +75,17 @@ int addr_dict_split::load()
     stat(_fullpath, &st);
     _last_load = st.st_mtime;
 
+    p_data->_address_index.idle_2_current();
+
     return 0;
 }
 
 int addr_dict_split::reload()
 {
+    proc_data* p_data = proc_data::instance();
     {
         std::unordered_map<std::string, std::vector<std::string>, str_hasher> tmp;
-        _id_dict.swap(tmp);
-    }
-
-    {
-        std::unordered_map<std::string, std::vector<std::string>, str_hasher> tmp;
-        _address_index.swap(tmp);
+        p_data->_address_index.idle()->swap(tmp);
     }
 
     return load();
@@ -112,22 +110,6 @@ bool addr_dict_split::need_reload()
 
 int addr_dict_split::dump()
 {
-    FILE * fp = fopen(_dumppath, "w");
-    ASSERT_WARNING(fp != NULL, "addr_dict_split dump_data failed, open file [%s] error", _dumppath);
-
-    for (auto &p_data: _id_dict)
-    {
-        fprintf(fp,"id[%s]\t",p_data.first.c_str());
-
-        for (auto ii = p_data.second.begin(); ii != p_data.second.end(); ii++)
-        {
-            fprintf(fp, "%s", ii->c_str());
-        }
-
-        fprintf(fp, "\n");
-    }
-    fclose(fp);
-
     return 0;
 }
 

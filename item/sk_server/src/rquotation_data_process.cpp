@@ -87,13 +87,58 @@ void rquotation_data_process::msg_recv_finish()
     qt->insert(std::make_pair("range_percent", strVec[32]));
     qt->insert(std::make_pair("total_price", strVec[37]));
 
+
     if (atof((*qt)["start"].c_str()) <= 1)
     {
         p_data->_block_set.idle()->insert(_id);
     }
 
-
     it->second.idle_2_current();
+    {
+        float end = atof(strVec[3].c_str());
+        auto ii = p_data->_end_index.idle()->find(end);
+        if (p_data->_end_index.idle()->end() == ii)
+        {
+            std::vector<std::string> t_vec;
+            t_vec.push_back(_id);
+            p_data->_end_index.idle()->insert(std::make_pair(end, t_vec));
+        }
+        else
+        {
+            ii->second.push_back(_id);
+        }
+    }
+    
+    {
+        float change_rate = atof(strVec[38].c_str());
+        auto ii = p_data->_change_rate_index.idle()->find(change_rate);
+        if (p_data->_change_rate_index.idle()->end() == ii)
+        {
+            std::vector<std::string> t_vec;
+            t_vec.push_back(_id);
+            p_data->_change_rate_index.idle()->insert(std::make_pair(change_rate, t_vec));
+        }
+        else
+        {
+            ii->second.push_back(_id);
+        }
+    }
+
+    {
+        float range_percent = atof(strVec[32].c_str());
+        auto ii = p_data->_range_percent_index.idle()->find(range_percent);
+        if (p_data->_range_percent_index.idle()->end() == ii)
+        {
+            std::vector<std::string> t_vec;
+            t_vec.push_back(_id);
+            p_data->_range_percent_index.idle()->insert(std::make_pair(range_percent, t_vec));
+        }
+        else
+        {
+            ii->second.push_back(_id);
+        }
+    }
+
 
     throw CMyCommonException("msg_recv_finish");
 }
@@ -234,6 +279,10 @@ void rquotation_data_process::destroy()
         {
             p_data->_block_set.idle_2_current();
             LOG_DEBUG("_block_set idle_2_current");
+
+            p_data->_end_index.idle_2_current();
+            p_data->_change_rate_index.idle_2_current();
+            p_data->_range_percent_index.idle_2_current();
         }
     }
 }

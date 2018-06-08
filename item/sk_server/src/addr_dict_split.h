@@ -24,10 +24,6 @@ class addr_dict_split:public reload_inf
         char _fullpath[SIZE_LEN_512];
         char _dumppath[SIZE_LEN_512];
         time_t _last_load;
-    public:
-        std::unordered_map<std::string, std::vector<std::string>, str_hasher> _id_dict;
-
-        std::unordered_map<std::string, std::vector<std::string>, str_hasher> _address_index;
 };
 
 

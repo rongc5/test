@@ -125,9 +125,26 @@ class skhttp_req_thread:public base_net_thread
             proc_data* p_data = proc_data::instance();
             if (p_data && p_data->_conf)
             {
-                std::unordered_set<std::string, str_hasher> t_block;
-                p_data->_block_set.idle()->swap(t_block);
-                p_data->_block_set.idle_2_current();
+                {
+                    std::unordered_set<std::string, str_hasher> t_block;
+                    p_data->_block_set.idle()->swap(t_block);
+                    p_data->_block_set.idle_2_current();
+                }
+
+                {
+                    std::map<float, std::vector<std::string> > t_map;
+                    p_data->_end_index.idle()->swap(t_map);
+                }
+
+                {
+                    std::map<float, std::vector<std::string> > t_map;
+                    p_data->_change_rate_index.idle()->swap(t_map);
+                }
+
+                {
+                    std::map<float, std::vector<std::string> > t_map;
+                    p_data->_range_percent_index.idle()->swap(t_map);
+                }
 
                 real_morning_stime = get_real_time(p_data->_conf->_strategy->current()->real_morning_stime.c_str());
                 real_morning_etime = get_real_time(p_data->_conf->_strategy->current()->real_morning_etime.c_str());

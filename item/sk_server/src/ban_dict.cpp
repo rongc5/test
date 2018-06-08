@@ -52,7 +52,17 @@ int ban_dict::load()
         bt.id = tmp_vec[0];
         bt.date = tmp_vec[1];
 
-        _id_dict.insert(std::make_pair(bt.id, bt));
+        auto ii = _id_dict.find(bt.id);
+        if (ii == _id_dict.end())
+        {
+            std::vector<ban_t> ban_v;
+            ban_v.push_back(bt);
+            _id_dict.insert(std::make_pair(bt.id, ban_v));
+        }
+        else
+        {
+            ii->second.push_back(bt);
+        }
     }
 
     fclose(fp);
@@ -65,7 +75,7 @@ int ban_dict::load()
 
 int ban_dict::reload()
 {
-    std::unordered_map<std::string, ban_t, str_hasher> tmp;
+    std::unordered_map<std::string, std::vector<ban_t>, str_hasher> tmp;
     _id_dict.swap(tmp);
     return load();
 }
@@ -94,7 +104,8 @@ int ban_dict::dump()
 
     for (const auto & u :  _id_dict)
     {
-        fprintf(fp, "id[%s]\tdate[%s]\n", u.second.id.c_str(), u.second.date.c_str());
+        for (const auto & ii: u.second)
+            fprintf(fp, "id[%s]\tdate[%s]\n", ii.id.c_str(), ii.date.c_str());
     }
     fclose(fp);
 
