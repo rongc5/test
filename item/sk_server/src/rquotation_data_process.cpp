@@ -86,6 +86,15 @@ void rquotation_data_process::msg_recv_finish()
     qt->insert(std::make_pair("change_rate", strVec[38]));
     qt->insert(std::make_pair("range_percent", strVec[32]));
     qt->insert(std::make_pair("total_price", strVec[37]));
+    
+    float down_pointer = 0;
+    float up_pointer = 0;
+    
+    if (atof(strVec[3].c_str()) > atof(strVec[34].c_str()) && (atof(strVec[3].c_str()) != atof(strVec[5].c_str())))
+    {
+        down_pointer = (atof(strVec[3].c_str()) - atof(strVec[34].c_str()))/
+            (atof(strVec[3].c_str()) - atof(strVec[5].c_str()))
+    }
 
 
     if (atof((*qt)["start"].c_str()) <= 1)
