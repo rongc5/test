@@ -48,6 +48,7 @@ void rquotation_data_process::msg_recv_finish()
 {
     LOG_DEBUG("recv_buf: %s", _recv_buf.c_str());
     //FILE_WRITE("123", _recv_buf.c_str());
+    char t_buf[SIZE_LEN_512];
     
     std::vector<std::string> strVec;
     SplitString(_recv_buf.c_str(), "=", &strVec, SPLIT_MODE_ONE);
@@ -89,13 +90,35 @@ void rquotation_data_process::msg_recv_finish()
     
     float down_pointer = 0;
     float up_pointer = 0;
+    float avg_price = 0;
     
     if (atof(strVec[3].c_str()) > atof(strVec[34].c_str()) && (atof(strVec[3].c_str()) != atof(strVec[5].c_str())))
     {
         down_pointer = (atof(strVec[3].c_str()) - atof(strVec[34].c_str()))/
-            (atof(strVec[3].c_str()) - atof(strVec[5].c_str()))
+            (atof(strVec[3].c_str()) - atof(strVec[5].c_str()));
     }
 
+    if (atof(strVec[3].c_str()) < atof(strVec[33].c_str()) && (atof(strVec[3].c_str()) != atof(strVec[5].c_str())))
+    {
+        up_pointer = (atof(strVec[33].c_str()) - atof(strVec[3].c_str()))/
+            (atof(strVec[3].c_str()) - atof(strVec[5].c_str()));
+    }
+
+    if (down_pointer < 0)
+        down_pointer *= -1;
+
+    if (up_pointer < 0)
+        up_pointer *= -1;
+
+    {
+        snprintf(t_buf, sizeof(t_buf), "%.2f", down_pointer);
+        qt->insert(std::make_pair("down_pointer", std::string(t_buf)));
+    }
+
+    {
+        snprintf(t_buf, sizeof(t_buf), "%.2f", up_pointer);
+        qt->insert(std::make_pair("up_pointer", std::string(t_buf)));
+    }
 
     if (atof((*qt)["start"].c_str()) <= 1)
     {
@@ -141,6 +164,34 @@ void rquotation_data_process::msg_recv_finish()
             std::vector<std::string> t_vec;
             t_vec.push_back(_id);
             p_data->_range_percent_index.idle()->insert(std::make_pair(range_percent, t_vec));
+        }
+        else
+        {
+            ii->second.push_back(_id);
+        }
+    }
+
+    {
+        auto ii = p_data->_down_pointer_index.idle()->find(down_pointer);
+        if (p_data->_down_pointer_index.idle()->end() == ii)
+        {
+            std::vector<std::string> t_vec;
+            t_vec.push_back(_id);
+            p_data->_down_pointer_index.idle()->insert(std::make_pair(down_pointer, t_vec));
+        }
+        else
+        {
+            ii->second.push_back(_id);
+        }
+    }
+
+    {
+        auto ii = p_data->_up_pointer_index.idle()->find(up_pointer);
+        if (p_data->_up_pointer_index.idle()->end() == ii)
+        {
+            std::vector<std::string> t_vec;
+            t_vec.push_back(_id);
+            p_data->_up_pointer_index.idle()->insert(std::make_pair(up_pointer, t_vec));
         }
         else
         {

@@ -146,6 +146,16 @@ class skhttp_req_thread:public base_net_thread
                     p_data->_range_percent_index.idle()->swap(t_map);
                 }
 
+                {
+                    std::map<float, std::vector<std::string> > t_map;
+                    p_data->_down_pointer_index.idle()->swap(t_map);
+                }
+
+                {
+                    std::map<float, std::vector<std::string> > t_map;
+                    p_data->_up_pointer_index.idle()->swap(t_map);
+                }
+
                 real_morning_stime = get_real_time(p_data->_conf->_strategy->current()->real_morning_stime.c_str());
                 real_morning_etime = get_real_time(p_data->_conf->_strategy->current()->real_morning_etime.c_str());
 
