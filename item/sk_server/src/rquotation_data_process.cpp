@@ -187,6 +187,7 @@ void rquotation_data_process::msg_recv_finish()
         }
     }
 
+    if (down_pointer)
     {
         auto ii = p_data->_down_pointer_index.idle()->find(down_pointer);
         if (p_data->_down_pointer_index.idle()->end() == ii)
@@ -201,6 +202,7 @@ void rquotation_data_process::msg_recv_finish()
         }
     }
 
+    if (up_pointer)
     {
         auto ii = p_data->_up_pointer_index.idle()->find(up_pointer);
         if (p_data->_up_pointer_index.idle()->end() == ii)
@@ -215,6 +217,7 @@ void rquotation_data_process::msg_recv_finish()
         }
     }
 
+    if (avg_price)
     {
         auto ii = p_data->_end_avg_price_index.idle()->find(end_avg_price);
         if (p_data->_end_avg_price_index.idle()->end() == ii)
