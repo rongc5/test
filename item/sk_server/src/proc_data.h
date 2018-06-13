@@ -73,6 +73,7 @@ class proc_data:public reload_inf
 
         ToBufferMgr<std::map<float, std::vector<std::string> > > _down_pointer_index;
         ToBufferMgr<std::map<float, std::vector<std::string> > > _up_pointer_index;
+        ToBufferMgr<std::map<float, std::vector<std::string> > > _end_avg_price_index;
 
         ToBufferMgr<std::map<int, std::vector<std::string> > > _pe_index;
         ToBufferMgr<std::map<int, std::vector<std::string> > > _pb_index;

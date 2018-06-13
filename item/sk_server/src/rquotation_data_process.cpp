@@ -91,6 +91,7 @@ void rquotation_data_process::msg_recv_finish()
     float down_pointer = 0;
     float up_pointer = 0;
     float avg_price = 0;
+    float end_avg_price = 0;
     
     if (atof(strVec[3].c_str()) > atof(strVec[34].c_str()) && (atof(strVec[3].c_str()) != atof(strVec[5].c_str())))
     {
@@ -102,6 +103,16 @@ void rquotation_data_process::msg_recv_finish()
     {
         up_pointer = (atof(strVec[33].c_str()) - atof(strVec[3].c_str()))/
             (atof(strVec[3].c_str()) - atof(strVec[5].c_str()));
+    }
+
+    if (atof(strVec[36].c_str()))
+    {
+        avg_price = (atof(strVec[37].c_str())*10000)/(atof(strVec[36].c_str()) * 100);
+    }
+
+    if (avg_price)
+    {
+        end_avg_price = atof(strVec[3].c_str())/avg_price;
     }
 
     if (down_pointer < 0)
@@ -118,6 +129,11 @@ void rquotation_data_process::msg_recv_finish()
     {
         snprintf(t_buf, sizeof(t_buf), "%.2f", up_pointer);
         qt->insert(std::make_pair("up_pointer", std::string(t_buf)));
+    }
+
+    {
+        snprintf(t_buf, sizeof(t_buf), "%.2f", avg_price);
+        qt->insert(std::make_pair("avg_price", std::string(t_buf)));
     }
 
     if (atof((*qt)["start"].c_str()) <= 1)
@@ -199,6 +215,19 @@ void rquotation_data_process::msg_recv_finish()
         }
     }
 
+    {
+        auto ii = p_data->_end_avg_price_index.idle()->find(end_avg_price);
+        if (p_data->_end_avg_price_index.idle()->end() == ii)
+        {
+            std::vector<std::string> t_vec;
+            t_vec.push_back(_id);
+            p_data->_end_avg_price_index.idle()->insert(std::make_pair(end_avg_price, t_vec));
+        }
+        else
+        {
+            ii->second.push_back(_id);
+        }
+    }
 
     throw CMyCommonException("msg_recv_finish");
 }
@@ -343,6 +372,9 @@ void rquotation_data_process::destroy()
             p_data->_end_index.idle_2_current();
             p_data->_change_rate_index.idle_2_current();
             p_data->_range_percent_index.idle_2_current();
+            p_data->_down_pointer_index.idle_2_current();
+            p_data->_up_pointer_index.idle_2_current();
+            p_data->_end_avg_price_index.idle_2_current();
         }
     }
 }
