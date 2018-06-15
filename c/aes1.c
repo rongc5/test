@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <openssl/aes.h>
-#include <openssl/rand.h>
+/*#include <openssl/rand.h>*/
 
 // a simple hex-print routine. could be modified to print 16 bytes-per-line
 static void hex_print(const void* pv, size_t len)
@@ -40,7 +40,8 @@ int main(int argc, char **argv)
 
     /* init vector */
     unsigned char iv_enc[AES_BLOCK_SIZE], iv_dec[AES_BLOCK_SIZE];
-    RAND_bytes(iv_enc, AES_BLOCK_SIZE);
+    /*RAND_bytes(iv_enc, AES_BLOCK_SIZE);*/
+    memset(iv_enc, 0x00, AES_BLOCK_SIZE);
     memcpy(iv_dec, iv_enc, AES_BLOCK_SIZE);
 
     // buffers for encryption and decryption

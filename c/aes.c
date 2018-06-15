@@ -2,74 +2,34 @@
 #include <stdlib.h>
 #include <string.h>
 #include <openssl/aes.h>
-#include <openssl/rand.h>
 
-// a simple hex-print routine. could be modified to print 16 bytes-per-line
-static void hex_print(const void* pv, size_t len)
+#define DSP_DES_CBC_KEY "123456789"
+
+int main(int argc, char *argv[])
 {
-    const unsigned char * p = (const unsigned char*)pv;
-    if (NULL == pv)
-        printf("NULL");
-    else
-    {
-        size_t i = 0;
-        for (; i<len;++i)
-            printf("%02X ", *p++);
-    }
-    printf("\n");
-}
 
-// main entrypoint
-int main(int argc, char **argv)
-{
-    int keylength;
-    printf("Give a key length [only 128 or 192 or 256!]:\n");
+    unsigned char aes_key[AES_BLOCK_SIZE] = {0};
+    unsigned char ivc[AES_BLOCK_SIZE] = {0};
+    unsigned char enc_out[256] = {0};
+    unsigned char tmp[128] = {0};
 
-    /* generate a key with a given length */
-    unsigned char aes_key[16] = "hello easou";
+    int ret  = snprintf((char *)tmp, sizeof(tmp), "%s", "hello world");
 
-    size_t inputslength = 0;
-    printf("Give an input's length:\n");
-    scanf("%lu", &inputslength);
+    int encslength = ((ret + AES_BLOCK_SIZE) / AES_BLOCK_SIZE) * AES_BLOCK_SIZE;
 
-    /* generate input with a given length */
-    unsigned char aes_input[256]= "hello 2016";
-
-    /* init vector */
-    unsigned char iv_enc[AES_BLOCK_SIZE], iv_dec[AES_BLOCK_SIZE];
-    RAND_bytes(iv_enc, AES_BLOCK_SIZE);
-
-    memcpy(iv_enc, "0123456789876543", sizeof("0123456789876543"));
-    memcpy(iv_dec, iv_enc, AES_BLOCK_SIZE);
-
-    // buffers for encryption and decryption
-    const size_t encslength = ((inputslength + AES_BLOCK_SIZE) / AES_BLOCK_SIZE) * AES_BLOCK_SIZE;
-    unsigned char enc_out[encslength];
-    unsigned char dec_out[inputslength];
-    memset(enc_out, 0, sizeof(enc_out));
-    memset(dec_out, 0, sizeof(dec_out));
-
-    // so i can do with this aes-cbc-128 aes-cbc-192 aes-cbc-256
+    memset(ivc, 0, sizeof(ivc));
+    AES_KEY enc_key;
+    memcpy(aes_key, DSP_DES_CBC_KEY, sizeof(DSP_DES_CBC_KEY));
+    AES_set_encrypt_key(aes_key, 128, &enc_key);
+    AES_cbc_encrypt((unsigned char*)tmp, enc_out, encslength, &enc_key, ivc, AES_ENCRYPT);
 
 
-    AES_KEY enc_key, dec_key;
-    AES_set_encrypt_key(aes_key, sizeof(aes_key), &enc_key);
-    AES_cbc_encrypt(aes_input, enc_out, , &enc_key, iv_enc, AES_ENCRYPT);
+    memset(ivc, 0, sizeof(ivc));
+    unsigned char decrypt_string[256] = {0};
+    AES_set_decrypt_key(aes_key, 128, &enc_key);
+    AES_cbc_encrypt(enc_out, decrypt_string, encslength, &enc_key, ivc, AES_DECRYPT);
 
-
-    AES_set_decrypt_key(aes_key, sizeof(aes_key), &dec_key);
-    AES_cbc_encrypt(enc_out, dec_out, encslength, &dec_key, iv_dec, AES_DECRYPT);
-
-
-
-    printf("original:\t");
-    hex_print(aes_input, sizeof(aes_input));
-
-    printf("encrypt:\t");
-    hex_print(enc_out, sizeof(enc_out));
-
-    printf("decrypt:\t");
-    hex_print(dec_out, sizeof(dec_out));
-
+    printf("AES_DECRYPT: %s\n", decrypt_string);
+    
     return 0;
 }
