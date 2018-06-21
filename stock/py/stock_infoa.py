@@ -1906,9 +1906,6 @@ def do_search_short():
             cmd = ['python', 'load_quotation.py']
             subprocess.Popen(cmd, stdout=subprocess.PIPE).communicate()[0]
 
-            cmd = ['python', 'load_trade_date.py']
-            subprocess.Popen(cmd, stdout=subprocess.PIPE).communicate()[0]
-
         print 'after base_select', len(id_dic)
 
         for key in remove_ley:
