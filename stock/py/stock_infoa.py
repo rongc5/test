@@ -1183,48 +1183,6 @@ def get_stockid_real_time(id):
     #print stockdict
     return stockdict
 
-#获取所有股票列表
-def get_stock_list():
-    #url = 'http://www.shdjt.com/js/lib/astock.js'
-    url = 'http://www.ctxalgo.com/api/stocks'
-    curl =  CurlHTTPFetcher()
-    while 1:
-        header = {}
-        index = random.randint(0, len(user_agent_list) -1)
-        header['User-Agent'] = 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.113 Safari/537.36'
-        header['Cookie'] = 'session=eyJfaWQiOnsiIGIiOiJNMkZtTldJME1qSXpNR1UzWWpka01UYzRabUV6TURKbU5qTTJZemcwWWpjPSJ9fQ.DQvdBA.x1XmlgjogTBgu2R52U1y9mHxqXI'
-        res = {}
-        try:
-            res = curl.fetch(url, None, header)
-        except BaseException, e:
-            print e.message
-       #res = {}
-       #res['head'] = ''
-       #res['body'] = curl_cmd_get(url)
-        if len(res) < 2:
-            print url
-            #time.sleep(1)
-        else:
-            print res['head']
-            break
-
-    #print res
-    #res = {}
-    #res['head'] = ''
-    #res['body'] = curl_cmd_get(url)
-    id_dic= json.loads(res['body'])
-
-    file = open('code_all', "w+")
-    for key in id_dic:
-        file.write(unicodedata.normalize('NFKD', key).encode('ascii','ignore'))
-        file.write('\n')
-        id_dic[key] = {}
-        key = unicodedata.normalize('NFKD', key).encode('ascii','ignore')
-        file.flush()
-
-    file.close()
-    return id_dic
-
 #解禁列表, http 相应数据不全， chunked 的问题， 后边再处理吧
 def get_outDxf_list(start, end):
     url = 'http://stock.finance.qq.com//sstock/list/view/dxf.php?c=0&b=%s&e=%s' % (start, end)
@@ -1356,7 +1314,7 @@ def get_basic_list(id_dic):
 
 def load_base_list():
     if not os.path.isfile('code_all'):
-        get_stock_list()
+        return {}
 
     if not os.path.isfile('base_list'):
         id_list = []
@@ -1365,7 +1323,8 @@ def load_base_list():
             line = file.readline().strip()
             if not line:
                 break
-            id_list.append(line)
+            items = line.split('\t')
+            id_list.append(items[0])
         file.close()
         get_basic_list(id_list)
 
