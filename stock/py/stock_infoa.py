@@ -1220,11 +1220,21 @@ def get_basic_list(id_dic):
     if not len(id_dic):
         return
 
-    file = open('base_list', "a+")
+    filename = 'base_list'
+    file = open(filename, "a+")
 
     basic_dic = {}
     flag = False
     for key in id_dic:
+        flag = False
+        cmd = ['grep', key, filename]
+        res_str = subprocess.Popen(cmd, stdout=subprocess.PIPE).communicate()[0]
+        if not os.path.isfile(filename) or not res_str.strip():
+            flag = True
+
+        if not flag:
+            continue
+
         time.sleep(0.01)
         res = get_stockid_real_time(key)
 
@@ -1232,7 +1242,6 @@ def get_basic_list(id_dic):
             continue
 
         if not res.has_key('pe'):
-            log_write('err_base_list', key)
             continue
 
         #if res['circulation_market_value'] >= 390:
@@ -1249,7 +1258,6 @@ def get_basic_list(id_dic):
 
         res['mgzb'] = get_stockid_mgzb(key)
         if len(res['mgzb']) < 1:
-            log_write('err_base_list', key)
             continue
 
         #if '--' not in res['mgzb'][0]['tbmgsy'] and  float(res['mgzb'][0]['tbmgsy']) < 0.2:
@@ -1260,7 +1268,6 @@ def get_basic_list(id_dic):
 
         res['cznl'] = get_stockid_cznl(key)
         if len(res['cznl']) < 1:
-            log_write('err_base_list', key)
             continue
         #if float(res['cznl'][0]['yylr']) < 0:
         #    continue
@@ -1316,29 +1323,16 @@ def load_base_list():
     if not os.path.isfile('code_all'):
         return {}
 
-    if not os.path.isfile('base_list'):
-        id_list = []
-        file = open("code_all")
-        while 1:
-            line = file.readline().strip()
-            if not line:
-                break
-            items = line.split('\t')
-            id_list.append(items[0])
-        file.close()
-        get_basic_list(id_list)
-
     id_list = []
-    if os.path.isfile('err_base_list'):
-        file = open('err_base_list')
-        while 1:
-            line = file.readline().strip()
-            if not line:
-                break
-            id_list.append(line)
-        file.close()
-        os.remove('err_base_list')
-        get_basic_list(id_list)
+    file = open("code_all")
+    while 1:
+        line = file.readline().strip()
+        if not line:
+            break
+        items = line.split('\t')
+        id_list.append(items[0])
+    file.close()
+    get_basic_list(id_list)
 
     id_dic = {}
     file = open("base_list")
