@@ -554,7 +554,8 @@ def load_coad_all():
         line = file.readline().strip()
         if not line:
             break
-        id_all[line] = line
+        items = line.split('\t')
+        id_all[items[0]] = items[1]
     file.close()
 
 
