@@ -17,7 +17,7 @@ class plate_dict_split;
 class plate_dict;
 class history_single_dict;
 class history_quotation_dict;
-class trade_date_dict;
+class holiday_dict;
 class proc_data:public reload_inf
 {
     public:
@@ -58,7 +58,7 @@ class proc_data:public reload_inf
 
         reload_mgr<history_quotation_dict> * _hquoation_dict;
 
-        reload_mgr<trade_date_dict> * _tdate_dict;
+        reload_mgr<holiday_dict> * _holiday_dict;
 
         sk_conf * _conf;
 
@@ -92,6 +92,7 @@ class proc_data:public reload_inf
         ToBufferMgr<std::unordered_map<std::string, std::vector<std::string>, str_hasher> > _plate_index;
 
 
+        ToBufferMgr<std::vector<std::map<int, std::vector<std::string> > > > _rsingle_index;
 
     public:
         char proc_name[SIZE_LEN_256];

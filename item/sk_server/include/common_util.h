@@ -199,18 +199,6 @@ bool has_key(const std::map<T, U> & query, const T & key)
     return true;
 }
 
-template <class T, class U>
-bool has_key(const std::unordered_map<T, U> & query, const T & key)
-{
-    auto it = query.find(key);
-    if (it == query.end())
-    {
-        return false;
-    }
-
-    return true;
-}
-
 int exec_shell_cmd(std::string & cmd, std::string & res);
 
 template<typename T>
@@ -257,5 +245,13 @@ class ToBufferMgr
 
 uint32_t common_random(uint32_t *seed);
 
+//计算日期对应一周的第几天, 0 for Sunday, 1 for Monday
+int dayofweek(int d, int m, int y);
+
+//是否润年
+int yisleap(int year);
+
+//一年中第多少天
+int get_yday(int mon, int day, int year);
 
 #endif

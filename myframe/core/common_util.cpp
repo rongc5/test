@@ -651,9 +651,33 @@ int exec_shell_cmd(std::string & cmd, std::string & res)
     return 0;
 }
 
+//这次返回的结果作为下次的种子
 uint32_t common_random(uint32_t *seed)
 {
     uint32_t r;
     r = *seed = *seed * 1103515245 + 12345;
     return (r << 16) | ((r >> 16) & 0xffff);
+}
+
+int dayofweek(int d, int m, int y)
+{
+    int t[] = { 0, 3, 2, 5, 0, 3, 5, 1, 4, 6, 2, 4 };
+    y -= m < 3;
+    return ( y + y/4 - y/100 + y/400 + t[m-1] + d) % 7;
+}
+
+int yisleap(int year)
+{
+    return (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0);
+}
+
+int get_yday(int mon, int day, int year)
+{
+    static const int days[2][13] = {
+        {0, 0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334},
+        {0, 0, 31, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335}
+    };
+    int leap = yisleap(year);
+
+    return days[leap][mon] + day;
 }

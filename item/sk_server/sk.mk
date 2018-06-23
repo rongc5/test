@@ -36,7 +36,7 @@ OBJ	= $(LOC_DIR)/main.o     \
 	  $(LOC_DIR)/plate_dict.o \
 	  $(LOC_DIR)/history_single_dict.o \
 	  $(LOC_DIR)/history_quotation_dict.o \
-	  $(LOC_DIR)/trade_date_dict.o \
+	  $(LOC_DIR)/holiday_dict.o \
 	  $(LOC_DIR)/recommend_dict.o \
 	  $(LOC_DIR)/strategy_conf.o \
 

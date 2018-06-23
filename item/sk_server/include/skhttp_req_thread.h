@@ -14,7 +14,7 @@
 #include "common_obj_container.h"
 #include "real_quotation_dict.h"
 #include "rsingle_data_process.h"
-#include "trade_date_dict.h"
+#include "holiday_dict.h"
 
 class skhttp_req_thread:public base_net_thread
 {
@@ -161,6 +161,11 @@ class skhttp_req_thread:public base_net_thread
                     p_data->_end_avg_price_index.idle()->swap(t_map);
                 }
 
+                {
+                    std::vector<std::map<int, std::vector<std::string> > > t_map;
+                    p_data->_rsingle_index.idle()->swap(t_map);
+                }
+
                 real_morning_stime = get_real_time(p_data->_conf->_strategy->current()->real_morning_stime.c_str());
                 real_morning_etime = get_real_time(p_data->_conf->_strategy->current()->real_morning_etime.c_str());
 
@@ -168,6 +173,46 @@ class skhttp_req_thread:public base_net_thread
                 real_afternoon_etime = get_real_time(p_data->_conf->_strategy->current()->real_afternoon_etime.c_str());
             }
 
+        }
+
+        bool is_trade_date(const char * date)
+        {
+            if (!date)
+                return false;
+
+            int year, mon, day, weekday;
+            int len = strlen(date);
+            if (len < 8)
+                return false;
+
+            {
+                std::string str(date, 0, 4);
+                year = atoi(str.c_str());
+            }
+
+            {
+                std::string str(date, 4, 2);
+                mon = atoi(str.c_str());
+            }
+            
+            
+            {
+                std::string str(date, 6, 2);
+                day = atoi(str.c_str());
+            }
+            
+            weekday = dayofweek(day, mon, year);
+            if (weekday > 5 || weekday < 1)
+                return false;
+
+            proc_data* p_data = proc_data::instance();
+            if (p_data) 
+            {
+                auto ii = p_data->_holiday_dict->current()->_date_dict.find(std::string(date));
+                if (ii != p_data->_holiday_dict->current()->_date_dict.end())
+                    return false;
+            }
+            return true;
         }
 
         bool is_real_time()
@@ -192,11 +237,8 @@ class skhttp_req_thread:public base_net_thread
                     }
                 }
 
-                auto it = p_data->_tdate_dict->current()->_date_dict.find(date);
-                if (it == p_data->_tdate_dict->current()->_date_dict.end())
-                {
+                if (!is_trade_date(date))
                     return false;
-                }
 
                 if (now >= real_morning_stime && now <= real_morning_etime)
                     return true;

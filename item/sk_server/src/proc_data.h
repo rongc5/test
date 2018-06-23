@@ -17,7 +17,7 @@ class plate_dict_split;
 class plate_dict;
 class history_single_dict;
 class history_quotation_dict;
-class trade_date_dict;
+class holiday_dict;
 class proc_data:public reload_inf
 {
     public:
@@ -58,7 +58,7 @@ class proc_data:public reload_inf
 
         reload_mgr<history_quotation_dict> * _hquoation_dict;
 
-        reload_mgr<trade_date_dict> * _tdate_dict;
+        reload_mgr<holiday_dict> * _holiday_dict;
 
         sk_conf * _conf;
 

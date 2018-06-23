@@ -12,7 +12,7 @@
 #include "plate_dict.h"
 #include "history_single_dict.h"
 #include "history_quotation_dict.h"
-#include "trade_date_dict.h"
+#include "holiday_dict.h"
 #include "recommend_dict.h"
 
 int proc_data::init(sk_conf * conf)
@@ -220,17 +220,17 @@ int proc_data::init(sk_conf * conf)
     }
 
     {
-        trade_date_dict *td_dict1 = new (std::nothrow)trade_date_dict();
-        ASSERT_WARNING(td_dict1 != NULL, "allocate trade_date_dict fail");
-        td_dict1->init(_conf->_strategy->current()->trade_date_path.c_str(), 
-                _conf->_strategy->current()->trade_date_file.c_str(), conf->dump_dir.c_str());
+        holiday_dict *td_dict1 = new (std::nothrow)holiday_dict();
+        ASSERT_WARNING(td_dict1 != NULL, "allocate holiday_dict fail");
+        td_dict1->init(_conf->_strategy->current()->holiday_dict_path.c_str(), 
+                _conf->_strategy->current()->holiday_dict_file.c_str(), conf->dump_dir.c_str());
 
-        trade_date_dict *td_dict2 = new (std::nothrow)trade_date_dict();
-        ASSERT_WARNING(td_dict2 != NULL, "allocate trade_date_dict fail");
-        td_dict2->init(_conf->_strategy->current()->trade_date_path.c_str(),
-                _conf->_strategy->current()->trade_date_file.c_str(), conf->dump_dir.c_str());
+        holiday_dict *td_dict2 = new (std::nothrow)holiday_dict();
+        ASSERT_WARNING(td_dict2 != NULL, "allocate holiday_dict fail");
+        td_dict2->init(_conf->_strategy->current()->holiday_dict_path.c_str(),
+                _conf->_strategy->current()->holiday_dict_file.c_str(), conf->dump_dir.c_str());
 
-        _tdate_dict = new (std::nothrow)reload_mgr<trade_date_dict>(td_dict1, td_dict2);
+        _holiday_dict = new (std::nothrow)reload_mgr<holiday_dict>(td_dict1, td_dict2);
 
     }
 }
@@ -278,7 +278,7 @@ int proc_data::load()
 
     _hquoation_dict->load();
 
-    _tdate_dict->load();
+    _holiday_dict->load();
 
     return 0;
 }
@@ -344,9 +344,9 @@ int proc_data::reload()
         _hquoation_dict->reload();
     }
 
-    if (_tdate_dict)
+    if (_holiday_dict)
     {
-        _tdate_dict->reload();
+        _holiday_dict->reload();
     }
     return 0;
 }
@@ -380,7 +380,7 @@ int proc_data::dump()
 
     _hquoation_dict->dump();
 
-    _tdate_dict->dump();
+    _holiday_dict->dump();
 
     return 0;
 }
@@ -410,7 +410,7 @@ int proc_data::destroy()
 
     _hquoation_dict->destroy();
 
-    _tdate_dict->destroy();
+    _holiday_dict->destroy();
 
     return 0;
 }

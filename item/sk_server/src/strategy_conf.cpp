@@ -205,14 +205,14 @@ void strategy_conf::do_parse()
         history_quotation_file = _cfg["history_quotation_file"];
     }
 
-    if (has_key<std::string, std::string>(_cfg, "trade_date_path"))
+    if (has_key<std::string, std::string>(_cfg, "holiday_dict_path"))
     {
-        trade_date_path = _cfg["trade_date_path"];
+        holiday_dict_path = _cfg["holiday_dict_path"];
     }
 
-    if (has_key<std::string, std::string>(_cfg, "trade_date_file"))
+    if (has_key<std::string, std::string>(_cfg, "holiday_dict_file"))
     {
-        trade_date_file = _cfg["trade_date_file"];
+        holiday_dict_file = _cfg["holiday_dict_file"];
     }
 
     if (has_key<std::string, std::string>(_cfg, "recommend_dict_path"))
