@@ -364,21 +364,21 @@ void rquotation_data_process::destroy()
             common_obj_container * net_container = connect->get_net_container();
             net_container->get_domain()->delete_domain(_url_info.domain);
         }
+    }
 
-        proc_data* p_data = proc_data::instance();
-        id_dict * id_dic = p_data->_id_dict->current(); 
-        if (id_dic && id_dic->_id_vec.size() && id_dic->_id_vec[id_dic->_id_vec.size() - 1] == _id)
-        {
-            p_data->_block_set.idle_2_current();
-            LOG_DEBUG("_block_set idle_2_current");
+    proc_data* p_data = proc_data::instance();
+    id_dict * id_dic = p_data->_id_dict->current(); 
+    if (id_dic && id_dic->_id_vec.size() && id_dic->_id_vec[id_dic->_id_vec.size() - 1] == _id)
+    {
+        p_data->_block_set.idle_2_current();
+        LOG_DEBUG("_block_set idle_2_current");
 
-            p_data->_end_index.idle_2_current();
-            p_data->_change_rate_index.idle_2_current();
-            p_data->_range_percent_index.idle_2_current();
-            p_data->_down_pointer_index.idle_2_current();
-            p_data->_up_pointer_index.idle_2_current();
-            p_data->_end_avg_price_index.idle_2_current();
-        }
+        p_data->_end_index.idle_2_current();
+        p_data->_change_rate_index.idle_2_current();
+        p_data->_range_percent_index.idle_2_current();
+        p_data->_down_pointer_index.idle_2_current();
+        p_data->_up_pointer_index.idle_2_current();
+        p_data->_end_avg_price_index.idle_2_current();
     }
 }
 

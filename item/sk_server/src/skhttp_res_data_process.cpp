@@ -214,31 +214,31 @@ void skhttp_res_data_process::query_history_single(uint32_t last_day_num, std::s
     Value k(kStringType);
     k.SetString("last_single", allocator);
     
-    auto ii = p_data->_hsingle_dict->current()->_id_dict.find(id);
-    if (ii != p_data->_hsingle_dict->current()->_id_dict.end())
-    {
-        uint32_t i = 0;
-        for (auto iii = ii->second.rbegin(); 
-                iii != ii->second.rend() && i < last_day_num; iii++, i++)
-        {
-            Value key(kStringType);
-            key.SetString(iii->first.c_str(), allocator);
-            Value child(kArrayType);
-            for (auto kk: iii->second)
-            {
-                Value single(kObjectType);
-                Value key1(kStringType);
-                Value value1(kStringType);
+    //auto ii = p_data->_hsingle_dict->current()->_id_dict.find(id);
+    //if (ii != p_data->_hsingle_dict->current()->_id_dict.end())
+    //{
+        //uint32_t i = 0;
+        //for (auto iii = ii->second.rbegin(); 
+                //iii != ii->second.rend() && i < last_day_num; iii++, i++)
+        //{
+            //Value key(kStringType);
+            //key.SetString(iii->first.c_str(), allocator);
+            //Value child(kArrayType);
+            //for (auto kk: iii->second)
+            //{
+                //Value single(kObjectType);
+                //Value key1(kStringType);
+                //Value value1(kStringType);
 
-                key1.SetString(kk.single.c_str(), allocator);
-                value1.SetString(kk.price.c_str(), allocator);
-                single.AddMember(key1, value1, allocator);
-                child.PushBack(single, allocator);
-            }
-            v.AddMember(key, child, allocator);  
-        }
-    }
-    root.AddMember(k, v, allocator);
+                //key1.SetString(kk.single.c_str(), allocator);
+                //value1.SetString(kk.price.c_str(), allocator);
+                //single.AddMember(key1, value1, allocator);
+                //child.PushBack(single, allocator);
+            //}
+            //v.AddMember(key, child, allocator);  
+        //}
+    //}
+    //root.AddMember(k, v, allocator);
 }
 
 int skhttp_res_data_process::do_query_id(std::map<std::string, std::string> & url_para_map, Value & data_array, Document::AllocatorType & allocator)

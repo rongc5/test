@@ -3,6 +3,7 @@
 #include "log_helper.h"
 #include "ul_sign.h"
 #include "common_util.h"
+#include "proc_data.h"
 
 history_single_dict::history_single_dict()
 {
@@ -88,22 +89,6 @@ int history_single_dict::load_history_single(const char * file)
                 ii->second.insert(std::make_pair(strVec[0], single));
             }
         }
-
-        {
-            auto ii = _id_dict.find(strVec[0]);
-            if (ii == _id_dict.end())
-            {
-                std::map<std::string, std::vector<history_single> > date_map;
-                date_map[date] = single;
-
-                _id_dict[strVec[0]]= date_map;
-            }
-            else
-            {
-                ii->second.insert(std::make_pair(date, single));
-            }
-        }
-
     }
 
     return 0;
@@ -148,8 +133,13 @@ int history_single_dict::reload()
     }
 
     {
-        std::unordered_map<std::string, std::map<std::string, std::vector<history_single> >, str_hasher> tmp;
-        _id_dict.swap(tmp);
+        proc_data* p_data = proc_data::instance();
+        if (p_data)
+        {
+            std::unordered_map<std::string, single_index_vec, str_hasher> tmp;
+            p_data->_hsingle_index.idle()->swap(tmp);
+            p_data->_hsingle_index.idle_2_current();
+        }
     }
     return load();
 }

@@ -13,6 +13,7 @@
 #include "sk_conf.h"
 #include "real_single_dict.h"
 #include "strategy_conf.h"
+#include "id_dict.h"
 
 
 rsingle_data_process::rsingle_data_process(http_base_process * _p_process):http_base_data_process(_p_process)
@@ -99,6 +100,38 @@ void rsingle_data_process::msg_recv_finish()
     }
 
     it->second.idle_2_current();
+
+    for (uint32_t i = 0; i< single.size(); i++)
+    {
+        if (!single[i])
+            break;
+
+        if (i >= p_data->_rsingle_index.idle()->size())
+        {
+            std::map<int, std::vector<std::string> > t_map;
+            std::vector<std::string> t_vec;
+            t_vec.push_back(_id);
+            t_map.insert(std::make_pair(single[i], t_vec));
+            p_data->_rsingle_index.idle()->push_back(t_map);
+        }
+        else
+        {
+            std::map<int, std::vector<std::string> > & t_map = 
+                (*(p_data->_rsingle_index.idle()))[i];
+
+            auto ii = t_map.find(single[i]);
+            if (ii != t_map.end())
+            {
+                ii->second.push_back(_id);
+            }
+            else
+            {
+                std::vector<std::string> t_vec;
+                t_vec.push_back(_id);
+                t_map.insert(std::make_pair(single[i], t_vec));
+            }
+        }
+    }
 
     throw CMyCommonException("msg_recv_finish");
 }
@@ -227,6 +260,13 @@ void rsingle_data_process::destroy()
             common_obj_container * net_container = connect->get_net_container();
             net_container->get_domain()->delete_domain(_url_info.domain);
         }
+    }
+
+    proc_data* p_data = proc_data::instance();
+    id_dict * id_dic = p_data->_id_dict->current();
+    if (id_dic && id_dic->_id_vec.size() && id_dic->_id_vec[id_dic->_id_vec.size() - 1] == _id)
+    {
+        p_data->_rsingle_index.idle_2_current();
     }
 }
 

@@ -29,8 +29,6 @@ class history_single_dict:public reload_inf
     public:
         // <date, <id, single> >
         std::map<std::string, std::unordered_map<std::string, std::vector<history_single>, str_hasher> > _date_dict;
-        // <id, <date, single> >
-        std::unordered_map<std::string, std::map<std::string, std::vector<history_single> >, str_hasher> _id_dict;
 };
 
 

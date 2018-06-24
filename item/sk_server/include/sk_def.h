@@ -68,6 +68,11 @@ struct quotation_t
 };
 
 
+struct single_index_vec
+{
+    std::vector<std::map<int, std::string> > single_vec;
+};
+
 #define TIMER_TYPE_RELOAD_CONF 10000
 #define TIMER_TYPE_REQ_QUOTATION 10001
 #define TIMER_TYPE_REQ_SINGLE 10002

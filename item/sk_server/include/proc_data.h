@@ -93,6 +93,7 @@ class proc_data:public reload_inf
 
 
         ToBufferMgr<std::vector<std::map<int, std::vector<std::string> > > > _rsingle_index;
+        ToBufferMgr<std::unordered_map<std::string, single_index_vec, str_hasher> > _hsingle_index;
 
     public:
         char proc_name[SIZE_LEN_256];
