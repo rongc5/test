@@ -89,6 +89,45 @@ int history_single_dict::load_history_single(const char * file)
                 ii->second.insert(std::make_pair(strVec[0], single));
             }
         }
+
+        {
+            auto ii = p_data->_hsingle_index.idle()->find(date);
+            if (ii == p_data->_hsingle_index.idle()->end())
+            {
+                single_index_vec s_vec;
+                
+                for (uint32_t i = 0; i < single.size(); i++)
+                {
+                    if (!single[i].single)
+                        break;
+
+                    std::map<uint32_t, std::string> t_map;
+                    t_map.insert(std::make_pair(single[i].single, strVec[0]));
+                    s_vec.single_vec.push_back(t_map);
+                }
+                p_data->_hsingle_index.idle()->insert(std::make_pair(date, s_vec));
+            }
+            else
+            {
+                for (uint32_t i = 0; i < single.size(); i++)
+                {
+                    if (!single[i].single)
+                        break;
+
+                    if (i >= ii->second.single_vec.size())
+                    {
+                        std::map<uint32_t, std::string> t_map;
+                        t_map.insert(std::make_pair(single[i].single, strVec[0]));
+                        ii->second.single_vec.push_back(t_map);
+                    }
+                    else
+                    {
+
+                    }
+
+                }
+            }
+        }
     }
 
     return 0;
