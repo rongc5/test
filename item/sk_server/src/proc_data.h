@@ -93,7 +93,21 @@ class proc_data:public reload_inf
 
 
         ToBufferMgr<std::vector<std::map<int, std::vector<std::string> > > > _rsingle_index;
-        ToBufferMgr<std::unordered_map<std::string, single_index_vec, str_hasher> > _hsingle_index;
+
+        //date, single, id
+        ToBufferMgr<std::vector<std::map<std::string, 
+            std::map<int, std::vector<std::string> > > > > _hsingle_index;
+
+        //id, date
+        ToBufferMgr<std::unordered_map<std::string, std::string, str_hasher> > _hsid_date_index;
+
+        // history quotation 
+        ToBufferMgr<std::map<std::string, std::map<float, std::vector<std::string> > > > _hqend_index;
+        ToBufferMgr<std::map<std::string, std::map<float, std::vector<std::string> > > > _hqchange_rate_index;
+        ToBufferMgr<std::map<std::string, std::map<float, std::vector<std::string> > > > _hqrange_percent_index;
+
+        ToBufferMgr<std::map<std::string, std::map<float, std::vector<std::string> > > > _hqdown_pointer_index;
+        ToBufferMgr<std::map<std::string, std::map<float, std::vector<std::string> > > > _hqup_pointer_index;
 
     public:
         char proc_name[SIZE_LEN_256];

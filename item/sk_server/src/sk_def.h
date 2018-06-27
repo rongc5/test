@@ -12,8 +12,13 @@ struct ban_t
 
 struct history_single
 {
-    std::string single;
+    int single;
     std::string price;
+};
+
+struct history_single_vec
+{
+    std::vector<history_single> hs_vec;
 };
 
 struct quotation_t
@@ -36,8 +41,12 @@ struct quotation_t
     float change_rate;
     float range_percent;
 
+    float down_pointer;
+    float up_pointer;
+
     float total_price;
     bool blocked;
+
 
     quotation_t()
     {
@@ -67,11 +76,6 @@ struct quotation_t
     }
 };
 
-
-struct single_index_vec
-{
-    std::vector<std::map<int, std::string> > single_vec;
-};
 
 #define TIMER_TYPE_RELOAD_CONF 10000
 #define TIMER_TYPE_REQ_QUOTATION 10001
