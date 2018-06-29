@@ -3,6 +3,7 @@
 
 #include "base_reload.h"
 #include "sk_def.h"
+#include "common_util.h"
 
 class finance_dict:public reload_inf
 {

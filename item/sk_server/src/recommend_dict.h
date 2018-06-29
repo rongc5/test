@@ -2,7 +2,7 @@
 #define _RECOMMEND_DICT_H_
 
 #include "base_reload.h"
-#include "common_cfgparser.h"
+#include "common_util.h"
 
 class recommend_dict:public reload_inf
 {
@@ -26,7 +26,8 @@ class recommend_dict:public reload_inf
         time_t _last_load;
 
     public:
-        common_cfgparser _cfg;
+        //id, recommend_flag
+        std::unordered_map<std::string, std::vector<std::string>, str_hasher> _id_dict;
 };
 
 

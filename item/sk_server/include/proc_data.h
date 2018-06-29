@@ -109,6 +109,9 @@ class proc_data:public reload_inf
         ToBufferMgr<std::map<std::string, std::map<float, std::vector<std::string> > > > _hqdown_pointer_index;
         ToBufferMgr<std::map<std::string, std::map<float, std::vector<std::string> > > > _hqup_pointer_index;
 
+        //
+        ToBufferMgr<std::unordered_map<std::string, std::vector<std::string>, str_hasher> > _recommend_index;
+
     public:
         char proc_name[SIZE_LEN_256];
 
