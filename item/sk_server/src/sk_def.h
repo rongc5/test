@@ -68,6 +68,8 @@ struct quotation_t
         vol = 0;
         sell_vol = 0;
         buy_vol = 0;
+        down_pointer = 0;
+        up_pointer = 0;
 
         swing = 0;
         change_rate = 0;

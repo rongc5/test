@@ -194,6 +194,7 @@ int history_quotation_dict::load_history_quoation(const char * file)
             }
         }
 
+        if (qt.down_pointer)
         {
             auto ii = p_data->_hqdown_pointer_index.idle()->find(date);
             if (ii == p_data->_hqdown_pointer_index.idle()->end())
@@ -222,6 +223,7 @@ int history_quotation_dict::load_history_quoation(const char * file)
             }
         }
 
+        if (qt.up_pointer)
         {
             auto ii = p_data->_hqup_pointer_index.idle()->find(date);
             if (ii == p_data->_hqup_pointer_index.idle()->end())
