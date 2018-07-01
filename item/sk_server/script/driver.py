@@ -233,13 +233,9 @@ def print_res(res, parser):
                 if parser.file:
                     log_write(parser.file, tmp_str)
 
-            if item.has_key('last_single'):
-                tmp_str = 'last_single='
-                print tmp_str
-                if parser.file:
-                    log_write(parser.file, tmp_str)
-                for kk in item['last_single']:
-                    myjson = json.dumps(kk, ensure_ascii=False)
+            for kk in item:
+                if 'last_single' in kk:
+                    myjson = json.dumps(item[kk], ensure_ascii=False)
                     print myjson
                     if parser.file:
                         log_write(parser.file, myjson)

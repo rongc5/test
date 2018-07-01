@@ -100,10 +100,17 @@ int history_single_dict::load_history_single(const char * file)
         }
 
         {
-            auto ii = p_data->_hsid_date_index.idle()->find(date);
+            auto ii = p_data->_hsid_date_index.idle()->find(strVec[0]);
             if (ii == p_data->_hsid_date_index.idle()->end())
             {
-                p_data->_hsid_date_index.idle()->insert(std::make_pair(strVec[0], date));
+                std::set<std::string> t_set;
+                t_set.insert(date);
+
+                p_data->_hsid_date_index.idle()->insert(std::make_pair(strVec[0], t_set));
+            }
+            else
+            {
+                ii->second.insert(date);
             }
         }
 
@@ -219,7 +226,7 @@ int history_single_dict::reload()
             }
 
             {
-                std::unordered_map<std::string, std::string, str_hasher> tmp;
+                std::unordered_map<std::string, std::set<std::string>, str_hasher> tmp;
                 p_data->_hsid_date_index.idle()->swap(tmp);
             }
         }

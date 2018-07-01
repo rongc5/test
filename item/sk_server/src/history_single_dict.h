@@ -18,7 +18,7 @@ class history_single_dict:public reload_inf
         virtual int dump();
         virtual int destroy();
 
-        void creat_key(std::string & date, std::string & id, std::string & key);
+        static void creat_key(std::string & date, std::string & id, std::string & key);
 
     private:
         void set_path (const char* path);

@@ -99,7 +99,7 @@ class proc_data:public reload_inf
             std::map<int, std::vector<std::string> > > > > _hsingle_index;
 
         //id, date
-        ToBufferMgr<std::unordered_map<std::string, std::string, str_hasher> > _hsid_date_index;
+        ToBufferMgr<std::unordered_map<std::string, std::set<std::string>, str_hasher> > _hsid_date_index;
 
         // history quotation 
         ToBufferMgr<std::map<std::string, std::map<float, std::vector<std::string> > > > _hqend_index;

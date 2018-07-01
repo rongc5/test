@@ -210,35 +210,48 @@ void skhttp_res_data_process::query_history_single(uint32_t last_day_num, std::s
     proc_data* p_data = proc_data::instance();
     char t_buf[SIZE_LEN_64];
 
-    Value v(kObjectType);
-    Value k(kStringType);
-    k.SetString("last_single", allocator);
+    std::vector<std::string> date_vec;
     
-    //auto ii = p_data->_hsingle_dict->current()->_id_dict.find(id);
-    //if (ii != p_data->_hsingle_dict->current()->_id_dict.end())
-    //{
-        //uint32_t i = 0;
-        //for (auto iii = ii->second.rbegin(); 
-                //iii != ii->second.rend() && i < last_day_num; iii++, i++)
-        //{
-            //Value key(kStringType);
-            //key.SetString(iii->first.c_str(), allocator);
-            //Value child(kArrayType);
-            //for (auto kk: iii->second)
-            //{
-                //Value single(kObjectType);
-                //Value key1(kStringType);
-                //Value value1(kStringType);
+    {
+        auto ii = p_data->_hsid_date_index.current()->find(id);
+        if (ii == p_data->_hsid_date_index.current()->end())
+        {
+            return;
+        }
+        
+        uint32_t i = 0;
+        for (auto iii = ii->second.rbegin(); iii != ii->second.rend() && i < last_day_num; i++, iii++)
+        {
+            date_vec.push_back(*iii);
+        }
+    }
+    
+    for (uint32_t i = 0; i< date_vec.size(); i++)
+    {
+        std::string key;    
+        history_single_dict::creat_key(date_vec[i], id, key);
 
-                //key1.SetString(kk.single.c_str(), allocator);
-                //value1.SetString(kk.price.c_str(), allocator);
-                //single.AddMember(key1, value1, allocator);
-                //child.PushBack(single, allocator);
-            //}
-            //v.AddMember(key, child, allocator);  
-        //}
-    //}
-    //root.AddMember(k, v, allocator);
+        auto ii = p_data->_hsingle_dict->current()->_date_dict.find(key);
+        if (ii != p_data->_hsingle_dict->current()->_date_dict.end())
+        {
+            Value k(kStringType);
+            Value child(kArrayType);
+
+            std::string t_str;
+            t_str.append("last_single");
+            t_str.append("_");
+            t_str.append(date_vec[i]);
+
+            k.SetString(t_str.c_str(), allocator);
+
+            for (uint32_t k = 0; k < ii->second.hs_vec.size(); k++)
+            {
+                child.PushBack(ii->second.hs_vec[k].single, allocator);
+            }
+
+            root.AddMember(k, child, allocator);
+        }
+    }
 }
 
 int skhttp_res_data_process::do_query_id(std::map<std::string, std::string> & url_para_map, Value & data_array, Document::AllocatorType & allocator)
