@@ -398,6 +398,28 @@ std::string * skhttp_res_data_process::get_send_head()
     return str;
 }
 
+int skhttp_res_data_process::do_parse_request(std::map<std::string, std::string> & url_para_map)
+{
+   if (_recv_buf.empty())
+       return;
+
+    std::vector<std::string> items;
+    SplitString(_recv_buf.c_str(), "\r\n", &items, SPLIT_MODE_ALL);
+
+    for (uint32_t i = 0; i < items.size(); i++)
+    {
+        std::vector<std::string> sub_items;
+        SplitString(items[i].c_str(), "=", &sub_items, SPLIT_MODE_ALL);
+
+        if (sub_items.size() >= 2)
+        {
+
+        }
+    }
+
+    return 0;
+}
+
 size_t skhttp_res_data_process::process_recv_body(const char *buf, size_t len, int& result)
 {
     result = 1;

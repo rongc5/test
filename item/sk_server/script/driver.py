@@ -284,10 +284,11 @@ def do_select(parser):
         line = file.readline().strip('\n')
         if not line:
             break
+        line = line.strip(' ')
         if line.startwith('#'):
             continue
         body += line
-        body += '\n'
+        body += '\r\n'
 
 
     header = {}

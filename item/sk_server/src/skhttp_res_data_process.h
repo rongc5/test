@@ -35,6 +35,8 @@ class skhttp_res_data_process:public http_base_data_process
 
         int do_select(std::map<std::string, std::string> & url_para_map, Value & root, Document::AllocatorType & allocator);
 
+        int do_parse_request(std::map<std::string, std::string> & url_para_map);
+
         void query_finance(std::string &id, Value & root, Document::AllocatorType & allocator);
 
         void query_quotation(std::string &id, Value & root, Document::AllocatorType & allocator);
