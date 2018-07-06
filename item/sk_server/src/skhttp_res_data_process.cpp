@@ -344,7 +344,6 @@ void skhttp_res_data_process::msg_recv_finish()
     LOG_DEBUG("url_path:%s", req_head_para._url_path.c_str());
     
     std::map<std::string, std::string> url_para_map;
-    parse_url_para(req_head_para._url_path, url_para_map);
 
     Document document;
     Document::AllocatorType& allocator = document.GetAllocator(); 
@@ -353,8 +352,10 @@ void skhttp_res_data_process::msg_recv_finish()
 
     int recode;
     if (!strncmp(req_head_para._url_path.c_str(), "/queryid", strlen("/queryid"))){
+        parse_url_para(req_head_para._url_path, url_para_map);
         recode = do_query_id(url_para_map, data_array, allocator);
     }else if (!strncmp(req_head_para._url_path.c_str(), "/select", strlen("/select"))){
+        do_parse_request(url_para_map);
         recode = do_select(url_para_map, data_array, allocator);
     } else {
         recode = HTPP_REQ_PATH_ERR;
@@ -413,7 +414,7 @@ int skhttp_res_data_process::do_parse_request(std::map<std::string, std::string>
 
         if (sub_items.size() >= 2)
         {
-
+            url_para_map[trim(sub_items[0].c_str())] = trim(sub_items[1].c_str());
         }
     }
 
