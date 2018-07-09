@@ -31,11 +31,11 @@ class skhttp_res_data_process:public http_base_data_process
         
         static void gen_listen_obj(int fd, common_obj_container * net_container);
 
-        int do_query_id(std::map<std::string, std::string> & url_para_map, Value & root, Document::AllocatorType & allocator);
+        int url_query_id(std::map<std::string, std::string> & url_para_map, Value & root, Document::AllocatorType & allocator);
 
-        int do_select(std::map<std::string, std::string> & url_para_map, Value & root, Document::AllocatorType & allocator);
+        int url_select(std::map<std::string, std::string> & url_para_map, Value & root, Document::AllocatorType & allocator);
 
-        int do_check
+        int do_check_select(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res);
 
         int do_parse_request(std::map<std::string, std::string> & url_para_map);
 
@@ -54,6 +54,19 @@ class skhttp_res_data_process:public http_base_data_process
         void query_addr(std::string &id, Value & root, Document::AllocatorType & allocator);
 
         void query_history_single(uint32_t last_day_num, std::string &id, Value & root, Document::AllocatorType & allocator);
+
+    private:
+        void do_check_end(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res);
+
+        void do_check_change_rate(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res);
+
+        void do_check_range_percent(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res);
+
+        void do_check_down_pointer(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res);
+
+        void do_check_up_pointer(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res);
+
+        void do_check_end_avg_price(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res);
 
     protected:
         std::string _body;

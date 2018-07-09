@@ -254,7 +254,7 @@ void skhttp_res_data_process::query_history_single(uint32_t last_day_num, std::s
     }
 }
 
-int skhttp_res_data_process::do_query_id(std::map<std::string, std::string> & url_para_map, Value & data_array, Document::AllocatorType & allocator)
+int skhttp_res_data_process::url_query_id(std::map<std::string, std::string> & url_para_map, Value & data_array, Document::AllocatorType & allocator)
 {
     proc_data* p_data = proc_data::instance();
 
@@ -333,7 +333,80 @@ int skhttp_res_data_process::do_query_id(std::map<std::string, std::string> & ur
     return HTPP_RES_OK;
 }
 
-int skhttp_res_data_process::do_select(std::map<std::string, std::string> & url_para_map, Value & root, Document::AllocatorType & allocator)
+void skhttp_res_data_process::do_check_end(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res)
+{
+    float end = 0;
+    bool flag = false;
+    proc_data* p_data = proc_data::instance();
+    
+    std::map<float, std::vector<std::string> >::iterator it_le, it_ge, it;
+    it_le = p_data->_end_index.current()->end();
+    it_ge = p_data->_end_index.current()->begin();
+
+    if (has_key<std::string, string>(url_para_map, "end_le"))
+    {
+        flag = true;
+        end = atof(url_para_map["end_le"].c_str());
+        it_le = p_data->_end_index.current()->upper_bound(end);
+    }
+
+    if (has_key<std::string, string>(url_para_map, "end_ge"))
+    {
+        flag = true;
+        end = atof(url_para_map["end_ge"].c_str());
+        it_ge = p_data->_end_index.current()->lower_bound(end);
+    }
+
+    if (flag)
+        return;
+
+    for (it = it_ge; it < it_le; it++)
+    {
+        for (auto iii; iii != it.end(); iii++)
+            res.insert(iii); 
+    }
+}
+
+void skhttp_res_data_process::do_check_change_rate(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res)
+{
+    float end = 0;
+    bool flag = false;
+    proc_data* p_data = proc_data::instance();
+    
+    std::map<float, std::vector<std::string> >::iterator it_le, it_ge, it;
+    it_le = p_data->_change_rate_index.current()->end();
+    it_ge = p_data->_change_rate_index.current()->begin();
+
+    if (has_key<std::string, string>(url_para_map, "change_rate_le"))
+    {
+        flag = true;
+        end = atof(url_para_map["change_rate_le"].c_str());
+        it_le = p_data->_change_rate_index.current()->upper_bound(end);
+    }
+
+    if (has_key<std::string, string>(url_para_map, "change_rate_ge"))
+    {
+        flag = true;
+        end = atof(url_para_map["change_rate_ge"].c_str());
+        it_ge = p_data->_change_rate_index.current()->lower_bound(end);
+    }
+
+    if (flag)
+        return;
+
+    for (it = it_ge; it < it_le; it++)
+    {
+        for (auto iii; iii != it.end(); iii++)
+            res.insert(iii); 
+    }
+}
+
+int skhttp_res_data_process::do_check_select(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res)
+{
+    if (has_key<std::string, string>)
+}
+
+int skhttp_res_data_process::url_select(std::map<std::string, std::string> & url_para_map, Value & root, Document::AllocatorType & allocator)
 {
     return HTPP_RES_OK;
 }
