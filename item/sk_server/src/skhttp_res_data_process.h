@@ -68,6 +68,30 @@ class skhttp_res_data_process:public http_base_data_process
 
         void do_check_end_avg_price(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res);
 
+        void do_check_pe(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res);
+
+        void do_check_pb(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res);
+
+        void do_check_value(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res);
+
+        void do_check_cir_value(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res);
+
+        void do_check_mgxj(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res);
+
+        void do_check_mgsy(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res);
+
+        void do_check_mgsygr(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res);
+
+        void do_check_mgxjgr(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res);
+
+        void do_check_zysrgr(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res);
+
+        void do_check_yylrgr(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res);
+
+        void do_check_jlrgr(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res);
+
+        void do_check_address(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res);
+
     protected:
         std::string _body;
         std::string _recv_buf;
