@@ -90,7 +90,10 @@ class skhttp_res_data_process:public http_base_data_process
 
         void do_check_jlrgr(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res);
 
-        void do_check_address(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res);
+        //key like address or address_v 
+        void do_check_address(std::map<std::string, std::string> & url_para_map, const char * key, std::set<std::string> & res);
+        //key like plate or plate_v
+        void do_check_plate(std::map<std::string, std::string> & url_para_map, const char * key, std::set<std::string> & res);
 
     protected:
         std::string _body;

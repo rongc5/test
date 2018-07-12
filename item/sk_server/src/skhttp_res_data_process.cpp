@@ -911,9 +911,54 @@ void skhttp_res_data_process::do_check_jlrgr(std::map<std::string, std::string> 
     }
 }
 
-void skhttp_res_data_process::do_check_address(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res)
+void skhttp_res_data_process::do_check_address(std::map<std::string, std::string> & url_para_map, const char * key, std::set<std::string> & res)
 {
+    proc_data* p_data = proc_data::instance();
+    std::vector<std::string> tmp_vec;
+
+    if (key && has_key<std::string, string>(url_para_map, key))
+    {
+        SplitString(url_para_map[key].c_str(), '|', &tmp_vec, SPLIT_MODE_ALL);
+        if (!tmp_vec.size()) 
+            tmp_vec.push_back(url_para_map[key]);
+
+        for (uint32_t i = 0; i< tmp_vec.size(); i++) {
+            auto ii = p_data->_address_index.current()->find(trim(tmp_vec[i].c_str()));
+            if (ii != p_data->_address_index.current()->end())
+            {
+                for (uint32_t k = 0; k < ii->second.size(); k++)
+                {
+                    res.insert(ii->second[k]);
+                }
+            }
+        }
+    }
 }
+
+void skhttp_res_data_process::do_check_plate(std::map<std::string, std::string> & url_para_map, const char * key, std::set<std::string> & res)
+{
+    proc_data* p_data = proc_data::instance();
+    std::vector<std::string> tmp_vec;
+
+    if (key && has_key<std::string, string>(url_para_map, key))
+    {
+        SplitString(url_para_map[key].c_str(), '|', &tmp_vec, SPLIT_MODE_ALL);
+        if (!tmp_vec.size()) 
+            tmp_vec.push_back(url_para_map[key]);
+
+        for (uint32_t i = 0; i< tmp_vec.size(); i++) {
+            auto ii = p_data->_plate_index.current()->find(trim(tmp_vec[i].c_str()));
+            if (ii != p_data->_plate_index.current()->end())
+            {
+                for (uint32_t k = 0; k < ii->second.size(); k++)
+                {
+                    res.insert(ii->second[k]);
+                }
+            }
+        }
+    }
+}
+
 
 int skhttp_res_data_process::do_check_select(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res)
 {
