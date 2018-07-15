@@ -178,72 +178,17 @@ def print_res(res, parser):
 
     if res.has_key('data'):
         for item in res['data']:
-            if item.has_key('id'):
-                tmp_str = 'id='
-                tmp_str += item['id']
-                print tmp_str
-                if parser.file:
-                    log_write(parser.file, tmp_str)
-
-            if item.has_key('finance'):
-                tmp_str = 'finance='
-                myjson = json.dumps(item['finance'], ensure_ascii=False)
+            for key in item:
+                tmp_str = key + '='
+                myjson = json.dumps(item[key], ensure_ascii=False)
                 tmp_str += myjson
                 print tmp_str
                 if parser.file:
                     log_write(parser.file, tmp_str)
-
-            if item.has_key('quotation'):
-                tmp_str = 'quotation='
-                myjson = json.dumps(item['quotation'], ensure_ascii=False)
-                tmp_str += myjson
-                print tmp_str
-                if parser.file:
-                    log_write(parser.file, tmp_str)
-
-            if item.has_key('plate'):
-                tmp_str = 'plate='
-                myjson = json.dumps(item['plate'], ensure_ascii=False)
-                tmp_str += myjson
-                print tmp_str
-                if parser.file:
-                    log_write(parser.file, tmp_str)
-
-            if item.has_key('block'):
-                tmp_str = 'block='
-                myjson = json.dumps(item['block'], ensure_ascii=False)
-                tmp_str += myjson
-                print tmp_str
-                if parser.file:
-                    log_write(parser.file, tmp_str)
-
-            if item.has_key('addr'):
-                tmp_str = 'addr='
-                myjson = json.dumps(item['addr'], ensure_ascii=False)
-                tmp_str += myjson
-                print tmp_str
-                if parser.file:
-                    log_write(parser.file, tmp_str)
-
-            if item.has_key('single'):
-                tmp_str = 'single='
-                myjson = json.dumps(item['single'], ensure_ascii=False)
-                tmp_str += myjson
-                print tmp_str
-                if parser.file:
-                    log_write(parser.file, tmp_str)
-
-            for kk in item:
-                if 'last_single' in kk:
-                    myjson = json.dumps(item[kk], ensure_ascii=False)
-                    print myjson
-                    if parser.file:
-                        log_write(parser.file, myjson)
 
             print '\n'
             if parser.file:
                 log_write(parser.file, '\n')
-
 
 
 def do_query_id(parser):
