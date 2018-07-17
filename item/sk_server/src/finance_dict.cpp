@@ -71,177 +71,67 @@ int finance_dict::load()
         if (has_key<std::string, std::string>(ft, "pb"))
         {
             int pe = atoi(ft["pe"].c_str());
-            auto iii =  p_data->_pe_index.idle()->find(pe);
-            if (iii != p_data->_pe_index.idle()->end())
-            {
-                iii->second.push_back(ft["id"]);
-            }   
-            else
-            {   
-                std::vector<std::string> id_vec;
-                id_vec.push_back(ft["id"]);
-                p_data->_pe_index.idle()->insert(std::make_pair(pe, id_vec));
-            }
+            p_data->_pe_index.idle()->insert(std::make_pair(pe, ft["id"]));
         }
 
         if (has_key<std::string, std::string>(ft, "pb"))    
         {
             int pb = atoi(ft["pb"].c_str());
-            auto iii =  p_data->_pb_index.idle()->find(pb);
-            if (iii != p_data->_pb_index.idle()->end())
-            {
-                iii->second.push_back(ft["id"]);
-            }   
-            else
-            {   
-                std::vector<std::string> id_vec;
-                id_vec.push_back(ft["id"]);
-                p_data->_pb_index.idle()->insert(std::make_pair(pb, id_vec));
-            }
+            p_data->_pb_index.idle()->insert(std::make_pair(pb, ft["id"]));
         }
 
         if (has_key<std::string, std::string>(ft, "value"))
         {
             int value = atoi(ft["value"].c_str());
-            auto iii =  p_data->_value_index.idle()->find(value);
-            if (iii != p_data->_value_index.idle()->end())
-            {
-                iii->second.push_back(ft["id"]);
-            }   
-            else
-            {   
-                std::vector<std::string> id_vec;
-                id_vec.push_back(ft["id"]);
-                p_data->_value_index.idle()->insert(std::make_pair(value, id_vec));
-            }
+            p_data->_value_index.idle()->insert(std::make_pair(value, ft["id"]));
         }
 
         if (has_key<std::string, std::string>(ft, "cir_value"))    
         {
             int cir_value = atoi(ft["cir_value"].c_str());
-            auto iii =  p_data->_cir_value_index.idle()->find(cir_value);
-            if (iii != p_data->_cir_value_index.idle()->end())
-            {
-                iii->second.push_back(ft["id"]);
-            }   
-            else
-            {   
-                std::vector<std::string> id_vec;
-                id_vec.push_back(ft["id"]);
-                p_data->_cir_value_index.idle()->insert(std::make_pair(cir_value, id_vec));
-            }
+            p_data->_cir_value_index.idle()->insert(std::make_pair(cir_value, ft["id"]));
         }
 
         if (has_key<std::string, std::string>(ft, "mgxj"))    
         {
             float mgxj = atof(ft["mgxj"].c_str());
-            auto iii =  p_data->_mgxj_index.idle()->find(mgxj);
-            if (iii != p_data->_mgxj_index.idle()->end())
-            {
-                iii->second.push_back(ft["id"]);
-            }   
-            else
-            {   
-                std::vector<std::string> id_vec;
-                id_vec.push_back(ft["id"]);
-                p_data->_mgxj_index.idle()->insert(std::make_pair(mgxj, id_vec));
-            }
+            p_data->_mgxj_index.idle()->insert(std::make_pair(mgxj, ft["id"]));
         }
 
         if (has_key<std::string, std::string>(ft, "mgsy"))    
         {
             float mgsy = atof(ft["mgsy"].c_str());
-            auto iii =  p_data->_mgsy_index.idle()->find(mgsy);
-            if (iii != p_data->_mgsy_index.idle()->end())
-            {
-                iii->second.push_back(ft["id"]);
-            }   
-            else
-            {   
-                std::vector<std::string> id_vec;
-                id_vec.push_back(ft["id"]);
-                p_data->_mgsy_index.idle()->insert(std::make_pair(mgsy, id_vec));
-            }
+            p_data->_mgsy_index.idle()->insert(std::make_pair(mgsy, ft["id"]));
         }
 
         if (has_key<std::string, std::string>(ft, "mgsygr"))    
         {
             float mgsygr = atof(ft["mgsygr"].c_str());
-            auto iii =  p_data->_mgsygr_index.idle()->find(mgsygr);
-            if (iii != p_data->_mgsygr_index.idle()->end())
-            {
-                iii->second.push_back(ft["id"]);
-            }   
-            else
-            {   
-                std::vector<std::string> id_vec;
-                id_vec.push_back(ft["id"]);
-                p_data->_mgsygr_index.idle()->insert(std::make_pair(mgsygr, id_vec));
-            }
+            p_data->_mgsygr_index.idle()->insert(std::make_pair(mgsygr, ft["id"]));
         }
 
         if (has_key<std::string, std::string>(ft, "mgxjgr"))    
         {
             float mgxjgr = atof(ft["mgxjgr"].c_str());
-            auto iii =  p_data->_mgxjgr_index.idle()->find(mgxjgr);
-            if (iii != p_data->_mgxjgr_index.idle()->end())
-            {
-                iii->second.push_back(ft["id"]);
-            }   
-            else
-            {   
-                std::vector<std::string> id_vec;
-                id_vec.push_back(ft["id"]);
-                p_data->_mgxjgr_index.idle()->insert(std::make_pair(mgxjgr, id_vec));
-            }
+            p_data->_mgxjgr_index.idle()->insert(std::make_pair(mgxjgr, ft["id"]));
         }
 
         if (has_key<std::string, std::string>(ft, "zysrgr"))    
         {
             float zysrgr = atof(ft["zysrgr"].c_str());
-            auto iii =  p_data->_zysrgr_index.idle()->find(zysrgr);
-            if (iii != p_data->_zysrgr_index.idle()->end())
-            {
-                iii->second.push_back(ft["id"]);
-            }   
-            else
-            {   
-                std::vector<std::string> id_vec;
-                id_vec.push_back(ft["id"]);
-                p_data->_zysrgr_index.idle()->insert(std::make_pair(zysrgr, id_vec));
-            }
+            p_data->_zysrgr_index.idle()->insert(std::make_pair(zysrgr, ft["id"]));
         }
 
         if (has_key<std::string, std::string>(ft, "yylrgr"))    
         {
             float yylrgr = atof(ft["yylrgr"].c_str());
-            auto iii =  p_data->_yylrgr_index.idle()->find(yylrgr);
-            if (iii != p_data->_yylrgr_index.idle()->end())
-            {
-                iii->second.push_back(ft["id"]);
-            }   
-            else
-            {   
-                std::vector<std::string> id_vec;
-                id_vec.push_back(ft["id"]);
-                p_data->_yylrgr_index.idle()->insert(std::make_pair(yylrgr, id_vec));
-            }
+            p_data->_yylrgr_index.idle()->insert(std::make_pair(yylrgr, ft["id"]));
         }
 
         if (has_key<std::string, std::string>(ft, "jlrgr"))    
         {
             float jlrgr = atof(ft["jlrgr"].c_str());
-            auto iii =  p_data->_jlrgr_index.idle()->find(jlrgr);
-            if (iii != p_data->_jlrgr_index.idle()->end())
-            {
-                iii->second.push_back(ft["id"]);
-            }   
-            else
-            {   
-                std::vector<std::string> id_vec;
-                id_vec.push_back(ft["id"]);
-                p_data->_jlrgr_index.idle()->insert(std::make_pair(jlrgr, id_vec));
-            }
+            p_data->_jlrgr_index.idle()->insert(std::make_pair(jlrgr, ft["id"]));
         }
     }
 
@@ -276,57 +166,57 @@ int finance_dict::reload()
     }
 
     {
-        std::map<int, std::vector<std::string> > tmp;
+        std::multimap<int, std::string> tmp;
         p_data->_pe_index.idle()->swap(tmp);
     }
 
     {
-        std::map<int, std::vector<std::string> > tmp;
+        std::multimap<int, std::string> tmp;
         p_data->_pb_index.idle()->swap(tmp);
     }
 
     {
-        std::map<int, std::vector<std::string> > tmp;
+        std::multimap<int, std::string> tmp;
         p_data->_value_index.idle()->swap(tmp);
     }
 
     {
-        std::map<int, std::vector<std::string> > tmp;
+        std::multimap<int, std::string> tmp;
         p_data->_cir_value_index.idle()->swap(tmp);
     }
     
     {
-        std::map<float, std::vector<std::string> > tmp;
+        std::multimap<float, std::string> tmp;
         p_data->_mgxj_index.idle()->swap(tmp);
     }
 
     {
-        std::map<float, std::vector<std::string> > tmp;
+        std::multimap<float, std::string> tmp;
         p_data->_mgsy_index.idle()->swap(tmp);
     }
 
     {
-        std::map<float, std::vector<std::string> > tmp;
+        std::multimap<float, std::string> tmp;
         p_data->_mgsygr_index.idle()->swap(tmp);
     }
 
     {
-        std::map<float, std::vector<std::string> > tmp;
+        std::multimap<float, std::string> tmp;
         p_data->_mgxjgr_index.idle()->swap(tmp);
     }
 
     {
-        std::map<float, std::vector<std::string> > tmp;
+        std::multimap<float, std::string> tmp;
         p_data->_zysrgr_index.idle()->swap(tmp);
     }
 
     {
-        std::map<float, std::vector<std::string> > tmp;
+        std::multimap<float, std::string> tmp;
         p_data->_yylrgr_index.idle()->swap(tmp);
     }
 
     {
-        std::map<float, std::vector<std::string> > tmp;
+        std::multimap<float, std::string> tmp;
         p_data->_jlrgr_index.idle()->swap(tmp);
     }
 

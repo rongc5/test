@@ -144,92 +144,32 @@ void rquotation_data_process::msg_recv_finish()
     it->second.idle_2_current();
     {
         float end = atof(strVec[3].c_str());
-        auto ii = p_data->_end_index.idle()->find(end);
-        if (p_data->_end_index.idle()->end() == ii)
-        {
-            std::vector<std::string> t_vec;
-            t_vec.push_back(_id);
-            p_data->_end_index.idle()->insert(std::make_pair(end, t_vec));
-        }
-        else
-        {
-            ii->second.push_back(_id);
-        }
+        p_data->_end_index.idle()->insert(std::make_pair(end, _id));
     }
     
     {
         float change_rate = atof(strVec[38].c_str());
-        auto ii = p_data->_change_rate_index.idle()->find(change_rate);
-        if (p_data->_change_rate_index.idle()->end() == ii)
-        {
-            std::vector<std::string> t_vec;
-            t_vec.push_back(_id);
-            p_data->_change_rate_index.idle()->insert(std::make_pair(change_rate, t_vec));
-        }
-        else
-        {
-            ii->second.push_back(_id);
-        }
+        p_data->_change_rate_index.idle()->insert(std::make_pair(change_rate, _id));
     }
 
     {
         float range_percent = atof(strVec[32].c_str());
-        auto ii = p_data->_range_percent_index.idle()->find(range_percent);
-        if (p_data->_range_percent_index.idle()->end() == ii)
-        {
-            std::vector<std::string> t_vec;
-            t_vec.push_back(_id);
-            p_data->_range_percent_index.idle()->insert(std::make_pair(range_percent, t_vec));
-        }
-        else
-        {
-            ii->second.push_back(_id);
-        }
+        p_data->_range_percent_index.idle()->insert(std::make_pair(range_percent, _id));
     }
 
     if (down_pointer)
     {
-        auto ii = p_data->_down_pointer_index.idle()->find(down_pointer);
-        if (p_data->_down_pointer_index.idle()->end() == ii)
-        {
-            std::vector<std::string> t_vec;
-            t_vec.push_back(_id);
-            p_data->_down_pointer_index.idle()->insert(std::make_pair(down_pointer, t_vec));
-        }
-        else
-        {
-            ii->second.push_back(_id);
-        }
+        p_data->_down_pointer_index.idle()->insert(std::make_pair(down_pointer, _id));
     }
 
     if (up_pointer)
     {
-        auto ii = p_data->_up_pointer_index.idle()->find(up_pointer);
-        if (p_data->_up_pointer_index.idle()->end() == ii)
-        {
-            std::vector<std::string> t_vec;
-            t_vec.push_back(_id);
-            p_data->_up_pointer_index.idle()->insert(std::make_pair(up_pointer, t_vec));
-        }
-        else
-        {
-            ii->second.push_back(_id);
-        }
+        p_data->_up_pointer_index.idle()->insert(std::make_pair(up_pointer, _id));
     }
 
     if (avg_price)
     {
-        auto ii = p_data->_end_avg_price_index.idle()->find(end_avg_price);
-        if (p_data->_end_avg_price_index.idle()->end() == ii)
-        {
-            std::vector<std::string> t_vec;
-            t_vec.push_back(_id);
-            p_data->_end_avg_price_index.idle()->insert(std::make_pair(end_avg_price, t_vec));
-        }
-        else
-        {
-            ii->second.push_back(_id);
-        }
+        p_data->_end_avg_price_index.idle()->insert(std::make_pair(end_avg_price, _id));
     }
 
     throw CMyCommonException("msg_recv_finish");
@@ -299,7 +239,7 @@ void rquotation_data_process::gen_net_obj(std::string id, common_obj_container *
         return;
     }
 
-    srand((uint32_t)&id);
+    srand((unsigned long)vIp);
     int index = rand() % vIp->size();
     u_info.ip = (*vIp)[index];
 

@@ -67,50 +67,49 @@ class proc_data:public reload_inf
         //search index;
         ToBufferMgr<std::unordered_set<std::string, str_hasher> > _block_set;
 
-        ToBufferMgr<std::map<float, std::vector<std::string> > > _end_index;
-        ToBufferMgr<std::map<float, std::vector<std::string> > > _change_rate_index;
-        ToBufferMgr<std::map<float, std::vector<std::string> > > _range_percent_index;
+        ToBufferMgr<std::multimap<float, std::string> > _end_index;
+        ToBufferMgr<std::multimap<float, std::string> > _change_rate_index;
+        ToBufferMgr<std::multimap<float, std::string> > _range_percent_index;
 
-        ToBufferMgr<std::map<float, std::vector<std::string> > > _down_pointer_index;
-        ToBufferMgr<std::map<float, std::vector<std::string> > > _up_pointer_index;
-        ToBufferMgr<std::map<float, std::vector<std::string> > > _end_avg_price_index;
+        ToBufferMgr<std::multimap<float, std::string> > _down_pointer_index;
+        ToBufferMgr<std::multimap<float, std::string> > _up_pointer_index;
+        ToBufferMgr<std::multimap<float, std::string> > _end_avg_price_index;
 
-        ToBufferMgr<std::map<int, std::vector<std::string> > > _pe_index;
-        ToBufferMgr<std::map<int, std::vector<std::string> > > _pb_index;
-        ToBufferMgr<std::map<int, std::vector<std::string> > > _value_index;
-        ToBufferMgr<std::map<int, std::vector<std::string> > > _cir_value_index;
+        ToBufferMgr<std::multimap<int, std::string> > _pe_index;
+        ToBufferMgr<std::multimap<int, std::string> > _pb_index;
+        ToBufferMgr<std::multimap<int, std::string> > _value_index;
+        ToBufferMgr<std::multimap<int, std::string> > _cir_value_index;
 
-        ToBufferMgr<std::map<float, std::vector<std::string> > > _mgxj_index;
-        ToBufferMgr<std::map<float, std::vector<std::string> > > _mgsy_index;
-        ToBufferMgr<std::map<float, std::vector<std::string> > > _mgsygr_index;
-        ToBufferMgr<std::map<float, std::vector<std::string> > > _mgxjgr_index;
-        ToBufferMgr<std::map<float, std::vector<std::string> > > _zysrgr_index;
-        ToBufferMgr<std::map<float, std::vector<std::string> > > _yylrgr_index;
-        ToBufferMgr<std::map<float, std::vector<std::string> > > _jlrgr_index;
+        ToBufferMgr<std::multimap<float, std::string> > _mgxj_index;
+        ToBufferMgr<std::multimap<float, std::string> > _mgsy_index;
+        ToBufferMgr<std::multimap<float, std::string> > _mgsygr_index;
+        ToBufferMgr<std::multimap<float, std::string> > _mgxjgr_index;
+        ToBufferMgr<std::multimap<float, std::string> > _zysrgr_index;
+        ToBufferMgr<std::multimap<float, std::string> > _yylrgr_index;
+        ToBufferMgr<std::multimap<float, std::string> > _jlrgr_index;
 
-        ToBufferMgr<std::unordered_map<std::string, std::vector<std::string>, str_hasher> > _address_index;
-        ToBufferMgr<std::unordered_map<std::string, std::vector<std::string>, str_hasher> > _plate_index;
+        ToBufferMgr<std::unordered_multimap<std::string, std::string, str_hasher> > _address_index;
+        ToBufferMgr<std::unordered_multimap<std::string, std::string, str_hasher> > _plate_index;
 
 
-        ToBufferMgr<std::vector<std::map<int, std::vector<std::string> > > > _rsingle_index;
+        ToBufferMgr<std::vector<std::multimap<int, std::string> > > _rsingle_diff_index;
 
         //date, single, id
-        ToBufferMgr<std::vector<std::map<std::string, 
-            std::map<int, std::vector<std::string> > > > > _hsingle_index;
+        ToBufferMgr<std::vector<std::map<std::string, std::multimap<int, std::string> > > > _hsingle_diff_index;
 
         //id, date
         ToBufferMgr<std::unordered_map<std::string, std::set<std::string>, str_hasher> > _hsid_date_index;
 
         // history quotation 
-        ToBufferMgr<std::map<std::string, std::map<float, std::vector<std::string> > > > _hqend_index;
-        ToBufferMgr<std::map<std::string, std::map<float, std::vector<std::string> > > > _hqchange_rate_index;
-        ToBufferMgr<std::map<std::string, std::map<float, std::vector<std::string> > > > _hqrange_percent_index;
+        ToBufferMgr<std::map<std::string, std::multimap<float, std::string> > > _hqend_index;
+        ToBufferMgr<std::map<std::string, std::multimap<float, std::string> > > _hqchange_rate_index;
+        ToBufferMgr<std::map<std::string, std::multimap<float, std::string> > > _hqrange_percent_index;
 
-        ToBufferMgr<std::map<std::string, std::map<float, std::vector<std::string> > > > _hqdown_pointer_index;
-        ToBufferMgr<std::map<std::string, std::map<float, std::vector<std::string> > > > _hqup_pointer_index;
+        ToBufferMgr<std::map<std::string, std::multimap<float, std::string> > > _hqdown_pointer_index;
+        ToBufferMgr<std::map<std::string, std::multimap<float, std::string> > > _hqup_pointer_index;
 
         //recommend_flag, id
-        ToBufferMgr<std::unordered_map<std::string, std::vector<std::string>, str_hasher> > _recommend_index;
+        ToBufferMgr<std::unordered_multimap<std::string, std::string, str_hasher> > _recommend_index;
 
     public:
         char proc_name[SIZE_LEN_256];

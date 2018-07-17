@@ -48,33 +48,11 @@ int recommend_dict::load()
             continue;
         }
 
-        auto ii = _id_dict.find(tmp_vec[0]);
-        if (ii == _id_dict.end())
-        {
-            std::vector<std::string> t_vec;
-            t_vec.push_back(tmp_vec[1]);
-
-            _id_dict.insert(std::make_pair(tmp_vec[0], t_vec));
-        }
-        else 
-        {
-            ii->second.push_back(tmp_vec[1]);
-        }
+        _id_dict.insert(std::make_pair(tmp_vec[0], tmp_vec[1]));
 
         if (p_data)
         {
-            auto iii = p_data->_recommend_index.idle()->find(tmp_vec[1]);
-            if (iii == p_data->_recommend_index.idle()->end())
-            {
-                std::vector<std::string> t_vec;
-                t_vec.push_back(tmp_vec[0]);
-                
-                p_data->_recommend_index.idle()->insert(std::make_pair(tmp_vec[1], t_vec));
-            }
-            else
-            {
-                iii->second.push_back(tmp_vec[0]);
-            }
+            p_data->_recommend_index.idle()->insert(std::make_pair(tmp_vec[1], tmp_vec[0]));
         }
     }
 
@@ -122,13 +100,13 @@ int recommend_dict::dump()
 
 int recommend_dict::destroy()
 {
-    std::unordered_map<std::string, std::vector<std::string>, str_hasher> tmp;
+    std::unordered_multimap<std::string, std::string, str_hasher> tmp;
     _id_dict.swap(tmp);
 
     proc_data* p_data = proc_data::instance();
     if (p_data)
     {
-        std::unordered_map<std::string, std::vector<std::string>, str_hasher> tmp;
+        std::unordered_multimap<std::string, std::string, str_hasher> tmp;
         p_data->_recommend_index.idle()->swap(tmp);
     }
 

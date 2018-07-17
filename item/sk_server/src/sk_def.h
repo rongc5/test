@@ -10,15 +10,35 @@ struct ban_t
     std::string date;
 };
 
-struct history_single
+struct single_t
 {
-    int single;
+    int in;
+    int out;
+    int diff;
     std::string price;
+
+    single_t()
+    {
+        in = 0;
+        out = 0;
+        diff = 0;
+    }
+
+    bool operator != (const single_t & st) const
+    {
+        if (this->in != st.in || this->out != st.out || this->diff != st.diff || this->price != st.price)
+        {
+            return true;
+        }
+
+        return false;
+    }
 };
+
 
 struct history_single_vec
 {
-    std::vector<history_single> hs_vec;
+    std::vector<single_t> hs_vec;
 };
 
 struct quotation_t

@@ -67,9 +67,9 @@ void rsingle_data_process::msg_recv_finish()
         return;
     }
 
-    std::deque<std::vector<int> > * st = it->second.idle();
+    std::deque<std::vector<single_t> > * st = it->second.idle();
     *st = *it->second.current();
-    std::vector<int> single;
+    std::vector<single_t> single;
     //不是标准json
     
     int ttmp;
@@ -79,9 +79,13 @@ void rsingle_data_process::msg_recv_finish()
 
     for (uint32_t i = 3; i < ssVec.size() & i + 7 <= ssVec.size(); i += 7)
     {
-        ttmp = atoi(ssVec[i + 4].c_str()) - atoi(ssVec[i + 5].c_str());
-        single.push_back(ttmp);
+        single_t sst;
+        sst.in = atoi(ssVec[i + 4].c_str());
+        sst.out = atoi(ssVec[i + 5].c_str());
+        sst.diff = sst.in - sst.out;
+        single.push_back(sst);
     }
+
     if (single.empty())
     {
         return;
@@ -103,33 +107,21 @@ void rsingle_data_process::msg_recv_finish()
 
     for (uint32_t i = 0; i< single.size(); i++)
     {
-        if (!single[i])
+        if (!single[i].diff)
             break;
 
-        if (i >= p_data->_rsingle_index.idle()->size())
+        if (i >= p_data->_rsingle_diff_index.idle()->size())
         {
-            std::map<int, std::vector<std::string> > t_map;
-            std::vector<std::string> t_vec;
-            t_vec.push_back(_id);
-            t_map.insert(std::make_pair(single[i], t_vec));
-            p_data->_rsingle_index.idle()->push_back(t_map);
+            std::multimap<int, std::string> t_map;
+            t_map.insert(std::make_pair(single[i].diff, _id));
+            p_data->_rsingle_diff_index.idle()->push_back(t_map);
         }
         else
         {
-            std::map<int, std::vector<std::string> > & t_map = 
-                (*(p_data->_rsingle_index.idle()))[i];
+            std::multimap<int, std::string> & t_map = 
+                (*(p_data->_rsingle_diff_index.idle()))[i];
 
-            auto ii = t_map.find(single[i]);
-            if (ii != t_map.end())
-            {
-                ii->second.push_back(_id);
-            }
-            else
-            {
-                std::vector<std::string> t_vec;
-                t_vec.push_back(_id);
-                t_map.insert(std::make_pair(single[i], t_vec));
-            }
+            t_map.insert(std::make_pair(single[i].diff, _id));
         }
     }
 
@@ -196,7 +188,7 @@ void rsingle_data_process::gen_net_obj(std::string id, common_obj_container * ne
         return;
     }
 
-    srand((uint32_t)&id);
+    srand((unsigned long)vIp);
     int index = rand() % vIp->size();
     u_info.ip = (*vIp)[index];
 
@@ -266,7 +258,7 @@ void rsingle_data_process::destroy()
     id_dict * id_dic = p_data->_id_dict->current();
     if (id_dic && id_dic->_id_vec.size() && id_dic->_id_vec[id_dic->_id_vec.size() - 1] == _id)
     {
-        p_data->_rsingle_index.idle_2_current();
+        p_data->_rsingle_diff_index.idle_2_current();
     }
 }
 

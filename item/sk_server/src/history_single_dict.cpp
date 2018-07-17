@@ -82,10 +82,12 @@ int history_single_dict::load_history_single(const char * file)
         history_single_vec single;
         for (uint32_t i = 1; i < strVec.size() && i+1 < strVec.size(); i += 2)
         {
-            history_single hs;
+            single_t hs;
 
-            hs.single = atoi(strVec[i].c_str());
-            hs.price = strVec[i+1];
+            hs.in = atoi(strVec[i].c_str());
+            hs.out = atoi(strVec[i + 1].c_str());
+            hs.diff = hs.in - hs.out;
+            hs.price = strVec[i + 2];
 
             single.hs_vec.push_back(hs);
         }
@@ -118,49 +120,32 @@ int history_single_dict::load_history_single(const char * file)
         {
             for (uint32_t i = 0; i < single.hs_vec.size(); i++)
             {
-                if (!single.hs_vec[i].single)
+                if (!single.hs_vec[i].diff)
                     break;
 
-                if (i >= p_data->_hsingle_index.idle()->size())
+                if (i >= p_data->_hsingle_diff_index.idle()->size())
                 {
-                    std::unordered_map<std::string, std::map<int, std::vector<std::string> > > u_map;
-                    std::map<int, std::vector<std::string> > t_map;
-                    std::vector<std::string> t_vec;
+                    std::unordered_map<std::string, std::multimap<int, std::string> > u_map;
+                    std::multimap<int, std::string> t_map;
 
-                    t_vec.push_back(strVec[0]);
-
-                    t_map.insert(std::make_pair(single.hs_vec[i].single, t_vec));
+                    t_map.insert(std::make_pair(single.hs_vec[i].diff, strVec[0]));
                     u_map.insert(std::make_pair(date, t_map));
                 }
                 else
                 {
-                    std::map<std::string, std::map<int, std::vector<std::string> > >  & u_map = (*(p_data->_hsingle_index.idle()))[i];
+                    std::map<std::string, std::multimap<int, std::string> >  & u_map = (*(p_data->_hsingle_diff_index.idle()))[i];
 
                     auto ii = u_map.find(date);
                     if (ii == u_map.end())
                     {
-                        std::map<int, std::vector<std::string> > t_map;
-                        std::vector<std::string> t_vec;
+                        std::multimap<int, std::string> t_map;
 
-                        t_vec.push_back(strVec[0]);
-
-                        t_map.insert(std::make_pair(single.hs_vec[i].single, t_vec));
+                        t_map.insert(std::make_pair(single.hs_vec[i].diff, strVec[0]));
                         u_map.insert(std::make_pair(date, t_map));
                     }
                     else
                     {
-                        auto iii = ii->second.find(single.hs_vec[i].single);
-                        if (iii == ii->second.end())
-                        {
-                            std::vector<std::string> t_vec;
-                            t_vec.push_back(strVec[0]);
-
-                            ii->second.insert(std::make_pair(single.hs_vec[i].single, t_vec));
-                        }
-                        else
-                        {
-                            iii->second.push_back(strVec[0]);
-                        }
+                        ii->second.insert(std::make_pair(single.hs_vec[i].diff, strVec[0]));
                     }
                 }
             }
@@ -202,7 +187,7 @@ int history_single_dict::load()
     proc_data* p_data = proc_data::instance();
     if (p_data)
     {
-        p_data->_hsingle_index.idle_2_current();
+        p_data->_hsingle_diff_index.idle_2_current();
         p_data->_hsid_date_index.idle_2_current();
     }
 
@@ -221,8 +206,8 @@ int history_single_dict::reload()
         if (p_data)
         {
             {
-                std::vector<std::map<std::string, std::map<int, std::vector<std::string> > > > tmp;
-                p_data->_hsingle_index.idle()->swap(tmp);
+                std::vector<std::map<std::string, std::multimap<int, std::string> > > tmp;
+                p_data->_hsingle_diff_index.idle()->swap(tmp);
             }
 
             {

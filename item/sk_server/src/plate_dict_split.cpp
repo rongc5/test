@@ -56,17 +56,7 @@ int plate_dict_split::load()
 
         for (auto iit = tmp_vec.begin(); iit != tmp_vec.begin(); iit++)
         {
-            auto iii =  p_data->_plate_index.idle()->find(*iit);
-            if (iii != p_data->_plate_index.idle()->end())
-            {
-                iii->second.push_back(id);
-            }
-            else
-            {
-                std::vector<std::string> id_vec;
-                id_vec.push_back(id);
-                p_data->_plate_index.idle()->insert(std::make_pair(*iit, id_vec));
-            }
+            p_data->_plate_index.idle()->insert(std::make_pair(*iit, id));
         }
 
     }
@@ -83,7 +73,7 @@ int plate_dict_split::reload()
 {
     proc_data* p_data = proc_data::instance();
     {
-        std::unordered_map<std::string, std::vector<std::string>, str_hasher> tmp;
+        std::unordered_multimap<std::string, std::string, str_hasher> tmp;
         p_data->_plate_index.idle()->swap(tmp);
     }
 

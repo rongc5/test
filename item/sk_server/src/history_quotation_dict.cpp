@@ -114,27 +114,14 @@ int history_quotation_dict::load_history_quoation(const char * file)
             auto ii = p_data->_hqend_index.idle()->find(date);
             if (ii == p_data->_hqend_index.idle()->end())
             {
-                std::map<float, std::vector<std::string> > t_map;
-                std::vector<std::string> t_vec;
-                t_vec.push_back(qt.id);
+                std::multimap<float, std::string> t_map;
 
-                t_map.insert(std::make_pair(qt.end, t_vec));
+                t_map.insert(std::make_pair(qt.end, qt.id));
                 p_data->_hqend_index.idle()->insert(std::make_pair(date, t_map));
             }
             else
             {
-                auto iii = ii->second.find(qt.end);
-                if (iii == ii->second.end())
-                {
-                    std::vector<std::string> t_vec;
-                    t_vec.push_back(qt.id);
-
-                    ii->second.insert(std::make_pair(qt.end, t_vec));
-                }
-                else
-                {
-                    iii->second.push_back(qt.id);
-                }
+                ii->second.insert(std::make_pair(qt.end, qt.id));
             }
         }
 
@@ -142,27 +129,14 @@ int history_quotation_dict::load_history_quoation(const char * file)
             auto ii = p_data->_hqchange_rate_index.idle()->find(date);
             if (ii == p_data->_hqchange_rate_index.idle()->end())
             {
-                std::map<float, std::vector<std::string> > t_map;
-                std::vector<std::string> t_vec;
-                t_vec.push_back(qt.id);
+                std::multimap<float, std::string> t_map;
 
-                t_map.insert(std::make_pair(qt.change_rate, t_vec));
+                t_map.insert(std::make_pair(qt.change_rate, qt.id));
                 p_data->_hqchange_rate_index.idle()->insert(std::make_pair(date, t_map));
             }
             else
             {
-                auto iii = ii->second.find(qt.end);
-                if (iii == ii->second.end())
-                {
-                    std::vector<std::string> t_vec;
-                    t_vec.push_back(qt.id);
-
-                    ii->second.insert(std::make_pair(qt.change_rate, t_vec));
-                }
-                else
-                {
-                    iii->second.push_back(qt.id);
-                }
+                ii->second.insert(std::make_pair(qt.change_rate, qt.id));
             }
         }
 
@@ -170,27 +144,14 @@ int history_quotation_dict::load_history_quoation(const char * file)
             auto ii = p_data->_hqrange_percent_index.idle()->find(date);
             if (ii == p_data->_hqrange_percent_index.idle()->end())
             {
-                std::map<float, std::vector<std::string> > t_map;
-                std::vector<std::string> t_vec;
-                t_vec.push_back(qt.id);
+                std::multimap<float, std::string> t_map;
 
-                t_map.insert(std::make_pair(qt.range_percent, t_vec));
+                t_map.insert(std::make_pair(qt.range_percent, qt.id));
                 p_data->_hqrange_percent_index.idle()->insert(std::make_pair(date, t_map));
             }
             else
             {
-                auto iii = ii->second.find(qt.end);
-                if (iii == ii->second.end())
-                {
-                    std::vector<std::string> t_vec;
-                    t_vec.push_back(qt.id);
-
-                    ii->second.insert(std::make_pair(qt.range_percent, t_vec));
-                }
-                else
-                {
-                    iii->second.push_back(qt.id);
-                }
+                ii->second.insert(std::make_pair(qt.range_percent, qt.id));
             }
         }
 
@@ -199,27 +160,14 @@ int history_quotation_dict::load_history_quoation(const char * file)
             auto ii = p_data->_hqdown_pointer_index.idle()->find(date);
             if (ii == p_data->_hqdown_pointer_index.idle()->end())
             {
-                std::map<float, std::vector<std::string> > t_map;
-                std::vector<std::string> t_vec;
-                t_vec.push_back(qt.id);
+                std::multimap<float, std::string> t_map;
 
-                t_map.insert(std::make_pair(qt.down_pointer, t_vec));
+                t_map.insert(std::make_pair(qt.down_pointer, qt.id));
                 p_data->_hqdown_pointer_index.idle()->insert(std::make_pair(date, t_map));
             }
             else
             {
-                auto iii = ii->second.find(qt.end);
-                if (iii == ii->second.end())
-                {
-                    std::vector<std::string> t_vec;
-                    t_vec.push_back(qt.id);
-
-                    ii->second.insert(std::make_pair(qt.down_pointer, t_vec));
-                }
-                else
-                {
-                    iii->second.push_back(qt.id);
-                }
+                ii->second.insert(std::make_pair(qt.down_pointer, qt.id));
             }
         }
 
@@ -228,27 +176,15 @@ int history_quotation_dict::load_history_quoation(const char * file)
             auto ii = p_data->_hqup_pointer_index.idle()->find(date);
             if (ii == p_data->_hqup_pointer_index.idle()->end())
             {
-                std::map<float, std::vector<std::string> > t_map;
-                std::vector<std::string> t_vec;
-                t_vec.push_back(qt.id);
+                std::multimap<float, std::string> t_map;
 
-                t_map.insert(std::make_pair(qt.up_pointer, t_vec));
+                t_map.insert(std::make_pair(qt.up_pointer, qt.id));
                 p_data->_hqup_pointer_index.idle()->insert(std::make_pair(date, t_map));
             }
             else
             {
-                auto iii = ii->second.find(qt.end);
-                if (iii == ii->second.end())
-                {
-                    std::vector<std::string> t_vec;
-                    t_vec.push_back(qt.id);
 
-                    ii->second.insert(std::make_pair(qt.up_pointer, t_vec));
-                }
-                else
-                {
-                    iii->second.push_back(qt.id);
-                }
+                ii->second.insert(std::make_pair(qt.up_pointer, qt.id));
             }
         }
     }
@@ -306,27 +242,27 @@ int history_quotation_dict::reload()
         if (p_data)
         {
             {
-                std::map<std::string, std::map<float, std::vector<std::string> > > tmp;
+                std::map<std::string, std::multimap<float, std::string> > tmp;
                 p_data->_hqend_index.idle()->swap(tmp);
             }
 
             {
-                std::map<std::string, std::map<float, std::vector<std::string> > > tmp;
+                std::map<std::string, std::multimap<float, std::string> > tmp;
                 p_data->_hqchange_rate_index.idle()->swap(tmp);
             }
 
             {
-                std::map<std::string, std::map<float, std::vector<std::string> > > tmp;
+                std::map<std::string, std::multimap<float, std::string> > tmp;
                 p_data->_hqrange_percent_index.idle()->swap(tmp);
             }
             
             {
-                std::map<std::string, std::map<float, std::vector<std::string> > > tmp;
+                std::map<std::string, std::multimap<float, std::string> > tmp;
                 p_data->_hqdown_pointer_index.idle()->swap(tmp);
             }
 
             {
-                std::map<std::string, std::map<float, std::vector<std::string> > > tmp;
+                std::map<std::string, std::multimap<float, std::string> > tmp;
                 p_data->_hqup_pointer_index.idle()->swap(tmp);
             }
         }

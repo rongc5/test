@@ -27,7 +27,7 @@ class recommend_dict:public reload_inf
 
     public:
         //id, recommend_flag
-        std::unordered_map<std::string, std::vector<std::string>, str_hasher> _id_dict;
+        std::unordered_multimap<std::string, std::string, str_hasher> _id_dict;
 };
 
 
