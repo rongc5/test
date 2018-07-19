@@ -132,38 +132,38 @@ class skhttp_req_thread:public base_net_thread
                 }
 
                 {
-                    std::map<float, std::vector<std::string> > t_map;
+                    std::multimap<float, std::string> t_map;
                     p_data->_end_index.idle()->swap(t_map);
                 }
 
                 {
-                    std::map<float, std::vector<std::string> > t_map;
+                    std::multimap<float, std::string> t_map;
                     p_data->_change_rate_index.idle()->swap(t_map);
                 }
 
                 {
-                    std::map<float, std::vector<std::string> > t_map;
+                    std::multimap<float, std::string> t_map;
                     p_data->_range_percent_index.idle()->swap(t_map);
                 }
 
                 {
-                    std::map<float, std::vector<std::string> > t_map;
+                    std::multimap<float, std::string> t_map;
                     p_data->_down_pointer_index.idle()->swap(t_map);
                 }
 
                 {
-                    std::map<float, std::vector<std::string> > t_map;
+                    std::multimap<float, std::string> t_map;
                     p_data->_up_pointer_index.idle()->swap(t_map);
                 }
 
                 {
-                    std::map<float, std::vector<std::string> > t_map;
+                    std::multimap<float, std::string> t_map;
                     p_data->_end_avg_price_index.idle()->swap(t_map);
                 }
 
                 {
-                    std::vector<std::map<int, std::vector<std::string> > > t_map;
-                    p_data->_rsingle_index.idle()->swap(t_map);
+                    std::vector<std::multimap<int, std::string> > t_map;
+                    p_data->_rsingle_diff_index.idle()->swap(t_map);
                 }
 
                 real_morning_stime = get_real_time(p_data->_conf->_strategy->current()->real_morning_stime.c_str());

@@ -18,19 +18,25 @@ class history_single_dict:public reload_inf
         virtual int dump();
         virtual int destroy();
 
-        static void creat_key(std::string & date, std::string & id, std::string & key);
+        static void creat_key(const std::string & date, const std::string & id, std::string & key);
 
     private:
         void set_path (const char* path);
         int load_history_single(const char * file);
+
+        void update_sum_index();
 
     private:
         char _fullpath[SIZE_LEN_512];
         char _dumppath[SIZE_LEN_512];
         time_t _last_load;
     public:
-        // <date_id, single> >
+        // <date_id, diff> >
         std::unordered_map<std::string, history_single_vec, str_hasher> _date_dict;
+        //id, date,
+        std::unordered_map<std::string, std::set<std::string>, str_hasher> _id_date_dict;
+        //date
+        std::set<std::string> _date_index;
 };
 
 

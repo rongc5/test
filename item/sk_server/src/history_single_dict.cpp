@@ -24,7 +24,7 @@ int history_single_dict::init(const char * path, const char * file, const char *
     return 0;
 }
 
-void history_single_dict::creat_key(std::string & date, std::string & id, std::string & key)
+void history_single_dict::creat_key(const std::string & date, const std::string & id, std::string & key)
 {
     key.clear();
     //date_id;
@@ -57,6 +57,8 @@ int history_single_dict::load_history_single(const char * file)
         LOG_WARNING("file:%s, date:%s has loaded", file, date.c_str());
         return -1;
     }
+
+    _date_index.insert(date);
     proc_data* p_data = proc_data::instance();
 
     FILE * fp = fopen(file, "r");
@@ -80,7 +82,7 @@ int history_single_dict::load_history_single(const char * file)
         SplitString(file, '\t', &strVec, SPLIT_MODE_ALL | SPLIT_MODE_TRIM); 
 
         history_single_vec single;
-        for (uint32_t i = 1; i < strVec.size() && i+1 < strVec.size(); i += 2)
+        for (uint32_t i = 1; i < strVec.size() && i+1 < strVec.size(); i += 3)
         {
             single_t hs;
 
@@ -92,12 +94,27 @@ int history_single_dict::load_history_single(const char * file)
             single.hs_vec.push_back(hs);
         }
 
+
         creat_key(date, strVec[0], key);
         {
             auto ii = _date_dict.find(key);
             if (ii == _date_dict.end())
             {
                 _date_dict.insert(std::make_pair(key, single));
+            }
+        }
+
+        {
+            auto ii = _id_date_dict.find(strVec[0]);
+            if (ii == _id_date_dict.end())
+            {
+                std::set<std::string> t_set;
+                t_set.insert(date);
+                _id_date_dict.insert(std::make_pair(strVec[0], t_set));
+            }
+            else
+            {
+                ii->second.insert(date);
             }
         }
 
@@ -156,6 +173,81 @@ int history_single_dict::load_history_single(const char * file)
     return 0;
 }
 
+void history_single_dict::update_sum_index()
+{
+    proc_data* p_data = proc_data::instance();
+    if (!p_data)
+    {
+        return;
+    }
+
+
+    std::string key;
+    for (auto ii = _date_index.begin(); ii != _date_index.end(); ii++)
+    {
+        const std::string  & date = *ii;
+
+        for (auto it = _id_date_dict.begin(); it != _id_date_dict.end(); it++)
+        {
+            const std::string & id = it->first;
+            int diff = 0;
+            history_single_vec hs;
+
+            for (auto iii = it->second.lower_bound(date); iii != it->second.end(); iii++)
+            {
+                creat_key(*iii, id, key);
+                auto tt = _date_dict.find(key);
+                if (tt != _date_dict.end())
+                {
+                    for (uint32_t i = 0; i < tt->second.hs_vec.size(); i++)
+                    {
+                        if (i >= hs.hs_vec.size())
+                        {
+                            single_t st;
+                            hs.hs_vec.push_back(st);
+                        }
+                        
+                        hs.hs_vec[i].diff += tt->second.hs_vec[i].diff;
+                    }
+                }
+            }
+
+            for (uint32_t i = 0; i < hs.hs_vec.size(); i++)
+            {
+                if (!hs.hs_vec[i].diff)
+                    continue;
+
+                if (i >= p_data->_hsingle_sum_diff_index.idle()->size())
+                {
+                    std::unordered_map<std::string, std::multimap<int, std::string> > u_map;
+                    std::multimap<int, std::string> t_map;
+
+                    t_map.insert(std::make_pair(hs.hs_vec[i].diff, id));
+                    u_map.insert(std::make_pair(date, t_map));
+                }
+                else
+                {
+                    std::map<std::string, std::multimap<int, std::string> >  & u_map = (*(p_data->_hsingle_sum_diff_index.idle()))[i];
+
+                    auto ii = u_map.find(date);
+                    if (ii == u_map.end())
+                    {
+                        std::multimap<int, std::string> t_map;
+
+                        t_map.insert(std::make_pair(hs.hs_vec[i].diff, id));
+                        u_map.insert(std::make_pair(date, t_map));
+                    }
+                    else
+                    {
+                        ii->second.insert(std::make_pair(hs.hs_vec[i].diff, id));
+                    }
+                }
+            }
+        }
+    }
+
+}
+
 int history_single_dict::load()
 {
     FILE * fp = fopen(_fullpath, "r");
@@ -183,11 +275,14 @@ int history_single_dict::load()
     struct stat st;
     stat(_fullpath, &st);
     _last_load = st.st_mtime;
+
+    update_sum_index();
     
     proc_data* p_data = proc_data::instance();
     if (p_data)
     {
         p_data->_hsingle_diff_index.idle_2_current();
+        p_data->_hsingle_sum_diff_index.idle_2_current();
         p_data->_hsid_date_index.idle_2_current();
     }
 
@@ -202,12 +297,27 @@ int history_single_dict::reload()
     }
 
     {
+        std::unordered_map<std::string, std::set<std::string>, str_hasher> tmp;
+        _id_date_dict.swap(tmp);
+    }
+
+    {
+        std::set<std::string> tmp;
+        _date_index.swap(tmp);
+    }
+
+    {
         proc_data* p_data = proc_data::instance();
         if (p_data)
         {
             {
                 std::vector<std::map<std::string, std::multimap<int, std::string> > > tmp;
                 p_data->_hsingle_diff_index.idle()->swap(tmp);
+            }
+
+            {
+                std::vector<std::map<std::string, std::multimap<int, std::string> > > tmp;
+                p_data->_hsingle_sum_diff_index.idle()->swap(tmp);
             }
 
             {

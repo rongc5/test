@@ -18,11 +18,13 @@ class history_quotation_dict:public reload_inf
         virtual int dump();
         virtual int destroy();
 
-        void creat_key(std::string & date, std::string & id, std::string & key);
+        void creat_key(const std::string & date, const std::string & id, std::string & key);
 
     private:
         void set_path (const char* path);
         int load_history_quoation(const char * file);
+
+        void update_sum_index();
 
     private:
         char _fullpath[SIZE_LEN_512];
@@ -31,6 +33,10 @@ class history_quotation_dict:public reload_inf
     public:
         // <date_id, quotation> >
         std::unordered_map<std::string, quotation_t, str_hasher> _id_dict;
+        //id, date,
+        std::unordered_map<std::string, std::set<std::string>, str_hasher> _id_date_dict;
+        //date
+        std::set<std::string> _date_index;
 };
 
 

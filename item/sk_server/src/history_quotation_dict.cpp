@@ -24,7 +24,7 @@ int history_quotation_dict::init(const char * path, const char * file, const cha
     return 0;
 }
 
-void history_quotation_dict::creat_key(std::string & date, std::string & id, std::string & key)
+void history_quotation_dict::creat_key(const std::string & date, const std::string & id, std::string & key)
 {
     key.clear();
 
@@ -57,6 +57,7 @@ int history_quotation_dict::load_history_quoation(const char * file)
         LOG_WARNING("file:%s, date:%s has loaded", file, date.c_str());
         return -1;
     }
+    _date_index.insert(date);
 
     proc_data* p_data = proc_data::instance();
     FILE * fp = fopen(file, "r");
@@ -108,6 +109,20 @@ int history_quotation_dict::load_history_quoation(const char * file)
         if (ii == _id_dict.end())
         {
             _id_dict.insert(std::make_pair(key, qt));
+        }
+
+        {   
+            auto ii = _id_date_dict.find(strVec[0]);
+            if (ii == _id_date_dict.end())
+            {   
+                std::set<std::string> t_set;
+                t_set.insert(date);
+                _id_date_dict.insert(std::make_pair(strVec[0], t_set));
+            }   
+            else
+            {   
+                ii->second.insert(date);
+            }   
         }
 
         {
@@ -192,6 +207,53 @@ int history_quotation_dict::load_history_quoation(const char * file)
     return 0;
 }
 
+void history_quotation_dict::update_sum_index()
+{
+    proc_data* p_data = proc_data::instance();
+    if (!p_data)
+    {
+        return;
+    }
+
+    std::string key;
+    for (auto ii = _date_index.begin(); ii != _date_index.end(); ii++)
+    {
+        const std::string  & date = *ii;
+
+        for (auto it = _id_date_dict.begin(); it != _id_date_dict.end(); it++)
+        {
+            const std::string & id = it->first;
+            quotation_t qt;
+
+            for (auto iii = it->second.lower_bound(date); iii != it->second.end(); iii++)
+            {
+                creat_key(*iii, id, key);
+                auto tt = _id_dict.find(key);
+                if (tt != _id_dict.end())
+                {
+                    qt.range_percent += tt->second.range_percent;
+                }
+            }
+
+
+            std::map<std::string, std::multimap<float, std::string> >  & u_map = *(p_data->_hqrange_sum_percent_index.idle());
+
+            auto ii = u_map.find(date);
+            if (ii == u_map.end())
+            {
+                std::multimap<float, std::string> t_map;
+
+                t_map.insert(std::make_pair(qt.range_percent, id));
+                u_map.insert(std::make_pair(date, t_map));
+            }
+            else
+            {
+                ii->second.insert(std::make_pair(qt.range_percent, id));
+            }
+        }
+    }
+}
+
 int history_quotation_dict::load()
 {
     FILE * fp = fopen(_fullpath, "r");
@@ -219,6 +281,9 @@ int history_quotation_dict::load()
     struct stat st;
     stat(_fullpath, &st);
     _last_load = st.st_mtime;
+
+    update_sum_index();
+
     proc_data* p_data = proc_data::instance();
     if (p_data)
     {
@@ -227,6 +292,8 @@ int history_quotation_dict::load()
         p_data->_hqrange_percent_index.idle_2_current();
         p_data->_hqdown_pointer_index.idle_2_current();
         p_data->_hqup_pointer_index.idle_2_current();
+
+        p_data->_hqrange_sum_percent_index.idle_2_current();
     }
 
     return 0;
@@ -234,8 +301,20 @@ int history_quotation_dict::load()
 
 int history_quotation_dict::reload()
 {
-    std::unordered_map<std::string, quotation_t, str_hasher> tmp;
-    _id_dict.swap(tmp);
+    {
+        std::unordered_map<std::string, quotation_t, str_hasher> tmp;
+        _id_dict.swap(tmp);
+    }
+
+    {
+        std::unordered_map<std::string, std::set<std::string>, str_hasher> tmp;
+        _id_date_dict.swap(tmp);
+    }
+
+    {
+        std::set<std::string> tmp;
+        _date_index.swap(tmp);
+    }
 
     {
         proc_data* p_data = proc_data::instance();
@@ -254,6 +333,12 @@ int history_quotation_dict::reload()
             {
                 std::map<std::string, std::multimap<float, std::string> > tmp;
                 p_data->_hqrange_percent_index.idle()->swap(tmp);
+            }
+
+
+            {
+                std::map<std::string, std::multimap<float, std::string> > tmp;
+                p_data->_hqrange_sum_percent_index.idle()->swap(tmp);
             }
             
             {

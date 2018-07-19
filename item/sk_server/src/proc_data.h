@@ -96,6 +96,8 @@ class proc_data:public reload_inf
 
         //date, single, id
         ToBufferMgr<std::vector<std::map<std::string, std::multimap<int, std::string> > > > _hsingle_diff_index;
+        //date, sum_single, id
+        ToBufferMgr<std::vector<std::map<std::string, std::multimap<int, std::string> > > > _hsingle_sum_diff_index;
 
         //id, date
         ToBufferMgr<std::unordered_map<std::string, std::set<std::string>, str_hasher> > _hsid_date_index;
@@ -104,6 +106,8 @@ class proc_data:public reload_inf
         ToBufferMgr<std::map<std::string, std::multimap<float, std::string> > > _hqend_index;
         ToBufferMgr<std::map<std::string, std::multimap<float, std::string> > > _hqchange_rate_index;
         ToBufferMgr<std::map<std::string, std::multimap<float, std::string> > > _hqrange_percent_index;
+
+        ToBufferMgr<std::map<std::string, std::multimap<float, std::string> > > _hqrange_sum_percent_index;
 
         ToBufferMgr<std::map<std::string, std::multimap<float, std::string> > > _hqdown_pointer_index;
         ToBufferMgr<std::map<std::string, std::multimap<float, std::string> > > _hqup_pointer_index;
