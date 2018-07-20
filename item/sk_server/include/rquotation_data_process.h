@@ -39,6 +39,8 @@ class rquotation_data_process: public http_base_data_process
 
         void set_id(std::string id);
 
+        void update_sum_index(std::map<std::string, std::string> * rq);
+
     protected:
         std::string _recv_buf;
         std::string _id;

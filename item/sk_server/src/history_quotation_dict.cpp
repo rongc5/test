@@ -232,24 +232,15 @@ void history_quotation_dict::update_sum_index()
                 if (tt != _id_dict.end())
                 {
                     qt.range_percent += tt->second.range_percent;
+                    qt.change_rate += tt->second.change_rate;
                 }
             }
 
-
-            std::map<std::string, std::multimap<float, std::string> >  & u_map = *(p_data->_hqrange_sum_percent_index.idle());
-
-            auto ii = u_map.find(date);
-            if (ii == u_map.end())
             {
-                std::multimap<float, std::string> t_map;
+                creat_key(date, id, key);
+                _id_sum_dict.insert(std::make_pair(key, qt));
+            }
 
-                t_map.insert(std::make_pair(qt.range_percent, id));
-                u_map.insert(std::make_pair(date, t_map));
-            }
-            else
-            {
-                ii->second.insert(std::make_pair(qt.range_percent, id));
-            }
         }
     }
 }
@@ -292,8 +283,6 @@ int history_quotation_dict::load()
         p_data->_hqrange_percent_index.idle_2_current();
         p_data->_hqdown_pointer_index.idle_2_current();
         p_data->_hqup_pointer_index.idle_2_current();
-
-        p_data->_hqrange_sum_percent_index.idle_2_current();
     }
 
     return 0;
@@ -304,6 +293,11 @@ int history_quotation_dict::reload()
     {
         std::unordered_map<std::string, quotation_t, str_hasher> tmp;
         _id_dict.swap(tmp);
+    }
+
+    {
+        std::unordered_map<std::string, quotation_t, str_hasher> tmp;
+        _id_sum_dict.swap(tmp);
     }
 
     {
@@ -333,12 +327,6 @@ int history_quotation_dict::reload()
             {
                 std::map<std::string, std::multimap<float, std::string> > tmp;
                 p_data->_hqrange_percent_index.idle()->swap(tmp);
-            }
-
-
-            {
-                std::map<std::string, std::multimap<float, std::string> > tmp;
-                p_data->_hqrange_sum_percent_index.idle()->swap(tmp);
             }
             
             {

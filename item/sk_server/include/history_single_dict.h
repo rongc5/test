@@ -33,6 +33,8 @@ class history_single_dict:public reload_inf
     public:
         // <date_id, diff> >
         std::unordered_map<std::string, history_single_vec, str_hasher> _date_dict;
+        // date_id, sum_diff
+        std::unordered_map<std::string, history_single_vec, str_hasher> _date_sum_dict;
         //id, date,
         std::unordered_map<std::string, std::set<std::string>, str_hasher> _id_date_dict;
         //date

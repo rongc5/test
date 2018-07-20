@@ -212,37 +212,11 @@ void history_single_dict::update_sum_index()
                 }
             }
 
-            for (uint32_t i = 0; i < hs.hs_vec.size(); i++)
             {
-                if (!hs.hs_vec[i].diff)
-                    continue;
-
-                if (i >= p_data->_hsingle_sum_diff_index.idle()->size())
-                {
-                    std::unordered_map<std::string, std::multimap<int, std::string> > u_map;
-                    std::multimap<int, std::string> t_map;
-
-                    t_map.insert(std::make_pair(hs.hs_vec[i].diff, id));
-                    u_map.insert(std::make_pair(date, t_map));
-                }
-                else
-                {
-                    std::map<std::string, std::multimap<int, std::string> >  & u_map = (*(p_data->_hsingle_sum_diff_index.idle()))[i];
-
-                    auto ii = u_map.find(date);
-                    if (ii == u_map.end())
-                    {
-                        std::multimap<int, std::string> t_map;
-
-                        t_map.insert(std::make_pair(hs.hs_vec[i].diff, id));
-                        u_map.insert(std::make_pair(date, t_map));
-                    }
-                    else
-                    {
-                        ii->second.insert(std::make_pair(hs.hs_vec[i].diff, id));
-                    }
-                }
+                creat_key(date, id, key);
+                _date_sum_dict.insert(std::make_pair(key, hs));
             }
+
         }
     }
 
@@ -282,7 +256,6 @@ int history_single_dict::load()
     if (p_data)
     {
         p_data->_hsingle_diff_index.idle_2_current();
-        p_data->_hsingle_sum_diff_index.idle_2_current();
         p_data->_hsid_date_index.idle_2_current();
     }
 
@@ -294,6 +267,11 @@ int history_single_dict::reload()
     {
         std::unordered_map<std::string, history_single_vec, str_hasher> tmp;
         _date_dict.swap(tmp);
+    }
+
+    {
+        std::unordered_map<std::string, history_single_vec, str_hasher> tmp;
+        _date_sum_dict.swap(tmp);
     }
 
     {
@@ -313,11 +291,6 @@ int history_single_dict::reload()
             {
                 std::vector<std::map<std::string, std::multimap<int, std::string> > > tmp;
                 p_data->_hsingle_diff_index.idle()->swap(tmp);
-            }
-
-            {
-                std::vector<std::map<std::string, std::multimap<int, std::string> > > tmp;
-                p_data->_hsingle_sum_diff_index.idle()->swap(tmp);
             }
 
             {

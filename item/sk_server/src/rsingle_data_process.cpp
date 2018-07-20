@@ -14,6 +14,7 @@
 #include "real_single_dict.h"
 #include "strategy_conf.h"
 #include "id_dict.h"
+#include "history_single_dict.h"
 
 
 rsingle_data_process::rsingle_data_process(http_base_process * _p_process):http_base_data_process(_p_process)
@@ -126,6 +127,70 @@ void rsingle_data_process::msg_recv_finish()
     }
 
     throw CMyCommonException("msg_recv_finish");
+}
+
+void rsingle_data_process::update_sum_index(std::vector<single_t> & single)
+{
+    proc_data* p_data = proc_data::instance();
+    if (!p_data || !single.size())
+        return;
+    
+    std::string key;
+    for (auto ii = p_data->_hsingle_dict->current()->_date_index.begin(); ii != p_data->_hsingle_dict->current()->_date_index.end(); ii++)
+    {
+        const std::string  & date = *ii;
+        history_single_dict::creat_key(date, _id, key);
+
+        auto tt = p_data->_hsingle_dict->current()->_date_sum_dict.find(key);
+        if (tt != p_data->_hsingle_dict->current()->_date_sum_dict.end())
+        {
+            std::vector<single_t>  se = tt->second.hs_vec;
+
+            for (uint32_t i = 0; i< single.size(); i++)
+            {
+                if (i >= se.size())
+                {
+                    single_t ss;
+                    se.push_back(ss);
+                }
+
+                se[i].diff += single[i].diff;
+            }
+
+
+            for (uint32_t i = 0; i < se.size(); i++)
+            {   
+                if (!se[i].diff)
+                    continue;
+
+                if (i >= p_data->_hsingle_sum_diff_index.idle()->size())
+                {   
+                    std::unordered_map<std::string, std::multimap<int, std::string> > u_map;
+                    std::multimap<int, std::string> t_map;
+
+                    t_map.insert(std::make_pair(se[i].diff, _id));
+                    u_map.insert(std::make_pair(date, t_map));
+                }   
+                else
+                {   
+                    std::map<std::string, std::multimap<int, std::string> >  & u_map = (*(p_data->_hsingle_sum_diff_index.idle()))[i];
+
+                    auto ii = u_map.find(date);
+                    if (ii == u_map.end())
+                    {   
+                        std::multimap<int, std::string> t_map;
+
+                        t_map.insert(std::make_pair(se[i].diff, _id));
+                        u_map.insert(std::make_pair(date, t_map));
+                    }   
+                    else
+                    {   
+                        ii->second.insert(std::make_pair(se[i].diff, _id));
+                    }   
+                }
+            }
+        }
+    }
 }
 
 std::string * rsingle_data_process::get_send_head()
@@ -259,6 +324,7 @@ void rsingle_data_process::destroy()
     if (id_dic && id_dic->_id_vec.size() && id_dic->_id_vec[id_dic->_id_vec.size() - 1] == _id)
     {
         p_data->_rsingle_diff_index.idle_2_current();
+        p_data->_hsingle_sum_diff_index.idle_2_current();
     }
 }
 

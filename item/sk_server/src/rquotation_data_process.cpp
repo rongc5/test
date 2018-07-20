@@ -13,6 +13,7 @@
 #include "sk_conf.h"
 #include "real_quotation_dict.h"
 #include "id_dict.h"
+#include "history_quotation_dict.h"
 
 rquotation_data_process::rquotation_data_process(http_base_process * _p_process):http_base_data_process(_p_process)
 {
@@ -172,7 +173,72 @@ void rquotation_data_process::msg_recv_finish()
         p_data->_end_avg_price_index.idle()->insert(std::make_pair(end_avg_price, _id));
     }
 
+    {
+        update_sum_index(qt);
+    }
+
     throw CMyCommonException("msg_recv_finish");
+}
+
+void rquotation_data_process::update_sum_index(std::map<std::string, std::string> * rq)
+{
+    proc_data* p_data = proc_data::instance();
+    if (!p_data || !rq)
+        return;
+
+    std::string key;
+    for (auto ii = p_data->_hquoation_dict->current()->_date_index.begin(); ii != p_data->_hquoation_dict->current()->_date_index.end(); ii++)
+    {
+        const std::string  & date = *ii;
+
+        history_quotation_dict::creat_key(date, _id, key);
+        
+        auto tt = p_data->_hquoation_dict->current()->_id_sum_dict.find(key);
+        if (tt != p_data->_hquoation_dict->current()->_id_sum_dict.end())
+        {
+            quotation_t qt = tt->second;
+            qt.range_percent += atof((*rq)["range_percent"].c_str());
+
+            qt.change_rate += atof((*rq)["change_rate"].c_str());
+
+            {   
+                std::map<std::string, std::multimap<float, std::string> >  & u_map = *(p_data->_hq_sum_range_percent_index.idle());
+
+                auto ii = u_map.find(date);
+                if (ii == u_map.end())
+                {   
+                    std::multimap<float, std::string> t_map;
+
+                    t_map.insert(std::make_pair(qt.range_percent, _id));
+                    u_map.insert(std::make_pair(date, t_map));
+                }   
+                else
+                {   
+                    ii->second.insert(std::make_pair(qt.range_percent, _id));
+                }   
+            }
+
+
+            {
+                std::map<std::string, std::multimap<float, std::string> >  & u_map = *(p_data->_hq_sum_change_rate_index.idle());
+
+                auto ii = u_map.find(date);
+                if (ii == u_map.end())
+                {
+                    std::multimap<float, std::string> t_map;
+
+                    t_map.insert(std::make_pair(qt.change_rate, _id));
+                    u_map.insert(std::make_pair(date, t_map));
+                }
+                else
+                {
+                    ii->second.insert(std::make_pair(qt.change_rate, _id));
+                }
+
+            }
+        }
+    }
+
 }
 
 std::string * rquotation_data_process::get_send_head()
@@ -319,6 +385,9 @@ void rquotation_data_process::destroy()
         p_data->_down_pointer_index.idle_2_current();
         p_data->_up_pointer_index.idle_2_current();
         p_data->_end_avg_price_index.idle_2_current();
+
+        p_data->_hq_sum_range_percent_index.idle_2_current();
+        p_data->_hq_sum_change_rate_index.idle_2_current();
     }
 }
 
