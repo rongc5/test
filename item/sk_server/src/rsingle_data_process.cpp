@@ -16,6 +16,7 @@
 #include "id_dict.h"
 #include "history_single_dict.h"
 
+#include "history_quotation_dict.h"
 
 rsingle_data_process::rsingle_data_process(http_base_process * _p_process):http_base_data_process(_p_process)
 {
@@ -47,6 +48,61 @@ void rsingle_data_process::header_recv_finish()
     _is_ok = true;
 }
 
+int rsingle_data_process::get_single_index(std::string &id, uint32_t index)
+{
+    int arr[] = {100, 200, 300, 400, 500, 800, 1000, 1500, 2000};
+    int i = -1;
+
+    proc_data* p_data = proc_data::instance();
+    strategy_conf * strategy = p_data->_conf->_strategy->current();
+    float end = 0;
+
+    {
+        auto it = p_data->_rquoation_dict->current()->_id_dict.find(id); 
+        if (it != p_data->_rquoation_dict->current()->_id_dict.end())
+        {    
+            if (has_key<std::string, std::string>(*(it->second.current()), "end"))
+            {    
+                end = atof((*(it->second.current()))["end"].c_str());
+
+            }
+        }
+    }
+
+    if (!end)
+    {
+        std::string key;
+        auto ii = p_data->_hquoation_dict->current()->_id_date_dict.find(id);
+        if (ii != p_data->_hquoation_dict->current()->_id_date_dict.end())
+        {
+            const std::string & date = *(ii->second.rbegin());
+            history_quotation_dict::creat_key(date, id, key);
+
+        }
+
+        auto it = p_data->_hquoation_dict->current()->_id_dict.find(key);
+        if (it != p_data->_hquoation_dict->current()->_id_dict.end())
+        {
+            end = it->second.end;
+        }
+    }
+
+    if (!end)
+        return i;
+
+    
+    for (uint32_t k = 0; k < sizeof(arr)/sizeof(arr[0]); k++)
+    {
+        if (end * arr[k] * 100 >= strategy->real_single_scale[index])
+        {
+            i = k;
+            break;
+        }
+    }
+
+    return i; 
+}
+
 void rsingle_data_process::msg_recv_finish()
 {
     LOG_DEBUG("recv_buf: %s", _recv_buf.c_str());
@@ -61,6 +117,7 @@ void rsingle_data_process::msg_recv_finish()
 
     _recv_buf.clear();
     proc_data * p_data = proc_data::instance();
+    strategy_conf * strategy = p_data->_conf->_strategy->current();
 
     auto it = p_data->_rsingle_dict->current()->_id_dict.find(_id);
     if (it == p_data->_rsingle_dict->current()->_id_dict.end())
@@ -70,7 +127,7 @@ void rsingle_data_process::msg_recv_finish()
 
     std::deque<std::vector<single_t> > * st = it->second.idle();
     *st = *it->second.current();
-    std::vector<single_t> single;
+    std::vector<single_t> single, tmp_single;
     //不是标准json
     
     int ttmp;
@@ -84,7 +141,16 @@ void rsingle_data_process::msg_recv_finish()
         sst.in = atoi(ssVec[i + 4].c_str());
         sst.out = atoi(ssVec[i + 5].c_str());
         sst.diff = sst.in - sst.out;
-        single.push_back(sst);
+        tmp_single.push_back(sst);
+    }
+
+    for (uint32_t i = 0; i < strategy->real_single_scale.size(); i++)
+    {
+        int index = get_single_index(_id, i);
+        if (index < 0 || index > (int)tmp_single.size())
+            break;
+
+        single.push_back(tmp_single[index]);
     }
 
     if (single.empty())

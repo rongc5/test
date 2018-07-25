@@ -15,6 +15,8 @@
 #include "addr_dict.h"
 #include "history_single_dict.h"
 
+#include <algorithm>
+
 
 
 skhttp_res_data_process::skhttp_res_data_process(http_base_process * _p_process):http_base_data_process(_p_process)
@@ -75,32 +77,6 @@ void skhttp_res_data_process::query_plate(std::string &id, Value & root, Documen
     }
 }
 
-int skhttp_res_data_process::get_single_index(std::string &id, uint32_t num)
-{
-    int arr[] = {100, 200, 300, 400, 500, 800, 1000, 1500, 2000};
-    int index = -1;
-    proc_data* p_data = proc_data::instance();
-    auto it = p_data->_rquoation_dict->current()->_id_dict.find(id); 
-    if (it != p_data->_rquoation_dict->current()->_id_dict.end())
-    {
-        if (has_key<std::string, std::string>(*(it->second.current()), "end"))
-        {
-            float end = atof((*(it->second.current()))["end"].c_str());
-             
-            for (uint32_t i = 0; i< sizeof(arr)/sizeof(arr[0]); i++)
-            {
-                if (end * arr[i] * 100 >= num)
-                {
-                    index = i;
-                    break;
-                }
-            }
-        }
-    }
-
-    return index;
-}
-
 void skhttp_res_data_process::query_single(std::string &id, Value & root, Document::AllocatorType & allocator)
 {
 
@@ -114,11 +90,6 @@ void skhttp_res_data_process::query_single(std::string &id, Value & root, Docume
     {
         for (uint32_t i = 0; i < strategy->real_single_scale.size(); i++)
         {
-            index = get_single_index(id, strategy->real_single_scale[i]);
-            if (index < 0)
-                break;
-
-            
             Value key(kStringType);
             Value child(kArrayType);
 
@@ -333,7 +304,7 @@ int skhttp_res_data_process::url_query_id(std::map<std::string, std::string> & u
     return HTPP_RES_OK;
 }
 
-void skhttp_res_data_process::do_check_end(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res)
+bool skhttp_res_data_process::do_check_end(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res)
 {
     float end = 0;
     bool flag = false;
@@ -357,16 +328,18 @@ void skhttp_res_data_process::do_check_end(std::map<std::string, std::string> & 
         it_ge = p_data->_end_index.current()->lower_bound(end);
     }
 
-    if (flag)
-        return;
+    if (!flag)
+        return flag;
 
     for (it = it_ge; it != it_le; ++it)
     {
         res.insert(it->second); 
     }
+
+    return flag;
 }
 
-void skhttp_res_data_process::do_check_change_rate(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res)
+bool skhttp_res_data_process::do_check_change_rate(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res)
 {
     float end = 0;
     bool flag = false;
@@ -390,16 +363,18 @@ void skhttp_res_data_process::do_check_change_rate(std::map<std::string, std::st
         it_ge = p_data->_change_rate_index.current()->lower_bound(end);
     }
 
-    if (flag)
-        return;
+    if (!flag)
+        return flag;
 
     for (it = it_ge; it != it_le; ++it)
     {
         res.insert(it->second); 
     }
+
+    return flag;
 }
 
-void skhttp_res_data_process::do_check_range_percent(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res)
+bool skhttp_res_data_process::do_check_range_percent(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res)
 {
     float end = 0;
     bool flag = false;
@@ -423,16 +398,18 @@ void skhttp_res_data_process::do_check_range_percent(std::map<std::string, std::
         it_ge = p_data->_range_percent_index.current()->lower_bound(end);
     }
 
-    if (flag)
-        return;
+    if (!flag)
+        return flag;
 
     for (it = it_ge; it != it_le; ++it)
     {
         res.insert(it->second); 
     }
+
+    return flag;
 }
 
-void skhttp_res_data_process::do_check_down_pointer(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res)
+bool skhttp_res_data_process::do_check_down_pointer(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res)
 {
     float end = 0;
     bool flag = false;
@@ -456,16 +433,18 @@ void skhttp_res_data_process::do_check_down_pointer(std::map<std::string, std::s
         it_ge = p_data->_down_pointer_index.current()->lower_bound(end);
     }
 
-    if (flag)
-        return;
+    if (!flag)
+        return flag;
 
     for (it = it_ge; it != it_le; ++it)
     {
         res.insert(it->second); 
     }
+
+    return flag;
 }
 
-void skhttp_res_data_process::do_check_up_pointer(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res)
+bool skhttp_res_data_process::do_check_up_pointer(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res)
 {
     float end = 0;
     bool flag = false;
@@ -489,16 +468,18 @@ void skhttp_res_data_process::do_check_up_pointer(std::map<std::string, std::str
         it_ge = p_data->_up_pointer_index.current()->lower_bound(end);
     }
 
-    if (flag)
-        return;
+    if (!flag)
+        return flag;
 
     for (it = it_ge; it != it_le; ++it)
     {
         res.insert(it->second); 
     }
+
+    return flag;
 }
 
-void skhttp_res_data_process::do_check_end_avg_price(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res)
+bool skhttp_res_data_process::do_check_end_avg_price(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res)
 {
     float end = 0;
     bool flag = false;
@@ -522,16 +503,18 @@ void skhttp_res_data_process::do_check_end_avg_price(std::map<std::string, std::
         it_ge = p_data->_end_avg_price_index.current()->lower_bound(end);
     }
 
-    if (flag)
-        return;
+    if (!flag)
+        return flag;
 
     for (it = it_ge; it != it_le; ++it)
     {
         res.insert(it->second); 
     }
+
+    return flag;
 }
 
-void skhttp_res_data_process::do_check_pe(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res)
+bool skhttp_res_data_process::do_check_pe(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res)
 {
     int end = 0;
     bool flag = false;
@@ -555,16 +538,18 @@ void skhttp_res_data_process::do_check_pe(std::map<std::string, std::string> & u
         it_ge = p_data->_pe_index.current()->lower_bound(end);
     }
 
-    if (flag)
-        return;
+    if (!flag)
+        return flag;
 
     for (it = it_ge; it != it_le; ++it)
     {
         res.insert(it->second); 
     }
+
+    return flag;
 }
 
-void skhttp_res_data_process::do_check_pb(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res)
+bool skhttp_res_data_process::do_check_pb(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res)
 {
     int end = 0;
     bool flag = false;
@@ -588,16 +573,18 @@ void skhttp_res_data_process::do_check_pb(std::map<std::string, std::string> & u
         it_ge = p_data->_pb_index.current()->lower_bound(end);
     }
 
-    if (flag)
-        return;
+    if (!flag)
+        return flag;
 
     for (it = it_ge; it != it_le; ++it)
     {
         res.insert(it->second); 
     }
+
+    return flag;
 }
 
-void skhttp_res_data_process::do_check_value(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res)
+bool skhttp_res_data_process::do_check_value(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res)
 {
     int end = 0;
     bool flag = false;
@@ -621,16 +608,18 @@ void skhttp_res_data_process::do_check_value(std::map<std::string, std::string> 
         it_ge = p_data->_value_index.current()->lower_bound(end);
     }
 
-    if (flag)
-        return;
+    if (!flag)
+        return flag;
 
     for (it = it_ge; it != it_le; ++it)
     {
         res.insert(it->second); 
     }
+
+    return flag;
 }
 
-void skhttp_res_data_process::do_check_cir_value(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res)
+bool skhttp_res_data_process::do_check_cir_value(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res)
 {
     int end = 0;
     bool flag = false;
@@ -654,16 +643,18 @@ void skhttp_res_data_process::do_check_cir_value(std::map<std::string, std::stri
         it_ge = p_data->_cir_value_index.current()->lower_bound(end);
     }
 
-    if (flag)
-        return;
+    if (!flag)
+        return flag;
 
     for (it = it_ge; it != it_le; ++it)
     {
         res.insert(it->second); 
     }
+
+    return flag;
 }
 
-void skhttp_res_data_process::do_check_mgxj(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res)
+bool skhttp_res_data_process::do_check_mgxj(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res)
 {
     float end = 0;
     bool flag = false;
@@ -687,16 +678,18 @@ void skhttp_res_data_process::do_check_mgxj(std::map<std::string, std::string> &
         it_ge = p_data->_mgxj_index.current()->lower_bound(end);
     }
 
-    if (flag)
-        return;
+    if (!flag)
+        return flag;
 
     for (it = it_ge; it != it_le; ++it)
     {
         res.insert(it->second); 
     }
+
+    return flag;
 }
 
-void skhttp_res_data_process::do_check_mgsy(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res)
+bool skhttp_res_data_process::do_check_mgsy(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res)
 {
 
     float end = 0;
@@ -721,16 +714,18 @@ void skhttp_res_data_process::do_check_mgsy(std::map<std::string, std::string> &
         it_ge = p_data->_mgsy_index.current()->lower_bound(end);
     }
 
-    if (flag)
-        return;
+    if (!flag)
+        return flag;
 
     for (it = it_ge; it != it_le; ++it)
     {
         res.insert(it->second); 
     }
+
+    return flag;
 }
 
-void skhttp_res_data_process::do_check_mgsygr(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res)
+bool skhttp_res_data_process::do_check_mgsygr(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res)
 {
     float end = 0;
     bool flag = false;
@@ -754,16 +749,18 @@ void skhttp_res_data_process::do_check_mgsygr(std::map<std::string, std::string>
         it_ge = p_data->_mgsygr_index.current()->lower_bound(end);
     }
 
-    if (flag)
-        return;
+    if (!flag)
+        return flag;
 
     for (it = it_ge; it != it_le; ++it)
     {
         res.insert(it->second); 
     }
+
+    return flag;
 }
 
-void skhttp_res_data_process::do_check_mgxjgr(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res)
+bool skhttp_res_data_process::do_check_mgxjgr(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res)
 {
     float end = 0;
     bool flag = false;
@@ -787,16 +784,18 @@ void skhttp_res_data_process::do_check_mgxjgr(std::map<std::string, std::string>
         it_ge = p_data->_mgxjgr_index.current()->lower_bound(end);
     }
 
-    if (flag)
-        return;
+    if (!flag)
+        return flag;
 
     for (it = it_ge; it != it_le; ++it)
     {
         res.insert(it->second); 
     }
+
+    return flag;
 }
 
-void skhttp_res_data_process::do_check_zysrgr(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res)
+bool skhttp_res_data_process::do_check_zysrgr(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res)
 {
     float end = 0;
     bool flag = false;
@@ -820,15 +819,17 @@ void skhttp_res_data_process::do_check_zysrgr(std::map<std::string, std::string>
         it_ge = p_data->_zysrgr_index.current()->lower_bound(end);
     }
 
-    if (flag)
-        return;
+    if (!flag)
+        return flag;
 
     for (it = it_ge; it != it_le; ++it)
     {
         res.insert(it->second); 
     }
+
+    return flag;
 }
- void skhttp_res_data_process::do_check_yylrgr(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res)
+ bool skhttp_res_data_process::do_check_yylrgr(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res)
 {
     float end = 0;
     bool flag = false;
@@ -852,16 +853,18 @@ void skhttp_res_data_process::do_check_zysrgr(std::map<std::string, std::string>
         it_ge = p_data->_yylrgr_index.current()->lower_bound(end);
     }
 
-    if (flag)
-        return;
+    if (!flag)
+        return flag;
 
     for (it = it_ge; it != it_le; ++it)
     {
         res.insert(it->second); 
     }
+
+    return flag;
 }
 
-void skhttp_res_data_process::do_check_jlrgr(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res)
+bool skhttp_res_data_process::do_check_jlrgr(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res)
 {
     float end = 0;
     bool flag = false;
@@ -885,22 +888,26 @@ void skhttp_res_data_process::do_check_jlrgr(std::map<std::string, std::string> 
         it_ge = p_data->_jlrgr_index.current()->lower_bound(end);
     }
 
-    if (flag)
-        return;
+    if (!flag)
+        return flag;
 
     for (it = it_ge; it != it_le; ++it)
     {
         res.insert(it->second); 
     }
+
+    return flag;
 }
 
-void skhttp_res_data_process::do_check_address(std::map<std::string, std::string> & url_para_map, const char * key, std::set<std::string> & res)
+bool skhttp_res_data_process::do_check_address(std::map<std::string, std::string> & url_para_map, const char * key, std::set<std::string> & res)
 {
     proc_data* p_data = proc_data::instance();
+    bool flag = false;
     std::vector<std::string> tmp_vec;
 
     if (key && has_key<std::string, std::string>(url_para_map, key))
     {
+        flag = true;
         SplitString(url_para_map[key].c_str(), '|', &tmp_vec, SPLIT_MODE_ALL);
         if (!tmp_vec.size()) 
             tmp_vec.push_back(url_para_map[key]);
@@ -913,15 +920,19 @@ void skhttp_res_data_process::do_check_address(std::map<std::string, std::string
             }
         }
     }
+
+    return flag;
 }
 
-void skhttp_res_data_process::do_check_plate(std::map<std::string, std::string> & url_para_map, const char * key, std::set<std::string> & res)
+bool skhttp_res_data_process::do_check_plate(std::map<std::string, std::string> & url_para_map, const char * key, std::set<std::string> & res)
 {
     proc_data* p_data = proc_data::instance();
+    bool flag = false;
     std::vector<std::string> tmp_vec;
 
     if (key && has_key<std::string, std::string>(url_para_map, key))
     {
+        flag = true;
         SplitString(url_para_map[key].c_str(), '|', &tmp_vec, SPLIT_MODE_ALL);
         if (!tmp_vec.size()) 
             tmp_vec.push_back(url_para_map[key]);
@@ -934,12 +945,356 @@ void skhttp_res_data_process::do_check_plate(std::map<std::string, std::string> 
             }
         }
     }
+
+    return flag;
 }
 
+bool skhttp_res_data_process::do_check_rsingle_diff(std::map<std::string, std::string> & url_para_map, uint32_t index, std::set<std::string> & res)
+{
+
+    int end = 0;
+    bool flag = false;
+    proc_data* p_data = proc_data::instance();
+    char t_buf[SIZE_LEN_128];
+    
+    std::multimap<int, std::string>::iterator it_le, it_ge, it;
+
+    if (index >= p_data->_rsingle_diff_index.current()->size())
+        return flag;
+
+    it_le = p_data->_rsingle_diff_index.current()->at(index).end();
+    it_ge = p_data->_rsingle_diff_index.current()->at(index).begin();
+
+    snprintf(t_buf, sizeof(t_buf), "rsingle_diff%d_le", index);
+    if (has_key<std::string, std::string>(url_para_map, t_buf))
+    {
+        flag = true;
+        end = atoi(url_para_map[t_buf].c_str());
+        it_le = p_data->_rsingle_diff_index.current()->at(index).upper_bound(end);
+    }
+
+    snprintf(t_buf, sizeof(t_buf), "rsingle_diff%d_ge", index);
+    if (has_key<std::string, std::string>(url_para_map, t_buf))
+    {
+        flag = true;
+        end = atof(url_para_map["jlrgr_ge"].c_str());
+        it_ge = p_data->_rsingle_diff_index.current()->at(index).lower_bound(end);
+    }
+
+    if (!flag)
+        return flag;
+
+    for (it = it_ge; it != it_le; ++it)
+    {
+        res.insert(it->second); 
+    }
+
+    return flag;
+}
 
 int skhttp_res_data_process::do_check_select(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res)
 {
-    //if (has_key<std::string, string>)
+    proc_data* p_data = proc_data::instance();
+    if (!p_data)
+        return -1;
+    
+    std::set<std::string> search;
+
+    {
+        std::set<std::string> tmp;
+        if (do_check_end(url_para_map, tmp))
+        {
+            search = tmp;
+        }
+
+        if (search.empty())
+        {
+            return -1;
+        }
+    }
+
+    {
+        std::set<std::string> tmp, tt;
+        if (do_check_change_rate(url_para_map, tmp))
+        {
+            std::set_intersection(search.begin(), search.end(), tmp.begin(), tmp.end(), std::inserter(tt,tt.begin()));
+            search = tt;
+        }
+
+        if (search.empty())
+        {
+            return -1;
+        }
+    }
+
+    {
+        std::set<std::string> tmp, tt;
+        if (do_check_range_percent(url_para_map, tmp))
+        {
+            std::set_intersection(search.begin(), search.end(), tmp.begin(), tmp.end(), std::inserter(tt,tt.begin()));
+            search = tt;
+        }
+
+        if (search.empty())
+        {
+            return -1;
+        }
+    }
+
+    {
+        std::set<std::string> tmp, tt;
+        if (do_check_down_pointer(url_para_map, tmp))
+        {
+            std::set_intersection(search.begin(), search.end(), tmp.begin(), tmp.end(), std::inserter(tt,tt.begin()));
+            search = tt;
+        }
+
+        if (search.empty())
+        {
+            return -1;
+        }
+    }
+
+    {
+        std::set<std::string> tmp, tt;
+        if (do_check_up_pointer(url_para_map, tmp))
+        {
+            std::set_intersection(search.begin(), search.end(), tmp.begin(), tmp.end(), std::inserter(tt,tt.begin()));
+            search = tt;
+        }
+
+        if (search.empty())
+        {
+            return -1;
+        }
+    }
+
+    {
+        std::set<std::string> tmp, tt;
+        if (do_check_end_avg_price(url_para_map, tmp))
+        {
+            std::set_intersection(search.begin(), search.end(), tmp.begin(), tmp.end(), std::inserter(tt,tt.begin()));
+            search = tt;
+        }
+
+        if (search.empty())
+        {
+            return -1;
+        }
+    }
+
+    {
+        std::set<std::string> tmp, tt;
+        if (do_check_pe(url_para_map, tmp))
+        {
+            std::set_intersection(search.begin(), search.end(), tmp.begin(), tmp.end(), std::inserter(tt,tt.begin()));
+            search = tt;
+        }
+
+        if (search.empty())
+        {
+            return -1;
+        }
+    }
+
+    {
+        std::set<std::string> tmp, tt;
+        if (do_check_pb(url_para_map, tmp))
+        {
+            std::set_intersection(search.begin(), search.end(), tmp.begin(), tmp.end(), std::inserter(tt,tt.begin()));
+            search = tt;
+        }
+
+        if (search.empty())
+        {
+            return -1;
+        }
+    }
+
+    {
+        std::set<std::string> tmp, tt;
+        if (do_check_value(url_para_map, tmp))
+        {
+            std::set_intersection(search.begin(), search.end(), tmp.begin(), tmp.end(), std::inserter(tt,tt.begin()));
+            search = tt;
+        }
+
+        if (search.empty())
+        {
+            return -1;
+        }
+    }
+
+    {
+        std::set<std::string> tmp, tt;
+        if (do_check_cir_value(url_para_map, tmp))
+        {
+            std::set_intersection(search.begin(), search.end(), tmp.begin(), tmp.end(), std::inserter(tt,tt.begin()));
+            search = tt;
+        }
+
+        if (search.empty())
+        {
+            return -1;
+        }
+    }
+
+    {
+        std::set<std::string> tmp, tt;
+        if (do_check_mgxj(url_para_map, tmp))
+        {
+            std::set_intersection(search.begin(), search.end(), tmp.begin(), tmp.end(), std::inserter(tt,tt.begin()));
+            search = tt;
+        }
+
+        if (search.empty())
+        {
+            return -1;
+        }
+    }
+
+    {
+        std::set<std::string> tmp, tt;
+        if (do_check_mgsy(url_para_map, tmp))
+        {
+            std::set_intersection(search.begin(), search.end(), tmp.begin(), tmp.end(), std::inserter(tt,tt.begin()));
+            search = tt;
+        }
+
+        if (search.empty())
+        {
+            return -1;
+        }
+    }
+
+    {
+        std::set<std::string> tmp, tt;
+        if (do_check_mgsygr(url_para_map, tmp))
+        {
+            std::set_intersection(search.begin(), search.end(), tmp.begin(), tmp.end(), std::inserter(tt,tt.begin()));
+            search = tt;
+        }
+
+        if (search.empty())
+        {
+            return -1;
+        }
+    }
+
+    {
+        std::set<std::string> tmp, tt;
+        if (do_check_mgxjgr(url_para_map, tmp))
+        {
+            std::set_intersection(search.begin(), search.end(), tmp.begin(), tmp.end(), std::inserter(tt,tt.begin()));
+            search = tt;
+        }
+
+        if (search.empty())
+        {
+            return -1;
+        }
+    }
+
+    {
+        std::set<std::string> tmp, tt;
+        if (do_check_zysrgr(url_para_map, tmp))
+        {
+            std::set_intersection(search.begin(), search.end(), tmp.begin(), tmp.end(), std::inserter(tt,tt.begin()));
+            search = tt;
+        }
+
+        if (search.empty())
+        {
+            return -1;
+        }
+    }
+
+    {
+        std::set<std::string> tmp, tt;
+        if (do_check_yylrgr(url_para_map, tmp))
+        {
+            std::set_intersection(search.begin(), search.end(), tmp.begin(), tmp.end(), std::inserter(tt,tt.begin()));
+            search = tt;
+        }
+
+        if (search.empty())
+        {
+            return -1;
+        }
+    }
+
+    {
+        std::set<std::string> tmp, tt;
+        if (do_check_jlrgr(url_para_map, tmp))
+        {
+            std::set_intersection(search.begin(), search.end(), tmp.begin(), tmp.end(), std::inserter(tt,tt.begin()));
+            search = tt;
+        }
+
+        if (search.empty())
+        {
+            return -1;
+        }
+    }
+
+
+    {
+        std::set<std::string> tmp, tt;
+        if (do_check_address(url_para_map, "address", tmp))
+        {
+            std::set_intersection(search.begin(), search.end(), tmp.begin(), tmp.end(), std::inserter(tt,tt.begin()));
+            search = tt;
+        }
+
+        if (search.empty())
+        {
+            return -1;
+        }
+    }
+
+    {
+        std::set<std::string> tmp, tt;
+        if (do_check_address(url_para_map, "address_v", tmp))
+        {
+            std::set_difference(search.begin(), search.end(), tmp.begin(), tmp.end(), std::inserter(tt,tt.begin()));
+            search = tt;
+        }
+
+        if (search.empty())
+        {
+            return -1;
+        }
+    }
+
+    {
+        std::set<std::string> tmp, tt;
+        if (do_check_plate(url_para_map, "plate", tmp))
+        {
+            std::set_intersection(search.begin(), search.end(), tmp.begin(), tmp.end(), std::inserter(tt,tt.begin()));
+            search = tt;
+        }
+
+        if (search.empty())
+        {
+            return -1;
+        }
+    }
+
+    {
+        std::set<std::string> tmp, tt;
+        if (do_check_plate(url_para_map, "plate_v", tmp))
+        {
+            std::set_difference(search.begin(), search.end(), tmp.begin(), tmp.end(), std::inserter(tt,tt.begin()));
+            search = tt;
+        }
+
+        if (search.empty())
+        {
+            return -1;
+        }
+    }
+
+    return 0;
 }
 
 int skhttp_res_data_process::url_select(std::map<std::string, std::string> & url_para_map, Value & root, Document::AllocatorType & allocator)

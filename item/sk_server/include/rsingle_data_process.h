@@ -41,6 +41,8 @@ class rsingle_data_process: public http_base_data_process
 
         void update_sum_index(std::vector<single_t> & single);
 
+        static int get_single_index(std::string &id, uint32_t index);
+
     protected:
         std::string _recv_buf;
         std::string _id;
