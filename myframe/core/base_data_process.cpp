@@ -78,7 +78,7 @@ std::shared_ptr<base_net_obj>  base_data_process::get_base_net()
 
 void base_data_process::destroy()
 {
-
+    LOG_DEBUG("%p", this);
 }
 
 void base_data_process::add_timer(std::shared_ptr<timer_msg> & t_msg)
@@ -89,4 +89,5 @@ void base_data_process::add_timer(std::shared_ptr<timer_msg> & t_msg)
 
 void base_data_process::handle_timeout(std::shared_ptr<timer_msg> & t_msg)
 {
+    LOG_DEBUG("%p", this);
 }

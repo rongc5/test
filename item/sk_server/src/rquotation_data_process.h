@@ -33,7 +33,7 @@ class rquotation_data_process: public http_base_data_process
 
         static void gen_net_obj(std::string id, common_obj_container * net_container, std::map<std::string, std::string> & headers);
 
-        virtual void handle_timeout(timer_msg & t_msg);
+        virtual void handle_timeout(std::shared_ptr<timer_msg> & t_msg);
 
         virtual void destroy();
 

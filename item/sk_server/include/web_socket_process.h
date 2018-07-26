@@ -28,6 +28,8 @@ class web_socket_process: public base_data_process
 
 		virtual void peer_close();
 
+        virtual void destroy();
+
 		virtual void send_ping(const char op_code, const std::string &ping_data);
 
 		/************************************************************/

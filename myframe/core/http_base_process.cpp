@@ -120,6 +120,16 @@ void http_base_process::handle_timeout(std::shared_ptr<timer_msg> & t_msg)
     _data_process->handle_timeout(t_msg);
 }
 
+void http_base_process::destroy()
+{
+    _data_process->destroy();
+}
+
+void http_base_process::peer_close()
+{
+    _data_process->peer_close();
+}
+
 /****************************以上是五个口子，以下是供底层调用********************************************/
 
 void http_base_process::change_http_status(HTTP_STATUS status, bool if_change_send)

@@ -24,7 +24,7 @@ import optparse
 
 __author__ = 'rong'
 
-MAX_RESPONSE_KB = 10*1024
+MAX_RESPONSE_KB = 100*1024
 
 user_agent_list = [
         "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/536.3 "
@@ -173,8 +173,8 @@ class CurlHTTPFetcher(object):
             c.close()
 
 def print_res(res, parser):
-    if res.has_key('recode'):
-        print res['recode']
+    #if res.has_key('recode'):
+        #print res['recode']
 
     if res.has_key('data'):
         for item in res['data']:
@@ -183,16 +183,25 @@ def print_res(res, parser):
                 myjson = json.dumps(item[key], ensure_ascii=False)
                 tmp_str += myjson
                 print tmp_str
-                if parser.file:
-                    log_write(parser.file, tmp_str)
+                if parser.outfile:
+                    log_write(parser.outfile, tmp_str)
 
             print '\n'
-            if parser.file:
-                log_write(parser.file, '\n')
+            if parser.outfile:
+                log_write(parser.outfile, '\n')
 
 
 def do_query_id(parser):
-    url = 'http://%s:%s/queryid?id=%s&last_day_num=%d' % (parser.ip, parser.port, parser.id, parser.last_day_num)
+    url = 'http://%s:%s/queryid?id=%s' % (parser.ip, parser.port, parser.id)
+
+    if parser.history_diff_num:
+        url += '&history_diff_num=%d' % (parser.history_diff_num)
+
+    if parser.history_quotation_num:
+        url += '&history_quotation_num=%d' % (parser.history_quotation_num)
+
+    if parser.history_date:
+        url += '&history_date=%s' % (parser.history_date)
 
     header = {}
     index = random.randint(0, len(user_agent_list) -1)
@@ -214,23 +223,23 @@ def do_query_id(parser):
     #res_str = json.loads(res_str, encoding="GB2312")
     res_str = json.loads(res_str)
     if res_str:
-        print print_res(res_str, parser)
+        print_res(res_str, parser)
 
 
 def do_select(parser):
-    if not os.path.isfile(parser.select):
+    if not os.path.isfile(parser.ini):
         print 'slect ini file not exist'
 
     url = 'http://%s:%s/select?' % (parser.ip, parser.port)
 
     body = ''
-    file = open(parser.select)
+    file = open(parser.ini)
     while 1:
         line = file.readline().strip('\n')
         if not line:
             break
         line = line.strip(' ')
-        if line.startwith('#'):
+        if line.startswith('#'):
             continue
         body += line
         body += '\r\n'
@@ -247,12 +256,16 @@ def do_select(parser):
     except BaseException, e:
         print e.message
 
+    if not res.has_key('body'):
+        print 'net not ok'
+        return
+
     res_str = res['body'].strip()
     if res_str:
-        print res_str
+        #print res_str
 
-        if parser.file:
-            log_write(parser.file, res_str)
+        if parser.outfile:
+            log_write(parser.outfile, res_str)
 
 
 def do_search():
@@ -269,20 +282,28 @@ def do_search():
                   action="store", dest="port", type="string", default="8081",
               help="http server port")
 
-    parser.add_option("-q", "--id",
+    parser.add_option("-I", "--id",
                   action="store", dest="id",type="string",default="",
               help="stock id like sh601318")
 
-    parser.add_option("-n", "--num",
-                  action="store", dest="last_day_num",type="int",default=5,
-              help="last trade days num")
+    parser.add_option("-s", "--history_diff_num",
+                  action="store", dest="history_diff_num",type="int",default=0,
+              help="last trade days history_diff_num")
 
-    parser.add_option("-f", "--file",
-                  action="store", dest="file",type="string",default="",
+    parser.add_option("-q", "--history_quotation_num",
+                  action="store", dest="history_quotation_num",type="int",default=0,
+              help="last trade days history_quotation_num")
+
+    parser.add_option("-d", "--history_date",
+                  action="store", dest="history_date", type="string", default="",
+              help="http history_date")
+
+    parser.add_option("-o", "--outfile",
+                  action="store", dest="outfile",type="string",default="",
               help="log write res to file")
 
-    parser.add_option("-s", "--select",
-                  action="store", dest="select",type="string",default="",
+    parser.add_option("-f", "--ini",
+                  action="store", dest="ini",type="string",default="",
               help="select ini file")
 
     options, args = parser.parse_args()
@@ -293,8 +314,8 @@ def do_search():
         if options.id:
             do_query_id(options)
 
-        if options.select:
-            do_select()
+        if options.ini:
+            do_select(options)
 
         if options.time:
             time.sleep(options.time)

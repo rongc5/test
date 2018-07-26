@@ -344,17 +344,17 @@ void rquotation_data_process::gen_net_obj(std::string id, common_obj_container *
         t_msg->_timer_type = TIMER_TYPE_HTTP_REQ; 
         t_msg->_obj_id = connect->get_id()._id;
         sk_process->add_timer(t_msg);
-        LOG_NOTICE("add_timer TIMER_TYPE_HTTP_REQ");
+        LOG_DEBUG("add_timer TIMER_TYPE_HTTP_REQ");
     }
 
     return ;
 }
 
-void rquotation_data_process::handle_timeout(timer_msg & t_msg)
+void rquotation_data_process::handle_timeout(std::shared_ptr<timer_msg> & t_msg)
 {
-    if (t_msg._timer_type == TIMER_TYPE_HTTP_REQ)
+    if (t_msg->_timer_type == TIMER_TYPE_HTTP_REQ)
     {
-        LOG_NOTICE("timeout TIMER_TYPE_HTTP_REQ");
+        LOG_DEBUG("timeout TIMER_TYPE_HTTP_REQ");
 
         throw CMyCommonException("TIMER_TYPE_HTTP_REQ");
     }
@@ -362,6 +362,7 @@ void rquotation_data_process::handle_timeout(timer_msg & t_msg)
 
 void rquotation_data_process::destroy()
 {
+    LOG_DEBUG("id:%s destroy", _id.c_str());
     if (!_is_ok)
     {
         std::shared_ptr<base_net_obj> connect = get_base_net();
@@ -388,6 +389,8 @@ void rquotation_data_process::destroy()
 
         p_data->_hq_sum_range_percent_index.idle_2_current();
         p_data->_hq_sum_change_rate_index.idle_2_current();
+
+        LOG_DEBUG("_end_index idle_2_current");
     }
 }
 

@@ -117,6 +117,12 @@ void web_socket_process::peer_close()
         _p_data_process->peer_close();
 }
 
+void web_socket_process::destroy()
+{
+    if (_p_data_process != NULL)
+        _p_data_process->destroy();
+}
+
 void web_socket_process::send_ping(const char op_code, const std::string &ping_data)
 {
     if (ping_data.length() < 125) //大于125字节的ping包不让发出去了

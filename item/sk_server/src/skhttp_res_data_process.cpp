@@ -14,6 +14,7 @@
 #include "plate_dict.h"
 #include "addr_dict.h"
 #include "history_single_dict.h"
+#include "history_quotation_dict.h"
 
 #include <algorithm>
 
@@ -184,8 +185,8 @@ void skhttp_res_data_process::query_history_single(uint32_t last_day_num, std::s
     std::vector<std::string> date_vec;
     
     {
-        auto ii = p_data->_hsid_date_index.current()->find(id);
-        if (ii == p_data->_hsid_date_index.current()->end())
+        auto ii = p_data->_hsingle_dict->current()->_id_date_dict.find(id);
+        if (ii == p_data->_hsingle_dict->current()->_id_date_dict.end())
         {
             return;
         }
@@ -222,6 +223,148 @@ void skhttp_res_data_process::query_history_single(uint32_t last_day_num, std::s
 
             root.AddMember(k, child, allocator);
         }
+    }
+}
+
+void skhttp_res_data_process::query_history_single(std::string & history_date, std::string &id, Value & root, Document::AllocatorType & allocator)
+{
+    proc_data* p_data = proc_data::instance();
+    
+    std::string key;    
+    history_single_dict::creat_key(history_date, id, key);
+
+    auto ii = p_data->_hsingle_dict->current()->_date_dict.find(key);
+    if (ii != p_data->_hsingle_dict->current()->_date_dict.end())
+    {
+        Value k(kStringType);
+        Value child(kArrayType);
+
+        std::string t_str;
+        t_str.append("last_single");
+        t_str.append("_");
+        t_str.append(history_date);
+
+        k.SetString(t_str.c_str(), allocator);
+
+        for (uint32_t k = 0; k < ii->second.hs_vec.size(); k++)
+        {
+            child.PushBack(ii->second.hs_vec[k].diff, allocator);
+        }
+
+        root.AddMember(k, child, allocator);
+    }
+}
+
+
+void skhttp_res_data_process::query_history_quotation(uint32_t last_day_num, std::string &id, Value & root, Document::AllocatorType & allocator)
+{
+    proc_data* p_data = proc_data::instance();
+    char t_buf[SIZE_LEN_64];
+
+    std::vector<std::string> date_vec;
+    
+    {
+        auto ii = p_data->_hquoation_dict->current()->_id_date_dict.find(id);
+        if (ii == p_data->_hquoation_dict->current()->_id_date_dict.end())
+        {
+            return;
+        }
+        
+        uint32_t i = 0;
+        for (auto iii = ii->second.rbegin(); iii != ii->second.rend() && i < last_day_num; i++, iii++)
+        {
+            date_vec.push_back(*iii);
+        }
+    }
+    
+    for (uint32_t i = 0; i< date_vec.size(); i++)
+    {
+        std::string key;    
+        history_quotation_dict::creat_key(date_vec[i], id, key);
+
+        auto ii = p_data->_hquoation_dict->current()->_id_dict.find(key);
+        if (ii != p_data->_hquoation_dict->current()->_id_dict.end())
+        {
+            Value k(kStringType);
+            Value v(kObjectType);
+
+            Value key(kStringType);
+            Value value(kStringType);
+
+            std::string t_str;
+            t_str.append("last_quotation");
+            t_str.append("_");
+            t_str.append(date_vec[i]);
+
+            k.SetString(t_str.c_str(), allocator);
+
+            {
+                key.SetString("end", allocator); 
+
+                snprintf(t_buf, sizeof(t_buf), "%.2f", ii->second.end);
+                value.SetString(t_buf, allocator); 
+
+                v.AddMember(key, value, allocator);
+            }
+
+            {
+                key.SetString("range_percent", allocator); 
+
+                snprintf(t_buf, sizeof(t_buf), "%.2f", ii->second.range_percent);
+                value.SetString(t_buf, allocator); 
+
+                v.AddMember(key, value, allocator);
+            }
+
+            root.AddMember(k, v, allocator);
+        }
+    }
+}
+
+void skhttp_res_data_process::query_history_quotation(std::string & history_date, std::string &id, Value & root, Document::AllocatorType & allocator)
+{
+    proc_data* p_data = proc_data::instance();
+    char t_buf[SIZE_LEN_64];
+
+    
+    std::string key;    
+    history_quotation_dict::creat_key(history_date, id, key);
+
+    auto ii = p_data->_hquoation_dict->current()->_id_dict.find(key);
+    if (ii != p_data->_hquoation_dict->current()->_id_dict.end())
+    {
+        Value k(kStringType);
+        Value v(kObjectType);
+
+        Value key(kStringType);
+        Value value(kStringType);
+
+        std::string t_str;
+        t_str.append("last_quotation");
+        t_str.append("_");
+        t_str.append(history_date);
+
+        k.SetString(t_str.c_str(), allocator);
+
+        {
+            key.SetString("end", allocator); 
+
+            snprintf(t_buf, sizeof(t_buf), "%.2f", ii->second.end);
+            value.SetString(t_buf, allocator); 
+
+            v.AddMember(key, value, allocator);
+        }
+
+        {
+            key.SetString("range_percent", allocator); 
+
+            snprintf(t_buf, sizeof(t_buf), "%.2f", ii->second.range_percent);
+            value.SetString(t_buf, allocator); 
+
+            v.AddMember(key, value, allocator);
+        }
+
+        root.AddMember(k, v, allocator);
     }
 }
 
@@ -294,9 +437,21 @@ int skhttp_res_data_process::url_query_id(std::map<std::string, std::string> & u
         query_addr(url_para_map["id"], root, allocator);
     }
     
-    if (has_key<std::string, std::string>(url_para_map, "last_day_num"))
+    if (has_key<std::string, std::string>(url_para_map, "history_diff_num"))
     {
-        query_history_single(atoi(url_para_map["last_day_num"].c_str()), url_para_map["id"], root, allocator);
+        query_history_single(atoi(url_para_map["history_diff_num"].c_str()), url_para_map["id"], root, allocator);
+    }
+
+    if (has_key<std::string, std::string>(url_para_map, "history_quotation_num"))
+    {
+        query_history_quotation(atoi(url_para_map["history_quotation_num"].c_str()), url_para_map["id"], root, allocator);
+    }
+
+    if (has_key<std::string, std::string>(url_para_map, "history_date"))
+    {
+        query_history_single(atoi(url_para_map["history_date"].c_str()), url_para_map["id"], root, allocator);
+
+        query_history_quotation(atoi(url_para_map["history_date"].c_str()), url_para_map["id"], root, allocator);
     }
 
     data_array.PushBack(root, allocator);
@@ -1018,13 +1173,13 @@ int skhttp_res_data_process::do_check_select(std::map<std::string, std::string> 
         if (do_check_change_rate(url_para_map, tmp))
         {
             std::set_intersection(search.begin(), search.end(), tmp.begin(), tmp.end(), std::inserter(tt,tt.begin()));
-            search = tt;
         }
 
-        if (search.empty())
+        if (tt.empty())
         {
             return -1;
         }
+        search = tt;
     }
 
     {
@@ -1032,13 +1187,13 @@ int skhttp_res_data_process::do_check_select(std::map<std::string, std::string> 
         if (do_check_range_percent(url_para_map, tmp))
         {
             std::set_intersection(search.begin(), search.end(), tmp.begin(), tmp.end(), std::inserter(tt,tt.begin()));
-            search = tt;
         }
 
-        if (search.empty())
+        if (tt.empty())
         {
             return -1;
         }
+        search = tt;
     }
 
     {
@@ -1046,13 +1201,13 @@ int skhttp_res_data_process::do_check_select(std::map<std::string, std::string> 
         if (do_check_down_pointer(url_para_map, tmp))
         {
             std::set_intersection(search.begin(), search.end(), tmp.begin(), tmp.end(), std::inserter(tt,tt.begin()));
-            search = tt;
         }
 
-        if (search.empty())
+        if (tt.empty())
         {
             return -1;
         }
+        search = tt;
     }
 
     {
@@ -1060,13 +1215,13 @@ int skhttp_res_data_process::do_check_select(std::map<std::string, std::string> 
         if (do_check_up_pointer(url_para_map, tmp))
         {
             std::set_intersection(search.begin(), search.end(), tmp.begin(), tmp.end(), std::inserter(tt,tt.begin()));
-            search = tt;
         }
 
-        if (search.empty())
+        if (tt.empty())
         {
             return -1;
         }
+        search = tt;
     }
 
     {
@@ -1074,13 +1229,13 @@ int skhttp_res_data_process::do_check_select(std::map<std::string, std::string> 
         if (do_check_end_avg_price(url_para_map, tmp))
         {
             std::set_intersection(search.begin(), search.end(), tmp.begin(), tmp.end(), std::inserter(tt,tt.begin()));
-            search = tt;
         }
 
-        if (search.empty())
+        if (tt.empty())
         {
             return -1;
         }
+        search = tt;
     }
 
     {
@@ -1088,13 +1243,13 @@ int skhttp_res_data_process::do_check_select(std::map<std::string, std::string> 
         if (do_check_pe(url_para_map, tmp))
         {
             std::set_intersection(search.begin(), search.end(), tmp.begin(), tmp.end(), std::inserter(tt,tt.begin()));
-            search = tt;
         }
 
-        if (search.empty())
+        if (tt.empty())
         {
             return -1;
         }
+        search = tt;
     }
 
     {
@@ -1102,13 +1257,13 @@ int skhttp_res_data_process::do_check_select(std::map<std::string, std::string> 
         if (do_check_pb(url_para_map, tmp))
         {
             std::set_intersection(search.begin(), search.end(), tmp.begin(), tmp.end(), std::inserter(tt,tt.begin()));
-            search = tt;
         }
 
-        if (search.empty())
+        if (tt.empty())
         {
             return -1;
         }
+        search = tt;
     }
 
     {
@@ -1116,13 +1271,13 @@ int skhttp_res_data_process::do_check_select(std::map<std::string, std::string> 
         if (do_check_value(url_para_map, tmp))
         {
             std::set_intersection(search.begin(), search.end(), tmp.begin(), tmp.end(), std::inserter(tt,tt.begin()));
-            search = tt;
         }
 
-        if (search.empty())
+        if (tt.empty())
         {
             return -1;
         }
+        search = tt;
     }
 
     {
@@ -1130,13 +1285,12 @@ int skhttp_res_data_process::do_check_select(std::map<std::string, std::string> 
         if (do_check_cir_value(url_para_map, tmp))
         {
             std::set_intersection(search.begin(), search.end(), tmp.begin(), tmp.end(), std::inserter(tt,tt.begin()));
-            search = tt;
         }
-
-        if (search.empty())
+        if (tt.empty())
         {
             return -1;
         }
+        search = tt;
     }
 
     {
@@ -1144,13 +1298,13 @@ int skhttp_res_data_process::do_check_select(std::map<std::string, std::string> 
         if (do_check_mgxj(url_para_map, tmp))
         {
             std::set_intersection(search.begin(), search.end(), tmp.begin(), tmp.end(), std::inserter(tt,tt.begin()));
-            search = tt;
         }
 
-        if (search.empty())
+        if (tt.empty())
         {
             return -1;
         }
+        search = tt;
     }
 
     {
@@ -1158,13 +1312,13 @@ int skhttp_res_data_process::do_check_select(std::map<std::string, std::string> 
         if (do_check_mgsy(url_para_map, tmp))
         {
             std::set_intersection(search.begin(), search.end(), tmp.begin(), tmp.end(), std::inserter(tt,tt.begin()));
-            search = tt;
         }
 
-        if (search.empty())
+        if (tt.empty())
         {
             return -1;
         }
+        search = tt;
     }
 
     {
@@ -1172,13 +1326,13 @@ int skhttp_res_data_process::do_check_select(std::map<std::string, std::string> 
         if (do_check_mgsygr(url_para_map, tmp))
         {
             std::set_intersection(search.begin(), search.end(), tmp.begin(), tmp.end(), std::inserter(tt,tt.begin()));
-            search = tt;
         }
 
-        if (search.empty())
+        if (tt.empty())
         {
             return -1;
         }
+        search = tt;
     }
 
     {
@@ -1186,13 +1340,13 @@ int skhttp_res_data_process::do_check_select(std::map<std::string, std::string> 
         if (do_check_mgxjgr(url_para_map, tmp))
         {
             std::set_intersection(search.begin(), search.end(), tmp.begin(), tmp.end(), std::inserter(tt,tt.begin()));
-            search = tt;
         }
 
-        if (search.empty())
+        if (tt.empty())
         {
             return -1;
         }
+        search = tt;
     }
 
     {
@@ -1200,13 +1354,13 @@ int skhttp_res_data_process::do_check_select(std::map<std::string, std::string> 
         if (do_check_zysrgr(url_para_map, tmp))
         {
             std::set_intersection(search.begin(), search.end(), tmp.begin(), tmp.end(), std::inserter(tt,tt.begin()));
-            search = tt;
         }
 
-        if (search.empty())
+        if (tt.empty())
         {
             return -1;
         }
+        search = tt;
     }
 
     {
@@ -1214,13 +1368,13 @@ int skhttp_res_data_process::do_check_select(std::map<std::string, std::string> 
         if (do_check_yylrgr(url_para_map, tmp))
         {
             std::set_intersection(search.begin(), search.end(), tmp.begin(), tmp.end(), std::inserter(tt,tt.begin()));
-            search = tt;
         }
 
-        if (search.empty())
+        if (tt.empty())
         {
             return -1;
         }
+        search = tt;
     }
 
     {
@@ -1228,13 +1382,13 @@ int skhttp_res_data_process::do_check_select(std::map<std::string, std::string> 
         if (do_check_jlrgr(url_para_map, tmp))
         {
             std::set_intersection(search.begin(), search.end(), tmp.begin(), tmp.end(), std::inserter(tt,tt.begin()));
-            search = tt;
         }
 
-        if (search.empty())
+        if (tt.empty())
         {
             return -1;
         }
+        search = tt;
     }
 
 
@@ -1243,13 +1397,13 @@ int skhttp_res_data_process::do_check_select(std::map<std::string, std::string> 
         if (do_check_address(url_para_map, "address", tmp))
         {
             std::set_intersection(search.begin(), search.end(), tmp.begin(), tmp.end(), std::inserter(tt,tt.begin()));
-            search = tt;
         }
 
-        if (search.empty())
+        if (tt.empty())
         {
             return -1;
         }
+        search = tt;
     }
 
     {
@@ -1257,13 +1411,13 @@ int skhttp_res_data_process::do_check_select(std::map<std::string, std::string> 
         if (do_check_address(url_para_map, "address_v", tmp))
         {
             std::set_difference(search.begin(), search.end(), tmp.begin(), tmp.end(), std::inserter(tt,tt.begin()));
-            search = tt;
         }
 
-        if (search.empty())
+        if (tt.empty())
         {
             return -1;
         }
+        search = tt;
     }
 
     {
@@ -1271,13 +1425,13 @@ int skhttp_res_data_process::do_check_select(std::map<std::string, std::string> 
         if (do_check_plate(url_para_map, "plate", tmp))
         {
             std::set_intersection(search.begin(), search.end(), tmp.begin(), tmp.end(), std::inserter(tt,tt.begin()));
-            search = tt;
         }
 
-        if (search.empty())
+        if (tt.empty())
         {
             return -1;
         }
+        search = tt;
     }
 
     {
@@ -1285,20 +1439,48 @@ int skhttp_res_data_process::do_check_select(std::map<std::string, std::string> 
         if (do_check_plate(url_para_map, "plate_v", tmp))
         {
             std::set_difference(search.begin(), search.end(), tmp.begin(), tmp.end(), std::inserter(tt,tt.begin()));
-            search = tt;
         }
 
-        if (search.empty())
+        if (tt.empty())
         {
             return -1;
         }
+        search = tt;
     }
+    
+    //去除停牌的
+    {
+        std::set<std::string> tt;
+        std::set_difference(search.begin(), search.end(), p_data->_block_set.current()->begin(), 
+                p_data->_block_set.current()->end(), std::inserter(tt,tt.begin()));
+        if (tt.empty())
+        {
+            return -1;
+        }
+
+        search = tt;
+    }
+
+    res = search;
 
     return 0;
 }
 
 int skhttp_res_data_process::url_select(std::map<std::string, std::string> & url_para_map, Value & root, Document::AllocatorType & allocator)
 {
+    std::set<std::string> res;
+
+    do_check_select(url_para_map, res);
+    std::map<std::string, std::string> tmp_map;
+
+    for (auto ii = res.begin(); ii != res.end(); ii++)
+    {
+        tmp_map.clear();
+        tmp_map["id"] = *ii;
+
+        url_query_id(tmp_map, root, allocator);
+    }
+
     return HTPP_RES_OK;
 }
 

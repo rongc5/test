@@ -119,22 +119,6 @@ int history_single_dict::load_history_single(const char * file)
         }
 
         {
-            auto ii = p_data->_hsid_date_index.idle()->find(strVec[0]);
-            if (ii == p_data->_hsid_date_index.idle()->end())
-            {
-                std::set<std::string> t_set;
-                t_set.insert(date);
-
-                p_data->_hsid_date_index.idle()->insert(std::make_pair(strVec[0], t_set));
-            }
-            else
-            {
-                ii->second.insert(date);
-            }
-        }
-
-
-        {
             for (uint32_t i = 0; i < single.hs_vec.size(); i++)
             {
                 if (!single.hs_vec[i].diff)
@@ -256,7 +240,6 @@ int history_single_dict::load()
     if (p_data)
     {
         p_data->_hsingle_diff_index.idle_2_current();
-        p_data->_hsid_date_index.idle_2_current();
     }
 
     return 0;
@@ -291,11 +274,6 @@ int history_single_dict::reload()
             {
                 std::vector<std::map<std::string, std::multimap<int, std::string> > > tmp;
                 p_data->_hsingle_diff_index.idle()->swap(tmp);
-            }
-
-            {
-                std::unordered_map<std::string, std::set<std::string>, str_hasher> tmp;
-                p_data->_hsid_date_index.idle()->swap(tmp);
             }
         }
     }

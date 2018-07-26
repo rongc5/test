@@ -26,6 +26,11 @@ class http_base_process: public base_data_process
         virtual void handle_msg(std::shared_ptr<normal_msg> & p_msg);
 
         virtual void handle_timeout(std::shared_ptr<timer_msg> & t_msg);
+
+        virtual void destroy();
+
+        virtual void peer_close();
+
 		
 		/****************************以上是五个口子，以下是供底层调用********************************************/
 

@@ -72,7 +72,7 @@ class skhttp_req_thread:public base_net_thread
             if (id_dic && _quotation_index < id_dic->_id_vec.size())
             {
                 std::string id = id_dic->_id_vec[_single_index];
-                LOG_DEBUG("%d %d %s", _single_index, id_dic->_id_vec.size(), id.c_str());
+                LOG_DEBUG("single_index:%d id_vec.size:%d id:%s", _single_index, id_dic->_id_vec.size(), id.c_str());
                 req_real_single(id);
                 _single_index++;
             }
@@ -103,7 +103,7 @@ class skhttp_req_thread:public base_net_thread
             if (id_dic && _quotation_index < id_dic->_id_vec.size())
             {
                 std::string id = id_dic->_id_vec[_quotation_index];
-                LOG_DEBUG("%d %d %s", _quotation_index, id_dic->_id_vec.size(), id.c_str());
+                LOG_DEBUG("quotation_index: %d id_vec.size: %d id:%s", _quotation_index, id_dic->_id_vec.size(), id.c_str());
                 req_real_quotation(id);
                 _quotation_index++;
             }
@@ -331,9 +331,9 @@ class skhttp_req_thread:public base_net_thread
             }
         }
 
-        virtual void handle_timeout(timer_msg & t_msg)
+        virtual void handle_timeout(std::shared_ptr<timer_msg> & t_msg)
         {
-            if (t_msg._timer_type == TIMER_TYPE_REQ_QUOTATION)
+            if (t_msg->_timer_type == TIMER_TYPE_REQ_QUOTATION)
             {
                 _quotation_index = 0;
                 if (is_real_time())
@@ -341,7 +341,7 @@ class skhttp_req_thread:public base_net_thread
 
                 LOG_DEBUG("handle_timeout: TIMER_TYPE_REQ_QUOTATION");
             }
-            else if (t_msg._timer_type == TIMER_TYPE_REQ_SINGLE)
+            else if (t_msg->_timer_type == TIMER_TYPE_REQ_SINGLE)
             {
                 _single_index = 0;
                 if (is_real_time())

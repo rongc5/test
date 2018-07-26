@@ -53,6 +53,12 @@ class skhttp_res_data_process:public http_base_data_process
 
         void query_history_single(uint32_t last_day_num, std::string &id, Value & root, Document::AllocatorType & allocator);
 
+        void query_history_quotation(uint32_t last_day_num, std::string &id, Value & root, Document::AllocatorType & allocator);
+
+        void query_history_single(std::string & history_date, std::string &id, Value & root, Document::AllocatorType & allocator);
+
+        void query_history_quotation(std::string & history_date, std::string &id, Value & root, Document::AllocatorType & allocator);
+
     private:
         bool do_check_end(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res);
 

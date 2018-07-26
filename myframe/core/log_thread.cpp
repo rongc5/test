@@ -275,6 +275,7 @@ void log_thread::obj_process()
 {
     int  nfds = ::epoll_wait(_epoll_fd, _epoll_events, _epoll_size, DEFAULT_EPOLL_WAITE);
     if (-1 == nfds){
+        //PDEBUG("errno: %s\n", strerror(errno));
         return;
     }
 
