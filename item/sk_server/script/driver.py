@@ -261,11 +261,11 @@ def do_select(parser):
         return
 
     res_str = res['body'].strip()
+    res_str = res_str.decode('gb18030')
+    res_str = json.loads(res_str)
     if res_str:
         #print res_str
-
-        if parser.outfile:
-            log_write(parser.outfile, res_str)
+        print_res(res_str, parser)
 
 
 def do_search():

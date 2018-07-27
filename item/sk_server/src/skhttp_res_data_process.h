@@ -78,7 +78,11 @@ class skhttp_res_data_process:public http_base_data_process
 
         bool do_check_value(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res);
 
+        bool do_check_value_num(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res);
+
         bool do_check_cir_value(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res);
+
+        bool do_check_cir_value_num(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res);
 
         bool do_check_mgxj(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res);
 
