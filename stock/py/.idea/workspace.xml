@@ -27,10 +27,10 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="load_plate.py" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/load_plate.py">
+      <file leaf-file-name="load_ids.py" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/load_ids.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="433" column="43" selection-start="12055" selection-end="12055" vertical-scroll-proportion="0.8882353" vertical-offset="7925" max-vertical-offset="8341">
+            <state line="680" column="72" selection-start="21053" selection-end="21053" vertical-scroll-proportion="0.8903846" vertical-offset="12457" max-vertical-offset="13072">
               <folding>
                 <element signature="e#39#50#0" expanded="true" />
               </folding>
@@ -50,12 +50,12 @@
       <list>
         <option value="$PROJECT_DIR$/stock.ini" />
         <option value="$PROJECT_DIR$/load_finance.py" />
-        <option value="$PROJECT_DIR$/load_ids.py" />
         <option value="$PROJECT_DIR$/count_detail.py" />
         <option value="$PROJECT_DIR$/load_detail.py" />
-        <option value="$PROJECT_DIR$/stock_infoa.py" />
         <option value="$PROJECT_DIR$/load_plates.py" />
         <option value="$PROJECT_DIR$/load_plate.py" />
+        <option value="$PROJECT_DIR$/stock_infoa.py" />
+        <option value="$PROJECT_DIR$/load_ids.py" />
       </list>
     </option>
   </component>
@@ -91,6 +91,7 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -111,18 +112,22 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="recentsLimit" value="5" />
     <property name="options.lastSelected" value="File.Encoding" />
+    <property name="recentsLimit" value="5" />
     <property name="last_opened_file_path" value="D:/Python27/python.exe" />
     <property name="FullScreen" value="false" />
-    <property name="options.splitter.details.proportions" value="0.2" />
     <property name="options.searchVisible" value="true" />
+    <property name="options.splitter.details.proportions" value="0.2" />
+  </component>
+  <component name="PyConsoleOptionsProvider">
+    <option name="myPythonConsoleState">
+      <PyConsoleSettings />
+    </option>
   </component>
   <component name="RunManager" selected="Python.load_plate">
     <configuration default="false" name="load_plates" type="PythonConfigurationType" factoryName="Python" temporary="true">
@@ -247,9 +252,6 @@
       <option name="PARAMETERS" value="" />
       <method />
     </configuration>
-    <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug" singleton="true">
-      <method />
-    </configuration>
     <configuration default="true" type="tests" factoryName="Unittests">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -271,6 +273,9 @@
       <option name="PUREUNITTEST" value="true" />
       <option name="PARAMS" value="" />
       <option name="USE_PARAM" value="false" />
+      <method />
+    </configuration>
+    <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug" singleton="true">
       <method />
     </configuration>
     <configuration default="true" type="tests" factoryName="Doctests">
@@ -342,7 +347,7 @@
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.28863636" sideWeight="0.6700855" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2931818" sideWeight="0.6700855" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32991454" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
@@ -369,6 +374,13 @@
     <breakpoint-manager />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/load_plate.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="433" column="43" selection-start="12055" selection-end="12055" vertical-scroll-proportion="0.0" vertical-offset="285" max-vertical-offset="8341">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/stock_infoa.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="1115" column="28" selection-start="34238" selection-end="34238" vertical-scroll-proportion="0.0" vertical-offset="21185" max-vertical-offset="38399">
@@ -391,11 +403,6 @@
         <state line="348" column="4" selection-start="10758" selection-end="10758" vertical-scroll-proportion="0.33211008" vertical-offset="6165" max-vertical-offset="7657" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/load_ids.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="88" column="30" selection-start="9208" selection-end="9208" vertical-scroll-proportion="0.09357798" vertical-offset="1621" max-vertical-offset="2166" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/count_detail.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="38" column="26" selection-start="3337" selection-end="3337" vertical-scroll-proportion="0.79082566" vertical-offset="291" max-vertical-offset="836" />
@@ -406,16 +413,23 @@
         <state line="60" column="8" selection-start="1881" selection-end="1881" vertical-scroll-proportion="0.33211008" vertical-offset="959" max-vertical-offset="12027" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/stock_infoa.py">
+    <entry file="file://$PROJECT_DIR$/load_plate.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="530" column="28" selection-start="67125" selection-end="67125" vertical-scroll-proportion="0.7937385" vertical-offset="9639" max-vertical-offset="10184">
+        <state line="120" column="41" selection-start="15284" selection-end="15284" vertical-scroll-proportion="0.86372006" vertical-offset="1811" max-vertical-offset="2394">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/load_plate.py">
+    <entry file="file://$PROJECT_DIR$/stock_infoa.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="433" column="43" selection-start="12055" selection-end="12055" vertical-scroll-proportion="0.8882353" vertical-offset="7925" max-vertical-offset="8341">
+        <state line="1240" column="31" selection-start="38648" selection-end="38671" vertical-scroll-proportion="-8.44" vertical-offset="23045" max-vertical-offset="37886">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/load_ids.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="680" column="72" selection-start="21053" selection-end="21053" vertical-scroll-proportion="0.8903846" vertical-offset="12457" max-vertical-offset="13072">
           <folding>
             <element signature="e#39#50#0" expanded="true" />
           </folding>
