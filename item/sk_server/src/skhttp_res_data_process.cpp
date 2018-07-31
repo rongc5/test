@@ -428,18 +428,14 @@ void skhttp_res_data_process::query_history_quotation(uint32_t last_day_num, std
 
             {
                 key.SetString("end", allocator); 
-
-                snprintf(t_buf, sizeof(t_buf), "%.2f", ii->second.end);
-                value.SetString(t_buf, allocator); 
+                value.SetString(ii->second.end.c_str(), allocator); 
 
                 v.AddMember(key, value, allocator);
             }
 
             {
                 key.SetString("range_percent", allocator); 
-
-                snprintf(t_buf, sizeof(t_buf), "%.2f", ii->second.range_percent);
-                value.SetString(t_buf, allocator); 
+                value.SetString(ii->second.range_percent.c_str(), allocator); 
 
                 v.AddMember(key, value, allocator);
             }
@@ -476,18 +472,14 @@ void skhttp_res_data_process::query_history_quotation(std::string & history_date
 
         {
             key.SetString("end", allocator); 
-
-            snprintf(t_buf, sizeof(t_buf), "%.2f", ii->second.end);
-            value.SetString(t_buf, allocator); 
+            value.SetString(ii->second.end.c_str(), allocator); 
 
             v.AddMember(key, value, allocator);
         }
 
         {
             key.SetString("range_percent", allocator); 
-
-            snprintf(t_buf, sizeof(t_buf), "%.2f", ii->second.range_percent);
-            value.SetString(t_buf, allocator); 
+            value.SetString(ii->second.range_percent.c_str(), allocator); 
 
             v.AddMember(key, value, allocator);
         }

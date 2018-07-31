@@ -90,7 +90,12 @@ class skhttp_req_thread:public base_net_thread
                     add_timer(t_msg);
                 }
             }
-            else
+        }
+
+        void add_single_timer()
+        {
+            proc_data* p_data = proc_data::instance();
+            if (p_data)
             {
                 _req_single = false;
                 std::shared_ptr<timer_msg> t_msg(new timer_msg);
@@ -100,7 +105,6 @@ class skhttp_req_thread:public base_net_thread
                 t_msg->_obj_id = OBJ_ID_THREAD;
                 add_timer(t_msg);
             }
-
         }
 
 
@@ -136,7 +140,12 @@ class skhttp_req_thread:public base_net_thread
                     add_timer(t_msg);
                 }
             }
-            else
+        }
+
+        void add_quotation_timer()
+        {
+            proc_data* p_data = proc_data::instance();
+            if (p_data)
             {
                 _req_quotation = false;
                 std::shared_ptr<timer_msg> t_msg(new timer_msg);
@@ -146,7 +155,6 @@ class skhttp_req_thread:public base_net_thread
                 t_msg->_obj_id = OBJ_ID_THREAD;
                 add_timer(t_msg);
             }
-
         }
 
         void first_in_day()
@@ -352,6 +360,8 @@ class skhttp_req_thread:public base_net_thread
                         _quotation_index = 0;
                         if (is_real_time())
                             _req_quotation = true;
+                        else
+                            add_quotation_timer();
 
                         LOG_DEBUG("handle_timeout: TIMER_TYPE_REQ_QUOTATION");
                     }
@@ -361,6 +371,8 @@ class skhttp_req_thread:public base_net_thread
                         _single_index = 0;
                         if (is_real_time())
                             _req_single = true;
+                        else
+                            add_single_timer();
 
                         LOG_DEBUG("handle_timeout: TIMER_TYPE_REQ_SINGLE");
                     }
@@ -380,6 +392,8 @@ class skhttp_req_thread:public base_net_thread
                         p_data->_hq_sum_range_percent_index.idle_2_current();
                         p_data->_hq_sum_change_rate_index.idle_2_current();
                         p_data->_rquoation_dict_index.idle_2_current();
+
+                        add_quotation_timer();
                     }
                     break;
                 case TIMER_TYPE_SINGLE_IDLE_2_CURRENT:
@@ -389,6 +403,8 @@ class skhttp_req_thread:public base_net_thread
                         p_data->_rsingle_dict_index.idle_2_current();
 
                         LOG_DEBUG("_rsingle_diff_index idle_2_current");
+
+                        add_single_timer();
                     }
                     break;
             }
