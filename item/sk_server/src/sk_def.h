@@ -35,6 +35,22 @@ struct single_t
     }
 };
 
+struct finance_t
+{
+    std::string id;
+    std::string pe;
+    std::string pb;
+    std::string cir_value;
+    std::string value;
+    std::string mgsy;
+    std::string mgxj;
+    std::string mgsygr;
+    std::string mgxjgr;
+    std::string zysrgr;
+    std::string yylrgr;
+    std::string jlrgr;
+    std::string time_str;
+};
 
 struct history_single_vec
 {
@@ -46,56 +62,25 @@ struct quotation_t
     std::string id;
     std::string name;
 
-    float start;
-    float end;
-    float high;
-    float low;
-    float last_closed;
+    std::string start;
+    std::string end;
+    std::string high;
+    std::string low;
+    std::string last_closed;
 
-    uint64_t vol;
-    uint64_t buy_vol;
-    uint64_t sell_vol;
+    std::string vol;
+    std::string buy_vol;
+    std::string sell_vol;
 
-    float swing;
+    std::string swing;
 
-    float change_rate;
-    float range_percent;
+    std::string change_rate;
+    std::string range_percent;
 
-    float down_pointer;
-    float up_pointer;
-
-    float total_price;
-    bool blocked;
-
-
-    quotation_t()
-    {
-        reset();
-    }
-
-    void reset()
-    {
-        id.clear();
-
-        name.clear();
-
-        start = 0;
-        end = 0;
-        high = 0;
-        low = 0;
-        last_closed = 0;
-
-        vol = 0;
-        sell_vol = 0;
-        buy_vol = 0;
-        down_pointer = 0;
-        up_pointer = 0;
-
-        swing = 0;
-        change_rate = 0;
-        range_percent = 0;
-        blocked = false;
-    }
+    std::string down_pointer;
+    std::string up_pointer;
+    std::string avg_price;
+    std::string total_price;
 };
 
 
@@ -103,7 +88,11 @@ struct quotation_t
 #define TIMER_TYPE_REQ_QUOTATION 10001
 #define TIMER_TYPE_REQ_SINGLE 10002
 
-#define TIMER_TYPE_HTTP_REQ 10002
+#define TIMER_TYPE_QUOTATION_IDLE_2_CURRENT 10003
+#define TIMER_TYPE_SINGLE_IDLE_2_CURRENT 10004
+
+#define TIMER_TYPE_HTTP_REQ 10009
+
 
 #define HTPP_RES_OK 1000
 #define HTPP_RES_ERR 1001

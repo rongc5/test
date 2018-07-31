@@ -9,7 +9,6 @@
 #include "base_def.h"
 #include "http_res_process.h"
 #include "proc_data.h"
-#include "real_quotation_dict.h"
 #include "finance_dict.h"
 #include "plate_dict.h"
 #include "addr_dict.h"
@@ -47,16 +46,82 @@ void skhttp_res_data_process::query_quotation(std::string &id, Value & root, Doc
     Value value(kStringType);
 
     proc_data* p_data = proc_data::instance();
-    auto ii = p_data->_rquoation_dict->current()->_id_dict.find(id);
-    if (ii != p_data->_rquoation_dict->current()->_id_dict.end())
+    auto ii = p_data->_rquoation_dict_index.current()->find(id);
+    if (ii != p_data->_rquoation_dict_index.current()->end())
     {
-        for (auto ft: *(ii->second.current()))
         {
-            if (!strncmp(ft.first.c_str(), "id", strlen("id")))
-                continue;
+            key.SetString("name", allocator); 
+            value.SetString(ii->second.name.c_str(), allocator); 
 
-            key.SetString(ft.first.c_str(), allocator); 
-            value.SetString(ft.second.c_str(), allocator); 
+            root.AddMember(key, value, allocator);
+        }
+
+        {
+            key.SetString("start", allocator); 
+            value.SetString(ii->second.start.c_str(), allocator); 
+
+            root.AddMember(key, value, allocator);
+        }
+
+        {
+            key.SetString("end", allocator); 
+            value.SetString(ii->second.end.c_str(), allocator); 
+
+            root.AddMember(key, value, allocator);
+        }
+
+        {
+            key.SetString("high", allocator); 
+            value.SetString(ii->second.high.c_str(), allocator); 
+
+            root.AddMember(key, value, allocator);
+        }
+
+        {
+            key.SetString("low", allocator); 
+            value.SetString(ii->second.low.c_str(), allocator); 
+
+            root.AddMember(key, value, allocator);
+        }
+
+        {
+            key.SetString("last_closed", allocator); 
+            value.SetString(ii->second.last_closed.c_str(), allocator); 
+
+            root.AddMember(key, value, allocator);
+        }
+
+        {
+            key.SetString("change_rate", allocator); 
+            value.SetString(ii->second.change_rate.c_str(), allocator); 
+
+            root.AddMember(key, value, allocator);
+        }
+
+        {
+            key.SetString("range_percent", allocator); 
+            value.SetString(ii->second.range_percent.c_str(), allocator); 
+
+            root.AddMember(key, value, allocator);
+        }
+
+        {
+            key.SetString("down_pointer", allocator); 
+            value.SetString(ii->second.down_pointer.c_str(), allocator); 
+
+            root.AddMember(key, value, allocator);
+        }
+
+        {
+            key.SetString("up_pointer", allocator); 
+            value.SetString(ii->second.up_pointer.c_str(), allocator); 
+
+            root.AddMember(key, value, allocator);
+        }
+
+        {
+            key.SetString("avg_price", allocator); 
+            value.SetString(ii->second.avg_price.c_str(), allocator); 
 
             root.AddMember(key, value, allocator);
         }
@@ -85,9 +150,9 @@ void skhttp_res_data_process::query_single(std::string &id, Value & root, Docume
     char t_buf[SIZE_LEN_64];
     proc_data* p_data = proc_data::instance();
     strategy_conf * strategy = p_data->_conf->_strategy->current();
-    auto ii = p_data->_rsingle_dict->current()->_id_dict.find(id);
+    auto ii = p_data->_rsingle_dict_index.current()->find(id);
 
-    if (ii != p_data->_rsingle_dict->current()->_id_dict.end())
+    if (ii != p_data->_rsingle_dict_index.current()->end())
     {
         for (uint32_t i = 0; i < strategy->real_single_scale.size(); i++)
         {
@@ -97,7 +162,7 @@ void skhttp_res_data_process::query_single(std::string &id, Value & root, Docume
             snprintf(t_buf, sizeof(t_buf), "vol_%d", i);
             key.SetString(t_buf, allocator);
 
-            for (auto ft: *(ii->second.current()))
+            for (auto ft: ii->second)
             {
                 if (index < (int)ft.size())
                 {
@@ -158,19 +223,82 @@ void skhttp_res_data_process::query_finance(std::string &id, Value & root, Docum
     Value value(kStringType);
 
     proc_data* p_data = proc_data::instance();
-    auto ii = p_data->_finance_dict->current()->_id_dict.find(id);
-    if (ii != p_data->_finance_dict->current()->_id_dict.end())
+    auto ii = p_data->_finance_dict_index.current()->find(id);
+    if (ii != p_data->_finance_dict_index.current()->end())
     {
-        for (auto ft:ii->second)
         {
-            if (!strncmp(ft.first.c_str(), "id", strlen("id")))
-                continue;
+            key.SetString("pe", allocator); 
+            value.SetString(ii->second->pe.c_str(), allocator); 
 
-            if (!strncmp(ft.first.c_str(), "time_str", strlen("time_str")))
-                continue;
+            root.AddMember(key, value, allocator);
+        }
 
-            key.SetString(ft.first.c_str(), allocator); 
-            value.SetString(ft.second.c_str(), allocator); 
+        {
+            key.SetString("pb", allocator); 
+            value.SetString(ii->second->pb.c_str(), allocator); 
+
+            root.AddMember(key, value, allocator);
+        }
+
+        {
+            key.SetString("cir_value", allocator); 
+            value.SetString(ii->second->cir_value.c_str(), allocator); 
+
+            root.AddMember(key, value, allocator);
+        }
+
+        {
+            key.SetString("value", allocator); 
+            value.SetString(ii->second->value.c_str(), allocator); 
+
+            root.AddMember(key, value, allocator);
+        }
+
+        {
+            key.SetString("mgsy", allocator); 
+            value.SetString(ii->second->mgsy.c_str(), allocator); 
+
+            root.AddMember(key, value, allocator);
+        }
+
+        {
+            key.SetString("mgxj", allocator); 
+            value.SetString(ii->second->mgxj.c_str(), allocator); 
+
+            root.AddMember(key, value, allocator);
+        }
+
+        {
+            key.SetString("mgsygr", allocator); 
+            value.SetString(ii->second->mgsygr.c_str(), allocator); 
+
+            root.AddMember(key, value, allocator);
+        }
+
+        {
+            key.SetString("mgxjgr", allocator); 
+            value.SetString(ii->second->mgxjgr.c_str(), allocator); 
+
+            root.AddMember(key, value, allocator);
+        }
+
+        {
+            key.SetString("zysrgr", allocator); 
+            value.SetString(ii->second->zysrgr.c_str(), allocator); 
+
+            root.AddMember(key, value, allocator);
+        }
+
+        {
+            key.SetString("yylrgr", allocator); 
+            value.SetString(ii->second->yylrgr.c_str(), allocator); 
+
+            root.AddMember(key, value, allocator);
+        }
+
+        {
+            key.SetString("jlrgr", allocator); 
+            value.SetString(ii->second->jlrgr.c_str(), allocator); 
 
             root.AddMember(key, value, allocator);
         }

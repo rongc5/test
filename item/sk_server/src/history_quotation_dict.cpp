@@ -89,20 +89,18 @@ int history_quotation_dict::load_history_quoation(const char * file)
         quotation_t qt;
 
         qt.id = strVec[0];
-        qt.start = atof(strVec[1].c_str());
-        qt.end = atof(strVec[2].c_str());
-        qt.high = atof(strVec[3].c_str());
-        qt.low = atof(strVec[4].c_str());
-        qt.last_closed = atof(strVec[5].c_str());
-        qt.vol = atoi(strVec[6].c_str());
-        qt.buy_vol = atoi(strVec[7].c_str());
-        qt.sell_vol = atoi(strVec[8].c_str());
-        qt.swing = atof(strVec[9].c_str());
-        qt.change_rate = atof(strVec[10].c_str());
-        qt.range_percent = atof(strVec[11].c_str());
-        qt.total_price = atof(strVec[12].c_str());
-        qt.blocked = (bool)atoi(strVec[13].c_str());
-        
+        qt.start = strVec[1];
+        qt.end = strVec[2];
+        qt.high = strVec[3];
+        qt.low = strVec[4];
+        qt.last_closed = strVec[5];
+        qt.vol = strVec[6];
+        qt.buy_vol = strVec[7];
+        qt.sell_vol = strVec[8];
+        qt.swing = strVec[9];
+        qt.change_rate = strVec[10];
+        qt.range_percent = strVec[11];
+        qt.total_price = strVec[12];
 
         creat_key(date, qt.id, key);
         auto ii = _id_dict.find(key);
@@ -131,12 +129,12 @@ int history_quotation_dict::load_history_quoation(const char * file)
             {
                 std::multimap<float, std::string> t_map;
 
-                t_map.insert(std::make_pair(qt.end, qt.id));
+                t_map.insert(std::make_pair(atof(qt.end.c_str()), qt.id));
                 p_data->_hqend_index.idle()->insert(std::make_pair(date, t_map));
             }
             else
             {
-                ii->second.insert(std::make_pair(qt.end, qt.id));
+                ii->second.insert(std::make_pair(atof(qt.end.c_str()), qt.id));
             }
         }
 
@@ -146,12 +144,12 @@ int history_quotation_dict::load_history_quoation(const char * file)
             {
                 std::multimap<float, std::string> t_map;
 
-                t_map.insert(std::make_pair(qt.change_rate, qt.id));
+                t_map.insert(std::make_pair(atof(qt.change_rate.c_str()), qt.id));
                 p_data->_hqchange_rate_index.idle()->insert(std::make_pair(date, t_map));
             }
             else
             {
-                ii->second.insert(std::make_pair(qt.change_rate, qt.id));
+                ii->second.insert(std::make_pair(atof(qt.change_rate.c_str()), qt.id));
             }
         }
 
@@ -161,45 +159,45 @@ int history_quotation_dict::load_history_quoation(const char * file)
             {
                 std::multimap<float, std::string> t_map;
 
-                t_map.insert(std::make_pair(qt.range_percent, qt.id));
+                t_map.insert(std::make_pair(atof(qt.range_percent.c_str()), qt.id));
                 p_data->_hqrange_percent_index.idle()->insert(std::make_pair(date, t_map));
             }
             else
             {
-                ii->second.insert(std::make_pair(qt.range_percent, qt.id));
+                ii->second.insert(std::make_pair(atof(qt.range_percent.c_str()), qt.id));
             }
         }
 
-        if (qt.down_pointer)
+        if (atof(qt.down_pointer.c_str()))
         {
             auto ii = p_data->_hqdown_pointer_index.idle()->find(date);
             if (ii == p_data->_hqdown_pointer_index.idle()->end())
             {
                 std::multimap<float, std::string> t_map;
 
-                t_map.insert(std::make_pair(qt.down_pointer, qt.id));
+                t_map.insert(std::make_pair(atof(qt.down_pointer.c_str()), qt.id));
                 p_data->_hqdown_pointer_index.idle()->insert(std::make_pair(date, t_map));
             }
             else
             {
-                ii->second.insert(std::make_pair(qt.down_pointer, qt.id));
+                ii->second.insert(std::make_pair(atof(qt.down_pointer.c_str()), qt.id));
             }
         }
 
-        if (qt.up_pointer)
+        if (atof(qt.up_pointer.c_str()))
         {
             auto ii = p_data->_hqup_pointer_index.idle()->find(date);
             if (ii == p_data->_hqup_pointer_index.idle()->end())
             {
                 std::multimap<float, std::string> t_map;
 
-                t_map.insert(std::make_pair(qt.up_pointer, qt.id));
+                t_map.insert(std::make_pair(atof(qt.up_pointer.c_str()), qt.id));
                 p_data->_hqup_pointer_index.idle()->insert(std::make_pair(date, t_map));
             }
             else
             {
 
-                ii->second.insert(std::make_pair(qt.up_pointer, qt.id));
+                ii->second.insert(std::make_pair(atof(qt.up_pointer.c_str()), qt.id));
             }
         }
     }
@@ -209,6 +207,7 @@ int history_quotation_dict::load_history_quoation(const char * file)
 
 void history_quotation_dict::update_sum_index()
 {
+    char t_buf[SIZE_LEN_512];
     proc_data* p_data = proc_data::instance();
     if (!p_data)
     {
@@ -224,6 +223,8 @@ void history_quotation_dict::update_sum_index()
         {
             const std::string & id = it->first;
             quotation_t qt;
+            float range_percent = 0;
+            float change_rate = 0;
 
             for (auto iii = it->second.lower_bound(date); iii != it->second.end(); iii++)
             {
@@ -231,12 +232,18 @@ void history_quotation_dict::update_sum_index()
                 auto tt = _id_dict.find(key);
                 if (tt != _id_dict.end())
                 {
-                    qt.range_percent += tt->second.range_percent;
-                    qt.change_rate += tt->second.change_rate;
+                    range_percent += atof(tt->second.range_percent.c_str());
+                    change_rate += atof(tt->second.change_rate.c_str());
                 }
             }
 
             {
+                snprintf(t_buf, sizeof(t_buf), "%.2f", range_percent);
+                qt.range_percent.append(t_buf);
+
+                snprintf(t_buf, sizeof(t_buf), "%.2f", change_rate);
+                qt.change_rate.append(t_buf);
+
                 creat_key(date, id, key);
                 _id_sum_dict.insert(std::make_pair(key, qt));
             }

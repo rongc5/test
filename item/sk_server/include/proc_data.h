@@ -3,12 +3,10 @@
 
 #include "base_reload.h"
 #include "sk_conf.h"
-#include "real_single_dict.h"
-#include "real_quotation_dict.h"
+#include "finance_dict.h"
 
 class ua_dict;
 class recommend_dict;
-class finance_dict;
 class ban_dict;
 class id_dict;
 class addr_dict_split;
@@ -38,8 +36,6 @@ class proc_data:public reload_inf
 
         reload_mgr<recommend_dict> * _recommend_dict;
 
-        reload_mgr<finance_dict> * _finance_dict;
-
         reload_mgr<ban_dict> * _ban_dict;
 
         reload_mgr<addr_dict_split> * _addr_dict_split;
@@ -49,10 +45,6 @@ class proc_data:public reload_inf
         reload_mgr<plate_dict_split> * _plate_dict_split;
 
         reload_mgr<plate_dict> * _plate_dict;
-        
-        reload_mgr<real_single_dict> * _rsingle_dict;
-
-        reload_mgr<real_quotation_dict> * _rquoation_dict;
 
         reload_mgr<history_single_dict> * _hsingle_dict;
 
@@ -62,6 +54,15 @@ class proc_data:public reload_inf
 
         sk_conf * _conf;
 
+        finance_dict  _finance_dict;
+
+    public:
+        //index
+        ToBufferMgr<std::unordered_map<std::string, std::shared_ptr<finance_t>, str_hasher> > _finance_dict_index;
+
+        ToBufferMgr<std::unordered_map<std::string, std::deque<std::vector<single_t> >,str_hasher> > _rsingle_dict_index;
+
+        ToBufferMgr<std::unordered_map<std::string, quotation_t,str_hasher> > _rquoation_dict_index;
 
     public:
         //search index;

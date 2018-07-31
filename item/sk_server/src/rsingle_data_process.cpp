@@ -11,7 +11,6 @@
 #include "proc_data.h"
 #include "common_domain.h"
 #include "sk_conf.h"
-#include "real_single_dict.h"
 #include "strategy_conf.h"
 #include "id_dict.h"
 #include "history_single_dict.h"
@@ -58,14 +57,10 @@ int rsingle_data_process::get_single_index(std::string &id, uint32_t index)
     float end = 0;
 
     {
-        auto it = p_data->_rquoation_dict->current()->_id_dict.find(id); 
-        if (it != p_data->_rquoation_dict->current()->_id_dict.end())
+        auto it = p_data->_rquoation_dict_index.current()->find(id); 
+        if (it != p_data->_rquoation_dict_index.current()->end())
         {    
-            if (has_key<std::string, std::string>(*(it->second.current()), "end"))
-            {    
-                end = atof((*(it->second.current()))["end"].c_str());
-
-            }
+            end = atof(it->second.end.c_str());
         }
     }
 
@@ -83,7 +78,7 @@ int rsingle_data_process::get_single_index(std::string &id, uint32_t index)
         auto it = p_data->_hquoation_dict->current()->_id_dict.find(key);
         if (it != p_data->_hquoation_dict->current()->_id_dict.end())
         {
-            end = it->second.end;
+            end = atof(it->second.end.c_str());
         }
     }
 
@@ -118,15 +113,14 @@ void rsingle_data_process::msg_recv_finish()
     _recv_buf.clear();
     proc_data * p_data = proc_data::instance();
     strategy_conf * strategy = p_data->_conf->_strategy->current();
+    std::deque<std::vector<single_t> > st;
 
-    auto it = p_data->_rsingle_dict->current()->_id_dict.find(_id);
-    if (it == p_data->_rsingle_dict->current()->_id_dict.end())
+    auto it = p_data->_rsingle_dict_index.current()->find(_id);
+    if (it != p_data->_rsingle_dict_index.current()->end())
     {
-        return;
+        st = it->second;
     }
 
-    std::deque<std::vector<single_t> > * st = it->second.idle();
-    *st = *it->second.current();
     std::vector<single_t> single, tmp_single;
     //不是标准json
     
@@ -148,34 +142,35 @@ void rsingle_data_process::msg_recv_finish()
     {
         int index = get_single_index(_id, i);
         if (index < 0 || index > (int)tmp_single.size())
-            break;
-
-        single.push_back(tmp_single[index]);
+        {
+            single_t tmp_st;
+            single.push_back(tmp_st);
+        }
+        else
+        {
+            single.push_back(tmp_single[index]);
+        }
     }
 
-    if (single.empty())
+    if (st.empty() || (*(st.rbegin()))[0] != single[0])
     {
-        return;
-    }
-
-
-    if (st->empty() || (*(st->rbegin()))[0] != single[0])
-    {
-        st->push_back(single);
+        st.push_back(single);
     }
 
     if (p_data->_conf->_strategy->current()->real_single_deque_length && 
-            st->size() > p_data->_conf->_strategy->current()->real_single_deque_length)
+            st.size() > p_data->_conf->_strategy->current()->real_single_deque_length)
     {
-        st->pop_front();
+        st.pop_front();
     }
 
-    it->second.idle_2_current();
+    {
+        p_data->_rsingle_dict_index.idle()->insert(std::make_pair(_id, st));
+    }
 
     for (uint32_t i = 0; i< single.size(); i++)
     {
         if (!single[i].diff)
-            break;
+            continue;
 
         if (i >= p_data->_rsingle_diff_index.idle()->size())
         {
@@ -383,16 +378,6 @@ void rsingle_data_process::destroy()
             common_obj_container * net_container = connect->get_net_container();
             net_container->get_domain()->delete_domain(_url_info.domain);
         }
-    }
-
-    proc_data* p_data = proc_data::instance();
-    id_dict * id_dic = p_data->_id_dict->current();
-    if (id_dic && id_dic->_id_vec.size() && id_dic->_id_vec[id_dic->_id_vec.size() - 1] == _id)
-    {
-        p_data->_rsingle_diff_index.idle_2_current();
-        p_data->_hsingle_sum_diff_index.idle_2_current();
-
-        LOG_DEBUG("_rsingle_diff_index idle_2_current");
     }
 }
 

@@ -12,7 +12,6 @@
 #include "ua_dict.h"
 #include "id_dict.h"
 #include "common_obj_container.h"
-#include "real_quotation_dict.h"
 #include "rsingle_data_process.h"
 #include "holiday_dict.h"
 
@@ -69,12 +68,27 @@ class skhttp_req_thread:public base_net_thread
             }
 
             id_dict * id_dic = p_data->_id_dict->current();
-            if (id_dic && _quotation_index < id_dic->_id_vec.size())
+            if (id_dic && _single_index < id_dic->_id_vec.size())
             {
+                if (!_single_index)
+                {
+                    p_data->_rsingle_dict_index.idle()->clear();
+                }
+
                 std::string id = id_dic->_id_vec[_single_index];
                 LOG_DEBUG("single_index:%d id_vec.size:%d id:%s", _single_index, id_dic->_id_vec.size(), id.c_str());
                 req_real_single(id);
                 _single_index++;
+
+                if (_single_index >= id_dic->_id_vec.size())
+                {
+                    std::shared_ptr<timer_msg> t_msg(new timer_msg);
+
+                    t_msg->_timer_type = TIMER_TYPE_SINGLE_IDLE_2_CURRENT;
+                    t_msg->_time_length = p_data->_conf->_strategy->current()->req_http_timeout + 20;
+                    t_msg->_obj_id = OBJ_ID_THREAD;
+                    add_timer(t_msg);
+                }
             }
             else
             {
@@ -102,10 +116,25 @@ class skhttp_req_thread:public base_net_thread
             id_dict * id_dic = p_data->_id_dict->current();
             if (id_dic && _quotation_index < id_dic->_id_vec.size())
             {
+                if (!_quotation_index)
+                {
+                    p_data->_rquoation_dict_index.idle()->clear();
+                }
+
                 std::string id = id_dic->_id_vec[_quotation_index];
                 LOG_DEBUG("quotation_index: %d id_vec.size: %d id:%s", _quotation_index, id_dic->_id_vec.size(), id.c_str());
                 req_real_quotation(id);
                 _quotation_index++;
+
+                if (_quotation_index >= id_dic->_id_vec.size())
+                {
+                    std::shared_ptr<timer_msg> t_msg(new timer_msg);
+
+                    t_msg->_timer_type = TIMER_TYPE_QUOTATION_IDLE_2_CURRENT;
+                    t_msg->_time_length = p_data->_conf->_strategy->current()->req_http_timeout + 20;
+                    t_msg->_obj_id = OBJ_ID_THREAD;
+                    add_timer(t_msg);
+                }
             }
             else
             {
@@ -271,15 +300,6 @@ class skhttp_req_thread:public base_net_thread
             if (p_data)
             {
                 {
-                    auto it = p_data->_rquoation_dict->current()->_id_dict.find(id);
-                    if (it == p_data->_rquoation_dict->current()->_id_dict.end())
-                    {
-                        LOG_DEBUG("id: %s is not in _rquoation_dict", id.c_str());
-                        return;
-                    }
-                }
-
-                {
                     auto it = p_data->_block_set.current()->find(id);
                     if (it != p_data->_block_set.current()->end())
                     {
@@ -304,15 +324,6 @@ class skhttp_req_thread:public base_net_thread
             if (p_data)
             {
                 {
-                    auto it = p_data->_rsingle_dict->current()->_id_dict.find(id);
-                    if (it == p_data->_rsingle_dict->current()->_id_dict.end())
-                    {
-                        LOG_DEBUG("id: %s is not in _rsingle_dict", id.c_str());
-                        return;
-                    }
-                }
-
-                {
                     auto it = p_data->_block_set.current()->find(id);
                     if (it != p_data->_block_set.current()->end())
                     {
@@ -333,21 +344,53 @@ class skhttp_req_thread:public base_net_thread
 
         virtual void handle_timeout(std::shared_ptr<timer_msg> & t_msg)
         {
-            if (t_msg->_timer_type == TIMER_TYPE_REQ_QUOTATION)
+            proc_data* p_data = proc_data::instance();
+            switch (t_msg->_timer_type)
             {
-                _quotation_index = 0;
-                if (is_real_time())
-                    _req_quotation = true;
+                case TIMER_TYPE_REQ_QUOTATION:
+                    {
+                        _quotation_index = 0;
+                        if (is_real_time())
+                            _req_quotation = true;
 
-                LOG_DEBUG("handle_timeout: TIMER_TYPE_REQ_QUOTATION");
-            }
-            else if (t_msg->_timer_type == TIMER_TYPE_REQ_SINGLE)
-            {
-                _single_index = 0;
-                if (is_real_time())
-                    _req_single = true;
+                        LOG_DEBUG("handle_timeout: TIMER_TYPE_REQ_QUOTATION");
+                    }
+                    break;
+                case TIMER_TYPE_REQ_SINGLE:
+                    {
+                        _single_index = 0;
+                        if (is_real_time())
+                            _req_single = true;
 
-                LOG_DEBUG("handle_timeout: TIMER_TYPE_REQ_SINGLE");
+                        LOG_DEBUG("handle_timeout: TIMER_TYPE_REQ_SINGLE");
+                    }
+                    break;
+                case TIMER_TYPE_QUOTATION_IDLE_2_CURRENT:
+                    {
+                        LOG_DEBUG("_block_set idle_2_current");
+
+                        p_data->_block_set.idle_2_current();
+                        p_data->_end_index.idle_2_current();
+                        p_data->_change_rate_index.idle_2_current();
+                        p_data->_range_percent_index.idle_2_current();
+                        p_data->_down_pointer_index.idle_2_current();
+                        p_data->_up_pointer_index.idle_2_current();
+                        p_data->_end_avg_price_index.idle_2_current();
+
+                        p_data->_hq_sum_range_percent_index.idle_2_current();
+                        p_data->_hq_sum_change_rate_index.idle_2_current();
+                        p_data->_rquoation_dict_index.idle_2_current();
+                    }
+                    break;
+                case TIMER_TYPE_SINGLE_IDLE_2_CURRENT:
+                    {
+                        p_data->_rsingle_diff_index.idle_2_current();
+                        p_data->_hsingle_sum_diff_index.idle_2_current();
+                        p_data->_rsingle_dict_index.idle_2_current();
+
+                        LOG_DEBUG("_rsingle_diff_index idle_2_current");
+                    }
+                    break;
             }
         }
 

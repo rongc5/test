@@ -11,7 +11,6 @@
 #include "proc_data.h"
 #include "common_domain.h"
 #include "sk_conf.h"
-#include "real_quotation_dict.h"
 #include "id_dict.h"
 #include "history_quotation_dict.h"
 
@@ -50,6 +49,11 @@ void rquotation_data_process::msg_recv_finish()
     LOG_DEBUG("recv_buf: %s", _recv_buf.c_str());
     //FILE_WRITE("123", _recv_buf.c_str());
     char t_buf[SIZE_LEN_512];
+    quotation_t qt;
+    float down_pointer = 0;
+    float up_pointer = 0;
+    float avg_price = 0;
+    float end_avg_price = 0;
     
     std::vector<std::string> strVec;
     SplitString(_recv_buf.c_str(), "=", &strVec, SPLIT_MODE_ONE);
@@ -63,52 +67,45 @@ void rquotation_data_process::msg_recv_finish()
     proc_data * p_data = proc_data::instance();
     if (strVec.size() <= 45)
     {
-        return;
+        goto over;
     }
-
-    auto it = p_data->_rquoation_dict->current()->_id_dict.find(_id);
-    if (it == p_data->_rquoation_dict->current()->_id_dict.end())
-    {
-        LOG_WARNING("id: %s is not in _quotation_dict", _id.c_str());
-        return;
-    }
-
-    std::map<std::string, std::string> * qt = it->second.idle();
     
-    qt->insert(std::make_pair("name", strVec[1]));
-    qt->insert(std::make_pair("start", strVec[5]));
-    qt->insert(std::make_pair("end", strVec[3]));
-    qt->insert(std::make_pair("high", strVec[33]));
-    qt->insert(std::make_pair("low",  strVec[34]));
-    qt->insert(std::make_pair("last_closed", strVec[4]));
-    qt->insert(std::make_pair("vol",strVec[36]));
-    qt->insert(std::make_pair("sell_vol", strVec[8]));
-    qt->insert(std::make_pair("buy_vol", strVec[7]));
-    qt->insert(std::make_pair("swing", strVec[43]));
-    qt->insert(std::make_pair("change_rate", strVec[38]));
-    qt->insert(std::make_pair("range_percent", strVec[32]));
-    qt->insert(std::make_pair("total_price", strVec[37]));
+    qt.name = strVec[1];
+    qt.start = strVec[5];
+    qt.end = strVec[3];
+    qt.high = strVec[33];
+    qt.low = strVec[34];
+    qt.last_closed = strVec[4];
+    qt.vol = strVec[36];
+    qt.sell_vol= strVec[8];
+    qt.buy_vol = strVec[7];
+    qt.swing = strVec[43];
+    qt.change_rate = strVec[38];
+    qt.range_percent = strVec[32];
+    qt.total_price = strVec[37];
     
-    float down_pointer = 0;
-    float up_pointer = 0;
-    float avg_price = 0;
-    float end_avg_price = 0;
     
     if (atof(strVec[3].c_str()) > atof(strVec[34].c_str()) && (atof(strVec[3].c_str()) != atof(strVec[5].c_str())))
     {
         down_pointer = (atof(strVec[3].c_str()) - atof(strVec[34].c_str()))/
             (atof(strVec[3].c_str()) - atof(strVec[5].c_str()));
+        snprintf(t_buf, sizeof(t_buf), "%.2f", down_pointer);
+        qt.down_pointer = down_pointer;
     }
 
     if (atof(strVec[3].c_str()) < atof(strVec[33].c_str()) && (atof(strVec[3].c_str()) != atof(strVec[5].c_str())))
     {
         up_pointer = (atof(strVec[33].c_str()) - atof(strVec[3].c_str()))/
             (atof(strVec[3].c_str()) - atof(strVec[5].c_str()));
+        snprintf(t_buf, sizeof(t_buf), "%.2f", up_pointer);
+        qt.up_pointer = up_pointer;
     }
 
     if (atof(strVec[36].c_str()))
     {
         avg_price = (atof(strVec[37].c_str())*10000)/(atof(strVec[36].c_str()) * 100);
+        snprintf(t_buf, sizeof(t_buf), "%.2f", avg_price);
+        qt.avg_price = avg_price;
     }
 
     if (avg_price)
@@ -116,45 +113,23 @@ void rquotation_data_process::msg_recv_finish()
         end_avg_price = atof(strVec[3].c_str())/avg_price;
     }
 
-    if (down_pointer < 0)
-        down_pointer *= -1;
-
-    if (up_pointer < 0)
-        up_pointer *= -1;
-
-    {
-        snprintf(t_buf, sizeof(t_buf), "%.2f", down_pointer);
-        qt->insert(std::make_pair("down_pointer", std::string(t_buf)));
-    }
-
-    {
-        snprintf(t_buf, sizeof(t_buf), "%.2f", up_pointer);
-        qt->insert(std::make_pair("up_pointer", std::string(t_buf)));
-    }
-
-    {
-        snprintf(t_buf, sizeof(t_buf), "%.2f", avg_price);
-        qt->insert(std::make_pair("avg_price", std::string(t_buf)));
-    }
-
-    if (atof((*qt)["start"].c_str()) <= 1)
+    if (atof(qt.start.c_str()) <= 1)
     {
         p_data->_block_set.idle()->insert(_id);
     }
 
-    it->second.idle_2_current();
     {
-        float end = atof(strVec[3].c_str());
+        float end = atof(qt.end.c_str());
         p_data->_end_index.idle()->insert(std::make_pair(end, _id));
     }
     
     {
-        float change_rate = atof(strVec[38].c_str());
+        float change_rate = atof(qt.change_rate.c_str());
         p_data->_change_rate_index.idle()->insert(std::make_pair(change_rate, _id));
     }
 
     {
-        float range_percent = atof(strVec[32].c_str());
+        float range_percent = atof(qt.range_percent.c_str());
         p_data->_range_percent_index.idle()->insert(std::make_pair(range_percent, _id));
     }
 
@@ -174,16 +149,21 @@ void rquotation_data_process::msg_recv_finish()
     }
 
     {
+        p_data->_rquoation_dict_index.idle()->insert(std::make_pair(_id, qt));
+    }
+
+    {
         update_sum_index(qt);
     }
 
+over:
     throw CMyCommonException("msg_recv_finish");
 }
 
-void rquotation_data_process::update_sum_index(std::map<std::string, std::string> * rq)
+void rquotation_data_process::update_sum_index(quotation_t & qt)
 {
     proc_data* p_data = proc_data::instance();
-    if (!p_data || !rq)
+    if (!p_data)
         return;
 
     std::string key;
@@ -192,14 +172,15 @@ void rquotation_data_process::update_sum_index(std::map<std::string, std::string
         const std::string  & date = *ii;
 
         history_quotation_dict::creat_key(date, _id, key);
+
+        float range_percent = atof(qt.range_percent.c_str());
+        float change_rate = atof(qt.change_rate.c_str());
         
         auto tt = p_data->_hquoation_dict->current()->_id_sum_dict.find(key);
         if (tt != p_data->_hquoation_dict->current()->_id_sum_dict.end())
         {
-            quotation_t qt = tt->second;
-            qt.range_percent += atof((*rq)["range_percent"].c_str());
-
-            qt.change_rate += atof((*rq)["change_rate"].c_str());
+            range_percent += atof(tt->second.range_percent.c_str());
+            change_rate += atof(tt->second.change_rate.c_str());
 
             {   
                 std::map<std::string, std::multimap<float, std::string> >  & u_map = *(p_data->_hq_sum_range_percent_index.idle());
@@ -209,12 +190,12 @@ void rquotation_data_process::update_sum_index(std::map<std::string, std::string
                 {   
                     std::multimap<float, std::string> t_map;
 
-                    t_map.insert(std::make_pair(qt.range_percent, _id));
+                    t_map.insert(std::make_pair(range_percent, _id));
                     u_map.insert(std::make_pair(date, t_map));
                 }   
                 else
                 {   
-                    ii->second.insert(std::make_pair(qt.range_percent, _id));
+                    ii->second.insert(std::make_pair(range_percent, _id));
                 }   
             }
 
@@ -227,12 +208,12 @@ void rquotation_data_process::update_sum_index(std::map<std::string, std::string
                 {
                     std::multimap<float, std::string> t_map;
 
-                    t_map.insert(std::make_pair(qt.change_rate, _id));
+                    t_map.insert(std::make_pair(change_rate, _id));
                     u_map.insert(std::make_pair(date, t_map));
                 }
                 else
                 {
-                    ii->second.insert(std::make_pair(qt.change_rate, _id));
+                    ii->second.insert(std::make_pair(change_rate, _id));
                 }
 
             }
@@ -371,26 +352,6 @@ void rquotation_data_process::destroy()
             common_obj_container * net_container = connect->get_net_container();
             net_container->get_domain()->delete_domain(_url_info.domain);
         }
-    }
-
-    proc_data* p_data = proc_data::instance();
-    id_dict * id_dic = p_data->_id_dict->current(); 
-    if (id_dic && id_dic->_id_vec.size() && id_dic->_id_vec[id_dic->_id_vec.size() - 1] == _id)
-    {
-        p_data->_block_set.idle_2_current();
-        LOG_DEBUG("_block_set idle_2_current");
-
-        p_data->_end_index.idle_2_current();
-        p_data->_change_rate_index.idle_2_current();
-        p_data->_range_percent_index.idle_2_current();
-        p_data->_down_pointer_index.idle_2_current();
-        p_data->_up_pointer_index.idle_2_current();
-        p_data->_end_avg_price_index.idle_2_current();
-
-        p_data->_hq_sum_range_percent_index.idle_2_current();
-        p_data->_hq_sum_change_rate_index.idle_2_current();
-
-        LOG_DEBUG("_end_index idle_2_current");
     }
 }
 

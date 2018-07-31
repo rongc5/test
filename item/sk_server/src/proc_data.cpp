@@ -3,8 +3,6 @@
 #include "id_dict.h"
 #include "finance_dict.h"
 #include "ban_dict.h"
-#include "real_single_dict.h"
-#include "real_quotation_dict.h"
 #include "proc_data.h"
 #include "addr_dict_split.h"
 #include "addr_dict.h"
@@ -48,35 +46,6 @@ int proc_data::init(sk_conf * conf)
 
         _id_dict = new (std::nothrow)reload_mgr<id_dict>(id_dict1, id_dict2);
     }
-
-    {
-        real_quotation_dict *rq_dict1 = new (std::nothrow)real_quotation_dict();
-        ASSERT_WARNING(rq_dict1 != NULL, "allocate id_dict fail");
-        rq_dict1->init(_conf->_strategy->current()->id_path.c_str(), 
-                _conf->_strategy->current()->id_file.c_str(), _conf->dump_dir.c_str());
-
-        real_quotation_dict *rq_dict2 = new (std::nothrow)real_quotation_dict();
-        ASSERT_WARNING(rq_dict2 != NULL, "allocate id_dict fail");
-        rq_dict2->init(_conf->_strategy->current()->id_path.c_str(), 
-                _conf->_strategy->current()->id_file.c_str(), _conf->dump_dir.c_str());
-
-        _rquoation_dict = new (std::nothrow)reload_mgr<real_quotation_dict>(rq_dict1, rq_dict2);
-    }
-
-    {
-        real_single_dict *rs_dict1 = new (std::nothrow)real_single_dict();
-        ASSERT_WARNING(rs_dict1 != NULL, "allocate id_dict fail");
-        rs_dict1->init(_conf->_strategy->current()->id_path.c_str(), 
-                _conf->_strategy->current()->id_file.c_str(), _conf->dump_dir.c_str());
-
-        real_single_dict *rs_dict2 = new (std::nothrow)real_single_dict();
-        ASSERT_WARNING(rs_dict2 != NULL, "allocate id_dict fail");
-        rs_dict2->init(_conf->_strategy->current()->id_path.c_str(),
-                _conf->_strategy->current()->id_file.c_str(), _conf->dump_dir.c_str());
-
-        _rsingle_dict = new (std::nothrow)reload_mgr<real_single_dict>(rs_dict1, rs_dict2);
-    }
-
 
     {
         recommend_dict *recommend_dict1 = new (std::nothrow)recommend_dict();
@@ -162,17 +131,8 @@ int proc_data::init(sk_conf * conf)
 
     
     {
-        finance_dict *fin_dict1 = new (std::nothrow)finance_dict();
-        ASSERT_WARNING(fin_dict1 != NULL, "allocate finance_dict fail");
-        fin_dict1->init(_conf->_strategy->current()->financie_path.c_str(),
-                _conf->_strategy->current()->financie_file.c_str(), conf->dump_dir.c_str());
-
-        finance_dict *fin_dict2 = new (std::nothrow)finance_dict();
-        ASSERT_WARNING(fin_dict2 != NULL, "allocate finance_dict fail");
-        fin_dict2->init(_conf->_strategy->current()->financie_path.c_str(),
+        _finance_dict.init(_conf->_strategy->current()->financie_path.c_str(),  
                 conf->_strategy->current()->financie_file.c_str(), conf->dump_dir.c_str());
-
-        _finance_dict = new (std::nothrow)reload_mgr<finance_dict>(fin_dict1, fin_dict2);
     }
 
 
@@ -258,13 +218,9 @@ int proc_data::load()
 
     _id_dict->load();
 
-    _finance_dict->load();
+    _finance_dict.load();
 
     _ban_dict->load();
-
-    _rsingle_dict->load();
-
-    _rquoation_dict->load();
 
     _addr_dict_split->load();
 
@@ -294,24 +250,11 @@ int proc_data::reload()
         _id_dict->reload();
     }
 
-    if (_finance_dict)
-    {
-        _finance_dict->reload();
-    }
+    _finance_dict.reload();
 
     if (_ban_dict)
     {
         _ban_dict->reload();
-    }
-
-    if (_rsingle_dict)
-    {
-        _rsingle_dict->reload();
-    }
-
-    if (_rquoation_dict)
-    {
-        _rquoation_dict->reload();
     }
 
     if (_addr_dict_split)
@@ -360,13 +303,9 @@ int proc_data::dump()
 
     _id_dict->dump();
 
-    _finance_dict->dump();
+    _finance_dict.dump();
 
     _ban_dict->dump();
-
-    _rsingle_dict->dump();
-
-    _rquoation_dict->dump();
 
     _addr_dict_split->dump();
 
@@ -390,13 +329,9 @@ int proc_data::destroy()
 
     _id_dict->destroy();
 
-    _finance_dict->destroy();
+    _finance_dict.destroy();
 
     _ban_dict->destroy();
-
-    _rsingle_dict->destroy();
-
-    _rquoation_dict->destroy();
 
     _addr_dict_split->destroy();
 
