@@ -85,32 +85,32 @@ void rquotation_data_process::msg_recv_finish()
     qt.total_price = strVec[37];
     
     
-    if (atof(strVec[3].c_str()) > atof(strVec[34].c_str()) && (atof(strVec[3].c_str()) != atof(strVec[5].c_str())))
+    if (atof(qt.end.c_str()) > atof(qt.low.c_str()) && (atof(qt.end.c_str()) != atof(qt.start.c_str())))
     {
-        down_pointer = (atof(strVec[3].c_str()) - atof(strVec[34].c_str()))/
-            (atof(strVec[3].c_str()) - atof(strVec[5].c_str()));
+        down_pointer = (atof(qt.end.c_str()) - atof(qt.low.c_str()))/
+            (atof(qt.end.c_str()) - atof(qt.start.c_str()));
         snprintf(t_buf, sizeof(t_buf), "%.2f", down_pointer);
-        qt.down_pointer = down_pointer;
+        qt.down_pointer.append(t_buf);
     }
 
-    if (atof(strVec[3].c_str()) < atof(strVec[33].c_str()) && (atof(strVec[3].c_str()) != atof(strVec[5].c_str())))
+    if (atof(qt.end.c_str()) < atof(qt.high.c_str()) && (atof(qt.end.c_str()) != atof(qt.start.c_str())))
     {
-        up_pointer = (atof(strVec[33].c_str()) - atof(strVec[3].c_str()))/
-            (atof(strVec[3].c_str()) - atof(strVec[5].c_str()));
+        up_pointer = (atof(qt.high.c_str()) - atof(qt.end.c_str()))/
+            (atof(qt.end.c_str()) - atof(qt.start.c_str()));
         snprintf(t_buf, sizeof(t_buf), "%.2f", up_pointer);
-        qt.up_pointer = up_pointer;
+        qt.up_pointer.append(t_buf);
     }
 
-    if (atof(strVec[36].c_str()))
+    if (atof(qt.vol.c_str()))
     {
-        avg_price = (atof(strVec[37].c_str())*10000)/(atof(strVec[36].c_str()) * 100);
+        avg_price = (atof(qt.total_price.c_str())*10000)/(atoi(qt.vol.c_str()) * 100);
         snprintf(t_buf, sizeof(t_buf), "%.2f", avg_price);
-        qt.avg_price = avg_price;
+        qt.avg_price.append(t_buf);
     }
 
     if (avg_price)
     {
-        end_avg_price = atof(strVec[3].c_str())/avg_price;
+        end_avg_price = atof(qt.end.c_str())/avg_price;
     }
 
     if (atof(qt.start.c_str()) <= 1)

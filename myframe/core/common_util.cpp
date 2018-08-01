@@ -615,7 +615,13 @@ void parse_url_para(const std::string &url_path, std::map<std::string, std::stri
 
     std::vector<std::string> vec_str;
     SplitString(url_path.substr(pos + 1).c_str(), "&", &vec_str, SPLIT_MODE_ALL);
+    if (!vec_str.size())
+    {
+        vec_str.push_back(url_path.substr(pos + 1));
+    }
+
     size_t num = vec_str.size();
+
     for (size_t ii = 0; ii < num; ii ++)
     {
         std::vector<std::string> tmp_vec;

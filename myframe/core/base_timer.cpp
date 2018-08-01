@@ -60,7 +60,7 @@ void base_timer::check_timer(std::vector<uint32_t> &expect_list)
 
     _current = 1 - _current;
 
-    for (; it != itup; it++) 
+    for (; it != itup && itup != timer_list.end(); it++) 
     {
         std::vector<std::shared_ptr<timer_msg> >::iterator itvec;
         for (itvec = it->second.begin(); itvec != it->second.end(); itvec++) 
@@ -79,7 +79,10 @@ void base_timer::check_timer(std::vector<uint32_t> &expect_list)
                 expect_list.push_back((*itvec)->_obj_id);
             } 
         }
+    }
 
+    if (itup != timer_list.end())
+    {
         timer_list.erase(timer_list.begin(), itup);
     }
 }

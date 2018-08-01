@@ -352,6 +352,7 @@ class skhttp_req_thread:public base_net_thread
 
         virtual void handle_timeout(std::shared_ptr<timer_msg> & t_msg)
         {
+            LOG_DEBUG("handle_timeout: timer_id:%u timer_type:%u", t_msg->_timer_id, t_msg->_timer_type);
             proc_data* p_data = proc_data::instance();
             switch (t_msg->_timer_type)
             {
@@ -362,8 +363,6 @@ class skhttp_req_thread:public base_net_thread
                             _req_quotation = true;
                         else
                             add_quotation_timer();
-
-                        LOG_DEBUG("handle_timeout: TIMER_TYPE_REQ_QUOTATION");
                     }
                     break;
                 case TIMER_TYPE_REQ_SINGLE:
@@ -373,8 +372,6 @@ class skhttp_req_thread:public base_net_thread
                             _req_single = true;
                         else
                             add_single_timer();
-
-                        LOG_DEBUG("handle_timeout: TIMER_TYPE_REQ_SINGLE");
                     }
                     break;
                 case TIMER_TYPE_QUOTATION_IDLE_2_CURRENT:

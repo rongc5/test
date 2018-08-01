@@ -127,7 +127,6 @@ void rsingle_data_process::msg_recv_finish()
     int ttmp;
     std::vector<std::string> ssVec;
     SplitString(strVec[1].c_str(), ",", &ssVec, SPLIT_MODE_ALL);
-    
 
     for (uint32_t i = 3; i < ssVec.size() & i + 7 <= ssVec.size(); i += 7)
     {

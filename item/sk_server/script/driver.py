@@ -248,6 +248,7 @@ def do_select(parser):
     header = {}
     index = random.randint(0, len(user_agent_list) -1)
     header['User-Agent'] = user_agent_list[index]
+    res = {}
 
     try:
         curl =  CurlHTTPFetcher()

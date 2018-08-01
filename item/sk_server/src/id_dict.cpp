@@ -40,8 +40,17 @@ int id_dict::load()
         if (ptr == NULL || *ptr == '\0'|| *ptr == '#')
             continue;
 
-        std::string str = std::string(ptr);
-        _id_vec.push_back(str);
+        std::vector<std::string> tmp_vec;
+        SplitString(ptr, '\t', &tmp_vec, SPLIT_MODE_ALL);
+        if (tmp_vec.size() >= 2)
+        {
+            _id_vec.push_back(tmp_vec[0]);
+        }
+        else
+        {
+            std::string str = std::string(ptr);
+            _id_vec.push_back(str);
+        }
     }
 
     fclose(fp);
