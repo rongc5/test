@@ -47,7 +47,7 @@ void rsingle_data_process::header_recv_finish()
     _is_ok = true;
 }
 
-int rsingle_data_process::get_single_index(std::string &id, uint32_t index)
+int rsingle_data_process::get_single_index(const std::string &id, uint32_t index)
 {
     int arr[] = {100, 200, 300, 400, 500, 800, 1000, 1500, 2000};
     int i = -1;
@@ -102,33 +102,27 @@ void rsingle_data_process::msg_recv_finish()
 {
     LOG_DEBUG("recv_buf: %s", _recv_buf.c_str());
     //FILE_WRITE("123", _recv_buf.c_str());
+    proc_data * p_data = proc_data::instance();
+    std::vector<single_t> tmp_single;
+    int ttmp;
+    std::vector<std::string> ssVec;
+    uint32_t i = 0;
     
     std::vector<std::string> strVec;
     SplitString(_recv_buf.c_str(), "=", &strVec, SPLIT_MODE_ONE);
     if (strVec.size() < 2)
     {
-        return;
+        goto over;
     }
 
     _recv_buf.clear();
-    proc_data * p_data = proc_data::instance();
-    strategy_conf * strategy = p_data->_conf->_strategy->current();
-    std::deque<std::vector<single_t> > st;
 
-    auto it = p_data->_rsingle_dict_index.current()->find(_id);
-    if (it != p_data->_rsingle_dict_index.current()->end())
-    {
-        st = it->second;
-    }
 
-    std::vector<single_t> single, tmp_single;
     //不是标准json
     
-    int ttmp;
-    std::vector<std::string> ssVec;
     SplitString(strVec[1].c_str(), ",", &ssVec, SPLIT_MODE_ALL);
 
-    for (uint32_t i = 3; i < ssVec.size() & i + 7 <= ssVec.size(); i += 7)
+    for (i = 3; i < ssVec.size() & i + 7 <= ssVec.size(); i += 7)
     {
         single_t sst;
         sst.in = atoi(ssVec[i + 4].c_str());
@@ -137,59 +131,85 @@ void rsingle_data_process::msg_recv_finish()
         tmp_single.push_back(sst);
     }
 
-    for (uint32_t i = 0; i < strategy->real_single_scale.size(); i++)
-    {
-        int index = get_single_index(_id, i);
-        if (index < 0 || index > (int)tmp_single.size())
-        {
-            single_t tmp_st;
-            single.push_back(tmp_st);
-        }
-        else
-        {
-            single.push_back(tmp_single[index]);
-        }
-    }
+    p_data->_rsingle_real_dict[_id] = tmp_single;
 
-    if (st.empty() || (*(st.rbegin()))[0] != single[0])
-    {
-        st.push_back(single);
-    }
-
-    if (p_data->_conf->_strategy->current()->real_single_deque_length && 
-            st.size() > p_data->_conf->_strategy->current()->real_single_deque_length)
-    {
-        st.pop_front();
-    }
-
-    {
-        p_data->_rsingle_dict_index.idle()->insert(std::make_pair(_id, st));
-    }
-
-    for (uint32_t i = 0; i< single.size(); i++)
-    {
-        if (!single[i].diff)
-            continue;
-
-        if (i >= p_data->_rsingle_diff_index.idle()->size())
-        {
-            std::multimap<int, std::string> t_map;
-            t_map.insert(std::make_pair(single[i].diff, _id));
-            p_data->_rsingle_diff_index.idle()->push_back(t_map);
-        }
-        else
-        {
-            std::multimap<int, std::string> & t_map = 
-                (*(p_data->_rsingle_diff_index.idle()))[i];
-
-            t_map.insert(std::make_pair(single[i].diff, _id));
-        }
-    }
-
+over:
     throw CMyCommonException("msg_recv_finish");
 }
 
-void rsingle_data_process::update_sum_index(std::vector<single_t> & single)
+void rsingle_data_process::update_all_index()
+{
+    proc_data* p_data = proc_data::instance();
+    std::deque<std::vector<single_t> > st;
+    strategy_conf * strategy = p_data->_conf->_strategy->current();
+    std::vector<single_t> single;
+    uint32_t i = 0;
+
+    for (auto ii = p_data->_rsingle_real_dict.begin(); ii != p_data->_rsingle_real_dict.end(); ii++)
+    {
+        st.clear();
+        single.clear();
+
+        auto it = p_data->_rsingle_dict_index.current()->find(ii->first);
+        if (it != p_data->_rsingle_dict_index.current()->end())
+        {
+            st = it->second;
+        }
+
+        for (i = 0; i < strategy->real_single_scale.size(); i++)
+        {
+            int index = get_single_index(ii->first, i);
+            if (index < 0 || index > (int)ii->second.size())
+            {
+                single_t tmp_st;
+                single.push_back(tmp_st);
+            }
+            else
+            {
+                single.push_back(ii->second[index]);
+            }
+        }
+
+        if (st.empty() || (*(st.rbegin()))[0] != single[0])
+        {
+            st.push_back(single);
+        }
+
+        if (p_data->_conf->_strategy->current()->real_single_deque_length && 
+                st.size() > p_data->_conf->_strategy->current()->real_single_deque_length)
+        {
+            st.pop_front();
+        }
+
+        {
+            p_data->_rsingle_dict_index.idle()->insert(std::make_pair(ii->first, st));
+        }
+
+        for (i = 0; i< single.size(); i++)
+        {
+            if (!single[i].diff)
+                continue;
+
+            if (i >= p_data->_rsingle_diff_index.idle()->size())
+            {
+                std::multimap<int, std::string> t_map;
+                t_map.insert(std::make_pair(single[i].diff, ii->first));
+                p_data->_rsingle_diff_index.idle()->push_back(t_map);
+            }
+            else
+            {
+                std::multimap<int, std::string> & t_map = 
+                    (*(p_data->_rsingle_diff_index.idle()))[i];
+
+                t_map.insert(std::make_pair(single[i].diff, ii->first));
+            }
+        }
+
+        update_id_index(ii->first, single);
+    }
+}
+
+void rsingle_data_process::update_id_index(const std::string & id, std::vector<single_t> & single)
 {
     proc_data* p_data = proc_data::instance();
     if (!p_data || !single.size())
@@ -199,7 +219,7 @@ void rsingle_data_process::update_sum_index(std::vector<single_t> & single)
     for (auto ii = p_data->_hsingle_dict->current()->_date_index.begin(); ii != p_data->_hsingle_dict->current()->_date_index.end(); ii++)
     {
         const std::string  & date = *ii;
-        history_single_dict::creat_key(date, _id, key);
+        history_single_dict::creat_key(date, id, key);
 
         auto tt = p_data->_hsingle_dict->current()->_date_sum_dict.find(key);
         if (tt != p_data->_hsingle_dict->current()->_date_sum_dict.end())
@@ -228,7 +248,7 @@ void rsingle_data_process::update_sum_index(std::vector<single_t> & single)
                     std::unordered_map<std::string, std::multimap<int, std::string> > u_map;
                     std::multimap<int, std::string> t_map;
 
-                    t_map.insert(std::make_pair(se[i].diff, _id));
+                    t_map.insert(std::make_pair(se[i].diff, id));
                     u_map.insert(std::make_pair(date, t_map));
                 }   
                 else
@@ -240,12 +260,12 @@ void rsingle_data_process::update_sum_index(std::vector<single_t> & single)
                     {   
                         std::multimap<int, std::string> t_map;
 
-                        t_map.insert(std::make_pair(se[i].diff, _id));
+                        t_map.insert(std::make_pair(se[i].diff, id));
                         u_map.insert(std::make_pair(date, t_map));
                     }   
                     else
                     {   
-                        ii->second.insert(std::make_pair(se[i].diff, _id));
+                        ii->second.insert(std::make_pair(se[i].diff, id));
                     }   
                 }
             }

@@ -146,7 +146,6 @@ void skhttp_res_data_process::query_plate(std::string &id, Value & root, Documen
 void skhttp_res_data_process::query_single(std::string &id, Value & root, Document::AllocatorType & allocator)
 {
 
-    int index = 0;
     char t_buf[SIZE_LEN_64];
     proc_data* p_data = proc_data::instance();
     strategy_conf * strategy = p_data->_conf->_strategy->current();
@@ -164,9 +163,9 @@ void skhttp_res_data_process::query_single(std::string &id, Value & root, Docume
 
             for (auto ft: ii->second)
             {
-                if (index < (int)ft.size())
+                if (i < ft.size())
                 {
-                    child.PushBack(Value().SetInt(ft[index].diff), allocator);
+                    child.PushBack(Value().SetInt(ft[i].diff), allocator);
                 }
             }
             root.AddMember(key, child, allocator);

@@ -277,7 +277,7 @@ class skhttp_req_thread:public base_net_thread
 
             if (p_data && p_data->_conf)
             {
-                if (strncmp(date, _req_date.c_str(), _req_date.size()))
+                if (strncmp(date, _req_date.c_str(), strlen(date)))
                 {
                     time_t stime = get_real_time("09:15");
                     if (now >= stime)
@@ -395,6 +395,9 @@ class skhttp_req_thread:public base_net_thread
                     break;
                 case TIMER_TYPE_SINGLE_IDLE_2_CURRENT:
                     {
+                        //先更新再切换
+                        rsingle_data_process::update_all_index();
+
                         p_data->_rsingle_diff_index.idle_2_current();
                         p_data->_hsingle_sum_diff_index.idle_2_current();
                         p_data->_rsingle_dict_index.idle_2_current();
