@@ -118,49 +118,57 @@ void rquotation_data_process::msg_recv_finish()
         p_data->_block_set.idle()->insert(_id);
     }
 
-    {
-        float end = atof(qt.end.c_str());
-        p_data->_end_index.idle()->insert(std::make_pair(end, _id));
-    }
-    
-    {
-        float change_rate = atof(qt.change_rate.c_str());
-        p_data->_change_rate_index.idle()->insert(std::make_pair(change_rate, _id));
-    }
-
-    {
-        float range_percent = atof(qt.range_percent.c_str());
-        p_data->_range_percent_index.idle()->insert(std::make_pair(range_percent, _id));
-    }
-
-    if (down_pointer)
-    {
-        p_data->_down_pointer_index.idle()->insert(std::make_pair(down_pointer, _id));
-    }
-
-    if (up_pointer)
-    {
-        p_data->_up_pointer_index.idle()->insert(std::make_pair(up_pointer, _id));
-    }
-
-    if (avg_price)
-    {
-        p_data->_end_avg_price_index.idle()->insert(std::make_pair(end_avg_price, _id));
-    }
-
-    {
-        p_data->_rquoation_dict_index.idle()->insert(std::make_pair(_id, qt));
-    }
-
-    {
-        update_sum_index(qt);
-    }
+    p_data->_rquoation_real_dict[_id] = qt;
 
 over:
     throw CMyCommonException("msg_recv_finish");
 }
 
-void rquotation_data_process::update_sum_index(quotation_t & qt)
+void rquotation_data_process::update_all_index()
+{
+    proc_data* p_data = proc_data::instance();
+
+    for (auto ii = p_data->_rquoation_real_dict.begin(); ii != p_data->_rquoation_real_dict.end(); ii++)
+    {
+        {
+            float end = atof(ii->second.end.c_str());
+            p_data->_end_index.idle()->insert(std::make_pair(end, ii->first));
+        }
+
+        {
+            float change_rate = atof(ii->second.change_rate.c_str());
+            p_data->_change_rate_index.idle()->insert(std::make_pair(change_rate, ii->first));
+        }
+
+        {
+            float range_percent = atof(ii->second.range_percent.c_str());
+            p_data->_range_percent_index.idle()->insert(std::make_pair(range_percent, ii->first));
+        }
+
+        if (atof(ii->second.down_pointer.c_str()))
+        {
+            p_data->_down_pointer_index.idle()->insert(std::make_pair(atof(ii->second.down_pointer.c_str()), ii->first));
+        }
+
+        if (atof(ii->second.up_pointer.c_str()))
+        {
+            p_data->_up_pointer_index.idle()->insert(std::make_pair(atof(ii->second.up_pointer.c_str()), ii->first));
+        }
+
+        if (atof(ii->second.avg_price.c_str()))
+        {
+            p_data->_end_avg_price_index.idle()->insert(std::make_pair(atof(ii->second.avg_price.c_str()), ii->first));
+        }
+
+        {
+            p_data->_rquoation_dict_index.idle()->insert(std::make_pair(ii->first, ii->second));
+        }
+
+        update_id_index(ii->first, ii->second);
+    }
+}
+
+void rquotation_data_process::update_id_index(const std::string & id, quotation_t & qt)
 {
     proc_data* p_data = proc_data::instance();
     if (!p_data)
@@ -171,7 +179,7 @@ void rquotation_data_process::update_sum_index(quotation_t & qt)
     {
         const std::string  & date = *ii;
 
-        history_quotation_dict::creat_key(date, _id, key);
+        history_quotation_dict::creat_key(date, id, key);
 
         float range_percent = atof(qt.range_percent.c_str());
         float change_rate = atof(qt.change_rate.c_str());
@@ -190,12 +198,12 @@ void rquotation_data_process::update_sum_index(quotation_t & qt)
                 {   
                     std::multimap<float, std::string> t_map;
 
-                    t_map.insert(std::make_pair(range_percent, _id));
+                    t_map.insert(std::make_pair(range_percent, id));
                     u_map.insert(std::make_pair(date, t_map));
                 }   
                 else
                 {   
-                    ii->second.insert(std::make_pair(range_percent, _id));
+                    ii->second.insert(std::make_pair(range_percent, id));
                 }   
             }
 
@@ -208,12 +216,12 @@ void rquotation_data_process::update_sum_index(quotation_t & qt)
                 {
                     std::multimap<float, std::string> t_map;
 
-                    t_map.insert(std::make_pair(change_rate, _id));
+                    t_map.insert(std::make_pair(change_rate, id));
                     u_map.insert(std::make_pair(date, t_map));
                 }
                 else
                 {
-                    ii->second.insert(std::make_pair(change_rate, _id));
+                    ii->second.insert(std::make_pair(change_rate, id));
                 }
 
             }

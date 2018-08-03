@@ -39,6 +39,9 @@ class base_net_obj: public std::enable_shared_from_this<base_net_obj>
         virtual void handle_timeout(std::shared_ptr<timer_msg> & t_msg);
 
         virtual void destroy();
+
+        net_addr & get_peer_addr();
+
     protected:
         void add_timer();
 
@@ -49,6 +52,8 @@ class base_net_obj: public std::enable_shared_from_this<base_net_obj>
         ObjId _id_str;
         bool _real_net;
         std::vector<std::shared_ptr<timer_msg> > _timer_vec;
+
+        net_addr _peer_net;
 };
 
 

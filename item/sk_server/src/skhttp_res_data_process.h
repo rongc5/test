@@ -60,50 +60,90 @@ class skhttp_res_data_process:public http_base_data_process
         void query_history_quotation(std::string & history_date, std::string &id, Value & root, Document::AllocatorType & allocator);
 
     private:
-        bool do_check_end(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res);
+        bool do_check_end_le(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res);
 
-        bool do_check_change_rate(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res);
+        bool do_check_end_ge(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res);
 
-        bool do_check_range_percent(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res);
+        bool do_check_change_rate_le(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res);
 
-        bool do_check_down_pointer(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res);
+        bool do_check_change_rate_ge(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res);
 
-        bool do_check_up_pointer(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res);
+        bool do_check_range_percent_le(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res);
 
-        bool do_check_end_avg_price(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res);
+        bool do_check_range_percent_ge(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res);
 
-        bool do_check_pe(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res);
+        bool do_check_down_pointer_le(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res);
+        
+        bool do_check_down_pointer_ge(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res);
 
-        bool do_check_pb(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res);
+        bool do_check_up_pointer_le(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res);
 
-        bool do_check_value(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res);
+        bool do_check_up_pointer_ge(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res);
 
-        bool do_check_value_num(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res);
+        bool do_check_end_avg_price_le(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res);
 
-        bool do_check_cir_value(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res);
+        bool do_check_end_avg_price_ge(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res);
 
-        bool do_check_cir_value_num(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res);
+        bool do_check_pe_le(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res);
 
-        bool do_check_mgxj(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res);
+        bool do_check_pe_ge(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res);
 
-        bool do_check_mgsy(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res);
+        bool do_check_pb_le(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res);
 
-        bool do_check_mgsygr(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res);
+        bool do_check_pb_ge(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res);
 
-        bool do_check_mgxjgr(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res);
+        bool do_check_value_le(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res);
 
-        bool do_check_zysrgr(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res);
+        bool do_check_value_ge(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res);
 
-        bool do_check_yylrgr(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res);
+        bool do_check_value_num_min(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res);
 
-        bool do_check_jlrgr(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res);
+        bool do_check_value_num_max(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res);
+
+        bool do_check_cir_value_le(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res);
+
+        bool do_check_cir_value_ge(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res);
+
+        bool do_check_cir_value_num_min(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res);
+
+        bool do_check_cir_value_num_max(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res);
+
+        bool do_check_mgxj_le(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res);
+
+        bool do_check_mgxj_ge(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res);
+
+        bool do_check_mgsy_le(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res);
+
+        bool do_check_mgsy_ge(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res);
+
+        bool do_check_mgsygr_le(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res);
+
+        bool do_check_mgsygr_ge(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res);
+
+        bool do_check_mgxjgr_le(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res);
+
+        bool do_check_mgxjgr_ge(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res);
+
+        bool do_check_zysrgr_le(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res);
+
+        bool do_check_zysrgr_ge(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res);
+
+        bool do_check_yylrgr_le(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res);
+
+        bool do_check_yylrgr_ge(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res);
+
+        bool do_check_jlrgr_le(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res);
+
+        bool do_check_jlrgr_ge(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res);
 
         //key like address or address_v 
         bool do_check_address(std::map<std::string, std::string> & url_para_map, const char * key, std::set<std::string> & res);
         //key like plate or plate_v
         bool do_check_plate(std::map<std::string, std::string> & url_para_map, const char * key, std::set<std::string> & res);
         //rsingle_diff0_ge, start from 0
-        bool do_check_rsingle_diff(std::map<std::string, std::string> & url_para_map, uint32_t index, std::set<std::string> & res);
+        bool do_check_rsingle_diff_le(std::map<std::string, std::string> & url_para_map, uint32_t index, std::set<std::string> & res);
+
+        bool do_check_rsingle_diff_ge(std::map<std::string, std::string> & url_para_map, uint32_t index, std::set<std::string> & res);
 
     protected:
         std::string _body;

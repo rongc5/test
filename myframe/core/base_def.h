@@ -24,7 +24,6 @@
 
 #include <arpa/inet.h>
 
-#include <sys/socket.h>
 #include <netdb.h>
 
 #include <unistd.h>

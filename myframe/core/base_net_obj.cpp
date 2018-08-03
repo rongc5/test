@@ -157,6 +157,25 @@ void base_net_obj::add_timer()
     }
 }
 
+net_addr & base_net_obj::get_peer_addr()
+{
+    if (!_peer_net.ip.empty() && _peer_net.port)
+    {
+        return _peer_net;
+    }
+
+    struct sockaddr_in sa;
+    socklen_t len = sizeof(struct sockaddr_in);
+
+    if (!getpeername(_fd, (struct sockaddr *)&sa, &len))
+    {
+        _peer_net.ip = inet_ntoa(sa.sin_addr);
+        _peer_net.port = ntohs(sa.sin_port);
+    }
+
+    return _peer_net;
+}
+
 void base_net_obj::handle_timeout(std::shared_ptr<timer_msg> & t_msg)
 {
 }

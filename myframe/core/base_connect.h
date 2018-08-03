@@ -18,9 +18,9 @@ class base_connect:public base_net_obj
             _fd = sock;
             int bReuseAddr = 1;
             setsockopt(_fd, IPPROTO_TCP, TCP_NODELAY, &bReuseAddr, sizeof(bReuseAddr));
-
             _p_send_buf = NULL;
             _process = NULL;
+            get_peer_addr();
         }
 
         base_connect()

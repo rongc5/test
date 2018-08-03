@@ -224,6 +224,16 @@ struct http_req_head_para
     std::map<std::string, std::string> _cookie_list;
 };
 
+struct net_addr
+{
+    std::string ip;
+    int port;
+
+    net_addr()
+    {
+        port = 0;
+    }
+};
 
 
 struct http_res_head_para

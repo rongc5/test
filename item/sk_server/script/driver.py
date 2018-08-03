@@ -202,6 +202,7 @@ def do_query_id(parser):
 
     if parser.history_date:
         url += '&history_date=%s' % (parser.history_date)
+    print url
 
     header = {}
     index = random.randint(0, len(user_agent_list) -1)
@@ -308,7 +309,7 @@ def do_search():
               help="select ini file")
 
     options, args = parser.parse_args()
-    print options
+    #print options
     #print 'Query string:', options.time
 
     while 1:

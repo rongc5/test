@@ -57,6 +57,27 @@ class skhttp_req_thread:public base_net_thread
                 do_single();
             }
         }
+
+        void single_reset()
+        {
+            proc_data* p_data = proc_data::instance();
+            {
+                std::vector<std::multimap<int, std::string> > t_map;
+                p_data->_rsingle_diff_index.idle()->swap(t_map);
+            }
+
+            {
+                std::vector<std::map<std::string, std::multimap<int, std::string> > > tmp;
+                p_data->_hsingle_sum_diff_index.idle()->swap(tmp);
+            }
+
+
+            {
+                std::unordered_map<std::string, std::deque<std::vector<single_t> >,str_hasher> tmp;
+                p_data->_rsingle_dict_index.idle()->swap(tmp);
+            }
+
+        }
     
         void do_single()
         {
@@ -72,7 +93,7 @@ class skhttp_req_thread:public base_net_thread
             {
                 if (!_single_index)
                 {
-                    p_data->_rsingle_dict_index.idle()->clear();
+                    single_reset();
                 }
 
                 std::string id = id_dic->_id_vec[_single_index];
@@ -107,6 +128,54 @@ class skhttp_req_thread:public base_net_thread
             }
         }
 
+        void quotation_reset()
+        {
+            proc_data* p_data = proc_data::instance();
+            {
+                std::multimap<float, std::string> t_map;
+                p_data->_end_index.idle()->swap(t_map);
+            }
+
+            {
+                std::multimap<float, std::string> t_map;
+                p_data->_change_rate_index.idle()->swap(t_map);
+            }
+
+            {
+                std::multimap<float, std::string> t_map;
+                p_data->_range_percent_index.idle()->swap(t_map);
+            }
+
+            {
+                std::multimap<float, std::string> t_map;
+                p_data->_down_pointer_index.idle()->swap(t_map);
+            }
+
+            {
+                std::multimap<float, std::string> t_map;
+                p_data->_up_pointer_index.idle()->swap(t_map);
+            }
+
+            {
+                std::multimap<float, std::string> t_map;
+                p_data->_end_avg_price_index.idle()->swap(t_map);
+            }
+
+            {
+                std::unordered_map<std::string, quotation_t,str_hasher> tmp;
+                p_data->_rquoation_dict_index.idle()->swap(tmp);
+            }
+
+            {
+                std::map<std::string, std::multimap<float, std::string> > t_map;
+                p_data->_hq_sum_range_percent_index.idle()->swap(t_map);
+            }
+
+            {
+                std::map<std::string, std::multimap<float, std::string> > t_map;
+                p_data->_hq_sum_change_rate_index.idle()->swap(t_map);
+            }
+        }
 
         void do_quotation()
         {   
@@ -122,7 +191,7 @@ class skhttp_req_thread:public base_net_thread
             {
                 if (!_quotation_index)
                 {
-                    p_data->_rquoation_dict_index.idle()->clear();
+                    quotation_reset();
                 }
 
                 std::string id = id_dic->_id_vec[_quotation_index];
@@ -157,65 +226,21 @@ class skhttp_req_thread:public base_net_thread
             }
         }
 
+
         void first_in_day()
         {
             proc_data* p_data = proc_data::instance();
             if (p_data && p_data->_conf)
             {
+                //{
+                    //std::unordered_map<std::string, std::vector<single_t>,str_hasher> t_dict;
+                    //p_data->_rsingle_real_dict.swap(t_dict);
+                //}
+
                 {
                     std::unordered_set<std::string, str_hasher> t_block;
                     p_data->_block_set.idle()->swap(t_block);
                     p_data->_block_set.idle_2_current();
-                }
-
-                {
-                    std::multimap<float, std::string> t_map;
-                    p_data->_end_index.idle()->swap(t_map);
-                }
-
-                {
-                    std::multimap<float, std::string> t_map;
-                    p_data->_change_rate_index.idle()->swap(t_map);
-                }
-
-                {
-                    std::multimap<float, std::string> t_map;
-                    p_data->_range_percent_index.idle()->swap(t_map);
-                }
-
-                {
-                    std::multimap<float, std::string> t_map;
-                    p_data->_down_pointer_index.idle()->swap(t_map);
-                }
-
-                {
-                    std::multimap<float, std::string> t_map;
-                    p_data->_up_pointer_index.idle()->swap(t_map);
-                }
-
-                {
-                    std::multimap<float, std::string> t_map;
-                    p_data->_end_avg_price_index.idle()->swap(t_map);
-                }
-
-                {
-                    std::vector<std::multimap<int, std::string> > t_map;
-                    p_data->_rsingle_diff_index.idle()->swap(t_map);
-                }
-
-                {
-                    std::vector<std::map<std::string, std::multimap<int, std::string> > > tmp;
-                    p_data->_hsingle_sum_diff_index.idle()->swap(tmp);
-                }
-
-                {
-                    std::map<std::string, std::multimap<float, std::string> > tmp;
-                    p_data->_hq_sum_range_percent_index.idle()->swap(tmp); 
-                }
-
-                {
-                    std::map<std::string, std::multimap<float, std::string> > tmp;
-                    p_data->_hq_sum_change_rate_index.idle()->swap(tmp);
                 }
 
                 real_morning_stime = get_real_time(p_data->_conf->_strategy->current()->real_morning_stime.c_str());
@@ -377,6 +402,7 @@ class skhttp_req_thread:public base_net_thread
                 case TIMER_TYPE_QUOTATION_IDLE_2_CURRENT:
                     {
                         LOG_DEBUG("_block_set idle_2_current");
+                        rquotation_data_process::update_all_index();
 
                         p_data->_block_set.idle_2_current();
                         p_data->_end_index.idle_2_current();

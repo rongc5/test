@@ -107,6 +107,7 @@ void rsingle_data_process::msg_recv_finish()
     int ttmp;
     std::vector<std::string> ssVec;
     uint32_t i = 0;
+    bool flag = false;
     
     std::vector<std::string> strVec;
     SplitString(_recv_buf.c_str(), "=", &strVec, SPLIT_MODE_ONE);
@@ -129,9 +130,13 @@ void rsingle_data_process::msg_recv_finish()
         sst.out = atoi(ssVec[i + 5].c_str());
         sst.diff = sst.in - sst.out;
         tmp_single.push_back(sst);
+        flag = true;
     }
 
-    p_data->_rsingle_real_dict[_id] = tmp_single;
+    if (flag)
+    {
+        p_data->_rsingle_real_dict[_id] = tmp_single;
+    }
 
 over:
     throw CMyCommonException("msg_recv_finish");
@@ -249,7 +254,7 @@ void rsingle_data_process::update_id_index(const std::string & id, std::vector<s
                     std::multimap<int, std::string> t_map;
 
                     t_map.insert(std::make_pair(se[i].diff, id));
-                    u_map.insert(std::make_pair(date, t_map));
+                    u_map[date] = t_map;
                 }   
                 else
                 {   
