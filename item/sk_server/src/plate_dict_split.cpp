@@ -66,6 +66,8 @@ int plate_dict_split::load()
     stat(_fullpath, &st);
     _last_load = st.st_mtime;
 
+    p_data->_plate_index.idle_2_current();
+
     return 0;
 }
 

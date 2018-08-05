@@ -182,11 +182,11 @@ def print_res(res, parser):
                 tmp_str = key + '='
                 myjson = json.dumps(item[key], ensure_ascii=False)
                 tmp_str += myjson
-                print tmp_str
+                #print tmp_str
+                #print '\n'
                 if parser.outfile:
-                    log_write(parser.outfile, tmp_str)
+                    log_write(parser.outfile, tmp_str.encode('gb18030'))
 
-            print '\n'
             if parser.outfile:
                 log_write(parser.outfile, '\n')
 

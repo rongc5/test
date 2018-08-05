@@ -1836,7 +1836,7 @@ bool skhttp_res_data_process::do_check_rsingle_diff_ge(std::map<std::string, std
     if (has_key<std::string, std::string>(url_para_map, t_buf))
     {
         flag = true;
-        end = atof(url_para_map["jlrgr_ge"].c_str());
+        end = atoi(url_para_map[t_buf].c_str());
         it_ge = p_data->_rsingle_diff_index.current()->at(index).lower_bound(end);
     }
 
@@ -3125,6 +3125,59 @@ int skhttp_res_data_process::do_check_select(std::map<std::string, std::string> 
                 search = tmp;
             }
         }
+    }
+
+    {
+        strategy_conf * strategy = p_data->_conf->_strategy->current();
+        for (uint32_t i = 0; i < strategy->real_single_scale.size(); i++)
+        {
+            {
+                std::set<std::string> tmp, tt;
+                if (do_check_rsingle_diff_le(url_para_map, i, tmp))
+                {
+                    if (!search.empty())
+                    {
+                        std::set_difference(search.begin(), search.end(), tmp.begin(), tmp.end(), std::inserter(tt,tt.begin()));
+
+                        if (tt.empty())
+                        {
+                            return -1;
+                        }
+
+                        search = tt;
+                    }
+                    else
+                    {
+                        search = tmp;
+                    }
+                }
+            }
+
+
+            {
+                std::set<std::string> tmp, tt;
+                if (do_check_rsingle_diff_ge(url_para_map, i, tmp))
+                {
+                    if (!search.empty())
+                    {
+                        std::set_difference(search.begin(), search.end(), tmp.begin(), tmp.end(), std::inserter(tt,tt.begin()));
+
+                        if (tt.empty())
+                        {
+                            return -1;
+                        }
+
+                        search = tt;
+                    }
+                    else
+                    {
+                        search = tmp;
+                    }
+                }
+            }
+
+        }
+
     }
     
     //去除停牌的
