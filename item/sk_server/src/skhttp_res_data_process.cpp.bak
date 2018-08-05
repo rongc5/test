@@ -1854,61 +1854,13 @@ bool skhttp_res_data_process::do_check_rsingle_diff_ge(std::map<std::string, std
     return flag;
 }
 
-void skhttp_res_data_process::get_intersection(std::vector<std::set<std::string> > & arr, std::set<std::string> &res)
-{
-    std::set<std::string> search, tmp;
-    auto ii = arr.begin();
-    if (arr.size())
-    {
-        search = (*ii);
-        ii++;
-    }
-
-    for (; ii != arr.end(); ii++)
-    {
-        std::set_intersection(search.begin(), search.end(), ii->begin(), ii->end(), 
-                std::inserter(tmp,tmp.begin()));
-        if (tmp.empty())
-        {
-            return;
-        }
-        search = tmp;
-    }
-
-    res = search;
-}
-
-void skhttp_res_data_process::get_union(std::vector<std::set<std::string> > & arr, std::set<std::string> &res)
-{
-    std::set<std::string> search, tmp;
-    auto ii = arr.begin();
-    if (arr.size())
-    {
-        search = (*ii);
-        ii++;
-    }
-
-    for (; ii != arr.end(); ii++)
-    {
-        std::set_union(search.begin(), search.end(), ii->begin(), ii->end(), 
-                std::inserter(tmp,tmp.begin()));
-        if (tmp.empty())
-        {
-            return;
-        }
-        search = tmp;
-    }
-
-    res = search;
-
-}
-
 int skhttp_res_data_process::do_check_select(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res)
 {
     proc_data* p_data = proc_data::instance();
     if (!p_data)
         return -1;
     
+    std::set<std::string> search;
 
     std::vector<std::set<std::string> > positive, negative;
 
@@ -1928,742 +1880,1254 @@ int skhttp_res_data_process::do_check_select(std::map<std::string, std::string> 
         std::set<std::string> tmp;
         if (do_check_end_ge(url_para_map, tmp))
         {
-            if (tmp.empty())
+            if (!search.empty())
             {
-                return -1;
+                std::set_intersection(search.begin(), search.end(), tmp.begin(), tmp.end(), std::inserter(tt,tt.begin()));
 
+                if (tt.empty())
+                {
+                    return -1;
+                }
+
+                search = tt;
             }
-
-            positive.push_back(tmp);
+            else
+            {
+                search = tmp;
+            }
         }
     }
 
     {
-        std::set<std::string> tmp;
+        std::set<std::string> tmp, tt;
         if (do_check_change_rate_le(url_para_map, tmp))
         {
-            if (tmp.empty())
+            if (!search.empty())
             {
-                return -1;
-            }
+                std::set_intersection(search.begin(), search.end(), tmp.begin(), tmp.end(), std::inserter(tt,tt.begin()));
 
-            positive.push_back(tmp);
+                if (tt.empty())
+                {
+                    return -1;
+                }
+
+                search = tt;
+            }
+            else
+            {
+                search = tmp;
+            }
         }
     }
 
     {
-        std::set<std::string> tmp;
+        std::set<std::string> tmp, tt;
         if (do_check_change_rate_ge(url_para_map, tmp))
         {
-            if (tmp.empty())
+            if (!search.empty())
             {
-                return -1;
-            }
+                std::set_intersection(search.begin(), search.end(), tmp.begin(), tmp.end(), std::inserter(tt,tt.begin()));
 
-            positive.push_back(tmp);
+                if (tt.empty())
+                {
+                    return -1;
+                }
+
+                search = tt;
+            }
+            else
+            {
+                search = tmp;
+            }
         }
     }
 
     {
-        std::set<std::string> tmp;
+        std::set<std::string> tmp, tt;
         if (do_check_range_percent_le(url_para_map, tmp))
         {
-            if (tmp.empty())
+            if (!search.empty())
             {
-                return -1;
-            }
+                std::set_intersection(search.begin(), search.end(), tmp.begin(), tmp.end(), std::inserter(tt,tt.begin()));
 
-            positive.push_back(tmp);
+                if (tt.empty())
+                {
+                    return -1;
+                }
+
+                search = tt;
+            }
+            else
+            {
+                search = tmp;
+            }
         }
     }
 
     {
-        std::set<std::string> tmp;
+        std::set<std::string> tmp, tt;
         if (do_check_range_percent_ge(url_para_map, tmp))
         {
-            if (tmp.empty())
+            if (!search.empty())
             {
-                return -1;
-            }
+                std::set_intersection(search.begin(), search.end(), tmp.begin(), tmp.end(), std::inserter(tt,tt.begin()));
 
-            positive.push_back(tmp);
+                if (tt.empty())
+                {
+                    return -1;
+                }
+
+                search = tt;
+            }
+            else
+            {
+                search = tmp;
+            }
         }
     }
 
     {
-        std::set<std::string> tmp;
+        std::set<std::string> tmp, tt;
         if (do_check_down_pointer_le(url_para_map, tmp))
         {
-            if (tmp.empty())
+            if (!search.empty())
             {
-                return -1;
-            }
+                std::set_intersection(search.begin(), search.end(), tmp.begin(), tmp.end(), std::inserter(tt,tt.begin()));
 
-            positive.push_back(tmp);
+                if (tt.empty())
+                {
+                    return -1;
+                }
+
+                search = tt;
+            }
+            else
+            {
+                search = tmp;
+            }
         }
     }
 
     {
-        std::set<std::string> tmp;
+        std::set<std::string> tmp, tt;
         if (do_check_down_pointer_ge(url_para_map, tmp))
         {
-            if (tmp.empty())
+            if (!search.empty())
             {
-                return -1;
-            }
+                std::set_intersection(search.begin(), search.end(), tmp.begin(), tmp.end(), std::inserter(tt,tt.begin()));
 
-            positive.push_back(tmp);
+                if (tt.empty())
+                {
+                    return -1;
+                }
+
+                search = tt;
+            }
+            else
+            {
+                search = tmp;
+            }
         }
     }
 
     {
-        std::set<std::string> tmp;
+        std::set<std::string> tmp, tt;
         if (do_check_up_pointer_le(url_para_map, tmp))
         {
-            if (tmp.empty())
+            if (!search.empty())
             {
-                return -1;
-            }
+                std::set_intersection(search.begin(), search.end(), tmp.begin(), tmp.end(), std::inserter(tt,tt.begin()));
 
-            positive.push_back(tmp);
+                if (tt.empty())
+                {
+                    return -1;
+                }
+
+                search = tt;
+            }
+            else
+            {
+                search = tmp;
+            }
         }
     }
 
     {
-        std::set<std::string> tmp;
+        std::set<std::string> tmp, tt;
         if (do_check_up_pointer_ge(url_para_map, tmp))
         {
-            if (tmp.empty())
+            if (!search.empty())
             {
-                return -1;
-            }
+                std::set_intersection(search.begin(), search.end(), tmp.begin(), tmp.end(), std::inserter(tt,tt.begin()));
 
-            positive.push_back(tmp);
+                if (tt.empty())
+                {
+                    return -1;
+                }
+
+                search = tt;
+            }
+            else
+            {
+                search = tmp;
+            }
         }
     }
 
     {
-        std::set<std::string> tmp;
+        std::set<std::string> tmp, tt;
         if (do_check_end_avg_price_le(url_para_map, tmp))
         {
-            if (tmp.empty())
+            if (!search.empty())
             {
-                return -1;
-            }
+                std::set_intersection(search.begin(), search.end(), tmp.begin(), tmp.end(), std::inserter(tt,tt.begin()));
 
-            positive.push_back(tmp);
+                if (tt.empty())
+                {
+                    return -1;
+                }
+
+                search = tt;
+            }
+            else
+            {
+                search = tmp;
+            }
         }
     }
 
     {
-        std::set<std::string> tmp;
+        std::set<std::string> tmp, tt;
         if (do_check_end_avg_price_ge(url_para_map, tmp))
         {
-            if (tmp.empty())
+            if (!search.empty())
             {
-                return -1;
-            }
+                std::set_intersection(search.begin(), search.end(), tmp.begin(), tmp.end(), std::inserter(tt,tt.begin()));
 
-            positive.push_back(tmp);
+                if (tt.empty())
+                {
+                    return -1;
+                }
+
+                search = tt;
+            }
+            else
+            {
+                search = tmp;
+            }
         }
     }
 
     {
-        std::set<std::string> tmp;
+        std::set<std::string> tmp, tt;
         if (do_check_pe_le(url_para_map, tmp))
         {
-            if (tmp.empty())
+            if (!search.empty())
             {
-                return -1;
-            }
+                std::set_intersection(search.begin(), search.end(), tmp.begin(), tmp.end(), std::inserter(tt,tt.begin()));
 
-            positive.push_back(tmp);
+                if (tt.empty())
+                {
+                    return -1;
+                }
+
+                search = tt;
+            }
+            else
+            {
+                search = tmp;
+            }
         }
     }
 
     {
-        std::set<std::string> tmp;
+        std::set<std::string> tmp, tt;
         if (do_check_pe_ge(url_para_map, tmp))
         {
-            if (tmp.empty())
+            if (!search.empty())
             {
-                return -1;
-            }
+                std::set_intersection(search.begin(), search.end(), tmp.begin(), tmp.end(), std::inserter(tt,tt.begin()));
 
-            positive.push_back(tmp);
+                if (tt.empty())
+                {
+                    return -1;
+                }
+
+                search = tt;
+            }
+            else
+            {
+                search = tmp;
+            }
         }
     }
 
     {
-        std::set<std::string> tmp;
+        std::set<std::string> tmp, tt;
         if (do_check_pb_le(url_para_map, tmp))
         {
-            if (tmp.empty())
+            if (!search.empty())
             {
-                return -1;
-            }
+                std::set_intersection(search.begin(), search.end(), tmp.begin(), tmp.end(), std::inserter(tt,tt.begin()));
 
-            positive.push_back(tmp);
+                if (tt.empty())
+                {
+                    return -1;
+                }
+
+                search = tt;
+            }
+            else
+            {
+                search = tmp;
+            }
         }
     }
 
     {
-        std::set<std::string> tmp;
+        std::set<std::string> tmp, tt;
         if (do_check_pb_ge(url_para_map, tmp))
         {
-            if (tmp.empty())
+            if (!search.empty())
             {
-                return -1;
-            }
+                std::set_intersection(search.begin(), search.end(), tmp.begin(), tmp.end(), std::inserter(tt,tt.begin()));
 
-            positive.push_back(tmp);
+                if (tt.empty())
+                {
+                    return -1;
+                }
+
+                search = tt;
+            }
+            else
+            {
+                search = tmp;
+            }
         }
     }
 
     {
-        std::set<std::string> tmp;
+        std::set<std::string> tmp, tt;
         if (do_check_value_le(url_para_map, tmp))
         {
-            if (tmp.empty())
+            if (!search.empty())
             {
-                return -1;
-            }
+                std::set_intersection(search.begin(), search.end(), tmp.begin(), tmp.end(), std::inserter(tt,tt.begin()));
 
-            positive.push_back(tmp);
+                if (tt.empty())
+                {
+                    return -1;
+                }
+
+                search = tt;
+            }
+            else
+            {
+                search = tmp;
+            }
         }
     }
 
     {
-        std::set<std::string> tmp;
+        std::set<std::string> tmp, tt;
         if (do_check_value_ge(url_para_map, tmp))
         {
-            if (tmp.empty())
+            if (!search.empty())
             {
-                return -1;
-            }
+                std::set_intersection(search.begin(), search.end(), tmp.begin(), tmp.end(), std::inserter(tt,tt.begin()));
 
-            positive.push_back(tmp);
+                if (tt.empty())
+                {
+                    return -1;
+                }
+
+                search = tt;
+            }
+            else
+            {
+                search = tmp;
+            }
         }
     }
 
     {
-        std::set<std::string> tmp;
+        std::set<std::string> tmp, tt;
         if (do_check_value_num_min(url_para_map, tmp))
         {
-            if (tmp.empty())
+            if (!search.empty())
             {
-                return -1;
-            }
+                std::set_intersection(search.begin(), search.end(), tmp.begin(), tmp.end(), std::inserter(tt,tt.begin()));
 
-            positive.push_back(tmp);
+                if (tt.empty())
+                {
+                    return -1;
+                }
+
+                search = tt;
+            }
+            else
+            {
+                search = tmp;
+            }
         }
     }
 
     {
-        std::set<std::string> tmp;
+        std::set<std::string> tmp, tt;
         if (do_check_value_num_max(url_para_map, tmp))
         {
-            if (tmp.empty())
+            if (!search.empty())
             {
-                return -1;
-            }
+                std::set_intersection(search.begin(), search.end(), tmp.begin(), tmp.end(), std::inserter(tt,tt.begin()));
 
-            positive.push_back(tmp);
+                if (tt.empty())
+                {
+                    return -1;
+                }
+
+                search = tt;
+            }
+            else
+            {
+                search = tmp;
+            }
         }
     }
 
     {
-        std::set<std::string> tmp;
+        std::set<std::string> tmp, tt;
         if (do_check_cir_value_le(url_para_map, tmp))
         {
-            if (tmp.empty())
+            if (!search.empty())
             {
-                return -1;
-            }
+                std::set_intersection(search.begin(), search.end(), tmp.begin(), tmp.end(), std::inserter(tt,tt.begin()));
 
-            positive.push_back(tmp);
+                if (tt.empty())
+                {
+                    return -1;
+                }
+
+                search = tt;
+            }
+            else
+            {
+                search = tmp;
+            }
         }
     }
 
     {
-        std::set<std::string> tmp;
+        std::set<std::string> tmp, tt;
         if (do_check_cir_value_ge(url_para_map, tmp))
         {
-            if (tmp.empty())
+            if (!search.empty())
             {
-                return -1;
-            }
+                std::set_intersection(search.begin(), search.end(), tmp.begin(), tmp.end(), std::inserter(tt,tt.begin()));
 
-            positive.push_back(tmp);
+                if (tt.empty())
+                {
+                    return -1;
+                }
+
+                search = tt;
+            }
+            else
+            {
+                search = tmp;
+            }
         }
     }
 
     {
-        std::set<std::string> tmp;
+        std::set<std::string> tmp, tt;
         if (do_check_cir_value_num_min(url_para_map, tmp))
         {
-            if (tmp.empty())
+            if (!search.empty())
             {
-                return -1;
-            }
+                std::set_intersection(search.begin(), search.end(), tmp.begin(), tmp.end(), std::inserter(tt,tt.begin()));
 
-            positive.push_back(tmp);
+                if (tt.empty())
+                {
+                    return -1;
+                }
+
+                search = tt;
+            }
+            else
+            {
+                search = tmp;
+            }
         }
     }
 
     {
-        std::set<std::string> tmp;
+        std::set<std::string> tmp, tt;
         if (do_check_cir_value_num_max(url_para_map, tmp))
         {
-            if (tmp.empty())
+            if (!search.empty())
             {
-                return -1;
-            }
+                std::set_intersection(search.begin(), search.end(), tmp.begin(), tmp.end(), std::inserter(tt,tt.begin()));
 
-            positive.push_back(tmp);
+                if (tt.empty())
+                {
+                    return -1;
+                }
+
+                search = tt;
+            }
+            else
+            {
+                search = tmp;
+            }
         }
     }
 
     {
-        std::set<std::string> tmp;
+        std::set<std::string> tmp, tt;
         if (do_check_mgxj_le(url_para_map, tmp))
         {
-            if (tmp.empty())
+            if (!search.empty())
             {
-                return -1;
-            }
+                std::set_intersection(search.begin(), search.end(), tmp.begin(), tmp.end(), std::inserter(tt,tt.begin()));
 
-            positive.push_back(tmp);
+                if (tt.empty())
+                {
+                    return -1;
+                }
+
+                search = tt;
+            }
+            else
+            {
+                search = tmp;
+            }
         }
     }
 
     {
-        std::set<std::string> tmp;
+        std::set<std::string> tmp, tt;
         if (do_check_mgxj_ge(url_para_map, tmp))
         {
-            if (tmp.empty())
+            if (!search.empty())
             {
-                return -1;
-            }
+                std::set_intersection(search.begin(), search.end(), tmp.begin(), tmp.end(), std::inserter(tt,tt.begin()));
 
-            positive.push_back(tmp);
+                if (tt.empty())
+                {
+                    return -1;
+                }
+
+                search = tt;
+            }
+            else
+            {
+                search = tmp;
+            }
         }
     }
 
     {
-        std::set<std::string> tmp;
+        std::set<std::string> tmp, tt;
         if (do_check_mgsy_le(url_para_map, tmp))
         {
-            if (tmp.empty())
+            if (!search.empty())
             {
-                return -1;
-            }
+                std::set_intersection(search.begin(), search.end(), tmp.begin(), tmp.end(), std::inserter(tt,tt.begin()));
 
-            positive.push_back(tmp);
+                if (tt.empty())
+                {
+                    return -1;
+                }
+
+                search = tt;
+            }
+            else
+            {
+                search = tmp;
+            }
         }
     }
 
     {
-        std::set<std::string> tmp;
+        std::set<std::string> tmp, tt;
         if (do_check_mgsy_ge(url_para_map, tmp))
         {
-            if (tmp.empty())
+            if (!search.empty())
             {
-                return -1;
+                std::set_intersection(search.begin(), search.end(), tmp.begin(), tmp.end(), std::inserter(tt,tt.begin()));
+
+                if (tt.empty())
+                {
+                    return -1;
+                }
+
+                search = tt;
             }
-            
-            positive.push_back(tmp);
+            else
+            {
+                search = tmp;
+            }
         }
     }
 
     {
-        std::set<std::string> tmp;
+        std::set<std::string> tmp, tt;
         if (do_check_mgsygr_le(url_para_map, tmp))
         {
-            if (tmp.empty())
+            if (!search.empty())
             {
-                return -1;
-            }
+                std::set_intersection(search.begin(), search.end(), tmp.begin(), tmp.end(), std::inserter(tt,tt.begin()));
 
-            positive.push_back(tmp);
+                if (tt.empty())
+                {
+                    return -1;
+                }
+
+                search = tt;
+            }
+            else
+            {
+                search = tmp;
+            }
         }
     }
 
     {
-        std::set<std::string> tmp;
+        std::set<std::string> tmp, tt;
         if (do_check_mgsygr_ge(url_para_map, tmp))
         {
-            if (tmp.empty())
+            if (!search.empty())
             {
-                return -1;
-            }
+                std::set_intersection(search.begin(), search.end(), tmp.begin(), tmp.end(), std::inserter(tt,tt.begin()));
 
-            positive.push_back(tmp);
+                if (tt.empty())
+                {
+                    return -1;
+                }
+
+                search = tt;
+            }
+            else
+            {
+                search = tmp;
+            }
         }
     }
 
     {
-        std::set<std::string> tmp;
+        std::set<std::string> tmp, tt;
         if (do_check_mgxjgr_le(url_para_map, tmp))
         {
-            if (tmp.empty())
+            if (!search.empty())
             {
-                return -1;
-            }
+                std::set_intersection(search.begin(), search.end(), tmp.begin(), tmp.end(), std::inserter(tt,tt.begin()));
 
-            positive.push_back(tmp);
+                if (tt.empty())
+                {
+                    return -1;
+                }
+
+                search = tt;
+            }
+            else
+            {
+                search = tmp;
+            }
         }
     }
 
     {
-        std::set<std::string> tmp;
+        std::set<std::string> tmp, tt;
         if (do_check_mgxjgr_ge(url_para_map, tmp))
         {
-            if (tmp.empty())
+            if (!search.empty())
             {
-                return -1;
-            }
+                std::set_intersection(search.begin(), search.end(), tmp.begin(), tmp.end(), std::inserter(tt,tt.begin()));
 
-            positive.push_back(tmp);
+                if (tt.empty())
+                {
+                    return -1;
+                }
+
+                search = tt;
+            }
+            else
+            {
+                search = tmp;
+            }
         }
     }
 
     {
-        std::set<std::string> tmp;
+        std::set<std::string> tmp, tt;
         if (do_check_zysrgr_le(url_para_map, tmp))
         {
-            if (tmp.empty())
+            if (!search.empty())
             {
-                return -1;
-            }
+                std::set_intersection(search.begin(), search.end(), tmp.begin(), tmp.end(), std::inserter(tt,tt.begin()));
 
-            positive.push_back(tmp);
+                if (tt.empty())
+                {
+                    return -1;
+                }
+
+                search = tt;
+            }
+            else
+            {
+                search = tmp;
+            }
         }
     }
 
     {
-        std::set<std::string> tmp;
+        std::set<std::string> tmp, tt;
         if (do_check_zysrgr_ge(url_para_map, tmp))
         {
-            if (tmp.empty())
+            if (!search.empty())
             {
-                return -1;
+                std::set_intersection(search.begin(), search.end(), tmp.begin(), tmp.end(), std::inserter(tt,tt.begin()));
+
+                if (tt.empty())
+                {
+                    return -1;
+                }
+
+                search = tt;
             }
-            
-            positive.push_back(tmp);
+            else
+            {
+                search = tmp;
+            }
         }
     }
 
     {
-        std::set<std::string> tmp;
+        std::set<std::string> tmp, tt;
         if (do_check_yylrgr_le(url_para_map, tmp))
         {
-            if (tmp.empty())
+            if (!search.empty())
             {
-                return -1;
-            }
+                std::set_intersection(search.begin(), search.end(), tmp.begin(), tmp.end(), std::inserter(tt,tt.begin()));
 
-            positive.push_back(tmp);
+                if (tt.empty())
+                {
+                    return -1;
+                }
+
+                search = tt;
+            }
+            else
+            {
+                search = tmp;
+            }
         }
     }
 
     {
-        std::set<std::string> tmp;
+        std::set<std::string> tmp, tt;
         if (do_check_yylrgr_ge(url_para_map, tmp))
         {
-            if (tmp.empty())
+            if (!search.empty())
             {
-                return -1;
-            }
+                std::set_intersection(search.begin(), search.end(), tmp.begin(), tmp.end(), std::inserter(tt,tt.begin()));
 
-            positive.push_back(tmp);
+                if (tt.empty())
+                {
+                    return -1;
+                }
+
+                search = tt;
+            }
+            else
+            {
+                search = tmp;
+            }
         }
     }
 
     {
-        std::set<std::string> tmp;
+        std::set<std::string> tmp, tt;
         if (do_check_jlrgr_le(url_para_map, tmp))
         {
-            if (tmp.empty())
+            if (!search.empty())
             {
-                return -1;
-            }
+                std::set_intersection(search.begin(), search.end(), tmp.begin(), tmp.end(), std::inserter(tt,tt.begin()));
 
-            positive.push_back(tmp);
+                if (tt.empty())
+                {
+                    return -1;
+                }
+
+                search = tt;
+            }
+            else
+            {
+                search = tmp;
+            }
         }
     }
 
     {
-        std::set<std::string> tmp;
+        std::set<std::string> tmp, tt;
         if (do_check_jlrgr_ge(url_para_map, tmp))
         {
-            if (tmp.empty())
+            if (!search.empty())
             {
-                return -1;
-            }
+                std::set_intersection(search.begin(), search.end(), tmp.begin(), tmp.end(), std::inserter(tt,tt.begin()));
 
-            positive.push_back(tmp);
+                if (tt.empty())
+                {
+                    return -1;
+                }
+
+                search = tt;
+            }
+            else
+            {
+                search = tmp;
+            }
         }
     }
 
     {
-        std::set<std::string> tmp;
+        std::set<std::string> tmp, tt;
         if (do_check_cir_value_num_min(url_para_map, tmp))
         {
-            if (tmp.empty())
+            if (!search.empty())
             {
-                return -1;
-            }
+                std::set_intersection(search.begin(), search.end(), tmp.begin(), tmp.end(), std::inserter(tt,tt.begin()));
 
-            positive.push_back(tmp);
+                if (tt.empty())
+                {
+                    return -1;
+                }
+
+                search = tt;
+            }
+            else
+            {
+                search = tmp;
+            }
         }
     }
 
     {
-        std::set<std::string> tmp;
+        std::set<std::string> tmp, tt;
         if (do_check_cir_value_num_max(url_para_map, tmp))
         {
-            if (tmp.empty())
+            if (!search.empty())
             {
-                return -1;
+                std::set_intersection(search.begin(), search.end(), tmp.begin(), tmp.end(), std::inserter(tt,tt.begin()));
+
+                if (tt.empty())
+                {
+                    return -1;
+                }
+
+                search = tt;
             }
-            
-            positive.push_back(tmp);
+            else
+            {
+                search = tmp;
+            }
         }
     }
 
     {
-        std::set<std::string> tmp;
+        std::set<std::string> tmp, tt;
         if (do_check_mgxj_le(url_para_map, tmp))
         {
-            if (tmp.empty())
+            if (!search.empty())
             {
-                return -1;
-            }
+                std::set_intersection(search.begin(), search.end(), tmp.begin(), tmp.end(), std::inserter(tt,tt.begin()));
 
-            positive.push_back(tmp);
+                if (tt.empty())
+                {
+                    return -1;
+                }
+
+                search = tt;
+            }
+            else
+            {
+                search = tmp;
+            }
         }
     }
 
     {
-        std::set<std::string> tmp;
+        std::set<std::string> tmp, tt;
         if (do_check_mgxj_ge(url_para_map, tmp))
         {
-            if (tmp.empty())
+            if (!search.empty())
             {
-                return -1;
-            }
+                std::set_intersection(search.begin(), search.end(), tmp.begin(), tmp.end(), std::inserter(tt,tt.begin()));
 
-            positive.push_back(tmp);
+                if (tt.empty())
+                {
+                    return -1;
+                }
+
+                search = tt;
+            }
+            else
+            {
+                search = tmp;
+            }
         }
     }
 
     {
-        std::set<std::string> tmp;
+        std::set<std::string> tmp, tt;
         if (do_check_mgsy_le(url_para_map, tmp))
         {
-            if (tmp.empty())
+            if (!search.empty())
             {
-                return -1;
+                std::set_intersection(search.begin(), search.end(), tmp.begin(), tmp.end(), std::inserter(tt,tt.begin()));
+
+                if (tt.empty())
+                {
+                    return -1;
+                }
+
+                search = tt;
             }
-            
-            positive.push_back(tmp);
+            else
+            {
+                search = tmp;
+            }
         }
     }
 
     {
-        std::set<std::string> tmp;
+        std::set<std::string> tmp, tt;
         if (do_check_mgsy_ge(url_para_map, tmp))
         {
-            if (tmp.empty())
+            if (!search.empty())
             {
-                return -1;
-            }
+                std::set_intersection(search.begin(), search.end(), tmp.begin(), tmp.end(), std::inserter(tt,tt.begin()));
 
-            positive.push_back(tmp);
+                if (tt.empty())
+                {
+                    return -1;
+                }
+
+                search = tt;
+            }
+            else
+            {
+                search = tmp;
+            }
         }
     }
 
     {
-        std::set<std::string> tmp;
+        std::set<std::string> tmp, tt;
         if (do_check_mgsygr_le(url_para_map, tmp))
         {
-            if (tmp.empty())
+            if (!search.empty())
             {
-                return -1;
-            }
+                std::set_intersection(search.begin(), search.end(), tmp.begin(), tmp.end(), std::inserter(tt,tt.begin()));
 
-            positive.push_back(tmp);
+                if (tt.empty())
+                {
+                    return -1;
+                }
+
+                search = tt;
+            }
+            else
+            {
+                search = tmp;
+            }
         }
     }
 
     {
-        std::set<std::string> tmp;
+        std::set<std::string> tmp, tt;
         if (do_check_mgsygr_ge(url_para_map, tmp))
         {
-            if (tmp.empty())
+            if (!search.empty())
             {
-                return -1;
-            }
+                std::set_intersection(search.begin(), search.end(), tmp.begin(), tmp.end(), std::inserter(tt,tt.begin()));
 
-            positive.push_back(tmp);
+                if (tt.empty())
+                {
+                    return -1;
+                }
+
+                search = tt;
+            }
+            else
+            {
+                search = tmp;
+            }
         }
     }
 
     {
-        std::set<std::string> tmp;
+        std::set<std::string> tmp, tt;
         if (do_check_mgxjgr_le(url_para_map, tmp))
         {
-            if (tmp.empty())
+            if (!search.empty())
             {
-                return -1;
-            }
+                std::set_intersection(search.begin(), search.end(), tmp.begin(), tmp.end(), std::inserter(tt,tt.begin()));
 
-            positive.push_back(tmp);
+                if (tt.empty())
+                {
+                    return -1;
+                }
+
+                search = tt;
+            }
+            else
+            {
+                search = tmp;
+            }
         }
     }
 
     {
-        std::set<std::string> tmp;
+        std::set<std::string> tmp, tt;
         if (do_check_mgxjgr_ge(url_para_map, tmp))
         {
-            if (tmp.empty())
+            if (!search.empty())
             {
-                return -1;
-            }
+                std::set_intersection(search.begin(), search.end(), tmp.begin(), tmp.end(), std::inserter(tt,tt.begin()));
 
-            positive.push_back(tmp);
+                if (tt.empty())
+                {
+                    return -1;
+                }
+
+                search = tt;
+            }
+            else
+            {
+                search = tmp;
+            }
         }
     }
 
     {
-        std::set<std::string> tmp;
+        std::set<std::string> tmp, tt;
         if (do_check_zysrgr_le(url_para_map, tmp))
         {
-            if (tmp.empty())
+            if (!search.empty())
             {
-                return -1;
-            }
+                std::set_intersection(search.begin(), search.end(), tmp.begin(), tmp.end(), std::inserter(tt,tt.begin()));
 
-            positive.push_back(tmp);
+                if (tt.empty())
+                {
+                    return -1;
+                }
+
+                search = tt;
+            }
+            else
+            {
+                search = tmp;
+            }
         }
     }
 
     {
-        std::set<std::string> tmp;
+        std::set<std::string> tmp, tt;
         if (do_check_zysrgr_ge(url_para_map, tmp))
         {
-            if (tmp.empty())
+            if (!search.empty())
             {
-                return -1;
-            }
+                std::set_intersection(search.begin(), search.end(), tmp.begin(), tmp.end(), std::inserter(tt,tt.begin()));
 
-            positive.push_back(tmp);
+                if (tt.empty())
+                {
+                    return -1;
+                }
+
+                search = tt;
+            }
+            else
+            {
+                search = tmp;
+            }
         }
     }
 
     {
-        std::set<std::string> tmp;
+        std::set<std::string> tmp, tt;
         if (do_check_yylrgr_le(url_para_map, tmp))
         {
-            if (tmp.empty())
+            if (!search.empty())
             {
-                return -1;
-            }
+                std::set_intersection(search.begin(), search.end(), tmp.begin(), tmp.end(), std::inserter(tt,tt.begin()));
 
-            positive.push_back(tmp);
+                if (tt.empty())
+                {
+                    return -1;
+                }
+
+                search = tt;
+            }
+            else
+            {
+                search = tmp;
+            }
         }
     }
 
     {
-        std::set<std::string> tmp;
+        std::set<std::string> tmp, tt;
         if (do_check_yylrgr_ge(url_para_map, tmp))
         {
-            if (tmp.empty())
+            if (!search.empty())
             {
-                return -1;
-            }
+                std::set_intersection(search.begin(), search.end(), tmp.begin(), tmp.end(), std::inserter(tt,tt.begin()));
 
-            positive.push_back(tmp);
+                if (tt.empty())
+                {
+                    return -1;
+                }
+
+                search = tt;
+            }
+            else
+            {
+                search = tmp;
+            }
         }
     }
 
     {
-        std::set<std::string> tmp;
+        std::set<std::string> tmp, tt;
         if (do_check_jlrgr_le(url_para_map, tmp))
         {
-            if (tmp.empty())
+            if (!search.empty())
             {
-                return -1;
-            }
+                std::set_intersection(search.begin(), search.end(), tmp.begin(), tmp.end(), std::inserter(tt,tt.begin()));
 
-            positive.push_back(tmp);
+                if (tt.empty())
+                {
+                    return -1;
+                }
+
+                search = tt;
+            }
+            else
+            {
+                search = tmp;
+            }
         }
     }
 
     {
-        std::set<std::string> tmp;
+        std::set<std::string> tmp, tt;
         if (do_check_jlrgr_ge(url_para_map, tmp))
         {
-            if (tmp.empty())
+            if (!search.empty())
             {
-                return -1;
-            }
+                std::set_intersection(search.begin(), search.end(), tmp.begin(), tmp.end(), std::inserter(tt,tt.begin()));
 
-            positive.push_back(tmp);
+                if (tt.empty())
+                {
+                    return -1;
+                }
+
+                search = tt;
+            }
+            else
+            {
+                search = tmp;
+            }
         }
     }
 
 
     {
-        std::set<std::string> tmp;
+        std::set<std::string> tmp, tt;
         if (do_check_address(url_para_map, "address", tmp))
         {
-            if (tmp.empty())
+            if (!search.empty())
             {
-                return -1;
-            }
+                std::set_intersection(search.begin(), search.end(), tmp.begin(), tmp.end(), std::inserter(tt,tt.begin()));
 
-            positive.push_back(tmp);
+                if (tt.empty())
+                {
+                    return -1;
+                }
+
+                search = tt;
+            }
+            else
+            {
+                search = tmp;
+            }
         }
     }
 
     {
-        std::set<std::string> tmp;
+        std::set<std::string> tmp, tt;
         if (do_check_address(url_para_map, "address_v", tmp))
         {
-            if (tmp.empty())
+            if (!search.empty())
             {
-                return -1;
-            }
+                std::set_difference(search.begin(), search.end(), tmp.begin(), tmp.end(), std::inserter(tt,tt.begin()));
 
-            negative.push_back(tmp);
+                if (tt.empty())
+                {
+                    return -1;
+                }
+
+                search = tt;
+            }
+            else
+            {
+                search = tmp;
+            }
         }
     }
 
     {
-        std::set<std::string> tmp;
+        std::set<std::string> tmp, tt;
         if (do_check_plate(url_para_map, "plate", tmp))
         {
-            if (tmp.empty())
+            if (!search.empty())
             {
-                return -1;
-            }
+                std::set_intersection(search.begin(), search.end(), tmp.begin(), tmp.end(), std::inserter(tt,tt.begin()));
 
-            positive.push_back(tmp);
+                if (tt.empty())
+                {
+                    return -1;
+                }
+
+                search = tt;
+            }
+            else
+            {
+                search = tmp;
+            }
         }
     }
 
     {
-        std::set<std::string> tmp;
+        std::set<std::string> tmp, tt;
         if (do_check_plate(url_para_map, "plate_v", tmp))
         {
-            if (tmp.empty())
+            if (!search.empty())
             {
-                return -1;
-            }
+                std::set_difference(search.begin(), search.end(), tmp.begin(), tmp.end(), std::inserter(tt,tt.begin()));
 
-            negative.push_back(tmp);
+                if (tt.empty())
+                {
+                    return -1;
+                }
+
+                search = tt;
+            }
+            else
+            {
+                search = tmp;
+            }
         }
     }
 
@@ -2672,29 +3136,47 @@ int skhttp_res_data_process::do_check_select(std::map<std::string, std::string> 
         for (uint32_t i = 0; i < strategy->real_single_scale.size(); i++)
         {
             {
-                std::set<std::string> tmp;
+                std::set<std::string> tmp, tt;
                 if (do_check_rsingle_diff_le(url_para_map, i, tmp))
                 {
-                    if (tmp.empty())
+                    if (!search.empty())
                     {
-                        return -1;
-                    }
+                        std::set_difference(search.begin(), search.end(), tmp.begin(), tmp.end(), std::inserter(tt,tt.begin()));
 
-                    positive.push_back(tmp);
+                        if (tt.empty())
+                        {
+                            return -1;
+                        }
+
+                        search = tt;
+                    }
+                    else
+                    {
+                        search = tmp;
+                    }
                 }
             }
 
 
             {
-                std::set<std::string> tmp;
+                std::set<std::string> tmp, tt;
                 if (do_check_rsingle_diff_ge(url_para_map, i, tmp))
                 {
-                    if (tmp.empty())
+                    if (!search.empty())
                     {
-                        return -1;
-                    }
+                        std::set_difference(search.begin(), search.end(), tmp.begin(), tmp.end(), std::inserter(tt,tt.begin()));
 
-                    positive.push_back(tmp);
+                        if (tt.empty())
+                        {
+                            return -1;
+                        }
+
+                        search = tt;
+                    }
+                    else
+                    {
+                        search = tmp;
+                    }
                 }
             }
 
@@ -2704,26 +3186,15 @@ int skhttp_res_data_process::do_check_select(std::map<std::string, std::string> 
     
     //去除停牌的
     {
-        std::set<std::string> tmp;
-        for (auto ii = p_data->_block_set.current()->begin(); ii != p_data->_block_set.current()->end(); ii++)
+        std::set<std::string> tt;
+        std::set_difference(search.begin(), search.end(), p_data->_block_set.current()->begin(), 
+                p_data->_block_set.current()->end(), std::inserter(tt,tt.begin()));
+        if (tt.empty())
         {
-            tmp.insert(*ii); 
+            return -1;
         }
 
-        if (!tmp.empty())
-        {
-            negative.push_back(tmp);
-        }
-    }
-
-    {
-        std::set<std::string> p_set, n_set;
-
-        get_intersection(positive, p_set);
-
-        get_union(negative, n_set);
-
-        std::set_difference(p_set.begin(), p_set.end(), n_set.begin(), n_set.end(), std::inserter(res,res.begin()));
+        res = tt;
     }
 
     return 0;

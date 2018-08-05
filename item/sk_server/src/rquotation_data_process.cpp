@@ -89,6 +89,10 @@ void rquotation_data_process::msg_recv_finish()
     {
         down_pointer = (atof(qt.end.c_str()) - atof(qt.low.c_str()))/
             (atof(qt.end.c_str()) - atof(qt.start.c_str()));
+
+        if (down_pointer < 0)
+            down_pointer *= -1;
+
         snprintf(t_buf, sizeof(t_buf), "%.2f", down_pointer);
         qt.down_pointer.append(t_buf);
     }
@@ -97,6 +101,10 @@ void rquotation_data_process::msg_recv_finish()
     {
         up_pointer = (atof(qt.high.c_str()) - atof(qt.end.c_str()))/
             (atof(qt.end.c_str()) - atof(qt.start.c_str()));
+
+        if (up_pointer < 0)
+            up_pointer *= -1;
+
         snprintf(t_buf, sizeof(t_buf), "%.2f", up_pointer);
         qt.up_pointer.append(t_buf);
     }

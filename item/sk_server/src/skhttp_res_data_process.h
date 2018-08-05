@@ -145,6 +145,10 @@ class skhttp_res_data_process:public http_base_data_process
 
         bool do_check_rsingle_diff_ge(std::map<std::string, std::string> & url_para_map, uint32_t index, std::set<std::string> & res);
 
+        void get_intersection(std::vector<std::set<std::string> > & arr, std::set<std::string> &res);
+
+        void get_union(std::vector<std::set<std::string> > & arr, std::set<std::string> &res);
+
     protected:
         std::string _body;
         std::string _recv_buf;
