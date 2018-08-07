@@ -25,7 +25,7 @@ uint32_t base_timer::gen_timerid()
         if (_timerid < TIMER_ID_BEGIN)
             _timerid = TIMER_ID_BEGIN;
         
-    }while (!_timerid_set.count(_timerid));
+    }while (_timerid_set.count(_timerid));
 
     _timerid_set.insert(_timerid);
 

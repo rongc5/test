@@ -45,6 +45,7 @@ void common_epoll::mod_from_epoll(base_net_obj * p_obj)
 int common_epoll::epoll_wait(std::map<ObjId, std::shared_ptr<base_net_obj> > &expect_list, std::map<ObjId, std::shared_ptr<base_net_obj> > &remove_list, uint32_t num)
 {
     int wait_time = _epoll_wait_time;
+    //if (num > DEFAULT_EPOLL_WAITE_SIZE)
     if (num > 0)
     {
         wait_time = 0;
