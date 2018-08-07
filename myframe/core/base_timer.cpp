@@ -19,7 +19,16 @@ base_timer::~base_timer()
 
 uint32_t base_timer::gen_timerid()
 {
-    _timerid++;
+    do
+    {
+        _timerid++;
+        if (_timerid < TIMER_ID_BEGIN)
+            _timerid = TIMER_ID_BEGIN;
+        
+    }while (!_timerid_set.count(_timerid));
+
+    _timerid_set.insert(_timerid);
+
     return _timerid;
 }
 
@@ -31,20 +40,13 @@ uint32_t base_timer::add_timer(std::shared_ptr<timer_msg> & t_msg)
                 t_msg->_time_length, t_msg->_timer_id, t_msg->_timer_type);
         return 0;
     }
+
     uint64_t reach_time = GetMilliSecond() + t_msg->_time_length;
     t_msg->_timer_id = gen_timerid();
-    LOG_DEBUG("set time_length:%u reach_time:%llu timer_id:%u", t_msg->_time_length, reach_time, t_msg->_timer_id);
-    //PDEBUG("set time_length:%u reach_time:%llu timer_id:%u", t_msg._time_length, reach_time, t_msg._timer_id);
 
-    std::map<uint64_t, std::vector<std::shared_ptr<timer_msg> > >::iterator it;
-    it = _timer_list[_current].find(reach_time);
-    if (it != _timer_list[_current].end()) {
-        it->second.push_back(t_msg);
-    }else {
-        std::vector<std::shared_ptr<timer_msg> > t_vec;
-        t_vec.push_back(t_msg);
-        _timer_list[_current].insert(make_pair(reach_time, t_vec));
-    }
+    LOG_DEBUG("set time_length:%u reach_time:%llu timer_id:%u", t_msg->_time_length, reach_time, t_msg->_timer_id);
+
+    _timer_list[_current].insert(make_pair(reach_time, t_msg));
 
     return t_msg->_timer_id;
 }
@@ -53,37 +55,41 @@ void base_timer::check_timer(std::vector<uint32_t> &expect_list)
 {
     uint64_t now = 	GetMilliSecond();
 
-    std::map<uint64_t, std::vector<std::shared_ptr<timer_msg> > >::iterator it, itup;
-    itup = _timer_list[_current].upper_bound(now);
+    std::multimap<uint64_t, std::shared_ptr<timer_msg> >::iterator it;
     it = _timer_list[_current].begin();
-    std::map<uint64_t, std::vector<std::shared_ptr<timer_msg> > > & timer_list = _timer_list[_current];
+    std::multimap<uint64_t, std::shared_ptr<timer_msg> > & timer_list = _timer_list[_current];
+    std::vector<uint64_t> tmp_vec;
+    std::vector<uint64_t>::iterator ii;
 
     _current = 1 - _current;
 
-    for (; it != itup && itup != timer_list.end(); it++) 
+    for (it = timer_list.begin(); it != timer_list.end(); it++) 
     {
-        std::vector<std::shared_ptr<timer_msg> >::iterator itvec;
-        for (itvec = it->second.begin(); itvec != it->second.end(); itvec++) 
+        try
         {
-            try
-            {
-                LOG_DEBUG("set time_length:%u timer_id:%u", (*itvec)->_time_length, (*itvec)->_timer_id);
-                _net_container->handle_timeout(*itvec);
-            }
-            catch(CMyCommonException &e) 
-            {
-                expect_list.push_back((*itvec)->_obj_id);
-            }
-            catch(std::exception &e) 
-            {   
-                expect_list.push_back((*itvec)->_obj_id);
-            } 
+            if (it->first > now)
+                break;
+
+            LOG_DEBUG("set time_length:%u timer_id:%u", it->second->_time_length, it->second->_timer_id);
+
+            _timerid_set.erase(it->second->_timer_id);
+            tmp_vec.push_back(it->first);
+
+            _net_container->handle_timeout(it->second);
         }
+        catch(CMyCommonException &e) 
+        {
+            expect_list.push_back(it->second->_obj_id);
+        }
+        catch(std::exception &e) 
+        {   
+            expect_list.push_back(it->second->_obj_id);
+        } 
     }
 
-    if (itup != timer_list.end())
+    for (ii = tmp_vec.begin(); ii != tmp_vec.end(); ii++)
     {
-        timer_list.erase(timer_list.begin(), itup);
+        timer_list.erase(*ii);
     }
 }
 

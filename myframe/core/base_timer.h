@@ -20,7 +20,9 @@ class base_timer
         uint32_t gen_timerid();
 
 	protected:
-        std::map<uint64_t, std::vector<std::shared_ptr<timer_msg> > > _timer_list[2];
+        std::multimap<uint64_t, std::shared_ptr<timer_msg> > _timer_list[2];
+        std::set<uint32_t> _timerid_set;
+
         common_obj_container * _net_container;
         uint32_t _timerid;
         uint32_t _current;
