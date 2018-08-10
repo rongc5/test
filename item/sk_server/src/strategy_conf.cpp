@@ -80,6 +80,11 @@ void strategy_conf::do_parse()
         real_afternoon_etime = _cfg["real_afternoon_etime"];
     }
 
+    if (has_key<std::string, std::string>(_cfg, "dump_real_time"))
+    {
+        dump_real_time = _cfg["dump_real_time"];
+    }
+
     if (has_key<std::string, std::string>(_cfg, "req_http_timeout"))
     {
         req_http_timeout = atoi(_cfg["req_http_timeout"].c_str());
@@ -233,6 +238,16 @@ void strategy_conf::do_parse()
     if (has_key<std::string, std::string>(_cfg, "real_single_deque_length"))
     {
         real_single_deque_length = atoi(_cfg["real_single_deque_length"].c_str());
+    }
+
+    if (has_key<std::string, std::string>(_cfg, "real_quotation_path"))
+    {
+        real_quotation_path = _cfg["real_quotation_path"];
+    }
+
+    if (has_key<std::string, std::string>(_cfg, "real_single_path"))
+    {
+        real_single_path = _cfg["real_single_path"];
     }
 
     real_single_scale.clear();

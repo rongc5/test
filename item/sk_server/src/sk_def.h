@@ -83,6 +83,7 @@ struct quotation_t
     std::string total_price;
 };
 
+#define NORMAL_MSG_DUMP 1000
 
 #define TIMER_TYPE_RELOAD_CONF 10000
 #define TIMER_TYPE_REQ_QUOTATION 10001

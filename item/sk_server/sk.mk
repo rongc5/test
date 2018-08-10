@@ -37,6 +37,8 @@ OBJ	= $(LOC_DIR)/main.o     \
 	  $(LOC_DIR)/holiday_dict.o \
 	  $(LOC_DIR)/recommend_dict.o \
 	  $(LOC_DIR)/strategy_conf.o \
+	  $(LOC_DIR)/reload_thread.o \
+	  $(LOC_DIR)/skhttp_req_thread.o \
 
 
 AR=ar

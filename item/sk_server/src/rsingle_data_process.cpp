@@ -175,7 +175,7 @@ void rsingle_data_process::update_all_index()
             }
         }
 
-        if (st.empty() || (*(st.rbegin()))[0] != single[0])
+        if (st.empty() || st.back().at(0) != single[0])
         {
             st.push_back(single);
         }

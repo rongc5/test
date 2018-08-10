@@ -96,18 +96,7 @@ void log_thread::handle_msg(std::shared_ptr<log_msg> & p_msg)
     }
     else
     {
-        if (p_msg->_fname[0] == '/')
-        {
-            fp = fopen(p_msg->_fname.c_str(), "a");
-        }
-        else
-        {
-            std::string path;
-            path.append(_conf.log_path);
-            path.append("/");
-            path.append(p_msg->_fname);
-            fp = fopen(path.c_str(), "a");
-        }
+        fp = fopen(p_msg->_fname.c_str(), "a");
     }
 
     if (!fp){

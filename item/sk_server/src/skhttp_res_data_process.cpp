@@ -599,12 +599,9 @@ bool skhttp_res_data_process::do_check_end_le(std::map<std::string, std::string>
     if (!flag)
         return flag;
 
-    if (it_le != p_data->_end_index.current()->end())
+    for (it = it_ge; it != it_le; ++it)
     {
-        for (it = it_ge; it != it_le; ++it)
-        {
-            res.insert(it->second); 
-        }
+        res.insert(it->second); 
     }
 
     return flag;
@@ -630,12 +627,9 @@ bool skhttp_res_data_process::do_check_end_ge(std::map<std::string, std::string>
     if (!flag)
         return flag;
 
-    if (it_ge != p_data->_end_index.current()->end())
+    for (it = it_ge; it != it_le; ++it)
     {
-        for (it = it_ge; it != it_le; ++it)
-        {
-            res.insert(it->second); 
-        }
+        res.insert(it->second); 
     }
 
     return flag;
@@ -661,12 +655,9 @@ bool skhttp_res_data_process::do_check_change_rate_le(std::map<std::string, std:
     if (!flag)
         return flag;
 
-    if (it_le != p_data->_change_rate_index.current()->end())
+    for (it = it_ge; it != it_le; ++it)
     {
-        for (it = it_ge; it != it_le; ++it)
-        {
-            res.insert(it->second); 
-        }
+        res.insert(it->second); 
     }
 
     return flag;
@@ -692,12 +683,9 @@ bool skhttp_res_data_process::do_check_change_rate_ge(std::map<std::string, std:
     if (!flag)
         return flag;
 
-    if (it_ge != p_data->_change_rate_index.current()->end())
+    for (it = it_ge; it != it_le; ++it)
     {
-        for (it = it_ge; it != it_le; ++it)
-        {
-            res.insert(it->second); 
-        }
+        res.insert(it->second); 
     }
 
     return flag;
@@ -723,12 +711,9 @@ bool skhttp_res_data_process::do_check_range_percent_le(std::map<std::string, st
     if (!flag)
         return flag;
 
-    if (it_le != p_data->_range_percent_index.current()->end())
+    for (it = it_ge; it != it_le; ++it)
     {
-        for (it = it_ge; it != it_le; ++it)
-        {
-            res.insert(it->second); 
-        }
+        res.insert(it->second); 
     }
 
     return flag;
@@ -754,12 +739,9 @@ bool skhttp_res_data_process::do_check_range_percent_ge(std::map<std::string, st
     if (!flag)
         return flag;
 
-    if (it_ge != p_data->_range_percent_index.current()->end())
+    for (it = it_ge; it != it_le; ++it)
     {
-        for (it = it_ge; it != it_le; ++it)
-        {
-            res.insert(it->second); 
-        }
+        res.insert(it->second); 
     }
 
     return flag;
@@ -785,12 +767,9 @@ bool skhttp_res_data_process::do_check_down_pointer_le(std::map<std::string, std
     if (!flag)
         return flag;
 
-    if (it_le != p_data->_down_pointer_index.current()->end())
+    for (it = it_ge; it != it_le; ++it)
     {
-        for (it = it_ge; it != it_le; ++it)
-        {
-            res.insert(it->second); 
-        }
+        res.insert(it->second); 
     }
 
     return flag;
@@ -816,12 +795,9 @@ bool skhttp_res_data_process::do_check_down_pointer_ge(std::map<std::string, std
     if (!flag)
         return flag;
 
-    if (it_ge != p_data->_down_pointer_index.current()->end())
+    for (it = it_ge; it != it_le; ++it)
     {
-        for (it = it_ge; it != it_le; ++it)
-        {
-            res.insert(it->second); 
-        }
+        res.insert(it->second); 
     }
 
     return flag;
@@ -847,12 +823,9 @@ bool skhttp_res_data_process::do_check_up_pointer_le(std::map<std::string, std::
     if (!flag)
         return flag;
 
-    if (it_le != p_data->_up_pointer_index.current()->end())
+    for (it = it_ge; it != it_le; ++it)
     {
-        for (it = it_ge; it != it_le; ++it)
-        {
-            res.insert(it->second); 
-        }
+        res.insert(it->second); 
     }
 
     return flag;
@@ -878,12 +851,9 @@ bool skhttp_res_data_process::do_check_up_pointer_ge(std::map<std::string, std::
     if (!flag)
         return flag;
 
-    if (it_ge != p_data->_up_pointer_index.current()->end())
+    for (it = it_ge; it != it_le; ++it)
     {
-        for (it = it_ge; it != it_le; ++it)
-        {
-            res.insert(it->second); 
-        }
+        res.insert(it->second); 
     }
 
     return flag;
@@ -909,12 +879,9 @@ bool skhttp_res_data_process::do_check_end_avg_price_le(std::map<std::string, st
     if (!flag)
         return flag;
 
-    if (it_le != p_data->_end_avg_price_index.current()->end())
+    for (it = it_ge; it != it_le; ++it)
     {
-        for (it = it_ge; it != it_le; ++it)
-        {
-            res.insert(it->second); 
-        }
+        res.insert(it->second); 
     }
 
     return flag;
@@ -940,12 +907,9 @@ bool skhttp_res_data_process::do_check_end_avg_price_ge(std::map<std::string, st
     if (!flag)
         return flag;
 
-    if (it_ge != p_data->_end_avg_price_index.current()->end())
+    for (it = it_ge; it != it_le; ++it)
     {
-        for (it = it_ge; it != it_le; ++it)
-        {
-            res.insert(it->second); 
-        }
+        res.insert(it->second); 
     }
 
     return flag;
@@ -971,12 +935,9 @@ bool skhttp_res_data_process::do_check_pe_le(std::map<std::string, std::string> 
     if (!flag)
         return flag;
 
-    if (it_le != p_data->_pe_index.current()->end())
+    for (it = it_ge; it != it_le; ++it)
     {
-        for (it = it_ge; it != it_le; ++it)
-        {
-            res.insert(it->second); 
-        }
+        res.insert(it->second); 
     }
 
     return flag;
@@ -1003,12 +964,9 @@ bool skhttp_res_data_process::do_check_pe_ge(std::map<std::string, std::string> 
     if (!flag)
         return flag;
 
-    if (it_ge != p_data->_pe_index.current()->end())
+    for (it = it_ge; it != it_le; ++it)
     {
-        for (it = it_ge; it != it_le; ++it)
-        {
-            res.insert(it->second); 
-        }
+        res.insert(it->second); 
     }
 
     return flag;
@@ -1034,12 +992,9 @@ bool skhttp_res_data_process::do_check_pb_le(std::map<std::string, std::string> 
     if (!flag)
         return flag;
 
-    if (it_le != p_data->_pb_index.current()->end())
+    for (it = it_ge; it != it_le; ++it)
     {
-        for (it = it_ge; it != it_le; ++it)
-        {
-            res.insert(it->second); 
-        }
+        res.insert(it->second); 
     }
 
     return flag;
@@ -1065,12 +1020,9 @@ bool skhttp_res_data_process::do_check_pb_ge(std::map<std::string, std::string> 
     if (!flag)
         return flag;
 
-    if (it_ge != p_data->_pb_index.current()->end())
+    for (it = it_ge; it != it_le; ++it)
     {
-        for (it = it_ge; it != it_le; ++it)
-        {
-            res.insert(it->second); 
-        }
+        res.insert(it->second); 
     }
 
     return flag;
@@ -1096,12 +1048,9 @@ bool skhttp_res_data_process::do_check_value_le(std::map<std::string, std::strin
     if (!flag)
         return flag;
 
-    if (it_le != p_data->_value_index.current()->end())
+    for (it = it_ge; it != it_le; ++it)
     {
-        for (it = it_ge; it != it_le; ++it)
-        {
-            res.insert(it->second); 
-        }
+        res.insert(it->second); 
     }
 
     return flag;
@@ -1127,12 +1076,9 @@ bool skhttp_res_data_process::do_check_value_ge(std::map<std::string, std::strin
     if (!flag)
         return flag;
 
-    if (it_ge != p_data->_value_index.current()->end())
+    for (it = it_ge; it != it_le; ++it)
     {
-        for (it = it_ge; it != it_le; ++it)
-        {
-            res.insert(it->second); 
-        }
+        res.insert(it->second); 
     }
 
     return flag;
@@ -1158,12 +1104,9 @@ bool skhttp_res_data_process::do_check_cir_value_le(std::map<std::string, std::s
     if (!flag)
         return flag;
 
-    if (it_le != p_data->_cir_value_index.current()->end())
+    for (it = it_ge; it != it_le; ++it)
     {
-        for (it = it_ge; it != it_le; ++it)
-        {
-            res.insert(it->second); 
-        }
+        res.insert(it->second); 
     }
 
     return flag;
@@ -1189,12 +1132,9 @@ bool skhttp_res_data_process::do_check_cir_value_ge(std::map<std::string, std::s
     if (!flag)
         return flag;
 
-    if (it_ge != p_data->_cir_value_index.current()->end())
+    for (it = it_ge; it != it_le; ++it)
     {
-        for (it = it_ge; it != it_le; ++it)
-        {
-            res.insert(it->second); 
-        }
+        res.insert(it->second); 
     }
 
     return flag;
@@ -1312,12 +1252,9 @@ bool skhttp_res_data_process::do_check_mgxj_le(std::map<std::string, std::string
     if (!flag)
         return flag;
 
-    if (it_le != p_data->_mgxj_index.current()->end())
+    for (it = it_ge; it != it_le; ++it)
     {
-        for (it = it_ge; it != it_le; ++it)
-        {
-            res.insert(it->second); 
-        }
+        res.insert(it->second); 
     }
 
     return flag;
@@ -1343,12 +1280,9 @@ bool skhttp_res_data_process::do_check_mgxj_ge(std::map<std::string, std::string
     if (!flag)
         return flag;
 
-    if (it_ge != p_data->_mgxj_index.current()->end())
+    for (it = it_ge; it != it_le; ++it)
     {
-        for (it = it_ge; it != it_le; ++it)
-        {
-            res.insert(it->second); 
-        }
+        res.insert(it->second); 
     }
 
     return flag;
@@ -1375,12 +1309,9 @@ bool skhttp_res_data_process::do_check_mgsy_le(std::map<std::string, std::string
     if (!flag)
         return flag;
 
-    if (it_le != p_data->_mgsy_index.current()->end())
+    for (it = it_ge; it != it_le; ++it)
     {
-        for (it = it_ge; it != it_le; ++it)
-        {
-            res.insert(it->second); 
-        }
+        res.insert(it->second); 
     }
 
     return flag;
@@ -1407,12 +1338,9 @@ bool skhttp_res_data_process::do_check_mgsy_ge(std::map<std::string, std::string
     if (!flag)
         return flag;
 
-    if (it_ge != p_data->_mgsy_index.current()->end())
+    for (it = it_ge; it != it_le; ++it)
     {
-        for (it = it_ge; it != it_le; ++it)
-        {
-            res.insert(it->second); 
-        }
+        res.insert(it->second); 
     }
 
     return flag;
@@ -1438,12 +1366,9 @@ bool skhttp_res_data_process::do_check_mgsygr_le(std::map<std::string, std::stri
     if (!flag)
         return flag;
 
-    if (it_le != p_data->_mgsygr_index.current()->end())
+    for (it = it_ge; it != it_le; ++it)
     {
-        for (it = it_ge; it != it_le; ++it)
-        {
-            res.insert(it->second); 
-        }
+        res.insert(it->second); 
     }
 
     return flag;
@@ -1469,12 +1394,9 @@ bool skhttp_res_data_process::do_check_mgsygr_ge(std::map<std::string, std::stri
     if (!flag)
         return flag;
 
-    if (it_ge != p_data->_mgsygr_index.current()->end())
+    for (it = it_ge; it != it_le; ++it)
     {
-        for (it = it_ge; it != it_le; ++it)
-        {
-            res.insert(it->second); 
-        }
+        res.insert(it->second); 
     }
 
     return flag;
@@ -1500,12 +1422,9 @@ bool skhttp_res_data_process::do_check_mgxjgr_le(std::map<std::string, std::stri
     if (!flag)
         return flag;
 
-    if (it_le != p_data->_mgxjgr_index.current()->end())
+    for (it = it_ge; it != it_le; ++it)
     {
-        for (it = it_ge; it != it_le; ++it)
-        {
-            res.insert(it->second); 
-        }
+        res.insert(it->second); 
     }
 
     return flag;
@@ -1531,12 +1450,9 @@ bool skhttp_res_data_process::do_check_mgxjgr_ge(std::map<std::string, std::stri
     if (!flag)
         return flag;
 
-    if (it_ge != p_data->_mgxjgr_index.current()->end())
+    for (it = it_ge; it != it_le; ++it)
     {
-        for (it = it_ge; it != it_le; ++it)
-        {
-            res.insert(it->second); 
-        }
+        res.insert(it->second); 
     }
 
     return flag;
@@ -1562,12 +1478,9 @@ bool skhttp_res_data_process::do_check_zysrgr_le(std::map<std::string, std::stri
     if (!flag)
         return flag;
 
-    if (it_le != p_data->_zysrgr_index.current()->end())
+    for (it = it_ge; it != it_le; ++it)
     {
-        for (it = it_ge; it != it_le; ++it)
-        {
-            res.insert(it->second); 
-        }
+        res.insert(it->second); 
     }
 
     return flag;
@@ -1593,12 +1506,9 @@ bool skhttp_res_data_process::do_check_zysrgr_ge(std::map<std::string, std::stri
     if (!flag)
         return flag;
 
-    if (it_ge != p_data->_zysrgr_index.current()->end())
+    for (it = it_ge; it != it_le; ++it)
     {
-        for (it = it_ge; it != it_le; ++it)
-        {
-            res.insert(it->second); 
-        }
+        res.insert(it->second); 
     }
 
     return flag;
@@ -1624,12 +1534,9 @@ bool skhttp_res_data_process::do_check_zysrgr_ge(std::map<std::string, std::stri
     if (!flag)
         return flag;
 
-    if (it_le != p_data->_yylrgr_index.current()->end())
+    for (it = it_ge; it != it_le; ++it)
     {
-        for (it = it_ge; it != it_le; ++it)
-        {
-            res.insert(it->second); 
-        }
+        res.insert(it->second); 
     }
 
     return flag;
@@ -1655,12 +1562,9 @@ bool skhttp_res_data_process::do_check_zysrgr_ge(std::map<std::string, std::stri
     if (!flag)
         return flag;
 
-    if (it_ge != p_data->_yylrgr_index.current()->end())
+    for (it = it_ge; it != it_le; ++it)
     {
-        for (it = it_ge; it != it_le; ++it)
-        {
-            res.insert(it->second); 
-        }
+        res.insert(it->second); 
     }
 
     return flag;
@@ -1686,12 +1590,9 @@ bool skhttp_res_data_process::do_check_jlrgr_le(std::map<std::string, std::strin
     if (!flag)
         return flag;
 
-    if (it_le != p_data->_jlrgr_index.current()->end())
+    for (it = it_ge; it != it_le; ++it)
     {
-        for (it = it_ge; it != it_le; ++it)
-        {
-            res.insert(it->second); 
-        }
+        res.insert(it->second); 
     }
 
     return flag;
@@ -1717,12 +1618,9 @@ bool skhttp_res_data_process::do_check_jlrgr_ge(std::map<std::string, std::strin
     if (!flag)
         return flag;
 
-    if (it_ge != p_data->_jlrgr_index.current()->end())
+    for (it = it_ge; it != it_le; ++it)
     {
-        for (it = it_ge; it != it_le; ++it)
-        {
-            res.insert(it->second); 
-        }
+        res.insert(it->second); 
     }
 
     return flag;
@@ -1805,12 +1703,9 @@ bool skhttp_res_data_process::do_check_rsingle_diff_le(std::map<std::string, std
     if (!flag)
         return flag;
 
-    if (it_le != p_data->_rsingle_diff_index.current()->at(index).end())
+    for (it = it_ge; it != it_le; ++it)
     {
-        for (it = it_ge; it != it_le; ++it)
-        {
-            res.insert(it->second); 
-        }
+        res.insert(it->second); 
     }
 
     return flag;
@@ -1843,12 +1738,9 @@ bool skhttp_res_data_process::do_check_rsingle_diff_ge(std::map<std::string, std
     if (!flag)
         return flag;
 
-    if (it_ge != p_data->_rsingle_diff_index.current()->at(index).end())
+    for (it = it_ge; it != it_le; ++it)
     {
-        for (it = it_ge; it != it_le; ++it)
-        {
-            res.insert(it->second); 
-        }
+        res.insert(it->second); 
     }
 
     return flag;
@@ -1866,12 +1758,14 @@ void skhttp_res_data_process::get_intersection(std::vector<std::set<std::string>
 
     for (; ii != arr.end(); ii++)
     {
-        std::set_intersection(search.begin(), search.end(), ii->begin(), ii->end(), 
-                std::inserter(tmp,tmp.begin()));
+        tmp.clear();
+
+        std::set_intersection(search.begin(), search.end(), ii->begin(), ii->end(), std::inserter(tmp,tmp.begin()));
         if (tmp.empty())
         {
             return;
         }
+
         search = tmp;
     }
 
@@ -1890,12 +1784,15 @@ void skhttp_res_data_process::get_union(std::vector<std::set<std::string> > & ar
 
     for (; ii != arr.end(); ii++)
     {
-        std::set_union(search.begin(), search.end(), ii->begin(), ii->end(), 
-                std::inserter(tmp,tmp.begin()));
+        tmp.clear();
+
+        std::set_union(search.begin(), search.end(), ii->begin(), ii->end(), std::inserter(tmp,tmp.begin()));
+
         if (tmp.empty())
         {
             return;
         }
+
         search = tmp;
     }
 

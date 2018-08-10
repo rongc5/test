@@ -41,16 +41,8 @@ int history_quotation_dict::load_history_quoation(const char * file)
     {
         return -1;
     }
-    
-    std::vector<std::string> strVec;
-    SplitString(file, '_', &strVec, SPLIT_MODE_ALL); 
-    if (strVec.size() != 2)
-    {
-        LOG_WARNING("file:%s, SplitString failed", file);
-        return -1;
-    }
 
-    std::string date = strVec[1];
+    std::string date = file;
     auto ii = _id_dict.find(date);
     if (ii != _id_dict.end())
     {
@@ -64,6 +56,7 @@ int history_quotation_dict::load_history_quoation(const char * file)
     ASSERT_WARNING(fp != NULL,"open file failed. file[%s]", file);
 
 
+    std::vector<std::string> strVec;
     char line[SIZE_LEN_1024];
     char * ptr = NULL;
     std::string key;
@@ -80,7 +73,7 @@ int history_quotation_dict::load_history_quoation(const char * file)
         
         SplitString(file, '\t', &strVec, SPLIT_MODE_ALL | SPLIT_MODE_TRIM);
         
-        if (strVec.size() < 14)
+        if (strVec.size() < 13)
         {
             LOG_WARNING("file:%s, format err", file);
             continue;

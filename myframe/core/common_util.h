@@ -254,4 +254,7 @@ int yisleap(int year);
 //一年中第多少天
 int get_yday(int mon, int day, int year);
 
+//求某个日期前后 diff 天的日期
+int date_change(const std::string &in, int diff, std::string &out);
+
 #endif

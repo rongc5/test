@@ -41,16 +41,8 @@ int history_single_dict::load_history_single(const char * file)
     {
         return -1;
     }
-    
-    std::vector<std::string> strVec;
-    SplitString(file, '_', &strVec, SPLIT_MODE_ALL | SPLIT_MODE_TRIM); 
-    if (strVec.size() != 2)
-    {
-        LOG_WARNING("file:%s, SplitString failed", file);
-        return -1;
-    }
 
-    std::string date = strVec[1];
+    std::string date = file;
     auto ii = _date_dict.find(date);
     if (ii != _date_dict.end())
     {
@@ -65,6 +57,7 @@ int history_single_dict::load_history_single(const char * file)
     ASSERT_WARNING(fp != NULL,"open file failed. file[%s]", file);
 
 
+    std::vector<std::string> strVec;
     char line[SIZE_LEN_1024];
     char * ptr = NULL;
     std::string key;
@@ -88,8 +81,10 @@ int history_single_dict::load_history_single(const char * file)
 
             hs.in = atoi(strVec[i].c_str());
             hs.out = atoi(strVec[i + 1].c_str());
-            hs.diff = hs.in - hs.out;
-            hs.price = strVec[i + 2];
+            hs.diff = atoi(strVec[i + 2].c_str());
+            //hs.price = strVec[i + 2];
+
+            hs.diff = atoi(strVec[i].c_str());
 
             single.hs_vec.push_back(hs);
         }

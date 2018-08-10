@@ -63,12 +63,17 @@ class strategy_conf:public reload_inf
         std::string addr_dict_path;
         std::string addr_dict_file;
 
+        std::string real_quotation_path;
+        std::string real_single_path;
+
     public:
         std::string real_morning_stime;
         std::string real_morning_etime;
 
         std::string real_afternoon_stime;
         std::string real_afternoon_etime;
+
+        std::string dump_real_time;
 
         uint32_t req_quotation_millisecond;
         uint32_t req_single_millisecond;

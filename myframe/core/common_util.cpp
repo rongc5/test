@@ -687,3 +687,29 @@ int get_yday(int mon, int day, int year)
 
     return days[leap][mon] + day;
 }
+
+//参考网络
+int date_change(const std::string &in, int diff, std::string &out)
+{
+    out.clear();
+
+    time_t t1;
+    struct tm tmin;
+    struct tm *tminp=&tmin;
+    struct tm tmout;
+    struct tm *tmoutp=&tmout;
+
+    char tmp[SIZE_LEN_512];
+    memset(tmp,0,sizeof(tmp));
+    strptime(in.c_str(),"%Y%m%d",tminp);
+
+    t1 = mktime(tminp);
+    t1 += diff*60*60*24;
+
+    tmoutp=localtime(&t1);
+
+    strftime(tmp,sizeof(tmp),"%Y%m%d",tmoutp);
+    out.append(tmp);
+
+    return 0;
+}

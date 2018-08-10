@@ -182,13 +182,17 @@ def print_res(res, parser):
                 tmp_str = key + '='
                 myjson = json.dumps(item[key], ensure_ascii=False)
                 tmp_str += myjson
-                #print tmp_str
-                #print '\n'
+                if not parser.outfile:
+                    print tmp_str
                 if parser.outfile:
                     log_write(parser.outfile, tmp_str.encode('gb18030'))
 
+
+
             if parser.outfile:
                 log_write(parser.outfile, '\n')
+            else:
+                print '\n'
 
 
 def do_query_id(parser):
