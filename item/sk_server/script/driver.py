@@ -179,6 +179,8 @@ def print_res(res, parser):
     if res.has_key('data'):
         for item in res['data']:
             for key in item:
+                if 'block' in key:
+                    continue
                 tmp_str = key + '='
                 myjson = json.dumps(item[key], ensure_ascii=False)
                 tmp_str += myjson
@@ -198,11 +200,8 @@ def print_res(res, parser):
 def do_query_id(parser):
     url = 'http://%s:%s/queryid?id=%s' % (parser.ip, parser.port, parser.id)
 
-    if parser.history_diff_num:
-        url += '&history_diff_num=%d' % (parser.history_diff_num)
-
-    if parser.history_quotation_num:
-        url += '&history_quotation_num=%d' % (parser.history_quotation_num)
+    if parser.history_num:
+        url += '&history_num=%d' % (parser.history_num)
 
     if parser.history_date:
         url += '&history_date=%s' % (parser.history_date)
@@ -292,13 +291,9 @@ def do_search():
                   action="store", dest="id",type="string",default="",
               help="stock id like sh601318")
 
-    parser.add_option("-s", "--history_diff_num",
-                  action="store", dest="history_diff_num",type="int",default=0,
-              help="last trade days history_diff_num")
-
-    parser.add_option("-q", "--history_quotation_num",
-                  action="store", dest="history_quotation_num",type="int",default=0,
-              help="last trade days history_quotation_num")
+    parser.add_option("-n", "--history_num",
+                  action="store", dest="history_num",type="int",default=0,
+              help="last trade days history_num")
 
     parser.add_option("-d", "--history_date",
                   action="store", dest="history_date", type="string", default="",

@@ -42,7 +42,7 @@ int history_quotation_dict::load_history_quoation(const char * file)
         return -1;
     }
 
-    std::string date = file;
+    std::string date = basename((char *)file);
     auto ii = _id_dict.find(date);
     if (ii != _id_dict.end())
     {
@@ -71,7 +71,7 @@ int history_quotation_dict::load_history_quoation(const char * file)
         if (ptr == NULL || *ptr == '\0'|| *ptr == '#')
             continue;
         
-        SplitString(file, '\t', &strVec, SPLIT_MODE_ALL | SPLIT_MODE_TRIM);
+        SplitString(ptr, '\t', &strVec, SPLIT_MODE_ALL | SPLIT_MODE_TRIM);
         
         if (strVec.size() < 13)
         {
@@ -94,6 +94,10 @@ int history_quotation_dict::load_history_quoation(const char * file)
         qt.change_rate = strVec[10];
         qt.range_percent = strVec[11];
         qt.total_price = strVec[12];
+        qt.down_pointer = strVec[13];
+        qt.up_pointer = strVec[14];
+        qt.avg_price = strVec[15];
+
 
         creat_key(date, qt.id, key);
         auto ii = _id_dict.find(key);
@@ -264,8 +268,7 @@ int history_quotation_dict::load()
         if (ptr == NULL || *ptr == '\0'|| *ptr == '#')
             continue;
 
-        bname = basename(ptr);
-        load_history_quoation(bname);
+        load_history_quoation(ptr);
     }
 
     fclose(fp);

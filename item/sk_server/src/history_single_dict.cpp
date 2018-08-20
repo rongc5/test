@@ -42,7 +42,7 @@ int history_single_dict::load_history_single(const char * file)
         return -1;
     }
 
-    std::string date = file;
+    std::string date = basename((char *)file);
     auto ii = _date_dict.find(date);
     if (ii != _date_dict.end())
     {
@@ -72,7 +72,7 @@ int history_single_dict::load_history_single(const char * file)
         if (ptr == NULL || *ptr == '\0'|| *ptr == '#')
             continue;
         
-        SplitString(file, '\t', &strVec, SPLIT_MODE_ALL | SPLIT_MODE_TRIM); 
+        SplitString(ptr, '\t', &strVec, SPLIT_MODE_ALL | SPLIT_MODE_TRIM); 
 
         history_single_vec single;
         for (uint32_t i = 1; i < strVec.size() && i+1 < strVec.size(); i += 3)
@@ -82,9 +82,6 @@ int history_single_dict::load_history_single(const char * file)
             hs.in = atoi(strVec[i].c_str());
             hs.out = atoi(strVec[i + 1].c_str());
             hs.diff = atoi(strVec[i + 2].c_str());
-            //hs.price = strVec[i + 2];
-
-            hs.diff = atoi(strVec[i].c_str());
 
             single.hs_vec.push_back(hs);
         }
@@ -220,8 +217,7 @@ int history_single_dict::load()
         if (ptr == NULL || *ptr == '\0'|| *ptr == '#')
             continue;
 
-        bname = basename(ptr);
-        load_history_single(bname);
+        load_history_single(ptr);
     }
 
     fclose(fp);

@@ -557,14 +557,11 @@ int skhttp_res_data_process::url_query_id(std::map<std::string, std::string> & u
         query_addr(url_para_map["id"], root, allocator);
     }
     
-    if (has_key<std::string, std::string>(url_para_map, "history_diff_num"))
+    if (has_key<std::string, std::string>(url_para_map, "history_num"))
     {
-        query_history_single(atoi(url_para_map["history_diff_num"].c_str()), url_para_map["id"], root, allocator);
-    }
+        query_history_single(atoi(url_para_map["history_num"].c_str()), url_para_map["id"], root, allocator);
 
-    if (has_key<std::string, std::string>(url_para_map, "history_quotation_num"))
-    {
-        query_history_quotation(atoi(url_para_map["history_quotation_num"].c_str()), url_para_map["id"], root, allocator);
+        query_history_quotation(atoi(url_para_map["history_num"].c_str()), url_para_map["id"], root, allocator);
     }
 
     if (has_key<std::string, std::string>(url_para_map, "history_date"))

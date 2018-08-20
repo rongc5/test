@@ -20,12 +20,12 @@ int main(int c, char **v)
         exit(1);
     }
 
-    r = readdir(p);
-    if (NULL == r)
-    {
-        perror("readdir");
-        exit(1);
-    }
+    /*r = readdir(p);*/
+    /*if (NULL == r)*/
+    /*{*/
+        /*perror("readdir");*/
+        /*exit(1);*/
+    /*}*/
 
     while ((r= readdir(p)) != NULL)
     {

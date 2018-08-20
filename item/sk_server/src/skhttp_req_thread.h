@@ -52,7 +52,7 @@ class skhttp_req_thread:public base_net_thread
         virtual void run_process();
 
     protected:
-        time_t get_real_time(const char * time);
+        time_t get_real_time(const char * date, const char * time);
 
         void get_trade_date();
 
@@ -62,6 +62,10 @@ class skhttp_req_thread:public base_net_thread
 
         void dump_real_quotation();
         void dump_real_single();
+
+        void update_quotation_dict();
+
+        void update_single_dict();
 
     protected:
         std::string _req_date;

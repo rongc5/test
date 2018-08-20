@@ -2,6 +2,8 @@
 #include "strategy_conf.h"
 #include "common_util.h"
 
+#include <dirent.h>
+
 
 skhttp_req_thread::skhttp_req_thread()
 {
@@ -227,13 +229,18 @@ void skhttp_req_thread::first_in_day()
             p_data->_block_set.idle_2_current();
         }
 
-        real_morning_stime = get_real_time(p_data->_conf->_strategy->current()->real_morning_stime.c_str());
-        real_morning_etime = get_real_time(p_data->_conf->_strategy->current()->real_morning_etime.c_str());
+        real_morning_stime = get_real_time(_req_date.c_str(), 
+                p_data->_conf->_strategy->current()->real_morning_stime.c_str());
+        real_morning_etime = get_real_time(_req_date.c_str(), 
+                p_data->_conf->_strategy->current()->real_morning_etime.c_str());
 
-        real_afternoon_stime = get_real_time(p_data->_conf->_strategy->current()->real_afternoon_stime.c_str());
-        real_afternoon_etime = get_real_time(p_data->_conf->_strategy->current()->real_afternoon_etime.c_str());
+        real_afternoon_stime = get_real_time(_req_date.c_str(), 
+                p_data->_conf->_strategy->current()->real_afternoon_stime.c_str());
+        real_afternoon_etime = get_real_time(_req_date.c_str(), 
+                p_data->_conf->_strategy->current()->real_afternoon_etime.c_str());
 
-        dump_real_time = get_real_time(p_data->_conf->_strategy->current()->dump_real_time.c_str());
+        dump_real_time = get_real_time(_req_date.c_str(), 
+                p_data->_conf->_strategy->current()->dump_real_time.c_str());
     }
 
 }
@@ -290,11 +297,12 @@ bool skhttp_req_thread::is_real_time()
     {
         if (strncmp(date, _req_date.c_str(), strlen(date)))
         {
-            time_t stime = get_real_time("09:15");
+            time_t stime = get_real_time(date, "09:15");
             if (now >= stime)
             {
                 _req_date.assign(date);
                 get_trade_date();
+
                 first_in_day();
 
                 return true;
@@ -319,14 +327,15 @@ void skhttp_req_thread::get_trade_date()
     std::string tmp_date;
 
     _trade_date = _req_date;
-    int diff = 1;
+    int diff = 0;
 
     while (!is_trade_date(_trade_date.c_str()))
     {
-        date_change(_req_date, -1 * diff, _trade_date);
         diff++;
         if (diff > 30)// 说明有bug
             break;
+
+        date_change(_req_date, -1 * diff, _trade_date);
     }
 }
 
@@ -487,7 +496,132 @@ void skhttp_req_thread::dump_real_quotation()
         tmp.append(ii->second.total_price);
         tmp.append(1, '\t');
 
+        tmp.append(ii->second.down_pointer);
+        tmp.append(1, '\t');
+
+        tmp.append(ii->second.up_pointer);
+        tmp.append(1, '\t');
+
+        tmp.append(ii->second.avg_price);
+        tmp.append(1, '\t');
+
         FILE_WRITE(t_buf, "%s", tmp.c_str());
+    }
+
+    update_quotation_dict();
+}
+
+void skhttp_req_thread::update_quotation_dict()
+{
+    char t_buf[SIZE_LEN_512];
+    char path_buf[SIZE_LEN_512];
+    std::set<std::string> files;
+
+    proc_data* p_data = proc_data::instance();
+    if (!p_data)
+        return ;
+
+    strategy_conf * strategy = p_data->_conf->_strategy->current();
+
+    struct dirent *r;
+    DIR *p;
+    uint32_t i = 0;
+
+    p = opendir(strategy->real_quotation_path.c_str());
+    if (p == NULL)
+    {   
+        LOG_WARNING("opendir:%s", strategy->real_quotation_path.c_str());
+
+        return;
+    } 
+
+    while ((r= readdir(p)) != NULL)
+    {   
+        if (r->d_type == DT_REG && strstr(r->d_name, "20"))
+        {
+            snprintf(t_buf, sizeof(t_buf), "%s/%s", strategy->real_quotation_path.c_str(), r->d_name);
+            files.insert(t_buf);
+        }
+    } 
+    closedir(p);
+
+
+    snprintf(t_buf, sizeof(t_buf), "%s/.tmp_quotation", strategy->history_quotation_path.c_str());
+    FILE * fp = fopen(t_buf, "a");
+    if (!fp){ 
+        return;
+    }
+
+    i = 0;
+    for (auto ii = files.rbegin(); ii != files.rend() && i < strategy->history_quotation_num; ii++, i++)
+    {
+        fprintf(fp, "%s\n", ii->c_str());
+    }
+
+    fclose(fp);
+    snprintf(path_buf, sizeof(path_buf), "%s/%s", strategy->history_quotation_path.c_str(), strategy->history_quotation_file.c_str());
+
+    int ret = rename(t_buf, path_buf);
+    if (ret < 0)
+    {
+        LOG_WARNING("rename t_buf:%s to path_buf:%s, err:%s", t_buf, path_buf, strerror(errno));
+    }
+}
+
+void skhttp_req_thread::update_single_dict()
+{
+    char t_buf[SIZE_LEN_512];
+    char path_buf[SIZE_LEN_512];
+    std::set<std::string> files;
+
+    proc_data* p_data = proc_data::instance();
+    if (!p_data)
+        return ;
+
+    strategy_conf * strategy = p_data->_conf->_strategy->current();
+
+    struct dirent *r;
+    DIR *p;
+    uint32_t i = 0;
+
+    p = opendir(strategy->real_single_path.c_str());
+    if (p == NULL)
+    {   
+        LOG_WARNING("opendir:%s", strategy->real_single_path.c_str());
+
+        return;
+    } 
+
+    while ((r= readdir(p)) != NULL)
+    {   
+        if (r->d_type == DT_REG && strstr(r->d_name, "20"))
+        {
+            snprintf(t_buf, sizeof(t_buf), "%s/%s", strategy->real_single_path.c_str(), r->d_name);
+            files.insert(t_buf);
+        }
+    } 
+    closedir(p);
+
+
+    snprintf(t_buf, sizeof(t_buf), "%s/.tmp_single", strategy->history_single_path.c_str());
+    FILE * fp = fopen(t_buf, "a");
+    if (!fp){ 
+        return;
+    }
+
+    i = 0;
+    for (auto ii = files.rbegin(); ii != files.rend() && i < strategy->history_single_num; ii++, i++)
+    {
+        fprintf(fp, "%s\n", ii->c_str());
+    }
+
+    fclose(fp);
+    snprintf(path_buf, sizeof(path_buf), "%s/%s", strategy->history_single_path.c_str(), strategy->history_single_file.c_str());
+
+    int ret = rename(t_buf, path_buf);
+    if (ret < 0)
+    {
+        LOG_WARNING("rename t_buf:%s to path_buf:%s, err:%s", t_buf, path_buf, strerror(errno));
     }
 }
 
@@ -526,6 +660,7 @@ void skhttp_req_thread::dump_real_single()
         FILE_WRITE(t_buf, "%s", t_str.c_str());
     }
 
+    update_single_dict();
 }
 
 void skhttp_req_thread::handle_timeout(std::shared_ptr<timer_msg> & t_msg)
@@ -608,12 +743,12 @@ void skhttp_req_thread::run_process()
     real_req_start();    
 }
 
-time_t skhttp_req_thread::get_real_time(const char * time)
+time_t skhttp_req_thread::get_real_time(const char * date, const char * time)
 {
     struct tm tmp_time;
     memset(&tmp_time, 0, sizeof(tmp_time));
     char t_buf[SIZE_LEN_64];
-    snprintf(t_buf, sizeof(t_buf), "%s %s", _req_date.c_str(), time);
+    snprintf(t_buf, sizeof(t_buf), "%s %s", date, time);
 
     strptime(t_buf,"%Y%m%d %H:%M", &tmp_time);
     time_t t = mktime(&tmp_time);

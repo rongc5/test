@@ -235,6 +235,16 @@ void strategy_conf::do_parse()
         max_reqhttp_num = atoi(_cfg["max_reqhttp_num"].c_str());
     }
 
+    if (has_key<std::string, std::string>(_cfg, "history_quotation_num"))
+    {
+        history_quotation_num = atoi(_cfg["history_quotation_num"].c_str());
+    }
+
+    if (has_key<std::string, std::string>(_cfg, "history_single_num"))
+    {
+        history_single_num = atoi(_cfg["history_single_num"].c_str());
+    }
+
     if (has_key<std::string, std::string>(_cfg, "real_single_deque_length"))
     {
         real_single_deque_length = atoi(_cfg["real_single_deque_length"].c_str());
