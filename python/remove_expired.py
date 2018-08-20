@@ -18,6 +18,7 @@ expired_info = [{'dir':'user_type', 'field':'user_type', 'expired': -1,
                  'redis2_ns':'10.26.24.66:7000', 'redis_tp':'1'}, {'dir':'readcurrent', 'field':'readcurrent', 'expired': -7,
 				'tr':'/data/mingz/bin/tr5','redis2_ns':'10.26.24.66:7000', 'redis_tp':'1'}]
 base_dir = '/data/mingz/rs9'
+MAX_DAYS = 15
 
 class Day():
     def __init__(self):
@@ -251,7 +252,6 @@ def do_remove_expired(dic, base_path):
 
         index -= 1
         files = os.listdir(path)
-        fp = open('/data/mingz/base_list', "w")
         for file in files:
             if not os.path.isdir(file) and file.startswith('data_'):
                 if path in file:
@@ -259,6 +259,7 @@ def do_remove_expired(dic, base_path):
                 else:
                     f = open(path+"/"+file)
 
+                fp = open('/data/mingz/base_list', "w")
                 while 1:
                     line = f.readline().strip()
                     if not line:
@@ -270,18 +271,27 @@ def do_remove_expired(dic, base_path):
                         #file.write('hdel c%s %s' % (key, 'readhistory'))
                         #file.write('\n')
                         fp.flush()
+                fp.close()
                 f.close()
-		
-        fp.close()
+                cmd = '%s -s %s -p %s -c %s' % (dic['tr'], dic['redis2_ns'], 'base_list', dic['redis_tp'])
+                print cmd
+                res = os.popen(cmd).read()
+                print res
 
-        cmd = '%s -s %s -p %s -c %s' % (dic['tr'], dic['redis2_ns'], 'base_list', dic['redis_tp'])
-        print cmd
-        res = os.popen(cmd).read()
-        print res
     print len(id_dic)
-
-
 
 if __name__ == '__main__':
     for key in expired_info:
         do_remove_expired(key, base_dir)
+
+    day = Day()
+    index = MAX_DAYS * -1
+    while 1:
+        start_day = day.get_day_of_day(index)
+        path = '%s/%s'%(base_dir, start_day)
+        if not os.path.isdir(path):
+            print path, 'not exist'
+            break
+        index -= 1
+        print 'rmdir %s' % (path)
+        os.system("rm -rf %s" % (path))
