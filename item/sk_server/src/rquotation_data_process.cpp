@@ -49,7 +49,7 @@ void rquotation_data_process::msg_recv_finish()
     LOG_DEBUG("recv_buf: %s", _recv_buf.c_str());
     //FILE_WRITE("123", _recv_buf.c_str());
     char t_buf[SIZE_LEN_512];
-    quotation_t qt;
+    std::shared_ptr<quotation_t> qt(new quotation_t);
     float down_pointer = 0;
     float up_pointer = 0;
     float avg_price = 0;
@@ -70,58 +70,58 @@ void rquotation_data_process::msg_recv_finish()
         goto over;
     }
     
-    qt.name = strVec[1];
-    qt.start = strVec[5];
-    qt.end = strVec[3];
-    qt.high = strVec[33];
-    qt.low = strVec[34];
-    qt.last_closed = strVec[4];
-    qt.vol = strVec[36];
-    qt.sell_vol= strVec[8];
-    qt.buy_vol = strVec[7];
-    qt.swing = strVec[43];
-    qt.change_rate = strVec[38];
-    qt.range_percent = strVec[32];
-    qt.total_price = strVec[37];
+    qt->name = strVec[1];
+    qt->start = strVec[5];
+    qt->end = strVec[3];
+    qt->high = strVec[33];
+    qt->low = strVec[34];
+    qt->last_closed = strVec[4];
+    qt->vol = strVec[36];
+    qt->sell_vol= strVec[8];
+    qt->buy_vol = strVec[7];
+    qt->swing = strVec[43];
+    qt->change_rate = strVec[38];
+    qt->range_percent = strVec[32];
+    qt->total_price = strVec[37];
     
     
-    if (atof(qt.end.c_str()) > atof(qt.low.c_str()) && (atof(qt.end.c_str()) != atof(qt.start.c_str())))
+    if (atof(qt->end.c_str()) > atof(qt->low.c_str()) && (atof(qt->end.c_str()) != atof(qt->start.c_str())))
     {
-        down_pointer = (atof(qt.end.c_str()) - atof(qt.low.c_str()))/
-            (atof(qt.end.c_str()) - atof(qt.start.c_str()));
+        down_pointer = (atof(qt->end.c_str()) - atof(qt->low.c_str()))/
+            (atof(qt->end.c_str()) - atof(qt->start.c_str()));
 
         if (down_pointer < 0)
             down_pointer *= -1;
 
         snprintf(t_buf, sizeof(t_buf), "%.2f", down_pointer);
-        qt.down_pointer.append(t_buf);
+        qt->down_pointer.append(t_buf);
     }
 
-    if (atof(qt.end.c_str()) < atof(qt.high.c_str()) && (atof(qt.end.c_str()) != atof(qt.start.c_str())))
+    if (atof(qt->end.c_str()) < atof(qt->high.c_str()) && (atof(qt->end.c_str()) != atof(qt->start.c_str())))
     {
-        up_pointer = (atof(qt.high.c_str()) - atof(qt.end.c_str()))/
-            (atof(qt.end.c_str()) - atof(qt.start.c_str()));
+        up_pointer = (atof(qt->high.c_str()) - atof(qt->end.c_str()))/
+            (atof(qt->end.c_str()) - atof(qt->start.c_str()));
 
         if (up_pointer < 0)
             up_pointer *= -1;
 
         snprintf(t_buf, sizeof(t_buf), "%.2f", up_pointer);
-        qt.up_pointer.append(t_buf);
+        qt->up_pointer.append(t_buf);
     }
 
-    if (atof(qt.vol.c_str()))
+    if (atof(qt->vol.c_str()))
     {
-        avg_price = (atof(qt.total_price.c_str())*10000)/(atoi(qt.vol.c_str()) * 100);
+        avg_price = (atof(qt->total_price.c_str())*10000)/(atoi(qt->vol.c_str()) * 100);
         snprintf(t_buf, sizeof(t_buf), "%.2f", avg_price);
-        qt.avg_price.append(t_buf);
+        qt->avg_price.append(t_buf);
     }
 
     if (avg_price)
     {
-        end_avg_price = atof(qt.end.c_str())/avg_price;
+        end_avg_price = atof(qt->end.c_str())/avg_price;
     }
 
-    if (atof(qt.start.c_str()) <= 1)
+    if (atof(qt->start.c_str()) <= 1)
     {
         p_data->_block_set.idle()->insert(_id);
     }
@@ -139,33 +139,33 @@ void rquotation_data_process::update_all_index()
     for (auto ii = p_data->_rquoation_real_dict.begin(); ii != p_data->_rquoation_real_dict.end(); ii++)
     {
         {
-            float end = atof(ii->second.end.c_str());
+            float end = atof(ii->second->end.c_str());
             p_data->_end_index.idle()->insert(std::make_pair(end, ii->first));
         }
 
         {
-            float change_rate = atof(ii->second.change_rate.c_str());
+            float change_rate = atof(ii->second->change_rate.c_str());
             p_data->_change_rate_index.idle()->insert(std::make_pair(change_rate, ii->first));
         }
 
         {
-            float range_percent = atof(ii->second.range_percent.c_str());
+            float range_percent = atof(ii->second->range_percent.c_str());
             p_data->_range_percent_index.idle()->insert(std::make_pair(range_percent, ii->first));
         }
 
-        if (atof(ii->second.down_pointer.c_str()))
+        if (atof(ii->second->down_pointer.c_str()))
         {
-            p_data->_down_pointer_index.idle()->insert(std::make_pair(atof(ii->second.down_pointer.c_str()), ii->first));
+            p_data->_down_pointer_index.idle()->insert(std::make_pair(atof(ii->second->down_pointer.c_str()), ii->first));
         }
 
-        if (atof(ii->second.up_pointer.c_str()))
+        if (atof(ii->second->up_pointer.c_str()))
         {
-            p_data->_up_pointer_index.idle()->insert(std::make_pair(atof(ii->second.up_pointer.c_str()), ii->first));
+            p_data->_up_pointer_index.idle()->insert(std::make_pair(atof(ii->second->up_pointer.c_str()), ii->first));
         }
 
-        if (atof(ii->second.avg_price.c_str()))
+        if (atof(ii->second->avg_price.c_str()))
         {
-            p_data->_end_avg_price_index.idle()->insert(std::make_pair(atof(ii->second.avg_price.c_str()), ii->first));
+            p_data->_end_avg_price_index.idle()->insert(std::make_pair(atof(ii->second->avg_price.c_str()), ii->first));
         }
 
         {
@@ -176,7 +176,7 @@ void rquotation_data_process::update_all_index()
     }
 }
 
-void rquotation_data_process::update_id_index(const std::string & id, quotation_t & qt)
+void rquotation_data_process::update_id_index(const std::string & id, std::shared_ptr<quotation_t> & qt)
 {
     proc_data* p_data = proc_data::instance();
     if (!p_data)
@@ -189,8 +189,8 @@ void rquotation_data_process::update_id_index(const std::string & id, quotation_
 
         history_quotation_dict::creat_key(date, id, key);
 
-        float range_percent = atof(qt.range_percent.c_str());
-        float change_rate = atof(qt.change_rate.c_str());
+        float range_percent = atof(qt->range_percent.c_str());
+        float change_rate = atof(qt->change_rate.c_str());
         
         auto tt = p_data->_hquoation_dict->current()->_id_sum_dict.find(key);
         if (tt != p_data->_hquoation_dict->current()->_id_sum_dict.end())

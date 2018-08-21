@@ -52,77 +52,77 @@ void skhttp_res_data_process::query_quotation(std::string &id, Value & root, Doc
     {
         {
             key.SetString("name", allocator); 
-            value.SetString(ii->second.name.c_str(), allocator); 
+            value.SetString(ii->second->name.c_str(), allocator); 
 
             root.AddMember(key, value, allocator);
         }
 
         {
             key.SetString("start", allocator); 
-            value.SetString(ii->second.start.c_str(), allocator); 
+            value.SetString(ii->second->start.c_str(), allocator); 
 
             root.AddMember(key, value, allocator);
         }
 
         {
             key.SetString("end", allocator); 
-            value.SetString(ii->second.end.c_str(), allocator); 
+            value.SetString(ii->second->end.c_str(), allocator); 
 
             root.AddMember(key, value, allocator);
         }
 
         {
             key.SetString("high", allocator); 
-            value.SetString(ii->second.high.c_str(), allocator); 
+            value.SetString(ii->second->high.c_str(), allocator); 
 
             root.AddMember(key, value, allocator);
         }
 
         {
             key.SetString("low", allocator); 
-            value.SetString(ii->second.low.c_str(), allocator); 
+            value.SetString(ii->second->low.c_str(), allocator); 
 
             root.AddMember(key, value, allocator);
         }
 
         {
             key.SetString("last_closed", allocator); 
-            value.SetString(ii->second.last_closed.c_str(), allocator); 
+            value.SetString(ii->second->last_closed.c_str(), allocator); 
 
             root.AddMember(key, value, allocator);
         }
 
         {
             key.SetString("change_rate", allocator); 
-            value.SetString(ii->second.change_rate.c_str(), allocator); 
+            value.SetString(ii->second->change_rate.c_str(), allocator); 
 
             root.AddMember(key, value, allocator);
         }
 
         {
             key.SetString("range_percent", allocator); 
-            value.SetString(ii->second.range_percent.c_str(), allocator); 
+            value.SetString(ii->second->range_percent.c_str(), allocator); 
 
             root.AddMember(key, value, allocator);
         }
 
         {
             key.SetString("down_pointer", allocator); 
-            value.SetString(ii->second.down_pointer.c_str(), allocator); 
+            value.SetString(ii->second->down_pointer.c_str(), allocator); 
 
             root.AddMember(key, value, allocator);
         }
 
         {
             key.SetString("up_pointer", allocator); 
-            value.SetString(ii->second.up_pointer.c_str(), allocator); 
+            value.SetString(ii->second->up_pointer.c_str(), allocator); 
 
             root.AddMember(key, value, allocator);
         }
 
         {
             key.SetString("avg_price", allocator); 
-            value.SetString(ii->second.avg_price.c_str(), allocator); 
+            value.SetString(ii->second->avg_price.c_str(), allocator); 
 
             root.AddMember(key, value, allocator);
         }
@@ -1811,7 +1811,7 @@ void skhttp_res_data_process::get_union(std::vector<std::set<std::string> > & ar
 
 }
 
-int skhttp_res_data_process::do_check_select(std::map<std::string, std::string> & url_para_map, std::set<std::shared_ptr<std::string> > & res)
+int skhttp_res_data_process::do_check_select(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res)
 {
     proc_data* p_data = proc_data::instance();
     if (!p_data)
@@ -1821,7 +1821,7 @@ int skhttp_res_data_process::do_check_select(std::map<std::string, std::string> 
     std::vector<std::set<std::string> > positive, negative;
 
     {
-        std::set<std::shared_ptr<std::string> > tmp;
+        std::set<std::string> tmp;
         if (do_check_end_le(url_para_map, tmp))
         {
             if (tmp.empty())
@@ -1833,7 +1833,7 @@ int skhttp_res_data_process::do_check_select(std::map<std::string, std::string> 
     }
 
     {
-        std::set<std::shared_ptr<std::string> > tmp;
+        std::set<std::string> tmp;
         if (do_check_end_ge(url_para_map, tmp))
         {
             if (tmp.empty())
@@ -1847,7 +1847,7 @@ int skhttp_res_data_process::do_check_select(std::map<std::string, std::string> 
     }
 
     {
-        std::set<std::shared_ptr<std::string> > tmp;
+        std::set<std::string> tmp;
         if (do_check_change_rate_le(url_para_map, tmp))
         {
             if (tmp.empty())
@@ -1860,7 +1860,7 @@ int skhttp_res_data_process::do_check_select(std::map<std::string, std::string> 
     }
 
     {
-        std::set<std::shared_ptr<std::string> > tmp;
+        std::set<std::string> tmp;
         if (do_check_change_rate_ge(url_para_map, tmp))
         {
             if (tmp.empty())
@@ -1873,7 +1873,7 @@ int skhttp_res_data_process::do_check_select(std::map<std::string, std::string> 
     }
 
     {
-        std::set<std::shared_ptr<std::string> > tmp;
+        std::set<std::string> tmp;
         if (do_check_range_percent_le(url_para_map, tmp))
         {
             if (tmp.empty())
@@ -1886,7 +1886,7 @@ int skhttp_res_data_process::do_check_select(std::map<std::string, std::string> 
     }
 
     {
-        std::set<std::shared_ptr<std::string> > tmp;
+        std::set<std::string> tmp;
         if (do_check_range_percent_ge(url_para_map, tmp))
         {
             if (tmp.empty())
@@ -1899,7 +1899,7 @@ int skhttp_res_data_process::do_check_select(std::map<std::string, std::string> 
     }
 
     {
-        std::set<std::shared_ptr<std::string> > tmp;
+        std::set<std::string> tmp;
         if (do_check_down_pointer_le(url_para_map, tmp))
         {
             if (tmp.empty())
@@ -1912,7 +1912,7 @@ int skhttp_res_data_process::do_check_select(std::map<std::string, std::string> 
     }
 
     {
-        std::set<std::shared_ptr<std::string> > tmp;
+        std::set<std::string> tmp;
         if (do_check_down_pointer_ge(url_para_map, tmp))
         {
             if (tmp.empty())
@@ -1925,7 +1925,7 @@ int skhttp_res_data_process::do_check_select(std::map<std::string, std::string> 
     }
 
     {
-        std::set<std::shared_ptr<std::string> > tmp;
+        std::set<std::string> tmp;
         if (do_check_up_pointer_le(url_para_map, tmp))
         {
             if (tmp.empty())
@@ -1938,7 +1938,7 @@ int skhttp_res_data_process::do_check_select(std::map<std::string, std::string> 
     }
 
     {
-        std::set<std::shared_ptr<std::string> > tmp;
+        std::set<std::string> tmp;
         if (do_check_up_pointer_ge(url_para_map, tmp))
         {
             if (tmp.empty())
@@ -1951,7 +1951,7 @@ int skhttp_res_data_process::do_check_select(std::map<std::string, std::string> 
     }
 
     {
-        std::set<std::shared_ptr<std::string> > tmp;
+        std::set<std::string> tmp;
         if (do_check_end_avg_price_le(url_para_map, tmp))
         {
             if (tmp.empty())
@@ -1964,7 +1964,7 @@ int skhttp_res_data_process::do_check_select(std::map<std::string, std::string> 
     }
 
     {
-        std::set<std::shared_ptr<std::string> > tmp;
+        std::set<std::string> tmp;
         if (do_check_end_avg_price_ge(url_para_map, tmp))
         {
             if (tmp.empty())
@@ -1977,7 +1977,7 @@ int skhttp_res_data_process::do_check_select(std::map<std::string, std::string> 
     }
 
     {
-        std::set<std::shared_ptr<std::string> > tmp;
+        std::set<std::string> tmp;
         if (do_check_pe_le(url_para_map, tmp))
         {
             if (tmp.empty())
@@ -1990,7 +1990,7 @@ int skhttp_res_data_process::do_check_select(std::map<std::string, std::string> 
     }
 
     {
-        std::set<std::shared_ptr<std::string> > tmp;
+        std::set<std::string> tmp;
         if (do_check_pe_ge(url_para_map, tmp))
         {
             if (tmp.empty())
@@ -2003,7 +2003,7 @@ int skhttp_res_data_process::do_check_select(std::map<std::string, std::string> 
     }
 
     {
-        std::set<std::shared_ptr<std::string> > tmp;
+        std::set<std::string> tmp;
         if (do_check_pb_le(url_para_map, tmp))
         {
             if (tmp.empty())
@@ -2016,7 +2016,7 @@ int skhttp_res_data_process::do_check_select(std::map<std::string, std::string> 
     }
 
     {
-        std::set<std::shared_ptr<std::string> > tmp;
+        std::set<std::string> tmp;
         if (do_check_pb_ge(url_para_map, tmp))
         {
             if (tmp.empty())
@@ -2029,7 +2029,7 @@ int skhttp_res_data_process::do_check_select(std::map<std::string, std::string> 
     }
 
     {
-        std::set<std::shared_ptr<std::string> > tmp;
+        std::set<std::string> tmp;
         if (do_check_value_le(url_para_map, tmp))
         {
             if (tmp.empty())
@@ -2042,7 +2042,7 @@ int skhttp_res_data_process::do_check_select(std::map<std::string, std::string> 
     }
 
     {
-        std::set<std::shared_ptr<std::string> > tmp;
+        std::set<std::string> tmp;
         if (do_check_value_ge(url_para_map, tmp))
         {
             if (tmp.empty())
@@ -2055,7 +2055,7 @@ int skhttp_res_data_process::do_check_select(std::map<std::string, std::string> 
     }
 
     {
-        std::set<std::shared_ptr<std::string> > tmp;
+        std::set<std::string> tmp;
         if (do_check_value_num_min(url_para_map, tmp))
         {
             if (tmp.empty())
@@ -2068,7 +2068,7 @@ int skhttp_res_data_process::do_check_select(std::map<std::string, std::string> 
     }
 
     {
-        std::set<std::shared_ptr<std::string> > tmp;
+        std::set<std::string> tmp;
         if (do_check_value_num_max(url_para_map, tmp))
         {
             if (tmp.empty())
@@ -2081,7 +2081,7 @@ int skhttp_res_data_process::do_check_select(std::map<std::string, std::string> 
     }
 
     {
-        std::set<std::shared_ptr<std::string> > tmp;
+        std::set<std::string> tmp;
         if (do_check_cir_value_le(url_para_map, tmp))
         {
             if (tmp.empty())
@@ -2094,7 +2094,7 @@ int skhttp_res_data_process::do_check_select(std::map<std::string, std::string> 
     }
 
     {
-        std::set<std::shared_ptr<std::string> > tmp;
+        std::set<std::string> tmp;
         if (do_check_cir_value_ge(url_para_map, tmp))
         {
             if (tmp.empty())
@@ -2107,7 +2107,7 @@ int skhttp_res_data_process::do_check_select(std::map<std::string, std::string> 
     }
 
     {
-        std::set<std::shared_ptr<std::string> > tmp;
+        std::set<std::string> tmp;
         if (do_check_cir_value_num_min(url_para_map, tmp))
         {
             if (tmp.empty())
@@ -2120,7 +2120,7 @@ int skhttp_res_data_process::do_check_select(std::map<std::string, std::string> 
     }
 
     {
-        std::set<std::shared_ptr<std::string> > tmp;
+        std::set<std::string> tmp;
         if (do_check_cir_value_num_max(url_para_map, tmp))
         {
             if (tmp.empty())
@@ -2133,7 +2133,7 @@ int skhttp_res_data_process::do_check_select(std::map<std::string, std::string> 
     }
 
     {
-        std::set<std::shared_ptr<std::string> > tmp;
+        std::set<std::string> tmp;
         if (do_check_mgxj_le(url_para_map, tmp))
         {
             if (tmp.empty())
@@ -2146,7 +2146,7 @@ int skhttp_res_data_process::do_check_select(std::map<std::string, std::string> 
     }
 
     {
-        std::set<std::shared_ptr<std::string> > tmp;
+        std::set<std::string> tmp;
         if (do_check_mgxj_ge(url_para_map, tmp))
         {
             if (tmp.empty())
@@ -2159,7 +2159,7 @@ int skhttp_res_data_process::do_check_select(std::map<std::string, std::string> 
     }
 
     {
-        std::set<std::shared_ptr<std::string> > tmp;
+        std::set<std::string> tmp;
         if (do_check_mgsy_le(url_para_map, tmp))
         {
             if (tmp.empty())
@@ -2172,7 +2172,7 @@ int skhttp_res_data_process::do_check_select(std::map<std::string, std::string> 
     }
 
     {
-        std::set<std::shared_ptr<std::string> > tmp;
+        std::set<std::string> tmp;
         if (do_check_mgsy_ge(url_para_map, tmp))
         {
             if (tmp.empty())
@@ -2185,7 +2185,7 @@ int skhttp_res_data_process::do_check_select(std::map<std::string, std::string> 
     }
 
     {
-        std::set<std::shared_ptr<std::string> > tmp;
+        std::set<std::string> tmp;
         if (do_check_mgsygr_le(url_para_map, tmp))
         {
             if (tmp.empty())
@@ -2198,7 +2198,7 @@ int skhttp_res_data_process::do_check_select(std::map<std::string, std::string> 
     }
 
     {
-        std::set<std::shared_ptr<std::string> > tmp;
+        std::set<std::string> tmp;
         if (do_check_mgsygr_ge(url_para_map, tmp))
         {
             if (tmp.empty())
@@ -2211,7 +2211,7 @@ int skhttp_res_data_process::do_check_select(std::map<std::string, std::string> 
     }
 
     {
-        std::set<std::shared_ptr<std::string> > tmp;
+        std::set<std::string> tmp;
         if (do_check_mgxjgr_le(url_para_map, tmp))
         {
             if (tmp.empty())
@@ -2224,7 +2224,7 @@ int skhttp_res_data_process::do_check_select(std::map<std::string, std::string> 
     }
 
     {
-        std::set<std::shared_ptr<std::string> > tmp;
+        std::set<std::string> tmp;
         if (do_check_mgxjgr_ge(url_para_map, tmp))
         {
             if (tmp.empty())
@@ -2237,7 +2237,7 @@ int skhttp_res_data_process::do_check_select(std::map<std::string, std::string> 
     }
 
     {
-        std::set<std::shared_ptr<std::string> > tmp;
+        std::set<std::string> tmp;
         if (do_check_zysrgr_le(url_para_map, tmp))
         {
             if (tmp.empty())
@@ -2250,7 +2250,7 @@ int skhttp_res_data_process::do_check_select(std::map<std::string, std::string> 
     }
 
     {
-        std::set<std::shared_ptr<std::string> > tmp;
+        std::set<std::string> tmp;
         if (do_check_zysrgr_ge(url_para_map, tmp))
         {
             if (tmp.empty())
@@ -2263,7 +2263,7 @@ int skhttp_res_data_process::do_check_select(std::map<std::string, std::string> 
     }
 
     {
-        std::set<std::shared_ptr<std::string> > tmp;
+        std::set<std::string> tmp;
         if (do_check_yylrgr_le(url_para_map, tmp))
         {
             if (tmp.empty())
@@ -2276,7 +2276,7 @@ int skhttp_res_data_process::do_check_select(std::map<std::string, std::string> 
     }
 
     {
-        std::set<std::shared_ptr<std::string> > tmp;
+        std::set<std::string> tmp;
         if (do_check_yylrgr_ge(url_para_map, tmp))
         {
             if (tmp.empty())
@@ -2289,7 +2289,7 @@ int skhttp_res_data_process::do_check_select(std::map<std::string, std::string> 
     }
 
     {
-        std::set<std::shared_ptr<std::string> > tmp;
+        std::set<std::string> tmp;
         if (do_check_jlrgr_le(url_para_map, tmp))
         {
             if (tmp.empty())
@@ -2302,7 +2302,7 @@ int skhttp_res_data_process::do_check_select(std::map<std::string, std::string> 
     }
 
     {
-        std::set<std::shared_ptr<std::string> > tmp;
+        std::set<std::string> tmp;
         if (do_check_jlrgr_ge(url_para_map, tmp))
         {
             if (tmp.empty())
@@ -2315,7 +2315,7 @@ int skhttp_res_data_process::do_check_select(std::map<std::string, std::string> 
     }
 
     {
-        std::set<std::shared_ptr<std::string> > tmp;
+        std::set<std::string> tmp;
         if (do_check_mgxj_le(url_para_map, tmp))
         {
             if (tmp.empty())
@@ -2328,7 +2328,7 @@ int skhttp_res_data_process::do_check_select(std::map<std::string, std::string> 
     }
 
     {
-        std::set<std::shared_ptr<std::string> > tmp;
+        std::set<std::string> tmp;
         if (do_check_mgxj_ge(url_para_map, tmp))
         {
             if (tmp.empty())
@@ -2341,7 +2341,7 @@ int skhttp_res_data_process::do_check_select(std::map<std::string, std::string> 
     }
 
     {
-        std::set<std::shared_ptr<std::string> > tmp;
+        std::set<std::string> tmp;
         if (do_check_mgsy_le(url_para_map, tmp))
         {
             if (tmp.empty())
@@ -2354,7 +2354,7 @@ int skhttp_res_data_process::do_check_select(std::map<std::string, std::string> 
     }
 
     {
-        std::set<std::shared_ptr<std::string> > tmp;
+        std::set<std::string> tmp;
         if (do_check_mgsy_ge(url_para_map, tmp))
         {
             if (tmp.empty())
@@ -2367,7 +2367,7 @@ int skhttp_res_data_process::do_check_select(std::map<std::string, std::string> 
     }
 
     {
-        std::set<std::shared_ptr<std::string> > tmp;
+        std::set<std::string> tmp;
         if (do_check_mgsygr_le(url_para_map, tmp))
         {
             if (tmp.empty())
@@ -2380,7 +2380,7 @@ int skhttp_res_data_process::do_check_select(std::map<std::string, std::string> 
     }
 
     {
-        std::set<std::shared_ptr<std::string> > tmp;
+        std::set<std::string> tmp;
         if (do_check_mgsygr_ge(url_para_map, tmp))
         {
             if (tmp.empty())
@@ -2393,7 +2393,7 @@ int skhttp_res_data_process::do_check_select(std::map<std::string, std::string> 
     }
 
     {
-        std::set<std::shared_ptr<std::string> > tmp;
+        std::set<std::string> tmp;
         if (do_check_mgxjgr_le(url_para_map, tmp))
         {
             if (tmp.empty())
@@ -2406,7 +2406,7 @@ int skhttp_res_data_process::do_check_select(std::map<std::string, std::string> 
     }
 
     {
-        std::set<std::shared_ptr<std::string> > tmp;
+        std::set<std::string> tmp;
         if (do_check_mgxjgr_ge(url_para_map, tmp))
         {
             if (tmp.empty())
@@ -2419,7 +2419,7 @@ int skhttp_res_data_process::do_check_select(std::map<std::string, std::string> 
     }
 
     {
-        std::set<std::shared_ptr<std::string> > tmp;
+        std::set<std::string> tmp;
         if (do_check_zysrgr_le(url_para_map, tmp))
         {
             if (tmp.empty())
@@ -2432,7 +2432,7 @@ int skhttp_res_data_process::do_check_select(std::map<std::string, std::string> 
     }
 
     {
-        std::set<std::shared_ptr<std::string> > tmp;
+        std::set<std::string> tmp;
         if (do_check_zysrgr_ge(url_para_map, tmp))
         {
             if (tmp.empty())
@@ -2445,7 +2445,7 @@ int skhttp_res_data_process::do_check_select(std::map<std::string, std::string> 
     }
 
     {
-        std::set<std::shared_ptr<std::string> > tmp;
+        std::set<std::string> tmp;
         if (do_check_yylrgr_le(url_para_map, tmp))
         {
             if (tmp.empty())
@@ -2458,7 +2458,7 @@ int skhttp_res_data_process::do_check_select(std::map<std::string, std::string> 
     }
 
     {
-        std::set<std::shared_ptr<std::string> > tmp;
+        std::set<std::string> tmp;
         if (do_check_yylrgr_ge(url_para_map, tmp))
         {
             if (tmp.empty())
@@ -2471,7 +2471,7 @@ int skhttp_res_data_process::do_check_select(std::map<std::string, std::string> 
     }
 
     {
-        std::set<std::shared_ptr<std::string> > tmp;
+        std::set<std::string> tmp;
         if (do_check_jlrgr_le(url_para_map, tmp))
         {
             if (tmp.empty())
@@ -2484,7 +2484,7 @@ int skhttp_res_data_process::do_check_select(std::map<std::string, std::string> 
     }
 
     {
-        std::set<std::shared_ptr<std::string> > tmp;
+        std::set<std::string> tmp;
         if (do_check_jlrgr_ge(url_para_map, tmp))
         {
             if (tmp.empty())
@@ -2498,7 +2498,7 @@ int skhttp_res_data_process::do_check_select(std::map<std::string, std::string> 
 
 
     {
-        std::set<std::shared_ptr<std::string> > tmp;
+        std::set<std::string> tmp;
         if (do_check_address(url_para_map, "address", tmp))
         {
             if (tmp.empty())
@@ -2511,7 +2511,7 @@ int skhttp_res_data_process::do_check_select(std::map<std::string, std::string> 
     }
 
     {
-        std::set<std::shared_ptr<std::string> > tmp;
+        std::set<std::string> tmp;
         if (do_check_address(url_para_map, "address_v", tmp))
         {
             if (tmp.empty())
@@ -2524,7 +2524,7 @@ int skhttp_res_data_process::do_check_select(std::map<std::string, std::string> 
     }
 
     {
-        std::set<std::shared_ptr<std::string> > tmp;
+        std::set<std::string> tmp;
         if (do_check_plate(url_para_map, "plate", tmp))
         {
             if (tmp.empty())
@@ -2537,7 +2537,7 @@ int skhttp_res_data_process::do_check_select(std::map<std::string, std::string> 
     }
 
     {
-        std::set<std::shared_ptr<std::string> > tmp;
+        std::set<std::string> tmp;
         if (do_check_plate(url_para_map, "plate_v", tmp))
         {
             if (tmp.empty())
@@ -2554,7 +2554,7 @@ int skhttp_res_data_process::do_check_select(std::map<std::string, std::string> 
         for (uint32_t i = 0; i < strategy->real_single_scale.size(); i++)
         {
             {
-                std::set<std::shared_ptr<std::string> > tmp;
+                std::set<std::string> tmp;
                 if (do_check_rsingle_diff2_ge(url_para_map, i, tmp))
                 {
                     if (tmp.empty())
@@ -2568,7 +2568,7 @@ int skhttp_res_data_process::do_check_select(std::map<std::string, std::string> 
 
 
             {
-                std::set<std::shared_ptr<std::string> > tmp;
+                std::set<std::string> tmp;
                 if (do_check_rsingle_diff_ge(url_para_map, i, tmp))
                 {
                     if (tmp.empty())
@@ -2586,7 +2586,7 @@ int skhttp_res_data_process::do_check_select(std::map<std::string, std::string> 
     
     //去除停牌的
     {
-        std::set<std::shared_ptr<std::string> > tmp;
+        std::set<std::string> tmp;
         for (auto ii = p_data->_block_set.current()->begin(); ii != p_data->_block_set.current()->end(); ii++)
         {
             tmp.insert(*ii); 

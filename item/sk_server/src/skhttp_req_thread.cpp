@@ -153,7 +153,7 @@ void skhttp_req_thread::quotation_reset()
     }
 
     {
-        std::unordered_map<std::string, quotation_t,str_hasher> tmp;
+        std::unordered_map<std::string, std::shared_ptr<quotation_t>,str_hasher> tmp;
         p_data->_rquoation_dict_index.idle()->swap(tmp);
     }
 
@@ -185,8 +185,8 @@ void skhttp_req_thread::do_quotation()
             quotation_reset();
         }
 
-        std::shared_ptr<std::string> & id = id_dic->_id_vec[_quotation_index];
-        LOG_DEBUG("quotation_index: %d id_vec.size: %d id:%s", _quotation_index, id_dic->_id_vec.size(), id->c_str());
+        std::string id = id_dic->_id_vec[_quotation_index];
+        LOG_DEBUG("quotation_index: %d id_vec.size: %d id:%s", _quotation_index, id_dic->_id_vec.size(), id.c_str());
         req_real_quotation(id);
         _quotation_index++;
 
@@ -354,7 +354,7 @@ void skhttp_req_thread::req_real_quotation(const std::string & id)
             auto it = p_data->_block_set.current()->find(id);
             if (it != p_data->_block_set.current()->end())
             {
-                LOG_DEBUG("id: %s is blocked", id->c_str());
+                LOG_DEBUG("id: %s is blocked", id.c_str());
                 return;
             }
         }
@@ -465,49 +465,49 @@ void skhttp_req_thread::dump_real_quotation()
         tmp.append(ii->first);
         tmp.append(1, '\t');
 
-        tmp.append(ii->second.start);
+        tmp.append(ii->second->start);
         tmp.append(1, '\t');
 
-        tmp.append(ii->second.end);
+        tmp.append(ii->second->end);
         tmp.append(1, '\t');
 
-        tmp.append(ii->second.high);
+        tmp.append(ii->second->high);
         tmp.append(1, '\t');
 
-        tmp.append(ii->second.low);
+        tmp.append(ii->second->low);
         tmp.append(1, '\t');
 
-        tmp.append(ii->second.last_closed);
+        tmp.append(ii->second->last_closed);
         tmp.append(1, '\t');
 
-        tmp.append(ii->second.vol);
+        tmp.append(ii->second->vol);
         tmp.append(1, '\t');
 
-        tmp.append(ii->second.buy_vol);
+        tmp.append(ii->second->buy_vol);
         tmp.append(1, '\t');
 
-        tmp.append(ii->second.sell_vol);
+        tmp.append(ii->second->sell_vol);
         tmp.append(1, '\t');
 
-        tmp.append(ii->second.swing);
+        tmp.append(ii->second->swing);
         tmp.append(1, '\t');
 
-        tmp.append(ii->second.change_rate);
+        tmp.append(ii->second->change_rate);
         tmp.append(1, '\t');
 
-        tmp.append(ii->second.range_percent);
+        tmp.append(ii->second->range_percent);
         tmp.append(1, '\t');
 
-        tmp.append(ii->second.total_price);
+        tmp.append(ii->second->total_price);
         tmp.append(1, '\t');
 
-        tmp.append(ii->second.down_pointer);
+        tmp.append(ii->second->down_pointer);
         tmp.append(1, '\t');
 
-        tmp.append(ii->second.up_pointer);
+        tmp.append(ii->second->up_pointer);
         tmp.append(1, '\t');
 
-        tmp.append(ii->second.avg_price);
+        tmp.append(ii->second->avg_price);
         tmp.append(1, '\t');
 
         FILE_WRITE(t_buf, "%s", tmp.c_str());
