@@ -48,8 +48,7 @@ int id_dict::load()
         }
         else
         {
-            std::string str = std::string(ptr);
-            _id_vec.push_back(str);
+            _id_vec.push_back(std::string(ptr));
         }
     }
 

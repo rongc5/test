@@ -142,6 +142,21 @@ over:
     throw CMyCommonException("msg_recv_finish");
 }
 
+int rsingle_data_process::get_single_diff2(std::deque<std::vector<single_t> > & st, uint32_t index)
+{
+    if (st.size() <= 0 || index >= st.back().size())
+        return -1;
+
+    if (st.size() == 1)
+    {
+        return 0;
+    }
+
+    int diff2 = st.back().at(index).diff - st.front().at(index).diff;
+
+    return diff2;
+}
+
 void rsingle_data_process::update_all_index()
 {
     proc_data* p_data = proc_data::instance();
@@ -149,6 +164,7 @@ void rsingle_data_process::update_all_index()
     strategy_conf * strategy = p_data->_conf->_strategy->current();
     std::vector<single_t> single;
     uint32_t i = 0;
+    int diff2 = 0;
 
     for (auto ii = p_data->_rsingle_real_dict.begin(); ii != p_data->_rsingle_real_dict.end(); ii++)
     {
@@ -192,21 +208,43 @@ void rsingle_data_process::update_all_index()
 
         for (i = 0; i< single.size(); i++)
         {
-            if (!single[i].diff)
-                continue;
 
-            if (i >= p_data->_rsingle_diff_index.idle()->size())
+            diff2 = get_single_diff2(st, i);
+            if (diff2 > 0)
             {
-                std::multimap<int, std::string> t_map;
-                t_map.insert(std::make_pair(single[i].diff, ii->first));
-                p_data->_rsingle_diff_index.idle()->push_back(t_map);
+            
+                if (i >= p_data->_rsingle_diff2_index.idle()->size())
+                {
+                    std::multimap<int, std::string> t_map;
+                    t_map.insert(std::make_pair(diff2, ii->first));
+                    p_data->_rsingle_diff2_index.idle()->push_back(t_map);
+                }
+                else 
+                {
+                    std::multimap<int, std::string> & t_map = 
+                        (*(p_data->_rsingle_diff2_index.idle()))[i];
+
+                    t_map.insert(std::make_pair(diff2, ii->first));
+                }
             }
-            else
-            {
-                std::multimap<int, std::string> & t_map = 
-                    (*(p_data->_rsingle_diff_index.idle()))[i];
+        
 
-                t_map.insert(std::make_pair(single[i].diff, ii->first));
+            if (single[i].diff > 0)
+            {
+
+                if (i >= p_data->_rsingle_diff_index.idle()->size())
+                {
+                    std::multimap<int, std::string> t_map;
+                    t_map.insert(std::make_pair(single[i].diff, ii->first));
+                    p_data->_rsingle_diff_index.idle()->push_back(t_map);
+                }
+                else
+                {
+                    std::multimap<int, std::string> & t_map = 
+                        (*(p_data->_rsingle_diff_index.idle()))[i];
+
+                    t_map.insert(std::make_pair(single[i].diff, ii->first));
+                }
             }
         }
 

@@ -141,7 +141,7 @@ class skhttp_res_data_process:public http_base_data_process
         //key like plate or plate_v
         bool do_check_plate(std::map<std::string, std::string> & url_para_map, const char * key, std::set<std::string> & res);
         //rsingle_diff0_ge, start from 0
-        bool do_check_rsingle_diff_le(std::map<std::string, std::string> & url_para_map, uint32_t index, std::set<std::string> & res);
+        bool do_check_rsingle_diff2_ge(std::map<std::string, std::string> & url_para_map, uint32_t index, std::set<std::string> & res);
 
         bool do_check_rsingle_diff_ge(std::map<std::string, std::string> & url_para_map, uint32_t index, std::set<std::string> & res);
 

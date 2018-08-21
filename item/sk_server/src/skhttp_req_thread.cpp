@@ -53,6 +53,11 @@ void skhttp_req_thread::single_reset()
     }
 
     {
+        std::vector<std::multimap<int, std::string> > t_map;
+        p_data->_rsingle_diff2_index.idle()->swap(t_map);
+    }
+
+    {
         std::vector<std::map<std::string, std::multimap<int, std::string> > > tmp;
         p_data->_hsingle_sum_diff_index.idle()->swap(tmp);
     }
@@ -180,8 +185,8 @@ void skhttp_req_thread::do_quotation()
             quotation_reset();
         }
 
-        std::string id = id_dic->_id_vec[_quotation_index];
-        LOG_DEBUG("quotation_index: %d id_vec.size: %d id:%s", _quotation_index, id_dic->_id_vec.size(), id.c_str());
+        std::shared_ptr<std::string> & id = id_dic->_id_vec[_quotation_index];
+        LOG_DEBUG("quotation_index: %d id_vec.size: %d id:%s", _quotation_index, id_dic->_id_vec.size(), id->c_str());
         req_real_quotation(id);
         _quotation_index++;
 
@@ -349,7 +354,7 @@ void skhttp_req_thread::req_real_quotation(const std::string & id)
             auto it = p_data->_block_set.current()->find(id);
             if (it != p_data->_block_set.current()->end())
             {
-                LOG_DEBUG("id: %s is blocked", id.c_str());
+                LOG_DEBUG("id: %s is blocked", id->c_str());
                 return;
             }
         }
@@ -726,6 +731,7 @@ void skhttp_req_thread::handle_timeout(std::shared_ptr<timer_msg> & t_msg)
                 rsingle_data_process::update_all_index();
 
                 p_data->_rsingle_diff_index.idle_2_current();
+                p_data->_rsingle_diff2_index.idle_2_current();
                 p_data->_hsingle_sum_diff_index.idle_2_current();
                 p_data->_rsingle_dict_index.idle_2_current();
 

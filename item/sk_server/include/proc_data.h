@@ -99,6 +99,9 @@ class proc_data:public reload_inf
 
         ToBufferMgr<std::vector<std::multimap<int, std::string> > > _rsingle_diff_index;
 
+        // 
+        ToBufferMgr<std::vector<std::multimap<int, std::string> > > _rsingle_diff2_index;
+
         //date, single, id
         ToBufferMgr<std::vector<std::map<std::string, std::multimap<int, std::string> > > > _hsingle_diff_index;
         //date, sum_single, id

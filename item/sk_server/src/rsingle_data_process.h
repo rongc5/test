@@ -45,6 +45,8 @@ class rsingle_data_process: public http_base_data_process
 
         static int get_single_index(const std::string &id, uint32_t index);
 
+        static int get_single_diff2(std::deque<std::vector<single_t> > & st, uint32_t index);
+
     protected:
         std::string _recv_buf;
         std::string _id;
