@@ -9,10 +9,16 @@ import os
 
 
 #dir:filed
-expired_info = [{'dir':'readcurrent', 'field':'readcurrent', 'expired': -6,
+#expired_info = [{'dir':'readcurrent', 'field':'readcurrent', 'expired': -7,
+ #                'tr':'/data/mingz/bin/tr5',
+ #                'redis2_ns':'10.26.24.66:7000', 'redis_tp':'1'}]
+
+expired_info = [{'dir':'user_type', 'field':'user_type', 'expired': -1,
                  'tr':'/data/mingz/bin/tr5',
-                 'redis2_ns':'10.26.24.66:7000', 'redis_tp':'1'}]
+                 'redis2_ns':'10.26.24.66:7000', 'redis_tp':'1'}, {'dir':'readcurrent', 'field':'readcurrent', 'expired': -7,
+				'tr':'/data/mingz/bin/tr5','redis2_ns':'10.26.24.66:7000', 'redis_tp':'1'}]
 base_dir = '/data/mingz/rs9'
+MAX_DAYS = 15
 
 class Day():
     def __init__(self):
@@ -180,80 +186,112 @@ class Day():
      return "-".join("%s" % i for i in arr)
 
 
-def do_remove_expired(dic, base_path):
+def load_saved_dict(dic, base_path, dst_dic):
     if not len(dic):
         return
 
+    path_dic = []
     day = Day()
-    start_day = day.get_day_of_day(dic['expired'])
-    print start_day
-    path = '%s/%s/%s'%(base_path, start_day, dic['dir'])
-    if not os.path.isdir(path):
-        print path, 'not exist'
-        return
+    lastday = 0
+    for id_day in range(abs(dic['expired'])):
+        date = ''
 
-    id_dic = {}
-    files = os.listdir(path)
-    for file in files:
-        if not os.path.isdir(file):
-            if path in file:
-                f = open(file)
-            else:
-                f = open(path+"/"+file)
+        date =  '%s' % (day.get_day_of_day(lastday), )
+        path = '%s/%s/%s'%(base_path, date, dic['dir'])
+        path_dic.append(path)
 
-            while 1:
-                line = f.readline().strip()
-                if not line:
-                    break
-                items = line.split('\t')
-                if len(items):
-                    id_dic[items[0]] = items[0]
-                    #print items[0]
-            f.close()
+        lastday = lastday - 1
 
-    for index in range(abs(dic['expired'])):
-        remove_list = []
-        if index > 0:
-			index = index * -1
-        start_day = day.get_day_of_day(index)
-        print start_day
-        path = '%s/%s/%s'%(base_path, start_day, dic['dir'])
-        if not os.path.isdir(path):
-            print path, 'not exist'
-            continue
-
-        files = os.listdir(path)
+    print path_dic
+    for key in path_dic:
+        files = os.listdir(key)
         for file in files:
-            if not os.path.isdir(file):
-                if path in file:
+            #print file
+            if not os.path.isdir(file) and file.startswith('data_'):
+                if key in file:
                     f = open(file)
                 else:
-                    f = open(path+"/"+file)
+                    f = open(key+"/"+file)
 
                 while 1:
                     line = f.readline().strip()
                     if not line:
                         break
                     items = line.split('\t')
-                    if len(items) and items[0] in id_dic:
-                        remove_list.append(items[0])
+                    if len(items):
+                        dst_dic[items[0]] = ''
+                        #print items[0]
                 f.close()
 
-        for key in remove_list:
-            id_dic.pop(key)
+def do_remove_expired(dic, base_path):
+    if not len(dic):
+        return
 
-    file = open('base_list', "w+")
-    for key in id_dic:
-        file.write('hdel c%s %s' % (key, dic['field']))
-        file.write('\n')
-    file.close()
+    day = Day()
+    start_day = day.get_day_of_day(dic['expired'])
+    path = '%s/%s/%s'%(base_path, start_day, dic['dir'])
+    if not os.path.isdir(path):
+        print path, 'not exist'
+        return
+
+    id_dic = {}
+    load_saved_dict(dic, base_path, id_dic)
+    if not len(id_dic):
+        return
+    
+    index = dic['expired']
+
+    while 1:
+        start_day = day.get_day_of_day(index)
+        path = '%s/%s/%s'%(base_path, start_day, dic['dir'])
+        print path
+
+        if not os.path.isdir(path):
+            print path, 'not exist'
+            break
+
+        index -= 1
+        files = os.listdir(path)
+        for file in files:
+            if not os.path.isdir(file) and file.startswith('data_'):
+                if path in file:
+                    f = open(file)
+                else:
+                    f = open(path+"/"+file)
+
+                fp = open('/data/mingz/base_list', "w")
+                while 1:
+                    line = f.readline().strip()
+                    if not line:
+                        break
+                    items = line.split('\t')
+                    if len(items) and items[0] not in id_dic:
+                        fp.write('hdel c%s %s' % (items[0], dic['field']))
+                        fp.write('\n')
+                        #file.write('hdel c%s %s' % (key, 'readhistory'))
+                        #file.write('\n')
+                        fp.flush()
+                fp.close()
+                f.close()
+                cmd = '%s -s %s -p %s -c %s' % (dic['tr'], dic['redis2_ns'], 'base_list', dic['redis_tp'])
+                print cmd
+                res = os.popen(cmd).read()
+                print res
+
     print len(id_dic)
-
-    cmd = '%s -s %s -p %s -c %s' % (dic['tr'], dic['redis2_ns'], 'base_list', dic['redis_tp'])
-    res = os.popen(cmd).read()
-    print res
-
 
 if __name__ == '__main__':
     for key in expired_info:
         do_remove_expired(key, base_dir)
+
+    day = Day()
+    index = MAX_DAYS * -1
+    while 1:
+        start_day = day.get_day_of_day(index)
+        path = '%s/%s'%(base_dir, start_day)
+        if not os.path.isdir(path):
+            print path, 'not exist'
+            break
+        index -= 1
+        print 'rmdir %s' % (path)
+        os.system("rm -rf %s" % (path))
