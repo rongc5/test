@@ -17,6 +17,7 @@
 #include "base_net_obj.h"
 
 #include <algorithm>
+#include "sk_util.h"
 
 
 
@@ -512,6 +513,8 @@ int skhttp_res_data_process::url_query_id(std::map<std::string, std::string> & u
         {
             return HTPP_RES_ERR;
         }
+
+        get_standard_id(url_para_map["id"]);
     }
     
     if (!p_data)
