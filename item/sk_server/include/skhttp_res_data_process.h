@@ -127,7 +127,7 @@ class skhttp_res_data_process:public http_base_data_process
         bool do_check_zysrgr_le(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res);
 
         bool do_check_zysrgr_ge(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res);
-
+ 
         bool do_check_yylrgr_le(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res);
 
         bool do_check_yylrgr_ge(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res);

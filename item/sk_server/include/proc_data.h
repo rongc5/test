@@ -56,17 +56,17 @@ class proc_data:public reload_inf
 
         finance_dict  _finance_dict;
 
-        std::unordered_map<std::string, std::vector<single_t>,str_hasher> _rsingle_real_dict;
+        std::unordered_map<std::string, std::vector<single_t>, str_hasher> _rsingle_real_dict;
 
-        std::unordered_map<std::string, quotation_t,str_hasher> _rquoation_real_dict;
+        std::unordered_map<std::string, std::shared_ptr<quotation_t>, str_hasher> _rquoation_real_dict;
 
     public:
         //index
         ToBufferMgr<std::unordered_map<std::string, std::shared_ptr<finance_t>, str_hasher> > _finance_dict_index;
 
-        ToBufferMgr<std::unordered_map<std::string, std::deque<std::vector<single_t> >,str_hasher> > _rsingle_dict_index;
+        ToBufferMgr<std::unordered_map<std::string, std::deque<std::vector<single_t> >, str_hasher> > _rsingle_dict_index;
 
-        ToBufferMgr<std::unordered_map<std::string, quotation_t,str_hasher> > _rquoation_dict_index;
+        ToBufferMgr<std::unordered_map<std::string, std::shared_ptr<quotation_t>, str_hasher> > _rquoation_dict_index;
 
     public:
         //search index;

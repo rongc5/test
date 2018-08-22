@@ -21,6 +21,19 @@ struct str_hasher
     }   
 };
 
+
+struct str_shared_hasher
+{
+    size_t operator()(const std::shared_ptr<std::string> & k) const
+    {   
+        uint64_t key = 0;
+
+        create_sign_fs64(k->c_str(), k->length(), &key);
+
+        return key;
+    }   
+};
+
 #define DEL_PTR(PTR) \
     do {\
         delete PTR; \

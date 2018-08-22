@@ -166,6 +166,20 @@ void rsingle_data_process::update_all_index()
     uint32_t i = 0;
     int diff2 = 0;
 
+    for (i = 0; i < strategy->real_single_scale.size(); i++)
+    {
+        std::multimap<int, std::string> t_map;
+        if (i >= p_data->_rsingle_diff_index.idle()->size()) 
+        {
+            p_data->_rsingle_diff_index.idle()->push_back(t_map);
+        }
+
+        if (i >= p_data->_rsingle_diff2_index.idle()->size())
+        {
+            p_data->_rsingle_diff2_index.idle()->push_back(t_map);
+        }
+    }
+
     for (auto ii = p_data->_rsingle_real_dict.begin(); ii != p_data->_rsingle_real_dict.end(); ii++)
     {
         st.clear();
@@ -212,39 +226,19 @@ void rsingle_data_process::update_all_index()
             diff2 = get_single_diff2(st, i);
             if (diff2 > 0)
             {
-            
-                if (i >= p_data->_rsingle_diff2_index.idle()->size())
-                {
-                    std::multimap<int, std::string> t_map;
-                    t_map.insert(std::make_pair(diff2, ii->first));
-                    p_data->_rsingle_diff2_index.idle()->push_back(t_map);
-                }
-                else 
-                {
-                    std::multimap<int, std::string> & t_map = 
-                        (*(p_data->_rsingle_diff2_index.idle()))[i];
+                std::multimap<int, std::string> & t_map = 
+                    (*(p_data->_rsingle_diff2_index.idle()))[i];
 
-                    t_map.insert(std::make_pair(diff2, ii->first));
-                }
+                t_map.insert(std::make_pair(diff2, ii->first));
             }
         
 
             if (single[i].diff > 0)
             {
+                std::multimap<int, std::string> & t_map = 
+                    (*(p_data->_rsingle_diff_index.idle()))[i];
 
-                if (i >= p_data->_rsingle_diff_index.idle()->size())
-                {
-                    std::multimap<int, std::string> t_map;
-                    t_map.insert(std::make_pair(single[i].diff, ii->first));
-                    p_data->_rsingle_diff_index.idle()->push_back(t_map);
-                }
-                else
-                {
-                    std::multimap<int, std::string> & t_map = 
-                        (*(p_data->_rsingle_diff_index.idle()))[i];
-
-                    t_map.insert(std::make_pair(single[i].diff, ii->first));
-                }
+                t_map.insert(std::make_pair(single[i].diff, ii->first));
             }
         }
 

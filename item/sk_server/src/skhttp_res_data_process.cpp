@@ -86,42 +86,42 @@ void skhttp_res_data_process::query_quotation(std::string &id, Value & root, Doc
         }
 
         {
-            key.SetString("last_closed", allocator); 
+            key.SetString("l_closed", allocator); 
             value.SetString(ii->second->last_closed.c_str(), allocator); 
 
             root.AddMember(key, value, allocator);
         }
 
         {
-            key.SetString("change_rate", allocator); 
+            key.SetString("c_rate", allocator); 
             value.SetString(ii->second->change_rate.c_str(), allocator); 
 
             root.AddMember(key, value, allocator);
         }
 
         {
-            key.SetString("range_percent", allocator); 
+            key.SetString("r_percent", allocator); 
             value.SetString(ii->second->range_percent.c_str(), allocator); 
 
             root.AddMember(key, value, allocator);
         }
 
         {
-            key.SetString("down_pointer", allocator); 
+            key.SetString("d_pointer", allocator); 
             value.SetString(ii->second->down_pointer.c_str(), allocator); 
 
             root.AddMember(key, value, allocator);
         }
 
         {
-            key.SetString("up_pointer", allocator); 
+            key.SetString("u_pointer", allocator); 
             value.SetString(ii->second->up_pointer.c_str(), allocator); 
 
             root.AddMember(key, value, allocator);
         }
 
         {
-            key.SetString("avg_price", allocator); 
+            key.SetString("a_price", allocator); 
             value.SetString(ii->second->avg_price.c_str(), allocator); 
 
             root.AddMember(key, value, allocator);
@@ -338,7 +338,7 @@ void skhttp_res_data_process::query_history_single(uint32_t last_day_num, std::s
             Value child(kArrayType);
 
             std::string t_str;
-            t_str.append("last_single");
+            t_str.append("single");
             t_str.append("_");
             t_str.append(date_vec[i]);
 
@@ -368,7 +368,7 @@ void skhttp_res_data_process::query_history_single(std::string & history_date, s
         Value child(kArrayType);
 
         std::string t_str;
-        t_str.append("last_single");
+        t_str.append("single");
         t_str.append("_");
         t_str.append(history_date);
 
@@ -420,7 +420,7 @@ void skhttp_res_data_process::query_history_quotation(uint32_t last_day_num, std
             Value value(kStringType);
 
             std::string t_str;
-            t_str.append("last_quotation");
+            t_str.append("quotation");
             t_str.append("_");
             t_str.append(date_vec[i]);
 
@@ -471,7 +471,7 @@ void skhttp_res_data_process::query_history_quotation(std::string & history_date
         Value value(kStringType);
 
         std::string t_str;
-        t_str.append("last_quotation");
+        t_str.append("quotation");
         t_str.append("_");
         t_str.append(history_date);
 
