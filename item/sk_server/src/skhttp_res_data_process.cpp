@@ -165,9 +165,9 @@ void skhttp_res_data_process::query_single(std::string &id, Value & root, Docume
 
             for (auto ft: ii->second)
             {
-                if (i < ft.size())
+                if (i < ft->size())
                 {
-                    child.PushBack(Value().SetInt(ft[i].diff), allocator);
+                    child.PushBack(Value().SetInt(ft->at(i).diff), allocator);
                 }
             }
             root.AddMember(key, child, allocator);

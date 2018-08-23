@@ -103,7 +103,9 @@ void rsingle_data_process::msg_recv_finish()
     LOG_DEBUG("recv_buf: %s", _recv_buf.c_str());
     //FILE_WRITE("123", _recv_buf.c_str());
     proc_data * p_data = proc_data::instance();
-    std::vector<single_t> tmp_single;
+
+    std::shared_ptr<single_vec> tmp_single(new single_vec);
+
     int ttmp;
     std::vector<std::string> ssVec;
     uint32_t i = 0;
@@ -129,7 +131,7 @@ void rsingle_data_process::msg_recv_finish()
         sst.in = atoi(ssVec[i + 4].c_str());
         sst.out = atoi(ssVec[i + 5].c_str());
         sst.diff = sst.in - sst.out;
-        tmp_single.push_back(sst);
+        tmp_single->push_back(sst);
         flag = true;
     }
 
@@ -142,9 +144,9 @@ over:
     throw CMyCommonException("msg_recv_finish");
 }
 
-int rsingle_data_process::get_single_diff2(std::deque<std::vector<single_t> > & st, uint32_t index)
+int rsingle_data_process::get_single_diff2(std::deque<std::shared_ptr<single_vec> > & st, uint32_t index)
 {
-    if (st.size() <= 0 || index >= st.back().size())
+    if (st.size() <= 0 || index >= st.back()->size())
         return -1;
 
     if (st.size() == 1)
@@ -152,7 +154,7 @@ int rsingle_data_process::get_single_diff2(std::deque<std::vector<single_t> > & 
         return 0;
     }
 
-    int diff2 = st.back().at(index).diff - st.front().at(index).diff;
+    int diff2 = st.back()->at(index).diff - st.front()->at(index).diff;
 
     return diff2;
 }
@@ -246,10 +248,10 @@ void rsingle_data_process::update_all_index()
     }
 }
 
-void rsingle_data_process::update_id_index(const std::string & id, std::vector<single_t> & single)
+void rsingle_data_process::update_id_index(const std::string & id, std::shared_ptr<single_vec> & single)
 {
     proc_data* p_data = proc_data::instance();
-    if (!p_data || !single.size())
+    if (!p_data || !single->size())
         return;
     
     std::string key;
@@ -261,9 +263,9 @@ void rsingle_data_process::update_id_index(const std::string & id, std::vector<s
         auto tt = p_data->_hsingle_dict->current()->_date_sum_dict.find(key);
         if (tt != p_data->_hsingle_dict->current()->_date_sum_dict.end())
         {
-            std::vector<single_t>  se = tt->second.hs_vec;
+            std::vector<single_t>  se = *(tt->second);
 
-            for (uint32_t i = 0; i< single.size(); i++)
+            for (uint32_t i = 0; i< single->size(); i++)
             {
                 if (i >= se.size())
                 {

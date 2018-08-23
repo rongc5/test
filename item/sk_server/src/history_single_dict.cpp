@@ -74,7 +74,7 @@ int history_single_dict::load_history_single(const char * file)
         
         SplitString(ptr, '\t', &strVec, SPLIT_MODE_ALL | SPLIT_MODE_TRIM); 
 
-        history_single_vec single;
+        std::shared_ptr<single_vec> single(new single_vec);
         for (uint32_t i = 1; i < strVec.size() && i+1 < strVec.size(); i += 3)
         {
             single_t hs;
@@ -83,7 +83,7 @@ int history_single_dict::load_history_single(const char * file)
             hs.out = atoi(strVec[i + 1].c_str());
             hs.diff = atoi(strVec[i + 2].c_str());
 
-            single.hs_vec.push_back(hs);
+            single->push_back(hs);
         }
 
 
@@ -113,7 +113,7 @@ int history_single_dict::load_history_single(const char * file)
         {
             for (uint32_t i = 0; i < single.hs_vec.size(); i++)
             {
-                if (!single.hs_vec[i].diff)
+                if (!single->at(i).diff)
                     break;
 
                 if (i >= p_data->_hsingle_diff_index.idle()->size())
@@ -121,7 +121,7 @@ int history_single_dict::load_history_single(const char * file)
                     std::unordered_map<std::string, std::multimap<int, std::string> > u_map;
                     std::multimap<int, std::string> t_map;
 
-                    t_map.insert(std::make_pair(single.hs_vec[i].diff, strVec[0]));
+                    t_map.insert(std::make_pair(single->at(i).diff, strVec[0]));
                     u_map.insert(std::make_pair(date, t_map));
                 }
                 else
@@ -133,12 +133,12 @@ int history_single_dict::load_history_single(const char * file)
                     {
                         std::multimap<int, std::string> t_map;
 
-                        t_map.insert(std::make_pair(single.hs_vec[i].diff, strVec[0]));
+                        t_map.insert(std::make_pair(single->at(i).diff, strVec[0]));
                         u_map.insert(std::make_pair(date, t_map));
                     }
                     else
                     {
-                        ii->second.insert(std::make_pair(single.hs_vec[i].diff, strVec[0]));
+                        ii->second.insert(std::make_pair(single->at(i).diff, strVec[0]));
                     }
                 }
             }
@@ -167,7 +167,7 @@ void history_single_dict::update_sum_index()
         {
             const std::string & id = it->first;
             int diff = 0;
-            history_single_vec hs;
+            std::shared_ptr<single_vec> hs(new single_vec);
 
             for (auto iii = it->second.lower_bound(date); iii != it->second.end(); iii++)
             {
@@ -175,15 +175,15 @@ void history_single_dict::update_sum_index()
                 auto tt = _date_dict.find(key);
                 if (tt != _date_dict.end())
                 {
-                    for (uint32_t i = 0; i < tt->second.hs_vec.size(); i++)
+                    for (uint32_t i = 0; i < tt->second->size(); i++)
                     {
-                        if (i >= hs.hs_vec.size())
+                        if (i >= hs->size())
                         {
                             single_t st;
-                            hs.hs_vec.push_back(st);
+                            hs->push_back(st);
                         }
                         
-                        hs.hs_vec[i].diff += tt->second.hs_vec[i].diff;
+                        hs->at(i).diff += tt->second->at(i).diff;
                     }
                 }
             }
@@ -239,12 +239,12 @@ int history_single_dict::load()
 int history_single_dict::reload()
 {
     {
-        std::unordered_map<std::string, history_single_vec, str_hasher> tmp;
+        std::unordered_map<std::string, std::shared_ptr<single_vec>, str_hasher> tmp;
         _date_dict.swap(tmp);
     }
 
     {
-        std::unordered_map<std::string, history_single_vec, str_hasher> tmp;
+        std::unordered_map<std::string, std::shared_ptr<single_vec>, str_hasher> tmp;
         _date_sum_dict.swap(tmp);
     }
 
