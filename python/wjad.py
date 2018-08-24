@@ -113,7 +113,7 @@ class MySQL:
             log_write(LOG_NAME, "%s Mysql Error %s" % (time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time())), e.args[1]))
 
 HADOOP_BIN='/data/mingz/hadoop-2.8.1/bin/hadoop'
-HADOOP_HDFS='hdfs://10.26.24.165:9090'
+HADOOP_HDFS='hdfs://10.26.26.145:8020'
 
 if __name__ == '__main__':
     sql = MySQL('10.26.20.20','root','1Q2W3E4R')

@@ -33,17 +33,28 @@
       <file leaf-file-name="re_test_case.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/re_test_case.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="28" column="45" selection-start="571" selection-end="571" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="17841">
+            <state line="28" column="45" selection-start="571" selection-end="571" vertical-scroll-proportion="0.0" vertical-offset="532" max-vertical-offset="17936">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="remove_expired.py" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/remove_expired.py">
+      <file leaf-file-name="wjad.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/wjad.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="276" column="0" selection-start="7256" selection-end="7256" vertical-scroll-proportion="2.2266858" vertical-offset="3654" max-vertical-offset="5491">
+            <state line="134" column="0" selection-start="4678" selection-end="4678" vertical-scroll-proportion="0.0" vertical-offset="2191" max-vertical-offset="2888">
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="response_st.py" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/response_st.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="57" column="80" selection-start="1816" selection-end="1816" vertical-scroll-proportion="0.41666666" vertical-offset="798" max-vertical-offset="1615">
+              <folding>
+                <element signature="e#38#49#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -58,8 +69,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/wjad.py" />
-        <option value="$PROJECT_DIR$/../stock/py/stock_infoe.py" />
         <option value="$PROJECT_DIR$/../stock/py/grepx.py" />
         <option value="$PROJECT_DIR$/../stock/py/load_plates.py" />
         <option value="$PROJECT_DIR$/../stock/py/load_address.py" />
@@ -74,6 +83,8 @@
         <option value="$PROJECT_DIR$/../stock/py/load_detail.py" />
         <option value="$PROJECT_DIR$/../stock/py/stock_infoa.py" />
         <option value="$PROJECT_DIR$/remove_expired.py" />
+        <option value="$PROJECT_DIR$/wjad.py" />
+        <option value="$PROJECT_DIR$/response_st.py" />
       </list>
     </option>
   </component>
@@ -444,7 +455,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1420" height="860" extended-state="0" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -480,26 +491,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/../stock/py/count_detail.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="31" column="40" selection-start="3500" selection-end="3500" vertical-scroll-proportion="0.8333333" vertical-offset="19" max-vertical-offset="703" />
-      </provider>
-    </entry>
-    <entry file="file://D:/Python27/Lib/subprocess.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="647" column="8" selection-start="20658" selection-end="20658" vertical-scroll-proportion="-2.2840745" vertical-offset="13885" max-vertical-offset="30894" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../stock/py/monitor.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="483" column="24" selection-start="15294" selection-end="15294" vertical-scroll-proportion="1.7718794" vertical-offset="7695" max-vertical-offset="10412" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tf_idf.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="68" column="0" selection-start="1595" selection-end="1595" vertical-scroll-proportion="1.6628407" vertical-offset="0" max-vertical-offset="2014" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../stock/py/load_brief.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="384" column="22" selection-start="10647" selection-end="10647" vertical-scroll-proportion="-0.110687025" vertical-offset="7354" max-vertical-offset="10906" />
@@ -517,9 +508,7 @@
     </entry>
     <entry file="file://$USER_HOME$/.PyCharm30/system/python_stubs/1494736245/datetime.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="492" column="8" selection-start="16679" selection-end="16679" vertical-scroll-proportion="5.0176125" vertical-offset="6784" max-vertical-offset="12027">
-          <folding />
-        </state>
+        <state line="492" column="8" selection-start="16679" selection-end="16679" vertical-scroll-proportion="5.0176125" vertical-offset="6784" max-vertical-offset="12027" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/../stock/py/load_quotation.py">
@@ -549,16 +538,49 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/semail.ini.bak">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="697">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="697" />
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/.PyCharm30/system/python_stubs/1494736245/nt.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="312" column="9" selection-start="7128" selection-end="7133" vertical-scroll-proportion="0.6944444" vertical-offset="5453" max-vertical-offset="15010" />
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/.PyCharm30/system/python_stubs/1494736245/__builtin__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="414" column="4" selection-start="13599" selection-end="13599" vertical-scroll-proportion="0.3328551" vertical-offset="7634" max-vertical-offset="97033">
           <folding />
         </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/remove_expired.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="296" column="38" selection-start="7922" selection-end="7922" vertical-scroll-proportion="0.8091822" vertical-offset="5022" max-vertical-offset="5719" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/re_test_case.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="28" column="45" selection-start="571" selection-end="571" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="17841">
+        <state line="28" column="45" selection-start="571" selection-end="571" vertical-scroll-proportion="0.0" vertical-offset="532" max-vertical-offset="17841">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$
+    <entry file="file://$PROJECT_DIR$/wjad.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="134" column="0" selection-start="4678" selection-end="4678" vertical-scroll-proportion="0.0" vertical-offset="2191" max-vertical-offset="2888">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/response_st.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="57" column="80" selection-start="1816" selection-end="1816" vertical-scroll-proportion="0.41666666" vertical-offset="798" max-vertical-offset="1615">
+          <folding>
+            <element signature="e#38#49#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+  </component>
+</project>
+
