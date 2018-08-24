@@ -259,7 +259,9 @@ int history_single_dict::load()
     if (p_data)
     {
         p_data->_hsingle_diff_index.idle_2_current();
+        p_data->_hsingle_sum_diff_index.idle_2_current();
     }
+
 
     return 0;
 }

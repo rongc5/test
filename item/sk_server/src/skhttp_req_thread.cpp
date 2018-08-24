@@ -57,11 +57,6 @@ void skhttp_req_thread::single_reset()
         p_data->_rsingle_diff2_index.idle()->swap(t_map);
     }
 
-    {
-        std::vector<std::map<std::string, std::multimap<int, std::string> > > tmp;
-        p_data->_hsingle_sum_diff_index.idle()->swap(tmp);
-    }
-
 
     {
         std::unordered_map<std::string, std::deque<std::vector<single_t> >,str_hasher> tmp;
@@ -732,7 +727,6 @@ void skhttp_req_thread::handle_timeout(std::shared_ptr<timer_msg> & t_msg)
 
                 p_data->_rsingle_diff_index.idle_2_current();
                 p_data->_rsingle_diff2_index.idle_2_current();
-                p_data->_hsingle_sum_diff_index.idle_2_current();
                 p_data->_rsingle_dict_index.idle_2_current();
 
                 LOG_DEBUG("_rsingle_diff_index idle_2_current");
