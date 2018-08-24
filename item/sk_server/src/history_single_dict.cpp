@@ -111,20 +111,9 @@ int history_single_dict::load_history_single(const char * file)
         }
 
         {
-            for (uint32_t i = 0; i < single.hs_vec.size(); i++)
+            for (uint32_t i = 0; i < single->size(); i++)
             {
-                if (!single->at(i).diff)
-                    break;
-
-                if (i >= p_data->_hsingle_diff_index.idle()->size())
-                {
-                    std::unordered_map<std::string, std::multimap<int, std::string> > u_map;
-                    std::multimap<int, std::string> t_map;
-
-                    t_map.insert(std::make_pair(single->at(i).diff, strVec[0]));
-                    u_map.insert(std::make_pair(date, t_map));
-                }
-                else
+                if (single->at(i).diff > 0)
                 {
                     std::map<std::string, std::multimap<int, std::string> >  & u_map = (*(p_data->_hsingle_diff_index.idle()))[i];
 
@@ -193,6 +182,27 @@ void history_single_dict::update_sum_index()
                 _date_sum_dict.insert(std::make_pair(key, hs));
             }
 
+            for (uint32_t i = 0; i < hs->size(); i++)
+            {
+                if (hs->at(i).diff > 0)
+                {
+                    std::map<std::string, std::multimap<int, std::string> >  & u_map = (*(p_data->_hsingle_sum_diff_index.idle()))[i];
+
+                    auto ii = u_map.find(date);
+                    if (ii == u_map.end())
+                    {
+                        std::multimap<int, std::string> t_map;
+
+                        t_map.insert(std::make_pair(hs->at(i).diff, id));
+                        u_map.insert(std::make_pair(date, t_map));
+                    }
+                    else
+                    {
+                        ii->second.insert(std::make_pair(hs->at(i).diff, id));
+                    }
+                }
+            }
+
         }
     }
 
@@ -206,6 +216,24 @@ int history_single_dict::load()
     char line[SIZE_LEN_1024];
     char * ptr = NULL, *bname;
     uint32_t query_sign[2];
+
+    proc_data* p_data = proc_data::instance();
+    strategy_conf * strategy = p_data->_conf->_strategy->current();
+    uint32_t i = 0;
+
+    for (i = 0; i < strategy->real_single_scale.size(); i++)
+    {
+        std::map<std::string, std::multimap<int, std::string> > t_map;
+        if (i >= p_data->_hsingle_diff_index.idle()->size())
+        {
+            p_data->_hsingle_diff_index.idle()->push_back(t_map);
+        }
+
+        if (i >= p_data->_hsingle_sum_diff_index.idle()->size())
+        {
+            p_data->_hsingle_sum_diff_index.idle()->push_back(t_map);
+        }
+    }
 
     while (fgets(line, sizeof(line), fp)) 
     {
@@ -256,6 +284,11 @@ int history_single_dict::reload()
     {
         std::set<std::string> tmp;
         _date_index.swap(tmp);
+    }
+
+    {
+        std::vector<std::map<std::string, std::multimap<int, std::string> > > tmp;
+        p_data->_hsingle_sum_diff_index.idle()->swap(tmp);
     }
 
     {
