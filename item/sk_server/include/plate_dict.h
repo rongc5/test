@@ -25,8 +25,8 @@ class plate_dict:public reload_inf
         char _dumppath[SIZE_LEN_512];
         time_t _last_load;
     public:
-        std::unordered_map<std::string, std::vector<std::shared_ptr<std::string> >, str_hasher> _id_dict;
-        std::unordered_set<std::shared_ptr<std::string> > _plate_set;
+        std::unordered_map<std::string, std::vector<std::shared_ptr<std::string> >, str_hasher, str_equaler> _id_dict;
+        std::unordered_set<std::shared_ptr<std::string>, str_hasher, str_equaler> _plate_set;
 };
 
 

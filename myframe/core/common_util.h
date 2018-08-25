@@ -45,6 +45,34 @@ struct str_hasher
     }   
 };
 
+struct str_equaler
+{
+    bool operator()(const std::string & k1, const std::string & k2) const
+    {   
+        
+
+        return !k1.compare(k2);
+    }   
+
+    bool operator()(const std::shared_ptr<std::string> & k1, const std::shared_ptr<std::string> & k2) const
+    {   
+        if (!k1 || !k2)
+            return false;
+
+        return !k1->compare(*k2);
+    }   
+
+    bool operator()(const std::string * k1, const std::string * k2) const
+    {   
+        if (!k1 || !k2)
+            return false;
+
+
+        return !k1->compare(*k2);
+    }   
+};
+
+
 #define DEL_PTR(PTR) \
     do {\
         delete PTR; \

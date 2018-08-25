@@ -206,7 +206,7 @@ void skhttp_res_data_process::query_addr(std::string &id, Value & root, Document
         std::string str;
         for (auto ft:ii->second)
         {
-            str.append(ft);
+            str.append(ft->c_str());
         }
         value.SetString(str.c_str(), allocator);
         root.AddMember(key, value, allocator);
@@ -1654,7 +1654,9 @@ bool skhttp_res_data_process::do_check_address(std::map<std::string, std::string
             tmp_vec.push_back(url_para_map[key]);
 
         for (uint32_t i = 0; i< tmp_vec.size(); i++) {
-            auto range = p_data->_address_index.current()->equal_range(trim(tmp_vec[i].c_str()));
+
+            std::shared_ptr<std::string> ss(new std::string(trim(tmp_vec[i].c_str())));
+            auto range = p_data->_address_index.current()->equal_range(ss);
             for (auto it = range.first; it != range.second; ++it)
             {
                 res.insert(it->second);

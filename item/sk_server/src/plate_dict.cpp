@@ -83,12 +83,12 @@ int plate_dict::load()
 int plate_dict::reload()
 {
     {
-        std::unordered_map<std::string, std::vector<std::shared_ptr<std::string> >, str_hasher> tmp;
+        std::unordered_map<std::string, std::vector<std::shared_ptr<std::string> >, str_hasher, str_equaler> tmp;
         _id_dict.swap(tmp);
     }
 
     {
-        std::unordered_set<std::shared_ptr<std::string> > tmp;
+        std::unordered_set<std::shared_ptr<std::string>, str_hasher, str_equaler> tmp;
         _plate_set.swap(tmp);
     }
 
