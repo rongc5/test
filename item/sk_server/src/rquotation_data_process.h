@@ -41,8 +41,6 @@ class rquotation_data_process: public http_base_data_process
 
         static void update_all_index();
 
-        static void update_id_index(const std::string & id, std::shared_ptr<quotation_t> & qt);
-
     protected:
         std::string _recv_buf;
         std::string _id;

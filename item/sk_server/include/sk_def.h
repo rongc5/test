@@ -35,6 +35,8 @@ struct single_t
     }
 };
 
+typedef std::vector<single_t> single_vec;
+
 struct finance_t
 {
     std::string id;
@@ -50,11 +52,6 @@ struct finance_t
     std::string yylrgr;
     std::string jlrgr;
     std::string time_str;
-};
-
-struct history_single_vec
-{
-    std::vector<single_t> hs_vec;
 };
 
 struct quotation_t

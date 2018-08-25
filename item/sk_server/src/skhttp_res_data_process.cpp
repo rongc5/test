@@ -87,42 +87,42 @@ void skhttp_res_data_process::query_quotation(std::string &id, Value & root, Doc
         }
 
         {
-            key.SetString("l_closed", allocator); 
+            key.SetString("last_closed", allocator); 
             value.SetString(ii->second->last_closed.c_str(), allocator); 
 
             root.AddMember(key, value, allocator);
         }
 
         {
-            key.SetString("c_rate", allocator); 
+            key.SetString("change_rate", allocator); 
             value.SetString(ii->second->change_rate.c_str(), allocator); 
 
             root.AddMember(key, value, allocator);
         }
 
         {
-            key.SetString("r_percent", allocator); 
+            key.SetString("range_percent", allocator); 
             value.SetString(ii->second->range_percent.c_str(), allocator); 
 
             root.AddMember(key, value, allocator);
         }
 
         {
-            key.SetString("d_pointer", allocator); 
+            key.SetString("down_pointer", allocator); 
             value.SetString(ii->second->down_pointer.c_str(), allocator); 
 
             root.AddMember(key, value, allocator);
         }
 
         {
-            key.SetString("u_pointer", allocator); 
+            key.SetString("up_pointer", allocator); 
             value.SetString(ii->second->up_pointer.c_str(), allocator); 
 
             root.AddMember(key, value, allocator);
         }
 
         {
-            key.SetString("a_price", allocator); 
+            key.SetString("avage_price", allocator); 
             value.SetString(ii->second->avg_price.c_str(), allocator); 
 
             root.AddMember(key, value, allocator);
@@ -139,7 +139,7 @@ void skhttp_res_data_process::query_plate(std::string &id, Value & root, Documen
     {
         for (auto ft: ii->second)
         {
-            value.SetString(ft.c_str(), allocator); 
+            value.SetString(ft->c_str(), allocator); 
             root.PushBack(value, allocator);
         }
     }
@@ -345,9 +345,9 @@ void skhttp_res_data_process::query_history_single(uint32_t last_day_num, std::s
 
             k.SetString(t_str.c_str(), allocator);
 
-            for (uint32_t k = 0; k < ii->second.hs_vec.size(); k++)
+            for (uint32_t k = 0; k < ii->second->size(); k++)
             {
-                child.PushBack(ii->second.hs_vec[k].diff, allocator);
+                child.PushBack(ii->second->at(k).diff, allocator);
             }
 
             root.AddMember(k, child, allocator);
@@ -375,9 +375,9 @@ void skhttp_res_data_process::query_history_single(std::string & history_date, s
 
         k.SetString(t_str.c_str(), allocator);
 
-        for (uint32_t k = 0; k < ii->second.hs_vec.size(); k++)
+        for (uint32_t k = 0; k < ii->second->size(); k++)
         {
-            child.PushBack(ii->second.hs_vec[k].diff, allocator);
+            child.PushBack(ii->second->at(k).diff, allocator);
         }
 
         root.AddMember(k, child, allocator);
@@ -429,21 +429,21 @@ void skhttp_res_data_process::query_history_quotation(uint32_t last_day_num, std
 
             {
                 key.SetString("end", allocator); 
-                value.SetString(ii->second.end.c_str(), allocator); 
+                value.SetString(ii->second->end.c_str(), allocator); 
 
                 v.AddMember(key, value, allocator);
             }
 
             {
                 key.SetString("low", allocator); 
-                value.SetString(ii->second.low.c_str(), allocator); 
+                value.SetString(ii->second->low.c_str(), allocator); 
 
                 v.AddMember(key, value, allocator);
             }
 
             {
                 key.SetString("range_percent", allocator); 
-                value.SetString(ii->second.range_percent.c_str(), allocator); 
+                value.SetString(ii->second->range_percent.c_str(), allocator); 
 
                 v.AddMember(key, value, allocator);
             }
@@ -480,21 +480,21 @@ void skhttp_res_data_process::query_history_quotation(std::string & history_date
 
         {
             key.SetString("end", allocator); 
-            value.SetString(ii->second.end.c_str(), allocator); 
+            value.SetString(ii->second->end.c_str(), allocator); 
 
             v.AddMember(key, value, allocator);
         }
 
         {
             key.SetString("low", allocator); 
-            value.SetString(ii->second.low.c_str(), allocator); 
+            value.SetString(ii->second->low.c_str(), allocator); 
 
             v.AddMember(key, value, allocator);
         }
 
         {
             key.SetString("range_percent", allocator); 
-            value.SetString(ii->second.range_percent.c_str(), allocator); 
+            value.SetString(ii->second->range_percent.c_str(), allocator); 
 
             v.AddMember(key, value, allocator);
         }
@@ -1679,7 +1679,8 @@ bool skhttp_res_data_process::do_check_plate(std::map<std::string, std::string> 
             tmp_vec.push_back(url_para_map[key]);
 
         for (uint32_t i = 0; i< tmp_vec.size(); i++) {
-            auto range = p_data->_plate_index.current()->equal_range(trim(tmp_vec[i].c_str()));
+            std::shared_ptr<std::string> ss(new std::string(trim(tmp_vec[i].c_str())));
+            auto range = p_data->_plate_index.current()->equal_range(ss);
             for (auto it = range.first; it != range.second; ++it)
             {
                 res.insert(it->second);

@@ -56,7 +56,7 @@ class proc_data:public reload_inf
 
         finance_dict  _finance_dict;
 
-        std::unordered_map<std::string, std::vector<single_t>, str_hasher> _rsingle_real_dict;
+        std::unordered_map<std::string, std::shared_ptr<single_vec>, str_hasher> _rsingle_real_dict;
 
         std::unordered_map<std::string, std::shared_ptr<quotation_t>, str_hasher> _rquoation_real_dict;
 
@@ -64,7 +64,7 @@ class proc_data:public reload_inf
         //index
         ToBufferMgr<std::unordered_map<std::string, std::shared_ptr<finance_t>, str_hasher> > _finance_dict_index;
 
-        ToBufferMgr<std::unordered_map<std::string, std::deque<std::vector<single_t> >, str_hasher> > _rsingle_dict_index;
+        ToBufferMgr<std::unordered_map<std::string, std::deque<std::shared_ptr<single_vec> >, str_hasher> > _rsingle_dict_index;
 
         ToBufferMgr<std::unordered_map<std::string, std::shared_ptr<quotation_t>, str_hasher> > _rquoation_dict_index;
 
@@ -94,7 +94,7 @@ class proc_data:public reload_inf
         ToBufferMgr<std::multimap<float, std::string> > _jlrgr_index;
 
         ToBufferMgr<std::unordered_multimap<std::string, std::string, str_hasher> > _address_index;
-        ToBufferMgr<std::unordered_multimap<std::string, std::string, str_hasher> > _plate_index;
+        ToBufferMgr<std::unordered_multimap<std::shared_ptr<std::string>, std::string, str_hasher> > _plate_index;
 
 
         ToBufferMgr<std::vector<std::multimap<int, std::string> > > _rsingle_diff_index;

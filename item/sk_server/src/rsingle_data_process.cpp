@@ -78,7 +78,7 @@ int rsingle_data_process::get_single_index(const std::string &id, uint32_t index
         auto it = p_data->_hquoation_dict->current()->_id_dict.find(key);
         if (it != p_data->_hquoation_dict->current()->_id_dict.end())
         {
-            end = atof(it->second.end.c_str());
+            end = atof(it->second->end.c_str());
         }
     }
 
@@ -162,9 +162,8 @@ int rsingle_data_process::get_single_diff2(std::deque<std::shared_ptr<single_vec
 void rsingle_data_process::update_all_index()
 {
     proc_data* p_data = proc_data::instance();
-    std::deque<std::vector<single_t> > st;
+    std::deque<std::shared_ptr<single_vec> > st;
     strategy_conf * strategy = p_data->_conf->_strategy->current();
-    std::vector<single_t> single;
     uint32_t i = 0;
     int diff2 = 0;
 
@@ -185,7 +184,7 @@ void rsingle_data_process::update_all_index()
     for (auto ii = p_data->_rsingle_real_dict.begin(); ii != p_data->_rsingle_real_dict.end(); ii++)
     {
         st.clear();
-        single.clear();
+        std::shared_ptr<single_vec> single(new single_vec);
 
         auto it = p_data->_rsingle_dict_index.current()->find(ii->first);
         if (it != p_data->_rsingle_dict_index.current()->end())
@@ -196,18 +195,18 @@ void rsingle_data_process::update_all_index()
         for (i = 0; i < strategy->real_single_scale.size(); i++)
         {
             int index = get_single_index(ii->first, i);
-            if (index < 0 || index > (int)ii->second.size())
+            if (index < 0 || index > (int)ii->second->size())
             {
                 single_t tmp_st;
-                single.push_back(tmp_st);
+                single->push_back(tmp_st);
             }
             else
             {
-                single.push_back(ii->second[index]);
+                single->push_back(ii->second->at(index));
             }
         }
 
-        if (st.empty() || st.back().at(0) != single[0])
+        if (st.empty() || st.back()->at(0) != single->at(0))
         {
             st.push_back(single);
         }
@@ -222,7 +221,7 @@ void rsingle_data_process::update_all_index()
             p_data->_rsingle_dict_index.idle()->insert(std::make_pair(ii->first, st));
         }
 
-        for (i = 0; i< single.size(); i++)
+        for (i = 0; i< single->size(); i++)
         {
 
             diff2 = get_single_diff2(st, i);
@@ -235,12 +234,12 @@ void rsingle_data_process::update_all_index()
             }
         
 
-            if (single[i].diff > 0)
+            if (single->at(i).diff > 0)
             {
                 std::multimap<int, std::string> & t_map = 
                     (*(p_data->_rsingle_diff_index.idle()))[i];
 
-                t_map.insert(std::make_pair(single[i].diff, ii->first));
+                t_map.insert(std::make_pair(single->at(i).diff, ii->first));
             }
         }
     }

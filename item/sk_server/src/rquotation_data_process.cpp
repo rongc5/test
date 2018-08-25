@@ -171,71 +171,7 @@ void rquotation_data_process::update_all_index()
         {
             p_data->_rquoation_dict_index.idle()->insert(std::make_pair(ii->first, ii->second));
         }
-
-        update_id_index(ii->first, ii->second);
     }
-}
-
-void rquotation_data_process::update_id_index(const std::string & id, std::shared_ptr<quotation_t> & qt)
-{
-    proc_data* p_data = proc_data::instance();
-    if (!p_data)
-        return;
-
-    std::string key;
-    for (auto ii = p_data->_hquoation_dict->current()->_date_index.begin(); ii != p_data->_hquoation_dict->current()->_date_index.end(); ii++)
-    {
-        const std::string  & date = *ii;
-
-        history_quotation_dict::creat_key(date, id, key);
-
-        float range_percent = atof(qt->range_percent.c_str());
-        float change_rate = atof(qt->change_rate.c_str());
-        
-        auto tt = p_data->_hquoation_dict->current()->_id_sum_dict.find(key);
-        if (tt != p_data->_hquoation_dict->current()->_id_sum_dict.end())
-        {
-            range_percent += atof(tt->second.range_percent.c_str());
-            change_rate += atof(tt->second.change_rate.c_str());
-
-            {   
-                std::map<std::string, std::multimap<float, std::string> >  & u_map = *(p_data->_hq_sum_range_percent_index.idle());
-
-                auto ii = u_map.find(date);
-                if (ii == u_map.end())
-                {   
-                    std::multimap<float, std::string> t_map;
-
-                    t_map.insert(std::make_pair(range_percent, id));
-                    u_map.insert(std::make_pair(date, t_map));
-                }   
-                else
-                {   
-                    ii->second.insert(std::make_pair(range_percent, id));
-                }   
-            }
-
-
-            {
-                std::map<std::string, std::multimap<float, std::string> >  & u_map = *(p_data->_hq_sum_change_rate_index.idle());
-
-                auto ii = u_map.find(date);
-                if (ii == u_map.end())
-                {
-                    std::multimap<float, std::string> t_map;
-
-                    t_map.insert(std::make_pair(change_rate, id));
-                    u_map.insert(std::make_pair(date, t_map));
-                }
-                else
-                {
-                    ii->second.insert(std::make_pair(change_rate, id));
-                }
-
-            }
-        }
-    }
-
 }
 
 std::string * rquotation_data_process::get_send_head()

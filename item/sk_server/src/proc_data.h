@@ -94,7 +94,7 @@ class proc_data:public reload_inf
         ToBufferMgr<std::multimap<float, std::string> > _jlrgr_index;
 
         ToBufferMgr<std::unordered_multimap<std::string, std::string, str_hasher> > _address_index;
-        ToBufferMgr<std::unordered_multimap<std::string, std::string, str_hasher> > _plate_index;
+        ToBufferMgr<std::unordered_multimap<std::shared_ptr<std::string>, std::string, str_hasher> > _plate_index;
 
 
         ToBufferMgr<std::vector<std::multimap<int, std::string> > > _rsingle_diff_index;

@@ -59,7 +59,7 @@ void skhttp_req_thread::single_reset()
 
 
     {
-        std::unordered_map<std::string, std::deque<std::vector<single_t> >,str_hasher> tmp;
+        std::unordered_map<std::string, std::deque<std::shared_ptr<single_vec> >,str_hasher> tmp;
         p_data->_rsingle_dict_index.idle()->swap(tmp);
     }
 
@@ -150,16 +150,6 @@ void skhttp_req_thread::quotation_reset()
     {
         std::unordered_map<std::string, std::shared_ptr<quotation_t>,str_hasher> tmp;
         p_data->_rquoation_dict_index.idle()->swap(tmp);
-    }
-
-    {
-        std::map<std::string, std::multimap<float, std::string> > t_map;
-        p_data->_hq_sum_range_percent_index.idle()->swap(t_map);
-    }
-
-    {
-        std::map<std::string, std::multimap<float, std::string> > t_map;
-        p_data->_hq_sum_change_rate_index.idle()->swap(t_map);
     }
 }
 
@@ -641,17 +631,17 @@ void skhttp_req_thread::dump_real_single()
     {
         std::string t_str;
 
-        std::deque<std::vector<single_t> > & st = ii->second;
+        std::deque<std::shared_ptr<single_vec> > & st = ii->second;
         if (!st.size())
             continue;
 
         t_str.append(ii->first.c_str());
         t_str.append(1, '\t');
 
-        for (uint32_t i =0; i < st.back().size(); i++)
+        for (uint32_t i =0; i < st.back()->size(); i++)
         {
 
-            snprintf(tmp, sizeof(tmp), "%d\t%d\t%d", st.back().at(i).in, st.back().at(i).out, st.back().at(i).diff);
+            snprintf(tmp, sizeof(tmp), "%d\t%d\t%d", st.back()->at(i).in, st.back()->at(i).out, st.back()->at(i).diff);
 
             t_str.append(tmp);
             t_str.append(1, '\t');
@@ -712,8 +702,6 @@ void skhttp_req_thread::handle_timeout(std::shared_ptr<timer_msg> & t_msg)
                 p_data->_up_pointer_index.idle_2_current();
                 p_data->_end_avg_price_index.idle_2_current();
 
-                p_data->_hq_sum_range_percent_index.idle_2_current();
-                p_data->_hq_sum_change_rate_index.idle_2_current();
                 p_data->_rquoation_dict_index.idle_2_current();
 
                 add_quotation_timer();

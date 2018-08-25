@@ -255,8 +255,6 @@ int history_single_dict::load()
 
     update_sum_index();
     
-    proc_data* p_data = proc_data::instance();
-    if (p_data)
     {
         p_data->_hsingle_diff_index.idle_2_current();
         p_data->_hsingle_sum_diff_index.idle_2_current();
@@ -268,6 +266,7 @@ int history_single_dict::load()
 
 int history_single_dict::reload()
 {
+    proc_data* p_data = proc_data::instance();
     {
         std::unordered_map<std::string, std::shared_ptr<single_vec>, str_hasher> tmp;
         _date_dict.swap(tmp);

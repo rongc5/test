@@ -52,8 +52,24 @@ int plate_dict::load()
         std::string id = *(tmp_vec.begin());
         tmp_vec.erase(tmp_vec.begin());
 
-        _id_dict.insert(std::make_pair(id, tmp_vec));
+        std::vector<std::shared_ptr<std::string> > ts_vec;
 
+        for (auto ii = tmp_vec.begin(); ii != tmp_vec.end(); ii++)
+        {
+            std::shared_ptr<std::string> ss(new std::string(*ii));
+            auto iii = _plate_set.find(ss);
+            if (iii != _plate_set.end())
+            {
+                ts_vec.push_back(*iii);
+            }
+            else
+            {
+                ts_vec.push_back(ss);
+                _plate_set.insert(ss);
+            }
+        }
+        
+        _id_dict.insert(std::make_pair(id, ts_vec));
     }
 
     fclose(fp);
@@ -67,8 +83,13 @@ int plate_dict::load()
 int plate_dict::reload()
 {
     {
-        std::unordered_map<std::string, std::vector<std::string>, str_hasher> tmp;
+        std::unordered_map<std::string, std::vector<std::shared_ptr<std::string> >, str_hasher> tmp;
         _id_dict.swap(tmp);
+    }
+
+    {
+        std::unordered_set<std::shared_ptr<std::string> > tmp;
+        _plate_set.swap(tmp);
     }
 
     return load();
@@ -102,7 +123,7 @@ int plate_dict::dump()
 
         for (auto ii = p_data.second.begin(); ii != p_data.second.end(); ii++)
         {
-            fprintf(fp, "%s", ii->c_str());
+            fprintf(fp, "%s", (*ii)->c_str());
         }
 
         fprintf(fp, "\n");
