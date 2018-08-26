@@ -256,17 +256,24 @@ bool skhttp_req_thread::is_trade_date(const char * date)
     {
         std::string str(date, 0, 4);
         year = atoi(str.c_str());
+        if (year <= 0)
+            return false;
     }
 
     {
         std::string str(date, 4, 2);
         mon = atoi(str.c_str());
+
+        if (mon <=0 || mon > 12)
+            return false;
     }
 
 
     {
         std::string str(date, 6, 2);
         day = atoi(str.c_str());
+        if (day <= 0 || day >= 31)
+            return false;
     }
 
     weekday = dayofweek(day, mon, year);
@@ -288,9 +295,7 @@ bool skhttp_req_thread::is_real_time()
     char date[SIZE_LEN_64] = {'\0'};
     time_t now = get_timestr(date, sizeof(date), "%Y%m%d");
 
-
     proc_data* p_data = proc_data::instance();
-
     if (p_data && p_data->_conf)
     {
         if (strncmp(date, _req_date.c_str(), strlen(date)))
