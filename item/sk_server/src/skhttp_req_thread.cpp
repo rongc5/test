@@ -302,8 +302,6 @@ bool skhttp_req_thread::is_real_time()
                 get_trade_date(_req_date, _trade_date);
 
                 first_in_day();
-
-                return true;
             }
         }
 
@@ -402,7 +400,7 @@ bool skhttp_req_thread::need_dump_real_quotation()
     if (!d)
         return false;
 
-    if (_trade_date == _req_date){
+    if (is_trade_date(_req_date.c_str())){
         time_t now = time(NULL);
         if (now > dump_real_time)
             return true;
@@ -429,7 +427,7 @@ bool skhttp_req_thread::need_dump_real_single()
     if (!d)
         return false;
 
-    if (_trade_date == _req_date){
+    if (is_trade_date(_req_date.c_str())){
         time_t now = time(NULL);
         if (now > dump_real_time)
             return true;
