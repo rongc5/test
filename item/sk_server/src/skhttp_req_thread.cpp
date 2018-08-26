@@ -393,6 +393,9 @@ bool skhttp_req_thread::need_dump_real_quotation()
         return false;
 
     strategy_conf * strategy = p_data->_conf->_strategy->current();
+
+    if (!is_trade_date(_trade_date.c_str()))
+        return false;
     
     snprintf(t_buf, sizeof(t_buf), "%s/%s", strategy->real_quotation_path.c_str(), _trade_date.c_str());
 
@@ -420,6 +423,8 @@ bool skhttp_req_thread::need_dump_real_single()
         return false;
 
     strategy_conf * strategy = p_data->_conf->_strategy->current();
+    if (!is_trade_date(_trade_date.c_str()))
+        return false;
     
     snprintf(t_buf, sizeof(t_buf), "%s/%s", strategy->real_single_path.c_str(), _trade_date.c_str());
 
