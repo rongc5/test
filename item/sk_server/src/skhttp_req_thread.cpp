@@ -12,6 +12,13 @@ skhttp_req_thread::skhttp_req_thread()
 
     _req_quotation = true;
     _req_single = true;
+
+    char date[SIZE_LEN_64] = {'\0'};
+    time_t now = get_timestr(date, sizeof(date), "%Y%m%d");
+
+    _req_date.assign(date);
+
+    get_trade_date(_req_date, _trade_date);
 }
 
 void skhttp_req_thread::handle_msg(std::shared_ptr<normal_msg> & p_msg)
@@ -213,6 +220,7 @@ void skhttp_req_thread::first_in_day()
         //p_data->_rsingle_real_dict.swap(t_dict);
         //}
 
+        if (_req_date == _trade_date)
         {
             std::unordered_set<std::string, str_hasher> t_block;
             p_data->_block_set.idle()->swap(t_block);
@@ -291,7 +299,7 @@ bool skhttp_req_thread::is_real_time()
             if (now >= stime)
             {
                 _req_date.assign(date);
-                get_trade_date();
+                get_trade_date(_req_date, _trade_date);
 
                 first_in_day();
 
@@ -312,20 +320,20 @@ bool skhttp_req_thread::is_real_time()
     return false;
 }
 
-void skhttp_req_thread::get_trade_date()
+void skhttp_req_thread::get_trade_date(const std::string & date, std::string & trade_date)
 {
     std::string tmp_date;
 
-    _trade_date = _req_date;
+    trade_date = date;
     int diff = 0;
 
-    while (!is_trade_date(_trade_date.c_str()))
+    while (!is_trade_date(trade_date.c_str()))
     {
         diff++;
         if (diff > 30)// 说明有bug
             break;
 
-        date_change(_req_date, -1 * diff, _trade_date);
+        date_change(date, -1 * diff, trade_date);
     }
 }
 

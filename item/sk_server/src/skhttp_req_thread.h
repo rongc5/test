@@ -54,7 +54,7 @@ class skhttp_req_thread:public base_net_thread
     protected:
         time_t get_real_time(const char * date, const char * time);
 
-        void get_trade_date();
+        void get_trade_date(const std::string & date, std::string & trade_date);
 
         bool need_dump_real_quotation();
 
