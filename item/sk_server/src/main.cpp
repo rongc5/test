@@ -7,6 +7,7 @@
 #include "listen_thread.h"
 #include "common_util.h"
 #include "skhttp_res_thread.h"
+#include "sk_util.h"
 
 
 void do_init()
@@ -51,6 +52,9 @@ void do_init()
 
 int main(int argc, char *argv[])
 {
+    signal_process<default_signal_process> sp;
+    sp();
+
     do_init();
 
 

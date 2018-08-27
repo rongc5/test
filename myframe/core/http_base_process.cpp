@@ -83,7 +83,6 @@ std::string* http_base_process::get_send_buf()
 {
     if (_http_status < SEND_HEAD)
     {
-        LOG_WARNING("http send status not correct (%d)", _http_status);
         return NULL;
     }
 
