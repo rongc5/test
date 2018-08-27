@@ -205,6 +205,11 @@ def do_query_id(parser):
 
     if parser.history_date:
         url += '&history_date=%s' % (parser.history_date)
+    if parser.single_in:
+        url += '&single_in=%d' % (parser.single_in)
+
+    if parser.single_out:
+        url += '&single_out=%d' % (parser.single_out)
     print url
 
     header = {}
@@ -291,6 +296,14 @@ def do_search():
                   action="store", dest="id",type="string",default="",
               help="stock id like sh601318")
 
+    parser.add_option("-D", "--detail_in",
+                  action="store", dest="single_in",type="int",default=0,
+              help="show the single in")
+
+    parser.add_option("-O", "--detail_out",
+                  action="store", dest="single_out",type="int",default=0,
+              help="show the single out")
+
     parser.add_option("-n", "--history_num",
                   action="store", dest="history_num",type="int",default=0,
               help="last trade days history_num")
@@ -306,6 +319,7 @@ def do_search():
     parser.add_option("-f", "--ini",
                   action="store", dest="ini",type="string",default="",
               help="select ini file")
+
 
     options, args = parser.parse_args()
     #print options
