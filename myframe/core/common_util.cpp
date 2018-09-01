@@ -708,7 +708,7 @@ int date_change(const std::string &in, int diff, std::string &out)
 
     tmoutp=localtime(&t1);
 
-    strftime(tmp,sizeof(tmp),"%Y%m%d %Z",tmoutp);
+    strftime(tmp,sizeof(tmp),"%Y%m%d",tmoutp);
     out.append(tmp);
 
     return 0;
