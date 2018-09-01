@@ -701,14 +701,14 @@ int date_change(const std::string &in, int diff, std::string &out)
 
     char tmp[SIZE_LEN_512];
     memset(tmp,0,sizeof(tmp));
-    strptime(in.c_str(),"%Y%m%d",tminp);
+    strptime(in.c_str(),"%Y%m%d %Z",tminp);
 
     t1 = mktime(tminp);
     t1 += diff*60*60*24;
 
     tmoutp=localtime(&t1);
 
-    strftime(tmp,sizeof(tmp),"%Y%m%d",tmoutp);
+    strftime(tmp,sizeof(tmp),"%Y%m%d %Z",tmoutp);
     out.append(tmp);
 
     return 0;
