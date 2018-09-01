@@ -444,6 +444,7 @@ int history_quotation_dict::destroy()
 
 int history_quotation_dict::destroy()
 {
+    LOG_TRACE("%p", this);
     proc_data* p_data = proc_data::instance();
 
     {
