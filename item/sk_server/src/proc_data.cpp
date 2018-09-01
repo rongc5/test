@@ -349,3 +349,30 @@ int proc_data::destroy()
 
     return 0;
 }
+
+int proc_data::destroy_idle()
+{
+    _ua_dict->destroy_idle();
+
+    _id_dict->destroy_idle();
+
+    _finance_dict.destroy_idle();
+
+    _ban_dict->destroy_idle();
+
+    _addr_dict_split->destroy_idle();
+
+    _addr_dict->destroy_idle();
+
+    _plate_dict_split->destroy_idle();
+
+    _plate_dict->destroy_idle();
+
+    _hsingle_dict->destroy_idle();
+
+    _hquoation_dict->destroy_idle();
+
+    _holiday_dict->destroy_idle();
+
+    return 0;
+}

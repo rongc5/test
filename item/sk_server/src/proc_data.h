@@ -29,6 +29,7 @@ class proc_data:public reload_inf
         virtual bool need_reload();
         virtual int dump();
         virtual int destroy();
+        virtual int destroy_idle();
 
     public:
         reload_mgr<ua_dict> * _ua_dict;

@@ -90,6 +90,8 @@ class strategy_conf:public reload_inf
 
         uint32_t history_single_num;
 
+        uint32_t destroy_idle_millisecond;
+
         std::vector<uint32_t> real_single_scale;
 };
 

@@ -327,6 +327,53 @@ int history_quotation_dict::load()
 
 int history_quotation_dict::reload()
 {
+    destroy();
+
+    return load();
+}
+
+void history_quotation_dict::set_path (const char* path)
+{
+    snprintf(_fullpath, sizeof(_fullpath), "%s", path);
+}
+
+bool history_quotation_dict::need_reload()
+{
+    struct stat st;
+
+    if (stat(_fullpath, &st) == 0 && S_ISREG(st.st_mode) && st.st_mtime != _last_load)
+    {
+        return true;
+    }
+
+    return false;
+}
+
+int history_quotation_dict::dump()
+{
+    //FILE * fp = fopen(_dumppath, "w");
+    //ASSERT_WARNING(fp != NULL, "history_quotation_dict dump_data failed, open file [%s] error", _dumppath);
+
+    //for (auto &p_data: _id_dict)
+    //{
+        //fprintf(fp,"id[%s]\tpe[%.2f]\tpb[%.2f]\t",p_data.second.id.c_str(), p_data.second.pe, p_data.second.pb);
+
+        //fprintf(fp, "cir_value[%.2f]\tvalue[%.2f]\tmgsy[%.2f]\tmgxj[%.2f]\tmgsygr[%.2f]\t", 
+                //p_data.second.cir_value, 
+                //p_data.second.value, p_data.second.mgsy, p_data.second.mgxj, p_data.second.mgsygr);
+
+        //fprintf(fp, "mgxjgr[%.2f]\tzysrgr[%.2f]\tyylrgr[%.2f]\tjlrgr[%.2f]time_str[%s]\n", 
+                //p_data.second.mgxjgr, p_data.second.zysrgr, p_data.second.yylrgr, p_data.second.jlrgr, 
+                //p_data.second.time_str.c_str());
+    //}
+    //fclose(fp);
+
+    return 0;
+}
+
+#if 0
+int history_quotation_dict::destroy()
+{
     proc_data* p_data = proc_data::instance();
 
     {
@@ -389,51 +436,77 @@ int history_quotation_dict::reload()
             }
         }
     }
-    return load();
-}
-
-void history_quotation_dict::set_path (const char* path)
-{
-    snprintf(_fullpath, sizeof(_fullpath), "%s", path);
-}
-
-bool history_quotation_dict::need_reload()
-{
-    struct stat st;
-
-    if (stat(_fullpath, &st) == 0 && S_ISREG(st.st_mode) && st.st_mtime != _last_load)
-    {
-        return true;
-    }
-
-    return false;
-}
-
-int history_quotation_dict::dump()
-{
-    //FILE * fp = fopen(_dumppath, "w");
-    //ASSERT_WARNING(fp != NULL, "history_quotation_dict dump_data failed, open file [%s] error", _dumppath);
-
-    //for (auto &p_data: _id_dict)
-    //{
-        //fprintf(fp,"id[%s]\tpe[%.2f]\tpb[%.2f]\t",p_data.second.id.c_str(), p_data.second.pe, p_data.second.pb);
-
-        //fprintf(fp, "cir_value[%.2f]\tvalue[%.2f]\tmgsy[%.2f]\tmgxj[%.2f]\tmgsygr[%.2f]\t", 
-                //p_data.second.cir_value, 
-                //p_data.second.value, p_data.second.mgsy, p_data.second.mgxj, p_data.second.mgsygr);
-
-        //fprintf(fp, "mgxjgr[%.2f]\tzysrgr[%.2f]\tyylrgr[%.2f]\tjlrgr[%.2f]time_str[%s]\n", 
-                //p_data.second.mgxjgr, p_data.second.zysrgr, p_data.second.yylrgr, p_data.second.jlrgr, 
-                //p_data.second.time_str.c_str());
-    //}
-    //fclose(fp);
 
     return 0;
 }
+
+#endif
 
 int history_quotation_dict::destroy()
 {
+    proc_data* p_data = proc_data::instance();
+
+    {
+        std::unordered_map<std::string, std::shared_ptr<quotation_t>, str_hasher> tmp;
+        _id_dict.clear();
+    }
+
+    {
+        std::unordered_map<std::string, std::shared_ptr<quotation_t>, str_hasher> tmp;
+        _id_sum_dict.clear();
+    }
+
+    {
+        std::unordered_map<std::string, std::set<std::string>, str_hasher> tmp;
+        _id_date_dict.clear();
+    }
+
+    {
+        std::set<std::string> tmp;
+        _date_index.clear();
+    }
+
+    {
+        std::map<std::string, std::multimap<float, std::string> > t_map;
+        p_data->_hq_sum_range_percent_index.idle()->clear();
+    }
+
+    {
+        std::map<std::string, std::multimap<float, std::string> > t_map;
+        p_data->_hq_sum_change_rate_index.idle()->clear();
+    }
+
+    {
+        proc_data* p_data = proc_data::instance();
+        if (p_data)
+        {
+            {
+                std::map<std::string, std::multimap<float, std::string> > tmp;
+                p_data->_hqend_index.idle()->clear();
+            }
+
+            {
+                std::map<std::string, std::multimap<float, std::string> > tmp;
+                p_data->_hqchange_rate_index.idle()->clear();
+            }
+
+            {
+                std::map<std::string, std::multimap<float, std::string> > tmp;
+                p_data->_hqrange_percent_index.idle()->clear();
+            }
+            
+            {
+                std::map<std::string, std::multimap<float, std::string> > tmp;
+                p_data->_hqdown_pointer_index.idle()->clear();
+            }
+
+            {
+                std::map<std::string, std::multimap<float, std::string> > tmp;
+                p_data->_hqup_pointer_index.idle()->clear();
+            }
+        }
+    }
+
     return 0;
 }
-
 

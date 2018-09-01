@@ -75,8 +75,8 @@ int ban_dict::load()
 
 int ban_dict::reload()
 {
-    std::unordered_map<std::string, std::vector<ban_t>, str_hasher> tmp;
-    _id_dict.swap(tmp);
+    destroy();
+
     return load();
 }
 
@@ -114,6 +114,8 @@ int ban_dict::dump()
 
 int ban_dict::destroy()
 {
+    std::unordered_map<std::string, std::vector<ban_t>, str_hasher> tmp;
+    _id_dict.swap(tmp);
 
     return 0;
 }

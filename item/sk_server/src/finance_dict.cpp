@@ -67,7 +67,6 @@ int finance_dict::load()
         ft->jlrgr = tmp_vec[11];
         ft->time_str = tmp_vec[12];
         
-        _id_dict.insert(std::make_pair(ft->id, ft));
         p_data->_finance_dict_index.idle()->insert(std::make_pair(ft->id, ft));
 
         {
@@ -151,12 +150,52 @@ int finance_dict::load()
 
 int finance_dict::reload()
 {
-    proc_data* p_data = proc_data::instance();
+    destroy();
+
+    return load();
+}
+
+void finance_dict::set_path (const char* path)
+{
+    snprintf(_fullpath, sizeof(_fullpath), "%s", path);
+}
+
+bool finance_dict::need_reload()
+{
+    struct stat st;
+
+    if (stat(_fullpath, &st) == 0 && S_ISREG(st.st_mode) && st.st_mtime != _last_load)
     {
-        std::unordered_map<std::string, std::shared_ptr<finance_t>, str_hasher> tmp;
-        _id_dict.swap(tmp);
+        return true;
     }
 
+    return false;
+}
+
+int finance_dict::dump()
+{
+    FILE * fp = fopen(_dumppath, "w");
+    ASSERT_WARNING(fp != NULL, "finance_dict dump_data failed, open file [%s] error", _dumppath);
+
+    //for (auto &p_data: _id_dict)
+    //{
+        //fprintf(fp, "%s[%s]\t", ft.first.c_str(), ft.second.c_str());
+    //}
+    fclose(fp);
+
+    return 0;
+}
+
+int finance_dict::destroy()
+{
+    destroy_idle();
+
+    return 0;
+}
+
+int finance_dict::destroy_idle()
+{
+    proc_data* p_data = proc_data::instance();
     {
         std::multimap<int, std::string> tmp;
         p_data->_pe_index.idle()->swap(tmp);
@@ -217,44 +256,6 @@ int finance_dict::reload()
         p_data->_finance_dict_index.idle()->swap(tmp);
     }
 
-    return load();
-}
-
-void finance_dict::set_path (const char* path)
-{
-    snprintf(_fullpath, sizeof(_fullpath), "%s", path);
-}
-
-bool finance_dict::need_reload()
-{
-    struct stat st;
-
-    if (stat(_fullpath, &st) == 0 && S_ISREG(st.st_mode) && st.st_mtime != _last_load)
-    {
-        return true;
-    }
-
-    return false;
-}
-
-int finance_dict::dump()
-{
-    FILE * fp = fopen(_dumppath, "w");
-    ASSERT_WARNING(fp != NULL, "finance_dict dump_data failed, open file [%s] error", _dumppath);
-
-    //for (auto &p_data: _id_dict)
-    //{
-        //fprintf(fp, "%s[%s]\t", ft.first.c_str(), ft.second.c_str());
-    //}
-    fclose(fp);
-
     return 0;
 }
-
-int finance_dict::destroy()
-{
-
-    return 0;
-}
-
 

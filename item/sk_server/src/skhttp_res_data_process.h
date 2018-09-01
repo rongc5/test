@@ -82,7 +82,11 @@ class skhttp_res_data_process:public http_base_data_process
 
         bool do_check_range_percent_le(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res);
 
+        //bool do_check_history_range_percent_le(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res);
+
         bool do_check_range_percent_ge(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res);
+
+        //bool do_check_history_range_percent_ge(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res);
 
         bool do_check_down_pointer_le(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res);
         

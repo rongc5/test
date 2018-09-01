@@ -266,42 +266,8 @@ int history_single_dict::load()
 
 int history_single_dict::reload()
 {
-    proc_data* p_data = proc_data::instance();
-    {
-        std::unordered_map<std::string, std::shared_ptr<single_vec>, str_hasher> tmp;
-        _date_dict.swap(tmp);
-    }
+    destroy();
 
-    {
-        std::unordered_map<std::string, std::shared_ptr<single_vec>, str_hasher> tmp;
-        _date_sum_dict.swap(tmp);
-    }
-
-    {
-        std::unordered_map<std::string, std::set<std::string>, str_hasher> tmp;
-        _id_date_dict.swap(tmp);
-    }
-
-    {
-        std::set<std::string> tmp;
-        _date_index.swap(tmp);
-    }
-
-    {
-        std::vector<std::map<std::string, std::multimap<int, std::string> > > tmp;
-        p_data->_hsingle_sum_diff_index.idle()->swap(tmp);
-    }
-
-    {
-        proc_data* p_data = proc_data::instance();
-        if (p_data)
-        {
-            {
-                std::vector<std::map<std::string, std::multimap<int, std::string> > > tmp;
-                p_data->_hsingle_diff_index.idle()->swap(tmp);
-            }
-        }
-    }
     return load();
 }
 
@@ -346,6 +312,43 @@ int history_single_dict::dump()
 
 int history_single_dict::destroy()
 {
+    proc_data* p_data = proc_data::instance();
+    {
+        std::unordered_map<std::string, std::shared_ptr<single_vec>, str_hasher> tmp;
+        _date_dict.swap(tmp);
+    }
+
+    {
+        std::unordered_map<std::string, std::shared_ptr<single_vec>, str_hasher> tmp;
+        _date_sum_dict.swap(tmp);
+    }
+
+    {
+        std::unordered_map<std::string, std::set<std::string>, str_hasher> tmp;
+        _id_date_dict.swap(tmp);
+    }
+
+    {
+        std::set<std::string> tmp;
+        _date_index.swap(tmp);
+    }
+
+    {
+        std::vector<std::map<std::string, std::multimap<int, std::string> > > tmp;
+        p_data->_hsingle_sum_diff_index.idle()->swap(tmp);
+    }
+
+    {
+        proc_data* p_data = proc_data::instance();
+        if (p_data)
+        {
+            {
+                std::vector<std::map<std::string, std::multimap<int, std::string> > > tmp;
+                p_data->_hsingle_diff_index.idle()->swap(tmp);
+            }
+        }
+    }
+
     return 0;
 }
 

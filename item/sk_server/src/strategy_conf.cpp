@@ -95,6 +95,11 @@ void strategy_conf::do_parse()
         req_quotation_millisecond = atoi(_cfg["req_quotation_millisecond"].c_str());
     }
 
+    if (has_key<std::string, std::string>(_cfg, "destroy_idle_millisecond"))
+    {
+        destroy_idle_millisecond = atoi(_cfg["destroy_idle_millisecond"].c_str());
+    }
+
     if (has_key<std::string, std::string>(_cfg, "req_single_millisecond"))
     {
         req_single_millisecond = atoi(_cfg["req_single_millisecond"].c_str());

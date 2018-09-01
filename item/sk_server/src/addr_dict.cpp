@@ -83,15 +83,7 @@ int addr_dict::load()
 
 int addr_dict::reload()
 {
-    {
-        std::unordered_map<std::string, std::vector<std::shared_ptr<std::string> >, str_hasher, str_equaler> tmp;
-        _id_dict.swap(tmp);
-    }
-
-    {
-        std::unordered_set<std::shared_ptr<std::string>, str_hasher, str_equaler> tmp;
-        _addr_set.swap(tmp);
-    }
+    destroy();
 
     return load();
 }
@@ -136,6 +128,15 @@ int addr_dict::dump()
 
 int addr_dict::destroy()
 {
+    {
+        std::unordered_map<std::string, std::vector<std::shared_ptr<std::string> >, str_hasher, str_equaler> tmp;
+        _id_dict.swap(tmp);
+    }
+
+    {
+        std::unordered_set<std::shared_ptr<std::string>, str_hasher, str_equaler> tmp;
+        _addr_set.swap(tmp);
+    }
 
     return 0;
 }

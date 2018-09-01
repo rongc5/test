@@ -18,9 +18,11 @@ class reload_thread:public base_net_thread
 
         virtual void handle_msg(std::shared_ptr<normal_msg> & p_msg);
 
-        virtual void handle_timeout(timer_msg & t_msg);
+        virtual void handle_timeout(std::shared_ptr<timer_msg> & t_msg);
 
         void reload_timer_start();
+
+        void destroy_idle_start();
 
     private:
         bool _is_first;

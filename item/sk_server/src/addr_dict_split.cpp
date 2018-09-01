@@ -82,16 +82,7 @@ int addr_dict_split::load()
 
 int addr_dict_split::reload()
 {
-    proc_data* p_data = proc_data::instance();
-    {
-        std::unordered_multimap<std::shared_ptr<std::string>, std::string, str_hasher, str_equaler> tmp;
-        p_data->_address_index.idle()->swap(tmp);
-    }
-
-    {
-        std::unordered_set<std::shared_ptr<std::string>, str_hasher, str_equaler> tmp;
-        _addr_set.swap(tmp);
-    } 
+    destroy();
 
     return load();
 }
@@ -120,6 +111,16 @@ int addr_dict_split::dump()
 
 int addr_dict_split::destroy()
 {
+    proc_data* p_data = proc_data::instance();
+    {
+        std::unordered_multimap<std::shared_ptr<std::string>, std::string, str_hasher, str_equaler> tmp;
+        p_data->_address_index.idle()->swap(tmp);
+    }
+
+    {
+        std::unordered_set<std::shared_ptr<std::string>, str_hasher, str_equaler> tmp;
+        _addr_set.swap(tmp);
+    } 
 
     return 0;
 }

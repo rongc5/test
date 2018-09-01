@@ -976,6 +976,34 @@ bool skhttp_res_data_process::do_check_range_percent_le(std::map<std::string, st
     return flag;
 }
 
+//bool skhttp_res_data_process::do_check_history_range_percent_le(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res)
+//{
+    //float end = 0;
+    //bool flag = false;
+    //proc_data* p_data = proc_data::instance();
+    
+    //std::multimap<float, std::string>::iterator it_le, it_ge, it;
+    //it_le = p_data->_range_percent_index.current()->end();
+    //it_ge = p_data->_range_percent_index.current()->begin();
+
+    //if (has_key<std::string, std::string>(url_para_map, "history_range_percent_le"))
+    //{
+        //flag = true;
+        //end = atof(url_para_map["range_percent_le"].c_str());
+        //it_le = p_data->_range_percent_index.current()->upper_bound(end);
+    //}
+
+    //if (!flag)
+        //return flag;
+
+    //for (it = it_ge; it != it_le; ++it)
+    //{
+        //res.insert(it->second); 
+    //}
+
+    //return flag;
+//}
+
 bool skhttp_res_data_process::do_check_range_percent_ge(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res)
 {
     float end = 0;

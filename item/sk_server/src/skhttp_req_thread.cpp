@@ -272,7 +272,7 @@ bool skhttp_req_thread::is_trade_date(const char * date)
     {
         std::string str(date, 6, 2);
         day = atoi(str.c_str());
-        if (day <= 0 || day >= 31)
+        if (day <= 0 || day > 31)
             return false;
     }
 

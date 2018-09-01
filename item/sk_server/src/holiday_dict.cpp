@@ -60,8 +60,8 @@ int holiday_dict::load()
 
 int holiday_dict::reload()
 {
-    std::unordered_map<std::string, std::string, str_hasher> tmp;
-    _date_dict.swap(tmp);
+    destroy();
+
     return load();
 }
 
@@ -106,6 +106,9 @@ int holiday_dict::dump()
 
 int holiday_dict::destroy()
 {
+    std::unordered_map<std::string, std::string, str_hasher> tmp;
+    _date_dict.swap(tmp);
+
     return 0;
 }
 

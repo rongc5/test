@@ -56,8 +56,8 @@ int real_quotation_dict::load()
 
 int real_quotation_dict::reload()
 {
-    std::unordered_map<std::string, ToBufferMgr<std::map<std::string, std::string> >,str_hasher> tmp;
-    _id_dict.swap(tmp);
+    destroy();
+
     return load();
 }
 
@@ -102,6 +102,9 @@ int real_quotation_dict::dump()
 
 int real_quotation_dict::destroy()
 {
+    std::unordered_map<std::string, ToBufferMgr<std::map<std::string, std::string> >,str_hasher> tmp;
+    _id_dict.swap(tmp);
+
     return 0;
 }
 

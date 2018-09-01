@@ -17,6 +17,7 @@ class finance_dict:public reload_inf
         virtual bool need_reload();
         virtual int dump();
         virtual int destroy();
+        virtual int destroy_idle();
 
     private:
         void set_path (const char* path);
@@ -25,8 +26,6 @@ class finance_dict:public reload_inf
         char _fullpath[SIZE_LEN_512];
         char _dumppath[SIZE_LEN_512];
         time_t _last_load;
-    public:
-        std::unordered_map<std::string, std::shared_ptr<finance_t>, str_hasher> _id_dict;
 };
 
 

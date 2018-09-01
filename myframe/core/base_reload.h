@@ -49,6 +49,8 @@ class reload_mgr
 
         int destroy();
 
+        int destroy_idle();
+
     private:
         T * _objects[2];
         int16_t _curr;
@@ -148,5 +150,13 @@ int reload_mgr<T>::destroy()
     return 0;
 }
 
+template<typename T>
+int reload_mgr<T>::destroy_idle()
+{
+    if (_objects[1 - _curr])
+        _objects[1 - _curr]->destroy();
+
+    return 0;
+}
 
 #endif
