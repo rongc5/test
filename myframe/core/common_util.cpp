@@ -699,6 +699,9 @@ int date_change(const std::string &in, int diff, std::string &out)
     struct tm tmout;
     struct tm *tmoutp=&tmout;
 
+    memset(tminp, 0, sizeof(struct tm));
+    memset(tmoutp, 0, sizeof(struct tm));
+
     char tmp[SIZE_LEN_512];
     memset(tmp,0,sizeof(tmp));
     strptime(in.c_str(),"%Y%m%d %Z",tminp);

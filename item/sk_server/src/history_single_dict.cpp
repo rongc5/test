@@ -43,8 +43,8 @@ int history_single_dict::load_history_single(const char * file)
     }
 
     std::string date = basename((char *)file);
-    auto ii = _date_dict.find(date);
-    if (ii != _date_dict.end())
+    auto ii = _date_index.find(date);
+    if (ii != _date_index.end())
     {
         LOG_WARNING("file:%s, date:%s has loaded", file, date.c_str());
         return -1;

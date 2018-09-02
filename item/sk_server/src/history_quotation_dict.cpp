@@ -43,8 +43,8 @@ int history_quotation_dict::load_history_quoation(const char * file)
     }
 
     std::string date = basename((char *)file);
-    auto ii = _id_dict.find(date);
-    if (ii != _id_dict.end())
+    auto ii = _date_index.find(date);
+    if (ii != _date_index.end())
     {
         LOG_WARNING("file:%s, date:%s has loaded", file, date.c_str());
         return -1;
@@ -371,11 +371,11 @@ int history_quotation_dict::dump()
     return 0;
 }
 
-#if 0
 int history_quotation_dict::destroy()
 {
     proc_data* p_data = proc_data::instance();
 
+    //LOG_TRACE("%p", this);
     {
         std::unordered_map<std::string, std::shared_ptr<quotation_t>, str_hasher> tmp;
         _id_dict.swap(tmp);
@@ -439,75 +439,3 @@ int history_quotation_dict::destroy()
 
     return 0;
 }
-
-#endif
-
-int history_quotation_dict::destroy()
-{
-    LOG_TRACE("%p", this);
-    proc_data* p_data = proc_data::instance();
-
-    {
-        std::unordered_map<std::string, std::shared_ptr<quotation_t>, str_hasher> tmp;
-        _id_dict.clear();
-    }
-
-    {
-        std::unordered_map<std::string, std::shared_ptr<quotation_t>, str_hasher> tmp;
-        _id_sum_dict.clear();
-    }
-
-    {
-        std::unordered_map<std::string, std::set<std::string>, str_hasher> tmp;
-        _id_date_dict.clear();
-    }
-
-    {
-        std::set<std::string> tmp;
-        _date_index.clear();
-    }
-
-    {
-        std::map<std::string, std::multimap<float, std::string> > t_map;
-        p_data->_hq_sum_range_percent_index.idle()->clear();
-    }
-
-    {
-        std::map<std::string, std::multimap<float, std::string> > t_map;
-        p_data->_hq_sum_change_rate_index.idle()->clear();
-    }
-
-    {
-        proc_data* p_data = proc_data::instance();
-        if (p_data)
-        {
-            {
-                std::map<std::string, std::multimap<float, std::string> > tmp;
-                p_data->_hqend_index.idle()->clear();
-            }
-
-            {
-                std::map<std::string, std::multimap<float, std::string> > tmp;
-                p_data->_hqchange_rate_index.idle()->clear();
-            }
-
-            {
-                std::map<std::string, std::multimap<float, std::string> > tmp;
-                p_data->_hqrange_percent_index.idle()->clear();
-            }
-            
-            {
-                std::map<std::string, std::multimap<float, std::string> > tmp;
-                p_data->_hqdown_pointer_index.idle()->clear();
-            }
-
-            {
-                std::map<std::string, std::multimap<float, std::string> > tmp;
-                p_data->_hqup_pointer_index.idle()->clear();
-            }
-        }
-    }
-
-    return 0;
-}
-
