@@ -17,7 +17,6 @@ class finance_dict:public reload_inf
         virtual bool need_reload();
         virtual int dump();
         virtual int destroy();
-        virtual int destroy_idle();
 
     private:
         void set_path (const char* path);

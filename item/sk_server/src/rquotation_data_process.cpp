@@ -70,58 +70,58 @@ void rquotation_data_process::msg_recv_finish()
         goto over;
     }
     
-    qt->name = strVec[1];
-    qt->start = strVec[5];
-    qt->end = strVec[3];
-    qt->high = strVec[33];
-    qt->low = strVec[34];
-    qt->last_closed = strVec[4];
-    qt->vol = strVec[36];
-    qt->sell_vol= strVec[8];
-    qt->buy_vol = strVec[7];
-    qt->swing = strVec[43];
-    qt->change_rate = strVec[38];
-    qt->range_percent = strVec[32];
-    qt->total_price = strVec[37];
+    snprintf(qt->name, sizeof(qt->name), "%s", strVec[1].c_str());
+    qt->start = atof(strVec[5].c_str());
+    qt->end = atof(strVec[3].c_str());
+    qt->high = atof(strVec[33].c_str());
+    qt->low = atof(strVec[34].c_str());
+    qt->last_closed = atof(strVec[4].c_str());
+    qt->vol = atoi(strVec[36].c_str());
+    qt->sell_vol= atoi(strVec[8].c_str());
+    qt->buy_vol = atoi(strVec[7].c_str());
+    qt->swing = atof(strVec[43].c_str());
+    qt->change_rate = atof(strVec[38].c_str());
+    qt->range_percent = atof(strVec[32].c_str());
+    qt->total_price = atof(strVec[37].c_str());
     
     
-    if (atof(qt->end.c_str()) > atof(qt->low.c_str()) && (atof(qt->end.c_str()) != atof(qt->start.c_str())))
+    if ((qt->end > qt->low) && (qt->end != qt->start))
     {
-        down_pointer = (atof(qt->end.c_str()) - atof(qt->low.c_str()))/
-            (atof(qt->end.c_str()) - atof(qt->start.c_str()));
+        down_pointer = (qt->end - qt->low)/
+            (qt->end - qt->start);
 
         if (down_pointer < 0)
             down_pointer *= -1;
 
         snprintf(t_buf, sizeof(t_buf), "%.2f", down_pointer);
-        qt->down_pointer.append(t_buf);
+        qt->down_pointer = atof(t_buf);
     }
 
-    if (atof(qt->end.c_str()) < atof(qt->high.c_str()) && (atof(qt->end.c_str()) != atof(qt->start.c_str())))
+    if ((qt->end < qt->high) && (qt->end != qt->start))
     {
-        up_pointer = (atof(qt->high.c_str()) - atof(qt->end.c_str()))/
-            (atof(qt->end.c_str()) - atof(qt->start.c_str()));
+        up_pointer = (qt->high - qt->end)/
+            (qt->end - qt->start);
 
         if (up_pointer < 0)
             up_pointer *= -1;
 
         snprintf(t_buf, sizeof(t_buf), "%.2f", up_pointer);
-        qt->up_pointer.append(t_buf);
+        qt->up_pointer = atof(t_buf);
     }
 
-    if (atof(qt->vol.c_str()))
+    if (qt->vol)
     {
-        avg_price = (atof(qt->total_price.c_str())*10000)/(atoi(qt->vol.c_str()) * 100);
+        avg_price = (qt->total_price * 10000)/(qt->vol * 100);
         snprintf(t_buf, sizeof(t_buf), "%.2f", avg_price);
-        qt->avg_price.append(t_buf);
+        qt->avg_price = atof(t_buf);
     }
 
     if (avg_price)
     {
-        end_avg_price = atof(qt->end.c_str())/avg_price;
+        end_avg_price = qt->end/avg_price;
     }
 
-    if (atof(qt->start.c_str()) <= 1)
+    if (qt->start <= 1)
     {
         p_data->_block_set.idle()->insert(_id);
     }
@@ -139,33 +139,30 @@ void rquotation_data_process::update_all_index()
     for (auto ii = p_data->_rquoation_real_dict.begin(); ii != p_data->_rquoation_real_dict.end(); ii++)
     {
         {
-            float end = atof(ii->second->end.c_str());
-            p_data->_end_index.idle()->insert(std::make_pair(end, ii->first));
+            p_data->_end_index.idle()->insert(std::make_pair(ii->second->end, ii->first));
         }
 
         {
-            float change_rate = atof(ii->second->change_rate.c_str());
-            p_data->_change_rate_index.idle()->insert(std::make_pair(change_rate, ii->first));
+            p_data->_change_rate_index.idle()->insert(std::make_pair(ii->second->change_rate, ii->first));
         }
 
         {
-            float range_percent = atof(ii->second->range_percent.c_str());
-            p_data->_range_percent_index.idle()->insert(std::make_pair(range_percent, ii->first));
+            p_data->_range_percent_index.idle()->insert(std::make_pair(ii->second->range_percent, ii->first));
         }
 
-        if (atof(ii->second->down_pointer.c_str()))
+        if (ii->second->down_pointer)
         {
-            p_data->_down_pointer_index.idle()->insert(std::make_pair(atof(ii->second->down_pointer.c_str()), ii->first));
+            p_data->_down_pointer_index.idle()->insert(std::make_pair(ii->second->down_pointer, ii->first));
         }
 
-        if (atof(ii->second->up_pointer.c_str()))
+        if (ii->second->up_pointer)
         {
-            p_data->_up_pointer_index.idle()->insert(std::make_pair(atof(ii->second->up_pointer.c_str()), ii->first));
+            p_data->_up_pointer_index.idle()->insert(std::make_pair(ii->second->up_pointer, ii->first));
         }
 
-        if (atof(ii->second->avg_price.c_str()))
+        if (ii->second->avg_price)
         {
-            p_data->_end_avg_price_index.idle()->insert(std::make_pair(atof(ii->second->avg_price.c_str()), ii->first));
+            p_data->_end_avg_price_index.idle()->insert(std::make_pair(ii->second->avg_price, ii->first));
         }
 
         {

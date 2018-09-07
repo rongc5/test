@@ -26,9 +26,12 @@ void reload_thread::handle_timeout(std::shared_ptr<timer_msg> & t_msg)
     if (t_msg->_timer_type == TIMER_TYPE_RELOAD_CONF && p_data)
     {
         p_data->_conf->reload();
-        p_data->reload();
+        if (p_data->reload())
+        {
+            destroy_idle_start();
+        }
+
         reload_timer_start();
-        destroy_idle_start();
     }
     else if (t_msg->_timer_type == TIMER_TYPE_DESTROY_IDLE && p_data)
     {

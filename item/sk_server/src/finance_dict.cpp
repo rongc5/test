@@ -53,76 +53,42 @@ int finance_dict::load()
 
         std::shared_ptr<finance_t> ft(new finance_t);
 
-        ft->id = tmp_vec[0];
-        ft->pe = tmp_vec[1];
-        ft->pb = tmp_vec[2];
-        ft->cir_value = tmp_vec[3];
-        ft->value = tmp_vec[4];
-        ft->mgsy = tmp_vec[5];
-        ft->mgxj = tmp_vec[6];
-        ft->mgsygr = tmp_vec[7];
-        ft->mgxjgr = tmp_vec[8];
-        ft->zysrgr = tmp_vec[9];
-        ft->yylrgr = tmp_vec[10];
-        ft->jlrgr = tmp_vec[11];
-        ft->time_str = tmp_vec[12];
+        snprintf(ft->id, sizeof(ft->id), "%s", tmp_vec[0].c_str());
+        ft->pe = atoi(tmp_vec[1].c_str());
+        ft->pb = atoi(tmp_vec[2].c_str());
+        ft->cir_value = atoi(tmp_vec[3].c_str());
+        ft->value = atoi(tmp_vec[4].c_str());
+        ft->mgsy = atof(tmp_vec[5].c_str());
+        ft->mgxj = atof(tmp_vec[6].c_str());
+        ft->mgsygr = atof(tmp_vec[7].c_str());
+        ft->mgxjgr = atof(tmp_vec[8].c_str());
+        ft->zysrgr = atof(tmp_vec[9].c_str());
+        ft->yylrgr = atof(tmp_vec[10].c_str());
+        ft->jlrgr = atof(tmp_vec[11].c_str());
         
         p_data->_finance_dict_index.idle()->insert(std::make_pair(ft->id, ft));
 
-        {
-            int pe = atoi(ft->pe.c_str());
-            p_data->_pe_index.idle()->insert(std::make_pair(pe, ft->id));
-        }
+        p_data->_pe_index.idle()->insert(std::make_pair(ft->pe, ft->id));
 
-        {
-            int pb = atoi(ft->pb.c_str());
-            p_data->_pb_index.idle()->insert(std::make_pair(pb, ft->id));
-        }
+        p_data->_pb_index.idle()->insert(std::make_pair(ft->pb, ft->id));
 
-        {
-            int value = atoi(ft->value.c_str());
-            p_data->_value_index.idle()->insert(std::make_pair(value, ft->id));
-        }
+        p_data->_value_index.idle()->insert(std::make_pair(ft->value, ft->id));
 
-        {
-            int cir_value = atoi(ft->cir_value.c_str());
-            p_data->_cir_value_index.idle()->insert(std::make_pair(cir_value, ft->id));
-        }
+        p_data->_cir_value_index.idle()->insert(std::make_pair(ft->cir_value, ft->id));
 
-        {
-            float mgxj = atof(ft->mgxj.c_str());
-            p_data->_mgxj_index.idle()->insert(std::make_pair(mgxj, ft->id));
-        }
+        p_data->_mgxj_index.idle()->insert(std::make_pair(ft->mgxj, ft->id));
 
-        {
-            float mgsy = atof(ft->mgsy.c_str());
-            p_data->_mgsy_index.idle()->insert(std::make_pair(mgsy, ft->id));
-        }
+        p_data->_mgsy_index.idle()->insert(std::make_pair(ft->mgsy, ft->id));
 
-        {
-            float mgsygr = atof(ft->mgsygr.c_str());
-            p_data->_mgsygr_index.idle()->insert(std::make_pair(mgsygr, ft->id));
-        }
+        p_data->_mgsygr_index.idle()->insert(std::make_pair(ft->mgsygr, ft->id));
 
-        {
-            float mgxjgr = atof(ft->mgxjgr.c_str());
-            p_data->_mgxjgr_index.idle()->insert(std::make_pair(mgxjgr, ft->id));
-        }
+        p_data->_mgxjgr_index.idle()->insert(std::make_pair(ft->mgxjgr, ft->id));
 
-        {
-            float zysrgr = atof(ft->zysrgr.c_str());
-            p_data->_zysrgr_index.idle()->insert(std::make_pair(zysrgr, ft->id));
-        }
+        p_data->_zysrgr_index.idle()->insert(std::make_pair(ft->zysrgr, ft->id));
 
-        {
-            float yylrgr = atof(ft->yylrgr.c_str());
-            p_data->_yylrgr_index.idle()->insert(std::make_pair(yylrgr, ft->id));
-        }
+        p_data->_yylrgr_index.idle()->insert(std::make_pair(ft->yylrgr, ft->id));
 
-        {
-            float jlrgr = atof(ft->jlrgr.c_str());
-            p_data->_jlrgr_index.idle()->insert(std::make_pair(jlrgr, ft->id));
-        }
+        p_data->_jlrgr_index.idle()->insert(std::make_pair(ft->jlrgr, ft->id));
     }
 
     fclose(fp);
@@ -186,14 +152,8 @@ int finance_dict::dump()
     return 0;
 }
 
+
 int finance_dict::destroy()
-{
-    destroy_idle();
-
-    return 0;
-}
-
-int finance_dict::destroy_idle()
 {
     proc_data* p_data = proc_data::instance();
     {

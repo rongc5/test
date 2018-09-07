@@ -26,3 +26,30 @@ void get_standard_id(std::string & id)
         return;
     }
 }
+
+std::string float_2_str(float a, int decimal)
+{
+    char buf[SIZE_LEN_64];
+    buf[0] = '\0';
+
+    snprintf(buf, sizeof(buf), "%.*f", a, decimal);
+
+    std::string str;
+
+    str.append(buf);
+
+    return str;
+}
+
+std::string int_2_str(int a)
+{
+    char buf[SIZE_LEN_64];
+    buf[0] = '\0';
+
+    snprintf(buf, sizeof(buf), "%d",  a);
+
+    std::string str;
+    str.append(buf);
+
+    return str;
+}

@@ -81,23 +81,22 @@ int history_quotation_dict::load_history_quoation(const char * file)
 
         std::shared_ptr<quotation_t> qt(new quotation_t);
 
-        qt->id = strVec[0];
-        qt->start = strVec[1];
-        qt->end = strVec[2];
-        qt->high = strVec[3];
-        qt->low = strVec[4];
-        qt->last_closed = strVec[5];
-        qt->vol = strVec[6];
-        qt->buy_vol = strVec[7];
-        qt->sell_vol = strVec[8];
-        qt->swing = strVec[9];
-        qt->change_rate = strVec[10];
-        qt->range_percent = strVec[11];
-        qt->total_price = strVec[12];
-        qt->down_pointer = strVec[13];
-        qt->up_pointer = strVec[14];
-        qt->avg_price = strVec[15];
-
+        snprintf(qt->id, sizeof(qt->id), "%s", strVec[0].c_str());
+        qt->start = atof(strVec[1].c_str());
+        qt->end = atof(strVec[2].c_str());
+        qt->high = atof(strVec[3].c_str());
+        qt->low = atof(strVec[4].c_str());
+        qt->last_closed = atof(strVec[5].c_str());
+        qt->vol = atoi(strVec[6].c_str());
+        qt->buy_vol = atoi(strVec[7].c_str());
+        qt->sell_vol = atoi(strVec[8].c_str());
+        qt->swing = atof(strVec[9].c_str());
+        qt->change_rate = atof(strVec[10].c_str());
+        qt->range_percent = atof(strVec[11].c_str());
+        qt->total_price = atoi(strVec[12].c_str());
+        qt->down_pointer = atof(strVec[13].c_str());
+        qt->up_pointer = atof(strVec[14].c_str());
+        qt->avg_price = atof(strVec[15].c_str());
 
         creat_key(date, qt->id, key);
         auto ii = _id_dict.find(key);
@@ -107,12 +106,12 @@ int history_quotation_dict::load_history_quoation(const char * file)
         }
 
         {   
-            auto ii = _id_date_dict.find(strVec[0]);
+            auto ii = _id_date_dict.find(qt->id);
             if (ii == _id_date_dict.end())
             {   
                 std::set<std::string> t_set;
                 t_set.insert(date);
-                _id_date_dict.insert(std::make_pair(strVec[0], t_set));
+                _id_date_dict.insert(std::make_pair(qt->id, t_set));
             }   
             else
             {   
@@ -126,12 +125,12 @@ int history_quotation_dict::load_history_quoation(const char * file)
             {
                 std::multimap<float, std::string> t_map;
 
-                t_map.insert(std::make_pair(atof(qt->end.c_str()), qt->id));
+                t_map.insert(std::make_pair(qt->end, qt->id));
                 p_data->_hqend_index.idle()->insert(std::make_pair(date, t_map));
             }
             else
             {
-                ii->second.insert(std::make_pair(atof(qt->end.c_str()), qt->id));
+                ii->second.insert(std::make_pair(qt->end, qt->id));
             }
         }
 
@@ -141,12 +140,12 @@ int history_quotation_dict::load_history_quoation(const char * file)
             {
                 std::multimap<float, std::string> t_map;
 
-                t_map.insert(std::make_pair(atof(qt->change_rate.c_str()), qt->id));
+                t_map.insert(std::make_pair(qt->change_rate, qt->id));
                 p_data->_hqchange_rate_index.idle()->insert(std::make_pair(date, t_map));
             }
             else
             {
-                ii->second.insert(std::make_pair(atof(qt->change_rate.c_str()), qt->id));
+                ii->second.insert(std::make_pair(qt->change_rate, qt->id));
             }
         }
 
@@ -156,45 +155,45 @@ int history_quotation_dict::load_history_quoation(const char * file)
             {
                 std::multimap<float, std::string> t_map;
 
-                t_map.insert(std::make_pair(atof(qt->range_percent.c_str()), qt->id));
+                t_map.insert(std::make_pair(qt->range_percent, qt->id));
                 p_data->_hqrange_percent_index.idle()->insert(std::make_pair(date, t_map));
             }
             else
             {
-                ii->second.insert(std::make_pair(atof(qt->range_percent.c_str()), qt->id));
+                ii->second.insert(std::make_pair(qt->range_percent, qt->id));
             }
         }
 
-        if (atof(qt->down_pointer.c_str()))
+        if (qt->down_pointer)
         {
             auto ii = p_data->_hqdown_pointer_index.idle()->find(date);
             if (ii == p_data->_hqdown_pointer_index.idle()->end())
             {
                 std::multimap<float, std::string> t_map;
 
-                t_map.insert(std::make_pair(atof(qt->down_pointer.c_str()), qt->id));
+                t_map.insert(std::make_pair(qt->down_pointer, qt->id));
                 p_data->_hqdown_pointer_index.idle()->insert(std::make_pair(date, t_map));
             }
             else
             {
-                ii->second.insert(std::make_pair(atof(qt->down_pointer.c_str()), qt->id));
+                ii->second.insert(std::make_pair(qt->down_pointer, qt->id));
             }
         }
 
-        if (atof(qt->up_pointer.c_str()))
+        if (qt->up_pointer)
         {
             auto ii = p_data->_hqup_pointer_index.idle()->find(date);
             if (ii == p_data->_hqup_pointer_index.idle()->end())
             {
                 std::multimap<float, std::string> t_map;
 
-                t_map.insert(std::make_pair(atof(qt->up_pointer.c_str()), qt->id));
+                t_map.insert(std::make_pair(qt->up_pointer, qt->id));
                 p_data->_hqup_pointer_index.idle()->insert(std::make_pair(date, t_map));
             }
             else
             {
 
-                ii->second.insert(std::make_pair(atof(qt->up_pointer.c_str()), qt->id));
+                ii->second.insert(std::make_pair(qt->up_pointer, qt->id));
             }
         }
     }
@@ -229,17 +228,17 @@ void history_quotation_dict::update_sum_index()
                 auto tt = _id_dict.find(key);
                 if (tt != _id_dict.end())
                 {
-                    range_percent += atof(tt->second->range_percent.c_str());
-                    change_rate += atof(tt->second->change_rate.c_str());
+                    range_percent += tt->second->range_percent;
+                    change_rate += tt->second->change_rate;
                 }
             }
 
             {
                 snprintf(t_buf, sizeof(t_buf), "%.2f", range_percent);
-                qt->range_percent.append(t_buf);
+                qt->range_percent = atof(t_buf);
 
                 snprintf(t_buf, sizeof(t_buf), "%.2f", change_rate);
-                qt->change_rate.append(t_buf);
+                qt->change_rate = atof(t_buf);
 
                 creat_key(date, id, key);
                 _id_sum_dict.insert(std::make_pair(key, qt));
@@ -379,6 +378,11 @@ int history_quotation_dict::destroy()
     {
         std::unordered_map<std::string, std::shared_ptr<quotation_t>, str_hasher> tmp;
         _id_dict.swap(tmp);
+
+        if (tmp.size())
+        {
+            LOG_TRACE("%s, %d", tmp.begin()->first.c_str(), tmp.begin()->second.use_count());
+        }
     }
 
     {

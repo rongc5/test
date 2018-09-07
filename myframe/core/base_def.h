@@ -76,6 +76,11 @@ const uint32_t MAX_HTTP_HEAD_LEN = 100*1024;
 
 /******** 长度定义 *************/
 
+static const uint32_t SIZE_LEN_4 = 4; 
+static const uint32_t SIZE_LEN_6 = 6; 
+static const uint32_t SIZE_LEN_8 = 8; 
+static const uint32_t SIZE_LEN_10 = 10; 
+static const uint32_t SIZE_LEN_12 = 12; 
 static const uint32_t SIZE_LEN_16 = 16; 
 static const uint32_t SIZE_LEN_32 = 32; 
 static const uint32_t SIZE_LEN_64 = 64; 

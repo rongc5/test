@@ -1,6 +1,7 @@
 #include "skhttp_req_thread.h"
 #include "strategy_conf.h"
 #include "common_util.h"
+#include "sk_util.h"
 
 #include <dirent.h>
 
@@ -19,6 +20,7 @@ skhttp_req_thread::skhttp_req_thread()
     _req_date.assign(date);
 
     get_trade_date(_req_date, _trade_date);
+    first_in_day();
 }
 
 void skhttp_req_thread::handle_msg(std::shared_ptr<normal_msg> & p_msg)
@@ -466,49 +468,49 @@ void skhttp_req_thread::dump_real_quotation()
         tmp.append(ii->first);
         tmp.append(1, '\t');
 
-        tmp.append(ii->second->start);
+        tmp.append(float_2_str(ii->second->start));
         tmp.append(1, '\t');
 
-        tmp.append(ii->second->end);
+        tmp.append(float_2_str(ii->second->end));
         tmp.append(1, '\t');
 
-        tmp.append(ii->second->high);
+        tmp.append(float_2_str(ii->second->high));
         tmp.append(1, '\t');
 
-        tmp.append(ii->second->low);
+        tmp.append(float_2_str(ii->second->low));
         tmp.append(1, '\t');
 
-        tmp.append(ii->second->last_closed);
+        tmp.append(float_2_str(ii->second->last_closed));
         tmp.append(1, '\t');
 
-        tmp.append(ii->second->vol);
+        tmp.append(int_2_str(ii->second->vol));
         tmp.append(1, '\t');
 
-        tmp.append(ii->second->buy_vol);
+        tmp.append(int_2_str(ii->second->buy_vol));
         tmp.append(1, '\t');
 
-        tmp.append(ii->second->sell_vol);
+        tmp.append(int_2_str(ii->second->sell_vol));
         tmp.append(1, '\t');
 
-        tmp.append(ii->second->swing);
+        tmp.append(float_2_str(ii->second->swing));
         tmp.append(1, '\t');
 
-        tmp.append(ii->second->change_rate);
+        tmp.append(float_2_str(ii->second->change_rate));
         tmp.append(1, '\t');
 
-        tmp.append(ii->second->range_percent);
+        tmp.append(float_2_str(ii->second->range_percent));
         tmp.append(1, '\t');
 
-        tmp.append(ii->second->total_price);
+        tmp.append(float_2_str(ii->second->total_price));
         tmp.append(1, '\t');
 
-        tmp.append(ii->second->down_pointer);
+        tmp.append(float_2_str(ii->second->down_pointer));
         tmp.append(1, '\t');
 
-        tmp.append(ii->second->up_pointer);
+        tmp.append(float_2_str(ii->second->up_pointer));
         tmp.append(1, '\t');
 
-        tmp.append(ii->second->avg_price);
+        tmp.append(float_2_str(ii->second->avg_price));
         tmp.append(1, '\t');
 
         FILE_WRITE(t_buf, "%s", tmp.c_str());

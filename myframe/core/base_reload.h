@@ -45,11 +45,13 @@ class reload_mgr
         //模板类对象
         T* current(); 
 
+        bool need_reload();
+
         void dump();
 
         int destroy();
 
-        int destroy_idle();
+        T* idle(); 
 
     private:
         T * _objects[2];
@@ -97,6 +99,13 @@ int reload_mgr<T>::load()
     return -1;
 }
 
+template<typename T>
+bool reload_mgr<T>::need_reload()
+{
+    return current()->need_reload();
+}
+
+
 /**
  * @brief 重载配置
  */
@@ -104,17 +113,14 @@ int reload_mgr<T>::load()
 template<typename T>
 int reload_mgr<T>::reload() 
 {
-    if (current()->need_reload()) 
+    if ( _objects[1 - _curr]->reload() == 0 ) 
     {
-        if ( _objects[1 - _curr]->reload() == 0 ) 
-        {
-            _curr = 1 - _curr;
-            return 0;
-        } else 
-        {
-            LOG_WARNING("reload data failed,%d", _curr);
-            return -1;
-        }
+        _curr = 1 - _curr;
+        return 0;
+    } else 
+    {
+        LOG_WARNING("reload data failed,%d", _curr);
+        return -1;
     }
 
     return 0;
@@ -151,12 +157,13 @@ int reload_mgr<T>::destroy()
 }
 
 template<typename T>
-int reload_mgr<T>::destroy_idle()
+T* reload_mgr<T>::idle()
 {
-    if (_objects[1 - _curr])
-        _objects[1 - _curr]->destroy();
+    if( _curr == 0 || _curr == 1){
+        return (_objects[1 - _curr]);
+    }
 
-    return 0;
+    return NULL;
 }
 
 #endif

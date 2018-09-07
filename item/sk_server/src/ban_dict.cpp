@@ -49,8 +49,8 @@ int ban_dict::load()
         {   
             continue;
         }
-        bt.id = tmp_vec[0];
-        bt.date = tmp_vec[1];
+        snprintf(bt.id, sizeof(bt.id), "%s", tmp_vec[0].c_str());
+        snprintf(bt.date, sizeof(bt.date), "%s", tmp_vec[1].c_str());
 
         auto ii = _id_dict.find(bt.id);
         if (ii == _id_dict.end())
@@ -105,7 +105,7 @@ int ban_dict::dump()
     for (const auto & u :  _id_dict)
     {
         for (const auto & ii: u.second)
-            fprintf(fp, "id[%s]\tdate[%s]\n", ii.id.c_str(), ii.date.c_str());
+            fprintf(fp, "id[%s]\tdate[%s]\n", ii.id, ii.date);
     }
     fclose(fp);
 

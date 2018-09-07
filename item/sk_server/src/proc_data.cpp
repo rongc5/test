@@ -240,58 +240,74 @@ int proc_data::load()
 }
 int proc_data::reload()
 {
-    if (_ua_dict)
+    int flag = 0;
+    if (_ua_dict && _ua_dict->need_reload())
     {
         _ua_dict->reload();
+        flag = 1;
     }
 
-    if (_id_dict)
+    if (_id_dict && _id_dict->need_reload())
     {
         _id_dict->reload();
+        flag = 1;
     }
 
-    _finance_dict.reload();
+    if (_finance_dict.need_reload())
+    {
+        _finance_dict.reload();
+        flag = 1;
+    }
 
-    if (_ban_dict)
+    if (_ban_dict && _ban_dict->need_reload())
     {
         _ban_dict->reload();
+        flag = 1;
     }
 
-    if (_addr_dict_split)
+    if (_addr_dict_split && _addr_dict_split->need_reload())
     {
         _addr_dict_split->reload();
+        flag = 1;
     }
 
-    if (_addr_dict)
+    if (_addr_dict && _addr_dict->need_reload())
     {
         _addr_dict->reload();
+        flag = 1;
     }
 
-    if (_plate_dict_split)
+    if (_plate_dict_split && _plate_dict_split->need_reload())
     {
         _plate_dict_split->reload();
+        flag = 1;
     }
 
-    if (_plate_dict)
+    if (_plate_dict && _plate_dict->need_reload())
     {
         _plate_dict->reload();
+        flag = 1;
     }
 
-    if (_hsingle_dict)
+    if (_hsingle_dict && _hsingle_dict->need_reload())
     {
         _hsingle_dict->reload();
+        flag = 1;
     }
 
-    if (_hquoation_dict)
+    if (_hquoation_dict && _hquoation_dict->need_reload())
     {
         _hquoation_dict->reload();
+        flag = 1;
     }
 
-    if (_holiday_dict)
+    if (_holiday_dict && _holiday_dict->need_reload())
     {
         _holiday_dict->reload();
+        flag = 1;
     }
-    return 0;
+
+    return flag;
 }
 bool proc_data::need_reload()
 {
@@ -352,27 +368,27 @@ int proc_data::destroy()
 
 int proc_data::destroy_idle()
 {
-    _ua_dict->destroy_idle();
+    _ua_dict->idle()->destroy();
 
-    _id_dict->destroy_idle();
+    _id_dict->idle()->destroy();
 
-    _finance_dict.destroy_idle();
+    _finance_dict.destroy();
 
-    _ban_dict->destroy_idle();
+    _ban_dict->idle()->destroy();
 
-    _addr_dict_split->destroy_idle();
+    _addr_dict_split->idle()->destroy();
 
-    _addr_dict->destroy_idle();
+    _addr_dict->idle()->destroy();
 
-    _plate_dict_split->destroy_idle();
+    _plate_dict_split->idle()->destroy();
 
-    _plate_dict->destroy_idle();
+    _plate_dict->idle()->destroy();
 
-    _hsingle_dict->destroy_idle();
+    _hsingle_dict->idle()->destroy();
 
-    _hquoation_dict->destroy_idle();
+    _hquoation_dict->idle()->destroy();
 
-    _holiday_dict->destroy_idle();
+    _holiday_dict->idle()->destroy();
 
     return 0;
 }

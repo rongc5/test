@@ -53,77 +53,77 @@ void skhttp_res_data_process::query_quotation(std::string &id, Value & root, Doc
     {
         {
             key.SetString("name", allocator); 
-            value.SetString(ii->second->name.c_str(), allocator); 
+            value.SetString(ii->second->name, allocator); 
 
             root.AddMember(key, value, allocator);
         }
 
         {
             key.SetString("start", allocator); 
-            value.SetString(ii->second->start.c_str(), allocator); 
+            value.SetString(float_2_str(ii->second->start).c_str(), allocator); 
 
             root.AddMember(key, value, allocator);
         }
 
         {
             key.SetString("end", allocator); 
-            value.SetString(ii->second->end.c_str(), allocator); 
+            value.SetString(float_2_str(ii->second->end).c_str(), allocator); 
 
             root.AddMember(key, value, allocator);
         }
 
         {
             key.SetString("high", allocator); 
-            value.SetString(ii->second->high.c_str(), allocator); 
+            value.SetString(float_2_str(ii->second->high).c_str(), allocator); 
 
             root.AddMember(key, value, allocator);
         }
 
         {
             key.SetString("low", allocator); 
-            value.SetString(ii->second->low.c_str(), allocator); 
+            value.SetString(float_2_str(ii->second->low).c_str(), allocator); 
 
             root.AddMember(key, value, allocator);
         }
 
         {
             key.SetString("last_closed", allocator); 
-            value.SetString(ii->second->last_closed.c_str(), allocator); 
+            value.SetString(float_2_str(ii->second->last_closed).c_str(), allocator); 
 
             root.AddMember(key, value, allocator);
         }
 
         {
             key.SetString("change_rate", allocator); 
-            value.SetString(ii->second->change_rate.c_str(), allocator); 
+            value.SetString(float_2_str(ii->second->change_rate).c_str(), allocator); 
 
             root.AddMember(key, value, allocator);
         }
 
         {
             key.SetString("range_percent", allocator); 
-            value.SetString(ii->second->range_percent.c_str(), allocator); 
+            value.SetString(float_2_str(ii->second->range_percent).c_str(), allocator); 
 
             root.AddMember(key, value, allocator);
         }
 
         {
             key.SetString("down_pointer", allocator); 
-            value.SetString(ii->second->down_pointer.c_str(), allocator); 
+            value.SetString(float_2_str(ii->second->down_pointer).c_str(), allocator); 
 
             root.AddMember(key, value, allocator);
         }
 
         {
             key.SetString("up_pointer", allocator); 
-            value.SetString(ii->second->up_pointer.c_str(), allocator); 
+            value.SetString(float_2_str(ii->second->up_pointer).c_str(), allocator); 
 
             root.AddMember(key, value, allocator);
         }
 
         {
             key.SetString("avage_price", allocator); 
-            value.SetString(ii->second->avg_price.c_str(), allocator); 
+            value.SetString(float_2_str(ii->second->avg_price).c_str(), allocator); 
 
             root.AddMember(key, value, allocator);
         }
@@ -286,77 +286,77 @@ void skhttp_res_data_process::query_finance(std::string &id, Value & root, Docum
     {
         {
             key.SetString("pe", allocator); 
-            value.SetString(ii->second->pe.c_str(), allocator); 
+            value.SetString(int_2_str(ii->second->pe).c_str(), allocator); 
 
             root.AddMember(key, value, allocator);
         }
 
         {
             key.SetString("pb", allocator); 
-            value.SetString(ii->second->pb.c_str(), allocator); 
+            value.SetString(int_2_str(ii->second->pb).c_str(), allocator); 
 
             root.AddMember(key, value, allocator);
         }
 
         {
             key.SetString("cir_value", allocator); 
-            value.SetString(ii->second->cir_value.c_str(), allocator); 
+            value.SetString(int_2_str(ii->second->cir_value).c_str(), allocator); 
 
             root.AddMember(key, value, allocator);
         }
 
         {
             key.SetString("value", allocator); 
-            value.SetString(ii->second->value.c_str(), allocator); 
+            value.SetString(int_2_str(ii->second->value).c_str(), allocator); 
 
             root.AddMember(key, value, allocator);
         }
 
         {
             key.SetString("mgsy", allocator); 
-            value.SetString(ii->second->mgsy.c_str(), allocator); 
+            value.SetString(float_2_str(ii->second->mgsy).c_str(), allocator); 
 
             root.AddMember(key, value, allocator);
         }
 
         {
             key.SetString("mgxj", allocator); 
-            value.SetString(ii->second->mgxj.c_str(), allocator); 
+            value.SetString(float_2_str(ii->second->mgxj).c_str(), allocator); 
 
             root.AddMember(key, value, allocator);
         }
 
         {
             key.SetString("mgsygr", allocator); 
-            value.SetString(ii->second->mgsygr.c_str(), allocator); 
+            value.SetString(float_2_str(ii->second->mgsygr).c_str(), allocator); 
 
             root.AddMember(key, value, allocator);
         }
 
         {
             key.SetString("mgxjgr", allocator); 
-            value.SetString(ii->second->mgxjgr.c_str(), allocator); 
+            value.SetString(float_2_str(ii->second->mgxjgr).c_str(), allocator); 
 
             root.AddMember(key, value, allocator);
         }
 
         {
             key.SetString("zysrgr", allocator); 
-            value.SetString(ii->second->zysrgr.c_str(), allocator); 
+            value.SetString(float_2_str(ii->second->zysrgr).c_str(), allocator); 
 
             root.AddMember(key, value, allocator);
         }
 
         {
             key.SetString("yylrgr", allocator); 
-            value.SetString(ii->second->yylrgr.c_str(), allocator); 
+            value.SetString(float_2_str(ii->second->yylrgr).c_str(), allocator); 
 
             root.AddMember(key, value, allocator);
         }
 
         {
             key.SetString("jlrgr", allocator); 
-            value.SetString(ii->second->jlrgr.c_str(), allocator); 
+            value.SetString(float_2_str(ii->second->jlrgr).c_str(), allocator); 
 
             root.AddMember(key, value, allocator);
         }
@@ -641,21 +641,21 @@ void skhttp_res_data_process::query_history_quotation(uint32_t last_day_num, std
 
             {
                 key.SetString("end", allocator); 
-                value.SetString(ii->second->end.c_str(), allocator); 
+                value.SetString(float_2_str(ii->second->end).c_str(), allocator); 
 
                 v.AddMember(key, value, allocator);
             }
 
             {
                 key.SetString("low", allocator); 
-                value.SetString(ii->second->low.c_str(), allocator); 
+                value.SetString(float_2_str(ii->second->low).c_str(), allocator); 
 
                 v.AddMember(key, value, allocator);
             }
 
             {
                 key.SetString("range_percent", allocator); 
-                value.SetString(ii->second->range_percent.c_str(), allocator); 
+                value.SetString(float_2_str(ii->second->range_percent).c_str(), allocator); 
 
                 v.AddMember(key, value, allocator);
             }
@@ -692,21 +692,21 @@ void skhttp_res_data_process::query_history_quotation(std::string & history_date
 
         {
             key.SetString("end", allocator); 
-            value.SetString(ii->second->end.c_str(), allocator); 
+            value.SetString(float_2_str(ii->second->end).c_str(), allocator); 
 
             v.AddMember(key, value, allocator);
         }
 
         {
             key.SetString("low", allocator); 
-            value.SetString(ii->second->low.c_str(), allocator); 
+            value.SetString(float_2_str(ii->second->low).c_str(), allocator); 
 
             v.AddMember(key, value, allocator);
         }
 
         {
             key.SetString("range_percent", allocator); 
-            value.SetString(ii->second->range_percent.c_str(), allocator); 
+            value.SetString(float_2_str(ii->second->range_percent).c_str(), allocator); 
 
             v.AddMember(key, value, allocator);
         }

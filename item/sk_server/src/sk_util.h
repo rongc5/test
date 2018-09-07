@@ -64,4 +64,10 @@ class signal_process
 };
 
 
+std::string float_2_str(float a, int decimal = 2);
+std::string int_2_str(int a);
+
+
+
+
 #endif

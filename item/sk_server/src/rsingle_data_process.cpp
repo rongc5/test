@@ -60,7 +60,7 @@ int rsingle_data_process::get_single_index(const std::string &id, uint32_t index
         auto it = p_data->_rquoation_dict_index.current()->find(id); 
         if (it != p_data->_rquoation_dict_index.current()->end())
         {    
-            end = atof(it->second->end.c_str());
+            end = it->second->end;
         }
     }
 
@@ -78,7 +78,7 @@ int rsingle_data_process::get_single_index(const std::string &id, uint32_t index
         auto it = p_data->_hquoation_dict->current()->_id_dict.find(key);
         if (it != p_data->_hquoation_dict->current()->_id_dict.end())
         {
-            end = atof(it->second->end.c_str());
+            end = it->second->end;
         }
     }
 
