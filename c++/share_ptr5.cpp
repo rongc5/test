@@ -45,8 +45,10 @@ shared_ptr<FOO> test()
 }
 int main(int argc, char *argv[])
 {
-    shared_ptr<FOO> foo =  test();
-    cout << "3 Here the refcount is " << foo.use_count() << endl;
+    {
+        shared_ptr<FOO> foo =  test();
+        cout << "3 Here the refcount is " << foo.use_count() << endl;
+    }
     cout << "So here it will go out of scope and reach 0" << endl;
     return 0;
 }

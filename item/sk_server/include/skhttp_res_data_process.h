@@ -82,11 +82,19 @@ class skhttp_res_data_process:public http_base_data_process
 
         bool do_check_range_percent_le(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res);
 
-        //bool do_check_history_range_percent_le(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res);
+        bool do_check_history_sum_range_percent_le(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res);
+
+        bool do_check_history_has_range_percent_le(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res);
+
+        bool do_check_history_range_percent_le(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res);
 
         bool do_check_range_percent_ge(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res);
 
-        //bool do_check_history_range_percent_ge(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res);
+        bool do_check_history_sum_range_percent_ge(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res);
+
+        bool do_check_history_has_range_percent_ge(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res);
+
+        bool do_check_history_range_percent_ge(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res);
 
         bool do_check_down_pointer_le(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res);
         
@@ -160,6 +168,11 @@ class skhttp_res_data_process:public http_base_data_process
         bool do_check_rsingle_diff2_ge(std::map<std::string, std::string> & url_para_map, uint32_t index, std::set<std::string> & res);
 
         bool do_check_rsingle_diff_ge(std::map<std::string, std::string> & url_para_map, uint32_t index, std::set<std::string> & res);
+
+        bool do_check_hsingle_sum_diff_ge(std::map<std::string, std::string> & url_para_map, uint32_t index, std::set<std::string> & res);
+
+        bool do_check_hsingle_diff_ge(std::map<std::string, std::string> & url_para_map, uint32_t index, std::set<std::string> & res);
+
 
         void get_intersection(std::vector<std::set<std::string> > & arr, std::set<std::string> &res);
 

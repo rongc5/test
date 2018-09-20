@@ -20,6 +20,8 @@ class history_single_dict:public reload_inf
 
         static void creat_key(const std::string & date, const std::string & id, std::string & key);
 
+        void get_last_date(int n, std::string & date);
+
     private:
         void set_path (const char* path);
         int load_history_single(const char * file);

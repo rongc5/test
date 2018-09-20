@@ -109,6 +109,7 @@ class proc_data:public reload_inf
         ToBufferMgr<std::vector<std::map<std::string, std::multimap<int, std::string> > > > _hsingle_sum_diff_index;
 
         // history quotation 
+        // date, -, id
         ToBufferMgr<std::map<std::string, std::multimap<float, std::string> > > _hqend_index;
         ToBufferMgr<std::map<std::string, std::multimap<float, std::string> > > _hqchange_rate_index;
         ToBufferMgr<std::map<std::string, std::multimap<float, std::string> > > _hqrange_percent_index;
@@ -118,6 +119,8 @@ class proc_data:public reload_inf
 
         ToBufferMgr<std::map<std::string, std::multimap<float, std::string> > > _hqdown_pointer_index;
         ToBufferMgr<std::map<std::string, std::multimap<float, std::string> > > _hqup_pointer_index;
+
+        ToBufferMgr<std::map<std::string, std::multimap<float, std::string> > > _end_hqend_index;
 
         //recommend_flag, id
         ToBufferMgr<std::unordered_multimap<std::string, std::string, str_hasher> > _recommend_index;

@@ -20,6 +20,9 @@ class history_quotation_dict:public reload_inf
 
         static void creat_key(const std::string & date, const std::string & id, std::string & key);
 
+        //查看过去几天的日期
+        void get_last_date(int n, std::string & date);
+
     private:
         void set_path (const char* path);
         int load_history_quoation(const char * file);

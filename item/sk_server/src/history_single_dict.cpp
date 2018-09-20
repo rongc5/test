@@ -35,6 +35,23 @@ void history_single_dict::creat_key(const std::string & date, const std::string 
     return;
 }
 
+void history_single_dict::get_last_date(int n, std::string & date)
+{
+    if (n <= 0)
+        return;
+
+    int k = 0;
+    for (auto ii = _date_index.rbegin(); ii != _date_index.rend() && k < n; ii++, k++)
+    {   
+        date = *ii;
+    }   
+
+    if (k != n)
+    {   
+        date.clear();
+    }   
+}
+
 int history_single_dict::load_history_single(const char * file)
 {
     if (!file)

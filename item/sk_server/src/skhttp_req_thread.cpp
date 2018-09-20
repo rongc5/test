@@ -217,17 +217,25 @@ void skhttp_req_thread::first_in_day()
     proc_data* p_data = proc_data::instance();
     if (p_data && p_data->_conf)
     {
-        //{
-        //std::unordered_map<std::string, std::vector<single_t>,str_hasher> t_dict;
-        //p_data->_rsingle_real_dict.swap(t_dict);
-        //}
+        {
+            std::unordered_map<std::string, std::shared_ptr<single_vec>, str_hasher> t_dict;
+            p_data->_rsingle_real_dict.swap(t_dict);
+        }
 
-        if (_req_date == _trade_date)
+        {
+            std::unordered_map<std::string, std::shared_ptr<quotation_t>, str_hasher> t_dict;
+            p_data->_rquoation_real_dict.swap(t_dict);
+        }
+
         {
             std::unordered_set<std::string, str_hasher> t_block;
             p_data->_block_set.idle()->swap(t_block);
             p_data->_block_set.idle_2_current();
         }
+
+        single_reset();
+
+        quotation_reset();
 
         real_morning_stime = get_real_time(_req_date.c_str(), 
                 p_data->_conf->_strategy->current()->real_morning_stime.c_str());
