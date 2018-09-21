@@ -24,14 +24,10 @@ class skhttp_req_thread:public base_net_thread
         virtual void handle_msg(std::shared_ptr<normal_msg> & p_msg);
 
         void real_req_start();
-
-        void single_reset();
     
         void do_single();
 
         void add_single_timer();
-
-        void quotation_reset();
 
         void do_quotation();
 

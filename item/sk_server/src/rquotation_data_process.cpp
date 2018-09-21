@@ -35,12 +35,12 @@ url_info & rquotation_data_process::get_url_info()
 void rquotation_data_process::header_recv_finish()
 {
     //base_net_container * net_container = get_base_net()->get_net_container();
-    http_res_head_para & res_head_para = _base_process->get_res_head_para();
-    std::string * str = new std::string;
-    res_head_para.to_head_str(str);
-    LOG_DEBUG("header: %s", str->c_str());
+    //http_res_head_para & res_head_para = _base_process->get_res_head_para();
+    //std::string * str = new std::string;
+    //res_head_para.to_head_str(str);
+    //LOG_DEBUG("header: %s", str->c_str());
 
-    std::shared_ptr<std::string> rc(str);
+    //std::shared_ptr<std::string> rc(str);
     _is_ok = true;
 }
 
@@ -132,8 +132,49 @@ over:
     throw CMyCommonException("msg_recv_finish");
 }
 
+void rquotation_data_process::quotation_index_reset()
+{
+    proc_data* p_data = proc_data::instance();
+    {   
+        std::multimap<float, std::string> t_map;
+        p_data->_end_index.idle()->swap(t_map);
+    }   
+
+    {   
+        std::multimap<float, std::string> t_map;
+        p_data->_change_rate_index.idle()->swap(t_map);
+    }   
+
+    {   
+        std::multimap<float, std::string> t_map;
+        p_data->_range_percent_index.idle()->swap(t_map);
+    }   
+
+    {   
+        std::multimap<float, std::string> t_map;
+        p_data->_down_pointer_index.idle()->swap(t_map);
+    }   
+
+    {   
+        std::multimap<float, std::string> t_map;
+        p_data->_up_pointer_index.idle()->swap(t_map);
+    }   
+
+    {   
+        std::multimap<float, std::string> t_map;
+        p_data->_end_avg_price_index.idle()->swap(t_map);
+    }   
+
+    {   
+        std::unordered_map<std::string, std::shared_ptr<quotation_t>,str_hasher> tmp;
+        p_data->_rquoation_dict_index.idle()->swap(tmp);
+    }  
+}
+
 void rquotation_data_process::update_all_index()
 {
+    quotation_index_reset();
+
     proc_data* p_data = proc_data::instance();
 
     for (auto ii = p_data->_rquoation_real_dict.begin(); ii != p_data->_rquoation_real_dict.end(); ii++)
@@ -169,6 +210,21 @@ void rquotation_data_process::update_all_index()
             p_data->_rquoation_dict_index.idle()->insert(std::make_pair(ii->first, ii->second));
         }
     }
+
+    quotation_idle_current();
+}
+
+void rquotation_data_process::quotation_idle_current()
+{
+    proc_data* p_data = proc_data::instance();
+
+    p_data->_end_index.idle_2_current();
+    p_data->_change_rate_index.idle_2_current();
+    p_data->_range_percent_index.idle_2_current();
+    p_data->_down_pointer_index.idle_2_current();
+    p_data->_up_pointer_index.idle_2_current();
+    p_data->_end_avg_price_index.idle_2_current();
+    p_data->_rquoation_dict_index.idle_2_current();
 }
 
 std::string * rquotation_data_process::get_send_head()
@@ -284,7 +340,7 @@ void rquotation_data_process::handle_timeout(std::shared_ptr<timer_msg> & t_msg)
 {
     if (t_msg->_timer_type == TIMER_TYPE_HTTP_REQ)
     {
-        LOG_DEBUG("timeout TIMER_TYPE_HTTP_REQ");
+        LOG_DEBUG("timeout TIMER_TYPE_HTTP_REQ:_timer_id %u _timer_type:%u", t_msg->_timer_id, t_msg->_timer_type);
 
         throw CMyCommonException("TIMER_TYPE_HTTP_REQ");
     }

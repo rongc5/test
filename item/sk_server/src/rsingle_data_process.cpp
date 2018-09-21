@@ -38,12 +38,12 @@ url_info & rsingle_data_process::get_url_info()
 void rsingle_data_process::header_recv_finish()
 {
     //base_net_container * net_container = get_base_net()->get_net_container();
-    http_res_head_para & res_head_para = _base_process->get_res_head_para();
-    std::string * str = new std::string;
-    res_head_para.to_head_str(str);
-    LOG_DEBUG("header: %s", str->c_str());
+    //http_res_head_para & res_head_para = _base_process->get_res_head_para();
+    //std::string * str = new std::string;
+    //res_head_para.to_head_str(str);
+    //LOG_DEBUG("header: %s", str->c_str());
 
-    std::shared_ptr<std::string> rc(str);
+    //std::shared_ptr<std::string> rc(str);
     _is_ok = true;
 }
 
@@ -159,8 +159,31 @@ int rsingle_data_process::get_single_diff2(std::deque<std::shared_ptr<single_vec
     return diff2;
 }
 
+void rsingle_data_process::single_index_reset()
+{
+    proc_data* p_data = proc_data::instance();
+    {
+        std::vector<std::multimap<int, std::string> > t_map;
+        p_data->_rsingle_diff_index.idle()->swap(t_map);
+    }
+
+    {
+        std::vector<std::multimap<int, std::string> > t_map;
+        p_data->_rsingle_diff2_index.idle()->swap(t_map);
+    }
+
+
+    {
+        std::unordered_map<std::string, std::deque<std::shared_ptr<single_vec> >,str_hasher> tmp;
+        p_data->_rsingle_dict_index.idle()->swap(tmp);
+    }
+}
+
+
 void rsingle_data_process::update_all_index()
 {
+    single_index_reset();
+
     proc_data* p_data = proc_data::instance();
     std::deque<std::shared_ptr<single_vec> > st;
     strategy_conf * strategy = p_data->_conf->_strategy->current();
@@ -243,6 +266,16 @@ void rsingle_data_process::update_all_index()
             }
         }
     }
+
+    single_idle_current();
+}
+
+void rsingle_data_process::single_idle_current()
+{
+    proc_data* p_data = proc_data::instance();
+    p_data->_rsingle_diff_index.idle_2_current();
+    p_data->_rsingle_diff2_index.idle_2_current();
+    p_data->_rsingle_dict_index.idle_2_current();
 }
 
 std::string * rsingle_data_process::get_send_head()

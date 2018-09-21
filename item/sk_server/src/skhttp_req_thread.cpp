@@ -53,27 +53,6 @@ void skhttp_req_thread::real_req_start()
     }
 }
 
-void skhttp_req_thread::single_reset()
-{
-    proc_data* p_data = proc_data::instance();
-    {
-        std::vector<std::multimap<int, std::string> > t_map;
-        p_data->_rsingle_diff_index.idle()->swap(t_map);
-    }
-
-    {
-        std::vector<std::multimap<int, std::string> > t_map;
-        p_data->_rsingle_diff2_index.idle()->swap(t_map);
-    }
-
-
-    {
-        std::unordered_map<std::string, std::deque<std::shared_ptr<single_vec> >,str_hasher> tmp;
-        p_data->_rsingle_dict_index.idle()->swap(tmp);
-    }
-
-}
-
 void skhttp_req_thread::do_single()
 {
     proc_data* p_data = proc_data::instance();
@@ -86,11 +65,6 @@ void skhttp_req_thread::do_single()
     id_dict * id_dic = p_data->_id_dict->current();
     if (id_dic && _single_index < id_dic->_id_vec.size())
     {
-        if (!_single_index)
-        {
-            single_reset();
-        }
-
         std::string id = id_dic->_id_vec[_single_index];
         LOG_DEBUG("single_index:%d id_vec.size:%d id:%s", _single_index, id_dic->_id_vec.size(), id.c_str());
         req_real_single(id);
@@ -123,44 +97,6 @@ void skhttp_req_thread::add_single_timer()
     }
 }
 
-void skhttp_req_thread::quotation_reset()
-{
-    proc_data* p_data = proc_data::instance();
-    {
-        std::multimap<float, std::string> t_map;
-        p_data->_end_index.idle()->swap(t_map);
-    }
-
-    {
-        std::multimap<float, std::string> t_map;
-        p_data->_change_rate_index.idle()->swap(t_map);
-    }
-
-    {
-        std::multimap<float, std::string> t_map;
-        p_data->_range_percent_index.idle()->swap(t_map);
-    }
-
-    {
-        std::multimap<float, std::string> t_map;
-        p_data->_down_pointer_index.idle()->swap(t_map);
-    }
-
-    {
-        std::multimap<float, std::string> t_map;
-        p_data->_up_pointer_index.idle()->swap(t_map);
-    }
-
-    {
-        std::multimap<float, std::string> t_map;
-        p_data->_end_avg_price_index.idle()->swap(t_map);
-    }
-
-    {
-        std::unordered_map<std::string, std::shared_ptr<quotation_t>,str_hasher> tmp;
-        p_data->_rquoation_dict_index.idle()->swap(tmp);
-    }
-}
 
 void skhttp_req_thread::do_quotation()
 {   
@@ -174,11 +110,6 @@ void skhttp_req_thread::do_quotation()
     id_dict * id_dic = p_data->_id_dict->current();
     if (id_dic && _quotation_index < id_dic->_id_vec.size())
     {
-        if (!_quotation_index)
-        {
-            quotation_reset();
-        }
-
         std::string id = id_dic->_id_vec[_quotation_index];
         LOG_DEBUG("quotation_index: %d id_vec.size: %d id:%s", _quotation_index, id_dic->_id_vec.size(), id.c_str());
         req_real_quotation(id);
@@ -232,10 +163,6 @@ void skhttp_req_thread::first_in_day()
             p_data->_block_set.idle()->swap(t_block);
             p_data->_block_set.idle_2_current();
         }
-
-        single_reset();
-
-        quotation_reset();
 
         real_morning_stime = get_real_time(_req_date.c_str(), 
                 p_data->_conf->_strategy->current()->real_morning_stime.c_str());
@@ -717,33 +644,17 @@ void skhttp_req_thread::handle_timeout(std::shared_ptr<timer_msg> & t_msg)
             break;
         case TIMER_TYPE_QUOTATION_IDLE_2_CURRENT:
             {
-                LOG_DEBUG("_block_set idle_2_current");
+                LOG_DEBUG("QUOTATION_IDLE_2_CURRENT");
                 rquotation_data_process::update_all_index();
 
-                p_data->_block_set.idle_2_current();
-                p_data->_end_index.idle_2_current();
-                p_data->_change_rate_index.idle_2_current();
-                p_data->_range_percent_index.idle_2_current();
-                p_data->_down_pointer_index.idle_2_current();
-                p_data->_up_pointer_index.idle_2_current();
-                p_data->_end_avg_price_index.idle_2_current();
-
-                p_data->_rquoation_dict_index.idle_2_current();
-
                 add_quotation_timer();
-
             }
             break;
         case TIMER_TYPE_SINGLE_IDLE_2_CURRENT:
             {
                 //先更新再切换
                 rsingle_data_process::update_all_index();
-
-                p_data->_rsingle_diff_index.idle_2_current();
-                p_data->_rsingle_diff2_index.idle_2_current();
-                p_data->_rsingle_dict_index.idle_2_current();
-
-                LOG_DEBUG("_rsingle_diff_index idle_2_current");
+                LOG_DEBUG("SINGLE_IDLE_2_CURRENT");
 
                 add_single_timer();
 

@@ -39,7 +39,9 @@ class rquotation_data_process: public http_base_data_process
 
         void set_id(std::string id);
 
+        static void quotation_index_reset();
         static void update_all_index();
+        static void quotation_idle_current();
 
     protected:
         std::string _recv_buf;
