@@ -3332,10 +3332,6 @@ int skhttp_res_data_process::do_check_select(std::map<std::string, std::string> 
         std::set<std::string> tmp;
         if (do_check_address(url_para_map, "address_v", tmp, negative, SETS_OP_UNION))
         {
-            if (tmp.empty())
-            {
-                return -1;
-            }
             negative = tmp;
         }
     }
@@ -3356,10 +3352,6 @@ int skhttp_res_data_process::do_check_select(std::map<std::string, std::string> 
         std::set<std::string> tmp;
         if (do_check_plate(url_para_map, "plate_v", tmp, negative, SETS_OP_UNION))
         {
-            if (tmp.empty())
-            {
-                return -1;
-            }
             negative = tmp;
         }
     }
