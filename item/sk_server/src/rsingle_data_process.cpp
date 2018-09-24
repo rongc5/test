@@ -177,13 +177,112 @@ void rsingle_data_process::single_index_reset()
         std::unordered_map<std::string, std::deque<std::shared_ptr<single_vec> >,str_hasher> tmp;
         p_data->_rsingle_dict_index.idle()->swap(tmp);
     }
-}
 
+    {
+        std::vector<std::map<std::string, std::multimap<int, std::string> > > tmp;
+        p_data->_hsingle_sum_diff_index.idle()->swap(tmp);
+    }
+}
 
 void rsingle_data_process::update_all_index()
 {
     single_index_reset();
+    
+    update_real_index();
+    update_sum_index();
 
+    single_idle_current();
+}
+
+void rsingle_data_process::update_sum_index()
+{
+    proc_data* p_data = proc_data::instance();
+    bool flag = false;
+    
+    auto it = p_data->_hsingle_dict->current()->_date_index.find(p_data->_trade_date);
+    if (it != p_data->_hsingle_dict->current()->_date_index.end())
+        flag =  true;
+
+    strategy_conf * strategy = p_data->_conf->_strategy->current();
+    for (uint32_t i = 0; i < strategy->real_single_scale.size(); i++)
+    {
+        std::map<std::string, std::multimap<int, std::string> > t_map;
+
+        if (i >= p_data->_hsingle_sum_diff_index.idle()->size()) 
+        {
+            p_data->_hsingle_sum_diff_index.idle()->push_back(t_map);
+        }
+    }
+
+    std::string key;
+    for (auto it = p_data->_hsingle_dict->current()->_date_index.begin(); 
+            it != p_data->_hsingle_dict->current()->_date_index.end(); it++)
+    {   
+        const std::string  & date = *it;
+        for (auto ii = p_data->_rsingle_real_dict.begin(); ii != p_data->_rsingle_real_dict.end(); ii++)
+        {
+            const std::string & id = ii->first;
+            std::string key;
+            history_single_dict::creat_key(date, id, key);
+
+            auto tt = p_data->_hsingle_dict->current()->_date_sum_dict.find(key);
+            if (tt == p_data->_hsingle_dict->current()->_date_sum_dict.end())
+                continue;
+
+            {
+                single_vec hs;
+                for (uint32_t i = 0; i < tt->second->size(); i++)
+                {   
+                    if (i >= hs.size())
+                    {   
+                        single_t st; 
+                        hs.push_back(st);
+                    }
+
+                    hs.at(i) = tt->second->at(i);
+                }
+
+                if (!flag)
+                {
+                    for (uint32_t i = 0; i < tt->second->size() && i < ii->second->size(); i++)
+                    {
+
+                        hs[i].in = hs[i].in + ii->second->at(i).in;
+                        hs[i].out = hs[i].out + ii->second->at(i).out;
+                        hs[i].diff = hs[i].diff + ii->second->at(i).diff;
+                    } 
+                }
+
+                for (uint32_t i = 0; i < hs.size(); i++)
+                {
+                    if (hs.at(i).diff > 0)
+                    {
+                        std::map<std::string, std::multimap<int, std::string> >  & u_map = (*(p_data->_hsingle_sum_diff_index.idle()))[i];
+
+                        auto ii = u_map.find(date);
+                        if (ii == u_map.end())
+                        {
+                            std::multimap<int, std::string> t_map;
+
+                            t_map.insert(std::make_pair(hs.at(i).diff, id));
+                            u_map.insert(std::make_pair(date, t_map));
+                        }
+                        else
+                        {
+                            ii->second.insert(std::make_pair(hs.at(i).diff, id));  
+                        }
+                    }
+                }
+
+            }
+        }
+
+    }
+
+}
+
+void rsingle_data_process::update_real_index()
+{
     proc_data* p_data = proc_data::instance();
     std::deque<std::shared_ptr<single_vec> > st;
     strategy_conf * strategy = p_data->_conf->_strategy->current();
@@ -246,7 +345,6 @@ void rsingle_data_process::update_all_index()
 
         for (i = 0; i< single->size(); i++)
         {
-
             diff2 = get_single_diff2(st, i);
             if (diff2 > 0)
             {
@@ -255,7 +353,6 @@ void rsingle_data_process::update_all_index()
 
                 t_map.insert(std::make_pair(diff2, ii->first));
             }
-        
 
             if (single->at(i).diff > 0)
             {
@@ -266,8 +363,6 @@ void rsingle_data_process::update_all_index()
             }
         }
     }
-
-    single_idle_current();
 }
 
 void rsingle_data_process::single_idle_current()
@@ -276,6 +371,7 @@ void rsingle_data_process::single_idle_current()
     p_data->_rsingle_diff_index.idle_2_current();
     p_data->_rsingle_diff2_index.idle_2_current();
     p_data->_rsingle_dict_index.idle_2_current();
+    p_data->_hsingle_sum_diff_index.idle_2_current();
 }
 
 std::string * rsingle_data_process::get_send_head()

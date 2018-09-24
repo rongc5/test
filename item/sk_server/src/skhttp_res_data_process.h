@@ -182,6 +182,8 @@ class skhttp_res_data_process:public http_base_data_process
 
         bool do_check_id_substr(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res, std::set<std::string> & search, SETS_OP_TRPE et);
 
+        bool do_check_end_hqend_ge(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res, std::set<std::string> & search, SETS_OP_TRPE et);
+
         void get_intersection(std::vector<std::set<std::string> > & arr, std::set<std::string> &res);
 
         void get_union(std::vector<std::set<std::string> > & arr, std::set<std::string> &res);

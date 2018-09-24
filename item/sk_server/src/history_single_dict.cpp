@@ -163,7 +163,6 @@ void history_single_dict::update_sum_index()
         return;
     }
 
-
     std::string key;
     for (auto ii = _date_index.begin(); ii != _date_index.end(); ii++)
     {
@@ -198,28 +197,6 @@ void history_single_dict::update_sum_index()
                 creat_key(date, id, key);
                 _date_sum_dict.insert(std::make_pair(key, hs));
             }
-
-            for (uint32_t i = 0; i < hs->size(); i++)
-            {
-                if (hs->at(i).diff > 0)
-                {
-                    std::map<std::string, std::multimap<int, std::string> >  & u_map = (*(p_data->_hsingle_sum_diff_index.idle()))[i];
-
-                    auto ii = u_map.find(date);
-                    if (ii == u_map.end())
-                    {
-                        std::multimap<int, std::string> t_map;
-
-                        t_map.insert(std::make_pair(hs->at(i).diff, id));
-                        u_map.insert(std::make_pair(date, t_map));
-                    }
-                    else
-                    {
-                        ii->second.insert(std::make_pair(hs->at(i).diff, id));
-                    }
-                }
-            }
-
         }
     }
 
@@ -245,11 +222,6 @@ int history_single_dict::load()
         {
             p_data->_hsingle_diff_index.idle()->push_back(t_map);
         }
-
-        if (i >= p_data->_hsingle_sum_diff_index.idle()->size())
-        {
-            p_data->_hsingle_sum_diff_index.idle()->push_back(t_map);
-        }
     }
 
     while (fgets(line, sizeof(line), fp)) 
@@ -274,7 +246,6 @@ int history_single_dict::load()
     
     {
         p_data->_hsingle_diff_index.idle_2_current();
-        p_data->_hsingle_sum_diff_index.idle_2_current();
     }
 
 
@@ -348,11 +319,6 @@ int history_single_dict::destroy()
     {
         std::set<std::string> tmp;
         _date_index.swap(tmp);
-    }
-
-    {
-        std::vector<std::map<std::string, std::multimap<int, std::string> > > tmp;
-        p_data->_hsingle_sum_diff_index.idle()->swap(tmp);
     }
 
     {

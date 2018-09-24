@@ -41,6 +41,9 @@ class rquotation_data_process: public http_base_data_process
 
         static void quotation_index_reset();
         static void update_all_index();
+        static void update_real_index();
+        static void update_history_index();
+        static void update_sum_index();
         static void quotation_idle_current();
 
     protected:

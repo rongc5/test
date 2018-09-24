@@ -260,39 +260,6 @@ void history_quotation_dict::update_sum_index()
                 creat_key(date, id, key);
                 _id_sum_dict.insert(std::make_pair(key, qt));
             }
-
-            {   
-                std::map<std::string, std::multimap<float, std::string> >  & u_map = *(p_data->_hq_sum_range_percent_index.idle());   
-                auto ii = u_map.find(date);
-                if (ii == u_map.end())
-                {   
-                    std::multimap<float, std::string> t_map;
-
-                    t_map.insert(std::make_pair(range_percent, id));
-                    u_map.insert(std::make_pair(date, t_map));
-                }       
-                else
-                {   
-                    ii->second.insert(std::make_pair(range_percent, id));
-                }
-            }
-
-            {
-                std::map<std::string, std::multimap<float, std::string> >  & u_map = *(p_data->_hq_sum_change_rate_index.idle());
-
-                auto ii = u_map.find(date);
-                if (ii == u_map.end())
-                {
-                    std::multimap<float, std::string> t_map;
-
-                    t_map.insert(std::make_pair(change_rate, id));
-                    u_map.insert(std::make_pair(date, t_map));
-                }
-                else
-                {
-                    ii->second.insert(std::make_pair(change_rate, id));
-                }
-            }
         }
     }
 }
@@ -334,8 +301,6 @@ int history_quotation_dict::load()
         p_data->_hqrange_percent_index.idle_2_current();
         p_data->_hqdown_pointer_index.idle_2_current();
         p_data->_hqup_pointer_index.idle_2_current();
-        p_data->_hq_sum_range_percent_index.idle_2_current();
-        p_data->_hq_sum_change_rate_index.idle_2_current();
     }
 
     return 0;
@@ -415,16 +380,6 @@ int history_quotation_dict::destroy()
     {
         std::set<std::string> tmp;
         _date_index.swap(tmp);
-    }
-
-    {
-        std::map<std::string, std::multimap<float, std::string> > t_map;
-        p_data->_hq_sum_range_percent_index.idle()->swap(t_map);
-    }
-
-    {
-        std::map<std::string, std::multimap<float, std::string> > t_map;
-        p_data->_hq_sum_change_rate_index.idle()->swap(t_map);
     }
 
     {

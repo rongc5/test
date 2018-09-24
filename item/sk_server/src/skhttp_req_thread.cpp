@@ -18,8 +18,6 @@ skhttp_req_thread::skhttp_req_thread()
     time_t now = get_timestr(date, sizeof(date), "%Y%m%d");
 
     _req_date.assign(date);
-
-    get_trade_date(_req_date, _trade_date);
     first_in_day();
 }
 
@@ -145,9 +143,13 @@ void skhttp_req_thread::add_quotation_timer()
 
 void skhttp_req_thread::first_in_day()
 {
+    get_trade_date(_req_date, _trade_date);
+
     proc_data* p_data = proc_data::instance();
     if (p_data && p_data->_conf)
     {
+        p_data->_trade_date = _trade_date;
+
         {
             std::unordered_map<std::string, std::shared_ptr<single_vec>, str_hasher> t_dict;
             p_data->_rsingle_real_dict.swap(t_dict);
@@ -241,8 +243,6 @@ bool skhttp_req_thread::is_real_time()
             if (now >= stime)
             {
                 _req_date.assign(date);
-                get_trade_date(_req_date, _trade_date);
-
                 first_in_day();
             }
         }

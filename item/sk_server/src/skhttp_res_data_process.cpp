@@ -1244,6 +1244,62 @@ bool skhttp_res_data_process::do_check_history_sum_range_percent_ge(std::map<std
     return flag;
 }
 
+bool skhttp_res_data_process::do_check_end_hqend_ge(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res, std::set<std::string> & search, SETS_OP_TRPE et)
+{
+    float end = 0;
+    bool flag = false;
+    proc_data* p_data = proc_data::instance();
+    std::vector<std::string> tmp_vec;
+    std::vector<std::set<std::string> > tmp_res_vec;
+
+    std::multimap<float, std::string>::iterator it_le, it_ge, it;
+
+    if (has_key<std::string, std::string>(url_para_map, "end_hqend_ge"))
+    {
+        flag = true;
+        SplitString(url_para_map["end_hqend_ge"].c_str(), '|', &tmp_vec, SPLIT_MODE_ALL);
+        if (!tmp_vec.size())
+            tmp_vec.push_back(url_para_map["end_hqend_ge"]);
+
+        if (SETS_OP_UNION == et)
+            res = search;
+
+        for (uint32_t i = 0; i< tmp_vec.size(); i++) 
+        {
+
+            std::vector<std::string> t_vec;
+            SplitString(tmp_vec[i].c_str(), ':', &t_vec, SPLIT_MODE_ALL);
+            std::string date;
+            p_data->_hquoation_dict->current()->get_last_date(atoi(t_vec[0].c_str()), date);
+            if (date.empty())
+                return flag;
+
+
+            end = atof(t_vec[1].c_str());
+            auto ii = p_data->_end_hqend_index.current()->find(date);
+            if (ii == p_data->_end_hqend_index.current()->end())
+                return flag;
+
+            it_le = ii->second.end();
+            it_ge = ii->second.begin();
+
+            it_ge = ii->second.lower_bound(end);
+            std::set<std::string> t_res;
+            for (it = it_ge; it != it_le; ++it)
+            {
+                if (search.empty() || (SETS_OP_INTERSECTION == et && search.count(it->second)) || SETS_OP_UNION == et)
+                    t_res.insert(it->second); 
+            }
+
+            tmp_res_vec.push_back(t_res);
+        }
+    }
+
+    if (flag)
+        get_intersection(tmp_res_vec, res);
+
+    return flag;
+}
 
 bool skhttp_res_data_process::do_check_history_has_range_percent_ge(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res, std::set<std::string> & search, SETS_OP_TRPE et)
 {
@@ -2728,6 +2784,18 @@ int skhttp_res_data_process::do_check_select(std::map<std::string, std::string> 
     {
         std::set<std::string> tmp;
         if (do_check_history_has_range_percent_ge(url_para_map, tmp, positive, SETS_OP_INTERSECTION))
+        {
+            if (tmp.empty())
+            {
+                return -1;
+            }
+            positive = tmp;
+        }
+    }
+
+    {
+        std::set<std::string> tmp;
+        if (do_check_end_hqend_ge(url_para_map, tmp, positive, SETS_OP_INTERSECTION))
         {
             if (tmp.empty())
             {
