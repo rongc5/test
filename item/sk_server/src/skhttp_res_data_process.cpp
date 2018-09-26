@@ -19,6 +19,7 @@
 
 #include <algorithm>
 #include "sk_util.h"
+#include "rsingle_data_process.h"
 
 
 
@@ -413,6 +414,27 @@ void skhttp_res_data_process::query_history_single(uint32_t last_day_num, std::s
     }
 }
 
+void skhttp_res_data_process::query_sum_single(uint32_t last_day_num, std::string &id, Value & root, Document::AllocatorType & allocator)
+{
+    proc_data* p_data = proc_data::instance();
+
+    std::string date;
+
+    auto ii = p_data->_hsingle_dict->current()->_id_date_dict.find(id);
+    if (ii == p_data->_hsingle_dict->current()->_id_date_dict.end())
+    {
+        return;
+    }
+
+    uint32_t i = 0;
+    for (auto iii = ii->second.rbegin(); iii != ii->second.rend() && i < last_day_num; i++, iii++)
+    {
+        date = *iii;
+    }
+
+    query_sum_single(date, id, root, allocator);
+}
+
 void skhttp_res_data_process::query_history_single_in(uint32_t last_day_num, std::string &id, Value & root, Document::AllocatorType & allocator)
 {
     proc_data* p_data = proc_data::instance();
@@ -534,6 +556,33 @@ void skhttp_res_data_process::query_history_single(std::string & history_date, s
         for (uint32_t k = 0; k < ii->second->size(); k++)
         {
             child.PushBack(ii->second->at(k).diff, allocator);
+        }
+
+        root.AddMember(k, child, allocator);
+    }
+}
+
+void skhttp_res_data_process::query_sum_single(std::string & history_date, std::string &id, Value & root, Document::AllocatorType & allocator)
+{
+    proc_data* p_data = proc_data::instance();
+
+    single_vec st;
+    bool flag = rsingle_data_process::get_sum_diff(id, history_date, st);
+    if (flag)
+    {
+        Value k(kStringType);
+        Value child(kArrayType);
+
+        std::string t_str;
+        t_str.append("sum_single");
+        t_str.append("_");
+        t_str.append(history_date);
+
+        k.SetString(t_str.c_str(), allocator);
+
+        for (uint32_t k = 0; k < st.size(); k++)
+        {
+            child.PushBack(st.at(k).diff, allocator);
         }
 
         root.AddMember(k, child, allocator);
@@ -810,6 +859,8 @@ int skhttp_res_data_process::url_query_id(std::map<std::string, std::string> & u
     {
         query_history_single(atoi(url_para_map["history_num"].c_str()), url_para_map["id"], root, allocator);
 
+        query_sum_single(atoi(url_para_map["history_num"].c_str()), url_para_map["id"], root, allocator);
+
         if (has_key<std::string, std::string>(url_para_map, "single_in"))
             query_history_single_in(atoi(url_para_map["history_num"].c_str()), url_para_map["id"], root, allocator);
 
@@ -822,6 +873,8 @@ int skhttp_res_data_process::url_query_id(std::map<std::string, std::string> & u
     if (has_key<std::string, std::string>(url_para_map, "history_date"))
     {
         query_history_single(url_para_map["history_date"], url_para_map["id"], root, allocator);
+
+        query_sum_single(url_para_map["history_date"], url_para_map["id"], root, allocator);
 
         if (has_key<std::string, std::string>(url_para_map, "single_in"))
             query_history_single_in(url_para_map["history_date"], url_para_map["id"], root, allocator);
@@ -3568,7 +3621,8 @@ std::string * skhttp_res_data_process::get_send_head()
 
     res_head._headers.insert(std::make_pair("Date", SecToHttpTime(time(NULL))));
     res_head._headers.insert(std::make_pair("Server", p_data->proc_name));
-    res_head._headers.insert(std::make_pair("Connection", "keep-alive"));
+    //res_head._headers.insert(std::make_pair("Connection", "keep-alive"));
+    res_head._headers.insert(std::make_pair("Connection", "close"));
     snprintf(proc_name, sizeof(proc_name), "%d", _body.length());
     res_head._headers.insert(std::make_pair("Content-Length", proc_name));
     res_head.to_head_str(str);
