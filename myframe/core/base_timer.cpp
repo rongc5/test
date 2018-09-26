@@ -91,6 +91,8 @@ void base_timer::check_timer(std::vector<uint32_t> &expect_list)
     {
         timer_list.erase(*ii);
     }
+
+    LOG_DEBUG("_current: size:%u idle: size:%u", _timer_list[_current].size(), _timer_list[1 - _current].size());
 }
 
 bool base_timer::is_empty()

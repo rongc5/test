@@ -2505,7 +2505,6 @@ bool skhttp_res_data_process::do_check_hsingle_sum_diff_ge(std::map<std::string,
             if (date.empty())
                 return flag;
 
-
             end = atoi(t_vec[1].c_str());
             auto ii = p_data->_hsingle_sum_diff_index.current()->at(index).find(date);
             if (ii == p_data->_hsingle_sum_diff_index.current()->at(index).end())

@@ -178,9 +178,13 @@ def print_res(res, parser):
 
     if res.has_key('data'):
         for item in res['data']:
+            key_list = []
             for key in item:
                 if 'block' in key:
                     continue
+                key_list.append(key)
+            key_list.sort()
+            for key in key_list:
                 tmp_str = key + '='
                 myjson = json.dumps(item[key], ensure_ascii=False)
                 tmp_str += myjson

@@ -45,6 +45,7 @@ class rsingle_data_process: public http_base_data_process
         static void update_real_index();
         static void update_history_index();
         static void update_sum_index();
+        static bool get_sum_diff(std::string & id, std::string & date, single_vec & st);
 
         static void single_idle_current();
 

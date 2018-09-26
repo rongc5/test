@@ -127,6 +127,7 @@ class proc_data:public reload_inf
 
     public:
         char proc_name[SIZE_LEN_256];
+        std::string _trade_date;
 
     private:
         static proc_data* _singleton;

@@ -186,6 +186,33 @@ void rquotation_data_process::quotation_index_reset()
     }  
 }
 
+bool rquotation_data_process::get_sum_range_percent(std::string & id, std::string & date, float & sum_range_percent)
+{
+    proc_data* p_data = proc_data::instance();
+
+    bool flag = false;
+    auto it = p_data->_hquoation_dict->current()->_date_index.find(p_data->_trade_date);
+    if (it != p_data->_hquoation_dict->current()->_date_index.end())
+        flag =  true;
+
+    std::string key;
+    history_quotation_dict::creat_key(date, id, key);
+
+    auto tt = p_data->_hquoation_dict->current()->_id_sum_dict.find(key);
+    if (tt == p_data->_hquoation_dict->current()->_id_sum_dict.end())
+        return false;
+
+    sum_range_percent = tt->second->range_percent; 
+    if (!flag)
+    {
+        auto ii = p_data->_rquoation_real_dict.find(id);
+        if (ii != p_data->_rquoation_real_dict.end())
+            sum_range_percent += ii->second->range_percent;
+    }
+
+    return true;
+}
+
 void rquotation_data_process::update_sum_index()
 {
     proc_data* p_data = proc_data::instance();
@@ -497,6 +524,7 @@ void rquotation_data_process::handle_timeout(std::shared_ptr<timer_msg> & t_msg)
         throw CMyCommonException("TIMER_TYPE_HTTP_REQ");
     }
 }
+
 
 void rquotation_data_process::destroy()
 {

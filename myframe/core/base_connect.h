@@ -227,6 +227,12 @@ class base_connect:public base_net_obj
                     LOG_WARNING("_p_send_buf erase %d", ret);
                 }
             }
+
+            if (_p_send_buf && !_p_send_buf->length())
+            {
+                delete _p_send_buf;
+                _p_send_buf = NULL;
+            }
         }
 
     protected:

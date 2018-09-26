@@ -194,6 +194,53 @@ void rsingle_data_process::update_all_index()
     single_idle_current();
 }
 
+bool rsingle_data_process::get_sum_diff(std::string & id, std::string & date, single_vec & st)
+{
+    proc_data* p_data = proc_data::instance();
+
+    bool flag = false;
+    auto it = p_data->_hsingle_dict->current()->_date_index.find(p_data->_trade_date);
+    if (it != p_data->_hsingle_dict->current()->_date_index.end())
+        flag =  true;
+
+    std::string key;
+    history_single_dict::creat_key(date, id, key);
+    auto tt = p_data->_hsingle_dict->current()->_date_sum_dict.find(key);
+    if (tt == p_data->_hsingle_dict->current()->_date_sum_dict.end())
+        return false;
+
+    st.clear();
+    for (uint32_t i = 0; i < tt->second->size(); i++)
+    {   
+        if (i >= st.size())
+        {   
+            single_t ss; 
+            st.push_back(ss);
+        }
+
+        st.at(i) = tt->second->at(i);
+
+        LOG_DEBUG("st: id:%s i:%d in:%d out:%d diff:%d", id.c_str(), i, st[i].in, st[i].out, st[i].diff);
+    }
+
+    if (!flag)
+    {
+        auto ii = p_data->_rsingle_real_dict.find(id);
+
+        for (uint32_t i = 0; ii != p_data->_rsingle_real_dict.end() && i < st.size() && i < ii->second->size(); i++)
+        {
+
+            st[i].in = st[i].in + ii->second->at(i).in;
+            st[i].out = st[i].out + ii->second->at(i).out;
+            st[i].diff = st[i].diff + ii->second->at(i).diff;
+
+            LOG_DEBUG("st: id:%s i:%d in:%d out:%d diff:%d", id.c_str(), i, st[i].in, st[i].out, st[i].diff);
+        } 
+    }
+    
+    return true;
+}
+
 void rsingle_data_process::update_sum_index()
 {
     proc_data* p_data = proc_data::instance();
@@ -240,16 +287,17 @@ void rsingle_data_process::update_sum_index()
                     }
 
                     hs.at(i) = tt->second->at(i);
+                    LOG_DEBUG("date:%s id:%s i:%d in:%d out:%d diff:%d", date.c_str(), id.c_str(), i, hs[i].in, hs[i].out, hs[i].diff);
                 }
 
                 if (!flag)
                 {
-                    for (uint32_t i = 0; i < tt->second->size() && i < ii->second->size(); i++)
+                    for (uint32_t i = 0; i < hs.size() && i < ii->second->size(); i++)
                     {
-
                         hs[i].in = hs[i].in + ii->second->at(i).in;
                         hs[i].out = hs[i].out + ii->second->at(i).out;
                         hs[i].diff = hs[i].diff + ii->second->at(i).diff;
+                        LOG_DEBUG("date:%s id:%s i:%d in:%d out:%d diff:%d", date.c_str(), id.c_str(), i, hs[i].in, hs[i].out, hs[i].diff);
                     } 
                 }
 
