@@ -45,7 +45,7 @@ class rquotation_data_process: public http_base_data_process
         static void update_history_index();
         static void update_sum_index();
         static void quotation_idle_current();
-        static bool get_sum_range_percent(std::string & id, std::string & date, float & sum_range_percent);
+        static bool get_sum_quotation(std::string & id, std::string & date, quotation_t & qt);
 
     protected:
         std::string _recv_buf;

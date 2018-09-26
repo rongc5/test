@@ -20,6 +20,7 @@
 #include <algorithm>
 #include "sk_util.h"
 #include "rsingle_data_process.h"
+#include "rquotation_data_process.h"
 
 
 
@@ -715,6 +716,26 @@ void skhttp_res_data_process::query_history_quotation(uint32_t last_day_num, std
     }
 }
 
+void skhttp_res_data_process::query_sum_quotation(uint32_t last_day_num, std::string &id, Value & root, Document::AllocatorType & allocator)
+{
+    proc_data* p_data = proc_data::instance();
+    std::string date;
+
+    auto ii = p_data->_hquoation_dict->current()->_id_date_dict.find(id);
+    if (ii == p_data->_hquoation_dict->current()->_id_date_dict.end())
+    {
+        return;
+    }
+
+    uint32_t i = 0;
+    for (auto iii = ii->second.rbegin(); iii != ii->second.rend() && i < last_day_num; i++, iii++)
+    {
+        date = *iii;
+    }
+
+    query_sum_quotation(date, id, root, allocator);
+}
+
 void skhttp_res_data_process::query_history_quotation(std::string & history_date, std::string &id, Value & root, Document::AllocatorType & allocator)
 {
     proc_data* p_data = proc_data::instance();
@@ -757,6 +778,39 @@ void skhttp_res_data_process::query_history_quotation(std::string & history_date
         {
             key.SetString("range_percent", allocator); 
             value.SetString(float_2_str(ii->second->range_percent).c_str(), allocator); 
+
+            v.AddMember(key, value, allocator);
+        }
+
+        root.AddMember(k, v, allocator);
+    }
+}
+
+void skhttp_res_data_process::query_sum_quotation(std::string & history_date, std::string &id, Value & root, Document::AllocatorType & allocator)
+{
+    proc_data* p_data = proc_data::instance();
+    char t_buf[SIZE_LEN_64];
+
+    quotation_t qt;
+    bool flag = rquotation_data_process::get_sum_quotation(id, history_date, qt);
+    if (flag)
+    {
+        Value k(kStringType);
+        Value v(kObjectType);
+
+        Value key(kStringType);
+        Value value(kStringType);
+
+        std::string t_str;
+        t_str.append("sum_quotation");
+        t_str.append("_");
+        t_str.append(history_date);
+
+        k.SetString(t_str.c_str(), allocator);
+
+        {
+            key.SetString("range_percent", allocator); 
+            value.SetString(float_2_str(qt.range_percent).c_str(), allocator); 
 
             v.AddMember(key, value, allocator);
         }
@@ -868,6 +922,7 @@ int skhttp_res_data_process::url_query_id(std::map<std::string, std::string> & u
             query_history_single_out(atoi(url_para_map["history_num"].c_str()), url_para_map["id"], root, allocator);
 
         query_history_quotation(atoi(url_para_map["history_num"].c_str()), url_para_map["id"], root, allocator);
+        query_sum_quotation(atoi(url_para_map["history_num"].c_str()), url_para_map["id"], root, allocator);
     }
 
     if (has_key<std::string, std::string>(url_para_map, "history_date"))
@@ -883,6 +938,7 @@ int skhttp_res_data_process::url_query_id(std::map<std::string, std::string> & u
             query_history_single_out(url_para_map["history_date"], url_para_map["id"], root, allocator);
 
         query_history_quotation(url_para_map["history_date"], url_para_map["id"], root, allocator);
+        query_sum_quotation(url_para_map["history_date"], url_para_map["id"], root, allocator);
     }
 
     data_array.PushBack(root, allocator);

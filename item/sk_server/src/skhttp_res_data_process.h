@@ -65,6 +65,8 @@ class skhttp_res_data_process:public http_base_data_process
 
         void query_history_quotation(uint32_t last_day_num, std::string &id, Value & root, Document::AllocatorType & allocator);
 
+        void query_sum_quotation(uint32_t last_day_num, std::string &id, Value & root, Document::AllocatorType & allocator);
+
         void query_history_single(std::string & history_date, std::string &id, Value & root, Document::AllocatorType & allocator);
 
         void query_sum_single(std::string & history_date, std::string &id, Value & root, Document::AllocatorType & allocator);
@@ -74,6 +76,8 @@ class skhttp_res_data_process:public http_base_data_process
         void query_history_single_out(std::string & history_date, std::string &id, Value & root, Document::AllocatorType & allocator);
 
         void query_history_quotation(std::string & history_date, std::string &id, Value & root, Document::AllocatorType & allocator);
+
+        void query_sum_quotation(std::string & history_date, std::string &id, Value & root, Document::AllocatorType & allocator);
 
     private:
         enum SETS_OP_TRPE

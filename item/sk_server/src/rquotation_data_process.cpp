@@ -186,7 +186,7 @@ void rquotation_data_process::quotation_index_reset()
     }  
 }
 
-bool rquotation_data_process::get_sum_range_percent(std::string & id, std::string & date, float & sum_range_percent)
+bool rquotation_data_process::get_sum_quotation(std::string & id, std::string & date, quotation_t & qt)
 {
     proc_data* p_data = proc_data::instance();
 
@@ -202,12 +202,12 @@ bool rquotation_data_process::get_sum_range_percent(std::string & id, std::strin
     if (tt == p_data->_hquoation_dict->current()->_id_sum_dict.end())
         return false;
 
-    sum_range_percent = tt->second->range_percent; 
+    qt.range_percent = tt->second->range_percent; 
     if (!flag)
     {
         auto ii = p_data->_rquoation_real_dict.find(id);
         if (ii != p_data->_rquoation_real_dict.end())
-            sum_range_percent += ii->second->range_percent;
+            qt.range_percent += ii->second->range_percent;
     }
 
     return true;
