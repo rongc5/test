@@ -205,8 +205,8 @@ bool rquotation_data_process::get_sum_quotation(std::string & id, std::string & 
     qt.range_percent = tt->second->range_percent; 
     if (!flag)
     {
-        auto ii = p_data->_rquoation_real_dict.find(id);
-        if (ii != p_data->_rquoation_real_dict.end())
+        auto ii = p_data->_rquoation_dict_index.current()->find(id);
+        if (ii != p_data->_rquoation_dict_index.current()->end())
             qt.range_percent += ii->second->range_percent;
     }
 

@@ -225,17 +225,19 @@ bool rsingle_data_process::get_sum_diff(std::string & id, std::string & date, si
 
     if (!flag)
     {
-        auto ii = p_data->_rsingle_real_dict.find(id);
+        auto ii = p_data->_rsingle_dict_index.current()->find(id);
 
-        for (uint32_t i = 0; ii != p_data->_rsingle_real_dict.end() && i < st.size() && i < ii->second->size(); i++)
+        if (ii != p_data->_rsingle_dict_index.current()->end() && ii->second.size())
         {
+            for (uint32_t i = 0; i != ii->second.back()->size(); i++)
+            {
+                //st[i].in = st[i].in + ii->second.back().at(i).in;
+                //st[i].out = st[i].out + ii->second.out;
+                st[i].diff = st[i].diff + ii->second.back()->at(i).diff;
 
-            st[i].in = st[i].in + ii->second->at(i).in;
-            st[i].out = st[i].out + ii->second->at(i).out;
-            st[i].diff = st[i].diff + ii->second->at(i).diff;
-
-            LOG_DEBUG("st: id:%s i:%d in:%d out:%d diff:%d", id.c_str(), i, st[i].in, st[i].out, st[i].diff);
-        } 
+                LOG_DEBUG("st: id:%s i:%d in:%d out:%d diff:%d", id.c_str(), i, st[i].in, st[i].out, st[i].diff);
+            } 
+        }
     }
     
     return true;
