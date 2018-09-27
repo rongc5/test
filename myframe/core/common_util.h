@@ -184,9 +184,6 @@ int UrlDecode(const std::string &sSrc, std::string &sDest);
     }while (0)
 
 
-char * strncasestr(const char *p, int nLen, const char *pattern);
-
-
 std::string SecToHttpTime(time_t tmpTime);
 
 struct TMonth

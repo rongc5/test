@@ -84,7 +84,6 @@ void http_res_process::parse_first_line(const std::string & line)
     _req_head_para._url_path = tmp_vec[1];
 }
 
-
 void http_res_process::parse_header(std::string & recv_head)
 {
     std::string &head_str = recv_head;
@@ -122,7 +121,6 @@ void http_res_process::parse_header(std::string & recv_head)
         }
     }
 
-
     std::string *tmp_str = NULL;
     if (_req_head_para._method == "POST" || _req_head_para._method == "PUT")
     {
@@ -130,7 +128,7 @@ void http_res_process::parse_header(std::string & recv_head)
         tmp_str = _req_head_para.get_header("Content-Type");
         if (tmp_str)
         {
-            if (strncasestr(tmp_str->c_str(), tmp_str->length(),  "multipart/form-data") != NULL)
+            if (strcasestr(tmp_str->c_str(), "multipart/form-data") != NULL)
             {
                 GetCaseStringByLabel(*tmp_str, "boundary=", "", _boundary_para._boundary_str);
             }

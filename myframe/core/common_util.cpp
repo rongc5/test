@@ -512,22 +512,6 @@ std::string SecToHttpTime(time_t tmpTime)
     return std::string(sTime);
 }
 
-
-char * strncasestr(const char *p, int nLen, const char *pattern)
-{
-    char *ret = NULL;
-    char *pp = new char[nLen + 1];
-    memcpy(pp, p, nLen);
-    pp[nLen] = 0;
-    char *pRet = strcasestr(pp, pattern);
-    if (pRet != NULL)
-    {
-        ret = (char*)p + (pRet - pp);
-    }
-    delete[] pp;
-    return ret;
-}
-
 int parse_domain(const std::string &sDomain, std::vector<std::string> & vIp)
 {
     char ipbuf[SIZE_LEN_16];
