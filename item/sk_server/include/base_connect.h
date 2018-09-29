@@ -42,7 +42,6 @@ class base_connect:public base_net_obj
             }
         }
 
-
         virtual void event_process(int event)
         {
             if ((event & EPOLLERR) == EPOLLERR || (event & EPOLLHUP) == EPOLLHUP)
@@ -191,13 +190,13 @@ class base_connect:public base_net_obj
             {
                 LOG_DEBUG("process_recv_buf _recv_buf_len[%d] fd[%d]", _recv_buf_len, _fd);
                 p_ret = _process->process_recv_buf(_recv_buf.data(), _recv_buf_len);
-                LOG_DEBUG("process_recv_buf p_ret[%d] fd[%d]", p_ret, _fd);
                 if (p_ret && p_ret <= _recv_buf_len)
                 {
                     _recv_buf.erase(0, p_ret); 
                 }
             }		
 
+            LOG_DEBUG("process_recv_buf _recv_buf[%d] ip[%s]", _recv_buf.length(), _peer_net.ip.c_str());
         }
 
         void real_send()

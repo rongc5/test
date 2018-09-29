@@ -44,7 +44,7 @@ uint32_t base_timer::add_timer(std::shared_ptr<timer_msg> & t_msg)
     uint64_t reach_time = GetMilliSecond() + t_msg->_time_length;
     t_msg->_timer_id = gen_timerid();
 
-    LOG_DEBUG("time_length:%u reach_time:%llu timer_id:%u _timer_type:%u", t_msg->_time_length, reach_time, t_msg->_timer_id, t_msg->_timer_type);
+    //LOG_DEBUG("time_length:%u reach_time:%llu timer_id:%u _timer_type:%u", t_msg->_time_length, reach_time, t_msg->_timer_id, t_msg->_timer_type);
 
     _timer_list[_current].insert(make_pair(reach_time, t_msg));
 
@@ -70,9 +70,8 @@ void base_timer::check_timer(std::vector<uint32_t> &expect_list)
             if (it->first > now)
                 break;
 
-            LOG_DEBUG("time_length:%u timer_id:%u _timer_type:%u", it->second->_time_length, it->second->_timer_id, it->second->_timer_type);
+            //LOG_DEBUG("time_length:%u timer_id:%u _timer_type:%u", it->second->_time_length, it->second->_timer_id, it->second->_timer_type);
 
-            _timerid_set.erase(it->second->_timer_id);
             tmp_vec.push_back(it->first);
 
             _net_container->handle_timeout(it->second);
@@ -89,10 +88,15 @@ void base_timer::check_timer(std::vector<uint32_t> &expect_list)
 
     for (ii = tmp_vec.begin(); ii != tmp_vec.end(); ii++)
     {
-        timer_list.erase(*ii);
+        it = timer_list.find(*ii);
+        if (it != timer_list.end())
+        {
+            _timerid_set.erase(it->second->_timer_id);
+            timer_list.erase(*ii);
+        }
     }
 
-    LOG_DEBUG("_current: size:%u idle: size:%u", _timer_list[_current].size(), _timer_list[1 - _current].size());
+    //LOG_DEBUG("_current: size:%u idle: size:%u", _timer_list[_current].size(), _timer_list[1 - _current].size());
 }
 
 bool base_timer::is_empty()

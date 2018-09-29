@@ -172,5 +172,14 @@ const int URLESCAPE[] =
 #define WEB_SOCKET_HANDSHAKE_OK_TIMER_TYPE 3
 #define DOMAIN_CACHE_TIMER_TYPE 5
 
+#ifdef DEBUG
+#define PDEBUG(format, arg...) \
+do { \
+    printf("tid:[%lu],line:[%d] ,func:[%s],file:[%s] \n" format, pthread_self(), __LINE__, __func__, __FILE__, ##arg); \
+} while (0)
+#else
+#define PDEBUG(format, arg...) 
+#endif
+
 
 #endif

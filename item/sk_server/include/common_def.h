@@ -48,6 +48,11 @@ struct timer_msg
             _obj_id = 0;
         };
 
+        ~timer_msg()
+        {
+            //PDEBUG("time_length:%u timer_id:%u _timer_type:%u", _time_length, _timer_id, _timer_type);
+        }
+
         /** _obj_id, _timer_type, _time_length 必须传入 , _time_length 为毫秒级别**/
         uint32_t _obj_id;
         uint32_t _timer_type;

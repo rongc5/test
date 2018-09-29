@@ -1,7 +1,7 @@
 #ifndef _BASE_DATA_PROCESS_H_
 #define _BASE_DATA_PROCESS_H_
 
-#include "common_def.h"
+#include "common_util.h"
 
 class base_net_obj;
 class base_data_process

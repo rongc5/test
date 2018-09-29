@@ -49,8 +49,6 @@ struct str_equaler
 {
     bool operator()(const std::string & k1, const std::string & k2) const
     {   
-        
-
         return !k1.compare(k2);
     }   
 
@@ -67,11 +65,9 @@ struct str_equaler
         if (!k1 || !k2)
             return false;
 
-
         return !k1->compare(*k2);
     }   
 };
-
 
 #define DEL_PTR(PTR) \
     do {\
@@ -165,16 +161,6 @@ int UrlDecode(const std::string &sSrc, std::string &sDest);
             return -1; \
         } \
     }while(0)
-    
-    
-#ifdef DEBUG
-#define PDEBUG(format, arg...) \
-    do { \
-        printf("tid:[%lu],line:[%d] ,func:[%s],file:[%s] \n" format, pthread_self(), __LINE__, __func__, __FILE__, ##arg); \
-} while (0)
-#else
-    #define PDEBUG(format, arg...) 
-#endif
 
 #define FORMAT_STR(DST, SRC) \
     do {\
