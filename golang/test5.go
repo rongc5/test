@@ -21,7 +21,9 @@ func main() {
 		Name:   "hello world",
 	}
 
+    const PI = 3.1415926
+
 	var str = u.String()
-	fmt.Printf("%v", str)
+	fmt.Printf("%v, %v", str, PI)
 	//fmt.Println("Hello World!")
 }

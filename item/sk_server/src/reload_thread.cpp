@@ -1,4 +1,5 @@
 #include "reload_thread.h"
+#include <malloc.h>
 
 reload_thread::reload_thread()
 {

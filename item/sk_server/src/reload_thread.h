@@ -26,6 +26,7 @@ class reload_thread:public base_net_thread
 
     private:
         bool _is_first;
+        int count;
 };
 
 
