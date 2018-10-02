@@ -32,6 +32,7 @@ void reload_thread::handle_timeout(std::shared_ptr<timer_msg> & t_msg)
         }
 
         reload_timer_start();
+        malloc_trim(0);
     }
     else if (t_msg->_timer_type == TIMER_TYPE_DESTROY_IDLE && p_data)
     {
