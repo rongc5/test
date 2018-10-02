@@ -4,13 +4,13 @@ LIB_DIR=../lib
 
 INCLUDE = -I${INC_DIR}/ 
 
-LIB = -L$(LIB_DIR) -lmyframe -lpthread
+LIB = -L$(LIB_DIR) -lmyframe -lpthread -lsign
 
 CPPFLAGS = -g -msse3 -Wall $(INCLUDE) -DDEBUG=1 -std=c++0x
 CC  = g++ $(CPPFLAGS)
 
 
-OBJ	= ./test_day_week.o     \
+OBJ	= ./test_timer.o     \
 
 
 AR=ar
