@@ -68,7 +68,14 @@ int sk_conf::load()
 
 int sk_conf::reload()
 {
-    return load();
+    int flag = 0;
+    if (_strategy && _strategy->need_reload())
+    {
+        flag = 1;
+        load();
+    }
+
+    return flag;
 }
 
 bool sk_conf::need_reload()

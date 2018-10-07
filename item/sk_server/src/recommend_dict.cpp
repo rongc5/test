@@ -55,6 +55,7 @@ int recommend_dict::load()
             p_data->_recommend_index.idle()->insert(std::make_pair(tmp_vec[1], tmp_vec[0]));
         }
     }
+    fclose(fp);
 
     struct stat st;
     stat(_fullpath, &st);

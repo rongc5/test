@@ -69,10 +69,19 @@ class listen_connect:public base_net_obj
                 int tmp_sock = 0;
                 sockaddr_in addr;	
                 socklen_t len = 0;
-                while((tmp_sock = accept(_fd, (sockaddr*)&addr, &len)) != -1)
-                {				
-                    LOG_DEBUG("recv fd[%d]\n", tmp_sock);
-                    _process->process(tmp_sock);
+                while(1)
+                {
+                    tmp_sock = accept(_fd, (sockaddr*)&addr, &len);
+                    if (tmp_sock != -1)
+                    {				
+                        LOG_DEBUG("recv fd[%d]\n", tmp_sock);
+                        _process->process(tmp_sock);
+                    }
+                    else
+                    {
+                        LOG_WARNING("accept fail:%s", strerror(errno));
+                        break;
+                    }
                 }
             }
             else

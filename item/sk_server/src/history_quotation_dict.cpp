@@ -214,6 +214,7 @@ int history_quotation_dict::load_history_quoation(const char * file)
             }
         }
     }
+    fclose(fp);
 
     return 0;
 }

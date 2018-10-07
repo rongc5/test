@@ -48,13 +48,13 @@ class log_thread:public base_thread
         log_write_name _log_name[LOGSIZE];
         log_conf _conf;
         int _epoll_fd; 
-        std::mutex _mutex[2];
+        std::mutex _mutex;
         std::deque<std::shared_ptr<log_msg> > _queue[2];
         int _channelid;
         struct epoll_event *_epoll_events;
         uint32_t _epoll_size;
         std::string _recv_buf;
-        int _current;
+        volatile int _current;
 };
 
 

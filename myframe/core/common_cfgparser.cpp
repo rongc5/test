@@ -51,6 +51,8 @@ int common_cfgparser::load_cfg(const std::string & file_name)
         }
     }
 
+    fclose(fp);
+
     return 0;
 }
 

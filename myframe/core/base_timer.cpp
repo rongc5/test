@@ -55,7 +55,10 @@ void base_timer::check_timer(std::vector<uint32_t> &expect_list)
 {
     uint64_t now = 	GetMilliSecond();
 
-    std::multimap<uint64_t, std::shared_ptr<timer_msg> >::iterator it;
+    typedef std::multimap<uint64_t, std::shared_ptr<timer_msg> >::iterator MITER;
+    MITER it;
+    std::pair<MITER, MITER> range;
+
     it = _timer_list[_current].begin();
     std::multimap<uint64_t, std::shared_ptr<timer_msg> > & timer_list = _timer_list[_current];
     std::vector<uint64_t> tmp_vec;
@@ -88,15 +91,16 @@ void base_timer::check_timer(std::vector<uint32_t> &expect_list)
 
     for (ii = tmp_vec.begin(); ii != tmp_vec.end(); ii++)
     {
-        it = timer_list.find(*ii);
-        if (it != timer_list.end())
+
+        range = timer_list.equal_range(*ii);
+        for (it = range.first; it != range.second; ++it)
         {
             _timerid_set.erase(it->second->_timer_id);
-            timer_list.erase(*ii);
         }
+        timer_list.erase(*ii);
     }
 
-    //LOG_DEBUG("_current: size:%u idle: size:%u", _timer_list[_current].size(), _timer_list[1 - _current].size());
+    //LOG_DEBUG("_current: size:%u idle: size:%u, _timerid_set:%u", _timer_list[_current].size(), _timer_list[1 - _current].size(), _timerid_set.size());
 }
 
 bool base_timer::is_empty()

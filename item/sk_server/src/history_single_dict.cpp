@@ -151,6 +151,7 @@ int history_single_dict::load_history_single(const char * file)
         }
 
     }
+    fclose(fp);
 
     return 0;
 }

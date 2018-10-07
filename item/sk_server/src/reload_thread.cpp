@@ -26,8 +26,7 @@ void reload_thread::handle_timeout(std::shared_ptr<timer_msg> & t_msg)
     proc_data* p_data = proc_data::instance();
     if (t_msg->_timer_type == TIMER_TYPE_RELOAD_CONF && p_data)
     {
-        p_data->_conf->reload();
-        if (p_data->reload())
+        if (p_data->reload() || p_data->_conf->reload())
         {
             destroy_idle_start();
         }

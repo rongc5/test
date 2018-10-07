@@ -19,7 +19,6 @@ base_net_obj::base_net_obj()
 base_net_obj::~base_net_obj()
 {
 
-    LOG_DEBUG("%p", this);
     common_epoll * p_epoll = _p_net_container->get_epoll();
     if (p_epoll) {
         p_epoll->del_from_epoll(this);
@@ -29,6 +28,7 @@ base_net_obj::~base_net_obj()
 
     if (_fd != 0) {
         ::close(_fd);
+        LOG_DEBUG("close %d", _fd);
         _fd = 0;
     }
 }

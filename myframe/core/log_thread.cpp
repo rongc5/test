@@ -80,10 +80,11 @@ void log_thread::log_write(LogType type, const char *format, ...)
 
 void log_thread::put_msg(std::shared_ptr<log_msg> & p_msg)
 {
+    std::lock_guard<std::mutex> lck (_mutex);
     int idle = 1 - _current;
-    std::lock_guard<std::mutex> lck (_mutex[idle]);
     _queue[idle].push_back(p_msg);
-    write(_channelid, CHANNEL_MSG_TAG, sizeof(CHANNEL_MSG_TAG));
+    //write(_channelid, CHANNEL_MSG_TAG, sizeof(CHANNEL_MSG_TAG));
+    send(_channelid, CHANNEL_MSG_TAG, sizeof(CHANNEL_MSG_TAG), MSG_DONTWAIT);
 }
 
 void log_thread::handle_msg(std::shared_ptr<log_msg> & p_msg)
@@ -234,24 +235,27 @@ int log_thread::RECV(int fd, void *buf, size_t len)
 
 size_t log_thread::process_recv_buf(const char *buf, const size_t len)
 {
-    size_t k = len /sizeof(CHANNEL_MSG_TAG);
-    size_t i = 0;
+    //size_t k = len /sizeof(CHANNEL_MSG_TAG);
+    //size_t i = 0;
     std::deque<std::shared_ptr<log_msg> >::iterator it;
 
-    std::lock_guard<std::mutex> lck (_mutex[_current]);
-    for (it = _queue[_current].begin(); it != _queue[_current].end() && i < k;) {
-        handle_msg(*it);
-        it = _queue[_current].erase(it);
-        i++;
-    }
-
     if (_queue[_current].begin() == _queue[_current].end()){
+        std::lock_guard<std::mutex> lck (_mutex);
         _current = 1 - _current;
     }
 
-    k =  i * sizeof(CHANNEL_MSG_TAG);
+    //for (it = _queue[_current].begin(); it != _queue[_current].end() && i < k;) {
+    for (it = _queue[_current].begin(); it != _queue[_current].end();) {
+        handle_msg(*it);
+        it = _queue[_current].erase(it);
+        //i++;
+    }
 
-    return k;
+
+    //k =  i * sizeof(CHANNEL_MSG_TAG);
+
+    //return k;
+    return len;
 }
 
 void log_thread::set_type(LogType type)
@@ -270,26 +274,28 @@ void log_thread::obj_process()
 
     char buf[SIZE_LEN_2048];
     ssize_t ret = 0;
-    size_t _recv_buf_len = _recv_buf.length();
+    //size_t _recv_buf_len = _recv_buf.length();
     
     for (int i =0; i < nfds; i++) {
         if (_epoll_events[i].events & EPOLLIN) {
             ret = RECV(_epoll_events[i].data.fd, buf, sizeof(buf));
-            if (ret) {
-                _recv_buf.append(buf, ret);  
-                _recv_buf_len += ret;
-            }
+            //if (ret) {
+                //_recv_buf.append(buf, ret);  
+                //_recv_buf_len += ret;
+            //}
+
+            //if (_recv_buf_len > 0) {
+                //size_t p_ret = process_recv_buf((char*)_recv_buf.c_str(), _recv_buf_len);
+
+                //if (p_ret > 0 && p_ret <= _recv_buf_len)
+                //{
+                    //_recv_buf.erase(0, p_ret);
+                //}
+            //}
         }
     }
     
-    if (_recv_buf_len > 0) {
-    	size_t p_ret = process_recv_buf((char*)_recv_buf.c_str(), _recv_buf_len);
-
-      if (p_ret > 0 && p_ret <= _recv_buf_len)
-        {
-            _recv_buf.erase(0, p_ret);
-        }
-    }
+    process_recv_buf(buf, ret);
 }
 
 const log_conf & log_thread::get_log_conf()

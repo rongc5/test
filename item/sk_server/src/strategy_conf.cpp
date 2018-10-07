@@ -48,6 +48,7 @@ int strategy_conf::load()
 
         _cfg.insert(std::make_pair(trim(tmp_vec[0].c_str()), trim(tmp_vec[1].c_str())));
     }
+    fclose(fp);
 
     do_parse();
 
