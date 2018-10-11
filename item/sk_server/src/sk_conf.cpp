@@ -92,3 +92,11 @@ int sk_conf::destroy()
 {
     return 0;
 }
+
+int sk_conf::destroy_idle()
+{
+    if (_strategy)
+        _strategy->idle()->destroy();
+
+    return 0;
+}

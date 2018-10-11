@@ -231,10 +231,7 @@ bool rsingle_data_process::get_sum_diff(std::string & id, std::string & date, si
         {
             for (uint32_t i = 0; i != ii->second.back()->size(); i++)
             {
-                //st[i].in = st[i].in + ii->second.back().at(i).in;
-                //st[i].out = st[i].out + ii->second.out;
                 st[i].diff = st[i].diff + ii->second.back()->at(i).diff;
-
                 LOG_DEBUG("st: id:%s i:%d in:%d out:%d diff:%d", id.c_str(), i, st[i].in, st[i].out, st[i].diff);
             } 
         }
@@ -268,9 +265,10 @@ void rsingle_data_process::update_sum_index()
             it != p_data->_hsingle_dict->current()->_date_index.end(); it++)
     {   
         const std::string  & date = *it;
-        for (auto ii = p_data->_rsingle_real_dict.begin(); ii != p_data->_rsingle_real_dict.end(); ii++)
+        for (auto ii = p_data->_rsingle_dict_index.idle()->begin(); ii != p_data->_rsingle_dict_index.idle()->end(); ii++)
         {
             const std::string & id = ii->first;
+            std::deque<std::shared_ptr<single_vec> > & st = ii->second;
             std::string key;
             history_single_dict::creat_key(date, id, key);
 
@@ -294,11 +292,9 @@ void rsingle_data_process::update_sum_index()
 
                 if (!flag)
                 {
-                    for (uint32_t i = 0; i < hs.size() && i < ii->second->size(); i++)
+                    for (uint32_t i =0; i < st.back()->size(); i++) 
                     {
-                        hs[i].in = hs[i].in + ii->second->at(i).in;
-                        hs[i].out = hs[i].out + ii->second->at(i).out;
-                        hs[i].diff = hs[i].diff + ii->second->at(i).diff;
+                        hs[i].diff = hs[i].diff + st.back()->at(i).diff;
                         LOG_DEBUG("date:%s id:%s i:%d in:%d out:%d diff:%d", date.c_str(), id.c_str(), i, hs[i].in, hs[i].out, hs[i].diff);
                     } 
                 }

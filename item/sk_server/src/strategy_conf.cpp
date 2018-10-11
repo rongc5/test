@@ -315,6 +315,180 @@ int strategy_conf::dump()
 
 int strategy_conf::destroy()
 {
+    {
+        _cfg.clear();
+    }
+
+    {
+        std::string tmp;
+        tmp.swap(ua_path);
+    }
+
+    {
+        std::string tmp;
+        tmp.swap(ua_file);
+    }
+
+    {
+        std::string tmp;
+        tmp.swap(id_path);
+    }
+
+
+    {
+        std::string tmp;
+        tmp.swap(id_file);
+    }
+
+    {
+        std::string tmp;
+        tmp.swap(financie_path);
+    }
+
+    {
+        std::string tmp;
+        tmp.swap(financie_file);
+    }
+
+
+    {
+        std::string tmp;
+        tmp.swap(ban_path);
+    }
+
+    {
+        std::string tmp;
+        tmp.swap(ban_file);
+    }
+
+
+    {
+        std::string tmp;
+        tmp.swap(history_single_path);
+    }
+
+
+    {
+        std::string tmp;
+        tmp.swap(history_single_file);
+    }
+
+    {
+        std::string tmp;
+        tmp.swap(history_quotation_path);
+    }
+
+    {
+        std::string tmp;
+        tmp.swap(history_quotation_file);
+    }
+
+    {
+        std::string tmp;
+        tmp.swap(holiday_dict_path);
+    }
+
+
+    {
+        std::string tmp;
+        tmp.swap(holiday_dict_file);
+    }
+
+
+    {
+        std::string tmp;
+        tmp.swap(recommend_dict_path);
+    }
+
+    {
+        std::string tmp;
+        tmp.swap(recommend_dict_file);
+    }
+
+
+    {
+        std::string tmp;
+        tmp.swap(plate_dict_split_path);
+    }
+
+    {
+        std::string tmp;
+        tmp.swap(plate_dict_split_file);
+    }
+
+
+    {
+        std::string tmp;
+        tmp.swap(plate_dict_path);
+    }
+
+    {
+        std::string tmp;
+        tmp.swap(plate_dict_file);
+    }
+
+    {
+        std::string tmp;
+        tmp.swap(addr_dict_split_path);
+    }
+
+    {
+        std::string tmp;
+        tmp.swap(addr_dict_split_file);
+    }
+
+    {
+        std::string tmp;
+        tmp.swap(addr_dict_path);
+    }
+
+    {
+        std::string tmp;
+        tmp.swap(addr_dict_file);
+    }
+
+    {
+        std::string tmp;
+        tmp.swap(real_quotation_path);
+    }
+
+    {
+        std::string tmp;
+        tmp.swap(real_single_path);
+    }
+
+
+    {
+        std::string tmp;
+        tmp.swap(real_morning_stime);
+    }
+
+    {
+        std::string tmp;
+        tmp.swap(real_morning_etime);
+    }
+
+    {
+        std::string tmp;
+        tmp.swap(real_afternoon_stime);
+    }
+
+    {
+        std::string tmp;
+        tmp.swap(real_afternoon_etime);
+    }
+
+    {
+        std::string tmp;
+        tmp.swap(dump_real_time);
+    }
+
+    {
+        std::vector<uint32_t> tmp;
+        tmp.swap(real_single_scale);
+    }
+
+
     return 0;
 }
 

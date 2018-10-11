@@ -37,6 +37,7 @@ void reload_thread::handle_timeout(std::shared_ptr<timer_msg> & t_msg)
     else if (t_msg->_timer_type == TIMER_TYPE_DESTROY_IDLE && p_data)
     {
         p_data->destroy_idle();
+        p_data->_conf->destroy_idle();
     }
 }
 

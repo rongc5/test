@@ -2589,7 +2589,7 @@ bool skhttp_res_data_process::do_check_hsingle_sum_diff_ge(std::map<std::string,
     std::vector<std::set<std::string> > tmp_res_vec;
 
     std::multimap<int, std::string>::iterator it_le, it_ge, it;
-    if (index >= p_data->_rsingle_diff_index.current()->size())
+    if (index >= p_data->_hsingle_sum_diff_index.current()->size())
         return flag;
 
     snprintf(t_buf, sizeof(t_buf), "hsingle_sum_diff_%d_ge", index);

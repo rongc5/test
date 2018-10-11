@@ -31,6 +31,7 @@ class sk_conf: public reload_inf
         virtual bool need_reload();
         virtual int dump();
         virtual int destroy();
+        int destroy_idle();
 
     private:
         std::string _filename;
