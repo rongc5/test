@@ -13,6 +13,7 @@
 #include "sk_conf.h"
 #include "id_dict.h"
 #include "history_quotation_dict.h"
+#include "strategy_conf.h"
 
 rquotation_data_process::rquotation_data_process(http_base_process * _p_process):http_base_data_process(_p_process)
 {
@@ -443,7 +444,9 @@ void rquotation_data_process::gen_net_obj(std::string id, common_obj_container *
     if (!net_container || id.empty())
         return;
 
-    std::string url = "http://web.sqt.gtimg.cn/q=";
+    proc_data* p_data = proc_data::instance();
+    strategy_conf * strategy = p_data->_conf->_strategy->current();
+    std::string url = strategy->real_quotation_api;
     url.append(id);
 
     std::string refer = "http://gu.qq.com/";
@@ -501,7 +504,6 @@ void rquotation_data_process::gen_net_obj(std::string id, common_obj_container *
     connect->connect();
     connect->set_net_container(net_container);
 
-    proc_data* p_data = proc_data::instance();
     if (p_data && p_data->_conf && p_data->_conf->_strategy->current()->req_http_timeout)
     {
         std::shared_ptr<timer_msg>  t_msg(new timer_msg);

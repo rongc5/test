@@ -66,6 +66,9 @@ class strategy_conf:public reload_inf
         std::string real_quotation_path;
         std::string real_single_path;
 
+        std::string real_quotation_api;
+        std::string real_single_api;
+
     public:
         std::string real_morning_stime;
         std::string real_morning_etime;

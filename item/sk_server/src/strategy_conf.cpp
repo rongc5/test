@@ -266,6 +266,16 @@ void strategy_conf::do_parse()
         real_single_path = _cfg["real_single_path"];
     }
 
+    if (has_key<std::string, std::string>(_cfg, "real_quotation_api"))
+    {
+        real_quotation_api = _cfg["real_quotation_api"];
+    }
+
+    if (has_key<std::string, std::string>(_cfg, "real_single_api"))
+    {
+        real_single_api = _cfg["real_single_api"];
+    }
+
     real_single_scale.clear();
     if (has_key<std::string, std::string>(_cfg, "real_single_scale"))
     {
@@ -457,6 +467,15 @@ int strategy_conf::destroy()
         tmp.swap(real_single_path);
     }
 
+    {
+        std::string tmp;
+        tmp.swap(real_quotation_api);
+    }
+
+    {
+        std::string tmp;
+        tmp.swap(real_single_api);
+    }
 
     {
         std::string tmp;
