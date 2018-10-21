@@ -78,8 +78,6 @@ class skhttp_res_data_process:public http_base_data_process
         void query_history_quotation(std::string & history_date, std::string &id, Value & root, Document::AllocatorType & allocator);
 
         void query_sum_quotation(std::string & history_date, std::string &id, Value & root, Document::AllocatorType & allocator);
-        
-        void register_handler(std::string & url, std::shared_ptr<url_handler> & handler);
 
     private:
      

@@ -79,32 +79,6 @@ void get_union(std::vector<std::set<std::string> > & arr, std::set<std::string> 
     }
 
     res = search;
+
 }
-
-void get_intersection(std::vector<std::set<std::string> > & arr, std::set<std::string> &res)
-{
-    std::set<std::string> search, tmp;
-    auto ii = arr.begin();
-    if (arr.size())
-    {
-        search = (*ii);
-        ii++;
-    }
-
-    for (; ii != arr.end(); ii++)
-    {
-        tmp.clear();
-
-        std::set_intersection(search.begin(), search.end(), ii->begin(), ii->end(), std::inserter(tmp,tmp.begin()));
-        if (tmp.empty())
-        {
-            return;
-        }
-
-        search = tmp;
-    }
-
-    res = search;
-}
-
 
