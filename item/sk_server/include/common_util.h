@@ -278,6 +278,8 @@ class ToBufferMgr
         int16_t _curr;
 };
 
+bool start_with(const char *a, const char *b, size_t n=0);
+
 uint32_t common_random(uint32_t *seed);
 
 //计算日期对应一周的第几天, 0 for Sunday, 1 for Monday

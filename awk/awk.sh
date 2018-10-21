@@ -43,3 +43,5 @@ BEGIN {
 310     t       9       143.7761106780  1.0
 598     t       9       229.0199276668  0.9996838702
 620     t       9       88.8619226539   1.0
+
+awk -F',' '{for (i = 1; i <= NF; i++) if (match($i, "\"charge\":1")) arr[{]++} END{for (i in arr) print i,arr[i]}'}

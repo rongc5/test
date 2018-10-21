@@ -700,3 +700,14 @@ int date_change(const std::string &in, int diff, std::string &out)
 
     return 0;
 }
+
+bool start_with(const char *a, const char *b, size_t n)
+{
+    if (!n) {
+        if(strncmp(a, b, strlen(b)) == 0) return 1;
+    }else {
+        if(strncmp(a, b, n) == 0) return 1;  
+    }   
+
+    return 0;
+}

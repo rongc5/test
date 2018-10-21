@@ -240,5 +240,3 @@ size_t http_res_process::get_boundary(const char *buf, size_t len, int &result)
     return ret - p_len;
 }
 
-
-
