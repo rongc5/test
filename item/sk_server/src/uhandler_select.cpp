@@ -1,5 +1,16 @@
 #include "uhandler_select.h"
 #include "sk_util.h"
+#include "stringbuffer.h"
+#include "writer.h"
+#include "document.h"
+#include "memorystream.h"
+#include "prettywriter.h"
+#include "rapidjson.h"
+#include <algorithm>
+
+#include "proc_data.h"
+
+using namespace rapidjson;
 
 void perform(http_req_head_para * req_head, std::string * recv_body, http_res_head_para * res_head, std::string * send_body)
 {

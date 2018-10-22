@@ -4,14 +4,7 @@
 #include "base_def.h"
 #include "http_base_process.h"
 #include "http_base_data_process.h"
-#include "stringbuffer.h"
-#include "writer.h"
-#include "document.h"
-#include "memorystream.h"
-#include "prettywriter.h"
-#include "rapidjson.h"
-
-using namespace rapidjson;
+#include "sk_def.h"
 
 class skhttp_res_data_process:public http_base_data_process
 {
@@ -38,48 +31,8 @@ class skhttp_res_data_process:public http_base_data_process
         int do_check_select(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res);
 
         int do_parse_request(std::map<std::string, std::string> & url_para_map);
-
-        void query_finance(std::string &id, Value & root, Document::AllocatorType & allocator);
-
-        void query_quotation(std::string &id, Value & root, Document::AllocatorType & allocator);
-
-        void query_plate(std::string &id, Value & root, Document::AllocatorType & allocator);
-
-        void query_blocked(std::string &id, Value & root, Document::AllocatorType & allocator);
-
-        void query_single(std::string &id, Value & root, Document::AllocatorType & allocator);
-
-        void query_single_in(std::string &id, Value & root, Document::AllocatorType & allocator);
-
-        void query_single_out(std::string &id, Value & root, Document::AllocatorType & allocator);
-
-        void query_addr(std::string &id, Value & root, Document::AllocatorType & allocator);
-
-        void query_history_single(uint32_t last_day_num, std::string &id, Value & root, Document::AllocatorType & allocator);
         
-        void query_sum_single(uint32_t last_day_num, std::string &id, Value & root, Document::AllocatorType & allocator);
-
-        void query_history_single_in(uint32_t last_day_num, std::string &id, Value & root, Document::AllocatorType & allocator);
-
-        void query_history_single_out(uint32_t last_day_num, std::string &id, Value & root, Document::AllocatorType & allocator);
-
-        void query_history_quotation(uint32_t last_day_num, std::string &id, Value & root, Document::AllocatorType & allocator);
-
-        void query_sum_quotation(uint32_t last_day_num, std::string &id, Value & root, Document::AllocatorType & allocator);
-
-        void query_history_single(std::string & history_date, std::string &id, Value & root, Document::AllocatorType & allocator);
-
-        void query_sum_single(std::string & history_date, std::string &id, Value & root, Document::AllocatorType & allocator);
-
-        void query_history_single_in(std::string & history_date, std::string &id, Value & root, Document::AllocatorType & allocator);
-
-        void query_history_single_out(std::string & history_date, std::string &id, Value & root, Document::AllocatorType & allocator);
-
-        void query_history_quotation(std::string & history_date, std::string &id, Value & root, Document::AllocatorType & allocator);
-
-        void query_sum_quotation(std::string & history_date, std::string &id, Value & root, Document::AllocatorType & allocator);
-        
-        void register_handler(std::string & url, std::shared_ptr<url_handler> & handler);
+        void reg_handler(std::string & url, std::shared_ptr<url_handler> & handler);
 
     private:
      

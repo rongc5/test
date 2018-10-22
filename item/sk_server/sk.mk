@@ -40,6 +40,7 @@ OBJ	= $(LOC_DIR)/main.o     \
 	  $(LOC_DIR)/reload_thread.o \
 	  $(LOC_DIR)/skhttp_req_thread.o \
 	  $(LOC_DIR)/sk_util.o \
+	  $(LOC_DIR)/uhandler_select.o \
 
 
 AR=ar

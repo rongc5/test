@@ -17,11 +17,11 @@
 #include "base_net_obj.h"
 #include "id_dict.h"
 
-#include <algorithm>
 #include "sk_util.h"
 #include "rsingle_data_process.h"
 #include "rquotation_data_process.h"
 
+#include "uhandler_select.h"
 
 
 skhttp_res_data_process::skhttp_res_data_process(http_base_process * _p_process):http_base_data_process(_p_process)
@@ -1025,5 +1025,13 @@ void skhttp_res_data_process::gen_listen_obj(int fd, common_obj_container * net_
     connect->set_process(res_process);
 
     connect->set_net_container(net_container);
+
+    sa_process->reg_handler("/select?", std::make_shared<uhandler_select>());
+    sa_process->reg_handler("/queryid?", std::make_shared<uhandler_select>());
+}
+
+void reg_handler(std::string & url, std::shared_ptr<url_handler> & handler)
+{
+    _uhandler_map[url] = handler;
 }
 
