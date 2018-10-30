@@ -67,7 +67,9 @@ class signal_process
 std::string float_2_str(float a, int decimal = 2);
 std::string int_2_str(int a);
 
+void get_union(std::vector<std::set<std::string> > & arr, std::set<std::string> &res);
 
+void get_intersection(std::vector<std::set<std::string> > & arr, std::set<std::string> &res);
 
 
 #endif

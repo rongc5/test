@@ -110,6 +110,14 @@ struct quotation_t
     }
 };
 
+class url_handler
+{
+    public:
+        virtual ~url_handler(){}
+        virtual void perform(http_req_head_para * req_head, std::string * recv_body, 
+                http_res_head_para * res_head, std::string * send_body)=0;
+};
+
 #define NORMAL_MSG_DUMP 1000
 
 #define TIMER_TYPE_RELOAD_CONF 10000

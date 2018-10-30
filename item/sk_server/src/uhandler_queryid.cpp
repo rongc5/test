@@ -1,19 +1,38 @@
 #include "uhandler_queryid.h"
 #include "proc_data.h"
+#include "sk_util.h"
+#include "finance_dict.h"
+#include "plate_dict.h"
+#include "addr_dict.h"
+#include "history_single_dict.h"
+#include "history_quotation_dict.h"
+#include "base_net_obj.h"
+#include "id_dict.h"
+
+#include "sk_util.h"
+#include "rsingle_data_process.h"
+#include "rquotation_data_process.h"
 
 void uhandler_queryid::perform(http_req_head_para * req_head, std::string * recv_body, http_res_head_para * res_head, std::string * send_body)
 {
+    if (!req_head || !recv_body || !send_body || !res_head)
+        return;
 
-	Document document;
-   Document::AllocatorType& allocator = document.GetAllocator(); 
-   Value root(kObjectType); 
-   Value data_array(kArrayType);
-   
-   std::map<std::string, std::string> url_para_map;
-   
-   parse_url_para(req_head_para._url_path, url_para_map);
-   recode = do_check_queryid(url_para_map, data_array, allocator);
-   
+    proc_data* p_data = proc_data::instance();
+    int recode;
+    char t_buf[SIZE_LEN_256];
+    t_buf[0] = '\0';
+
+    Document document;
+    Document::AllocatorType& allocator = document.GetAllocator(); 
+    Value root(kObjectType); 
+    Value data_array(kArrayType);
+
+    std::map<std::string, std::string> url_para_map;
+
+    parse_url_para(req_head->_url_path, url_para_map);
+    recode = do_check_queryid(url_para_map, data_array, allocator);
+
     Value key(kStringType);    
     Value value(kStringType); 
 
@@ -23,17 +42,26 @@ void uhandler_queryid::perform(http_req_head_para * req_head, std::string * recv
     key.SetString("data", allocator);
 
     root.AddMember(key, data_array, allocator);
-    
+
     StringBuffer buffer;    
     Writer<StringBuffer> writer(buffer);    
     root.Accept(writer);
-}
 
+    send_body->append(buffer.GetString());
+
+    res_head->_headers.insert(std::make_pair("Date", SecToHttpTime(time(NULL))));
+    res_head->_headers.insert(std::make_pair("Server", p_data->proc_name));
+    res_head->_headers.insert(std::make_pair("Connection", "close"));
+
+    snprintf(t_buf, sizeof(t_buf), "%d", send_body->length());
+    res_head->_headers.insert(std::make_pair("Content-Length", t_buf));
+
+}
 
 
 int uhandler_queryid::do_check_queryid(std::map<std::string, std::string> & url_para_map, Value & data_array, Document::AllocatorType & allocator)
 {
-	proc_data* p_data = proc_data::instance();
+    proc_data* p_data = proc_data::instance();
 
     {
         auto ii = url_para_map.find("id");

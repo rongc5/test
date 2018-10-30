@@ -1,4 +1,5 @@
 #include "sk_util.h"
+#include <algorithm>
 
 void get_standard_id(std::string & id)
 {

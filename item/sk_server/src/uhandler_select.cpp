@@ -7,40 +7,82 @@
 #include "prettywriter.h"
 #include "rapidjson.h"
 #include <algorithm>
+#include "uhandler_queryid.h"
 
 #include "proc_data.h"
 
+#include "finance_dict.h"
+#include "plate_dict.h"
+#include "addr_dict.h"
+#include "history_single_dict.h"
+#include "history_quotation_dict.h"
+#include "base_net_obj.h"
+#include "id_dict.h"
+
+#include "sk_util.h"
+#include "rsingle_data_process.h"
+#include "rquotation_data_process.h"
+
 using namespace rapidjson;
 
-void perform(http_req_head_para * req_head, std::string * recv_body, http_res_head_para * res_head, std::string * send_body)
+void uhandler_select::perform(http_req_head_para * req_head, std::string * recv_body, http_res_head_para * res_head, std::string * send_body)
 {
-	
-	
-	Document document;
-   Document::AllocatorType& allocator = document.GetAllocator(); 
-   Value root(kObjectType); 
-   Value data_array(kArrayType);
-	
-	std::set<std::string> res;
-	std::map<std::string, std::string> url_para_map;
-	
-	do_parse_request(recv_body, url_para_map);
-	
-   do_check_select(url_para_map, res);
-   std::map<std::string, std::string> tmp_map;
+    if (!req_head || !recv_body || !send_body || !res_head)
+        return;
+
+    char t_buf[SIZE_LEN_256];
+    t_buf[0] = '\0';
+    proc_data* p_data = proc_data::instance();
+
+    int recode = HTPP_RES_OK;
+    Document document;
+    Document::AllocatorType& allocator = document.GetAllocator(); 
+    Value root(kObjectType); 
+    Value data_array(kArrayType);
+
+    std::set<std::string> res;
+    std::map<std::string, std::string> url_para_map;
+
+    do_parse_request(recv_body, url_para_map);
+
+    do_check_select(url_para_map, res);
+    std::map<std::string, std::string> tmp_map;
 
     for (auto ii = res.begin(); ii != res.end(); ii++)
     {
         tmp_map.clear();
         tmp_map["id"] = *ii;
 
-        url_query_id(tmp_map, root, allocator);
+        uhandler_queryid::do_check_queryid(tmp_map, data_array, allocator);
     }
+
+    Value key(kStringType);        
+    Value value(kStringType); 
+
+    key.SetString("recode", allocator);
+    root.AddMember(key, recode, allocator);
+
+    key.SetString("data", allocator);
+
+    root.AddMember(key, data_array, allocator);
+
+    StringBuffer buffer;        
+    Writer<StringBuffer> writer(buffer);        
+    root.Accept(writer);
+
+    send_body->append(buffer.GetString());
+
+    res_head->_headers.insert(std::make_pair("Date", SecToHttpTime(time(NULL))));
+    res_head->_headers.insert(std::make_pair("Server", p_data->proc_name));
+    res_head->_headers.insert(std::make_pair("Connection", "close"));
+
+    snprintf(t_buf, sizeof(t_buf), "%d", send_body->length());
+    res_head->_headers.insert(std::make_pair("Content-Length", t_buf));
 }
 
 int uhandler_select::do_parse_request(std::string * _recv_buf, std::map<std::string, std::string> & url_para_map)
 {
-	if (!_recv_buf || _recv_buf->empty())
+    if (!_recv_buf || _recv_buf->empty())
         return -1;
 
     std::vector<std::string> items;
@@ -51,10 +93,10 @@ int uhandler_select::do_parse_request(std::string * _recv_buf, std::map<std::str
         std::vector<std::string> sub_items;
         SplitString(items[i].c_str(), "=", &sub_items, SPLIT_MODE_ALL);
 
-       if (sub_items.size() >= 2)
-         {
+        if (sub_items.size() >= 2)
+        {
             url_para_map[trim(sub_items[0].c_str())] = trim(sub_items[1].c_str());
-         }
+        }
     }
 
     return 0;
@@ -62,7 +104,7 @@ int uhandler_select::do_parse_request(std::string * _recv_buf, std::map<std::str
 
 int uhandler_select::do_check_select(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res)
 {
-	proc_data* p_data = proc_data::instance();
+    proc_data* p_data = proc_data::instance();
     if (!p_data)
         return -1;
 
@@ -93,8 +135,8 @@ int uhandler_select::do_check_select(std::map<std::string, std::string> & url_pa
             positive = tmp;
         }
     }
-	
-	{
+
+    {
         std::set<std::string> tmp;
         if (do_check_change_rate_le(url_para_map, tmp, positive, SETS_OP_INTERSECTION))
         {
@@ -117,8 +159,8 @@ int uhandler_select::do_check_select(std::map<std::string, std::string> & url_pa
             positive = tmp;
         }
     }
-    
-     {
+
+    {
         std::set<std::string> tmp;
         if (do_check_range_percent_le(url_para_map, tmp, positive, SETS_OP_INTERSECTION))
         {
@@ -153,8 +195,8 @@ int uhandler_select::do_check_select(std::map<std::string, std::string> & url_pa
             positive = tmp;
         }
     }
- 	
- 	 {
+
+    {
         std::set<std::string> tmp;
         if (do_check_history_range_percent_le(url_para_map, tmp, positive, SETS_OP_INTERSECTION))
         {
@@ -190,7 +232,7 @@ int uhandler_select::do_check_select(std::map<std::string, std::string> & url_pa
             positive = tmp;
         }
     }
-    
+
     {
         std::set<std::string> tmp;
         if (do_check_history_has_range_percent_ge(url_para_map, tmp, positive, SETS_OP_INTERSECTION))
@@ -217,6 +259,18 @@ int uhandler_select::do_check_select(std::map<std::string, std::string> & url_pa
 
     {
         std::set<std::string> tmp;
+        if (do_check_history_range_percent_ge_num_ge(url_para_map, tmp, positive, SETS_OP_INTERSECTION))
+        {
+            if (tmp.empty())
+            {
+                return -1;
+            }
+            positive = tmp;
+        }
+    }
+
+    {
+        std::set<std::string> tmp;
         if (do_check_history_range_percent_ge(url_para_map, tmp, positive, SETS_OP_INTERSECTION))
         {
             if (tmp.empty())
@@ -226,8 +280,8 @@ int uhandler_select::do_check_select(std::map<std::string, std::string> & url_pa
             positive = tmp;
         }
     }
-    
- 	{
+
+    {
         std::set<std::string> tmp;
         if (do_check_down_pointer_le(url_para_map, tmp, positive, SETS_OP_INTERSECTION))
         {
@@ -900,8 +954,8 @@ int uhandler_select::do_check_select(std::map<std::string, std::string> & url_pa
     }
 
     std::set_difference(positive.begin(), positive.end(), negative.begin(), negative.end(), std::inserter(res,res.begin()));
-      
- 	return 0;
+
+    return 0;
 }
 
 bool uhandler_select::do_check_hsingle_diff_ge(std::map<std::string, std::string> & url_para_map, uint32_t index, std::set<std::string> & res, std::set<std::string> & search, SETS_OP_TRPE et)
@@ -929,8 +983,8 @@ bool uhandler_select::do_check_hsingle_diff_ge(std::map<std::string, std::string
 
         if (SETS_OP_UNION == et)
             res = search;
-            
- 		for (uint32_t i = 0; i< tmp_vec.size(); i++) 
+
+        for (uint32_t i = 0; i< tmp_vec.size(); i++) 
         {
 
             std::vector<std::string> t_vec;
@@ -993,7 +1047,7 @@ bool uhandler_select::do_check_hsingle_sum_diff_ge(std::map<std::string, std::st
         if (SETS_OP_UNION == et)
             res = search;
 
-for (uint32_t i = 0; i< tmp_vec.size(); i++) 
+        for (uint32_t i = 0; i< tmp_vec.size(); i++) 
         {
 
             std::vector<std::string> t_vec;
@@ -1677,7 +1731,6 @@ bool uhandler_select::do_check_range_percent_ge(std::map<std::string, std::strin
     return flag;
 }
 
-
 bool uhandler_select::do_check_history_sum_range_percent_ge(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res, std::set<std::string> & search, SETS_OP_TRPE et)
 {
     float end = 0;
@@ -1734,6 +1787,84 @@ bool uhandler_select::do_check_history_sum_range_percent_ge(std::map<std::string
 
     return flag;
 }
+
+bool uhandler_select::do_check_history_range_percent_ge_num_ge(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res, std::set<std::string> & search, SETS_OP_TRPE et)
+{
+    float end = 0;
+    bool flag = false;
+    proc_data* p_data = proc_data::instance();
+    std::vector<std::string> tmp_vec;
+    std::vector<std::set<std::string> > tmp_res_vec;
+
+    std::multimap<float, std::string>::iterator it_le, it_ge, it;
+
+    if (has_key<std::string, std::string>(url_para_map, "history_range_percent_ge_num_ge"))
+    {
+        flag = true;
+        SplitString(url_para_map["history_range_percent_ge_num_ge"].c_str(), '|', &tmp_vec, SPLIT_MODE_ALL);
+        if (!tmp_vec.size())
+            tmp_vec.push_back(url_para_map["history_range_percent_ge_num_ge"]);
+
+        if (SETS_OP_UNION == et)
+            res = search;
+
+        for (uint32_t i = 0; i< tmp_vec.size(); i++) 
+        {
+            std::vector<std::string> t_vec;
+            SplitString(tmp_vec[i].c_str(), ':', &t_vec, SPLIT_MODE_ALL);
+            std::string date;
+            p_data->_hquoation_dict->current()->get_last_date(atoi(t_vec[0].c_str()), date);
+            if (date.empty())
+                return flag;
+
+
+            end = atof(t_vec[1].c_str());
+            auto ii = p_data->_hqrange_percent_index.current()->find(date);
+            if (ii == p_data->_hqrange_percent_index.current()->end())
+                return flag;
+
+            std::map<std::string, int> t_res;
+            for (; ii != p_data->_hqrange_percent_index.current()->end(); ii++)
+            {
+                it_le = ii->second.end();
+                it_ge = ii->second.begin();
+
+                it_ge = ii->second.lower_bound(end);
+                for (it = it_ge; it != it_le; ++it)
+                {
+                    if (search.empty() || (SETS_OP_INTERSECTION == et && search.count(it->second)) || SETS_OP_UNION == et)
+                    {
+                        std::map<std::string, int>::iterator itm = t_res.find(it->second);
+                        if (itm == t_res.end())
+                        {
+                            t_res[it->second] = 1;
+                        }
+                        else
+                        {
+                            t_res[it->second]++;
+                        }
+                    }
+                }
+            }
+                
+            std::set<std::string> t_vv;
+            std::map<std::string, int>::iterator itm;
+            for (itm = t_res.begin(); itm != t_res.end(); itm++)
+            {
+                if (itm->second >= atoi(t_vec[2].c_str()))
+                    t_vv.insert(itm->first);
+            }
+
+            tmp_res_vec.push_back(t_vv);
+        }
+    }
+
+    if (flag)
+        get_intersection(tmp_res_vec, res);
+
+    return flag;
+}
+
 
 bool uhandler_select::do_check_end_hqend_ge(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res, std::set<std::string> & search, SETS_OP_TRPE et)
 {
