@@ -293,7 +293,7 @@ void rsingle_data_process::update_sum_index()
 
                 if (!flag)
                 {
-                    for (uint32_t i =0; i < st.back()->size(); i++) 
+                    for (uint32_t i =0; i < st.back()->size() && hs.size(); i++) 
                     {
                         hs[i].diff = hs[i].diff + st.back()->at(i).diff;
                         LOG_DEBUG("date:%s id:%s i:%d in:%d out:%d diff:%d", date.c_str(), id.c_str(), i, hs[i].in, hs[i].out, hs[i].diff);
