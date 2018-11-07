@@ -21,7 +21,7 @@ class history_quotation_dict:public reload_inf
         static void creat_key(const std::string & date, const std::string & id, std::string & key);
 
         //查看过去几天的日期
-        void get_last_date(int n, std::string & date);
+        static void get_last_date(int n, std::string & date);
 
     private:
         void set_path (const char* path);
@@ -39,6 +39,8 @@ class history_quotation_dict:public reload_inf
 
         // <date_id, sum_quotation> >
         std::unordered_map<std::string, std::shared_ptr<quotation_t>, str_hasher> _id_sum_dict;
+        //date_id, sum_avg_price
+        std::unordered_map<std::string, float, str_hasher> _id_sum_avg_price_dict;
         //id, date,
         std::unordered_map<std::string, std::set<std::string>, str_hasher> _id_date_dict;
         //date

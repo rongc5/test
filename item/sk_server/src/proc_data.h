@@ -69,6 +69,8 @@ class proc_data:public reload_inf
 
         ToBufferMgr<std::unordered_map<std::string, std::shared_ptr<quotation_t>, str_hasher> > _rquoation_dict_index;
 
+        ToBufferMgr<std::unordered_map<std::string, std::shared_ptr<technical_t>, str_hasher> > _rtechnical_dict_index;
+
     public:
         //search index;
         ToBufferMgr<std::unordered_set<std::string, str_hasher> > _block_set;
@@ -116,9 +118,6 @@ class proc_data:public reload_inf
 
         ToBufferMgr<std::map<std::string, std::multimap<float, std::string> > > _hq_sum_range_percent_index;
         ToBufferMgr<std::map<std::string, std::multimap<float, std::string> > > _hq_sum_change_rate_index;
-
-        ToBufferMgr<std::map<std::string, std::multimap<float, std::string> > > _hqdown_pointer_index;
-        ToBufferMgr<std::map<std::string, std::multimap<float, std::string> > > _hqup_pointer_index;
 
         ToBufferMgr<std::map<std::string, std::multimap<float, std::string> > > _end_hqend_index;
 

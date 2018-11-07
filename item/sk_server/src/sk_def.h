@@ -58,6 +58,32 @@ struct finance_t
     float jlrgr;
 };
 
+struct technical_t
+{
+    char id[SIZE_LEN_10];
+    float avg_price_5;
+    float avg_price_10;
+    float avg_price_20;
+    float avg_price_30;
+    float avg_price_60;
+    float down_pointer;
+    float up_pointer;
+    float avg_price;
+
+    technical_t()
+    {
+        id[0] = '\0';
+        avg_price_5 = 0;
+        avg_price_10 = 0;
+        avg_price_20 = 0;
+        avg_price_30 = 0;
+        avg_price_60 = 0;
+        down_pointer = 0;
+        up_pointer = 0;
+        avg_price = 0;
+    }
+};
+
 struct quotation_t
 {
     char id[SIZE_LEN_10];
@@ -78,9 +104,6 @@ struct quotation_t
     float change_rate;
     float range_percent;
 
-    float down_pointer;
-    float up_pointer;
-    float avg_price;
     float total_price;
 
     quotation_t()
@@ -103,9 +126,6 @@ struct quotation_t
         change_rate = 0;
         range_percent = 0;
 
-        down_pointer = 0;
-        up_pointer = 0;
-        avg_price = 0;
         total_price = 0;
     }
 };

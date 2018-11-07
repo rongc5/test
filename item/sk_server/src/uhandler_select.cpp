@@ -271,6 +271,18 @@ int uhandler_select::do_check_select(std::map<std::string, std::string> & url_pa
 
     {
         std::set<std::string> tmp;
+        if (do_check_history_range_percent_ge_num_le(url_para_map, tmp, positive, SETS_OP_INTERSECTION))
+        {
+            if (tmp.empty())
+            {
+                return -1;
+            }
+            positive = tmp;
+        }
+    }
+
+    {
+        std::set<std::string> tmp;
         if (do_check_history_range_percent_ge(url_para_map, tmp, positive, SETS_OP_INTERSECTION))
         {
             if (tmp.empty())
@@ -1865,6 +1877,102 @@ bool uhandler_select::do_check_history_range_percent_ge_num_ge(std::map<std::str
     return flag;
 }
 
+bool uhandler_select::do_check_history_range_percent_ge_num_le(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res, std::set<std::string> & search, SETS_OP_TRPE et)
+{
+    float end = 0;
+    bool flag = false;
+    proc_data* p_data = proc_data::instance();
+    std::vector<std::string> tmp_vec;
+    std::vector<std::set<std::string> > tmp_res_vec;
+
+    std::multimap<float, std::string>::iterator it_le, it_ge, it;
+
+    if (has_key<std::string, std::string>(url_para_map, "history_range_percent_ge_num_le"))
+    {
+        flag = true;
+        SplitString(url_para_map["history_range_percent_ge_num_le"].c_str(), '|', &tmp_vec, SPLIT_MODE_ALL);
+        if (!tmp_vec.size())
+            tmp_vec.push_back(url_para_map["history_range_percent_ge_num_le"]);
+
+        if (SETS_OP_UNION == et)
+            res = search;
+
+        for (uint32_t i = 0; i< tmp_vec.size(); i++) 
+        {
+            std::vector<std::string> t_vec;
+            SplitString(tmp_vec[i].c_str(), ':', &t_vec, SPLIT_MODE_ALL);
+            std::string date;
+            p_data->_hquoation_dict->current()->get_last_date(atoi(t_vec[0].c_str()), date);
+            if (date.empty())
+                return flag;
+
+
+            end = atof(t_vec[1].c_str());
+            auto ii = p_data->_hqrange_percent_index.current()->find(date);
+            if (ii == p_data->_hqrange_percent_index.current()->end())
+                return flag;
+
+            std::map<std::string, int> t_res;
+            for (; ii != p_data->_hqrange_percent_index.current()->end(); ii++)
+            {
+                it_le = ii->second.end();
+                it_ge = ii->second.begin();
+
+                it_ge = ii->second.lower_bound(end);
+                for (it = it_ge; it != it_le; ++it)
+                {
+                    if (search.empty() || (SETS_OP_INTERSECTION == et && search.count(it->second)) || SETS_OP_UNION == et)
+                    {
+                        std::map<std::string, int>::iterator itm = t_res.find(it->second);
+                        if (itm == t_res.end())
+                        {
+                            t_res[it->second] = 1;
+                        }
+                        else
+                        {
+                            t_res[it->second]++;
+                        }
+                    }
+                }
+            }
+                
+            std::set<std::string> t_vv;
+            std::map<std::string, int>::iterator itm;
+            for (itm = t_res.begin(); itm != t_res.end(); itm++)
+            {
+                if (itm->second < atoi(t_vec[2].c_str()))
+                    t_vv.insert(itm->first);
+            }
+
+            tmp_res_vec.push_back(t_vv);
+        }
+    }
+
+    if (flag)
+        get_intersection(tmp_res_vec, res);
+
+    return flag;
+}
+
+
+bool uhandler_select::do_check_end_hqend_ge(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res, std::set<std::string> & search, SETS_OP_TRPE et)
+{
+    float end = 0;
+    bool flag = false;
+    proc_data* p_data = proc_data::instance();
+    std::vector<std::string> tmp_vec;
+    std::vector<std::set<std::string> > tmp_res_vec;
+
+    std::multimap<float, std::string>::iterator it_le, it_ge, it;
+
+    if (has_key<std::string, std::string>(url_para_map, "end_hqend_ge"))
+    {
+        flag = true;
+        SplitString(url_para_map["end_hqend_ge"].c_str(), '|', &tmp_vec, SPLIT_MODE_ALL);
+        if (!tmp_vec.size())
+            tmp_vec.push_back(url_para_map["end_hqend_ge"]);
+
+        if (SETS_OP_UNION == et)
 
 bool uhandler_select::do_check_end_hqend_ge(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res, std::set<std::string> & search, SETS_OP_TRPE et)
 {

@@ -111,9 +111,6 @@ int history_quotation_dict::load_history_quoation(const char * file)
         qt->change_rate = atof(strVec[10].c_str());
         qt->range_percent = atof(strVec[11].c_str());
         qt->total_price = atoi(strVec[12].c_str());
-        qt->down_pointer = atof(strVec[13].c_str());
-        qt->up_pointer = atof(strVec[14].c_str());
-        qt->avg_price = atof(strVec[15].c_str());
 
         creat_key(date, qt->id, key);
         auto ii = _id_dict.find(key);
@@ -180,39 +177,6 @@ int history_quotation_dict::load_history_quoation(const char * file)
                 ii->second.insert(std::make_pair(qt->range_percent, qt->id));
             }
         }
-
-        if (qt->down_pointer)
-        {
-            auto ii = p_data->_hqdown_pointer_index.idle()->find(date);
-            if (ii == p_data->_hqdown_pointer_index.idle()->end())
-            {
-                std::multimap<float, std::string> t_map;
-
-                t_map.insert(std::make_pair(qt->down_pointer, qt->id));
-                p_data->_hqdown_pointer_index.idle()->insert(std::make_pair(date, t_map));
-            }
-            else
-            {
-                ii->second.insert(std::make_pair(qt->down_pointer, qt->id));
-            }
-        }
-
-        if (qt->up_pointer)
-        {
-            auto ii = p_data->_hqup_pointer_index.idle()->find(date);
-            if (ii == p_data->_hqup_pointer_index.idle()->end())
-            {
-                std::multimap<float, std::string> t_map;
-
-                t_map.insert(std::make_pair(qt->up_pointer, qt->id));
-                p_data->_hqup_pointer_index.idle()->insert(std::make_pair(date, t_map));
-            }
-            else
-            {
-
-                ii->second.insert(std::make_pair(qt->up_pointer, qt->id));
-            }
-        }
     }
     fclose(fp);
 
@@ -239,6 +203,8 @@ void history_quotation_dict::update_sum_index()
             std::shared_ptr<quotation_t> qt(new quotation_t);
             float range_percent = 0;
             float change_rate = 0;
+            float avg_price = 0;
+
 
             for (auto iii = it->second.lower_bound(date); iii != it->second.end(); iii++)
             {
@@ -248,6 +214,8 @@ void history_quotation_dict::update_sum_index()
                 {
                     range_percent += tt->second->range_percent;
                     change_rate += tt->second->change_rate;
+
+                    avg_price += (tt->second->total_price * 10000)/(tt->second->vol * 100);
                 }
             }
 
@@ -258,8 +226,13 @@ void history_quotation_dict::update_sum_index()
                 snprintf(t_buf, sizeof(t_buf), "%.2f", change_rate);
                 qt->change_rate = atof(t_buf);
 
+                snprintf(t_buf, sizeof(t_buf), "%.2f", avg_price);
+                avg_price = atof(t_buf);
+
                 creat_key(date, id, key);
                 _id_sum_dict.insert(std::make_pair(key, qt));
+
+                _id_sum_avg_price_dict.insert(std::make_pair(key, avg_price));
             }
         }
     }
@@ -300,8 +273,6 @@ int history_quotation_dict::load()
         p_data->_hqend_index.idle_2_current();
         p_data->_hqchange_rate_index.idle_2_current();
         p_data->_hqrange_percent_index.idle_2_current();
-        p_data->_hqdown_pointer_index.idle_2_current();
-        p_data->_hqup_pointer_index.idle_2_current();
     }
 
     return 0;
@@ -374,6 +345,11 @@ int history_quotation_dict::destroy()
     }
 
     {
+        std::unordered_map<std::string, float, str_hasher> tmp;
+        _id_sum_avg_price_dict.swap(tmp);
+    }
+
+    {
         std::unordered_map<std::string, std::set<std::string>, str_hasher> tmp;
         _id_date_dict.swap(tmp);
     }
@@ -400,16 +376,6 @@ int history_quotation_dict::destroy()
             {
                 std::map<std::string, std::multimap<float, std::string> > tmp;
                 p_data->_hqrange_percent_index.idle()->swap(tmp);
-            }
-            
-            {
-                std::map<std::string, std::multimap<float, std::string> > tmp;
-                p_data->_hqdown_pointer_index.idle()->swap(tmp);
-            }
-
-            {
-                std::map<std::string, std::multimap<float, std::string> > tmp;
-                p_data->_hqup_pointer_index.idle()->swap(tmp);
             }
         }
     }
