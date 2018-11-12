@@ -133,18 +133,19 @@ int history_quotation_dict::load_history_quoation(const char * file)
             }   
         }
 
+        if (qt->start)
         {
-            auto ii = p_data->_hqend_index.idle()->find(date);
-            if (ii == p_data->_hqend_index.idle()->end())
+            auto ii = p_data->_hqend_hqstart_index.idle()->find(date);
+            if (ii == p_data->_hqend_hqstart_index.idle()->end())
             {
                 std::multimap<float, std::string> t_map;
 
-                t_map.insert(std::make_pair(qt->end, qt->id));
-                p_data->_hqend_index.idle()->insert(std::make_pair(date, t_map));
+                t_map.insert(std::make_pair(qt->end/qt->start, qt->id));
+                p_data->_hqend_hqstart_index.idle()->insert(std::make_pair(date, t_map));
             }
             else
             {
-                ii->second.insert(std::make_pair(qt->end, qt->id));
+                ii->second.insert(std::make_pair(qt->end/qt->start, qt->id));
             }
         }
 
@@ -200,11 +201,7 @@ void history_quotation_dict::update_sum_index()
         for (auto it = _id_date_dict.begin(); it != _id_date_dict.end(); it++)
         {
             const std::string & id = it->first;
-            std::shared_ptr<quotation_t> qt(new quotation_t);
-            float range_percent = 0;
-            float change_rate = 0;
-            float avg_price = 0;
-
+            std::shared_ptr<sum_quotation> qt(new sum_quotation);
 
             for (auto iii = it->second.lower_bound(date); iii != it->second.end(); iii++)
             {
@@ -212,27 +209,29 @@ void history_quotation_dict::update_sum_index()
                 auto tt = _id_dict.find(key);
                 if (tt != _id_dict.end())
                 {
-                    range_percent += tt->second->range_percent;
-                    change_rate += tt->second->change_rate;
+                    qt->range_percent += tt->second->range_percent;
+                    qt->change_rate += tt->second->change_rate;
 
-                    avg_price += (tt->second->total_price * 10000)/(tt->second->vol * 100);
+                    qt->avg_end += (tt->second->total_price * 10000)/(tt->second->vol * 100);
+                    qt->end += tt->second->end;
                 }
             }
 
             {
-                snprintf(t_buf, sizeof(t_buf), "%.2f", range_percent);
+                snprintf(t_buf, sizeof(t_buf), "%.2f", qt->range_percent);
                 qt->range_percent = atof(t_buf);
 
-                snprintf(t_buf, sizeof(t_buf), "%.2f", change_rate);
+                snprintf(t_buf, sizeof(t_buf), "%.2f", qt->change_rate);
                 qt->change_rate = atof(t_buf);
 
-                snprintf(t_buf, sizeof(t_buf), "%.2f", avg_price);
-                avg_price = atof(t_buf);
+                snprintf(t_buf, sizeof(t_buf), "%.2f", qt->avg_end);
+                qt->avg_end = atof(t_buf);
+
+                snprintf(t_buf, sizeof(t_buf), "%.2f", qt->end);
+                qt->end = atof(t_buf);
 
                 creat_key(date, id, key);
                 _id_sum_dict.insert(std::make_pair(key, qt));
-
-                _id_sum_avg_price_dict.insert(std::make_pair(key, avg_price));
             }
         }
     }
@@ -270,7 +269,7 @@ int history_quotation_dict::load()
     proc_data* p_data = proc_data::instance();
     if (p_data)
     {
-        p_data->_hqend_index.idle_2_current();
+        p_data->_hqend_hqstart_index.idle_2_current();
         p_data->_hqchange_rate_index.idle_2_current();
         p_data->_hqrange_percent_index.idle_2_current();
     }
@@ -340,13 +339,8 @@ int history_quotation_dict::destroy()
     }
 
     {
-        std::unordered_map<std::string, std::shared_ptr<quotation_t>, str_hasher> tmp;
+        std::unordered_map<std::string, std::shared_ptr<sum_quotation>, str_hasher> tmp;
         _id_sum_dict.swap(tmp);
-    }
-
-    {
-        std::unordered_map<std::string, float, str_hasher> tmp;
-        _id_sum_avg_price_dict.swap(tmp);
     }
 
     {
@@ -365,7 +359,7 @@ int history_quotation_dict::destroy()
         {
             {
                 std::map<std::string, std::multimap<float, std::string> > tmp;
-                p_data->_hqend_index.idle()->swap(tmp);
+                p_data->_hqend_hqstart_index.idle()->swap(tmp);
             }
 
             {

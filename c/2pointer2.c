@@ -11,7 +11,7 @@ int main(void)
     p = &buf;
     //buf[10] = '\0';
     //printf("%s\n", *p);
-    p[1] = NULL;
+   p[1] = NULL;
     while (buf)
     printf("%c ", *buf++);
     printf("\n");

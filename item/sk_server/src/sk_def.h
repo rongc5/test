@@ -61,26 +61,53 @@ struct finance_t
 struct technical_t
 {
     char id[SIZE_LEN_10];
-    float avg_price_5;
-    float avg_price_10;
-    float avg_price_20;
-    float avg_price_30;
-    float avg_price_60;
+
+    float end_5;
+    float end_10;
+    float end_20;
+    float end_30;
+    float end_60;
+    float avg_end_5;
+    float avg_end_10;
+    float avg_end_20;
+    float avg_end_30;
+    float avg_end_60;
     float down_pointer;
     float up_pointer;
-    float avg_price;
+    float avg_end;
 
     technical_t()
     {
         id[0] = '\0';
-        avg_price_5 = 0;
-        avg_price_10 = 0;
-        avg_price_20 = 0;
-        avg_price_30 = 0;
-        avg_price_60 = 0;
+        end_5 = 0;
+        end_10 = 0;
+        end_20 = 0;
+        end_30 = 0;
+        end_60 = 0;
+        avg_end_5 = 0;
+        avg_end_10 = 0;
+        avg_end_20 = 0;
+        avg_end_30 = 0;
+        avg_end_60 = 0;
         down_pointer = 0;
         up_pointer = 0;
-        avg_price = 0;
+        avg_end = 0;
+    }
+};
+
+struct sum_quotation
+{
+    float change_rate;
+    float range_percent;
+    float end;
+    float avg_end;
+
+    sum_quotation()
+    {
+        change_rate = 0;
+        range_percent = 0;
+        end = 0;
+        avg_end = 0;
     }
 };
 

@@ -37,6 +37,8 @@ class uhandler_queryid:public url_handler
 
         static void query_addr(std::string &id, Value & root, Document::AllocatorType & allocator);
 
+        static void query_technical(std::string &id, Value & root, Document::AllocatorType & allocator);
+
         static void query_history_single(uint32_t last_day_num, std::string &id, Value & root, Document::AllocatorType & allocator);
 
         static void query_sum_single(uint32_t last_day_num, std::string &id, Value & root, Document::AllocatorType & allocator);

@@ -439,15 +439,6 @@ void skhttp_req_thread::dump_real_quotation()
         tmp.append(float_2_str(ii->second->total_price));
         tmp.append(1, '\t');
 
-        tmp.append(float_2_str(ii->second->down_pointer));
-        tmp.append(1, '\t');
-
-        tmp.append(float_2_str(ii->second->up_pointer));
-        tmp.append(1, '\t');
-
-        tmp.append(float_2_str(ii->second->avg_price));
-        tmp.append(1, '\t');
-
         FILE_WRITE(t_buf, "%s", tmp.c_str());
     }
 

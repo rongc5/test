@@ -247,7 +247,7 @@ int uhandler_select::do_check_select(std::map<std::string, std::string> & url_pa
 
     {
         std::set<std::string> tmp;
-        if (do_check_end_hqend_ge(url_para_map, tmp, positive, SETS_OP_INTERSECTION))
+        if (do_check_hqend_hqstart_ge(url_para_map, tmp, positive, SETS_OP_INTERSECTION))
         {
             if (tmp.empty())
             {
@@ -272,6 +272,18 @@ int uhandler_select::do_check_select(std::map<std::string, std::string> & url_pa
     {
         std::set<std::string> tmp;
         if (do_check_history_range_percent_ge_num_le(url_para_map, tmp, positive, SETS_OP_INTERSECTION))
+        {
+            if (tmp.empty())
+            {
+                return -1;
+            }
+            positive = tmp;
+        }
+    }
+
+    {
+        std::set<std::string> tmp;
+        if (do_check_hqend_hqstart_ge_num_ge(url_para_map, tmp, positive, SETS_OP_INTERSECTION))
         {
             if (tmp.empty())
             {
@@ -343,7 +355,7 @@ int uhandler_select::do_check_select(std::map<std::string, std::string> & url_pa
 
     {
         std::set<std::string> tmp;
-        if (do_check_end_avg_price_le(url_para_map, tmp, positive, SETS_OP_INTERSECTION))
+        if (do_check_end_avg_end_le(url_para_map, tmp, positive, SETS_OP_INTERSECTION))
         {
             if (tmp.empty())
             {
@@ -355,7 +367,151 @@ int uhandler_select::do_check_select(std::map<std::string, std::string> & url_pa
 
     {
         std::set<std::string> tmp;
-        if (do_check_end_avg_price_ge(url_para_map, tmp, positive, SETS_OP_INTERSECTION))
+        if (do_check_end_end5_le(url_para_map, tmp, positive, SETS_OP_INTERSECTION))
+        {
+            if (tmp.empty())
+            {
+                return -1;
+            }
+            positive = tmp;
+        }
+    }
+
+    {
+        std::set<std::string> tmp;
+        if (do_check_end_end10_le(url_para_map, tmp, positive, SETS_OP_INTERSECTION))
+        {
+            if (tmp.empty())
+            {
+                return -1;
+            }
+            positive = tmp;
+        }
+    }
+
+    {
+        std::set<std::string> tmp;
+        if (do_check_end_end20_le(url_para_map, tmp, positive, SETS_OP_INTERSECTION))
+        {
+            if (tmp.empty())
+            {
+                return -1;
+            }
+            positive = tmp;
+        }
+    }
+
+    {
+        std::set<std::string> tmp;
+        if (do_check_end_end30_le(url_para_map, tmp, positive, SETS_OP_INTERSECTION))
+        {
+            if (tmp.empty())
+            {
+                return -1;
+            }
+            positive = tmp;
+        }
+    }
+
+    {
+        std::set<std::string> tmp;
+        if (do_check_end_avg_end_ge(url_para_map, tmp, positive, SETS_OP_INTERSECTION))
+        {
+            if (tmp.empty())
+            {
+                return -1;
+            }
+            positive = tmp;
+        }
+    }
+
+    {
+        std::set<std::string> tmp;
+        if (do_check_end_avg_end5_ge(url_para_map, tmp, positive, SETS_OP_INTERSECTION))
+        {
+            if (tmp.empty())
+            {
+                return -1;
+            }
+            positive = tmp;
+        }
+    }
+
+    {
+        std::set<std::string> tmp;
+        if (do_check_end_avg_end10_ge(url_para_map, tmp, positive, SETS_OP_INTERSECTION))
+        {
+            if (tmp.empty())
+            {
+                return -1;
+            }
+            positive = tmp;
+        }
+    }
+
+    {
+        std::set<std::string> tmp;
+        if (do_check_end_avg_end20_ge(url_para_map, tmp, positive, SETS_OP_INTERSECTION))
+        {
+            if (tmp.empty())
+            {
+                return -1;
+            }
+            positive = tmp;
+        }
+    }
+
+    {
+        std::set<std::string> tmp;
+        if (do_check_end_avg_end30_ge(url_para_map, tmp, positive, SETS_OP_INTERSECTION))
+        {
+            if (tmp.empty())
+            {
+                return -1;
+            }
+            positive = tmp;
+        }
+    }
+
+    {
+        std::set<std::string> tmp;
+        if (do_check_end_end5_ge(url_para_map, tmp, positive, SETS_OP_INTERSECTION))
+        {
+            if (tmp.empty())
+            {
+                return -1;
+            }
+            positive = tmp;
+        }
+    }
+
+    {
+        std::set<std::string> tmp;
+        if (do_check_end_end10_ge(url_para_map, tmp, positive, SETS_OP_INTERSECTION))
+        {
+            if (tmp.empty())
+            {
+                return -1;
+            }
+            positive = tmp;
+        }
+    }
+
+    {
+        std::set<std::string> tmp;
+        if (do_check_end_end20_ge(url_para_map, tmp, positive, SETS_OP_INTERSECTION))
+        {
+            if (tmp.empty())
+            {
+                return -1;
+            }
+            positive = tmp;
+        }
+    }
+
+    {
+        std::set<std::string> tmp;
+        if (do_check_end_end30_ge(url_para_map, tmp, positive, SETS_OP_INTERSECTION))
         {
             if (tmp.empty())
             {
@@ -976,6 +1132,7 @@ bool uhandler_select::do_check_hsingle_diff_ge(std::map<std::string, std::string
     bool flag = false;
     proc_data* p_data = proc_data::instance();
     char t_buf[SIZE_LEN_128]; 
+    SETS_OP_TRPE tmp_ot;
 
     std::vector<std::string> tmp_vec;
     std::vector<std::set<std::string> > tmp_res_vec;
@@ -989,7 +1146,17 @@ bool uhandler_select::do_check_hsingle_diff_ge(std::map<std::string, std::string
     if (has_key<std::string, std::string>(url_para_map, t_buf))
     {
         flag = true;
-        SplitString(t_buf, '|', &tmp_vec, SPLIT_MODE_ALL);
+        if (strstr(url_para_map[t_buf].c_str(), "|"))
+        {
+            SplitString(url_para_map[t_buf].c_str(), '|', &tmp_vec, SPLIT_MODE_ALL);
+            tmp_ot = SETS_OP_UNION;
+        }
+        else
+        {
+            SplitString(url_para_map[t_buf].c_str(), '&', &tmp_vec, SPLIT_MODE_ALL);
+            tmp_ot = SETS_OP_INTERSECTION;
+        }
+
         if (!tmp_vec.size())
             tmp_vec.push_back(url_para_map[t_buf]);
 
@@ -1028,7 +1195,12 @@ bool uhandler_select::do_check_hsingle_diff_ge(std::map<std::string, std::string
     }
 
     if (flag)
-        get_intersection(tmp_res_vec, res);
+    {
+        if (tmp_ot == SETS_OP_INTERSECTION)
+            get_intersection(tmp_res_vec, res);
+        else 
+            get_union(tmp_res_vec, res);
+    }
 
     return flag;
 }
@@ -1039,6 +1211,7 @@ bool uhandler_select::do_check_hsingle_sum_diff_ge(std::map<std::string, std::st
     bool flag = false;
     proc_data* p_data = proc_data::instance();
     char t_buf[SIZE_LEN_128]; 
+    SETS_OP_TRPE tmp_ot;
 
     std::vector<std::string> tmp_vec;
     std::vector<std::set<std::string> > tmp_res_vec;
@@ -1052,7 +1225,17 @@ bool uhandler_select::do_check_hsingle_sum_diff_ge(std::map<std::string, std::st
     if (has_key<std::string, std::string>(url_para_map, t_buf))
     {
         flag = true;
-        SplitString(t_buf, '|', &tmp_vec, SPLIT_MODE_ALL);
+        if (strstr(url_para_map[t_buf].c_str(), "|"))
+        {
+            SplitString(url_para_map[t_buf].c_str(), '|', &tmp_vec, SPLIT_MODE_ALL);
+            tmp_ot = SETS_OP_UNION;
+        }
+        else
+        {
+            SplitString(url_para_map[t_buf].c_str(), '&', &tmp_vec, SPLIT_MODE_ALL);
+            tmp_ot = SETS_OP_INTERSECTION;
+        }
+
         if (!tmp_vec.size())
             tmp_vec.push_back(url_para_map[t_buf]);
 
@@ -1090,7 +1273,12 @@ bool uhandler_select::do_check_hsingle_sum_diff_ge(std::map<std::string, std::st
     }
 
     if (flag)
-        get_intersection(tmp_res_vec, res);
+    {
+        if (tmp_ot == SETS_OP_INTERSECTION)
+            get_intersection(tmp_res_vec, res);
+        else 
+            get_union(tmp_res_vec, res);
+    }
 
     return flag;
 }
@@ -1546,13 +1734,24 @@ bool uhandler_select::do_check_history_sum_range_percent_le(std::map<std::string
     proc_data* p_data = proc_data::instance();
     std::vector<std::string> tmp_vec;
     std::vector<std::set<std::string> > tmp_res_vec;
+    SETS_OP_TRPE tmp_ot;
 
     std::multimap<float, std::string>::iterator it_le, it_ge, it;
 
     if (has_key<std::string, std::string>(url_para_map, "history_sum_range_percent_le"))
     {
         flag = true;
-        SplitString(url_para_map["history_sum_range_percent_le"].c_str(), '|', &tmp_vec, SPLIT_MODE_ALL);
+        if (strstr(url_para_map["history_sum_range_percent_le"].c_str(), "|"))
+        {
+            SplitString(url_para_map["history_sum_range_percent_le"].c_str(), '|', &tmp_vec, SPLIT_MODE_ALL);
+            tmp_ot = SETS_OP_UNION;
+        }
+        else
+        {
+            SplitString(url_para_map["history_sum_range_percent_le"].c_str(), '&', &tmp_vec, SPLIT_MODE_ALL);
+            tmp_ot = SETS_OP_INTERSECTION;
+        }
+
         if (!tmp_vec.size())
             tmp_vec.push_back(url_para_map["history_sum_range_percent_le"]);
 
@@ -1591,7 +1790,12 @@ bool uhandler_select::do_check_history_sum_range_percent_le(std::map<std::string
     }
 
     if (flag)
-        get_intersection(tmp_res_vec, res);
+    {
+        if (tmp_ot == SETS_OP_INTERSECTION)
+            get_intersection(tmp_res_vec, res);
+        else
+            get_union(tmp_res_vec, res);
+    }
 
     return flag;
 }
@@ -1604,13 +1808,24 @@ bool uhandler_select::do_check_history_has_range_percent_le(std::map<std::string
     proc_data* p_data = proc_data::instance();
     std::vector<std::string> tmp_vec;
     std::vector<std::set<std::string> > tmp_res_vec;
+    SETS_OP_TRPE tmp_ot;
 
     std::multimap<float, std::string>::iterator it_le, it_ge, it;
 
     if (has_key<std::string, std::string>(url_para_map, "history_has_range_percent_le"))
     {
         flag = true;
-        SplitString(url_para_map["history_has_range_percent_le"].c_str(), '|', &tmp_vec, SPLIT_MODE_ALL);
+        if (strstr(url_para_map["history_has_range_percent_le"].c_str(), "|"))
+        {
+            SplitString(url_para_map["history_has_range_percent_le"].c_str(), '|', &tmp_vec, SPLIT_MODE_ALL);
+            tmp_ot = SETS_OP_UNION;
+        }
+        else
+        {
+            SplitString(url_para_map["history_has_range_percent_le"].c_str(), '&', &tmp_vec, SPLIT_MODE_ALL);
+            tmp_ot = SETS_OP_INTERSECTION;
+        }
+
         if (!tmp_vec.size())
             tmp_vec.push_back(url_para_map["history_has_range_percent_le"]);
 
@@ -1652,7 +1867,12 @@ bool uhandler_select::do_check_history_has_range_percent_le(std::map<std::string
     }
 
     if (flag)
-        get_intersection(tmp_res_vec, res);
+    {    
+        if (tmp_ot == SETS_OP_INTERSECTION)
+            get_intersection(tmp_res_vec, res);
+        else 
+            get_union(tmp_res_vec, res);
+    }
 
     return flag;
 }
@@ -1664,13 +1884,24 @@ bool uhandler_select::do_check_history_range_percent_le(std::map<std::string, st
     proc_data* p_data = proc_data::instance();
     std::vector<std::string> tmp_vec;
     std::vector<std::set<std::string> > tmp_res_vec;
+    SETS_OP_TRPE tmp_ot;
 
     std::multimap<float, std::string>::iterator it_le, it_ge, it;
 
     if (has_key<std::string, std::string>(url_para_map, "history_range_percent_le"))
     {
         flag = true;
-        SplitString(url_para_map["history_range_percent_le"].c_str(), '|', &tmp_vec, SPLIT_MODE_ALL);
+        if (strstr(url_para_map["history_range_percent_le"].c_str(), "|"))
+        {
+            SplitString(url_para_map["history_range_percent_le"].c_str(), '|', &tmp_vec, SPLIT_MODE_ALL);
+            tmp_ot = SETS_OP_UNION;
+        }
+        else
+        {
+            SplitString(url_para_map["history_range_percent_le"].c_str(), '&', &tmp_vec, SPLIT_MODE_ALL);
+            tmp_ot = SETS_OP_INTERSECTION;
+        }
+
         if (!tmp_vec.size())
             tmp_vec.push_back(url_para_map["history_range_percent_le"]);
 
@@ -1709,7 +1940,12 @@ bool uhandler_select::do_check_history_range_percent_le(std::map<std::string, st
     }
 
     if (flag)
-        get_intersection(tmp_res_vec, res);
+    {    
+        if (tmp_ot == SETS_OP_INTERSECTION)
+            get_intersection(tmp_res_vec, res);
+        else 
+            get_union(tmp_res_vec, res);
+    }
 
     return flag;
 }
@@ -1750,13 +1986,24 @@ bool uhandler_select::do_check_history_sum_range_percent_ge(std::map<std::string
     proc_data* p_data = proc_data::instance();
     std::vector<std::string> tmp_vec;
     std::vector<std::set<std::string> > tmp_res_vec;
+    SETS_OP_TRPE tmp_ot;
 
     std::multimap<float, std::string>::iterator it_le, it_ge, it;
 
     if (has_key<std::string, std::string>(url_para_map, "history_sum_range_percent_ge"))
     {
         flag = true;
-        SplitString(url_para_map["history_sum_range_percent_ge"].c_str(), '|', &tmp_vec, SPLIT_MODE_ALL);
+        if (strstr(url_para_map["history_sum_range_percent_ge"].c_str(), "|")) 
+        {
+            SplitString(url_para_map["history_sum_range_percent_ge"].c_str(), '|', &tmp_vec, SPLIT_MODE_ALL);
+            tmp_ot = SETS_OP_UNION;
+        }
+        else
+        {
+            SplitString(url_para_map["history_sum_range_percent_ge"].c_str(), '&', &tmp_vec, SPLIT_MODE_ALL);
+            tmp_ot = SETS_OP_INTERSECTION;
+        }
+
         if (!tmp_vec.size())
             tmp_vec.push_back(url_para_map["history_sum_range_percent_ge"]);
 
@@ -1795,7 +2042,12 @@ bool uhandler_select::do_check_history_sum_range_percent_ge(std::map<std::string
     }
 
     if (flag)
-        get_intersection(tmp_res_vec, res);
+    {
+        if (tmp_ot == SETS_OP_INTERSECTION)
+            get_intersection(tmp_res_vec, res);
+        else 
+            get_union(tmp_res_vec, res);
+    }
 
     return flag;
 }
@@ -1807,13 +2059,24 @@ bool uhandler_select::do_check_history_range_percent_ge_num_ge(std::map<std::str
     proc_data* p_data = proc_data::instance();
     std::vector<std::string> tmp_vec;
     std::vector<std::set<std::string> > tmp_res_vec;
+    SETS_OP_TRPE tmp_ot;
 
     std::multimap<float, std::string>::iterator it_le, it_ge, it;
 
     if (has_key<std::string, std::string>(url_para_map, "history_range_percent_ge_num_ge"))
     {
         flag = true;
-        SplitString(url_para_map["history_range_percent_ge_num_ge"].c_str(), '|', &tmp_vec, SPLIT_MODE_ALL);
+        if (strstr(url_para_map["history_range_percent_ge_num_ge"].c_str(), "|"))
+        {
+            SplitString(url_para_map["history_range_percent_ge_num_ge"].c_str(), '|', &tmp_vec, SPLIT_MODE_ALL);
+            tmp_ot = SETS_OP_UNION;
+        }
+        else
+        {
+            SplitString(url_para_map["history_range_percent_ge_num_ge"].c_str(), '&', &tmp_vec, SPLIT_MODE_ALL);
+            tmp_ot = SETS_OP_INTERSECTION;
+        }
+
         if (!tmp_vec.size())
             tmp_vec.push_back(url_para_map["history_range_percent_ge_num_ge"]);
 
@@ -1872,7 +2135,12 @@ bool uhandler_select::do_check_history_range_percent_ge_num_ge(std::map<std::str
     }
 
     if (flag)
-        get_intersection(tmp_res_vec, res);
+    {
+        if (tmp_ot == SETS_OP_INTERSECTION)
+            get_intersection(tmp_res_vec, res);
+        else
+            get_union(tmp_res_vec, res);
+    }
 
     return flag;
 }
@@ -1884,13 +2152,24 @@ bool uhandler_select::do_check_history_range_percent_ge_num_le(std::map<std::str
     proc_data* p_data = proc_data::instance();
     std::vector<std::string> tmp_vec;
     std::vector<std::set<std::string> > tmp_res_vec;
+    SETS_OP_TRPE tmp_ot;
 
     std::multimap<float, std::string>::iterator it_le, it_ge, it;
 
     if (has_key<std::string, std::string>(url_para_map, "history_range_percent_ge_num_le"))
     {
         flag = true;
-        SplitString(url_para_map["history_range_percent_ge_num_le"].c_str(), '|', &tmp_vec, SPLIT_MODE_ALL);
+        if (strstr(url_para_map["history_range_percent_ge_num_le"].c_str(), "|"))
+        {
+            SplitString(url_para_map["history_range_percent_ge_num_le"].c_str(), '|', &tmp_vec, SPLIT_MODE_ALL);
+            tmp_ot = SETS_OP_UNION;
+        }
+        else
+        {
+            SplitString(url_para_map["history_range_percent_ge_num_le"].c_str(), '&', &tmp_vec, SPLIT_MODE_ALL);
+            tmp_ot = SETS_OP_INTERSECTION;
+        }
+
         if (!tmp_vec.size())
             tmp_vec.push_back(url_para_map["history_range_percent_ge_num_le"]);
 
@@ -1949,47 +2228,135 @@ bool uhandler_select::do_check_history_range_percent_ge_num_le(std::map<std::str
     }
 
     if (flag)
-        get_intersection(tmp_res_vec, res);
+    {
+        if (tmp_ot == SETS_OP_INTERSECTION)
+            get_intersection(tmp_res_vec, res);
+        else
+            get_union(tmp_res_vec, res);
+    }
+
+    return flag;
+}
+bool uhandler_select::do_check_hqend_hqstart_ge_num_ge(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res, std::set<std::string> & search, SETS_OP_TRPE et)
+{
+    float end = 0;
+    bool flag = false;
+    proc_data* p_data = proc_data::instance();
+    std::vector<std::string> tmp_vec;
+    std::vector<std::set<std::string> > tmp_res_vec;
+    SETS_OP_TRPE tmp_ot;
+
+    std::multimap<float, std::string>::iterator it_le, it_ge, it;
+
+    if (has_key<std::string, std::string>(url_para_map, "hqend_hqstart_ge_num_ge"))
+    {
+        flag = true;
+        if (strstr(url_para_map["hqend_hqstart_ge_num_ge"].c_str(), "|"))
+        {
+            SplitString(url_para_map["hqend_hqstart_ge_num_ge"].c_str(), '|', &tmp_vec, SPLIT_MODE_ALL);
+            tmp_ot = SETS_OP_UNION;
+        }
+        else
+        {
+            SplitString(url_para_map["hqend_hqstart_ge_num_ge"].c_str(), '&', &tmp_vec, SPLIT_MODE_ALL);
+            tmp_ot = SETS_OP_INTERSECTION;
+        }
+
+        if (!tmp_vec.size())
+            tmp_vec.push_back(url_para_map["hqend_hqstart_ge_num_ge"]);
+
+        if (SETS_OP_UNION == et)
+            res = search;
+
+        for (uint32_t i = 0; i< tmp_vec.size(); i++) 
+        {
+            std::vector<std::string> t_vec;
+            SplitString(tmp_vec[i].c_str(), ':', &t_vec, SPLIT_MODE_ALL);
+            std::string date;
+            p_data->_hquoation_dict->current()->get_last_date(atoi(t_vec[0].c_str()), date);
+            if (date.empty())
+                return flag;
+
+
+            end = atof(t_vec[1].c_str());
+            auto ii = p_data->_hqend_hqstart_index.current()->find(date);
+            if (ii == p_data->_hqend_hqstart_index.current()->end())
+                return flag;
+
+            std::map<std::string, int> t_res;
+            for (; ii != p_data->_hqend_hqstart_index.current()->end(); ii++)
+            {
+                it_le = ii->second.end();
+                it_ge = ii->second.begin();
+
+                it_ge = ii->second.lower_bound(end);
+                for (it = it_ge; it != it_le; ++it)
+                {
+                    if (search.empty() || (SETS_OP_INTERSECTION == et && search.count(it->second)) || SETS_OP_UNION == et)
+                    {
+                        std::map<std::string, int>::iterator itm = t_res.find(it->second);
+                        if (itm == t_res.end())
+                        {
+                            t_res[it->second] = 1;
+                        }
+                        else
+                        {
+                            t_res[it->second]++;
+                        }
+                    }
+                }
+            }
+                
+            std::set<std::string> t_vv;
+            std::map<std::string, int>::iterator itm;
+            for (itm = t_res.begin(); itm != t_res.end(); itm++)
+            {
+                if (itm->second >= atoi(t_vec[2].c_str()))
+                    t_vv.insert(itm->first);
+            }
+
+            tmp_res_vec.push_back(t_vv);
+        }
+    }
+
+    if (flag)
+    {
+        if (tmp_ot == SETS_OP_INTERSECTION)
+            get_intersection(tmp_res_vec, res);
+        else
+            get_union(tmp_res_vec, res);
+    }
 
     return flag;
 }
 
-
-bool uhandler_select::do_check_end_hqend_ge(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res, std::set<std::string> & search, SETS_OP_TRPE et)
+bool uhandler_select::do_check_hqend_hqstart_ge(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res, std::set<std::string> & search, SETS_OP_TRPE et)
 {
     float end = 0;
     bool flag = false;
     proc_data* p_data = proc_data::instance();
     std::vector<std::string> tmp_vec;
     std::vector<std::set<std::string> > tmp_res_vec;
+    SETS_OP_TRPE tmp_ot;
 
     std::multimap<float, std::string>::iterator it_le, it_ge, it;
 
-    if (has_key<std::string, std::string>(url_para_map, "end_hqend_ge"))
+    if (has_key<std::string, std::string>(url_para_map, "hqend_hqstart_ge"))
     {
         flag = true;
-        SplitString(url_para_map["end_hqend_ge"].c_str(), '|', &tmp_vec, SPLIT_MODE_ALL);
+        if (strstr(url_para_map["hqend_hqstart_ge"].c_str(), "|"))
+        {
+            SplitString(url_para_map["hqend_hqstart_ge"].c_str(), '|', &tmp_vec, SPLIT_MODE_ALL);
+            tmp_ot = SETS_OP_UNION;
+        }
+        else
+        {
+            SplitString(url_para_map["hqend_hqstart_ge"].c_str(), '&', &tmp_vec, SPLIT_MODE_ALL);
+            tmp_ot = SETS_OP_INTERSECTION;
+        }
+
         if (!tmp_vec.size())
-            tmp_vec.push_back(url_para_map["end_hqend_ge"]);
-
-        if (SETS_OP_UNION == et)
-
-bool uhandler_select::do_check_end_hqend_ge(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res, std::set<std::string> & search, SETS_OP_TRPE et)
-{
-    float end = 0;
-    bool flag = false;
-    proc_data* p_data = proc_data::instance();
-    std::vector<std::string> tmp_vec;
-    std::vector<std::set<std::string> > tmp_res_vec;
-
-    std::multimap<float, std::string>::iterator it_le, it_ge, it;
-
-    if (has_key<std::string, std::string>(url_para_map, "end_hqend_ge"))
-    {
-        flag = true;
-        SplitString(url_para_map["end_hqend_ge"].c_str(), '|', &tmp_vec, SPLIT_MODE_ALL);
-        if (!tmp_vec.size())
-            tmp_vec.push_back(url_para_map["end_hqend_ge"]);
+            tmp_vec.push_back(url_para_map["hqend_hqstart_ge"]);
 
         if (SETS_OP_UNION == et)
             res = search;
@@ -2006,8 +2373,8 @@ bool uhandler_select::do_check_end_hqend_ge(std::map<std::string, std::string> &
 
 
             end = atof(t_vec[1].c_str());
-            auto ii = p_data->_end_hqend_index.current()->find(date);
-            if (ii == p_data->_end_hqend_index.current()->end())
+            auto ii = p_data->_hqend_hqstart_index.current()->find(date);
+            if (ii == p_data->_hqend_hqstart_index.current()->end())
                 return flag;
 
             it_le = ii->second.end();
@@ -2026,7 +2393,12 @@ bool uhandler_select::do_check_end_hqend_ge(std::map<std::string, std::string> &
     }
 
     if (flag)
-        get_intersection(tmp_res_vec, res);
+    {
+        if (tmp_ot == SETS_OP_INTERSECTION)
+            get_intersection(tmp_res_vec, res);
+        else
+            get_union(tmp_res_vec, res);
+    }
 
     return flag;
 }
@@ -2038,13 +2410,24 @@ bool uhandler_select::do_check_history_has_range_percent_ge(std::map<std::string
     proc_data* p_data = proc_data::instance();
     std::vector<std::string> tmp_vec;
     std::vector<std::set<std::string> > tmp_res_vec;
+    SETS_OP_TRPE tmp_ot;
 
     std::multimap<float, std::string>::iterator it_le, it_ge, it;
 
     if (has_key<std::string, std::string>(url_para_map, "history_has_range_percent_ge"))
     {
         flag = true;
-        SplitString(url_para_map["history_has_range_percent_ge"].c_str(), '|', &tmp_vec, SPLIT_MODE_ALL);
+        if (strstr(url_para_map["history_has_range_percent_ge"].c_str(), "|"))
+        {
+            SplitString(url_para_map["history_has_range_percent_ge"].c_str(), '|', &tmp_vec, SPLIT_MODE_ALL);
+            tmp_ot = SETS_OP_UNION;
+        }
+        else
+        {
+            SplitString(url_para_map["history_has_range_percent_ge"].c_str(), '&', &tmp_vec, SPLIT_MODE_ALL);
+            tmp_ot = SETS_OP_INTERSECTION;
+        }
+
         if (!tmp_vec.size())
             tmp_vec.push_back(url_para_map["history_has_range_percent_ge"]);
 
@@ -2086,7 +2469,12 @@ bool uhandler_select::do_check_history_has_range_percent_ge(std::map<std::string
     }
 
     if (flag)
-        get_intersection(tmp_res_vec, res);
+    {
+        if (tmp_ot == SETS_OP_INTERSECTION)
+            get_intersection(tmp_res_vec, res);
+        else
+            get_union(tmp_res_vec, res);
+    }
 
     return flag;
 }
@@ -2098,13 +2486,23 @@ bool uhandler_select::do_check_history_range_percent_ge(std::map<std::string, st
     proc_data* p_data = proc_data::instance();
     std::vector<std::string> tmp_vec;
     std::vector<std::set<std::string> > tmp_res_vec;
+    SETS_OP_TRPE tmp_ot;
 
     std::multimap<float, std::string>::iterator it_le, it_ge, it;
 
     if (has_key<std::string, std::string>(url_para_map, "history_range_percent_ge"))
     {
         flag = true;
-        SplitString(url_para_map["history_range_percent_ge"].c_str(), '|', &tmp_vec, SPLIT_MODE_ALL);
+        if (strstr(url_para_map["history_range_percent_ge"].c_str(), "|"))
+        {
+            SplitString(url_para_map["history_range_percent_ge"].c_str(), '|', &tmp_vec, SPLIT_MODE_ALL);
+            tmp_ot = SETS_OP_UNION;
+        }
+        else
+        {
+            SplitString(url_para_map["history_range_percent_ge"].c_str(), '&', &tmp_vec, SPLIT_MODE_ALL);
+            tmp_ot = SETS_OP_INTERSECTION;
+        }
         if (!tmp_vec.size())
             tmp_vec.push_back(url_para_map["history_range_percent_ge"]);
 
@@ -2143,7 +2541,12 @@ bool uhandler_select::do_check_history_range_percent_ge(std::map<std::string, st
     }
 
     if (flag)
-        get_intersection(tmp_res_vec, res);
+    {
+        if (tmp_ot == SETS_OP_INTERSECTION)
+            get_intersection(tmp_res_vec, res);
+        else
+            get_union(tmp_res_vec, res);
+    }
 
     return flag;
 }
@@ -2261,21 +2664,21 @@ bool uhandler_select::do_check_up_pointer_ge(std::map<std::string, std::string> 
     return flag;
 }
 
-bool uhandler_select::do_check_end_avg_price_le(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res, std::set<std::string> & search, SETS_OP_TRPE et)
+bool uhandler_select::do_check_end_avg_end_le(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res, std::set<std::string> & search, SETS_OP_TRPE et)
 {
     float end = 0;
     bool flag = false;
     proc_data* p_data = proc_data::instance();
 
     std::multimap<float, std::string>::iterator it_le, it_ge, it;
-    it_le = p_data->_end_avg_price_index.current()->end();
-    it_ge = p_data->_end_avg_price_index.current()->begin();
+    it_le = p_data->_end_avg_end_index.current()->end();
+    it_ge = p_data->_end_avg_end_index.current()->begin();
 
-    if (has_key<std::string, std::string>(url_para_map, "end_avg_price_le"))
+    if (has_key<std::string, std::string>(url_para_map, "end_avg_end_le"))
     {
         flag = true;
-        end = atof(url_para_map["end_avg_price_le"].c_str());
-        it_le = p_data->_end_avg_price_index.current()->upper_bound(end);
+        end = atof(url_para_map["end_avg_end_le"].c_str());
+        it_le = p_data->_end_avg_end_index.current()->upper_bound(end);
         if (SETS_OP_UNION == et)
             res = search;
     }
@@ -2289,21 +2692,358 @@ bool uhandler_select::do_check_end_avg_price_le(std::map<std::string, std::strin
     return flag;
 }
 
-bool uhandler_select::do_check_end_avg_price_ge(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res, std::set<std::string> & search, SETS_OP_TRPE et)
+bool uhandler_select::do_check_end_end5_le(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res, std::set<std::string> & search, SETS_OP_TRPE et)
 {
     float end = 0;
     bool flag = false;
     proc_data* p_data = proc_data::instance();
 
     std::multimap<float, std::string>::iterator it_le, it_ge, it;
-    it_le = p_data->_end_avg_price_index.current()->end();
-    it_ge = p_data->_end_avg_price_index.current()->begin();
+    it_le = p_data->_end_end5_index.current()->end();
+    it_ge = p_data->_end_end5_index.current()->begin();
 
-    if (has_key<std::string, std::string>(url_para_map, "end_avg_price_ge"))
+    if (has_key<std::string, std::string>(url_para_map, "end_end5_le"))
     {
         flag = true;
-        end = atof(url_para_map["end_avg_price_ge"].c_str());
-        it_ge = p_data->_end_avg_price_index.current()->lower_bound(end);
+        end = atof(url_para_map["end_end5_le"].c_str());
+        it_le = p_data->_end_end5_index.current()->upper_bound(end);
+        if (SETS_OP_UNION == et)
+            res = search;
+    }
+
+    for (it = it_ge; it != it_le && flag; ++it)
+    {
+        if (search.empty() || (SETS_OP_INTERSECTION == et && search.count(it->second)) || SETS_OP_UNION == et)
+            res.insert(it->second); 
+    }
+
+    return flag;
+}
+
+
+bool uhandler_select::do_check_end_end10_le(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res, std::set<std::string> & search, SETS_OP_TRPE et)
+{
+    float end = 0;
+    bool flag = false;
+    proc_data* p_data = proc_data::instance();
+
+    std::multimap<float, std::string>::iterator it_le, it_ge, it;
+    it_le = p_data->_end_end10_index.current()->end();
+    it_ge = p_data->_end_end10_index.current()->begin();
+
+    if (has_key<std::string, std::string>(url_para_map, "end_end10_le"))
+    {
+        flag = true;
+        end = atof(url_para_map["end_end10_le"].c_str());
+        it_le = p_data->_end_end10_index.current()->upper_bound(end);
+        if (SETS_OP_UNION == et)
+            res = search;
+    }
+
+    for (it = it_ge; it != it_le && flag; ++it)
+    {
+        if (search.empty() || (SETS_OP_INTERSECTION == et && search.count(it->second)) || SETS_OP_UNION == et)
+            res.insert(it->second); 
+    }
+
+    return flag;
+}
+
+bool uhandler_select::do_check_end_end20_le(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res, std::set<std::string> & search, SETS_OP_TRPE et)
+{
+    float end = 0;
+    bool flag = false;
+    proc_data* p_data = proc_data::instance();
+
+    std::multimap<float, std::string>::iterator it_le, it_ge, it;
+    it_le = p_data->_end_end20_index.current()->end();
+    it_ge = p_data->_end_end20_index.current()->begin();
+
+    if (has_key<std::string, std::string>(url_para_map, "end_end20_le"))
+    {
+        flag = true;
+        end = atof(url_para_map["end_end20_le"].c_str());
+        it_le = p_data->_end_end20_index.current()->upper_bound(end);
+        if (SETS_OP_UNION == et)
+            res = search;
+    }
+
+    for (it = it_ge; it != it_le && flag; ++it)
+    {
+        if (search.empty() || (SETS_OP_INTERSECTION == et && search.count(it->second)) || SETS_OP_UNION == et)
+            res.insert(it->second); 
+    }
+
+    return flag;
+}
+
+bool uhandler_select::do_check_end_end30_le(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res, std::set<std::string> & search, SETS_OP_TRPE et)
+{
+    float end = 0;
+    bool flag = false;
+    proc_data* p_data = proc_data::instance();
+
+    std::multimap<float, std::string>::iterator it_le, it_ge, it;
+    it_le = p_data->_end_end30_index.current()->end();
+    it_ge = p_data->_end_end30_index.current()->begin();
+
+    if (has_key<std::string, std::string>(url_para_map, "end_end30_le"))
+    {
+        flag = true;
+        end = atof(url_para_map["end_end30_le"].c_str());
+        it_le = p_data->_end_end30_index.current()->upper_bound(end);
+        if (SETS_OP_UNION == et)
+            res = search;
+    }
+
+    for (it = it_ge; it != it_le && flag; ++it)
+    {
+        if (search.empty() || (SETS_OP_INTERSECTION == et && search.count(it->second)) || SETS_OP_UNION == et)
+            res.insert(it->second); 
+    }
+
+    return flag;
+}
+
+bool uhandler_select::do_check_end_avg_end_ge(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res, std::set<std::string> & search, SETS_OP_TRPE et)
+{
+    float end = 0;
+    bool flag = false;
+    proc_data* p_data = proc_data::instance();
+
+    std::multimap<float, std::string>::iterator it_le, it_ge, it;
+    it_le = p_data->_end_avg_end_index.current()->end();
+    it_ge = p_data->_end_avg_end_index.current()->begin();
+
+    if (has_key<std::string, std::string>(url_para_map, "end_avg_end_ge"))
+    {
+        flag = true;
+        end = atof(url_para_map["end_avg_end_ge"].c_str());
+        it_ge = p_data->_end_avg_end_index.current()->lower_bound(end);
+        if (SETS_OP_UNION == et)
+            res = search;
+    }
+
+    for (it = it_ge; it != it_le && flag; ++it)
+    {
+        if (search.empty() || (SETS_OP_INTERSECTION == et && search.count(it->second)) || SETS_OP_UNION == et)
+            res.insert(it->second); 
+    }
+
+    return flag;
+}
+
+bool uhandler_select::do_check_end_avg_end5_ge(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res, std::set<std::string> & search, SETS_OP_TRPE et)
+{
+    float end = 0;
+    bool flag = false;
+    proc_data* p_data = proc_data::instance();
+
+    std::multimap<float, std::string>::iterator it_le, it_ge, it;
+    it_le = p_data->_end_avg_end5_index.current()->end();
+    it_ge = p_data->_end_avg_end5_index.current()->begin();
+
+    if (has_key<std::string, std::string>(url_para_map, "end_avg_end5_ge"))
+    {
+        flag = true;
+        end = atof(url_para_map["end_avg_end10_ge"].c_str());
+        it_ge = p_data->_end_avg_end5_index.current()->lower_bound(end);
+        if (SETS_OP_UNION == et)
+            res = search;
+    }
+
+    for (it = it_ge; it != it_le && flag; ++it)
+    {
+        if (search.empty() || (SETS_OP_INTERSECTION == et && search.count(it->second)) || SETS_OP_UNION == et)
+            res.insert(it->second); 
+    }
+
+    return flag;
+}
+
+bool uhandler_select::do_check_end_avg_end10_ge(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res, std::set<std::string> & search, SETS_OP_TRPE et)
+{
+    float end = 0;
+    bool flag = false;
+    proc_data* p_data = proc_data::instance();
+
+    std::multimap<float, std::string>::iterator it_le, it_ge, it;
+    it_le = p_data->_end_avg_end10_index.current()->end();
+    it_ge = p_data->_end_avg_end10_index.current()->begin();
+
+    if (has_key<std::string, std::string>(url_para_map, "end_avg_end10_ge"))
+    {
+        flag = true;
+        end = atof(url_para_map["end_avg_end10_ge"].c_str());
+        it_ge = p_data->_end_avg_end10_index.current()->lower_bound(end);
+        if (SETS_OP_UNION == et)
+            res = search;
+    }
+
+    for (it = it_ge; it != it_le && flag; ++it)
+    {
+        if (search.empty() || (SETS_OP_INTERSECTION == et && search.count(it->second)) || SETS_OP_UNION == et)
+            res.insert(it->second); 
+    }
+
+    return flag;
+}
+
+bool uhandler_select::do_check_end_avg_end20_ge(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res, std::set<std::string> & search, SETS_OP_TRPE et)
+{
+    float end = 0;
+    bool flag = false;
+    proc_data* p_data = proc_data::instance();
+
+    std::multimap<float, std::string>::iterator it_le, it_ge, it;
+    it_le = p_data->_end_avg_end20_index.current()->end();
+    it_ge = p_data->_end_avg_end20_index.current()->begin();
+
+    if (has_key<std::string, std::string>(url_para_map, "end_avg_end20_ge"))
+    {
+        flag = true;
+        end = atof(url_para_map["end_avg_end20_ge"].c_str());
+        it_ge = p_data->_end_avg_end20_index.current()->lower_bound(end);
+        if (SETS_OP_UNION == et)
+            res = search;
+    }
+
+    for (it = it_ge; it != it_le && flag; ++it)
+    {
+        if (search.empty() || (SETS_OP_INTERSECTION == et && search.count(it->second)) || SETS_OP_UNION == et)
+            res.insert(it->second); 
+    }
+
+    return flag;
+}
+
+bool uhandler_select::do_check_end_avg_end30_ge(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res, std::set<std::string> & search, SETS_OP_TRPE et)
+{
+    float end = 0;
+    bool flag = false;
+    proc_data* p_data = proc_data::instance();
+
+    std::multimap<float, std::string>::iterator it_le, it_ge, it;
+    it_le = p_data->_end_avg_end30_index.current()->end();
+    it_ge = p_data->_end_avg_end30_index.current()->begin();
+
+    if (has_key<std::string, std::string>(url_para_map, "end_avg_end30_ge"))
+    {
+        flag = true;
+        end = atof(url_para_map["end_avg_end30_ge"].c_str());
+        it_ge = p_data->_end_avg_end30_index.current()->lower_bound(end);
+        if (SETS_OP_UNION == et)
+            res = search;
+    }
+
+    for (it = it_ge; it != it_le && flag; ++it)
+    {
+        if (search.empty() || (SETS_OP_INTERSECTION == et && search.count(it->second)) || SETS_OP_UNION == et)
+            res.insert(it->second); 
+    }
+
+    return flag;
+}
+
+bool uhandler_select::do_check_end_end5_ge(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res, std::set<std::string> & search, SETS_OP_TRPE et)
+{
+    float end = 0;
+    bool flag = false;
+    proc_data* p_data = proc_data::instance();
+
+    std::multimap<float, std::string>::iterator it_le, it_ge, it;
+    it_le = p_data->_end_end5_index.current()->end();
+    it_ge = p_data->_end_end5_index.current()->begin();
+
+    if (has_key<std::string, std::string>(url_para_map, "end_end5_ge"))
+    {
+        flag = true;
+        end = atof(url_para_map["end_end5_ge"].c_str());
+        it_ge = p_data->_end_end5_index.current()->lower_bound(end);
+        if (SETS_OP_UNION == et)
+            res = search;
+    }
+
+    for (it = it_ge; it != it_le && flag; ++it)
+    {
+        if (search.empty() || (SETS_OP_INTERSECTION == et && search.count(it->second)) || SETS_OP_UNION == et)
+            res.insert(it->second); 
+    }
+
+    return flag;
+}
+
+bool uhandler_select::do_check_end_end10_ge(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res, std::set<std::string> & search, SETS_OP_TRPE et)
+{
+    float end = 0;
+    bool flag = false;
+    proc_data* p_data = proc_data::instance();
+
+    std::multimap<float, std::string>::iterator it_le, it_ge, it;
+    it_le = p_data->_end_end10_index.current()->end();
+    it_ge = p_data->_end_end10_index.current()->begin();
+
+    if (has_key<std::string, std::string>(url_para_map, "end_end10_ge"))
+    {
+        flag = true;
+        end = atof(url_para_map["end_end10_ge"].c_str());
+        it_ge = p_data->_end_end10_index.current()->lower_bound(end);
+        if (SETS_OP_UNION == et)
+            res = search;
+    }
+
+    for (it = it_ge; it != it_le && flag; ++it)
+    {
+        if (search.empty() || (SETS_OP_INTERSECTION == et && search.count(it->second)) || SETS_OP_UNION == et)
+            res.insert(it->second); 
+    }
+
+    return flag;
+}
+
+bool uhandler_select::do_check_end_end20_ge(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res, std::set<std::string> & search, SETS_OP_TRPE et)
+{
+    float end = 0;
+    bool flag = false;
+    proc_data* p_data = proc_data::instance();
+
+    std::multimap<float, std::string>::iterator it_le, it_ge, it;
+    it_le = p_data->_end_end20_index.current()->end();
+    it_ge = p_data->_end_end20_index.current()->begin();
+
+    if (has_key<std::string, std::string>(url_para_map, "end_end20_ge"))
+    {
+        flag = true;
+        end = atof(url_para_map["end_end20_ge"].c_str());
+        it_ge = p_data->_end_end20_index.current()->lower_bound(end);
+        if (SETS_OP_UNION == et)
+            res = search;
+    }
+
+    for (it = it_ge; it != it_le && flag; ++it)
+    {
+        if (search.empty() || (SETS_OP_INTERSECTION == et && search.count(it->second)) || SETS_OP_UNION == et)
+            res.insert(it->second); 
+    }
+
+    return flag;
+}
+
+bool uhandler_select::do_check_end_end30_ge(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res, std::set<std::string> & search, SETS_OP_TRPE et)
+{
+    float end = 0;
+    bool flag = false;
+    proc_data* p_data = proc_data::instance();
+
+    std::multimap<float, std::string>::iterator it_le, it_ge, it;
+    it_le = p_data->_end_end30_index.current()->end();
+    it_ge = p_data->_end_end30_index.current()->begin();
+
+    if (has_key<std::string, std::string>(url_para_map, "end_end30_ge"))
+    {
+        flag = true;
+        end = atof(url_para_map["end_end30_ge"].c_str());
+        it_ge = p_data->_end_end30_index.current()->lower_bound(end);
         if (SETS_OP_UNION == et)
             res = search;
     }

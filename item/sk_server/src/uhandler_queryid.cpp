@@ -122,6 +122,14 @@ int uhandler_queryid::do_check_queryid(std::map<std::string, std::string> & url_
         root.AddMember(key, child, allocator);
     }
 
+    {
+        Value child(kObjectType);
+        query_technical(url_para_map["id"], child, allocator);
+
+        key.SetString("technical", allocator);
+        root.AddMember(key, child, allocator);
+    }
+
     if (has_key<std::string, std::string>(url_para_map, "single_in"))
     {
         Value child(kObjectType);
@@ -250,6 +258,80 @@ void uhandler_queryid::query_quotation(std::string &id, Value & root, Document::
 
             root.AddMember(key, value, allocator);
         }
+    }
+}
+
+void uhandler_queryid::query_technical(std::string &id, Value & root, Document::AllocatorType & allocator)
+{
+    Value key(kStringType);
+    Value value(kStringType);
+
+    proc_data* p_data = proc_data::instance();
+    auto ii = p_data->_rtechnical_dict_index.current()->find(id);
+    if (ii != p_data->_rtechnical_dict_index.current()->end())
+    {
+        {
+            key.SetString("avg_end", allocator); 
+            value.SetString(float_2_str(ii->second->avg_end).c_str(), allocator); 
+
+            root.AddMember(key, value, allocator);
+        }
+
+        {
+            key.SetString("end_5", allocator); 
+            value.SetString(float_2_str(ii->second->end_5).c_str(), allocator); 
+
+            root.AddMember(key, value, allocator);
+        }
+
+        {
+            key.SetString("end_10", allocator); 
+            value.SetString(float_2_str(ii->second->end_10).c_str(), allocator); 
+
+            root.AddMember(key, value, allocator);
+        }
+
+        {
+            key.SetString("end_20", allocator); 
+            value.SetString(float_2_str(ii->second->end_20).c_str(), allocator); 
+
+            root.AddMember(key, value, allocator);
+        }
+
+        {
+            key.SetString("end_30", allocator); 
+            value.SetString(float_2_str(ii->second->end_30).c_str(), allocator); 
+
+            root.AddMember(key, value, allocator);
+        }
+
+        {
+            key.SetString("avg_end_5", allocator); 
+            value.SetString(float_2_str(ii->second->avg_end_5).c_str(), allocator); 
+
+            root.AddMember(key, value, allocator);
+        }
+
+        {
+            key.SetString("avg_end_10", allocator); 
+            value.SetString(float_2_str(ii->second->avg_end_10).c_str(), allocator); 
+
+            root.AddMember(key, value, allocator);
+        }
+
+        {
+            key.SetString("avg_end_20", allocator); 
+            value.SetString(float_2_str(ii->second->avg_end_20).c_str(), allocator); 
+
+            root.AddMember(key, value, allocator);
+        }
+
+        {
+            key.SetString("avg_end_30", allocator); 
+            value.SetString(float_2_str(ii->second->avg_end_30).c_str(), allocator); 
+
+            root.AddMember(key, value, allocator);
+        }
 
         {
             key.SetString("down_pointer", allocator); 
@@ -261,13 +343,6 @@ void uhandler_queryid::query_quotation(std::string &id, Value & root, Document::
         {
             key.SetString("up_pointer", allocator); 
             value.SetString(float_2_str(ii->second->up_pointer).c_str(), allocator); 
-
-            root.AddMember(key, value, allocator);
-        }
-
-        {
-            key.SetString("avage_price", allocator); 
-            value.SetString(float_2_str(ii->second->avg_price).c_str(), allocator); 
 
             root.AddMember(key, value, allocator);
         }

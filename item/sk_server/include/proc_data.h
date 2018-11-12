@@ -69,6 +69,8 @@ class proc_data:public reload_inf
 
         ToBufferMgr<std::unordered_map<std::string, std::shared_ptr<quotation_t>, str_hasher> > _rquoation_dict_index;
 
+        ToBufferMgr<std::unordered_map<std::string, std::shared_ptr<technical_t>, str_hasher> > _rtechnical_dict_index;
+
     public:
         //search index;
         ToBufferMgr<std::unordered_set<std::string, str_hasher> > _block_set;
@@ -79,7 +81,16 @@ class proc_data:public reload_inf
 
         ToBufferMgr<std::multimap<float, std::string> > _down_pointer_index;
         ToBufferMgr<std::multimap<float, std::string> > _up_pointer_index;
-        ToBufferMgr<std::multimap<float, std::string> > _end_avg_price_index;
+        ToBufferMgr<std::multimap<float, std::string> > _end_avg_end_index;
+        ToBufferMgr<std::multimap<float, std::string> > _end_avg_end5_index;
+        ToBufferMgr<std::multimap<float, std::string> > _end_avg_end10_index;
+        ToBufferMgr<std::multimap<float, std::string> > _end_avg_end20_index;
+        ToBufferMgr<std::multimap<float, std::string> > _end_avg_end30_index;
+
+        ToBufferMgr<std::multimap<float, std::string> > _end_end5_index;
+        ToBufferMgr<std::multimap<float, std::string> > _end_end10_index;
+        ToBufferMgr<std::multimap<float, std::string> > _end_end20_index;
+        ToBufferMgr<std::multimap<float, std::string> > _end_end30_index;
 
         ToBufferMgr<std::multimap<int, std::string> > _pe_index;
         ToBufferMgr<std::multimap<int, std::string> > _pb_index;
@@ -97,9 +108,7 @@ class proc_data:public reload_inf
         ToBufferMgr<std::unordered_multimap<std::shared_ptr<std::string>, std::string, str_hasher, str_equaler> > _address_index;
         ToBufferMgr<std::unordered_multimap<std::shared_ptr<std::string>, std::string, str_hasher, str_equaler> > _plate_index;
 
-
         ToBufferMgr<std::vector<std::multimap<int, std::string> > > _rsingle_diff_index;
-
         // 
         ToBufferMgr<std::vector<std::multimap<int, std::string> > > _rsingle_diff2_index;
 
@@ -110,17 +119,13 @@ class proc_data:public reload_inf
 
         // history quotation 
         // date, -, id
-        ToBufferMgr<std::map<std::string, std::multimap<float, std::string> > > _hqend_index;
         ToBufferMgr<std::map<std::string, std::multimap<float, std::string> > > _hqchange_rate_index;
         ToBufferMgr<std::map<std::string, std::multimap<float, std::string> > > _hqrange_percent_index;
 
         ToBufferMgr<std::map<std::string, std::multimap<float, std::string> > > _hq_sum_range_percent_index;
         ToBufferMgr<std::map<std::string, std::multimap<float, std::string> > > _hq_sum_change_rate_index;
 
-        ToBufferMgr<std::map<std::string, std::multimap<float, std::string> > > _hqdown_pointer_index;
-        ToBufferMgr<std::map<std::string, std::multimap<float, std::string> > > _hqup_pointer_index;
-
-        ToBufferMgr<std::map<std::string, std::multimap<float, std::string> > > _end_hqend_index;
+        ToBufferMgr<std::map<std::string, std::multimap<float, std::string> > > _hqend_hqstart_index;
 
         //recommend_flag, id
         ToBufferMgr<std::unordered_multimap<std::string, std::string, str_hasher> > _recommend_index;
