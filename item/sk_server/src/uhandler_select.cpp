@@ -1169,21 +1169,25 @@ bool uhandler_select::do_check_hsingle_diff_ge(std::map<std::string, std::string
             std::vector<std::string> t_vec;
             SplitString(tmp_vec[i].c_str(), ':', &t_vec, SPLIT_MODE_ALL);
             std::string date;
+            std::set<std::string> t_res;
             p_data->_hsingle_dict->current()->get_last_date(atoi(t_vec[0].c_str()), date);
-            if (date.empty())
-                return flag;
+            if (date.empty()) {
+                tmp_res_vec.push_back(t_res);
+                continue;;
+            }
 
 
             end = atoi(t_vec[1].c_str());
             auto ii = p_data->_hsingle_diff_index.current()->at(index).find(date);
-            if (ii == p_data->_hsingle_diff_index.current()->at(index).end())
-                return flag;
+            if (ii == p_data->_hsingle_diff_index.current()->at(index).end()) {
+                tmp_res_vec.push_back(t_res);
+                continue;;
+            }
 
             it_le = ii->second.end();
             it_ge = ii->second.begin();
 
             it_ge = ii->second.lower_bound(end);
-            std::set<std::string> t_res;
             for (it = it_ge; it != it_le; ++it)
             {
                 if (search.empty() || (SETS_OP_INTERSECTION == et && search.count(it->second)) || SETS_OP_UNION == et)
@@ -1248,20 +1252,24 @@ bool uhandler_select::do_check_hsingle_sum_diff_ge(std::map<std::string, std::st
             std::vector<std::string> t_vec;
             SplitString(tmp_vec[i].c_str(), ':', &t_vec, SPLIT_MODE_ALL);
             std::string date;
+            std::set<std::string> t_res;
             p_data->_hsingle_dict->current()->get_last_date(atoi(t_vec[0].c_str()), date);
-            if (date.empty())
-                return flag;
+            if (date.empty()){
+                tmp_res_vec.push_back(t_res);
+                continue;;
+            }
 
             end = atoi(t_vec[1].c_str());
             auto ii = p_data->_hsingle_sum_diff_index.current()->at(index).find(date);
-            if (ii == p_data->_hsingle_sum_diff_index.current()->at(index).end())
-                return flag;
+            if (ii == p_data->_hsingle_sum_diff_index.current()->at(index).end()) {
+                tmp_res_vec.push_back(t_res);
+                continue;;
+            }
 
             it_le = ii->second.end();
             it_ge = ii->second.begin();
 
             it_ge = ii->second.lower_bound(end);
-            std::set<std::string> t_res;
             for (it = it_ge; it != it_le; ++it)
             {
                 if (search.empty() || (SETS_OP_INTERSECTION == et && search.count(it->second)) || SETS_OP_UNION == et)
@@ -1764,21 +1772,25 @@ bool uhandler_select::do_check_history_sum_range_percent_le(std::map<std::string
             std::vector<std::string> t_vec;
             SplitString(tmp_vec[i].c_str(), ':', &t_vec, SPLIT_MODE_ALL);
             std::string date;
+            std::set<std::string> t_res;
             p_data->_hquoation_dict->current()->get_last_date(atoi(t_vec[0].c_str()), date);
-            if (date.empty())
-                return flag;
+            if (date.empty()) {
+                tmp_res_vec.push_back(t_res);
+                continue;;
+            }
 
 
             end = atof(t_vec[1].c_str());
             auto ii = p_data->_hq_sum_range_percent_index.current()->find(date);
-            if (ii == p_data->_hq_sum_range_percent_index.current()->end())
-                return flag;
+            if (ii == p_data->_hq_sum_range_percent_index.current()->end()) {
+                tmp_res_vec.push_back(t_res);
+                continue;;
+            }
 
             it_le = ii->second.end();
             it_ge = ii->second.begin();
 
             it_le = ii->second.upper_bound(end);
-            std::set<std::string> t_res;
             for (it = it_ge; it != it_le; ++it)
             {
                 if (search.empty() || (SETS_OP_INTERSECTION == et && search.count(it->second)) || SETS_OP_UNION == et)
@@ -1838,17 +1850,21 @@ bool uhandler_select::do_check_history_has_range_percent_le(std::map<std::string
             std::vector<std::string> t_vec;
             SplitString(tmp_vec[i].c_str(), ':', &t_vec, SPLIT_MODE_ALL);
             std::string date;
+            std::set<std::string> t_res;
             p_data->_hquoation_dict->current()->get_last_date(atoi(t_vec[0].c_str()), date);
-            if (date.empty())
-                return flag;
+            if (date.empty()) {
+                tmp_res_vec.push_back(t_res);
+                continue;
+            }
 
 
             end = atof(t_vec[1].c_str());
             auto ii = p_data->_hqrange_percent_index.current()->find(date);
-            if (ii == p_data->_hqrange_percent_index.current()->end())
-                return flag;
+            if (ii == p_data->_hqrange_percent_index.current()->end()) {
+                tmp_res_vec.push_back(t_res);
+                continue;
+            }
 
-            std::set<std::string> t_res;
             for (; ii != p_data->_hqrange_percent_index.current()->end(); ii++)
             {
                 it_le = ii->second.end();
@@ -1914,17 +1930,21 @@ bool uhandler_select::do_check_history_range_percent_le(std::map<std::string, st
             std::vector<std::string> t_vec;
             SplitString(tmp_vec[i].c_str(), ':', &t_vec, SPLIT_MODE_ALL);
             std::string date;
+            std::set<std::string> t_res;
             p_data->_hquoation_dict->current()->get_last_date(atoi(t_vec[0].c_str()), date);
-            if (date.empty())
-                return flag;
+            if (date.empty()) {
+                tmp_res_vec.push_back(t_res);
+                continue;
+            }
 
 
             end = atof(t_vec[1].c_str());
             auto ii = p_data->_hqrange_percent_index.current()->find(date);
-            if (ii == p_data->_hqrange_percent_index.current()->end())
-                return flag;
+            if (ii == p_data->_hqrange_percent_index.current()->end()) {
+                tmp_res_vec.push_back(t_res);
+                continue;
+            }
 
-            std::set<std::string> t_res;
             it_le = ii->second.end();
             it_ge = ii->second.begin();
 
@@ -2016,21 +2036,25 @@ bool uhandler_select::do_check_history_sum_range_percent_ge(std::map<std::string
             std::vector<std::string> t_vec;
             SplitString(tmp_vec[i].c_str(), ':', &t_vec, SPLIT_MODE_ALL);
             std::string date;
+            std::set<std::string> t_res;
             p_data->_hquoation_dict->current()->get_last_date(atoi(t_vec[0].c_str()), date);
-            if (date.empty())
-                return flag;
+            if (date.empty()) {
+                tmp_res_vec.push_back(t_res);
+                continue;
+            }
 
 
             end = atof(t_vec[1].c_str());
             auto ii = p_data->_hq_sum_range_percent_index.current()->find(date);
-            if (ii == p_data->_hq_sum_range_percent_index.current()->end())
-                return flag;
+            if (ii == p_data->_hq_sum_range_percent_index.current()->end()) {
+                tmp_res_vec.push_back(t_res);
+                continue;
+            }
 
             it_le = ii->second.end();
             it_ge = ii->second.begin();
 
             it_ge = ii->second.lower_bound(end);
-            std::set<std::string> t_res;
             for (it = it_ge; it != it_le; ++it)
             {
                 if (search.empty() || (SETS_OP_INTERSECTION == et && search.count(it->second)) || SETS_OP_UNION == et)
@@ -2088,17 +2112,22 @@ bool uhandler_select::do_check_history_range_percent_ge_num_ge(std::map<std::str
             std::vector<std::string> t_vec;
             SplitString(tmp_vec[i].c_str(), ':', &t_vec, SPLIT_MODE_ALL);
             std::string date;
+            std::map<std::string, int> t_res;
+            std::set<std::string> t_vv;
             p_data->_hquoation_dict->current()->get_last_date(atoi(t_vec[0].c_str()), date);
-            if (date.empty())
-                return flag;
+            if (date.empty()) {
+                tmp_res_vec.push_back(t_vv);
+                continue;
+            }
 
 
             end = atof(t_vec[1].c_str());
             auto ii = p_data->_hqrange_percent_index.current()->find(date);
-            if (ii == p_data->_hqrange_percent_index.current()->end())
-                return flag;
+            if (ii == p_data->_hqrange_percent_index.current()->end()) {
+                tmp_res_vec.push_back(t_vv);
+                continue;
+            }
 
-            std::map<std::string, int> t_res;
             for (; ii != p_data->_hqrange_percent_index.current()->end(); ii++)
             {
                 it_le = ii->second.end();
@@ -2122,7 +2151,6 @@ bool uhandler_select::do_check_history_range_percent_ge_num_ge(std::map<std::str
                 }
             }
                 
-            std::set<std::string> t_vv;
             std::map<std::string, int>::iterator itm;
             for (itm = t_res.begin(); itm != t_res.end(); itm++)
             {
@@ -2181,17 +2209,22 @@ bool uhandler_select::do_check_history_range_percent_ge_num_le(std::map<std::str
             std::vector<std::string> t_vec;
             SplitString(tmp_vec[i].c_str(), ':', &t_vec, SPLIT_MODE_ALL);
             std::string date;
+            std::map<std::string, int> t_res;
+            std::set<std::string> t_vv;
             p_data->_hquoation_dict->current()->get_last_date(atoi(t_vec[0].c_str()), date);
-            if (date.empty())
-                return flag;
+            if (date.empty()) {
+                tmp_res_vec.push_back(t_vv);
+                continue;
+            }
 
 
             end = atof(t_vec[1].c_str());
             auto ii = p_data->_hqrange_percent_index.current()->find(date);
-            if (ii == p_data->_hqrange_percent_index.current()->end())
-                return flag;
+            if (ii == p_data->_hqrange_percent_index.current()->end()) {
+                tmp_res_vec.push_back(t_vv);
+                continue;
+            }
 
-            std::map<std::string, int> t_res;
             for (; ii != p_data->_hqrange_percent_index.current()->end(); ii++)
             {
                 it_le = ii->second.end();
@@ -2215,7 +2248,6 @@ bool uhandler_select::do_check_history_range_percent_ge_num_le(std::map<std::str
                 }
             }
                 
-            std::set<std::string> t_vv;
             std::map<std::string, int>::iterator itm;
             for (itm = t_res.begin(); itm != t_res.end(); itm++)
             {
@@ -2273,17 +2305,22 @@ bool uhandler_select::do_check_hqend_hqstart_ge_num_ge(std::map<std::string, std
             std::vector<std::string> t_vec;
             SplitString(tmp_vec[i].c_str(), ':', &t_vec, SPLIT_MODE_ALL);
             std::string date;
+            std::map<std::string, int> t_res;
+            std::set<std::string> t_vv;
             p_data->_hquoation_dict->current()->get_last_date(atoi(t_vec[0].c_str()), date);
-            if (date.empty())
-                return flag;
+            if (date.empty()) {
+                tmp_res_vec.push_back(t_vv);
+                continue;
+            }
 
 
             end = atof(t_vec[1].c_str());
             auto ii = p_data->_hqend_hqstart_index.current()->find(date);
-            if (ii == p_data->_hqend_hqstart_index.current()->end())
-                return flag;
+            if (ii == p_data->_hqend_hqstart_index.current()->end()) {
+                tmp_res_vec.push_back(t_vv);
+                continue;
+            }
 
-            std::map<std::string, int> t_res;
             for (; ii != p_data->_hqend_hqstart_index.current()->end(); ii++)
             {
                 it_le = ii->second.end();
@@ -2307,7 +2344,6 @@ bool uhandler_select::do_check_hqend_hqstart_ge_num_ge(std::map<std::string, std
                 }
             }
                 
-            std::set<std::string> t_vv;
             std::map<std::string, int>::iterator itm;
             for (itm = t_res.begin(); itm != t_res.end(); itm++)
             {
@@ -2367,21 +2403,25 @@ bool uhandler_select::do_check_hqend_hqstart_ge(std::map<std::string, std::strin
             std::vector<std::string> t_vec;
             SplitString(tmp_vec[i].c_str(), ':', &t_vec, SPLIT_MODE_ALL);
             std::string date;
+            std::set<std::string> t_res;
             p_data->_hquoation_dict->current()->get_last_date(atoi(t_vec[0].c_str()), date);
-            if (date.empty())
-                return flag;
+            if (date.empty()) {
+                tmp_res_vec.push_back(t_res);
+                continue;
+            }
 
 
             end = atof(t_vec[1].c_str());
             auto ii = p_data->_hqend_hqstart_index.current()->find(date);
-            if (ii == p_data->_hqend_hqstart_index.current()->end())
-                return flag;
+            if (ii == p_data->_hqend_hqstart_index.current()->end()) {
+                tmp_res_vec.push_back(t_res);
+                continue;
+            }
 
             it_le = ii->second.end();
             it_ge = ii->second.begin();
 
             it_ge = ii->second.lower_bound(end);
-            std::set<std::string> t_res;
             for (it = it_ge; it != it_le; ++it)
             {
                 if (search.empty() || (SETS_OP_INTERSECTION == et && search.count(it->second)) || SETS_OP_UNION == et)
@@ -2440,17 +2480,21 @@ bool uhandler_select::do_check_history_has_range_percent_ge(std::map<std::string
             std::vector<std::string> t_vec;
             SplitString(tmp_vec[i].c_str(), ':', &t_vec, SPLIT_MODE_ALL);
             std::string date;
+            std::set<std::string> t_res;
             p_data->_hquoation_dict->current()->get_last_date(atoi(t_vec[0].c_str()), date);
-            if (date.empty())
-                return flag;
+            if (date.empty()) {
+                tmp_res_vec.push_back(t_res);
+                continue;
+            }
 
 
             end = atof(t_vec[1].c_str());
             auto ii = p_data->_hqrange_percent_index.current()->find(date);
-            if (ii == p_data->_hqrange_percent_index.current()->end())
-                return flag;
+            if (ii == p_data->_hqrange_percent_index.current()->end()) {
+                tmp_res_vec.push_back(t_res);
+                continue;
+            }
 
-            std::set<std::string> t_res;
             for (; ii != p_data->_hqrange_percent_index.current()->end(); ii++)
             {
                 it_le = ii->second.end();
@@ -2515,17 +2559,21 @@ bool uhandler_select::do_check_history_range_percent_ge(std::map<std::string, st
             std::vector<std::string> t_vec;
             SplitString(tmp_vec[i].c_str(), ':', &t_vec, SPLIT_MODE_ALL);
             std::string date;
+            std::set<std::string> t_res;
             p_data->_hquoation_dict->current()->get_last_date(atoi(t_vec[0].c_str()), date);
-            if (date.empty())
-                return flag;
+            if (date.empty()) {
+                tmp_res_vec.push_back(t_res);
+                continue;
+            }
 
 
             end = atof(t_vec[1].c_str());
             auto ii = p_data->_hqrange_percent_index.current()->find(date);
-            if (ii == p_data->_hqrange_percent_index.current()->end())
-                return flag;
+            if (ii == p_data->_hqrange_percent_index.current()->end()) {
+                tmp_res_vec.push_back(t_res);
+                continue;
+            }
 
-            std::set<std::string> t_res;
             it_le = ii->second.end();
             it_ge = ii->second.begin();
 
