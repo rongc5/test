@@ -4,11 +4,11 @@ import (
 	"os"
 	"time"
 	"fmt"
-	"errors"
 	"runtime"
 	"sync"
 	"path"
 )
+
 
 const(
 	LOG_LEVEL_FATAL = iota
@@ -19,64 +19,36 @@ const(
 )
 
 type logHelper struct{
-	log_path string
-	prefix_file_name string
-
 	log_Level int
 	file_max_size int
-	m_mu sync.Mutex
-
+	mutex sync.Mutex
 	log_name map[int]string
-}
-
-type LogConf struct {
-	log_path string
-	prefix_file_name string
-	log_Level int
-	file_max_size int
-}
-
-func defaultNew() *logHelper  {
-	return &logHelper{
-		log_path:*logD,
-		prefix_file_name:"",
-		m_FileHandle:nil,
-		log_Level:0,
-		log_name:make(map[int]string),
-		m_Depth:defaultDepth,
-		m_MaxLogFileNum:(*maxFileNum),
-		m_MaxLogDataNum:(*maxFileCap),
-	}
 }
 
 func NewLogHelper(conf *LogConf) *logHelper {
 
-	logger := defaultNew()
+	logger := new(logHelper)
 
-	if level < LOG_LEVEL_FATAL || level > LOG_LEVEL_DEBUG {
+	if conf.log_Level < LOG_LEVEL_FATAL || conf.log_Level > LOG_LEVEL_DEBUG {
 		fmt.Println("level is invailed")
 	}
 
-	logger.log_Level = conf.level
-	logger.
-	logger.log_name[LOG_LEVEL_FATAL] = logger.getLogFileName(LOG_LEVEL_FATAL)
-	logger.log_name[LOG_LEVEL_DEBUG] = logger.getLogFileName(LOG_LEVEL_DEBUG)
-	logger.log_name[LOG_LEVEL_WARNING] = logger.getLogFileName(LOG_LEVEL_WARNING)
-	logger.log_name[LOG_LEVEL_NOTICE] = logger.getLogFileName(LOG_LEVEL_NOTICE)
-	logger.log_name[LOG_LEVEL_TRACE] = logger.getLogFileName(LOG_LEVEL_TRACE)
+	logger.log_Level = conf.log_Level
+	logger.file_max_size = conf.file_max_size
+	logger.log_name = make(map[int]string)
+	logger.log_name[LOG_LEVEL_FATAL] = logger.getLogFileName(conf.log_path, conf.prefix_file_name, LOG_LEVEL_FATAL)
+	logger.log_name[LOG_LEVEL_DEBUG] = logger.getLogFileName(conf.log_path, conf.prefix_file_name,LOG_LEVEL_DEBUG)
+	logger.log_name[LOG_LEVEL_WARNING] = logger.getLogFileName(conf.log_path, conf.prefix_file_name,LOG_LEVEL_WARNING)
+	logger.log_name[LOG_LEVEL_NOTICE] = logger.getLogFileName(conf.log_path, conf.prefix_file_name,LOG_LEVEL_NOTICE)
+	logger.log_name[LOG_LEVEL_TRACE] = logger.getLogFileName(conf.log_path, conf.prefix_file_name,LOG_LEVEL_TRACE)
 
+	os.MkdirAll(conf.log_path, 0755)
 
-
-
-	err := logger.obtainLofFile()
-	if err != nil{
-		fmt.Println(ObtainFileFail)
-	}
 	return logger
 }
 
 func (this *logHelper)checkToRenmae(level int)  {
-	oldFileName := this.GetLoggerFileName(level)
+	oldFileName := this.log_name[level]
 	_,fileSize := GetFileByteSize(oldFileName)
 
 	now := time.Now().Format("20181105180405")
@@ -89,57 +61,62 @@ func (this *logHelper)checkToRenmae(level int)  {
 	}
 }
 
-func (this *logHelper)logWrite(level int,logMsg string)  {
-	this.m_mu.Lock()
-	defer this.m_mu.Unlock()
-	//超时或者超过大小
+func (this *logHelper)LogWrite(level int,logMsg string)  {
+	this.mutex.Lock()
+	defer this.mutex.Unlock()
 
 	this.checkToRenmae(level)
 
-	flag := GetLoggerLevel(level)
+	flag := this.getLoggerLevel(level)
 
 	_,file,line,ok := runtime.Caller(0)
 	if ok == false{
-		fmt.Println(GetLineNumFail)
+		fmt.Println("get line num fail")
 	}
 	name := path.Base(file)
 	time := time.Now().Format("2018-11-05 18:04:05.000")
-	_,err := Write(this.m_FileHandle,fmt.Sprintf("%s %s [%s:%d] %s\n",time,flag,name,line,logMsg))
+
+	fliename := this.log_name[level]
+
+	fd,_:=os.OpenFile(fliename,os.O_WRONLY|os.O_CREATE | os.O_APPEND,0644)
+	defer fd.Close()
+
+	_,err := fd.WriteString(fmt.Sprintf("%s %s [%s:%d] %s\n",time,flag,name,line,logMsg))
 	if err != nil {
-		fmt.Println(WriteLogInfoFail,err.Error())
+		fmt.Println("write log fail",err.Error())
 	}
 }
 
 func (this *logHelper)DEBUG(format string,args ...interface{})  {
-	if LOG_LEVEL_DEBUG < this.m_Level {
+	if LOG_LEVEL_DEBUG > this.log_Level {
 		return
 	}
 	this.LogWrite(LOG_LEVEL_DEBUG,fmt.Sprintf(format,args...))
 }
 
 func (this *logHelper)FATAL(format string,args ...interface{})  {
-	if LOG_LEVEL_FATAL < this.m_Level {
+	if LOG_LEVEL_FATAL > this.log_Level {
 		return
 	}
 	this.LogWrite(LOG_LEVEL_FATAL,fmt.Sprintf(format,args...))
 }
 
 func (this *logHelper)WARNING(format string,args ...interface{})  {
-	if LOG_LEVEL_WARNING < this.m_Level{
+	if LOG_LEVEL_WARNING > this.log_Level{
 		return
 	}
 	this.LogWrite(LOG_LEVEL_WARNING,fmt.Sprintf(format,args...))
 }
 
 func (this *logHelper)NOTICE(format string,args ...interface{})  {
-	if LOG_LEVEL_NOTICE < this.m_Level {
+	if LOG_LEVEL_NOTICE > this.log_Level {
 		return
 	}
 	this.LogWrite(LOG_LEVEL_NOTICE,fmt.Sprintf(format,args...))
 }
 
 func (this *logHelper)TRACE(format string,args ...interface{})  {
-	if LOG_LEVEL_TRACE < this.m_Level{
+	if LOG_LEVEL_TRACE > this.log_Level{
 		return
 	}
 	this.LogWrite(LOG_LEVEL_TRACE,fmt.Sprintf(format,args...))
@@ -162,63 +139,50 @@ func (this *logHelper)getLoggerLevel(level int)string  {
 	}
 }
 
-func (this *logHelper)getLogFileName(level int)string {
+func (this *logHelper)getLogFileName(log_path string, prefix_file_name string, level int)string {
 	switch level{
 	case LOG_LEVEL_DEBUG:
-		return fmt.Sprintf("%s/%s.%s", this.log_path, this.prefix_file_name, "db")
+		return fmt.Sprintf("%s/%s.%s", log_path, prefix_file_name, "db")
 	case LOG_LEVEL_FATAL:
-		return fmt.Sprintf("%s/%s.%s", this.log_path, this.prefix_file_name, "ft")
+		return fmt.Sprintf("%s/%s.%s", log_path, prefix_file_name, "ft")
 	case LOG_LEVEL_WARNING:
-		return fmt.Sprintf("%s/%s.%s", this.log_path, this.prefix_file_name, "wn")
+		return fmt.Sprintf("%s/%s.%s", log_path, prefix_file_name, "wn")
 	case LOG_LEVEL_NOTICE:
-		return fmt.Sprintf("%s/%s.%s", this.log_path, this.prefix_file_name, "nt")
+		return fmt.Sprintf("%s/%s.%s", log_path, prefix_file_name, "nt")
 	case LOG_LEVEL_TRACE:
-		return fmt.Sprintf("%s/%s.%s", this.log_path, this.prefix_file_name, "tr")
+		return fmt.Sprintf("%s/%s.%s", log_path, prefix_file_name, "tr")
 	default:
 		return ""
 	}
 }
-func (this *stLogger)obtainLofFile() error  {
-	fileDir := this.m_FileDir
-	//文件夹为空
-	if fileDir == ""{
-		fmt.Println(ArgsInvaild)
-		os.Exit(1)
-	}
 
-	//时间文件夹
-	destFilePath := fmt.Sprintf("%s%d%d%d",logDir,time.Now().Year(),time.Now().Month(),
-		time.Now().Day())
-	flag,err := IsExist(destFilePath)
-	if err != nil{
-		fmt.Println(ArgsInvaild)
+func IsFile(filename string) bool  {
+	fhandler, err := os.Stat(filename);
+	if(! (err == nil || os.IsExist(err)) ) {
+		return false
+	}else if (fhandler.IsDir()){
+		return false
 	}
-	if !flag {
-		os.MkdirAll(destFilePath,os.ModeDir)
-	}
-	//文件夹存在,直接以创建的方式打开文件
-	destFilePath =destFilePath+"/"
-	logFilePath:=fmt.Sprintf("%s%s_%d_%d%d%d%s",destFilePath,"log",1,time.Now().Year(),time.Now().Month(),
-		time.Now().Day(),".log")
+	return true
+}
 
-	_,fileSize := GetFileByteSize(logFilePath)
-	if flag && fileSize > int64(this.m_MaxLogDataNum){
-		this.RenameTooBigFile()
+func GetFileByteSize(filename string) (bool,int64) {
+	if (! IsFile(filename)) {
+		return false,0
 	}
-	fileHandle,err := os.OpenFile(logFilePath,os.O_CREATE | os.O_APPEND | os.O_RDWR, os.ModePerm)
-	if err != nil{
-		fmt.Println( OpenFileFail,err.Error())
-	}
-
-	this.m_FileHandle = fileHandle
-	this.m_FileName = logFilePath
-	//设置下次创建文件的时间
-	time.Unix(time.Now().Unix(),0).Format("2006-01-02")
-	nextDay := time.Unix(time.Now().Unix() + (24 * 3600),0)
-	nextDay = time.Date(nextDay.Year(),nextDay.Month(),nextDay.Day(),0,0,0,
-		0,nextDay.Location())
-	this.m_nexDay = nextDay
+	fhandler, _ := os.Stat(filename);
+	return true,fhandler.Size()
+}
 
 
-	return nil
+func GetProcName() string  {
+	exec_file := fmt.Sprintf("/proc/%d/exe", os.Getpid())
+	proc_name, err := os.Readlink(exec_file)
+	if err != nil {
+		return proc_name
+	}
+
+	proc_name = path.Base(proc_name)
+
+	return proc_name
 }
