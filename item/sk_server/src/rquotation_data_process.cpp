@@ -336,6 +336,7 @@ void rquotation_data_process::update_id_technical(std::shared_ptr<quotation_t> q
 
         snprintf(t_buf, sizeof(t_buf), "%.2f", tt->down_pointer);
         tt->down_pointer = atof(t_buf);
+        p_data->_down_pointer_index.idle()->insert(std::make_pair(tt->down_pointer, qt->id));
     }
 
     if ((qt->end < qt->high) && (qt->end != qt->start))
@@ -348,6 +349,7 @@ void rquotation_data_process::update_id_technical(std::shared_ptr<quotation_t> q
 
         snprintf(t_buf, sizeof(t_buf), "%.2f", tt->up_pointer);
         tt->up_pointer = atof(t_buf);
+        p_data->_up_pointer_index.idle()->insert(std::make_pair(tt->up_pointer, qt->id));
     }
 
     if (qt->vol)
@@ -527,6 +529,8 @@ void rquotation_data_process::idle_current()
 {
     proc_data* p_data = proc_data::instance();
 
+    p_data->_down_pointer_index.idle_2_current();
+    p_data->_up_pointer_index.idle_2_current();
     p_data->_end_index.idle_2_current();
     p_data->_change_rate_index.idle_2_current();
     p_data->_range_percent_index.idle_2_current();
