@@ -126,6 +126,8 @@ class proc_data:public reload_inf
         ToBufferMgr<std::map<std::string, std::multimap<float, std::string> > > _hq_sum_change_rate_index;
 
         ToBufferMgr<std::map<std::string, std::multimap<float, std::string> > > _hqend_hqstart_index;
+        //date, hend/avg_end, id
+        ToBufferMgr<std::map<std::string, std::multimap<float, std::string> > > _hend_avg_end_index;
 
         //recommend_flag, id
         ToBufferMgr<std::unordered_multimap<std::string, std::string, str_hasher> > _recommend_index;
