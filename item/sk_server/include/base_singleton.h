@@ -1,8 +1,6 @@
 #ifndef __BASE_SINGLETON_H__
 #define __BASE_SINGLETON_H__
 
-#include "common_def.h"
-
 template<class T>
 class base_singleton
 {
@@ -34,6 +32,7 @@ public:
 private:
 	static T *_p_instance;	
 };
+
 template<class T>
 T* base_singleton<T>::_p_instance = NULL;
 

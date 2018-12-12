@@ -278,7 +278,9 @@ class ToBufferMgr
         int16_t _curr;
 };
 
-bool start_with(const char *a, const char *b, size_t n=0);
+bool start_with(const std::string &mainStr, const std::string &toMatch);
+
+bool end_with(const std::string &mainStr, const std::string &toMatch);
 
 uint32_t common_random(uint32_t *seed);
 

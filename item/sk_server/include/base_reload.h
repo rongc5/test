@@ -90,9 +90,8 @@ reload_mgr<T>::~reload_mgr()
 template<typename T>
 int reload_mgr<T>::load() 
 {
-    if( _objects[0]->load() == 0 ) 
+    if( _objects[_curr]->load() == 0 ) 
     {
-        _curr = 0;
         return 0;
     }
 

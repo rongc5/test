@@ -46,6 +46,7 @@
 #include <exception>
 #include <memory>
 #include <fstream>
+#include <algorithm>
 
 #include <unordered_set>
 #include <unordered_map>

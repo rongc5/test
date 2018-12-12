@@ -312,11 +312,6 @@ int SplitString(const char *srcStr, const char *delim, std::vector<std::string> 
             std::string str(pstart, pend);
             pstart =  pend + dlen;
 
-            if (str.empty())
-            {
-                continue;
-            }
-
             if (s_mode & SPLIT_MODE_TRIM)
             {
                 if (!strncmp(str.c_str(), delim, dlen))
@@ -367,11 +362,6 @@ int SplitString(const char *srcStr, char delim, std::vector<std::string> * strVe
         {
             std::string str(pstart, pend);
             pstart =  pend + dlen;
-
-            if (str.empty())
-            {
-                continue;
-            }
 
             if (s_mode & SPLIT_MODE_TRIM)
             {
@@ -701,13 +691,20 @@ int date_change(const std::string &in, int diff, std::string &out)
     return 0;
 }
 
-bool start_with(const char *a, const char *b, size_t n)
+bool start_with(const std::string &mainStr, const std::string &toMatch)
 {
-    if (!n) {
-        if(strncmp(a, b, strlen(b)) == 0) return 1;
-    }else {
-        if(strncmp(a, b, n) == 0) return 1;  
-    }   
+    if(mainStr.size() >= toMatch.size() &&
+            mainStr.compare(0, toMatch.size(), toMatch) == 0)
+        return true;
+    else
+        return false;
+}
 
-    return 0;
+bool end_with(const std::string &mainStr, const std::string &toMatch)
+{
+    if(mainStr.size() >= toMatch.size() &&
+            mainStr.compare(mainStr.size() - toMatch.size(), toMatch.size(), toMatch) == 0)
+        return true;
+    else
+        return false;
 }
