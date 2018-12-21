@@ -500,8 +500,10 @@ void uhandler_queryid::query_finance(std::string &id, Value & root, Document::Al
     Value value(kStringType);
 
     proc_data* p_data = proc_data::instance();
-    auto ii = p_data->_finance_dict_index.current()->find(id);
-    if (ii != p_data->_finance_dict_index.current()->end())
+    std::unordered_map<std::string, std::shared_ptr<finance_t>, str_hasher> * finance_dict_index;
+    finance_dict_index = p_data->_finance_dict_index.current();
+    auto ii = finance_dict_index->find(id);
+    if (ii != finance_dict_index->end())
     {
         {
             key.SetString("pe", allocator); 

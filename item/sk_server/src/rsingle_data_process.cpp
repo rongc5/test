@@ -226,9 +226,11 @@ bool rsingle_data_process::get_sum_diff(std::string & id, std::string & date, si
 
     if (!flag)
     {
-        auto ii = p_data->_rsingle_dict_index.current()->find(id);
+        std::unordered_map<std::string, std::deque<std::shared_ptr<single_vec> >, str_hasher> * rsingle_dict_index;
+        rsingle_dict_index = p_data->_rsingle_dict_index.current();
+        auto ii = rsingle_dict_index->find(id);
 
-        if (ii != p_data->_rsingle_dict_index.current()->end() && ii->second.size())
+        if (ii != rsingle_dict_index->end() && ii->second.size())
         {
             for (uint32_t i = 0; i != ii->second.back()->size(); i++)
             {
@@ -246,8 +248,9 @@ void rsingle_data_process::update_sum_index()
     proc_data* p_data = proc_data::instance();
     bool flag = false;
     
-    auto it = p_data->_hsingle_dict->current()->_date_index.find(p_data->_trade_date);
-    if (it != p_data->_hsingle_dict->current()->_date_index.end())
+    history_single_dict * hsingle_dict = p_data->_hsingle_dict->current();
+    auto it = hsingle_dict->_date_index.find(p_data->_trade_date);
+    if (it != hsingle_dict->_date_index.end())
         flag =  true;
 
     strategy_conf * strategy = p_data->_conf->_strategy->current();
@@ -262,8 +265,8 @@ void rsingle_data_process::update_sum_index()
     }
 
     std::string key;
-    for (auto it = p_data->_hsingle_dict->current()->_date_index.begin(); 
-            it != p_data->_hsingle_dict->current()->_date_index.end(); it++)
+    for (auto it = hsingle_dict->_date_index.begin(); 
+            it != hsingle_dict->_date_index.end(); it++)
     {   
         const std::string  & date = *it;
         for (auto ii = p_data->_rsingle_dict_index.idle()->begin(); ii != p_data->_rsingle_dict_index.idle()->end(); ii++)
@@ -273,8 +276,8 @@ void rsingle_data_process::update_sum_index()
             std::string key;
             history_single_dict::creat_key(date, id, key);
 
-            auto tt = p_data->_hsingle_dict->current()->_date_sum_dict.find(key);
-            if (tt == p_data->_hsingle_dict->current()->_date_sum_dict.end())
+            auto tt = hsingle_dict->_date_sum_dict.find(key);
+            if (tt == hsingle_dict->_date_sum_dict.end())
                 continue;
 
             {

@@ -59,8 +59,9 @@ void base_timer::check_timer(std::vector<uint32_t> &expect_list)
     MITER it;
     std::pair<MITER, MITER> range;
 
-    it = _timer_list[_current].begin();
     std::multimap<uint64_t, std::shared_ptr<timer_msg> > & timer_list = _timer_list[_current];
+    it = timer_list.begin();
+
     std::vector<uint64_t> tmp_vec;
     std::vector<uint64_t>::iterator ii;
 
@@ -105,6 +106,7 @@ void base_timer::check_timer(std::vector<uint32_t> &expect_list)
 
 bool base_timer::is_empty()
 {
-    return _timer_list[_current].begin() == _timer_list[_current].end();
+    std::multimap<uint64_t, std::shared_ptr<timer_msg> > & timer_list = _timer_list[_current];
+    return timer_list.begin() == timer_list.end();
 }
 

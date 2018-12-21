@@ -239,15 +239,19 @@ size_t log_thread::process_recv_buf(const char *buf, const size_t len)
     //size_t i = 0;
     std::deque<std::shared_ptr<log_msg> >::iterator it;
 
-    if (_queue[_current].begin() == _queue[_current].end()){
-        std::lock_guard<std::mutex> lck (_mutex);
-        _current = 1 - _current;
+    {
+        std::deque<std::shared_ptr<log_msg> > & queue = _queue[_current];
+        if (queue.begin() == queue.end()){
+            std::lock_guard<std::mutex> lck (_mutex);
+            _current = 1 - _current;
+        }
     }
 
     //for (it = _queue[_current].begin(); it != _queue[_current].end() && i < k;) {
-    for (it = _queue[_current].begin(); it != _queue[_current].end();) {
+    std::deque<std::shared_ptr<log_msg> > & queue = _queue[_current];
+    for (it = queue.begin(); it != queue.end();) {
         handle_msg(*it);
-        it = _queue[_current].erase(it);
+        it = queue.erase(it);
         //i++;
     }
 
