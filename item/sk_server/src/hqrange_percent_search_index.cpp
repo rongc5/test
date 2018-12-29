@@ -1,4 +1,7 @@
 #include "hqrange_percent_search_index.h"
+#include "sk_util.h"
+#include "proc_data.h"
+#include "history_quotation_dict.h"
 
 bool hqrange_percent_search_index::search(std::string &key, std::string &value, std::set<std::string> & search)
 {
@@ -22,11 +25,12 @@ bool hqrange_percent_search_index::do_check_hqrange_percent_le(std::string &key,
 {
     float end = 0;
     std::multimap<float, std::string>::iterator it_le, it_ge, it;
-    std::multimap<float, std::string> * search_index = current();
+    std::map<std::string, std::multimap<float, std::string> > * search_index = current();
     SETS_OP_TRPE tmp_ot;
+    proc_data* p_data = proc_data::instance();
 
     std::vector<std::string> tmp_vec;
-
+    std::vector<std::set<std::string> > tmp_res_vec;
     if (strstr(key.c_str(), "|")) 
     {
         SplitString(value.c_str(), '|', &tmp_vec, SPLIT_MODE_ALL);
@@ -39,7 +43,7 @@ bool hqrange_percent_search_index::do_check_hqrange_percent_le(std::string &key,
     }
 
     if (!tmp_vec.size())
-        tmp_vec.push_back();
+        tmp_vec.push_back(value);
 
     for (uint32_t i = 0; i< tmp_vec.size(); i++)
     {
@@ -47,7 +51,7 @@ bool hqrange_percent_search_index::do_check_hqrange_percent_le(std::string &key,
         SplitString(tmp_vec[i].c_str(), ':', &t_vec, SPLIT_MODE_ALL);
         std::string date;
         std::set<std::string> t_res; 
-        search_index->get_last_date(atoi(t_vec[0].c_str()), date);
+        p_data->_hquoation_dict->current()->get_last_date(atoi(t_vec[0].c_str()), date);
         if (date.empty()) 
         { 
             tmp_res_vec.push_back(t_res);
@@ -89,9 +93,10 @@ bool hqrange_percent_search_index::do_check_hqrange_percent_ge(std::string &key,
     std::multimap<float, std::string>::iterator it_le, it_ge, it;
     std::map<std::string, std::multimap<float, std::string> >  * search_index = current();
     SETS_OP_TRPE tmp_ot;
+    proc_data* p_data = proc_data::instance();
 
     std::vector<std::string> tmp_vec;
-
+    std::vector<std::set<std::string> > tmp_res_vec;
     if (strstr(key.c_str(), "|")) 
     {
         SplitString(value.c_str(), '|', &tmp_vec, SPLIT_MODE_ALL);
@@ -104,7 +109,7 @@ bool hqrange_percent_search_index::do_check_hqrange_percent_ge(std::string &key,
     }
 
     if (!tmp_vec.size())
-        tmp_vec.push_back();
+        tmp_vec.push_back(value);
 
     for (uint32_t i = 0; i< tmp_vec.size(); i++)
     {
@@ -112,7 +117,7 @@ bool hqrange_percent_search_index::do_check_hqrange_percent_ge(std::string &key,
         SplitString(tmp_vec[i].c_str(), ':', &t_vec, SPLIT_MODE_ALL);
         std::string date;
         std::set<std::string> t_res; 
-        search_index->get_last_date(atoi(t_vec[0].c_str()), date);
+        p_data->_hquoation_dict->current()->get_last_date(atoi(t_vec[0].c_str()), date);
         if (date.empty()) 
         { 
             tmp_res_vec.push_back(t_res);
@@ -154,9 +159,10 @@ bool hqrange_percent_search_index::do_check_hqrange_percent_ge_num_ge(std::strin
     std::multimap<float, std::string>::iterator it_le, it_ge, it;
     std::map<std::string, std::multimap<float, std::string> >  * search_index = current();
     SETS_OP_TRPE tmp_ot;
+    proc_data* p_data = proc_data::instance();
 
     std::vector<std::string> tmp_vec;
-
+    std::vector<std::set<std::string> > tmp_res_vec;
     if (strstr(key.c_str(), "|")) 
     {
         SplitString(value.c_str(), '|', &tmp_vec, SPLIT_MODE_ALL);
@@ -169,7 +175,7 @@ bool hqrange_percent_search_index::do_check_hqrange_percent_ge_num_ge(std::strin
     }
 
     if (!tmp_vec.size())
-        tmp_vec.push_back();
+        tmp_vec.push_back(value);
 
     for (uint32_t i = 0; i< tmp_vec.size(); i++)
     {
@@ -178,10 +184,10 @@ bool hqrange_percent_search_index::do_check_hqrange_percent_ge_num_ge(std::strin
         std::string date;
         std::map<std::string, int> t_res;
         std::set<std::string> t_vv;
-        search_index->get_last_date(atoi(t_vec[0].c_str()), date);
+        p_data->_hquoation_dict->current()->get_last_date(atoi(t_vec[0].c_str()), date);
         if (date.empty()) 
         { 
-            tmp_res_vec.push_back(t_res);
+            tmp_res_vec.push_back(t_vv);
             continue;
         }
 
@@ -189,7 +195,7 @@ bool hqrange_percent_search_index::do_check_hqrange_percent_ge_num_ge(std::strin
         auto ii = search_index->find(date); 
         if (ii == search_index->end())
         {
-            tmp_res_vec.push_back(t_res);
+            tmp_res_vec.push_back(t_vv);
             continue;;
         }
 

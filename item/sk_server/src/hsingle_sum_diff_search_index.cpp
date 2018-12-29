@@ -1,4 +1,7 @@
 #include "hsingle_sum_diff_search_index.h"
+#include "sk_util.h"
+#include "proc_data.h"
+#include "history_single_dict.h"
 
 bool hsingle_sum_diff_search_index::search(std::string &key, std::string &value, std::set<std::string> & search)
 {
@@ -18,12 +21,14 @@ bool hsingle_sum_diff_search_index::do_check_hsingle_sum_diff_le(std::string &ke
 {
     uint32_t index = 0;
     int end = 0;
-    std::multimap<float, std::string>::iterator it_le, it_ge, it;
-    std::multimap<float, std::string> * search_index = current();
+    std::multimap<int, std::string>::iterator it_le, it_ge, it;
+    std::vector<std::map<std::string, std::multimap<int, std::string> > > * search_index = current();
     SETS_OP_TRPE tmp_ot;
+    proc_data* p_data = proc_data::instance();
 
     std::vector<std::string> tmp_vec;
-    SplitString(ptr, '_', &tmp_vec, SPLIT_MODE_ALL);
+    std::vector<std::set<std::string> > tmp_res_vec;
+    SplitString(key.c_str(), '_', &tmp_vec, SPLIT_MODE_ALL);
     if (tmp_vec.size() < 4)
         return false;
 
@@ -44,7 +49,7 @@ bool hsingle_sum_diff_search_index::do_check_hsingle_sum_diff_le(std::string &ke
     }
 
     if (!tmp_vec.size())
-        tmp_vec.push_back();
+        tmp_vec.push_back(value);
 
     for (uint32_t i = 0; i< tmp_vec.size(); i++)
     {
@@ -52,7 +57,7 @@ bool hsingle_sum_diff_search_index::do_check_hsingle_sum_diff_le(std::string &ke
         SplitString(tmp_vec[i].c_str(), ':', &t_vec, SPLIT_MODE_ALL);
         std::string date;
         std::set<std::string> t_res; 
-        search_index->get_last_date(atoi(t_vec[0].c_str()), date);
+        p_data->_hsingle_dict->current()->get_last_date(atoi(t_vec[0].c_str()), date);
         if (date.empty()) 
         { 
             tmp_res_vec.push_back(t_res);
@@ -92,12 +97,14 @@ bool hsingle_sum_diff_search_index::do_check_hsingle_sum_diff_ge(std::string &ke
 {
     uint32_t index = 0;
     int end = 0;
-    std::multimap<float, std::string>::iterator it_le, it_ge, it;
-    std::multimap<float, std::string> * search_index = current();
+    std::multimap<int, std::string>::iterator it_le, it_ge, it;
+    std::vector<std::map<std::string, std::multimap<int, std::string> > > * search_index = current();
     SETS_OP_TRPE tmp_ot;
+    proc_data* p_data = proc_data::instance();
 
     std::vector<std::string> tmp_vec;
-    SplitString(ptr, '_', &tmp_vec, SPLIT_MODE_ALL);
+    std::vector<std::set<std::string> > tmp_res_vec;
+    SplitString(key.c_str(), '_', &tmp_vec, SPLIT_MODE_ALL);
     if (tmp_vec.size() < 4)
         return false;
 
@@ -118,7 +125,7 @@ bool hsingle_sum_diff_search_index::do_check_hsingle_sum_diff_ge(std::string &ke
     }
 
     if (!tmp_vec.size())
-        tmp_vec.push_back();
+        tmp_vec.push_back(value);
 
     for (uint32_t i = 0; i< tmp_vec.size(); i++)
     {
@@ -126,7 +133,7 @@ bool hsingle_sum_diff_search_index::do_check_hsingle_sum_diff_ge(std::string &ke
         SplitString(tmp_vec[i].c_str(), ':', &t_vec, SPLIT_MODE_ALL);
         std::string date;
         std::set<std::string> t_res; 
-        search_index->get_last_date(atoi(t_vec[0].c_str()), date);
+        p_data->_hsingle_dict->current()->get_last_date(atoi(t_vec[0].c_str()), date);
         if (date.empty()) 
         { 
             tmp_res_vec.push_back(t_res);

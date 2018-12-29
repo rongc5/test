@@ -132,7 +132,7 @@ int history_single_dict::load_history_single(const char * file)
             {
                 if (single->at(i).diff > 0)
                 {
-                    std::map<std::string, std::multimap<int, std::string> >  & u_map = (*(p_data->_hsingle_diff_index.idle()))[i];
+                    std::map<std::string, std::multimap<int, std::string> >  & u_map = (*(p_data->_hsingle_diff_index->idle()))[i];
 
                     auto ii = u_map.find(date);
                     if (ii == u_map.end())
@@ -219,9 +219,9 @@ int history_single_dict::load()
     for (i = 0; i < strategy->real_single_scale.size(); i++)
     {
         std::map<std::string, std::multimap<int, std::string> > t_map;
-        if (i >= p_data->_hsingle_diff_index.idle()->size())
+        if (i >= p_data->_hsingle_diff_index->idle()->size())
         {
-            p_data->_hsingle_diff_index.idle()->push_back(t_map);
+            p_data->_hsingle_diff_index->idle()->push_back(t_map);
         }
     }
 
@@ -246,7 +246,7 @@ int history_single_dict::load()
     update_sum_index();
     
     {
-        p_data->_hsingle_diff_index.idle_2_current();
+        p_data->_hsingle_diff_index->idle_2_current();
     }
 
 
@@ -328,7 +328,7 @@ int history_single_dict::destroy()
         {
             {
                 std::vector<std::map<std::string, std::multimap<int, std::string> > > tmp;
-                p_data->_hsingle_diff_index.idle()->swap(tmp);
+                p_data->_hsingle_diff_index->idle()->swap(tmp);
             }
         }
     }

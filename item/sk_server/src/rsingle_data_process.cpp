@@ -58,8 +58,10 @@ int rsingle_data_process::get_single_index(const std::string &id, uint32_t index
     float end = 0;
 
     {
-        auto it = p_data->_rquoation_dict_index.current()->find(id); 
-        if (it != p_data->_rquoation_dict_index.current()->end())
+        std::unordered_map<std::string, std::shared_ptr<quotation_t>, str_hasher> * rquoation_dict_index = NULL;
+        rquoation_dict_index = p_data->_rquoation_dict_index.current();
+        auto it = rquoation_dict_index->find(id); 
+        if (it != rquoation_dict_index->end())
         {    
             end = it->second->end;
         }
@@ -68,16 +70,18 @@ int rsingle_data_process::get_single_index(const std::string &id, uint32_t index
     if (!end)
     {
         std::string key;
-        auto ii = p_data->_hquoation_dict->current()->_id_date_dict.find(id);
-        if (ii != p_data->_hquoation_dict->current()->_id_date_dict.end())
+
+        history_quotation_dict * _hquoation_dict = p_data->_hquoation_dict->current();
+        auto ii = _hquoation_dict->_id_date_dict.find(id);
+        if (ii != _hquoation_dict->_id_date_dict.end())
         {
             const std::string & date = *(ii->second.rbegin());
             history_quotation_dict::creat_key(date, id, key);
 
         }
 
-        auto it = p_data->_hquoation_dict->current()->_id_dict.find(key);
-        if (it != p_data->_hquoation_dict->current()->_id_dict.end())
+        auto it = _hquoation_dict->_id_dict.find(key);
+        if (it != _hquoation_dict->_id_dict.end())
         {
             end = it->second->end;
         }
@@ -165,12 +169,12 @@ void rsingle_data_process::single_index_reset()
     proc_data* p_data = proc_data::instance();
     {
         std::vector<std::multimap<int, std::string> > t_map;
-        p_data->_rsingle_diff_index.idle()->swap(t_map);
+        p_data->_rsingle_diff_index->idle()->swap(t_map);
     }
 
     {
         std::vector<std::multimap<int, std::string> > t_map;
-        p_data->_rsingle_diff2_index.idle()->swap(t_map);
+        p_data->_rsingle_diff2_index->idle()->swap(t_map);
     }
 
 
@@ -181,7 +185,7 @@ void rsingle_data_process::single_index_reset()
 
     {
         std::vector<std::map<std::string, std::multimap<int, std::string> > > tmp;
-        p_data->_hsingle_sum_diff_index.idle()->swap(tmp);
+        p_data->_hsingle_sum_diff_index->idle()->swap(tmp);
     }
 }
 
@@ -200,14 +204,15 @@ bool rsingle_data_process::get_sum_diff(std::string & id, std::string & date, si
     proc_data* p_data = proc_data::instance();
 
     bool flag = false;
-    auto it = p_data->_hsingle_dict->current()->_date_index.find(p_data->_trade_date);
-    if (it != p_data->_hsingle_dict->current()->_date_index.end())
+    history_single_dict * _hsingle_dict = p_data->_hsingle_dict->current();
+    auto it = _hsingle_dict->_date_index.find(p_data->_trade_date);
+    if (it != _hsingle_dict->_date_index.end())
         flag =  true;
 
     std::string key;
     history_single_dict::creat_key(date, id, key);
-    auto tt = p_data->_hsingle_dict->current()->_date_sum_dict.find(key);
-    if (tt == p_data->_hsingle_dict->current()->_date_sum_dict.end())
+    auto tt = _hsingle_dict->_date_sum_dict.find(key);
+    if (tt == _hsingle_dict->_date_sum_dict.end())
         return false;
 
     st.clear();
@@ -258,9 +263,9 @@ void rsingle_data_process::update_sum_index()
     {
         std::map<std::string, std::multimap<int, std::string> > t_map;
 
-        if (i >= p_data->_hsingle_sum_diff_index.idle()->size()) 
+        if (i >= p_data->_hsingle_sum_diff_index->idle()->size()) 
         {
-            p_data->_hsingle_sum_diff_index.idle()->push_back(t_map);
+            p_data->_hsingle_sum_diff_index->idle()->push_back(t_map);
         }
     }
 
@@ -307,7 +312,7 @@ void rsingle_data_process::update_sum_index()
                 {
                     if (hs.at(i).diff > 0)
                     {
-                        std::map<std::string, std::multimap<int, std::string> >  & u_map = (*(p_data->_hsingle_sum_diff_index.idle()))[i];
+                        std::map<std::string, std::multimap<int, std::string> >  & u_map = (*(p_data->_hsingle_sum_diff_index->idle()))[i];
 
                         auto ii = u_map.find(date);
                         if (ii == u_map.end())
@@ -342,14 +347,14 @@ void rsingle_data_process::update_real_index()
     for (i = 0; i < strategy->real_single_scale.size(); i++)
     {
         std::multimap<int, std::string> t_map;
-        if (i >= p_data->_rsingle_diff_index.idle()->size()) 
+        if (i >= p_data->_rsingle_diff_index->idle()->size()) 
         {
-            p_data->_rsingle_diff_index.idle()->push_back(t_map);
+            p_data->_rsingle_diff_index->idle()->push_back(t_map);
         }
 
-        if (i >= p_data->_rsingle_diff2_index.idle()->size())
+        if (i >= p_data->_rsingle_diff2_index->idle()->size())
         {
-            p_data->_rsingle_diff2_index.idle()->push_back(t_map);
+            p_data->_rsingle_diff2_index->idle()->push_back(t_map);
         }
     }
 
@@ -358,8 +363,10 @@ void rsingle_data_process::update_real_index()
         st.clear();
         std::shared_ptr<single_vec> single(new single_vec);
 
-        auto it = p_data->_rsingle_dict_index.current()->find(ii->first);
-        if (it != p_data->_rsingle_dict_index.current()->end())
+        std::unordered_map<std::string, std::deque<std::shared_ptr<single_vec> >, str_hasher> * rsingle_dict_index = NULL;
+        rsingle_dict_index = p_data->_rsingle_dict_index.current();
+        auto it = rsingle_dict_index->find(ii->first);
+        if (it != rsingle_dict_index->end())
         {
             st = it->second;
         }
@@ -399,7 +406,7 @@ void rsingle_data_process::update_real_index()
             if (diff2 > 0)
             {
                 std::multimap<int, std::string> & t_map = 
-                    (*(p_data->_rsingle_diff2_index.idle()))[i];
+                    (*(p_data->_rsingle_diff2_index->idle()))[i];
 
                 t_map.insert(std::make_pair(diff2, ii->first));
             }
@@ -407,7 +414,7 @@ void rsingle_data_process::update_real_index()
             if (single->at(i).diff > 0)
             {
                 std::multimap<int, std::string> & t_map = 
-                    (*(p_data->_rsingle_diff_index.idle()))[i];
+                    (*(p_data->_rsingle_diff_index->idle()))[i];
 
                 t_map.insert(std::make_pair(single->at(i).diff, ii->first));
             }
@@ -418,10 +425,10 @@ void rsingle_data_process::update_real_index()
 void rsingle_data_process::single_idle_current()
 {
     proc_data* p_data = proc_data::instance();
-    p_data->_rsingle_diff_index.idle_2_current();
-    p_data->_rsingle_diff2_index.idle_2_current();
+    p_data->_rsingle_diff_index->idle_2_current();
+    p_data->_rsingle_diff2_index->idle_2_current();
     p_data->_rsingle_dict_index.idle_2_current();
-    p_data->_hsingle_sum_diff_index.idle_2_current();
+    p_data->_hsingle_sum_diff_index->idle_2_current();
 }
 
 std::string * rsingle_data_process::get_send_head()

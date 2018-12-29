@@ -169,9 +169,14 @@ class base_search_index
 {
     public:
         virtual ~base_search_index(){}
-        virtual bool search(std::string &key, std::string &value, std::set<std::string> & search);
+        virtual bool search(std::string &key, std::string &value, std::set<std::string> & search)=0;
 };
 
+enum SETS_OP_TRPE
+{
+    SETS_OP_INTERSECTION,
+    SETS_OP_UNION
+};
 
 #define NORMAL_MSG_DUMP 1000
 

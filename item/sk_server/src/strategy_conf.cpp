@@ -226,16 +226,6 @@ void strategy_conf::do_parse()
         holiday_dict_file = _cfg["holiday_dict_file"];
     }
 
-    if (has_key<std::string, std::string>(_cfg, "recommend_dict_path"))
-    {
-        recommend_dict_path = _cfg["recommend_dict_path"];
-    }
-
-    if (has_key<std::string, std::string>(_cfg, "recommend_dict_file"))
-    {
-        recommend_dict_file = _cfg["recommend_dict_file"];
-    }
-
     if (has_key<std::string, std::string>(_cfg, "max_reqhttp_num"))
     {
         max_reqhttp_num = atoi(_cfg["max_reqhttp_num"].c_str());
@@ -403,18 +393,6 @@ int strategy_conf::destroy()
         std::string tmp;
         tmp.swap(holiday_dict_file);
     }
-
-
-    {
-        std::string tmp;
-        tmp.swap(recommend_dict_path);
-    }
-
-    {
-        std::string tmp;
-        tmp.swap(recommend_dict_file);
-    }
-
 
     {
         std::string tmp;

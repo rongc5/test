@@ -11,11 +11,16 @@
 #include "history_single_dict.h"
 #include "history_quotation_dict.h"
 #include "holiday_dict.h"
-#include "recommend_dict.h"
+#include "uhandler_select.h"
+#include "uhandler_queryid.h"
+#include "uhandler_default.h"
 
 int proc_data::init(sk_conf * conf)
 {
     get_proc_name(proc_name, sizeof(proc_name));
+
+    reg_search_index();
+    reg_handler();
 
     _conf = conf;
     
@@ -46,21 +51,6 @@ int proc_data::init(sk_conf * conf)
 
         _id_dict = new (std::nothrow)reload_mgr<id_dict>(id_dict1, id_dict2);
     }
-
-    {
-        recommend_dict *recommend_dict1 = new (std::nothrow)recommend_dict();
-        ASSERT_WARNING(recommend_dict1 != NULL, "allocate recommend_dict fail");
-        recommend_dict1->init(_conf->_strategy->current()->recommend_dict_path.c_str(), 
-                _conf->_strategy->current()->recommend_dict_file.c_str(), _conf->dump_dir.c_str());
-
-        recommend_dict *recommend_dict2 = new (std::nothrow)recommend_dict();
-        ASSERT_WARNING(recommend_dict2 != NULL, "allocate recommend_dict fail");
-        recommend_dict2->init(_conf->_strategy->current()->recommend_dict_path.c_str(),
-                _conf->_strategy->current()->recommend_dict_file.c_str(), _conf->dump_dir.c_str());
-
-        _recommend_dict = new (std::nothrow)reload_mgr<recommend_dict>(recommend_dict1, recommend_dict2);
-    }
-
 
     {
         addr_dict_split *addr_dict1 = new (std::nothrow)addr_dict_split();
@@ -193,6 +183,8 @@ int proc_data::init(sk_conf * conf)
         _holiday_dict = new (std::nothrow)reload_mgr<holiday_dict>(td_dict1, td_dict2);
 
     }
+
+    return 0;
 }
 
 proc_data* proc_data::_singleton;
@@ -395,96 +387,263 @@ int proc_data::destroy_idle()
 
 void proc_data::reg_search_index()
 {
-    _search_index_map.insert(std::make_pair("end_ge", &end_search_index));
-    _search_index_map.insert(std::make_pair("end_ge_v", &end_search_index));
-    _search_index_map.insert(std::make_pair("end_le", &end_search_index));
-    _search_index_map.insert(std::make_pair("end_le_v", &end_search_index));
+    _block_set = std::make_shared<block_search_index>();
+    _search_index_map.insert(std::make_pair("block", _block_set));
+    _search_index_map.insert(std::make_pair("block_v", _block_set));
 
-    _search_index_map.insert(std::make_pair("change_rate_ge", &change_rate_search_index));
-    _search_index_map.insert(std::make_pair("change_rate_le", &change_rate_search_index));
-    _search_index_map.insert(std::make_pair("change_rate_ge_v", &change_rate_search_index));
-    _search_index_map.insert(std::make_pair("change_rate_le_v", &change_rate_search_index));
+    _end_index = std::make_shared<end_search_index>();
+    _search_index_map.insert(std::make_pair("end_ge", _end_index));
+    _search_index_map.insert(std::make_pair("end_ge_v", _end_index));
+    _search_index_map.insert(std::make_pair("end_le", _end_index));
+    _search_index_map.insert(std::make_pair("end_le_v", _end_index));
 
-
-    _search_index_map.insert(std::make_pair("range_percent_ge", &range_percent_search_index));
-    _search_index_map.insert(std::make_pair("range_percent_ge_v", &range_percent_search_index));
-    _search_index_map.insert(std::make_pair("range_percent_le", &range_percent_search_index));
-    _search_index_map.insert(std::make_pair("range_percent_le_v", &range_percent_search_index));
-
-    _search_index_map.insert(std::make_pair("down_pointer_ge", &down_pointer_search_index));
-    _search_index_map.insert(std::make_pair("down_pointer_le", &down_pointer_search_index));
-    _search_index_map.insert(std::make_pair("down_pointer_ge_v", &down_pointer_search_index));
-    _search_index_map.insert(std::make_pair("down_pointer_le_v", &down_pointer_search_index));
-
-    _search_index_map.insert(std::make_pair("up_pointer_ge", &up_pointer_search_index));
-    _search_index_map.insert(std::make_pair("up_pointer_le", &up_pointer_search_index));
-    _search_index_map.insert(std::make_pair("up_pointer_ge_v", &up_pointer_search_index));
-    _search_index_map.insert(std::make_pair("up_pointer_le_v", &up_pointer_search_index));
-
-    _search_index_map.insert(std::make_pair("end_avg_end_ge", &end_avg_end_search_index));
-    _search_index_map.insert(std::make_pair("end_avg_end_le", &end_avg_end_search_index));
-    _search_index_map.insert(std::make_pair("end_avg_end_ge_v", &end_avg_end_search_index));
-    _search_index_map.insert(std::make_pair("end_avg_end_le_v", &end_avg_end_search_index));
-
-    _search_index_map.insert(std::make_pair("end_avg_end5_ge", &end_avg_end5_search_index));
-    _search_index_map.insert(std::make_pair("end_avg_end5_le", &end_avg_end5_search_index));
-    _search_index_map.insert(std::make_pair("end_avg_end5_ge_v", &end_avg_end5_search_index));
-    _search_index_map.insert(std::make_pair("end_avg_end5_le_v", &end_avg_end5_search_index));
-
-    _search_index_map.insert(std::make_pair("end_avg_end10_ge", &end_avg_end10_search_index));
-    _search_index_map.insert(std::make_pair("end_avg_end10_le", &end_avg_end10_search_index));
-    _search_index_map.insert(std::make_pair("end_avg_end10_ge_v", &end_avg_end10_search_index));
-    _search_index_map.insert(std::make_pair("end_avg_end10_le_v", &end_avg_end10_search_index));
-
-    _search_index_map.insert(std::make_pair("end_avg_end20_ge", &end_avg_end20_search_index));
-    _search_index_map.insert(std::make_pair("end_avg_end20_le", &end_avg_end20_search_index));
-    _search_index_map.insert(std::make_pair("end_avg_end20_ge_v", &end_avg_end20_search_index));
-    _search_index_map.insert(std::make_pair("end_avg_end20_le_v", &end_avg_end20_search_index));
-
-    _search_index_map.insert(std::make_pair("end_avg_end30_ge", &end_avg_end30_search_index));
-    _search_index_map.insert(std::make_pair("end_avg_end30_le", &end_avg_end30_search_index));
-    _search_index_map.insert(std::make_pair("end_avg_end30_ge_v", &end_avg_end30_search_index));
-    _search_index_map.insert(std::make_pair("end_avg_end30_le_v", &end_avg_end30_search_index));
-
-    _search_index_map.insert(std::make_pair("end_end5_ge", &end_end5_search_index));
-    _search_index_map.insert(std::make_pair("end_end5_le", &end_end5_search_index));
-    _search_index_map.insert(std::make_pair("end_end5_ge_v", &end_end5_search_index));
-    _search_index_map.insert(std::make_pair("end_end5_le_v", &end_end5_search_index));
-
-    _search_index_map.insert(std::make_pair("end_end10_ge", &end_end10_search_index));
-    _search_index_map.insert(std::make_pair("end_end10_le", &end_end10_search_index));
-    _search_index_map.insert(std::make_pair("end_end10_ge_v", &end_end10_search_index));
-    _search_index_map.insert(std::make_pair("end_end10_le_v", &end_end10_search_index));
+    _change_rate_index = std::make_shared<change_rate_search_index>();
+    _search_index_map.insert(std::make_pair("change_rate_ge", _change_rate_index));
+    _search_index_map.insert(std::make_pair("change_rate_le", _change_rate_index));
+    _search_index_map.insert(std::make_pair("change_rate_ge_v", _change_rate_index));
+    _search_index_map.insert(std::make_pair("change_rate_le_v", _change_rate_index));
 
 
-    _search_index_map.insert(std::make_pair("end_end20_ge", &end_end20_search_index));
-    _search_index_map.insert(std::make_pair("end_end20_le", &end_end20_search_index));
-    _search_index_map.insert(std::make_pair("end_end20_ge_v", &end_end20_search_index));
-    _search_index_map.insert(std::make_pair("end_end20_le_v", &end_end20_search_index));
+    _range_percent_index = std::make_shared<range_percent_search_index>();
+    _search_index_map.insert(std::make_pair("range_percent_ge", _range_percent_index));
+    _search_index_map.insert(std::make_pair("range_percent_ge_v", _range_percent_index));
+    _search_index_map.insert(std::make_pair("range_percent_le", _range_percent_index));
+    _search_index_map.insert(std::make_pair("range_percent_le_v", _range_percent_index));
 
-    _search_index_map.insert(std::make_pair("end_end30_ge", &end_end30_search_index));
-    _search_index_map.insert(std::make_pair("end_end30_le", &end_end30_search_index));
-    _search_index_map.insert(std::make_pair("end_end30_ge_v", &end_end30_search_index));
-    _search_index_map.insert(std::make_pair("end_end30_le_v", &end_end30_search_index));
+    _down_pointer_index = std::make_shared<down_pointer_search_index>();
+    _search_index_map.insert(std::make_pair("down_pointer_ge", _down_pointer_index));
+    _search_index_map.insert(std::make_pair("down_pointer_le", _down_pointer_index));
+    _search_index_map.insert(std::make_pair("down_pointer_ge_v", _down_pointer_index));
+    _search_index_map.insert(std::make_pair("down_pointer_le_v", _down_pointer_index));
 
-    _search_index_map.insert(std::make_pair("pe_ge", &pe_search_index));
-    _search_index_map.insert(std::make_pair("pe_le", &pe_search_index));
-    _search_index_map.insert(std::make_pair("pe_ge_v", &pe_search_index));
-    _search_index_map.insert(std::make_pair("pe_le_v", &pe_search_index));
+    _up_pointer_index = std::make_shared<up_pointer_search_index>();
+    _search_index_map.insert(std::make_pair("up_pointer_ge", _up_pointer_index));
+    _search_index_map.insert(std::make_pair("up_pointer_le", _up_pointer_index));
+    _search_index_map.insert(std::make_pair("up_pointer_ge_v", _up_pointer_index));
+    _search_index_map.insert(std::make_pair("up_pointer_le_v", _up_pointer_index));
 
-    _search_index_map.insert(std::make_pair("pb_ge", &pb_search_index));
-    _search_index_map.insert(std::make_pair("pb_le", &pb_search_index));
-    _search_index_map.insert(std::make_pair("pb_ge_v", &pb_search_index));
-    _search_index_map.insert(std::make_pair("pb_le_v", &pb_search_index));
+    _end_avg_end_index = std::make_shared<end_avg_end_search_index>();
+    _search_index_map.insert(std::make_pair("end_avg_end_ge", _end_avg_end_index));
+    _search_index_map.insert(std::make_pair("end_avg_end_le", _end_avg_end_index));
+    _search_index_map.insert(std::make_pair("end_avg_end_ge_v", _end_avg_end_index));
+    _search_index_map.insert(std::make_pair("end_avg_end_le_v", _end_avg_end_index));
 
-    _search_index_map.insert(std::make_pair("value_ge", &value_search_index));
-    _search_index_map.insert(std::make_pair("value_le", &value_search_index));
-    _search_index_map.insert(std::make_pair("value_ge_v", &value_search_index));
-    _search_index_map.insert(std::make_pair("value_le_v", &value_search_index));
+    _end_avg_end5_index = std::make_shared<end_avg_end5_search_index>();
+    _search_index_map.insert(std::make_pair("end_avg_end5_ge", _end_avg_end5_index));
+    _search_index_map.insert(std::make_pair("end_avg_end5_le", _end_avg_end5_index));
+    _search_index_map.insert(std::make_pair("end_avg_end5_ge_v", _end_avg_end5_index));
+    _search_index_map.insert(std::make_pair("end_avg_end5_le_v", _end_avg_end5_index));
 
+    _end_avg_end10_index = std::make_shared<end_avg_end10_search_index>();
+    _search_index_map.insert(std::make_pair("end_avg_end10_ge", _end_avg_end10_index));
+    _search_index_map.insert(std::make_pair("end_avg_end10_le", _end_avg_end10_index));
+    _search_index_map.insert(std::make_pair("end_avg_end10_ge_v", _end_avg_end10_index));
+    _search_index_map.insert(std::make_pair("end_avg_end10_le_v", _end_avg_end10_index));
+
+    _end_avg_end20_index = std::make_shared<end_avg_end20_search_index>();
+    _search_index_map.insert(std::make_pair("end_avg_end20_ge", _end_avg_end20_index));
+    _search_index_map.insert(std::make_pair("end_avg_end20_le", _end_avg_end20_index));
+    _search_index_map.insert(std::make_pair("end_avg_end20_ge_v", _end_avg_end20_index));
+    _search_index_map.insert(std::make_pair("end_avg_end20_le_v", _end_avg_end20_index));
+
+    _end_avg_end30_index = std::make_shared<end_avg_end30_search_index>();
+    _search_index_map.insert(std::make_pair("end_avg_end30_ge", _end_avg_end30_index));
+    _search_index_map.insert(std::make_pair("end_avg_end30_le", _end_avg_end30_index));
+    _search_index_map.insert(std::make_pair("end_avg_end30_ge_v", _end_avg_end30_index));
+    _search_index_map.insert(std::make_pair("end_avg_end30_le_v", _end_avg_end30_index));
+
+    _end_end5_index = std::make_shared<end_end5_search_index>();
+    _search_index_map.insert(std::make_pair("end_end5_ge", _end_end5_index));
+    _search_index_map.insert(std::make_pair("end_end5_le", _end_end5_index));
+    _search_index_map.insert(std::make_pair("end_end5_ge_v", _end_end5_index));
+    _search_index_map.insert(std::make_pair("end_end5_le_v", _end_end5_index));
+
+    _end_end10_index = std::make_shared<end_end10_search_index>();
+    _search_index_map.insert(std::make_pair("end_end10_ge", _end_end10_index));
+    _search_index_map.insert(std::make_pair("end_end10_le", _end_end10_index));
+    _search_index_map.insert(std::make_pair("end_end10_ge_v", _end_end10_index));
+    _search_index_map.insert(std::make_pair("end_end10_le_v", _end_end10_index));
+
+
+    _end_end20_index = std::make_shared<end_end20_search_index>();
+    _search_index_map.insert(std::make_pair("end_end20_ge", _end_end20_index));
+    _search_index_map.insert(std::make_pair("end_end20_le", _end_end20_index));
+    _search_index_map.insert(std::make_pair("end_end20_ge_v", _end_end20_index));
+    _search_index_map.insert(std::make_pair("end_end20_le_v", _end_end20_index));
+
+    _end_end30_index = std::make_shared<end_end30_search_index>();
+    _search_index_map.insert(std::make_pair("end_end30_ge", _end_end30_index));
+    _search_index_map.insert(std::make_pair("end_end30_le", _end_end30_index));
+    _search_index_map.insert(std::make_pair("end_end30_ge_v", _end_end30_index));
+    _search_index_map.insert(std::make_pair("end_end30_le_v", _end_end30_index));
+
+    _pe_index = std::make_shared<pe_search_index>();
+    _search_index_map.insert(std::make_pair("pe_ge", _pe_index));
+    _search_index_map.insert(std::make_pair("pe_le", _pe_index));
+    _search_index_map.insert(std::make_pair("pe_ge_v", _pe_index));
+    _search_index_map.insert(std::make_pair("pe_le_v", _pe_index));
+
+    _pb_index = std::make_shared<pb_search_index>();
+    _search_index_map.insert(std::make_pair("pb_ge", _pb_index));
+    _search_index_map.insert(std::make_pair("pb_le", _pb_index));
+    _search_index_map.insert(std::make_pair("pb_ge_v", _pb_index));
+    _search_index_map.insert(std::make_pair("pb_le_v", _pb_index));
+
+    _value_index = std::make_shared<value_search_index>();
+    _search_index_map.insert(std::make_pair("value_ge", _value_index));
+    _search_index_map.insert(std::make_pair("value_le", _value_index));
+    _search_index_map.insert(std::make_pair("value_ge_v", _value_index));
+    _search_index_map.insert(std::make_pair("value_le_v", _value_index));
+
+    _cir_value_index = std::make_shared<cir_value_search_index>();
+    _search_index_map.insert(std::make_pair("cir_value_ge", _cir_value_index));
+    _search_index_map.insert(std::make_pair("cir_value_le", _cir_value_index));
+    _search_index_map.insert(std::make_pair("cir_value_ge_v", _cir_value_index));
+    _search_index_map.insert(std::make_pair("cir_value_le_v", _cir_value_index));
+
+    _mgxj_index = std::make_shared<mgxj_search_index>();
+    _search_index_map.insert(std::make_pair("mgxj_ge", _mgxj_index));
+    _search_index_map.insert(std::make_pair("mgxj_le", _mgxj_index));
+    _search_index_map.insert(std::make_pair("mgxj_ge_v", _mgxj_index));
+    _search_index_map.insert(std::make_pair("mgxj_le_v", _mgxj_index));
+
+    _mgsy_index = std::make_shared<mgsy_search_index>();
+    _search_index_map.insert(std::make_pair("mgsy_ge", _mgsy_index));
+    _search_index_map.insert(std::make_pair("mgsy_le", _mgsy_index));
+    _search_index_map.insert(std::make_pair("mgsy_ge_v", _mgsy_index));
+    _search_index_map.insert(std::make_pair("mgsy_le_v", _mgsy_index));
+
+    _mgsygr_index = std::make_shared<mgsygr_search_index>();
+    _search_index_map.insert(std::make_pair("mgsygr_ge", _mgsygr_index));
+    _search_index_map.insert(std::make_pair("mgsygr_le", _mgsygr_index));
+    _search_index_map.insert(std::make_pair("mgsygr_ge_v", _mgsygr_index));
+    _search_index_map.insert(std::make_pair("mgsygr_le_v", _mgsygr_index));
+
+    _mgxjgr_index = std::make_shared<mgxjgr_search_index>();
+    _search_index_map.insert(std::make_pair("mgxjgr_ge", _mgxjgr_index));
+    _search_index_map.insert(std::make_pair("mgxjgr_le", _mgxjgr_index));
+    _search_index_map.insert(std::make_pair("mgxjgr_ge_v", _mgxjgr_index));
+    _search_index_map.insert(std::make_pair("mgxjgr_le_v", _mgxjgr_index));
+
+    _zysrgr_index = std::make_shared<zysrgr_search_index>();
+    _search_index_map.insert(std::make_pair("zysrgr_ge", _zysrgr_index));
+    _search_index_map.insert(std::make_pair("zysrgr_le", _zysrgr_index));
+    _search_index_map.insert(std::make_pair("zysrgr_ge_v", _zysrgr_index));
+    _search_index_map.insert(std::make_pair("zysrgr_le_v", _zysrgr_index));
+
+    _yylrgr_index = std::make_shared<yylrgr_search_index>();
+    _search_index_map.insert(std::make_pair("yylrgr_ge", _yylrgr_index));
+    _search_index_map.insert(std::make_pair("yylrgr_le", _yylrgr_index));
+    _search_index_map.insert(std::make_pair("yylrgr_ge_v", _yylrgr_index));
+    _search_index_map.insert(std::make_pair("yylrgr_le_v", _yylrgr_index));
+
+    _jlrgr_index = std::make_shared<jlrgr_search_index>();
+    _search_index_map.insert(std::make_pair("jlrgr_ge", _jlrgr_index));
+    _search_index_map.insert(std::make_pair("jlrgr_le", _jlrgr_index));
+    _search_index_map.insert(std::make_pair("jlrgr_ge_v", _jlrgr_index));
+    _search_index_map.insert(std::make_pair("jlrgr_le_v", _jlrgr_index));
+
+    _address_index = std::make_shared<address_search_index>();
+    _search_index_map.insert(std::make_pair("address", _address_index));
+    _search_index_map.insert(std::make_pair("address_v", _address_index));
+
+    _plate_index = std::make_shared<plate_search_index>();
+    _search_index_map.insert(std::make_pair("plate", _plate_index));
+    _search_index_map.insert(std::make_pair("plate_v", _plate_index));
+
+    _rsingle_diff_index = std::make_shared<rsingle_diff_search_index>();
+    _search_index_map.insert(std::make_pair("rsingle_diff_0_ge", _rsingle_diff_index));
+    _search_index_map.insert(std::make_pair("rsingle_diff_1_ge", _rsingle_diff_index));
+    _search_index_map.insert(std::make_pair("rsingle_diff_2_ge", _rsingle_diff_index));
+    _search_index_map.insert(std::make_pair("rsingle_diff_0_ge_v", _rsingle_diff_index));
+    _search_index_map.insert(std::make_pair("rsingle_diff_1_ge_v", _rsingle_diff_index));
+    _search_index_map.insert(std::make_pair("rsingle_diff_2_ge_v", _rsingle_diff_index));
+    _search_index_map.insert(std::make_pair("rsingle_diff_0_le", _rsingle_diff_index));
+    _search_index_map.insert(std::make_pair("rsingle_diff_1_le", _rsingle_diff_index));
+    _search_index_map.insert(std::make_pair("rsingle_diff_2_le", _rsingle_diff_index));
+    _search_index_map.insert(std::make_pair("rsingle_diff_0_le_v", _rsingle_diff_index));
+    _search_index_map.insert(std::make_pair("rsingle_diff_1_le_v", _rsingle_diff_index));
+    _search_index_map.insert(std::make_pair("rsingle_diff_2_le_v", _rsingle_diff_index));
+
+    _rsingle_diff2_index = std::make_shared<rsingle_diff2_search_index>();
+    _search_index_map.insert(std::make_pair("rsingle_diff2_0_ge", _rsingle_diff2_index));
+    _search_index_map.insert(std::make_pair("rsingle_diff2_1_ge", _rsingle_diff2_index));
+    _search_index_map.insert(std::make_pair("rsingle_diff2_2_ge", _rsingle_diff2_index));
+    _search_index_map.insert(std::make_pair("rsingle_diff2_0_le", _rsingle_diff2_index));
+    _search_index_map.insert(std::make_pair("rsingle_diff2_1_le", _rsingle_diff2_index));
+    _search_index_map.insert(std::make_pair("rsingle_diff2_2_le", _rsingle_diff2_index));
+    _search_index_map.insert(std::make_pair("rsingle_diff2_0_ge_v", _rsingle_diff2_index));
+    _search_index_map.insert(std::make_pair("rsingle_diff2_1_ge_v", _rsingle_diff2_index));
+    _search_index_map.insert(std::make_pair("rsingle_diff2_2_ge_v", _rsingle_diff2_index));
+    _search_index_map.insert(std::make_pair("rsingle_diff2_0_le_v", _rsingle_diff2_index));
+    _search_index_map.insert(std::make_pair("rsingle_diff2_1_le_v", _rsingle_diff2_index));
+    _search_index_map.insert(std::make_pair("rsingle_diff2_2_le_v", _rsingle_diff2_index));
+
+    _hsingle_diff_index = std::make_shared<hsingle_diff_search_index>();
+    _search_index_map.insert(std::make_pair("hsingle_diff_0_ge", _hsingle_diff_index));
+    _search_index_map.insert(std::make_pair("hsingle_diff_1_ge", _hsingle_diff_index));
+    _search_index_map.insert(std::make_pair("hsingle_diff_2_ge", _hsingle_diff_index));
+    _search_index_map.insert(std::make_pair("hsingle_diff_0_le", _hsingle_diff_index));
+    _search_index_map.insert(std::make_pair("hsingle_diff_1_le", _hsingle_diff_index));
+    _search_index_map.insert(std::make_pair("hsingle_diff_2_le", _hsingle_diff_index));
+    _search_index_map.insert(std::make_pair("hsingle_diff_0_ge_v", _hsingle_diff_index));
+    _search_index_map.insert(std::make_pair("hsingle_diff_1_ge_v", _hsingle_diff_index));
+    _search_index_map.insert(std::make_pair("hsingle_diff_2_ge_v", _hsingle_diff_index));
+    _search_index_map.insert(std::make_pair("hsingle_diff_0_le_v", _hsingle_diff_index));
+    _search_index_map.insert(std::make_pair("hsingle_diff_1_le_v", _hsingle_diff_index));
+    _search_index_map.insert(std::make_pair("hsingle_diff_2_le_v", _hsingle_diff_index));
+
+    _hsingle_sum_diff_index = std::make_shared<hsingle_sum_diff_search_index>();
+    _search_index_map.insert(std::make_pair("hsingle_sum_diff_0_ge", _hsingle_sum_diff_index));
+    _search_index_map.insert(std::make_pair("hsingle_sum_diff_1_ge", _hsingle_sum_diff_index));
+    _search_index_map.insert(std::make_pair("hsingle_sum_diff_2_ge", _hsingle_sum_diff_index));
+    _search_index_map.insert(std::make_pair("hsingle_sum_diff_0_le", _hsingle_sum_diff_index));
+    _search_index_map.insert(std::make_pair("hsingle_sum_diff_1_le", _hsingle_sum_diff_index));
+    _search_index_map.insert(std::make_pair("hsingle_sum_diff_2_le", _hsingle_sum_diff_index));
+    _search_index_map.insert(std::make_pair("hsingle_sum_diff_0_ge_v", _hsingle_sum_diff_index));
+    _search_index_map.insert(std::make_pair("hsingle_sum_diff_1_ge_v", _hsingle_sum_diff_index));
+    _search_index_map.insert(std::make_pair("hsingle_sum_diff_2_ge_v", _hsingle_sum_diff_index));
+    _search_index_map.insert(std::make_pair("hsingle_sum_diff_0_le_v", _hsingle_sum_diff_index));
+    _search_index_map.insert(std::make_pair("hsingle_sum_diff_1_le_v", _hsingle_sum_diff_index));
+    _search_index_map.insert(std::make_pair("hsingle_sum_diff_2_le_v", _hsingle_sum_diff_index));
+
+
+    _hqchange_rate_index = std::make_shared<hqchange_rate_search_index>();
+    _search_index_map.insert(std::make_pair("hqchange_rate_ge", _hqchange_rate_index));
+    _search_index_map.insert(std::make_pair("hqchange_rate_le", _hqchange_rate_index));
+    _search_index_map.insert(std::make_pair("hqchange_rate_ge_v", _hqchange_rate_index));
+    _search_index_map.insert(std::make_pair("hqchange_rate_le_v", _hqchange_rate_index));
+
+    _hqrange_percent_index = std::make_shared<hqrange_percent_search_index>();
+    _search_index_map.insert(std::make_pair("hqrange_percent_ge", _hqrange_percent_index));
+    _search_index_map.insert(std::make_pair("hqrange_percent_le", _hqrange_percent_index));
+    _search_index_map.insert(std::make_pair("hqrange_percent_ge_v", _hqrange_percent_index));
+    _search_index_map.insert(std::make_pair("hqrange_percent_le_v", _hqrange_percent_index));
+    _search_index_map.insert(std::make_pair("hqrange_percent_ge_num_ge", _hqrange_percent_index));
+    _search_index_map.insert(std::make_pair("hqrange_percent_ge_num_ge_v", _hqrange_percent_index));
+
+    _hq_sum_range_percent_index = std::make_shared<hq_sum_range_percent_search_index>();
+    _search_index_map.insert(std::make_pair("hq_sum_range_percent_ge", _hq_sum_range_percent_index));
+    _search_index_map.insert(std::make_pair("hq_sum_range_percent_ge_v", _hq_sum_range_percent_index));
+    _search_index_map.insert(std::make_pair("hq_sum_range_percent_le", _hq_sum_range_percent_index));
+    _search_index_map.insert(std::make_pair("hq_sum_range_percent_le_v", _hq_sum_range_percent_index));
+
+    _hq_sum_change_rate_index = std::make_shared<hq_sum_change_rate_search_index>();
+    _search_index_map.insert(std::make_pair("hq_sum_change_rate_ge", _hq_sum_change_rate_index));
+    _search_index_map.insert(std::make_pair("hq_sum_change_rate_ge_v", _hq_sum_change_rate_index));
+    _search_index_map.insert(std::make_pair("hq_sum_change_rate_le", _hq_sum_change_rate_index));
+    _search_index_map.insert(std::make_pair("hq_sum_change_rate_le_v", _hq_sum_change_rate_index));
+
+    _hqend_hqstart_index = std::make_shared<hqend_hqstart_search_index>();
+    _search_index_map.insert(std::make_pair("hqend_hqstart_ge", _hqend_hqstart_index));
+    _search_index_map.insert(std::make_pair("hqend_hqstart_ge_v", _hqend_hqstart_index));
+    _search_index_map.insert(std::make_pair("hqend_hqstart_le", _hqend_hqstart_index));
+    _search_index_map.insert(std::make_pair("hqend_hqstart_le_v", _hqend_hqstart_index));
+    _search_index_map.insert(std::make_pair("hqstart_ge_num_ge", _hqend_hqstart_index));
+    _search_index_map.insert(std::make_pair("hqstart_ge_num_ge_v", _hqend_hqstart_index));
 }
 
-base_search_index * proc_data::get_search_index(std::string & key)
+std::shared_ptr<base_search_index>  proc_data::get_search_index(std::string & key)
 {
     auto ii = _search_index_map.find(key);
     if (ii == _search_index_map.end())
@@ -493,4 +652,34 @@ base_search_index * proc_data::get_search_index(std::string & key)
     }
 
     return ii->second;
+}
+
+void proc_data::reg_handler()
+{
+    std::shared_ptr<url_handler> tmp_hander = std::make_shared<uhandler_select>();
+    _uhandler_map.insert(std::make_pair("/select", tmp_hander));
+
+    tmp_hander = std::make_shared<uhandler_queryid>();
+    _uhandler_map.insert(std::make_pair("/queryid", tmp_hander));
+
+    tmp_hander = std::make_shared<uhandler_default>();
+    _uhandler_map.insert(std::make_pair("/default", tmp_hander));
+}
+
+std::shared_ptr<url_handler> proc_data::get_url_handler(std::string & key)
+{
+    auto ii = _uhandler_map.find(key);
+    if (ii == _uhandler_map.end())
+    {
+        ii = _uhandler_map.find("/default");
+        if (ii == _uhandler_map.end())
+        {
+            return NULL;
+        }
+
+        return ii->second;
+    }
+
+    return ii->second;
+
 }

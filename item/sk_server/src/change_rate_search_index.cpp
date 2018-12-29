@@ -2,7 +2,7 @@
 
 bool change_rate_search_index::search(std::string &key, std::string &value, std::set<std::string> & search)
 {
-   if (!key.compare"change_rate_ge") || !key.compare"change_rate_ge_v"))
+   if (!key.compare("change_rate_ge") || !key.compare("change_rate_ge_v"))
    {
        return do_check_change_rate_ge(key, value, search);
    }

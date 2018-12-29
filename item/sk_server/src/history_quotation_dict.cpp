@@ -135,13 +135,13 @@ int history_quotation_dict::load_history_quoation(const char * file)
 
         if (qt->start)
         {
-            auto ii = p_data->_hqend_hqstart_index.idle()->find(date);
-            if (ii == p_data->_hqend_hqstart_index.idle()->end())
+            auto ii = p_data->_hqend_hqstart_index->idle()->find(date);
+            if (ii == p_data->_hqend_hqstart_index->idle()->end())
             {
                 std::multimap<float, std::string> t_map;
 
                 t_map.insert(std::make_pair(qt->end/qt->start, qt->id));
-                p_data->_hqend_hqstart_index.idle()->insert(std::make_pair(date, t_map));
+                p_data->_hqend_hqstart_index->idle()->insert(std::make_pair(date, t_map));
             }
             else
             {
@@ -150,13 +150,13 @@ int history_quotation_dict::load_history_quoation(const char * file)
         }
 
         {
-            auto ii = p_data->_hqchange_rate_index.idle()->find(date);
-            if (ii == p_data->_hqchange_rate_index.idle()->end())
+            auto ii = p_data->_hqchange_rate_index->idle()->find(date);
+            if (ii == p_data->_hqchange_rate_index->idle()->end())
             {
                 std::multimap<float, std::string> t_map;
 
                 t_map.insert(std::make_pair(qt->change_rate, qt->id));
-                p_data->_hqchange_rate_index.idle()->insert(std::make_pair(date, t_map));
+                p_data->_hqchange_rate_index->idle()->insert(std::make_pair(date, t_map));
             }
             else
             {
@@ -165,13 +165,13 @@ int history_quotation_dict::load_history_quoation(const char * file)
         }
 
         {
-            auto ii = p_data->_hqrange_percent_index.idle()->find(date);
-            if (ii == p_data->_hqrange_percent_index.idle()->end())
+            auto ii = p_data->_hqrange_percent_index->idle()->find(date);
+            if (ii == p_data->_hqrange_percent_index->idle()->end())
             {
                 std::multimap<float, std::string> t_map;
 
                 t_map.insert(std::make_pair(qt->range_percent, qt->id));
-                p_data->_hqrange_percent_index.idle()->insert(std::make_pair(date, t_map));
+                p_data->_hqrange_percent_index->idle()->insert(std::make_pair(date, t_map));
             }
             else
             {
@@ -269,9 +269,9 @@ int history_quotation_dict::load()
     proc_data* p_data = proc_data::instance();
     if (p_data)
     {
-        p_data->_hqend_hqstart_index.idle_2_current();
-        p_data->_hqchange_rate_index.idle_2_current();
-        p_data->_hqrange_percent_index.idle_2_current();
+        p_data->_hqend_hqstart_index->idle_2_current();
+        p_data->_hqchange_rate_index->idle_2_current();
+        p_data->_hqrange_percent_index->idle_2_current();
     }
 
     return 0;
@@ -359,17 +359,17 @@ int history_quotation_dict::destroy()
         {
             {
                 std::map<std::string, std::multimap<float, std::string> > tmp;
-                p_data->_hqend_hqstart_index.idle()->swap(tmp);
+                p_data->_hqend_hqstart_index->idle()->swap(tmp);
             }
 
             {
                 std::map<std::string, std::multimap<float, std::string> > tmp;
-                p_data->_hqchange_rate_index.idle()->swap(tmp);
+                p_data->_hqchange_rate_index->idle()->swap(tmp);
             }
 
             {
                 std::map<std::string, std::multimap<float, std::string> > tmp;
-                p_data->_hqrange_percent_index.idle()->swap(tmp);
+                p_data->_hqrange_percent_index->idle()->swap(tmp);
             }
         }
     }

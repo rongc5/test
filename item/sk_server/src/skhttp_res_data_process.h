@@ -21,16 +21,12 @@ class skhttp_res_data_process:public http_base_data_process
         virtual size_t process_recv_body(const char *buf, size_t len, int& result);
         
         static void gen_listen_obj(int fd, common_obj_container * net_container);
-        
-        void reg_handler(const char * url, std::shared_ptr<url_handler> & handler);
 
     protected:
         std::string _body;
         std::string _recv_buf;
         
         std::shared_ptr<url_handler> _current_hander;
-        
-        std::map<std::string, std::shared_ptr<url_handler> > _uhandler_map;
 };
 
 

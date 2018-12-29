@@ -60,12 +60,12 @@ int addr_dict_split::load()
             auto iii = _addr_set.find(ss);
             if (iii != _addr_set.end())
             {   
-                p_data->_address_index.idle()->insert(std::make_pair(*iii, id));
+                p_data->_address_index->idle()->insert(std::make_pair(*iii, id));
             }   
             else
             {   
                 _addr_set.insert(ss);
-                p_data->_address_index.idle()->insert(std::make_pair(ss, id));
+                p_data->_address_index->idle()->insert(std::make_pair(ss, id));
             }   
         }
     }
@@ -75,7 +75,7 @@ int addr_dict_split::load()
     stat(_fullpath, &st);
     _last_load = st.st_mtime;
 
-    p_data->_address_index.idle_2_current();
+    p_data->_address_index->idle_2_current();
 
     return 0;
 }
@@ -113,8 +113,7 @@ int addr_dict_split::destroy()
 {
     proc_data* p_data = proc_data::instance();
     {
-        std::unordered_multimap<std::shared_ptr<std::string>, std::string, str_hasher, str_equaler> tmp;
-        p_data->_address_index.idle()->swap(tmp);
+        p_data->_address_index->idle()->clear();
     }
 
     {

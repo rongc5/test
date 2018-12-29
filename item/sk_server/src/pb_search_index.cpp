@@ -1,4 +1,6 @@
 #include "pb_search_index.h"
+#include "sk_util.h"
+#include "proc_data.h"
 
 bool pb_search_index::search(std::string &key, std::string &value, std::set<std::string> & search)
 {
@@ -17,15 +19,15 @@ bool pb_search_index::search(std::string &key, std::string &value, std::set<std:
 bool pb_search_index::do_check_pb_le(std::string &key, std::string &value, std::set<std::string> & search)
 {
     int end = 0;
-    std::multimap<float, std::string>::iterator it_le, it_ge, it;
+    std::multimap<int, std::string>::iterator it_le, it_ge, it;
 
-    std::multimap<float, std::string> * search_index = current();
+    std::multimap<int, std::string> * search_index = current();
 
     it_le = search_index->end();
     it_ge = search_index->begin();
 
     end = atoi(value.c_str());
-    it_le = search_index->uppbr_bound(end);
+    it_le = search_index->upper_bound(end);
 
     for (it = it_ge; it != it_le; ++it)
     {
@@ -38,9 +40,9 @@ bool pb_search_index::do_check_pb_le(std::string &key, std::string &value, std::
 bool pb_search_index::do_check_pb_ge(std::string &key, std::string &value, std::set<std::string> & search)
 {
     int end = 0;
-    std::multimap<float, std::string>::iterator it_le, it_ge, it;
+    std::multimap<int, std::string>::iterator it_le, it_ge, it;
 
-    std::multimap<float, std::string> * search_index = current();
+    std::multimap<int, std::string> * search_index = current();
     it_le = search_index->end();
     it_ge = search_index->begin();
 

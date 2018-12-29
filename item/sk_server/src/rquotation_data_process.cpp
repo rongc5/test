@@ -90,7 +90,7 @@ void rquotation_data_process::msg_recv_finish()
 
     if (qt->start <= 1)
     {
-        p_data->_block_set.idle()->insert(_id);
+        p_data->_block_set->idle()->insert(_id);
     }
 
     p_data->_rquoation_real_dict[_id] = qt;
@@ -104,52 +104,52 @@ void rquotation_data_process::quotation_index_reset()
     proc_data* p_data = proc_data::instance();
     {   
         std::multimap<float, std::string> t_map;
-        p_data->_end_index.idle()->swap(t_map);
+        p_data->_end_index->idle()->swap(t_map);
     }   
 
     {   
         std::multimap<float, std::string> t_map;
-        p_data->_change_rate_index.idle()->swap(t_map);
+        p_data->_change_rate_index->idle()->swap(t_map);
     }   
 
     {   
         std::multimap<float, std::string> t_map;
-        p_data->_range_percent_index.idle()->swap(t_map);
+        p_data->_range_percent_index->idle()->swap(t_map);
     }   
 
     {   
         std::multimap<float, std::string> t_map;
-        p_data->_down_pointer_index.idle()->swap(t_map);
+        p_data->_down_pointer_index->idle()->swap(t_map);
     }   
 
     {   
         std::multimap<float, std::string> t_map;
-        p_data->_up_pointer_index.idle()->swap(t_map);
+        p_data->_up_pointer_index->idle()->swap(t_map);
     }   
 
     {   
         std::multimap<float, std::string> t_map;
-        p_data->_end_avg_end_index.idle()->swap(t_map);
+        p_data->_end_avg_end_index->idle()->swap(t_map);
     }   
 
     {   
         std::multimap<float, std::string> t_map;
-        p_data->_end_avg_end5_index.idle()->swap(t_map);
+        p_data->_end_avg_end5_index->idle()->swap(t_map);
     }   
 
     {   
         std::multimap<float, std::string> t_map;
-        p_data->_end_avg_end10_index.idle()->swap(t_map);
+        p_data->_end_avg_end10_index->idle()->swap(t_map);
     }   
 
     {   
         std::multimap<float, std::string> t_map;
-        p_data->_end_avg_end20_index.idle()->swap(t_map);
+        p_data->_end_avg_end20_index->idle()->swap(t_map);
     }   
 
     {   
         std::multimap<float, std::string> t_map;
-        p_data->_end_avg_end30_index.idle()->swap(t_map);
+        p_data->_end_avg_end30_index->idle()->swap(t_map);
     }   
 
     {   
@@ -164,32 +164,32 @@ void rquotation_data_process::quotation_index_reset()
 
     {   
         std::map<std::string, std::multimap<float, std::string> > tmp;
-        p_data->_hq_sum_change_rate_index.idle()->swap(tmp);
+        p_data->_hq_sum_change_rate_index->idle()->swap(tmp);
     }  
 
     {   
         std::map<std::string, std::multimap<float, std::string> > tmp;
-        p_data->_hq_sum_range_percent_index.idle()->swap(tmp);
+        p_data->_hq_sum_range_percent_index->idle()->swap(tmp);
     }  
 
     {
         std::multimap<float, std::string> tmp;
-        p_data->_end_end5_index.idle()->swap(tmp);
+        p_data->_end_end5_index->idle()->swap(tmp);
     }
 
     {
         std::multimap<float, std::string> tmp;
-        p_data->_end_end10_index.idle()->swap(tmp);
+        p_data->_end_end10_index->idle()->swap(tmp);
     }
 
     {
         std::multimap<float, std::string> tmp;
-        p_data->_end_end20_index.idle()->swap(tmp);
+        p_data->_end_end20_index->idle()->swap(tmp);
     }
 
     {
         std::multimap<float, std::string> tmp;
-        p_data->_end_end30_index.idle()->swap(tmp);
+        p_data->_end_end30_index->idle()->swap(tmp);
     }
 }
 
@@ -198,22 +198,26 @@ bool rquotation_data_process::get_sum_quotation(std::string & id, std::string & 
     proc_data* p_data = proc_data::instance();
 
     bool flag = false;
-    auto it = p_data->_hquoation_dict->current()->_date_index.find(p_data->_trade_date);
-    if (it != p_data->_hquoation_dict->current()->_date_index.end())
+    history_quotation_dict * _hquoation_dict = p_data->_hquoation_dict->current();
+    auto it = _hquoation_dict->_date_index.find(p_data->_trade_date);
+    if (it != _hquoation_dict->_date_index.end())
         flag =  true;
 
     std::string key;
     history_quotation_dict::creat_key(date, id, key);
 
-    auto tt = p_data->_hquoation_dict->current()->_id_sum_dict.find(key);
-    if (tt == p_data->_hquoation_dict->current()->_id_sum_dict.end())
+    auto tt = _hquoation_dict->_id_sum_dict.find(key);
+    if (tt == _hquoation_dict->_id_sum_dict.end())
         return false;
 
     qt.range_percent = tt->second->range_percent; 
     if (!flag)
     {
-        auto ii = p_data->_rquoation_dict_index.current()->find(id);
-        if (ii != p_data->_rquoation_dict_index.current()->end())
+        std::unordered_map<std::string, std::shared_ptr<quotation_t>, str_hasher> * _rquoation_dict_index;
+        _rquoation_dict_index = p_data->_rquoation_dict_index.current();
+
+        auto ii = _rquoation_dict_index->find(id);
+        if (ii != _rquoation_dict_index->end())
             qt.range_percent += ii->second->range_percent;
     }
 
@@ -225,12 +229,13 @@ void rquotation_data_process::update_sum_index()
     proc_data* p_data = proc_data::instance();
     bool flag = false;
 
-    auto it = p_data->_hquoation_dict->current()->_date_index.find(p_data->_trade_date);
-    if (it != p_data->_hquoation_dict->current()->_date_index.end())
+    history_quotation_dict * _hquoation_dict = p_data->_hquoation_dict->current();
+    auto it = _hquoation_dict->_date_index.find(p_data->_trade_date);
+    if (it != _hquoation_dict->_date_index.end())
         flag =  true;
     
-    for (auto it = p_data->_hquoation_dict->current()->_date_index.begin(); 
-            it != p_data->_hquoation_dict->current()->_date_index.end(); it++)
+    for (auto it = _hquoation_dict->_date_index.begin(); 
+            it != _hquoation_dict->_date_index.end(); it++)
     {
         const std::string  & date = *it;
 
@@ -240,8 +245,8 @@ void rquotation_data_process::update_sum_index()
             std::string key;
             history_quotation_dict::creat_key(date, id, key);
 
-            auto tt = p_data->_hquoation_dict->current()->_id_sum_dict.find(key);
-            if (tt == p_data->_hquoation_dict->current()->_id_sum_dict.end())
+            auto tt = _hquoation_dict->_id_sum_dict.find(key);
+            if (tt == _hquoation_dict->_id_sum_dict.end())
                 continue;
 
             {   
@@ -255,7 +260,7 @@ void rquotation_data_process::update_sum_index()
                     range_percent = tt->second->range_percent + ii->second->range_percent;
                 }
 
-                std::map<std::string, std::multimap<float, std::string> >  & u_map = *(p_data->_hq_sum_range_percent_index.idle());
+                std::map<std::string, std::multimap<float, std::string> >  & u_map = *(p_data->_hq_sum_range_percent_index->idle());
                 auto ii = u_map.find(date);
                 if (ii == u_map.end())
                 {   
@@ -281,7 +286,7 @@ void rquotation_data_process::update_sum_index()
                     change_rate = tt->second->change_rate + ii->second->change_rate;
                 }
 
-                std::map<std::string, std::multimap<float, std::string> >  & u_map = *(p_data->_hq_sum_change_rate_index.idle());
+                std::map<std::string, std::multimap<float, std::string> >  & u_map = *(p_data->_hq_sum_change_rate_index->idle());
                 auto ii = u_map.find(date);
                 if (ii == u_map.end())
                 {   
@@ -320,8 +325,9 @@ void rquotation_data_process::update_id_technical(std::shared_ptr<quotation_t> q
     proc_data* p_data = proc_data::instance();
     bool flag = false;
 
-    auto it = p_data->_hquoation_dict->current()->_date_index.find(p_data->_trade_date);
-    if (it != p_data->_hquoation_dict->current()->_date_index.end())
+    history_quotation_dict * _hquoation_dict = p_data->_hquoation_dict->current();
+    auto it = _hquoation_dict->_date_index.find(p_data->_trade_date);
+    if (it != _hquoation_dict->_date_index.end())
         flag =  true;
 
     std::shared_ptr<technical_t> tt(new technical_t);
@@ -336,7 +342,7 @@ void rquotation_data_process::update_id_technical(std::shared_ptr<quotation_t> q
 
         snprintf(t_buf, sizeof(t_buf), "%.2f", tt->down_pointer);
         tt->down_pointer = atof(t_buf);
-        p_data->_down_pointer_index.idle()->insert(std::make_pair(tt->down_pointer, qt->id));
+        p_data->_down_pointer_index->idle()->insert(std::make_pair(tt->down_pointer, qt->id));
     }
 
     if ((qt->end < qt->high) && (qt->end != qt->start))
@@ -349,7 +355,7 @@ void rquotation_data_process::update_id_technical(std::shared_ptr<quotation_t> q
 
         snprintf(t_buf, sizeof(t_buf), "%.2f", tt->up_pointer);
         tt->up_pointer = atof(t_buf);
-        p_data->_up_pointer_index.idle()->insert(std::make_pair(tt->up_pointer, qt->id));
+        p_data->_up_pointer_index->idle()->insert(std::make_pair(tt->up_pointer, qt->id));
     }
 
     if (qt->vol)
@@ -366,55 +372,55 @@ void rquotation_data_process::update_id_technical(std::shared_ptr<quotation_t> q
         snprintf(t_buf, sizeof(t_buf), "%.2f", end_avg_end);
         end_avg_end = atof(t_buf);
 
-        p_data->_end_avg_end_index.idle()->insert(std::make_pair(end_avg_end, qt->id));
+        p_data->_end_avg_end_index->idle()->insert(std::make_pair(end_avg_end, qt->id));
     }
 
     std::string date;
     std::string key;
     if (flag)
     {
-        p_data->_hquoation_dict->current()->get_last_date(5, date);
+        _hquoation_dict->get_last_date(5, date);
         if (!date.empty())
         {
             history_quotation_dict::creat_key(date, qt->id, key);
-            auto ii = p_data->_hquoation_dict->current()->_id_sum_dict.find(key);
-            if (ii != p_data->_hquoation_dict->current()->_id_sum_dict.end())
+            auto ii = _hquoation_dict->_id_sum_dict.find(key);
+            if (ii != _hquoation_dict->_id_sum_dict.end())
             {
                 tt->avg_end_5 = ii->second->avg_end/5;
                 tt->end_5 = ii->second->end/5;
             }
         }
 
-        p_data->_hquoation_dict->current()->get_last_date(10, date);
+        _hquoation_dict->get_last_date(10, date);
         if (!date.empty())
         {
             history_quotation_dict::creat_key(date, qt->id, key);
-            auto ii = p_data->_hquoation_dict->current()->_id_sum_dict.find(key);
-            if (ii != p_data->_hquoation_dict->current()->_id_sum_dict.end())
+            auto ii = _hquoation_dict->_id_sum_dict.find(key);
+            if (ii != _hquoation_dict->_id_sum_dict.end())
             {
                 tt->avg_end_10 = ii->second->avg_end/10;
                 tt->end_10 = ii->second->end/10;
             }
         }
 
-        p_data->_hquoation_dict->current()->get_last_date(20, date);
+        _hquoation_dict->get_last_date(20, date);
         if (!date.empty())
         {
             history_quotation_dict::creat_key(date, qt->id, key);
-            auto ii = p_data->_hquoation_dict->current()->_id_sum_dict.find(key);
-            if (ii != p_data->_hquoation_dict->current()->_id_sum_dict.end())
+            auto ii = _hquoation_dict->_id_sum_dict.find(key);
+            if (ii != _hquoation_dict->_id_sum_dict.end())
             {
                 tt->avg_end_20 = ii->second->avg_end/20;
                 tt->end_20 = ii->second->end/20;
             }
         }
 
-        p_data->_hquoation_dict->current()->get_last_date(30, date);
+        _hquoation_dict->get_last_date(30, date);
         if (!date.empty())
         {
             history_quotation_dict::creat_key(date, qt->id, key);
-            auto ii = p_data->_hquoation_dict->current()->_id_sum_dict.find(key);
-            if (ii != p_data->_hquoation_dict->current()->_id_sum_dict.end())
+            auto ii = _hquoation_dict->_id_sum_dict.find(key);
+            if (ii != _hquoation_dict->_id_sum_dict.end())
             {
                 tt->avg_end_30 = ii->second->avg_end/30;
                 tt->end_30 = ii->second->end/30;
@@ -423,48 +429,48 @@ void rquotation_data_process::update_id_technical(std::shared_ptr<quotation_t> q
     }
     else
     {
-        p_data->_hquoation_dict->current()->get_last_date(4, date);
+        _hquoation_dict->get_last_date(4, date);
         if (!date.empty())
         {
             history_quotation_dict::creat_key(date, qt->id, key);
-            auto ii = p_data->_hquoation_dict->current()->_id_sum_dict.find(key);
-            if (ii != p_data->_hquoation_dict->current()->_id_sum_dict.end())
+            auto ii = _hquoation_dict->_id_sum_dict.find(key);
+            if (ii != _hquoation_dict->_id_sum_dict.end())
             {
                 tt->avg_end_5 = (ii->second->avg_end + tt->avg_end)/5;
                 tt->end_5 = (ii->second->end + qt->end)/5;
             }
         }
 
-        p_data->_hquoation_dict->current()->get_last_date(9, date);
+        _hquoation_dict->get_last_date(9, date);
         if (!date.empty())
         {
             history_quotation_dict::creat_key(date, qt->id, key);
-            auto ii = p_data->_hquoation_dict->current()->_id_sum_dict.find(key);
-            if (ii != p_data->_hquoation_dict->current()->_id_sum_dict.end())
+            auto ii = _hquoation_dict->_id_sum_dict.find(key);
+            if (ii != _hquoation_dict->_id_sum_dict.end())
             {
                 tt->avg_end_10 = (ii->second->avg_end + tt->avg_end)/10;
                 tt->end_10 = (ii->second->end + qt->end)/10;
             }
         }
 
-        p_data->_hquoation_dict->current()->get_last_date(19, date);
+        _hquoation_dict->get_last_date(19, date);
         if (!date.empty())
         {
             history_quotation_dict::creat_key(date, qt->id, key);
-            auto ii = p_data->_hquoation_dict->current()->_id_sum_dict.find(key);
-            if (ii != p_data->_hquoation_dict->current()->_id_sum_dict.end())
+            auto ii = _hquoation_dict->_id_sum_dict.find(key);
+            if (ii != _hquoation_dict->_id_sum_dict.end())
             {
                 tt->avg_end_20 = (ii->second->avg_end + tt->avg_end)/20;
                 tt->end_20 = (ii->second->end + qt->end)/20;
             }
         }
 
-        p_data->_hquoation_dict->current()->get_last_date(29, date);
+        _hquoation_dict->get_last_date(29, date);
         if (!date.empty())
         {
             history_quotation_dict::creat_key(date, qt->id, key);
-            auto ii = p_data->_hquoation_dict->current()->_id_sum_dict.find(key);
-            if (ii != p_data->_hquoation_dict->current()->_id_sum_dict.end())
+            auto ii = _hquoation_dict->_id_sum_dict.find(key);
+            if (ii != _hquoation_dict->_id_sum_dict.end())
             {
                 tt->avg_end_30 = (ii->second->avg_end + tt->avg_end)/30;
                 tt->end_30 = (ii->second->end + qt->end)/30;
@@ -475,28 +481,28 @@ void rquotation_data_process::update_id_technical(std::shared_ptr<quotation_t> q
     p_data->_rtechnical_dict_index.idle()->insert(std::make_pair(qt->id, tt));
 
     if (tt->avg_end_5 && qt->end)
-        p_data->_end_avg_end5_index.idle()->insert(std::make_pair(qt->end/tt->avg_end_5, qt->id));
+        p_data->_end_avg_end5_index->idle()->insert(std::make_pair(qt->end/tt->avg_end_5, qt->id));
 
     if (tt->avg_end_10 && qt->end)
-        p_data->_end_avg_end10_index.idle()->insert(std::make_pair(qt->end/tt->avg_end_10, qt->id));
+        p_data->_end_avg_end10_index->idle()->insert(std::make_pair(qt->end/tt->avg_end_10, qt->id));
 
     if (tt->avg_end_20 && qt->end)
-        p_data->_end_avg_end20_index.idle()->insert(std::make_pair(qt->end/tt->avg_end_20, qt->id));
+        p_data->_end_avg_end20_index->idle()->insert(std::make_pair(qt->end/tt->avg_end_20, qt->id));
 
     if (tt->avg_end_30 && qt->end)
-        p_data->_end_avg_end30_index.idle()->insert(std::make_pair(qt->end/tt->avg_end_30, qt->id));
+        p_data->_end_avg_end30_index->idle()->insert(std::make_pair(qt->end/tt->avg_end_30, qt->id));
 
     if (tt->end_5 && qt->end)
-        p_data->_end_end5_index.idle()->insert(std::make_pair(qt->end/tt->end_5, qt->id));
+        p_data->_end_end5_index->idle()->insert(std::make_pair(qt->end/tt->end_5, qt->id));
 
     if (tt->end_10 && qt->end)
-        p_data->_end_end10_index.idle()->insert(std::make_pair(qt->end/tt->end_10, qt->id));
+        p_data->_end_end10_index->idle()->insert(std::make_pair(qt->end/tt->end_10, qt->id));
 
     if (tt->end_20 && qt->end)
-        p_data->_end_end20_index.idle()->insert(std::make_pair(qt->end/tt->end_20, qt->id));
+        p_data->_end_end20_index->idle()->insert(std::make_pair(qt->end/tt->end_20, qt->id));
 
     if (tt->end_30 && qt->end)
-        p_data->_end_end30_index.idle()->insert(std::make_pair(qt->end/tt->end_30, qt->id));
+        p_data->_end_end30_index->idle()->insert(std::make_pair(qt->end/tt->end_30, qt->id));
 }
 
 void rquotation_data_process::update_real_index()
@@ -506,15 +512,15 @@ void rquotation_data_process::update_real_index()
     for (auto ii = p_data->_rquoation_real_dict.begin(); ii != p_data->_rquoation_real_dict.end(); ii++)
     {
         {
-            p_data->_end_index.idle()->insert(std::make_pair(ii->second->end, ii->first));
+            p_data->_end_index->idle()->insert(std::make_pair(ii->second->end, ii->first));
         }
 
         {
-            p_data->_change_rate_index.idle()->insert(std::make_pair(ii->second->change_rate, ii->first));
+            p_data->_change_rate_index->idle()->insert(std::make_pair(ii->second->change_rate, ii->first));
         }
 
         {
-            p_data->_range_percent_index.idle()->insert(std::make_pair(ii->second->range_percent, ii->first));
+            p_data->_range_percent_index->idle()->insert(std::make_pair(ii->second->range_percent, ii->first));
         }
 
         {
@@ -529,26 +535,26 @@ void rquotation_data_process::idle_current()
 {
     proc_data* p_data = proc_data::instance();
 
-    p_data->_down_pointer_index.idle_2_current();
-    p_data->_up_pointer_index.idle_2_current();
-    p_data->_end_index.idle_2_current();
-    p_data->_change_rate_index.idle_2_current();
-    p_data->_range_percent_index.idle_2_current();
-    p_data->_end_avg_end_index.idle_2_current();
+    p_data->_down_pointer_index->idle_2_current();
+    p_data->_up_pointer_index->idle_2_current();
+    p_data->_end_index->idle_2_current();
+    p_data->_change_rate_index->idle_2_current();
+    p_data->_range_percent_index->idle_2_current();
+    p_data->_end_avg_end_index->idle_2_current();
     p_data->_rquoation_dict_index.idle_2_current();
-    p_data->_hq_sum_change_rate_index.idle_2_current();
-    p_data->_hq_sum_range_percent_index.idle_2_current();
+    p_data->_hq_sum_change_rate_index->idle_2_current();
+    p_data->_hq_sum_range_percent_index->idle_2_current();
 
     p_data->_rtechnical_dict_index.idle_2_current();
 
-    p_data->_end_avg_end5_index.idle_2_current();
-    p_data->_end_avg_end10_index.idle_2_current();
-    p_data->_end_avg_end20_index.idle_2_current();
-    p_data->_end_avg_end30_index.idle_2_current();
-    p_data->_end_end5_index.idle_2_current();
-    p_data->_end_end10_index.idle_2_current();
-    p_data->_end_end20_index.idle_2_current();
-    p_data->_end_end30_index.idle_2_current();
+    p_data->_end_avg_end5_index->idle_2_current();
+    p_data->_end_avg_end10_index->idle_2_current();
+    p_data->_end_avg_end20_index->idle_2_current();
+    p_data->_end_avg_end30_index->idle_2_current();
+    p_data->_end_end5_index->idle_2_current();
+    p_data->_end_end10_index->idle_2_current();
+    p_data->_end_end20_index->idle_2_current();
+    p_data->_end_end30_index->idle_2_current();
 }
 
 std::string * rquotation_data_process::get_send_head()

@@ -18,15 +18,13 @@ bool rsingle_diff2_search_index::do_check_rsingle_diff2_le(std::string &key, std
 {
     uint32_t index = 0;
     int end = 0;
-    std::multimap<float, std::string>::iterator it_le, it_ge, it;
+    std::multimap<int, std::string>::iterator it_le, it_ge, it;
 
-    std::multimap<float, std::string> * search_index = current();
+    std::vector<std::multimap<int, std::string> > * search_index = current();
 
-    it_le = search_index->end();
-    it_ge = search_index->begin();
 
     std::vector<std::string> tmp_vec;
-    SplitString(ptr, '_', &tmp_vec, SPLIT_MODE_ALL);
+    SplitString(value.c_str(), '_', &tmp_vec, SPLIT_MODE_ALL);
     if (tmp_vec.size() < 4)
         return false;
 
@@ -35,8 +33,12 @@ bool rsingle_diff2_search_index::do_check_rsingle_diff2_le(std::string &key, std
     if (index >= search_index->size()) 
         return false;
 
+    it_le = search_index->at(index).end();
+    it_ge = search_index->at(index).begin();
+
     end = atoi(value.c_str());
-    it_le = search_index->uprsingle_diff2r_bound(end);
+    it_le = search_index->at(index).upper_bound(end);
+
 
     for (it = it_ge; it != it_le; ++it)
     {
@@ -50,14 +52,12 @@ bool rsingle_diff2_search_index::do_check_rsingle_diff2_ge(std::string &key, std
 {
     uint32_t index = 0;
     int end = 0;
-    std::multimap<float, std::string>::iterator it_le, it_ge, it;
+    std::multimap<int, std::string>::iterator it_le, it_ge, it;
 
-    std::multimap<float, std::string> * search_index = current();
-    it_le = search_index->end();
-    it_ge = search_index->begin();
+    std::vector<std::multimap<int, std::string> > * search_index = current();
 
     std::vector<std::string> tmp_vec;
-    SplitString(ptr, '_', &tmp_vec, SPLIT_MODE_ALL);
+    SplitString(value.c_str(), '_', &tmp_vec, SPLIT_MODE_ALL);
     if (tmp_vec.size() < 4)
         return false;
 
@@ -66,8 +66,10 @@ bool rsingle_diff2_search_index::do_check_rsingle_diff2_ge(std::string &key, std
     if (index >= search_index->size()) 
         return false;
 
+    it_le = search_index->at(index).end();
+    it_ge = search_index->at(index).begin();
     end = atoi(value.c_str());
-    it_ge = search_index->lower_bound(end);
+    it_ge = search_index->at(index).lower_bound(end);
 
     for (it = it_ge; it != it_le; ++it)
     {

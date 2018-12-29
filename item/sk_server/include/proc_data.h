@@ -5,8 +5,45 @@
 #include "sk_conf.h"
 #include "finance_dict.h"
 
+#include "address_search_index.h"
+#include "change_rate_search_index.h"
+#include "cir_value_search_index.h"
+#include "down_pointer_search_index.h"
+#include "end_avg_end10_search_index.h"
+#include "end_avg_end20_search_index.h"
+#include "end_avg_end30_search_index.h"
+#include "end_avg_end5_search_index.h"
+#include "end_avg_end_search_index.h"
+#include "end_end10_search_index.h"
+#include "end_end20_search_index.h"
+#include "end_end30_search_index.h"
+#include "end_end5_search_index.h"
+#include "end_search_index.h"
+#include "hqchange_rate_search_index.h"
+#include "hqend_hqstart_search_index.h"
+#include "hqrange_percent_search_index.h"
+#include "hq_sum_change_rate_search_index.h"
+#include "hq_sum_range_percent_search_index.h"
+#include "hsingle_diff_search_index.h"
+#include "hsingle_sum_diff_search_index.h"
+#include "jlrgr_search_index.h"
+#include "mgsygr_search_index.h"
+#include "mgsy_search_index.h"
+#include "mgxjgr_search_index.h"
+#include "mgxj_search_index.h"
+#include "pb_search_index.h"
+#include "pe_search_index.h"
+#include "plate_search_index.h"
+#include "range_percent_search_index.h"
+#include "rsingle_diff2_search_index.h"
+#include "rsingle_diff_search_index.h"
+#include "up_pointer_search_index.h"
+#include "value_search_index.h"
+#include "yylrgr_search_index.h"
+#include "zysrgr_search_index.h"
+#include "block_search_index.h"
+
 class ua_dict;
-class recommend_dict;
 class ban_dict;
 class id_dict;
 class addr_dict_split;
@@ -32,10 +69,17 @@ class proc_data:public reload_inf
         virtual int destroy_idle();
 
     public:
+        void reg_search_index();
+
+        std::shared_ptr<base_search_index> get_search_index(std::string & key);
+
+        void reg_handler();
+
+        std::shared_ptr<url_handler> get_url_handler(std::string & key);
+
+    public:
         reload_mgr<ua_dict> * _ua_dict;
         reload_mgr<id_dict> * _id_dict;
-
-        reload_mgr<recommend_dict> * _recommend_dict;
 
         reload_mgr<ban_dict> * _ban_dict;
 
@@ -73,68 +117,68 @@ class proc_data:public reload_inf
 
     public:
         //search index;
-        ToBufferMgr<std::unordered_set<std::string, str_hasher> > _block_set;
+        std::shared_ptr<block_search_index> _block_set;
 
-        ToBufferMgr<std::multimap<float, std::string> > _end_index;
-        ToBufferMgr<std::multimap<float, std::string> > _change_rate_index;
-        ToBufferMgr<std::multimap<float, std::string> > _range_percent_index;
+        std::shared_ptr<end_search_index> _end_index;
+        std::shared_ptr<change_rate_search_index> _change_rate_index;
+        std::shared_ptr<range_percent_search_index> _range_percent_index;
 
-        ToBufferMgr<std::multimap<float, std::string> > _down_pointer_index;
-        ToBufferMgr<std::multimap<float, std::string> > _up_pointer_index;
-        ToBufferMgr<std::multimap<float, std::string> > _end_avg_end_index;
-        ToBufferMgr<std::multimap<float, std::string> > _end_avg_end5_index;
-        ToBufferMgr<std::multimap<float, std::string> > _end_avg_end10_index;
-        ToBufferMgr<std::multimap<float, std::string> > _end_avg_end20_index;
-        ToBufferMgr<std::multimap<float, std::string> > _end_avg_end30_index;
+        std::shared_ptr<down_pointer_search_index> _down_pointer_index;
+        std::shared_ptr<up_pointer_search_index> _up_pointer_index;
+        std::shared_ptr<end_avg_end_search_index> _end_avg_end_index;
+        std::shared_ptr<end_avg_end5_search_index> _end_avg_end5_index;
+        std::shared_ptr<end_avg_end10_search_index> _end_avg_end10_index;
+        std::shared_ptr<end_avg_end20_search_index> _end_avg_end20_index;
+        std::shared_ptr<end_avg_end30_search_index> _end_avg_end30_index;
 
-        ToBufferMgr<std::multimap<float, std::string> > _end_end5_index;
-        ToBufferMgr<std::multimap<float, std::string> > _end_end10_index;
-        ToBufferMgr<std::multimap<float, std::string> > _end_end20_index;
-        ToBufferMgr<std::multimap<float, std::string> > _end_end30_index;
+        std::shared_ptr<end_end5_search_index> _end_end5_index;
+        std::shared_ptr<end_end10_search_index> _end_end10_index;
+        std::shared_ptr<end_end20_search_index> _end_end20_index;
+        std::shared_ptr<end_end30_search_index> _end_end30_index;
 
-        ToBufferMgr<std::multimap<int, std::string> > _pe_index;
-        ToBufferMgr<std::multimap<int, std::string> > _pb_index;
-        ToBufferMgr<std::multimap<int, std::string> > _value_index;
-        ToBufferMgr<std::multimap<int, std::string> > _cir_value_index;
+        std::shared_ptr<pe_search_index> _pe_index;
+        std::shared_ptr<pb_search_index> _pb_index;
+        std::shared_ptr<value_search_index> _value_index;
+        std::shared_ptr<cir_value_search_index> _cir_value_index;
 
-        ToBufferMgr<std::multimap<float, std::string> > _mgxj_index;
-        ToBufferMgr<std::multimap<float, std::string> > _mgsy_index;
-        ToBufferMgr<std::multimap<float, std::string> > _mgsygr_index;
-        ToBufferMgr<std::multimap<float, std::string> > _mgxjgr_index;
-        ToBufferMgr<std::multimap<float, std::string> > _zysrgr_index;
-        ToBufferMgr<std::multimap<float, std::string> > _yylrgr_index;
-        ToBufferMgr<std::multimap<float, std::string> > _jlrgr_index;
+        std::shared_ptr<mgxj_search_index> _mgxj_index;
+        std::shared_ptr<mgsy_search_index> _mgsy_index;
+        std::shared_ptr<mgsygr_search_index> _mgsygr_index;
+        std::shared_ptr<mgxjgr_search_index> _mgxjgr_index;
+        std::shared_ptr<zysrgr_search_index> _zysrgr_index;
+        std::shared_ptr<yylrgr_search_index> _yylrgr_index;
+        std::shared_ptr<jlrgr_search_index> _jlrgr_index;
 
-        ToBufferMgr<std::unordered_multimap<std::shared_ptr<std::string>, std::string, str_hasher, str_equaler> > _address_index;
-        ToBufferMgr<std::unordered_multimap<std::shared_ptr<std::string>, std::string, str_hasher, str_equaler> > _plate_index;
+        std::shared_ptr<address_search_index> _address_index;
+        std::shared_ptr<plate_search_index> _plate_index;
 
-        ToBufferMgr<std::vector<std::multimap<int, std::string> > > _rsingle_diff_index;
+        std::shared_ptr<rsingle_diff_search_index> _rsingle_diff_index;
         // 
-        ToBufferMgr<std::vector<std::multimap<int, std::string> > > _rsingle_diff2_index;
+        std::shared_ptr<rsingle_diff2_search_index> _rsingle_diff2_index;
 
         //date, single, id
-        ToBufferMgr<std::vector<std::map<std::string, std::multimap<int, std::string> > > > _hsingle_diff_index;
+        std::shared_ptr<hsingle_diff_search_index> _hsingle_diff_index;
         //date, sum_single, id
-        ToBufferMgr<std::vector<std::map<std::string, std::multimap<int, std::string> > > > _hsingle_sum_diff_index;
+        std::shared_ptr<hsingle_sum_diff_search_index> _hsingle_sum_diff_index;
 
         // history quotation 
         // date, -, id
-        ToBufferMgr<std::map<std::string, std::multimap<float, std::string> > > _hqchange_rate_index;
-        ToBufferMgr<std::map<std::string, std::multimap<float, std::string> > > _hqrange_percent_index;
+        std::shared_ptr<hqchange_rate_search_index> _hqchange_rate_index;
+        std::shared_ptr<hqrange_percent_search_index> _hqrange_percent_index;
 
-        ToBufferMgr<std::map<std::string, std::multimap<float, std::string> > > _hq_sum_range_percent_index;
-        ToBufferMgr<std::map<std::string, std::multimap<float, std::string> > > _hq_sum_change_rate_index;
+        std::shared_ptr<hq_sum_range_percent_search_index> _hq_sum_range_percent_index;
+        std::shared_ptr<hq_sum_change_rate_search_index> _hq_sum_change_rate_index;
 
-        ToBufferMgr<std::map<std::string, std::multimap<float, std::string> > > _hqend_hqstart_index;
-        //date, hend/avg_end, id
-        ToBufferMgr<std::map<std::string, std::multimap<float, std::string> > > _hend_avg_end_index;
-
-        //recommend_flag, id
-        ToBufferMgr<std::unordered_multimap<std::string, std::string, str_hasher> > _recommend_index;
+        std::shared_ptr<hqend_hqstart_search_index> _hqend_hqstart_index;
 
     public:
         char proc_name[SIZE_LEN_256];
         std::string _trade_date;
+
+    private:
+        std::map<std::string, std::shared_ptr<base_search_index> > _search_index_map;
+
+        std::map<std::string, std::shared_ptr<url_handler> > _uhandler_map;
 
     private:
         static proc_data* _singleton;

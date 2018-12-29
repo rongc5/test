@@ -17,15 +17,15 @@ bool cir_value_search_index::search(std::string &key, std::string &value, std::s
 bool cir_value_search_index::do_check_cir_value_le(std::string &key, std::string &value, std::set<std::string> & search)
 {
     int end = 0;
-    std::multimap<float, std::string>::iterator it_le, it_ge, it;
+    std::multimap<int, std::string>::iterator it_le, it_ge, it;
 
-    std::multimap<float, std::string> * search_index = current();
+    std::multimap<int, std::string> * search_index = current();
 
     it_le = search_index->end();
     it_ge = search_index->begin();
 
     end = atoi(value.c_str());
-    it_le = search_index->upcir_valuer_bound(end);
+    it_le = search_index->upper_bound(end);
 
     for (it = it_ge; it != it_le; ++it)
     {
@@ -38,9 +38,9 @@ bool cir_value_search_index::do_check_cir_value_le(std::string &key, std::string
 bool cir_value_search_index::do_check_cir_value_ge(std::string &key, std::string &value, std::set<std::string> & search)
 {
     int end = 0;
-    std::multimap<float, std::string>::iterator it_le, it_ge, it;
+    std::multimap<int, std::string>::iterator it_le, it_ge, it;
 
-    std::multimap<float, std::string> * search_index = current();
+    std::multimap<int, std::string> * search_index = current();
     it_le = search_index->end();
     it_ge = search_index->begin();
 

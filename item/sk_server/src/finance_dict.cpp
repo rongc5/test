@@ -68,27 +68,27 @@ int finance_dict::load()
         
         p_data->_finance_dict_index.idle()->insert(std::make_pair(ft->id, ft));
 
-        p_data->_pe_index.idle()->insert(std::make_pair(ft->pe, ft->id));
+        p_data->_pe_index->idle()->insert(std::make_pair(ft->pe, ft->id));
 
-        p_data->_pb_index.idle()->insert(std::make_pair(ft->pb, ft->id));
+        p_data->_pb_index->idle()->insert(std::make_pair(ft->pb, ft->id));
 
-        p_data->_value_index.idle()->insert(std::make_pair(ft->value, ft->id));
+        p_data->_value_index->idle()->insert(std::make_pair(ft->value, ft->id));
 
-        p_data->_cir_value_index.idle()->insert(std::make_pair(ft->cir_value, ft->id));
+        p_data->_cir_value_index->idle()->insert(std::make_pair(ft->cir_value, ft->id));
 
-        p_data->_mgxj_index.idle()->insert(std::make_pair(ft->mgxj, ft->id));
+        p_data->_mgxj_index->idle()->insert(std::make_pair(ft->mgxj, ft->id));
 
-        p_data->_mgsy_index.idle()->insert(std::make_pair(ft->mgsy, ft->id));
+        p_data->_mgsy_index->idle()->insert(std::make_pair(ft->mgsy, ft->id));
 
-        p_data->_mgsygr_index.idle()->insert(std::make_pair(ft->mgsygr, ft->id));
+        p_data->_mgsygr_index->idle()->insert(std::make_pair(ft->mgsygr, ft->id));
 
-        p_data->_mgxjgr_index.idle()->insert(std::make_pair(ft->mgxjgr, ft->id));
+        p_data->_mgxjgr_index->idle()->insert(std::make_pair(ft->mgxjgr, ft->id));
 
-        p_data->_zysrgr_index.idle()->insert(std::make_pair(ft->zysrgr, ft->id));
+        p_data->_zysrgr_index->idle()->insert(std::make_pair(ft->zysrgr, ft->id));
 
-        p_data->_yylrgr_index.idle()->insert(std::make_pair(ft->yylrgr, ft->id));
+        p_data->_yylrgr_index->idle()->insert(std::make_pair(ft->yylrgr, ft->id));
 
-        p_data->_jlrgr_index.idle()->insert(std::make_pair(ft->jlrgr, ft->id));
+        p_data->_jlrgr_index->idle()->insert(std::make_pair(ft->jlrgr, ft->id));
     }
 
     fclose(fp);
@@ -97,17 +97,17 @@ int finance_dict::load()
     _last_load = st.st_mtime;
 
     {
-        p_data->_pe_index.idle_2_current();
-        p_data->_pb_index.idle_2_current();
-        p_data->_value_index.idle_2_current();
-        p_data->_cir_value_index.idle_2_current();
-        p_data->_mgxj_index.idle_2_current();
-        p_data->_mgsy_index.idle_2_current();
-        p_data->_mgsygr_index.idle_2_current();
-        p_data->_mgxjgr_index.idle_2_current();
-        p_data->_zysrgr_index.idle_2_current();
-        p_data->_yylrgr_index.idle_2_current();
-        p_data->_jlrgr_index.idle_2_current();
+        p_data->_pe_index->idle_2_current();
+        p_data->_pb_index->idle_2_current();
+        p_data->_value_index->idle_2_current();
+        p_data->_cir_value_index->idle_2_current();
+        p_data->_mgxj_index->idle_2_current();
+        p_data->_mgsy_index->idle_2_current();
+        p_data->_mgsygr_index->idle_2_current();
+        p_data->_mgxjgr_index->idle_2_current();
+        p_data->_zysrgr_index->idle_2_current();
+        p_data->_yylrgr_index->idle_2_current();
+        p_data->_jlrgr_index->idle_2_current();
         p_data->_finance_dict_index.idle_2_current();
     }
 
@@ -158,57 +158,57 @@ int finance_dict::destroy()
     proc_data* p_data = proc_data::instance();
     {
         std::multimap<int, std::string> tmp;
-        p_data->_pe_index.idle()->swap(tmp);
+        p_data->_pe_index->idle()->swap(tmp);
     }
 
     {
         std::multimap<int, std::string> tmp;
-        p_data->_pb_index.idle()->swap(tmp);
+        p_data->_pb_index->idle()->swap(tmp);
     }
 
     {
         std::multimap<int, std::string> tmp;
-        p_data->_value_index.idle()->swap(tmp);
+        p_data->_value_index->idle()->swap(tmp);
     }
 
     {
         std::multimap<int, std::string> tmp;
-        p_data->_cir_value_index.idle()->swap(tmp);
+        p_data->_cir_value_index->idle()->swap(tmp);
     }
     
     {
         std::multimap<float, std::string> tmp;
-        p_data->_mgxj_index.idle()->swap(tmp);
+        p_data->_mgxj_index->idle()->swap(tmp);
     }
 
     {
         std::multimap<float, std::string> tmp;
-        p_data->_mgsy_index.idle()->swap(tmp);
+        p_data->_mgsy_index->idle()->swap(tmp);
     }
 
     {
         std::multimap<float, std::string> tmp;
-        p_data->_mgsygr_index.idle()->swap(tmp);
+        p_data->_mgsygr_index->idle()->swap(tmp);
     }
 
     {
         std::multimap<float, std::string> tmp;
-        p_data->_mgxjgr_index.idle()->swap(tmp);
+        p_data->_mgxjgr_index->idle()->swap(tmp);
     }
 
     {
         std::multimap<float, std::string> tmp;
-        p_data->_zysrgr_index.idle()->swap(tmp);
+        p_data->_zysrgr_index->idle()->swap(tmp);
     }
 
     {
         std::multimap<float, std::string> tmp;
-        p_data->_yylrgr_index.idle()->swap(tmp);
+        p_data->_yylrgr_index->idle()->swap(tmp);
     }
 
     {
         std::multimap<float, std::string> tmp;
-        p_data->_jlrgr_index.idle()->swap(tmp);
+        p_data->_jlrgr_index->idle()->swap(tmp);
     }
 
     {

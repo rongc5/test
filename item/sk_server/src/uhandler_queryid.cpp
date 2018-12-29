@@ -200,8 +200,10 @@ void uhandler_queryid::query_quotation(std::string &id, Value & root, Document::
     Value value(kStringType);
 
     proc_data* p_data = proc_data::instance();
-    auto ii = p_data->_rquoation_dict_index.current()->find(id);
-    if (ii != p_data->_rquoation_dict_index.current()->end())
+    std::unordered_map<std::string, std::shared_ptr<quotation_t>, str_hasher> * rquoation_dict_index = NULL;
+    rquoation_dict_index = p_data->_rquoation_dict_index.current();
+    auto ii = rquoation_dict_index->find(id);
+    if (ii != rquoation_dict_index->end())
     {
         {
             key.SetString("name", allocator); 
@@ -267,8 +269,10 @@ void uhandler_queryid::query_technical(std::string &id, Value & root, Document::
     Value value(kStringType);
 
     proc_data* p_data = proc_data::instance();
-    auto ii = p_data->_rtechnical_dict_index.current()->find(id);
-    if (ii != p_data->_rtechnical_dict_index.current()->end())
+    std::unordered_map<std::string, std::shared_ptr<technical_t>, str_hasher> * rtechnical_dict_index = NULL;
+    rtechnical_dict_index = p_data->_rtechnical_dict_index.current();
+    auto ii = rtechnical_dict_index->find(id);
+    if (ii != rtechnical_dict_index->end())
     {
         {
             key.SetString("avg_end", allocator); 
@@ -353,8 +357,9 @@ void uhandler_queryid::query_plate(std::string &id, Value & root, Document::Allo
 {
     Value value(kStringType);
     proc_data* p_data = proc_data::instance();
-    auto ii = p_data->_plate_dict->current()->_id_dict.find(id);
-    if (ii != p_data->_plate_dict->current()->_id_dict.end())
+    plate_dict * _plate_dict = p_data->_plate_dict->current();
+    auto ii = _plate_dict->_id_dict.find(id);
+    if (ii != _plate_dict->_id_dict.end())
     {
         for (auto ft: ii->second)
         {
@@ -369,9 +374,11 @@ void uhandler_queryid::query_single(std::string &id, Value & root, Document::All
     char t_buf[SIZE_LEN_64];
     proc_data* p_data = proc_data::instance();
     strategy_conf * strategy = p_data->_conf->_strategy->current();
-    auto ii = p_data->_rsingle_dict_index.current()->find(id);
+    std::unordered_map<std::string, std::deque<std::shared_ptr<single_vec> >, str_hasher> * rsingle_dict_index = NULL;
+    rsingle_dict_index = p_data->_rsingle_dict_index.current();
 
-    if (ii != p_data->_rsingle_dict_index.current()->end())
+    auto ii = rsingle_dict_index->find(id);
+    if (ii != rsingle_dict_index->end())
     {
         for (uint32_t i = 0; i < strategy->real_single_scale.size(); i++)
         {
@@ -398,9 +405,12 @@ void uhandler_queryid::query_single_in(std::string &id, Value & root, Document::
     char t_buf[SIZE_LEN_64];
     proc_data* p_data = proc_data::instance();
     strategy_conf * strategy = p_data->_conf->_strategy->current();
-    auto ii = p_data->_rsingle_dict_index.current()->find(id);
+    std::unordered_map<std::string, std::deque<std::shared_ptr<single_vec> >, str_hasher> * rsingle_dict_index = NULL;
+    rsingle_dict_index = p_data->_rsingle_dict_index.current();
 
-    if (ii != p_data->_rsingle_dict_index.current()->end())
+    auto ii = rsingle_dict_index->find(id);
+
+    if (ii != rsingle_dict_index->end())
     {
         for (uint32_t i = 0; i < strategy->real_single_scale.size(); i++)
         {
@@ -427,9 +437,12 @@ void uhandler_queryid::query_single_out(std::string &id, Value & root, Document:
     char t_buf[SIZE_LEN_64];
     proc_data* p_data = proc_data::instance();
     strategy_conf * strategy = p_data->_conf->_strategy->current();
-    auto ii = p_data->_rsingle_dict_index.current()->find(id);
+    std::unordered_map<std::string, std::deque<std::shared_ptr<single_vec> >, str_hasher> * rsingle_dict_index = NULL;
+    rsingle_dict_index = p_data->_rsingle_dict_index.current();
 
-    if (ii != p_data->_rsingle_dict_index.current()->end())
+    auto ii = rsingle_dict_index->find(id);
+
+    if (ii != rsingle_dict_index->end())
     {
         for (uint32_t i = 0; i < strategy->real_single_scale.size(); i++)
         {
@@ -458,8 +471,7 @@ void uhandler_queryid::query_blocked(std::string &id, Value & root, Document::Al
 
     key.SetString("block", allocator);
     proc_data* p_data = proc_data::instance();
-    auto ii = p_data->_block_set.current()->find(id);
-    if (ii != p_data->_block_set.current()->end())
+    if (p_data->_block_set->do_check_block(id))
     {
         root.AddMember(key, 1, allocator);
     }
@@ -476,8 +488,9 @@ void uhandler_queryid::query_addr(std::string &id, Value & root, Document::Alloc
 
     key.SetString("addr", allocator);
     proc_data* p_data = proc_data::instance();
-    auto ii = p_data->_addr_dict->current()->_id_dict.find(id);
-    if (ii != p_data->_addr_dict->current()->_id_dict.end())
+    addr_dict * _addr_dict = p_data->_addr_dict->current();
+    auto ii = _addr_dict->_id_dict.find(id);
+    if (ii != _addr_dict->_id_dict.end())
     {
         std::string str;
         for (auto ft:ii->second)
@@ -591,9 +604,10 @@ void uhandler_queryid::query_history_single(uint32_t last_day_num, std::string &
 
     std::vector<std::string> date_vec;
 
+    history_single_dict * _hsingle_dict = p_data->_hsingle_dict->current();
     {
-        auto ii = p_data->_hsingle_dict->current()->_id_date_dict.find(id);
-        if (ii == p_data->_hsingle_dict->current()->_id_date_dict.end())
+        auto ii = _hsingle_dict->_id_date_dict.find(id);
+        if (ii == _hsingle_dict->_id_date_dict.end())
         {
             return;
         }
@@ -610,8 +624,8 @@ void uhandler_queryid::query_history_single(uint32_t last_day_num, std::string &
         std::string key;    
         history_single_dict::creat_key(date_vec[i], id, key);
 
-        auto ii = p_data->_hsingle_dict->current()->_date_dict.find(key);
-        if (ii != p_data->_hsingle_dict->current()->_date_dict.end())
+        auto ii = _hsingle_dict->_date_dict.find(key);
+        if (ii != _hsingle_dict->_date_dict.end())
         {
             Value k(kStringType);
             Value child(kArrayType);
@@ -639,8 +653,9 @@ void uhandler_queryid::query_sum_single(uint32_t last_day_num, std::string &id, 
 
     std::string date;
 
-    auto ii = p_data->_hsingle_dict->current()->_id_date_dict.find(id);
-    if (ii == p_data->_hsingle_dict->current()->_id_date_dict.end())
+    history_single_dict * _hsingle_dict = p_data->_hsingle_dict->current();
+    auto ii = _hsingle_dict->_id_date_dict.find(id);
+    if (ii == _hsingle_dict->_id_date_dict.end())
     {
         return;
     }
@@ -662,8 +677,9 @@ void uhandler_queryid::query_history_single_in(uint32_t last_day_num, std::strin
     std::vector<std::string> date_vec;
 
     {
-        auto ii = p_data->_hsingle_dict->current()->_id_date_dict.find(id);
-        if (ii == p_data->_hsingle_dict->current()->_id_date_dict.end())
+        history_single_dict * _hsingle_dict = p_data->_hsingle_dict->current();
+        auto ii = _hsingle_dict->_id_date_dict.find(id);
+        if (ii == _hsingle_dict->_id_date_dict.end())
         {
             return;
         }
@@ -680,8 +696,9 @@ void uhandler_queryid::query_history_single_in(uint32_t last_day_num, std::strin
         std::string key;    
         history_single_dict::creat_key(date_vec[i], id, key);
 
-        auto ii = p_data->_hsingle_dict->current()->_date_dict.find(key);
-        if (ii != p_data->_hsingle_dict->current()->_date_dict.end())
+        history_single_dict * _hsingle_dict = p_data->_hsingle_dict->current();
+        auto ii = _hsingle_dict->_date_dict.find(key);
+        if (ii != _hsingle_dict->_date_dict.end())
         {
             Value k(kStringType);
             Value child(kArrayType);
@@ -711,8 +728,9 @@ void uhandler_queryid::query_history_single_out(uint32_t last_day_num, std::stri
     std::vector<std::string> date_vec;
 
     {
-        auto ii = p_data->_hsingle_dict->current()->_id_date_dict.find(id);
-        if (ii == p_data->_hsingle_dict->current()->_id_date_dict.end())
+        history_single_dict * _hsingle_dict = p_data->_hsingle_dict->current();
+        auto ii = _hsingle_dict->_id_date_dict.find(id);
+        if (ii == _hsingle_dict->_id_date_dict.end())
         {
             return;
         }
@@ -729,8 +747,9 @@ void uhandler_queryid::query_history_single_out(uint32_t last_day_num, std::stri
         std::string key;    
         history_single_dict::creat_key(date_vec[i], id, key);
 
-        auto ii = p_data->_hsingle_dict->current()->_date_dict.find(key);
-        if (ii != p_data->_hsingle_dict->current()->_date_dict.end())
+        history_single_dict * _hsingle_dict = p_data->_hsingle_dict->current();
+        auto ii = _hsingle_dict->_date_dict.find(key);
+        if (ii != _hsingle_dict->_date_dict.end())
         {
             Value k(kStringType);
             Value child(kArrayType);
@@ -759,8 +778,9 @@ void uhandler_queryid::query_history_single(std::string & history_date, std::str
     std::string key;    
     history_single_dict::creat_key(history_date, id, key);
 
-    auto ii = p_data->_hsingle_dict->current()->_date_dict.find(key);
-    if (ii != p_data->_hsingle_dict->current()->_date_dict.end())
+    history_single_dict * _hsingle_dict = p_data->_hsingle_dict->current();
+    auto ii = _hsingle_dict->_date_dict.find(key);
+    if (ii != _hsingle_dict->_date_dict.end())
     {
         Value k(kStringType);
         Value child(kArrayType);
@@ -815,8 +835,9 @@ void uhandler_queryid::query_history_single_in(std::string & history_date, std::
     std::string key;    
     history_single_dict::creat_key(history_date, id, key);
 
-    auto ii = p_data->_hsingle_dict->current()->_date_dict.find(key);
-    if (ii != p_data->_hsingle_dict->current()->_date_dict.end())
+    history_single_dict * _hsingle_dict = p_data->_hsingle_dict->current();
+    auto ii = _hsingle_dict->_date_dict.find(key);
+    if (ii != _hsingle_dict->_date_dict.end())
     {
         Value k(kStringType);
         Value child(kArrayType);
@@ -844,8 +865,9 @@ void uhandler_queryid::query_history_single_out(std::string & history_date, std:
     std::string key;    
     history_single_dict::creat_key(history_date, id, key);
 
-    auto ii = p_data->_hsingle_dict->current()->_date_dict.find(key);
-    if (ii != p_data->_hsingle_dict->current()->_date_dict.end())
+    history_single_dict * _hsingle_dict = p_data->_hsingle_dict->current();
+    auto ii = _hsingle_dict->_date_dict.find(key);
+    if (ii != _hsingle_dict->_date_dict.end())
     {
         Value k(kStringType);
         Value child(kArrayType);
@@ -874,8 +896,9 @@ void uhandler_queryid::query_history_quotation(uint32_t last_day_num, std::strin
     std::vector<std::string> date_vec;
 
     {
-        auto ii = p_data->_hquoation_dict->current()->_id_date_dict.find(id);
-        if (ii == p_data->_hquoation_dict->current()->_id_date_dict.end())
+        history_quotation_dict * _hquoation_dict = p_data->_hquoation_dict->current();
+        auto ii = _hquoation_dict->_id_date_dict.find(id);
+        if (ii == _hquoation_dict->_id_date_dict.end())
         {
             return;
         }
@@ -892,8 +915,9 @@ void uhandler_queryid::query_history_quotation(uint32_t last_day_num, std::strin
         std::string key;    
         history_quotation_dict::creat_key(date_vec[i], id, key);
 
-        auto ii = p_data->_hquoation_dict->current()->_id_dict.find(key);
-        if (ii != p_data->_hquoation_dict->current()->_id_dict.end())
+        history_quotation_dict * _hquoation_dict = p_data->_hquoation_dict->current();
+        auto ii = _hquoation_dict->_id_dict.find(key);
+        if (ii != _hquoation_dict->_id_dict.end())
         {
             Value k(kStringType);
             Value v(kObjectType);
@@ -939,8 +963,9 @@ void uhandler_queryid::query_sum_quotation(uint32_t last_day_num, std::string &i
     proc_data* p_data = proc_data::instance();
     std::string date;
 
-    auto ii = p_data->_hquoation_dict->current()->_id_date_dict.find(id);
-    if (ii == p_data->_hquoation_dict->current()->_id_date_dict.end())
+    history_quotation_dict * _hquoation_dict = p_data->_hquoation_dict->current();
+    auto ii = _hquoation_dict->_id_date_dict.find(id);
+    if (ii == _hquoation_dict->_id_date_dict.end())
     {
         return;
     }
@@ -963,8 +988,9 @@ void uhandler_queryid::query_history_quotation(std::string & history_date, std::
     std::string key;    
     history_quotation_dict::creat_key(history_date, id, key);
 
-    auto ii = p_data->_hquoation_dict->current()->_id_dict.find(key);
-    if (ii != p_data->_hquoation_dict->current()->_id_dict.end())
+    history_quotation_dict * _hquoation_dict = p_data->_hquoation_dict->current();
+    auto ii = _hquoation_dict->_id_dict.find(key);
+    if (ii != _hquoation_dict->_id_dict.end())
     {
         Value k(kStringType);
         Value v(kObjectType);

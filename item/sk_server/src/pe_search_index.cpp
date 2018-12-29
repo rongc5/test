@@ -17,9 +17,9 @@ bool pe_search_index::search(std::string &key, std::string &value, std::set<std:
 bool pe_search_index::do_check_pe_le(std::string &key, std::string &value, std::set<std::string> & search)
 {
     int end = 0;
-    std::multimap<float, std::string>::iterator it_le, it_ge, it;
+    std::multimap<int, std::string>::iterator it_le, it_ge, it;
 
-    std::multimap<float, std::string> * search_index = current();
+    std::multimap<int, std::string> * search_index = current();
 
     it_le = search_index->end();
     it_ge = search_index->begin();
@@ -38,9 +38,9 @@ bool pe_search_index::do_check_pe_le(std::string &key, std::string &value, std::
 bool pe_search_index::do_check_pe_ge(std::string &key, std::string &value, std::set<std::string> & search)
 {
     int end = 0;
-    std::multimap<float, std::string>::iterator it_le, it_ge, it;
+    std::multimap<int, std::string>::iterator it_le, it_ge, it;
 
-    std::multimap<float, std::string> * search_index = current();
+    std::multimap<int, std::string> * search_index = current();
     it_le = search_index->end();
     it_ge = search_index->begin();
 

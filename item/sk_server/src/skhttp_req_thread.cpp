@@ -162,8 +162,8 @@ void skhttp_req_thread::first_in_day()
 
         {
             std::unordered_set<std::string, str_hasher> t_block;
-            p_data->_block_set.idle()->swap(t_block);
-            p_data->_block_set.idle_2_current();
+            p_data->_block_set->idle()->swap(t_block);
+            p_data->_block_set->idle_2_current();
         }
 
         real_morning_stime = get_real_time(_req_date.c_str(), 
@@ -222,8 +222,9 @@ bool skhttp_req_thread::is_trade_date(const char * date)
     proc_data* p_data = proc_data::instance();
     if (p_data) 
     {
-        auto ii = p_data->_holiday_dict->current()->_date_dict.find(std::string(date));
-        if (ii != p_data->_holiday_dict->current()->_date_dict.end())
+        holiday_dict * _holiday_dict = p_data->_holiday_dict->current();
+        auto ii = _holiday_dict->_date_dict.find(std::string(date));
+        if (ii != _holiday_dict->_date_dict.end())
             return false;
     }
     return true;
@@ -284,8 +285,7 @@ void skhttp_req_thread::req_real_quotation(const std::string & id)
     if (p_data)
     {
         {
-            auto it = p_data->_block_set.current()->find(id);
-            if (it != p_data->_block_set.current()->end())
+            if (p_data->_block_set->do_check_block(id))
             {
                 LOG_DEBUG("id: %s is blocked", id.c_str());
                 return;
@@ -308,8 +308,7 @@ void skhttp_req_thread::req_real_single(const std::string & id)
     if (p_data)
     {
         {
-            auto it = p_data->_block_set.current()->find(id);
-            if (it != p_data->_block_set.current()->end())
+            if (p_data->_block_set->do_check_block(id))
             {
                 LOG_DEBUG("id: %s is blocked", id.c_str());
                 return;
@@ -571,7 +570,9 @@ void skhttp_req_thread::dump_real_single()
     strategy_conf * strategy = p_data->_conf->_strategy->current();
     snprintf(t_buf, sizeof(t_buf), "%s/%s", strategy->real_single_path.c_str(), _trade_date.c_str());
 
-    for (auto ii = p_data->_rsingle_dict_index.current()->begin(); ii != p_data->_rsingle_dict_index.current()->end(); ii++)
+    std::unordered_map<std::string, std::deque<std::shared_ptr<single_vec> >, str_hasher> * rsingle_dict_index = NULL;
+    rsingle_dict_index = p_data->_rsingle_dict_index.current();
+    for (auto ii = rsingle_dict_index->begin(); ii != rsingle_dict_index->end(); ii++)
     {
         std::string t_str;
 

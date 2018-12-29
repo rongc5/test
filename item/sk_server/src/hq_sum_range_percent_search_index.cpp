@@ -1,4 +1,7 @@
 #include "hq_sum_range_percent_search_index.h"
+#include "sk_util.h"
+#include "proc_data.h"
+#include "history_quotation_dict.h"
 
 bool hq_sum_range_percent_search_index::search(std::string &key, std::string &value, std::set<std::string> & search)
 {
@@ -18,11 +21,12 @@ bool hq_sum_range_percent_search_index::do_check_hq_sum_range_percent_le(std::st
 {
     float end = 0;
     std::multimap<float, std::string>::iterator it_le, it_ge, it;
-    std::multimap<float, std::string> * search_index = current();
+    std::map<std::string, std::multimap<float, std::string> > * search_index = current();
     SETS_OP_TRPE tmp_ot;
+    proc_data* p_data = proc_data::instance();
 
     std::vector<std::string> tmp_vec;
-
+    std::vector<std::set<std::string> > tmp_res_vec;
     if (strstr(key.c_str(), "|")) 
     {
         SplitString(value.c_str(), '|', &tmp_vec, SPLIT_MODE_ALL);
@@ -35,7 +39,7 @@ bool hq_sum_range_percent_search_index::do_check_hq_sum_range_percent_le(std::st
     }
 
     if (!tmp_vec.size())
-        tmp_vec.push_back();
+        tmp_vec.push_back(value);
 
     for (uint32_t i = 0; i< tmp_vec.size(); i++)
     {
@@ -43,7 +47,7 @@ bool hq_sum_range_percent_search_index::do_check_hq_sum_range_percent_le(std::st
         SplitString(tmp_vec[i].c_str(), ':', &t_vec, SPLIT_MODE_ALL);
         std::string date;
         std::set<std::string> t_res; 
-        search_index->get_last_date(atoi(t_vec[0].c_str()), date);
+        p_data->_hquoation_dict->current()->get_last_date(atoi(t_vec[0].c_str()), date);
         if (date.empty()) 
         { 
             tmp_res_vec.push_back(t_res);
@@ -85,9 +89,10 @@ bool hq_sum_range_percent_search_index::do_check_hq_sum_range_percent_ge(std::st
     std::multimap<float, std::string>::iterator it_le, it_ge, it;
     std::map<std::string, std::multimap<float, std::string> >  * search_index = current();
     SETS_OP_TRPE tmp_ot;
+    proc_data* p_data = proc_data::instance();
 
     std::vector<std::string> tmp_vec;
-
+    std::vector<std::set<std::string> > tmp_res_vec;
     if (strstr(key.c_str(), "|")) 
     {
         SplitString(value.c_str(), '|', &tmp_vec, SPLIT_MODE_ALL);
@@ -100,7 +105,7 @@ bool hq_sum_range_percent_search_index::do_check_hq_sum_range_percent_ge(std::st
     }
 
     if (!tmp_vec.size())
-        tmp_vec.push_back();
+        tmp_vec.push_back(value);
 
     for (uint32_t i = 0; i< tmp_vec.size(); i++)
     {
@@ -108,7 +113,7 @@ bool hq_sum_range_percent_search_index::do_check_hq_sum_range_percent_ge(std::st
         SplitString(tmp_vec[i].c_str(), ':', &t_vec, SPLIT_MODE_ALL);
         std::string date;
         std::set<std::string> t_res; 
-        search_index->get_last_date(atoi(t_vec[0].c_str()), date);
+        p_data->_hquoation_dict->current()->get_last_date(atoi(t_vec[0].c_str()), date);
         if (date.empty()) 
         { 
             tmp_res_vec.push_back(t_res);
