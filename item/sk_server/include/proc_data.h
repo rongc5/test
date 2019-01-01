@@ -42,6 +42,8 @@
 #include "yylrgr_search_index.h"
 #include "zysrgr_search_index.h"
 #include "block_search_index.h"
+#include "hqdown_pointer_search_index.h"
+#include "hqup_pointer_search_index.h"
 
 class ua_dict;
 class ban_dict;
@@ -170,6 +172,10 @@ class proc_data:public reload_inf
         std::shared_ptr<hq_sum_change_rate_search_index> _hq_sum_change_rate_index;
 
         std::shared_ptr<hqend_hqstart_search_index> _hqend_hqstart_index;
+
+        std::shared_ptr<hqdown_pointer_search_index> _hqdown_pointer_index;
+
+        std::shared_ptr<hqup_pointer_search_index> _hqup_pointer_index;
 
     public:
         char proc_name[SIZE_LEN_256];

@@ -622,6 +622,22 @@ void proc_data::reg_search_index()
     _search_index_map.insert(std::make_pair("hqrange_percent_ge_num_ge", _hqrange_percent_index));
     _search_index_map.insert(std::make_pair("hqrange_percent_ge_num_ge_v", _hqrange_percent_index));
 
+    _hqdown_pointer_index = std::make_shared<hqdown_pointer_search_index>();
+    _search_index_map.insert(std::make_pair("hqdown_pointer_ge", _hqdown_pointer_index));
+    _search_index_map.insert(std::make_pair("hqdown_pointer_le", _hqdown_pointer_index));
+    _search_index_map.insert(std::make_pair("hqdown_pointer_ge_v", _hqdown_pointer_index));
+    _search_index_map.insert(std::make_pair("hqdown_pointer_le_v", _hqdown_pointer_index));
+    _search_index_map.insert(std::make_pair("hqdown_pointer_ge_num_ge", _hqdown_pointer_index));
+    _search_index_map.insert(std::make_pair("hqdown_pointer_ge_num_ge_v", _hqdown_pointer_index));
+
+    _hqup_pointer_index = std::make_shared<hqup_pointer_search_index>();
+    _search_index_map.insert(std::make_pair("hqup_pointer_ge", _hqup_pointer_index));
+    _search_index_map.insert(std::make_pair("hqup_pointer_le", _hqup_pointer_index));
+    _search_index_map.insert(std::make_pair("hqup_pointer_ge_v", _hqup_pointer_index));
+    _search_index_map.insert(std::make_pair("hqup_pointer_le_v", _hqup_pointer_index));
+    _search_index_map.insert(std::make_pair("hqup_pointer_ge_num_ge", _hqup_pointer_index));
+    _search_index_map.insert(std::make_pair("hqup_pointer_ge_num_ge_v", _hqup_pointer_index));
+
     _hq_sum_range_percent_index = std::make_shared<hq_sum_range_percent_search_index>();
     _search_index_map.insert(std::make_pair("hq_sum_range_percent_ge", _hq_sum_range_percent_index));
     _search_index_map.insert(std::make_pair("hq_sum_range_percent_ge_v", _hq_sum_range_percent_index));

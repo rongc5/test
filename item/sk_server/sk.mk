@@ -79,6 +79,8 @@ OBJ	= $(LOC_DIR)/main.o     \
 	  $(LOC_DIR)/yylrgr_search_index.o \
 	  $(LOC_DIR)/zysrgr_search_index.o \
 	  $(LOC_DIR)/block_search_index.o \
+	  $(LOC_DIR)/hqdown_pointer_search_index.o \
+	  $(LOC_DIR)/hqup_pointer_search_index.o \
 
 
 AR=ar
