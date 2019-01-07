@@ -167,6 +167,11 @@ void rquotation_data_process::quotation_index_reset()
         p_data->_hq_sum_change_rate_index->idle()->swap(tmp);
     }  
 
+    //{   
+        //std::map<std::string, std::multimap<float, std::string> > tmp;
+        //p_data->_low_hqlow_index->idle()->swap(tmp);
+    //}  
+
     {   
         std::map<std::string, std::multimap<float, std::string> > tmp;
         p_data->_hq_sum_range_percent_index->idle()->swap(tmp);
@@ -274,6 +279,61 @@ void rquotation_data_process::update_sum_index()
                     ii->second.insert(std::make_pair(range_percent, id));
                 }
             } 
+
+            {   
+                float change_rate = 0;
+                if (flag) 
+                {
+                    change_rate = tt->second->change_rate; 
+                }
+                else
+                {
+                    change_rate = tt->second->change_rate + ii->second->change_rate;
+                }
+
+                std::map<std::string, std::multimap<float, std::string> >  & u_map = *(p_data->_hq_sum_change_rate_index->idle());
+                auto ii = u_map.find(date);
+                if (ii == u_map.end())
+                {   
+                    std::multimap<float, std::string> t_map;
+
+                    t_map.insert(std::make_pair(change_rate, id));
+                    u_map.insert(std::make_pair(date, t_map));
+                }       
+                else
+                {   
+                    ii->second.insert(std::make_pair(change_rate, id));
+                }
+            }
+    
+        }
+    }
+}
+
+void rquotation_data_process::update_hq_index()
+{
+    proc_data* p_data = proc_data::instance();
+    bool flag = false;
+
+    history_quotation_dict * _hquoation_dict = p_data->_hquoation_dict->current();
+    auto it = _hquoation_dict->_date_index.find(p_data->_trade_date);
+    if (it != _hquoation_dict->_date_index.end())
+        flag =  true;
+    
+    for (auto it = _hquoation_dict->_date_index.begin(); 
+            it != _hquoation_dict->_date_index.end(); it++)
+    {
+        const std::string  & date = *it;
+
+        for (auto ii = p_data->_rquoation_real_dict.begin(); ii != p_data->_rquoation_real_dict.end(); ii++)
+        {
+            const std::string & id = ii->first;
+            std::string key;
+            history_quotation_dict::creat_key(date, id, key);
+
+            auto tt = _hquoation_dict->_id_sum_dict.find(key);
+            if (tt == _hquoation_dict->_id_sum_dict.end())
+                continue;
 
             {   
                 float change_rate = 0;

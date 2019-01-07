@@ -171,6 +171,8 @@ class proc_data:public reload_inf
         std::shared_ptr<hq_sum_range_percent_search_index> _hq_sum_range_percent_index;
         std::shared_ptr<hq_sum_change_rate_search_index> _hq_sum_change_rate_index;
 
+        //std::shared_ptr<low_hqlow_search_index> _low_hqlow_index;
+
         std::shared_ptr<hqend_hqstart_search_index> _hqend_hqstart_index;
 
         std::shared_ptr<hqdown_pointer_search_index> _hqdown_pointer_index;

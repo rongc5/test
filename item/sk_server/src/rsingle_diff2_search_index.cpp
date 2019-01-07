@@ -24,7 +24,7 @@ bool rsingle_diff2_search_index::do_check_rsingle_diff2_le(std::string &key, std
 
 
     std::vector<std::string> tmp_vec;
-    SplitString(value.c_str(), '_', &tmp_vec, SPLIT_MODE_ALL);
+    SplitString(key.c_str(), '_', &tmp_vec, SPLIT_MODE_ALL);
     if (tmp_vec.size() < 4)
         return false;
 
@@ -57,7 +57,7 @@ bool rsingle_diff2_search_index::do_check_rsingle_diff2_ge(std::string &key, std
     std::vector<std::multimap<int, std::string> > * search_index = current();
 
     std::vector<std::string> tmp_vec;
-    SplitString(value.c_str(), '_', &tmp_vec, SPLIT_MODE_ALL);
+    SplitString(key.c_str(), '_', &tmp_vec, SPLIT_MODE_ALL);
     if (tmp_vec.size() < 4)
         return false;
 

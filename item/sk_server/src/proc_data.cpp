@@ -593,6 +593,14 @@ void proc_data::reg_search_index()
     _search_index_map.insert(std::make_pair("hsingle_diff_1_le_v", _hsingle_diff_index));
     _search_index_map.insert(std::make_pair("hsingle_diff_2_le_v", _hsingle_diff_index));
 
+    _search_index_map.insert(std::make_pair("hsingle_diff_0_ge_num_ge", _hsingle_diff_index));
+    _search_index_map.insert(std::make_pair("hsingle_diff_1_ge_num_ge", _hsingle_diff_index));
+    _search_index_map.insert(std::make_pair("hsingle_diff_2_ge_num_ge", _hsingle_diff_index));
+    _search_index_map.insert(std::make_pair("hsingle_diff_0_ge_num_ge_v", _hsingle_diff_index));
+    _search_index_map.insert(std::make_pair("hsingle_diff_1_ge_num_ge_v", _hsingle_diff_index));
+    _search_index_map.insert(std::make_pair("hsingle_diff_2_ge_num_ge_v", _hsingle_diff_index));
+
+
     _hsingle_sum_diff_index = std::make_shared<hsingle_sum_diff_search_index>();
     _search_index_map.insert(std::make_pair("hsingle_sum_diff_0_ge", _hsingle_sum_diff_index));
     _search_index_map.insert(std::make_pair("hsingle_sum_diff_1_ge", _hsingle_sum_diff_index));

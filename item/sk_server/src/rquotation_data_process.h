@@ -43,6 +43,7 @@ class rquotation_data_process: public http_base_data_process
         static void update_all_index();
         static void update_real_index();
         static void update_sum_index();
+        static void update_hq_index();
         static void update_id_technical(std::shared_ptr<quotation_t> qt);
         static void idle_current();
         static bool get_sum_quotation(std::string & id, std::string & date, quotation_t & qt);

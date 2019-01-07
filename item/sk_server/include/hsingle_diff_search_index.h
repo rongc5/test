@@ -14,6 +14,8 @@ class hsingle_diff_search_index:public base_search_index, public ToBufferMgr<std
         bool do_check_hsingle_diff_le(std::string &key, std::string &value, std::set<std::string> & search);
 
         bool do_check_hsingle_diff_ge(std::string &key, std::string &value, std::set<std::string> & search);
+
+        bool do_check_hsingle_diff_ge_num_ge(std::string &key, std::string &value, std::set<std::string> & search);
 };
 
 
