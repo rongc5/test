@@ -57,6 +57,7 @@ std::string int_2_str(int a)
 
 void get_union(std::vector<std::set<std::string> > & arr, std::set<std::string> &res)
 {
+    res.clear();
     std::set<std::string> search, tmp;
     auto ii = arr.begin();
     if (arr.size())
@@ -84,6 +85,7 @@ void get_union(std::vector<std::set<std::string> > & arr, std::set<std::string> 
 
 void get_intersection(std::vector<std::set<std::string> > & arr, std::set<std::string> &res)
 {
+    res.clear();
     std::set<std::string> search, tmp;
     auto ii = arr.begin();
     if (arr.size())
