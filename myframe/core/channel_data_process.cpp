@@ -46,7 +46,8 @@ void channel_data_process::put_msg(uint32_t obj_id, std::shared_ptr<normal_msg> 
     nbj_msg._id = obj_id;
     _queue.push_back(nbj_msg);
 
-    write(_channelid, CHANNEL_MSG_TAG, sizeof(CHANNEL_MSG_TAG));
+    //write(_channelid, CHANNEL_MSG_TAG, sizeof(CHANNEL_MSG_TAG));
+    send(_channelid, CHANNEL_MSG_TAG, sizeof(CHANNEL_MSG_TAG), MSG_DONTWAIT);
 
     return ;
 }
