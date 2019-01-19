@@ -2,7 +2,7 @@ HOME_DIR=./
 SRC_DIR=${HOME_DIR}core
 
 INCLUDE = -I./include/
-LIB = -L/usr/lib/libpthread.a -L./lib/ \
+LIB = -L/usr/lib64/libpthread.a -L./lib/ \
 
 CPPFLAGS = -gdwarf-2 -msse3 -Wall $(INCLUDE) -DDEBUG=1 -O0 -std=c++11
 CC  = g++ $(CPPFLAGS)

@@ -9,9 +9,9 @@ INCLUDE = -I./${INC_DIR}/ -I./$(JSON_DIR)
 
 #LIB = -L$(LIB_DIR) -lrt -libmyframe -lpthread 
 LIB = -L$(LIB_DIR)/ -lmyframe -lrt -lsign -lpthread \
-	  /usr/lib/libcrypt.a \
-	  /usr/lib/libcrypto.a \
-	  /usr/lib/libssl.a \
+	  /usr/lib64/libcrypt.a \
+	  /usr/lib64/libcrypto.a \
+	  /usr/lib64/libssl.a \
 
 
 CPPFLAGS = -gdwarf-2 -msse3 -W $(INCLUDE) -DDEBUG=1 -O0 -std=c++11
