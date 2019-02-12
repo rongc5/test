@@ -392,10 +392,10 @@ int history_quotation_dict::destroy()
         std::unordered_map<std::string, std::shared_ptr<quotation_t>, str_hasher> tmp;
         _id_dict.swap(tmp);
 
-        if (tmp.size())
-        {
-            LOG_TRACE("%s, %d", tmp.begin()->first.c_str(), tmp.begin()->second.use_count());
-        }
+        //if (tmp.size())
+        //{
+            //LOG_TRACE("%s, %d", tmp.begin()->first.c_str(), tmp.begin()->second.use_count());
+        //}
     }
 
     {

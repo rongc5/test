@@ -146,7 +146,8 @@ int uhandler_select::do_check_select(std::map<std::string, std::string> & url_pa
 
                 get_union(arr, negative);
             }
-        }else
+        }
+        else
         {
             if (tmp.empty())
             {
@@ -164,6 +165,11 @@ int uhandler_select::do_check_select(std::map<std::string, std::string> & url_pa
                 arr.push_back(tmp);
 
                 get_intersection(arr, positive);
+
+                if (positive.empty())
+                {
+                    return -1;
+                }
             }
 
         }
