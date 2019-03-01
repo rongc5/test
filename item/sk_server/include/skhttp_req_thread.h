@@ -80,6 +80,10 @@ class skhttp_req_thread:public base_net_thread
 
         time_t dump_real_time;
 
+        uint32_t _history_quotation_num;
+        uint32_t _history_single_num;
+
+
 };
 
 

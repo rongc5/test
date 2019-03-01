@@ -19,6 +19,8 @@ skhttp_req_thread::skhttp_req_thread()
 
     _req_date.assign(date);
     first_in_day();
+    _history_quotation_num = 0;
+    _history_single_num = 0;
 }
 
 void skhttp_req_thread::handle_msg(std::shared_ptr<normal_msg> & p_msg)
@@ -440,8 +442,6 @@ void skhttp_req_thread::dump_real_quotation()
 
         FILE_WRITE(t_buf, "%s", tmp.c_str());
     }
-
-    update_quotation_dict();
 }
 
 void skhttp_req_thread::update_quotation_dict()
@@ -594,18 +594,18 @@ void skhttp_req_thread::dump_real_single()
 
         FILE_WRITE(t_buf, "%s", t_str.c_str());
     }
-
-    update_single_dict();
 }
 
 void skhttp_req_thread::handle_timeout(std::shared_ptr<timer_msg> & t_msg)
 {
     LOG_DEBUG("handle_timeout: timer_id:%u timer_type:%u", t_msg->_timer_id, t_msg->_timer_type);
     proc_data* p_data = proc_data::instance();
+    strategy_conf * strategy = p_data->_conf->_strategy->current();
     switch (t_msg->_timer_type)
     {
         case TIMER_TYPE_REQ_QUOTATION:
             {
+                bool flag = false;
                 _quotation_index = 0;
                 if (is_real_time())
                     _req_quotation = true;
@@ -615,12 +615,20 @@ void skhttp_req_thread::handle_timeout(std::shared_ptr<timer_msg> & t_msg)
                 if (need_dump_real_quotation())
                 {
                     dump_real_quotation();
+                    flag = true;
+                }
+
+                if (flag || _history_quotation_num != strategy->history_quotation_num) 
+                {
+                    update_quotation_dict(); 
+                    _history_quotation_num = strategy->history_quotation_num;
                 }
 
             }
             break;
         case TIMER_TYPE_REQ_SINGLE:
             {
+                bool flag = false;
                 _single_index = 0;
                 if (is_real_time())
                     _req_single = true;
@@ -630,6 +638,13 @@ void skhttp_req_thread::handle_timeout(std::shared_ptr<timer_msg> & t_msg)
                 if (need_dump_real_single())
                 {
                     dump_real_single();
+                    flag = true;
+                }
+
+                if (flag || _history_single_num != strategy->history_single_num) 
+                {
+                    update_single_dict();
+                    _history_single_num = strategy->history_single_num;
                 }
 
             }
