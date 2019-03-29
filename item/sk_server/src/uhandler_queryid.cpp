@@ -560,30 +560,10 @@ void uhandler_queryid::query_finance(std::string &id, Value & root, Document::Al
             root.AddMember(key, value, allocator);
         }
 
-        {
-            key.SetString("mgsygr", allocator); 
-            value.SetString(float_2_str(ii->second->mgsygr).c_str(), allocator); 
-
-            root.AddMember(key, value, allocator);
-        }
-
-        {
-            key.SetString("mgxjgr", allocator); 
-            value.SetString(float_2_str(ii->second->mgxjgr).c_str(), allocator); 
-
-            root.AddMember(key, value, allocator);
-        }
 
         {
             key.SetString("zysrgr", allocator); 
             value.SetString(float_2_str(ii->second->zysrgr).c_str(), allocator); 
-
-            root.AddMember(key, value, allocator);
-        }
-
-        {
-            key.SetString("yylrgr", allocator); 
-            value.SetString(float_2_str(ii->second->yylrgr).c_str(), allocator); 
 
             root.AddMember(key, value, allocator);
         }

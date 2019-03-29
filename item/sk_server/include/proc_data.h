@@ -27,9 +27,7 @@
 #include "hsingle_diff_search_index.h"
 #include "hsingle_sum_diff_search_index.h"
 #include "jlrgr_search_index.h"
-#include "mgsygr_search_index.h"
 #include "mgsy_search_index.h"
-#include "mgxjgr_search_index.h"
 #include "mgxj_search_index.h"
 #include "pb_search_index.h"
 #include "pe_search_index.h"
@@ -39,7 +37,6 @@
 #include "rsingle_diff_search_index.h"
 #include "up_pointer_search_index.h"
 #include "value_search_index.h"
-#include "yylrgr_search_index.h"
 #include "zysrgr_search_index.h"
 #include "block_search_index.h"
 #include "hqdown_pointer_search_index.h"
@@ -145,10 +142,7 @@ class proc_data:public reload_inf
 
         std::shared_ptr<mgxj_search_index> _mgxj_index;
         std::shared_ptr<mgsy_search_index> _mgsy_index;
-        std::shared_ptr<mgsygr_search_index> _mgsygr_index;
-        std::shared_ptr<mgxjgr_search_index> _mgxjgr_index;
         std::shared_ptr<zysrgr_search_index> _zysrgr_index;
-        std::shared_ptr<yylrgr_search_index> _yylrgr_index;
         std::shared_ptr<jlrgr_search_index> _jlrgr_index;
 
         std::shared_ptr<address_search_index> _address_index;
