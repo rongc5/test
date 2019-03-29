@@ -46,7 +46,7 @@ int finance_dict::load()
 
         std::vector<std::string> tmp_vec;
         SplitString(ptr, '\t', &tmp_vec, SPLIT_MODE_ALL);
-        if (tmp_vec.size() < 13)
+        if (tmp_vec.size() < 9)
         {
             continue;
         }
