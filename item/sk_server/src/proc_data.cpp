@@ -513,29 +513,11 @@ void proc_data::reg_search_index()
     _search_index_map.insert(std::make_pair("mgsy_ge_v", _mgsy_index));
     _search_index_map.insert(std::make_pair("mgsy_le_v", _mgsy_index));
 
-    _mgsygr_index = std::make_shared<mgsygr_search_index>();
-    _search_index_map.insert(std::make_pair("mgsygr_ge", _mgsygr_index));
-    _search_index_map.insert(std::make_pair("mgsygr_le", _mgsygr_index));
-    _search_index_map.insert(std::make_pair("mgsygr_ge_v", _mgsygr_index));
-    _search_index_map.insert(std::make_pair("mgsygr_le_v", _mgsygr_index));
-
-    _mgxjgr_index = std::make_shared<mgxjgr_search_index>();
-    _search_index_map.insert(std::make_pair("mgxjgr_ge", _mgxjgr_index));
-    _search_index_map.insert(std::make_pair("mgxjgr_le", _mgxjgr_index));
-    _search_index_map.insert(std::make_pair("mgxjgr_ge_v", _mgxjgr_index));
-    _search_index_map.insert(std::make_pair("mgxjgr_le_v", _mgxjgr_index));
-
     _zysrgr_index = std::make_shared<zysrgr_search_index>();
     _search_index_map.insert(std::make_pair("zysrgr_ge", _zysrgr_index));
     _search_index_map.insert(std::make_pair("zysrgr_le", _zysrgr_index));
     _search_index_map.insert(std::make_pair("zysrgr_ge_v", _zysrgr_index));
     _search_index_map.insert(std::make_pair("zysrgr_le_v", _zysrgr_index));
-
-    _yylrgr_index = std::make_shared<yylrgr_search_index>();
-    _search_index_map.insert(std::make_pair("yylrgr_ge", _yylrgr_index));
-    _search_index_map.insert(std::make_pair("yylrgr_le", _yylrgr_index));
-    _search_index_map.insert(std::make_pair("yylrgr_ge_v", _yylrgr_index));
-    _search_index_map.insert(std::make_pair("yylrgr_le_v", _yylrgr_index));
 
     _jlrgr_index = std::make_shared<jlrgr_search_index>();
     _search_index_map.insert(std::make_pair("jlrgr_ge", _jlrgr_index));

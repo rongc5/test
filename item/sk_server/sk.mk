@@ -64,9 +64,7 @@ OBJ	= $(LOC_DIR)/main.o     \
 	  $(LOC_DIR)/hsingle_diff_search_index.o \
 	  $(LOC_DIR)/hsingle_sum_diff_search_index.o \
 	  $(LOC_DIR)/jlrgr_search_index.o \
-	  $(LOC_DIR)/mgsygr_search_index.o \
 	  $(LOC_DIR)/mgsy_search_index.o \
-	  $(LOC_DIR)/mgxjgr_search_index.o \
 	  $(LOC_DIR)/mgxj_search_index.o \
 	  $(LOC_DIR)/pb_search_index.o \
 	  $(LOC_DIR)/pe_search_index.o \
@@ -76,7 +74,6 @@ OBJ	= $(LOC_DIR)/main.o     \
 	  $(LOC_DIR)/rsingle_diff_search_index.o \
 	  $(LOC_DIR)/up_pointer_search_index.o \
 	  $(LOC_DIR)/value_search_index.o \
-	  $(LOC_DIR)/yylrgr_search_index.o \
 	  $(LOC_DIR)/zysrgr_search_index.o \
 	  $(LOC_DIR)/block_search_index.o \
 	  $(LOC_DIR)/hqdown_pointer_search_index.o \

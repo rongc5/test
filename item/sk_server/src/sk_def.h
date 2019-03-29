@@ -51,10 +51,7 @@ struct finance_t
     int value;
     float mgsy;
     float mgxj;
-    float mgsygr;
-    float mgxjgr;
     float zysrgr;
-    float yylrgr;
     float jlrgr;
 };
 

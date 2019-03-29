@@ -60,11 +60,8 @@ int finance_dict::load()
         ft->value = atoi(tmp_vec[4].c_str());
         ft->mgsy = atof(tmp_vec[5].c_str());
         ft->mgxj = atof(tmp_vec[6].c_str());
-        ft->mgsygr = atof(tmp_vec[7].c_str());
-        ft->mgxjgr = atof(tmp_vec[8].c_str());
-        ft->zysrgr = atof(tmp_vec[9].c_str());
-        ft->yylrgr = atof(tmp_vec[10].c_str());
-        ft->jlrgr = atof(tmp_vec[11].c_str());
+        ft->zysrgr = atof(tmp_vec[7].c_str());
+        ft->jlrgr = atof(tmp_vec[8].c_str());
         
         p_data->_finance_dict_index.idle()->insert(std::make_pair(ft->id, ft));
 
@@ -80,13 +77,7 @@ int finance_dict::load()
 
         p_data->_mgsy_index->idle()->insert(std::make_pair(ft->mgsy, ft->id));
 
-        p_data->_mgsygr_index->idle()->insert(std::make_pair(ft->mgsygr, ft->id));
-
-        p_data->_mgxjgr_index->idle()->insert(std::make_pair(ft->mgxjgr, ft->id));
-
         p_data->_zysrgr_index->idle()->insert(std::make_pair(ft->zysrgr, ft->id));
-
-        p_data->_yylrgr_index->idle()->insert(std::make_pair(ft->yylrgr, ft->id));
 
         p_data->_jlrgr_index->idle()->insert(std::make_pair(ft->jlrgr, ft->id));
     }
@@ -103,10 +94,7 @@ int finance_dict::load()
         p_data->_cir_value_index->idle_2_current();
         p_data->_mgxj_index->idle_2_current();
         p_data->_mgsy_index->idle_2_current();
-        p_data->_mgsygr_index->idle_2_current();
-        p_data->_mgxjgr_index->idle_2_current();
         p_data->_zysrgr_index->idle_2_current();
-        p_data->_yylrgr_index->idle_2_current();
         p_data->_jlrgr_index->idle_2_current();
         p_data->_finance_dict_index.idle_2_current();
     }
@@ -186,24 +174,10 @@ int finance_dict::destroy()
         p_data->_mgsy_index->idle()->swap(tmp);
     }
 
-    {
-        std::multimap<float, std::string> tmp;
-        p_data->_mgsygr_index->idle()->swap(tmp);
-    }
-
-    {
-        std::multimap<float, std::string> tmp;
-        p_data->_mgxjgr_index->idle()->swap(tmp);
-    }
 
     {
         std::multimap<float, std::string> tmp;
         p_data->_zysrgr_index->idle()->swap(tmp);
-    }
-
-    {
-        std::multimap<float, std::string> tmp;
-        p_data->_yylrgr_index->idle()->swap(tmp);
     }
 
     {
