@@ -175,6 +175,7 @@ const int URLESCAPE[] =
 #define DELAY_CLOSE_TIMER_TYPE 2
 #define WEB_SOCKET_HANDSHAKE_OK_TIMER_TYPE 3
 #define DOMAIN_CACHE_TIMER_TYPE 5
+#define NONE_DATA_TIMER_TYPE 6
 
 #ifdef DEBUG
 #define PDEBUG(format, arg...) \

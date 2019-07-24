@@ -34,7 +34,7 @@ bool low_hqlow_search_index::do_check_low_hqlow_le(std::string &key, std::string
     }
     else 
     {
-        SplitString(value.c_str(), '&', &tmp_vec, SPLIT_MODE_ALL); 
+        SplitString(value.c_str(), ';', &tmp_vec, SPLIT_MODE_ALL); 
         tmp_ot = SETS_OP_INTERSECTION;
     }
 
@@ -100,7 +100,7 @@ bool low_hqlow_search_index::do_check_low_hqlow_ge(std::string &key, std::string
     }
     else 
     {
-        SplitString(value.c_str(), '&', &tmp_vec, SPLIT_MODE_ALL); 
+        SplitString(value.c_str(), ';', &tmp_vec, SPLIT_MODE_ALL); 
         tmp_ot = SETS_OP_INTERSECTION;
     }
 

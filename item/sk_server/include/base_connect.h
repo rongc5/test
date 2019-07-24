@@ -115,6 +115,10 @@ class base_connect:public base_net_obj
             {
                 THROW_COMMON_EXCEPT("the connect obj delay close, delete it");
             }
+            else if (t_msg->_timer_type == NONE_DATA_TIMER_TYPE) 
+            {
+                THROW_COMMON_EXCEPT("the connect obj no data");
+            }
             
             _process->handle_timeout(t_msg);
         }

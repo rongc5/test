@@ -89,6 +89,8 @@ class strategy_conf:public reload_inf
 
         uint32_t real_single_deque_length;
 
+        uint32_t real_quotation_deque_length;
+
         uint32_t history_quotation_num;
 
         uint32_t history_single_num;

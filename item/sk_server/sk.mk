@@ -43,41 +43,14 @@ OBJ	= $(LOC_DIR)/main.o     \
 	  $(LOC_DIR)/uhandler_queryid.o \
 	  $(LOC_DIR)/uhandler_default.o \
 	  $(LOC_DIR)/address_search_index.o \
-	  $(LOC_DIR)/change_rate_search_index.o \
-	  $(LOC_DIR)/cir_value_search_index.o \
-	  $(LOC_DIR)/down_pointer_search_index.o \
-	  $(LOC_DIR)/end_avg_end10_search_index.o \
-	  $(LOC_DIR)/end_avg_end20_search_index.o \
-	  $(LOC_DIR)/end_avg_end30_search_index.o \
-	  $(LOC_DIR)/end_avg_end5_search_index.o \
-	  $(LOC_DIR)/end_avg_end_search_index.o \
-	  $(LOC_DIR)/end_end10_search_index.o \
-	  $(LOC_DIR)/end_end20_search_index.o \
-	  $(LOC_DIR)/end_end30_search_index.o \
-	  $(LOC_DIR)/end_end5_search_index.o \
-	  $(LOC_DIR)/end_search_index.o \
-	  $(LOC_DIR)/hqchange_rate_search_index.o \
-	  $(LOC_DIR)/hqend_hqstart_search_index.o \
-	  $(LOC_DIR)/hqrange_percent_search_index.o \
-	  $(LOC_DIR)/hq_sum_change_rate_search_index.o \
-	  $(LOC_DIR)/hq_sum_range_percent_search_index.o \
-	  $(LOC_DIR)/hsingle_diff_search_index.o \
-	  $(LOC_DIR)/hsingle_sum_diff_search_index.o \
-	  $(LOC_DIR)/jlrgr_search_index.o \
-	  $(LOC_DIR)/mgsy_search_index.o \
-	  $(LOC_DIR)/mgxj_search_index.o \
-	  $(LOC_DIR)/pb_search_index.o \
-	  $(LOC_DIR)/pe_search_index.o \
+	  $(LOC_DIR)/hsingle_search_index.o \
+	  $(LOC_DIR)/hquotation_search_index.o \
+	  $(LOC_DIR)/rquotation_search_index.o \
 	  $(LOC_DIR)/plate_search_index.o \
-	  $(LOC_DIR)/range_percent_search_index.o \
-	  $(LOC_DIR)/rsingle_diff2_search_index.o \
-	  $(LOC_DIR)/rsingle_diff_search_index.o \
-	  $(LOC_DIR)/up_pointer_search_index.o \
-	  $(LOC_DIR)/value_search_index.o \
-	  $(LOC_DIR)/zysrgr_search_index.o \
+	  $(LOC_DIR)/hsingle_search_index.o \
+	  $(LOC_DIR)/rsingle_search_index.o \
+	  $(LOC_DIR)/finance_search_index.o \
 	  $(LOC_DIR)/block_search_index.o \
-	  $(LOC_DIR)/hqdown_pointer_search_index.o \
-	  $(LOC_DIR)/hqup_pointer_search_index.o \
 
 
 AR=ar

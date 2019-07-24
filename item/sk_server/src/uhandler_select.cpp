@@ -43,7 +43,9 @@ void uhandler_select::perform(http_req_head_para * req_head, std::string * recv_
     std::set<std::string> res;
     std::map<std::string, std::string> url_para_map;
 
-    do_parse_request(recv_body, url_para_map);
+    std::string decode_path;
+    UrlDecode(req_head->_url_path, decode_path);
+    parse_url_para(decode_path, url_para_map);
 
     if (!has_key<std::string, std::string>(url_para_map, "block") && !has_key<std::string, std::string>(url_para_map, "block_v"))
         {
@@ -85,28 +87,6 @@ void uhandler_select::perform(http_req_head_para * req_head, std::string * recv_
     res_head->_headers.insert(std::make_pair("Content-Length", t_buf));
 }
 
-int uhandler_select::do_parse_request(std::string * _recv_buf, std::map<std::string, std::string> & url_para_map)
-{
-    if (!_recv_buf || _recv_buf->empty())
-        return -1;
-
-    std::vector<std::string> items;
-    SplitString(_recv_buf->c_str(), "\r\n", &items, SPLIT_MODE_ALL);
-
-    for (uint32_t i = 0; i < items.size(); i++)
-    {
-        std::vector<std::string> sub_items;
-        SplitString(items[i].c_str(), "=", &sub_items, SPLIT_MODE_ALL);
-
-        if (sub_items.size() >= 2)
-        {
-            url_para_map[trim(sub_items[0].c_str())] = trim(sub_items[1].c_str());
-        }
-    }
-
-    return 0;
-}
-
 int uhandler_select::do_check_select(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res)
 {
     proc_data* p_data = proc_data::instance();
@@ -114,7 +94,7 @@ int uhandler_select::do_check_select(std::map<std::string, std::string> & url_pa
         return -1;
 
     std::map<std::string, std::string>::iterator it;
-    std::shared_ptr<base_search_index>  search_index;
+    base_search_index  search_index;
     std::set<std::string> positive, negative;
 
     for (it = url_para_map.begin(); it != url_para_map.end(); it++)
@@ -127,7 +107,7 @@ int uhandler_select::do_check_select(std::map<std::string, std::string> & url_pa
             continue;
 
         std::set<std::string> tmp;
-        search_index->search(key, value, tmp);
+        search_index(key, value, tmp);
         
         if (end_with(key, "_v"))
         {

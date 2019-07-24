@@ -246,6 +246,11 @@ void strategy_conf::do_parse()
         real_single_deque_length = atoi(_cfg["real_single_deque_length"].c_str());
     }
 
+    if (has_key<std::string, std::string>(_cfg, "real_quotation_deque_length"))
+    {
+        real_quotation_deque_length = atoi(_cfg["real_quotation_deque_length"].c_str());
+    }
+
     if (has_key<std::string, std::string>(_cfg, "real_quotation_path"))
     {
         real_quotation_path = _cfg["real_quotation_path"];

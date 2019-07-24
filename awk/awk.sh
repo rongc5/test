@@ -45,3 +45,5 @@ BEGIN {
 620     t       9       88.8619226539   1.0
 
 awk -F',' '{for (i = 1; i <= NF; i++) if (match($i, "\"charge\":1")) arr[{]++} END{for (i in arr) print i,arr[i]}'}
+
+grep 'pd=29 pt=2' asp.log.nt* | grep '07-23' | awk -F' ' '{for (i = 1; i <= NF; i++) if (index($i, "mid=") && !index($i, "mmid=")) print $i}' |wc -l

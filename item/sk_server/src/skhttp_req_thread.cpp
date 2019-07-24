@@ -4,6 +4,9 @@
 #include "sk_util.h"
 
 #include <dirent.h>
+#include "proc_data.h"
+#include "history_single_dict.h"
+#include "history_quotation_dict.h"
 
 
 skhttp_req_thread::skhttp_req_thread()
@@ -72,6 +75,7 @@ void skhttp_req_thread::do_single()
 
         if (_single_index >= id_dic->_id_vec.size())
         {
+            _req_single = false;
             std::shared_ptr<timer_msg> t_msg(new timer_msg);
 
             t_msg->_timer_type = TIMER_TYPE_SINGLE_IDLE_2_CURRENT;
@@ -87,7 +91,6 @@ void skhttp_req_thread::add_single_timer()
     proc_data* p_data = proc_data::instance();
     if (p_data)
     {
-        _req_single = false;
         std::shared_ptr<timer_msg> t_msg(new timer_msg);
 
         t_msg->_timer_type = TIMER_TYPE_REQ_SINGLE;
@@ -117,6 +120,7 @@ void skhttp_req_thread::do_quotation()
 
         if (_quotation_index >= id_dic->_id_vec.size())
         {
+            _req_quotation = false;
             std::shared_ptr<timer_msg> t_msg(new timer_msg);
 
             t_msg->_timer_type = TIMER_TYPE_QUOTATION_IDLE_2_CURRENT;
@@ -132,7 +136,6 @@ void skhttp_req_thread::add_quotation_timer()
     proc_data* p_data = proc_data::instance();
     if (p_data)
     {
-        _req_quotation = false;
         std::shared_ptr<timer_msg> t_msg(new timer_msg);
 
         t_msg->_timer_type = TIMER_TYPE_REQ_QUOTATION;
@@ -151,16 +154,6 @@ void skhttp_req_thread::first_in_day()
     if (p_data && p_data->_conf)
     {
         p_data->_trade_date = _trade_date;
-
-        {
-            std::unordered_map<std::string, std::shared_ptr<single_vec>, str_hasher> t_dict;
-            p_data->_rsingle_real_dict.swap(t_dict);
-        }
-
-        {
-            std::unordered_map<std::string, std::shared_ptr<quotation_t>, str_hasher> t_dict;
-            p_data->_rquoation_real_dict.swap(t_dict);
-        }
 
         {
             std::unordered_set<std::string, str_hasher> t_block;
@@ -397,47 +390,48 @@ void skhttp_req_thread::dump_real_quotation()
     strategy_conf * strategy = p_data->_conf->_strategy->current();
     snprintf(t_buf, sizeof(t_buf), "%s/%s", strategy->real_quotation_path.c_str(), _trade_date.c_str());
 
-    for (auto ii = p_data->_rquoation_real_dict.begin(); ii != p_data->_rquoation_real_dict.end(); ii++)
+    auto & qt = p_data->_rquotation_index->current()->id_quotation;
+    for (auto ii = qt.begin(); ii != qt.end(); ii++)
     {
         std::string tmp;
 
         tmp.append(ii->first);
         tmp.append(1, '\t');
 
-        tmp.append(float_2_str(ii->second->start));
+        tmp.append(float_2_str(ii->second.back()->start));
         tmp.append(1, '\t');
 
-        tmp.append(float_2_str(ii->second->end));
+        tmp.append(float_2_str(ii->second.back()->end));
         tmp.append(1, '\t');
 
-        tmp.append(float_2_str(ii->second->high));
+        tmp.append(float_2_str(ii->second.back()->high));
         tmp.append(1, '\t');
 
-        tmp.append(float_2_str(ii->second->low));
+        tmp.append(float_2_str(ii->second.back()->low));
         tmp.append(1, '\t');
 
-        tmp.append(float_2_str(ii->second->last_closed));
+        tmp.append(float_2_str(ii->second.back()->last_closed));
         tmp.append(1, '\t');
 
-        tmp.append(int_2_str(ii->second->vol));
+        tmp.append(int_2_str(ii->second.back()->vol));
         tmp.append(1, '\t');
 
-        tmp.append(int_2_str(ii->second->buy_vol));
+        tmp.append(int_2_str(ii->second.back()->buy_vol));
         tmp.append(1, '\t');
 
-        tmp.append(int_2_str(ii->second->sell_vol));
+        tmp.append(int_2_str(ii->second.back()->sell_vol));
         tmp.append(1, '\t');
 
-        tmp.append(float_2_str(ii->second->swing));
+        tmp.append(float_2_str(ii->second.back()->swing));
         tmp.append(1, '\t');
 
-        tmp.append(float_2_str(ii->second->change_rate));
+        tmp.append(float_2_str(ii->second.back()->change_rate));
         tmp.append(1, '\t');
 
-        tmp.append(float_2_str(ii->second->range_percent));
+        tmp.append(float_2_str(ii->second.back()->range_percent));
         tmp.append(1, '\t');
 
-        tmp.append(float_2_str(ii->second->total_price));
+        tmp.append(float_2_str(ii->second.back()->total_price));
         tmp.append(1, '\t');
 
         FILE_WRITE(t_buf, "%s", tmp.c_str());
@@ -570,9 +564,8 @@ void skhttp_req_thread::dump_real_single()
     strategy_conf * strategy = p_data->_conf->_strategy->current();
     snprintf(t_buf, sizeof(t_buf), "%s/%s", strategy->real_single_path.c_str(), _trade_date.c_str());
 
-    std::unordered_map<std::string, std::deque<std::shared_ptr<single_vec> >, str_hasher> * rsingle_dict_index = NULL;
-    rsingle_dict_index = p_data->_rsingle_dict_index.current();
-    for (auto ii = rsingle_dict_index->begin(); ii != rsingle_dict_index->end(); ii++)
+    auto rsingle_dict_index = p_data->_rsingle_index->current();
+    for (auto ii = rsingle_dict_index->id_single.begin(); ii != rsingle_dict_index->id_single.end(); ii++)
     {
         std::string t_str;
 
@@ -652,7 +645,7 @@ void skhttp_req_thread::handle_timeout(std::shared_ptr<timer_msg> & t_msg)
         case TIMER_TYPE_QUOTATION_IDLE_2_CURRENT:
             {
                 LOG_DEBUG("QUOTATION_IDLE_2_CURRENT");
-                rquotation_data_process::update_all_index();
+                p_data->_hquoation_dict->update_search_index();
 
                 add_quotation_timer();
             }
@@ -660,8 +653,8 @@ void skhttp_req_thread::handle_timeout(std::shared_ptr<timer_msg> & t_msg)
         case TIMER_TYPE_SINGLE_IDLE_2_CURRENT:
             {
                 //先更新再切换
-                rsingle_data_process::update_all_index();
                 LOG_DEBUG("SINGLE_IDLE_2_CURRENT");
+                p_data->_hsingle_dict->update_search_index();
 
                 add_single_timer();
 

@@ -4,6 +4,7 @@
 #include "ul_sign.h"
 #include "common_util.h"
 #include "proc_data.h"
+#include "finance_search_index.h"
 
 finance_dict::finance_dict()
 {
@@ -33,6 +34,8 @@ int finance_dict::load()
     char line[SIZE_LEN_1024];
     char * ptr = NULL;
 
+    finance_search_item * fsi = p_data->_finance_index->idle();
+
     while (fgets(line, 1024, fp)) 
     {
         if('\0' == line[0]){
@@ -53,7 +56,8 @@ int finance_dict::load()
 
         std::shared_ptr<finance_t> ft(new finance_t);
 
-        snprintf(ft->id, sizeof(ft->id), "%s", tmp_vec[0].c_str());
+        std::string & id =  tmp_vec[0];
+
         ft->pe = atoi(tmp_vec[1].c_str());
         ft->pb = atoi(tmp_vec[2].c_str());
         ft->cir_value = atoi(tmp_vec[3].c_str());
@@ -63,23 +67,23 @@ int finance_dict::load()
         ft->zysrgr = atof(tmp_vec[7].c_str());
         ft->jlrgr = atof(tmp_vec[8].c_str());
         
-        p_data->_finance_dict_index.idle()->insert(std::make_pair(ft->id, ft));
+        fsi->id_finance.insert(std::make_pair(id, ft));
 
-        p_data->_pe_index->idle()->insert(std::make_pair(ft->pe, ft->id));
+        fsi->pe_index.insert(std::make_pair(ft->pe, id));
 
-        p_data->_pb_index->idle()->insert(std::make_pair(ft->pb, ft->id));
+        fsi->pb_index.insert(std::make_pair(ft->pb, id));
 
-        p_data->_value_index->idle()->insert(std::make_pair(ft->value, ft->id));
+        fsi->value_index.insert(std::make_pair(ft->value, id));
 
-        p_data->_cir_value_index->idle()->insert(std::make_pair(ft->cir_value, ft->id));
+        fsi->cir_value_index.insert(std::make_pair(ft->cir_value, id));
 
-        p_data->_mgxj_index->idle()->insert(std::make_pair(ft->mgxj, ft->id));
+        fsi->mgxj_index.insert(std::make_pair(ft->mgxj, id));
 
-        p_data->_mgsy_index->idle()->insert(std::make_pair(ft->mgsy, ft->id));
+        fsi->mgsy_index.insert(std::make_pair(ft->mgsy, id));
 
-        p_data->_zysrgr_index->idle()->insert(std::make_pair(ft->zysrgr, ft->id));
+        fsi->zysrgr_index.insert(std::make_pair(ft->zysrgr, id));
 
-        p_data->_jlrgr_index->idle()->insert(std::make_pair(ft->jlrgr, ft->id));
+        fsi->jlrgr_index.insert(std::make_pair(ft->jlrgr, id));
     }
 
     fclose(fp);
@@ -88,15 +92,7 @@ int finance_dict::load()
     _last_load = st.st_mtime;
 
     {
-        p_data->_pe_index->idle_2_current();
-        p_data->_pb_index->idle_2_current();
-        p_data->_value_index->idle_2_current();
-        p_data->_cir_value_index->idle_2_current();
-        p_data->_mgxj_index->idle_2_current();
-        p_data->_mgsy_index->idle_2_current();
-        p_data->_zysrgr_index->idle_2_current();
-        p_data->_jlrgr_index->idle_2_current();
-        p_data->_finance_dict_index.idle_2_current();
+        p_data->_finance_index->idle_2_current();
     }
 
     return 0;
@@ -144,51 +140,8 @@ int finance_dict::dump()
 int finance_dict::destroy()
 {
     proc_data* p_data = proc_data::instance();
-    {
-        std::multimap<int, std::string> tmp;
-        p_data->_pe_index->idle()->swap(tmp);
-    }
 
-    {
-        std::multimap<int, std::string> tmp;
-        p_data->_pb_index->idle()->swap(tmp);
-    }
-
-    {
-        std::multimap<int, std::string> tmp;
-        p_data->_value_index->idle()->swap(tmp);
-    }
-
-    {
-        std::multimap<int, std::string> tmp;
-        p_data->_cir_value_index->idle()->swap(tmp);
-    }
-    
-    {
-        std::multimap<float, std::string> tmp;
-        p_data->_mgxj_index->idle()->swap(tmp);
-    }
-
-    {
-        std::multimap<float, std::string> tmp;
-        p_data->_mgsy_index->idle()->swap(tmp);
-    }
-
-
-    {
-        std::multimap<float, std::string> tmp;
-        p_data->_zysrgr_index->idle()->swap(tmp);
-    }
-
-    {
-        std::multimap<float, std::string> tmp;
-        p_data->_jlrgr_index->idle()->swap(tmp);
-    }
-
-    {
-        std::unordered_map<std::string, std::shared_ptr<finance_t>, str_hasher> tmp;
-        p_data->_finance_dict_index.idle()->swap(tmp);
-    }
+    p_data->_finance_index->idle()->clear();
 
     return 0;
 }

@@ -57,16 +57,7 @@ int plate_dict_split::load()
         for (auto iit = tmp_vec.begin(); iit != tmp_vec.end(); iit++)
         {
             std::shared_ptr<std::string> ss(new std::string(trim(iit->c_str())));
-            auto iii = _plate_set.find(ss);
-            if (iii != _plate_set.end())
-            {   
-                p_data->_plate_index->idle()->insert(std::make_pair(*iii, id));
-            }   
-            else
-            {   
-                _plate_set.insert(ss);
-                p_data->_plate_index->idle()->insert(std::make_pair(ss, id));
-            }  
+            p_data->_plate_index->idle()->insert(std::make_pair(ss, id));
         }
     }
 
@@ -114,11 +105,6 @@ int plate_dict_split::destroy()
     proc_data* p_data = proc_data::instance();
     {
         p_data->_plate_index->idle()->clear();
-    }
-
-    {
-        std::unordered_set<std::shared_ptr<std::string>, str_hasher, str_equaler> tmp;
-        _plate_set.swap(tmp);
     }
 
     return 0;

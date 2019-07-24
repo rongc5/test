@@ -77,11 +77,19 @@ size_t skhttp_res_data_process::process_recv_body(const char *buf, size_t len, i
 void skhttp_res_data_process::gen_listen_obj(int fd, common_obj_container * net_container)
 {
     std::shared_ptr<base_connect<http_res_process> > connect(new base_connect<http_res_process>(fd));
+    
+
     http_res_process * res_process = new http_res_process(connect);
     skhttp_res_data_process * sa_process = new skhttp_res_data_process(res_process);
     res_process->set_process(sa_process);
     connect->set_process(res_process);
 
     connect->set_net_container(net_container);
+
+    std::shared_ptr<timer_msg> t_msg(new timer_msg);
+    t_msg->_timer_type = NONE_DATA_TIMER_TYPE;
+    t_msg->_time_length = 30000;
+    t_msg->_obj_id = connect->get_id()._id;
+    connect->add_timer(t_msg);
 }
 

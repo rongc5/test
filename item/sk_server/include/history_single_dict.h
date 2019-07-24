@@ -20,13 +20,18 @@ class history_single_dict:public reload_inf
 
         static void creat_key(const std::string & date, const std::string & id, std::string & key);
 
-        void get_last_date(int n, std::string & date);
+        void update_real_single(const std::string & trade_date, const std::string & id, std::shared_ptr<single_vec>  single);
+
+        void update_search_index();
+    private:
+        void update_hsingle_search();
+        void update_rsingle_search();
+
+        int get_single_diff2(std::deque<std::shared_ptr<single_vec> > & st, uint32_t index);
 
     private:
         void set_path (const char* path);
         int load_history_single(const char * file);
-
-        void update_sum_index();
 
     private:
         char _fullpath[SIZE_LEN_512];
@@ -35,12 +40,8 @@ class history_single_dict:public reload_inf
     public:
         // <date_id, diff> >
         std::unordered_map<std::string, std::shared_ptr<single_vec>, str_hasher> _date_dict;
-        // date_id, sum_diff
-        std::unordered_map<std::string, std::shared_ptr<single_vec>, str_hasher> _date_sum_dict;
         //id, date,
         std::unordered_map<std::string, std::set<std::string>, str_hasher> _id_date_dict;
-        //date
-        std::set<std::string> _date_index;
 };
 
 

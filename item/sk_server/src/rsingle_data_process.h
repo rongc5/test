@@ -39,19 +39,9 @@ class rsingle_data_process: public http_base_data_process
 
         void set_id(std::string id);
 
-        static void single_index_reset();
-
-        static void update_all_index();
-        static void update_real_index();
-        static void update_history_index();
-        static void update_sum_index();
-        static bool get_sum_diff(std::string & id, std::string & date, single_vec & st);
-
-        static void single_idle_current();
+        std::shared_ptr<single_vec> get_rsingle(std::shared_ptr<single_vec> & tmp_single);
 
         static int get_single_index(const std::string &id, uint32_t index);
-
-        static int get_single_diff2(std::deque<std::shared_ptr<single_vec> > & st, uint32_t index);
 
     protected:
         std::string _recv_buf;

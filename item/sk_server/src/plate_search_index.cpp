@@ -14,7 +14,7 @@ bool plate_search_index::search(std::string &key, std::string &value, std::set<s
     }
     else
     {
-        SplitString(value.c_str(), '&', &tmp_vec, SPLIT_MODE_ALL); 
+        SplitString(value.c_str(), ';', &tmp_vec, SPLIT_MODE_ALL); 
         tmp_ot = SETS_OP_INTERSECTION;
     }
 

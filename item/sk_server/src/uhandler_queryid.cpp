@@ -12,6 +12,7 @@
 #include "sk_util.h"
 #include "rsingle_data_process.h"
 #include "rquotation_data_process.h"
+#include "hsingle_search_index.h"
 
 void uhandler_queryid::perform(http_req_head_para * req_head, std::string * recv_body, http_res_head_para * res_head, std::string * send_body)
 {
@@ -30,7 +31,9 @@ void uhandler_queryid::perform(http_req_head_para * req_head, std::string * recv
 
     std::map<std::string, std::string> url_para_map;
 
-    parse_url_para(req_head->_url_path, url_para_map);
+    std::string decode_path;
+    UrlDecode(req_head->_url_path, decode_path);
+    parse_url_para(decode_path, url_para_map);
     recode = do_check_queryid(url_para_map, data_array, allocator);
 
     Value key(kStringType);    
@@ -200,63 +203,62 @@ void uhandler_queryid::query_quotation(std::string &id, Value & root, Document::
     Value value(kStringType);
 
     proc_data* p_data = proc_data::instance();
-    std::unordered_map<std::string, std::shared_ptr<quotation_t>, str_hasher> * rquoation_dict_index = NULL;
-    rquoation_dict_index = p_data->_rquoation_dict_index.current();
-    auto ii = rquoation_dict_index->find(id);
-    if (ii != rquoation_dict_index->end())
+    auto & rquoation_dict_index = p_data->_rquotation_index->current()->id_quotation;
+    auto ii = rquoation_dict_index.find(id);
+    if (ii != rquoation_dict_index.end())
     {
         {
             key.SetString("name", allocator); 
-            value.SetString(ii->second->name, allocator); 
+            value.SetString(ii->second.back()->name, allocator); 
 
             root.AddMember(key, value, allocator);
         }
 
         {
             key.SetString("start", allocator); 
-            value.SetString(float_2_str(ii->second->start).c_str(), allocator); 
+            value.SetString(float_2_str(ii->second.back()->start).c_str(), allocator); 
 
             root.AddMember(key, value, allocator);
         }
 
         {
             key.SetString("end", allocator); 
-            value.SetString(float_2_str(ii->second->end).c_str(), allocator); 
+            value.SetString(float_2_str(ii->second.back()->end).c_str(), allocator); 
 
             root.AddMember(key, value, allocator);
         }
 
         {
             key.SetString("high", allocator); 
-            value.SetString(float_2_str(ii->second->high).c_str(), allocator); 
+            value.SetString(float_2_str(ii->second.back()->high).c_str(), allocator); 
 
             root.AddMember(key, value, allocator);
         }
 
         {
             key.SetString("low", allocator); 
-            value.SetString(float_2_str(ii->second->low).c_str(), allocator); 
+            value.SetString(float_2_str(ii->second.back()->low).c_str(), allocator); 
 
             root.AddMember(key, value, allocator);
         }
 
         {
             key.SetString("last_closed", allocator); 
-            value.SetString(float_2_str(ii->second->last_closed).c_str(), allocator); 
+            value.SetString(float_2_str(ii->second.back()->last_closed).c_str(), allocator); 
 
             root.AddMember(key, value, allocator);
         }
 
         {
             key.SetString("change_rate", allocator); 
-            value.SetString(float_2_str(ii->second->change_rate).c_str(), allocator); 
+            value.SetString(float_2_str(ii->second.back()->change_rate).c_str(), allocator); 
 
             root.AddMember(key, value, allocator);
         }
 
         {
             key.SetString("range_percent", allocator); 
-            value.SetString(float_2_str(ii->second->range_percent).c_str(), allocator); 
+            value.SetString(float_2_str(ii->second.back()->range_percent).c_str(), allocator); 
 
             root.AddMember(key, value, allocator);
         }
@@ -269,84 +271,55 @@ void uhandler_queryid::query_technical(std::string &id, Value & root, Document::
     Value value(kStringType);
 
     proc_data* p_data = proc_data::instance();
-    std::unordered_map<std::string, std::shared_ptr<technical_t>, str_hasher> * rtechnical_dict_index = NULL;
-    rtechnical_dict_index = p_data->_rtechnical_dict_index.current();
-    auto ii = rtechnical_dict_index->find(id);
-    if (ii != rtechnical_dict_index->end())
+    auto & rtechnical_dict_index = p_data->_rquotation_index->current()->id_technical;
+    auto ii = rtechnical_dict_index.find(id);
+    if (ii != rtechnical_dict_index.end())
     {
         {
             key.SetString("avg_end", allocator); 
-            value.SetString(float_2_str(ii->second->avg_end).c_str(), allocator); 
+            value.SetString(float_2_str(ii->second.back()->avg_end).c_str(), allocator); 
 
             root.AddMember(key, value, allocator);
         }
 
         {
             key.SetString("end_5", allocator); 
-            value.SetString(float_2_str(ii->second->end_5).c_str(), allocator); 
+            value.SetString(float_2_str(ii->second.back()->end_5).c_str(), allocator); 
 
             root.AddMember(key, value, allocator);
         }
 
         {
             key.SetString("end_10", allocator); 
-            value.SetString(float_2_str(ii->second->end_10).c_str(), allocator); 
+            value.SetString(float_2_str(ii->second.back()->end_10).c_str(), allocator); 
 
             root.AddMember(key, value, allocator);
         }
 
         {
             key.SetString("end_20", allocator); 
-            value.SetString(float_2_str(ii->second->end_20).c_str(), allocator); 
+            value.SetString(float_2_str(ii->second.back()->end_20).c_str(), allocator); 
 
             root.AddMember(key, value, allocator);
         }
 
         {
             key.SetString("end_30", allocator); 
-            value.SetString(float_2_str(ii->second->end_30).c_str(), allocator); 
-
-            root.AddMember(key, value, allocator);
-        }
-
-        {
-            key.SetString("avg_end_5", allocator); 
-            value.SetString(float_2_str(ii->second->avg_end_5).c_str(), allocator); 
-
-            root.AddMember(key, value, allocator);
-        }
-
-        {
-            key.SetString("avg_end_10", allocator); 
-            value.SetString(float_2_str(ii->second->avg_end_10).c_str(), allocator); 
-
-            root.AddMember(key, value, allocator);
-        }
-
-        {
-            key.SetString("avg_end_20", allocator); 
-            value.SetString(float_2_str(ii->second->avg_end_20).c_str(), allocator); 
-
-            root.AddMember(key, value, allocator);
-        }
-
-        {
-            key.SetString("avg_end_30", allocator); 
-            value.SetString(float_2_str(ii->second->avg_end_30).c_str(), allocator); 
+            value.SetString(float_2_str(ii->second.back()->end_30).c_str(), allocator); 
 
             root.AddMember(key, value, allocator);
         }
 
         {
             key.SetString("down_pointer", allocator); 
-            value.SetString(float_2_str(ii->second->down_pointer).c_str(), allocator); 
+            value.SetString(float_2_str(ii->second.back()->down_pointer).c_str(), allocator); 
 
             root.AddMember(key, value, allocator);
         }
 
         {
             key.SetString("up_pointer", allocator); 
-            value.SetString(float_2_str(ii->second->up_pointer).c_str(), allocator); 
+            value.SetString(float_2_str(ii->second.back()->up_pointer).c_str(), allocator); 
 
             root.AddMember(key, value, allocator);
         }
@@ -374,11 +347,10 @@ void uhandler_queryid::query_single(std::string &id, Value & root, Document::All
     char t_buf[SIZE_LEN_64];
     proc_data* p_data = proc_data::instance();
     strategy_conf * strategy = p_data->_conf->_strategy->current();
-    std::unordered_map<std::string, std::deque<std::shared_ptr<single_vec> >, str_hasher> * rsingle_dict_index = NULL;
-    rsingle_dict_index = p_data->_rsingle_dict_index.current();
+    auto rsingle_dict_index = p_data->_rsingle_index->current();
 
-    auto ii = rsingle_dict_index->find(id);
-    if (ii != rsingle_dict_index->end())
+    auto ii = rsingle_dict_index->id_single.find(id);
+    if (ii != rsingle_dict_index->id_single.end())
     {
         for (uint32_t i = 0; i < strategy->real_single_scale.size(); i++)
         {
@@ -405,12 +377,11 @@ void uhandler_queryid::query_single_in(std::string &id, Value & root, Document::
     char t_buf[SIZE_LEN_64];
     proc_data* p_data = proc_data::instance();
     strategy_conf * strategy = p_data->_conf->_strategy->current();
-    std::unordered_map<std::string, std::deque<std::shared_ptr<single_vec> >, str_hasher> * rsingle_dict_index = NULL;
-    rsingle_dict_index = p_data->_rsingle_dict_index.current();
+    auto rsingle_dict_index = p_data->_rsingle_index->current();
 
-    auto ii = rsingle_dict_index->find(id);
+    auto ii = rsingle_dict_index->id_single.find(id);
 
-    if (ii != rsingle_dict_index->end())
+    if (ii != rsingle_dict_index->id_single.end())
     {
         for (uint32_t i = 0; i < strategy->real_single_scale.size(); i++)
         {
@@ -437,12 +408,11 @@ void uhandler_queryid::query_single_out(std::string &id, Value & root, Document:
     char t_buf[SIZE_LEN_64];
     proc_data* p_data = proc_data::instance();
     strategy_conf * strategy = p_data->_conf->_strategy->current();
-    std::unordered_map<std::string, std::deque<std::shared_ptr<single_vec> >, str_hasher> * rsingle_dict_index = NULL;
-    rsingle_dict_index = p_data->_rsingle_dict_index.current();
+    auto rsingle_dict_index = p_data->_rsingle_index->current();
 
-    auto ii = rsingle_dict_index->find(id);
+    auto ii = rsingle_dict_index->id_single.find(id);
 
-    if (ii != rsingle_dict_index->end())
+    if (ii != rsingle_dict_index->id_single.end())
     {
         for (uint32_t i = 0; i < strategy->real_single_scale.size(); i++)
         {
@@ -513,10 +483,9 @@ void uhandler_queryid::query_finance(std::string &id, Value & root, Document::Al
     Value value(kStringType);
 
     proc_data* p_data = proc_data::instance();
-    std::unordered_map<std::string, std::shared_ptr<finance_t>, str_hasher> * finance_dict_index;
-    finance_dict_index = p_data->_finance_dict_index.current();
-    auto ii = finance_dict_index->find(id);
-    if (ii != finance_dict_index->end())
+    finance_search_item * finance_dict_index = p_data->_finance_index->current();
+    auto ii = finance_dict_index->id_finance.find(id);
+    if (ii != finance_dict_index->id_finance.end())
     {
         {
             key.SetString("pe", allocator); 
@@ -582,30 +551,26 @@ void uhandler_queryid::query_history_single(uint32_t last_day_num, std::string &
     proc_data* p_data = proc_data::instance();
     char t_buf[SIZE_LEN_64];
 
-    std::vector<std::string> date_vec;
+    hsingle_search_item * _hsingle_dict = p_data->_hsingle_index->current();
 
-    history_single_dict * _hsingle_dict = p_data->_hsingle_dict->current();
+    auto ii = _hsingle_dict->id_single.find(id);
+    if (ii == _hsingle_dict->id_single.end())
     {
-        auto ii = _hsingle_dict->_id_date_dict.find(id);
-        if (ii == _hsingle_dict->_id_date_dict.end())
-        {
-            return;
-        }
-
-        uint32_t i = 0;
-        for (auto iii = ii->second.rbegin(); iii != ii->second.rend() && i < last_day_num; i++, iii++)
-        {
-            date_vec.push_back(*iii);
-        }
+        return;
     }
 
-    for (uint32_t i = 0; i< date_vec.size(); i++)
+    int len = 0;
+    for (uint32_t i = 0; i< last_day_num && i < ii->second.size(); i++)
     {
-        std::string key;    
-        history_single_dict::creat_key(date_vec[i], id, key);
+        len = ii->second.size() - i - 1;
+        if (len < 0)
+            continue;
 
-        auto ii = _hsingle_dict->_date_dict.find(key);
-        if (ii != _hsingle_dict->_date_dict.end())
+        std::string key;           
+        hsingle_search_item::creat_id_index_key(id, len, key);
+
+        auto mm = _hsingle_dict->id_idx_date.find(key);
+        if (mm != _hsingle_dict->id_idx_date.end())
         {
             Value k(kStringType);
             Value child(kArrayType);
@@ -613,13 +578,15 @@ void uhandler_queryid::query_history_single(uint32_t last_day_num, std::string &
             std::string t_str;
             t_str.append("single");
             t_str.append("_");
-            t_str.append(date_vec[i]);
+            t_str.append(mm->second);
 
             k.SetString(t_str.c_str(), allocator);
 
-            for (uint32_t k = 0; k < ii->second->size(); k++)
+            const std::shared_ptr<single_vec> & single = ii->second[len];
+
+            for (uint32_t k = 0; k < single->size(); k++)
             {
-                child.PushBack(ii->second->at(k).diff, allocator);
+                child.PushBack(single->at(k).diff, allocator);
             }
 
             root.AddMember(k, child, allocator);
@@ -633,20 +600,28 @@ void uhandler_queryid::query_sum_single(uint32_t last_day_num, std::string &id, 
 
     std::string date;
 
-    history_single_dict * _hsingle_dict = p_data->_hsingle_dict->current();
-    auto ii = _hsingle_dict->_id_date_dict.find(id);
-    if (ii == _hsingle_dict->_id_date_dict.end())
+    hsingle_search_item * hsitem = p_data->_hsingle_index->current();
+    auto ii = hsitem->id_sum_single.find(id);
+    if (ii == hsitem->id_sum_single.end())
     {
         return;
     }
 
-    uint32_t i = 0;
-    for (auto iii = ii->second.rbegin(); iii != ii->second.rend() && i < last_day_num; i++, iii++)
+    int i = 0;
+    int len = 0;
+    for ( i = last_day_num;  i >= 0; i--)
     {
-        date = *iii;
+        if (i > (int)ii->second.size())
+            continue;
+        
+        len  = ii->second.size() - i;
+        date = hsitem->get_date(id, len);
+        if (!date.empty()) {
+            query_sum_single(date, id, root, allocator);
+            break;
+        }
     }
 
-    query_sum_single(date, id, root, allocator);
 }
 
 void uhandler_queryid::query_history_single_in(uint32_t last_day_num, std::string &id, Value & root, Document::AllocatorType & allocator)
@@ -654,31 +629,24 @@ void uhandler_queryid::query_history_single_in(uint32_t last_day_num, std::strin
     proc_data* p_data = proc_data::instance();
     char t_buf[SIZE_LEN_64];
 
-    std::vector<std::string> date_vec;
-
+    hsingle_search_item * hsitem = p_data->_hsingle_index->current();
+    auto ii = hsitem->id_single.find(id);
+    if (ii == hsitem->id_single.end())
     {
-        history_single_dict * _hsingle_dict = p_data->_hsingle_dict->current();
-        auto ii = _hsingle_dict->_id_date_dict.find(id);
-        if (ii == _hsingle_dict->_id_date_dict.end())
-        {
-            return;
-        }
-
-        uint32_t i = 0;
-        for (auto iii = ii->second.rbegin(); iii != ii->second.rend() && i < last_day_num; i++, iii++)
-        {
-            date_vec.push_back(*iii);
-        }
+        return;
     }
 
-    for (uint32_t i = 0; i< date_vec.size(); i++)
+    int i = 0;
+    int len = 0;
+    std::string date;
+    for (i = last_day_num; i >= 0; i--)
     {
-        std::string key;    
-        history_single_dict::creat_key(date_vec[i], id, key);
-
-        history_single_dict * _hsingle_dict = p_data->_hsingle_dict->current();
-        auto ii = _hsingle_dict->_date_dict.find(key);
-        if (ii != _hsingle_dict->_date_dict.end())
+        if (i > (int)ii->second.size())
+            continue;
+        len  = ii->second.size() - i;
+        
+        date = hsitem->get_date(id, len);
+        if (!date.empty())
         {
             Value k(kStringType);
             Value child(kArrayType);
@@ -686,13 +654,13 @@ void uhandler_queryid::query_history_single_in(uint32_t last_day_num, std::strin
             std::string t_str;
             t_str.append("single_in");
             t_str.append("_");
-            t_str.append(date_vec[i]);
+            t_str.append(date);
 
             k.SetString(t_str.c_str(), allocator);
 
-            for (uint32_t k = 0; k < ii->second->size(); k++)
+            for (uint32_t k = 0; k < ii->second[len]->size(); k++)
             {
-                child.PushBack(ii->second->at(k).in, allocator);
+                child.PushBack(ii->second[len]->at(k).in, allocator);
             }
 
             root.AddMember(k, child, allocator);
@@ -705,31 +673,26 @@ void uhandler_queryid::query_history_single_out(uint32_t last_day_num, std::stri
     proc_data* p_data = proc_data::instance();
     char t_buf[SIZE_LEN_64];
 
-    std::vector<std::string> date_vec;
 
-    {
-        history_single_dict * _hsingle_dict = p_data->_hsingle_dict->current();
-        auto ii = _hsingle_dict->_id_date_dict.find(id);
-        if (ii == _hsingle_dict->_id_date_dict.end())
-        {
-            return;
-        }
+    hsingle_search_item * hsitem = p_data->_hsingle_index->current();
+    auto ii = hsitem->id_single.find(id);
+    if (ii == hsitem->id_single.end())
+    {    
+        return;
+    }    
 
-        uint32_t i = 0;
-        for (auto iii = ii->second.rbegin(); iii != ii->second.rend() && i < last_day_num; i++, iii++)
-        {
-            date_vec.push_back(*iii);
-        }
-    }
+    int i = 0; 
+    int len = 0; 
+    std::string date;
 
-    for (uint32_t i = 0; i< date_vec.size(); i++)
-    {
-        std::string key;    
-        history_single_dict::creat_key(date_vec[i], id, key);
+    for (i = last_day_num; i >= 0; i--) 
+    {    
+        if (i > (int)ii->second.size())
+            continue;
+        len  = ii->second.size() - i; 
 
-        history_single_dict * _hsingle_dict = p_data->_hsingle_dict->current();
-        auto ii = _hsingle_dict->_date_dict.find(key);
-        if (ii != _hsingle_dict->_date_dict.end())
+        date = hsitem->get_date(id, len);
+        if (!date.empty())
         {
             Value k(kStringType);
             Value child(kArrayType);
@@ -737,13 +700,13 @@ void uhandler_queryid::query_history_single_out(uint32_t last_day_num, std::stri
             std::string t_str;
             t_str.append("single_out");
             t_str.append("_");
-            t_str.append(date_vec[i]);
+            t_str.append(date);
 
             k.SetString(t_str.c_str(), allocator);
 
-            for (uint32_t k = 0; k < ii->second->size(); k++)
+            for (uint32_t k = 0; k < ii->second[len]->size(); k++)
             {
-                child.PushBack(ii->second->at(k).out, allocator);
+                child.PushBack(ii->second[len]->at(k).out, allocator);
             }
 
             root.AddMember(k, child, allocator);
@@ -755,12 +718,14 @@ void uhandler_queryid::query_history_single(std::string & history_date, std::str
 {
     proc_data* p_data = proc_data::instance();
 
-    std::string key;    
-    history_single_dict::creat_key(history_date, id, key);
-
-    history_single_dict * _hsingle_dict = p_data->_hsingle_dict->current();
-    auto ii = _hsingle_dict->_date_dict.find(key);
-    if (ii != _hsingle_dict->_date_dict.end())
+    hsingle_search_item * hsitem = p_data->_hsingle_index->current();
+    auto ii = hsitem->id_single.find(id);
+    if (ii == hsitem->id_single.end())
+    {    
+        return;
+    }
+    int index = hsitem->get_index(id, history_date);
+    if (index < 0)
     {
         Value k(kStringType);
         Value child(kArrayType);
@@ -772,9 +737,9 @@ void uhandler_queryid::query_history_single(std::string & history_date, std::str
 
         k.SetString(t_str.c_str(), allocator);
 
-        for (uint32_t k = 0; k < ii->second->size(); k++)
+        for (uint32_t k = 0; k < ii->second[index]->size(); k++)
         {
-            child.PushBack(ii->second->at(k).diff, allocator);
+            child.PushBack(ii->second[index]->at(k).diff, allocator);
         }
 
         root.AddMember(k, child, allocator);
@@ -786,8 +751,13 @@ void uhandler_queryid::query_sum_single(std::string & history_date, std::string 
     proc_data* p_data = proc_data::instance();
 
     single_vec st;
-    bool flag = rsingle_data_process::get_sum_diff(id, history_date, st);
-    if (flag)
+    std::string key;
+    hsingle_search_item * hsitem = p_data->_hsingle_index->current();
+    
+    int index = hsitem->get_index(id, history_date);
+    auto ii = hsitem->id_sum_single.find(id);
+
+    if (ii != hsitem->id_sum_single.end() && index >= 0)
     {
         Value k(kStringType);
         Value child(kArrayType);
@@ -799,9 +769,9 @@ void uhandler_queryid::query_sum_single(std::string & history_date, std::string 
 
         k.SetString(t_str.c_str(), allocator);
 
-        for (uint32_t k = 0; k < st.size(); k++)
+        for (uint32_t k = 0; k < ii->second[index]->size(); k++)
         {
-            child.PushBack(st.at(k).diff, allocator);
+            child.PushBack(ii->second[index]->at(k).diff, allocator);
         }
 
         root.AddMember(k, child, allocator);
@@ -812,12 +782,20 @@ void uhandler_queryid::query_history_single_in(std::string & history_date, std::
 {
     proc_data* p_data = proc_data::instance();
 
-    std::string key;    
-    history_single_dict::creat_key(history_date, id, key);
+    hsingle_search_item * hsitem = p_data->_hsingle_index->current();
+    auto ii = hsitem->id_single.find(id);
+    if (ii == hsitem->id_single.end())
+    {    
+        return;
+    }
+    
+    int i = 0; 
+    int len = 0; 
+    std::string date;
 
-    history_single_dict * _hsingle_dict = p_data->_hsingle_dict->current();
-    auto ii = _hsingle_dict->_date_dict.find(key);
-    if (ii != _hsingle_dict->_date_dict.end())
+
+    len = hsitem->get_index(id, history_date) ;
+    if (len >= 0)
     {
         Value k(kStringType);
         Value child(kArrayType);
@@ -829,9 +807,9 @@ void uhandler_queryid::query_history_single_in(std::string & history_date, std::
 
         k.SetString(t_str.c_str(), allocator);
 
-        for (uint32_t k = 0; k < ii->second->size(); k++)
+        for (uint32_t k = 0; k < ii->second[len]->size(); k++)
         {
-            child.PushBack(ii->second->at(k).in, allocator);
+            child.PushBack(ii->second[len]->at(k).in, allocator);
         }
 
         root.AddMember(k, child, allocator);
@@ -842,12 +820,17 @@ void uhandler_queryid::query_history_single_out(std::string & history_date, std:
 {
     proc_data* p_data = proc_data::instance();
 
-    std::string key;    
-    history_single_dict::creat_key(history_date, id, key);
+    hsingle_search_item * hsitem = p_data->_hsingle_index->current();  
+    auto ii = hsitem->id_single.find(id);
+    if (ii == hsitem->id_single.end()) 
+        return;
 
-    history_single_dict * _hsingle_dict = p_data->_hsingle_dict->current();
-    auto ii = _hsingle_dict->_date_dict.find(key);
-    if (ii != _hsingle_dict->_date_dict.end())
+    int i = 0; 
+    int len = 0; 
+    std::string date;
+
+    len = hsitem->get_index(id, history_date) ;
+    if (len >= 0)
     {
         Value k(kStringType);
         Value child(kArrayType);
@@ -859,9 +842,9 @@ void uhandler_queryid::query_history_single_out(std::string & history_date, std:
 
         k.SetString(t_str.c_str(), allocator);
 
-        for (uint32_t k = 0; k < ii->second->size(); k++)
+        for (uint32_t k = 0; k < ii->second[len]->size(); k++)
         {
-            child.PushBack(ii->second->at(k).out, allocator);
+            child.PushBack(ii->second[len]->at(k).out, allocator);
         }
 
         root.AddMember(k, child, allocator);
@@ -873,31 +856,26 @@ void uhandler_queryid::query_history_quotation(uint32_t last_day_num, std::strin
     proc_data* p_data = proc_data::instance();
     char t_buf[SIZE_LEN_64];
 
-    std::vector<std::string> date_vec;
 
+    hquotation_search_item * hqitem = p_data->_hquotation_index->current();
+    auto ii = hqitem->id_quotation.find(id);
+    if (ii == hqitem->id_quotation.end())
     {
-        history_quotation_dict * _hquoation_dict = p_data->_hquoation_dict->current();
-        auto ii = _hquoation_dict->_id_date_dict.find(id);
-        if (ii == _hquoation_dict->_id_date_dict.end())
-        {
-            return;
-        }
-
-        uint32_t i = 0;
-        for (auto iii = ii->second.rbegin(); iii != ii->second.rend() && i < last_day_num; i++, iii++)
-        {
-            date_vec.push_back(*iii);
-        }
+        return;
     }
 
-    for (uint32_t i = 0; i< date_vec.size(); i++)
+    int i = 0;
+    int len = 0;
+    std::string date;
+    for (i = last_day_num; i >= 0; i--)
     {
-        std::string key;    
-        history_quotation_dict::creat_key(date_vec[i], id, key);
+        if (i > (int)ii->second.size())
+            continue;
+        len  = ii->second.size() - i;
 
-        history_quotation_dict * _hquoation_dict = p_data->_hquoation_dict->current();
-        auto ii = _hquoation_dict->_id_dict.find(key);
-        if (ii != _hquoation_dict->_id_dict.end())
+        date = hqitem->get_date(id, len);
+
+        if (!date.empty())
         {
             Value k(kStringType);
             Value v(kObjectType);
@@ -908,27 +886,27 @@ void uhandler_queryid::query_history_quotation(uint32_t last_day_num, std::strin
             std::string t_str;
             t_str.append("quotation");
             t_str.append("_");
-            t_str.append(date_vec[i]);
+            t_str.append(date);
 
             k.SetString(t_str.c_str(), allocator);
 
             {
                 key.SetString("end", allocator); 
-                value.SetString(float_2_str(ii->second->end).c_str(), allocator); 
+                value.SetString(float_2_str(ii->second[len]->end).c_str(), allocator); 
 
                 v.AddMember(key, value, allocator);
             }
 
             {
                 key.SetString("low", allocator); 
-                value.SetString(float_2_str(ii->second->low).c_str(), allocator); 
+                value.SetString(float_2_str(ii->second[len]->low).c_str(), allocator); 
 
                 v.AddMember(key, value, allocator);
             }
 
             {
                 key.SetString("range_percent", allocator); 
-                value.SetString(float_2_str(ii->second->range_percent).c_str(), allocator); 
+                value.SetString(float_2_str(ii->second[len]->range_percent).c_str(), allocator); 
 
                 v.AddMember(key, value, allocator);
             }
@@ -943,20 +921,27 @@ void uhandler_queryid::query_sum_quotation(uint32_t last_day_num, std::string &i
     proc_data* p_data = proc_data::instance();
     std::string date;
 
-    history_quotation_dict * _hquoation_dict = p_data->_hquoation_dict->current();
-    auto ii = _hquoation_dict->_id_date_dict.find(id);
-    if (ii == _hquoation_dict->_id_date_dict.end())
+    hquotation_search_item * hqitem = p_data->_hquotation_index->current();
+    auto ii = hqitem->id_sum_quotation.find(id);
+    if (ii == hqitem->id_sum_quotation.end())
     {
         return;
-    }
+    }  
 
-    uint32_t i = 0;
-    for (auto iii = ii->second.rbegin(); iii != ii->second.rend() && i < last_day_num; i++, iii++)
+    int i = 0;
+    int len = 0;
+    for ( i = last_day_num;  i >= 0; i--)
     {
-        date = *iii;
-    }
+        if (i > (int)ii->second.size())
+            continue;
 
-    query_sum_quotation(date, id, root, allocator);
+        len  = ii->second.size() - i;
+        date = hqitem->get_date(id, len);
+        if (!date.empty()) {
+            query_sum_quotation(date, id, root, allocator);
+            break;
+        }
+    }
 }
 
 void uhandler_queryid::query_history_quotation(std::string & history_date, std::string &id, Value & root, Document::AllocatorType & allocator)
@@ -965,12 +950,11 @@ void uhandler_queryid::query_history_quotation(std::string & history_date, std::
     char t_buf[SIZE_LEN_64];
 
 
-    std::string key;    
-    history_quotation_dict::creat_key(history_date, id, key);
+    hquotation_search_item * hqitem = p_data->_hquotation_index->current();
+    int index = hqitem->get_index(id, history_date);
+    auto ii = hqitem->id_quotation.find(id);
 
-    history_quotation_dict * _hquoation_dict = p_data->_hquoation_dict->current();
-    auto ii = _hquoation_dict->_id_dict.find(key);
-    if (ii != _hquoation_dict->_id_dict.end())
+    if (ii != hqitem->id_quotation.end() && index >= 0)
     {
         Value k(kStringType);
         Value v(kObjectType);
@@ -987,21 +971,21 @@ void uhandler_queryid::query_history_quotation(std::string & history_date, std::
 
         {
             key.SetString("end", allocator); 
-            value.SetString(float_2_str(ii->second->end).c_str(), allocator); 
+            value.SetString(float_2_str(ii->second[index]->end).c_str(), allocator); 
 
             v.AddMember(key, value, allocator);
         }
 
         {
             key.SetString("low", allocator); 
-            value.SetString(float_2_str(ii->second->low).c_str(), allocator); 
+            value.SetString(float_2_str(ii->second[index]->low).c_str(), allocator); 
 
             v.AddMember(key, value, allocator);
         }
 
         {
             key.SetString("range_percent", allocator); 
-            value.SetString(float_2_str(ii->second->range_percent).c_str(), allocator); 
+            value.SetString(float_2_str(ii->second[index]->range_percent).c_str(), allocator); 
 
             v.AddMember(key, value, allocator);
         }
@@ -1015,9 +999,11 @@ void uhandler_queryid::query_sum_quotation(std::string & history_date, std::stri
     proc_data* p_data = proc_data::instance();
     char t_buf[SIZE_LEN_64];
 
-    quotation_t qt;
-    bool flag = rquotation_data_process::get_sum_quotation(id, history_date, qt);
-    if (flag)
+    hquotation_search_item * hqitem = p_data->_hquotation_index->current();
+    int index = hqitem->get_index(id, history_date);
+    auto ii = hqitem->id_sum_quotation.find(id);
+
+    if (ii != hqitem->id_sum_quotation.end() && index >= 0)
     {
         Value k(kStringType);
         Value v(kObjectType);
@@ -1034,7 +1020,7 @@ void uhandler_queryid::query_sum_quotation(std::string & history_date, std::stri
 
         {
             key.SetString("range_percent", allocator); 
-            value.SetString(float_2_str(qt.range_percent).c_str(), allocator); 
+            value.SetString(float_2_str(ii->second[index]->range_percent).c_str(), allocator); 
 
             v.AddMember(key, value, allocator);
         }

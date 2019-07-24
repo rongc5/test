@@ -4,12 +4,12 @@
 #include "sk_def.h"
 #include "common_util.h"
 
-class address_search_index:public base_search_index, public ToBufferMgr<std::unordered_multimap<std::shared_ptr<std::string>, std::string, str_hasher, str_equaler> >
+class address_search_index:public ToBufferMgr<std::unordered_multimap<std::shared_ptr<std::string>, std::string, str_hasher, str_equaler> >
 {
     public:
         virtual ~address_search_index(){}
 
-        virtual bool search(std::string &key, std::string &value, std::set<std::string> & search);
+        bool search(std::string &key, std::string &value, std::set<std::string> & search);
 };
 
 
