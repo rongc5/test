@@ -21,7 +21,7 @@ size_t channel_data_process::process_recv_buf(const char *buf, size_t len)
     size_t i = 0;
     auto sp = _p_connect.lock();
     std::deque<normal_obj_msg >::iterator it;
-    for (it = _queue.begin(); it != _queue.end() && i<k;)
+    for (it = _queue.begin(); it != _queue.end() && i < k;i++)
     {
         if (sp) 
         {
@@ -29,7 +29,6 @@ size_t channel_data_process::process_recv_buf(const char *buf, size_t len)
         }
 
         it = _queue.erase(it);
-        i++;
     }
 
      k =  i * sizeof(CHANNEL_MSG_TAG);
@@ -46,8 +45,8 @@ void channel_data_process::put_msg(uint32_t obj_id, std::shared_ptr<normal_msg> 
     nbj_msg._id = obj_id;
     _queue.push_back(nbj_msg);
 
-    //write(_channelid, CHANNEL_MSG_TAG, sizeof(CHANNEL_MSG_TAG));
-    send(_channelid, CHANNEL_MSG_TAG, sizeof(CHANNEL_MSG_TAG), MSG_DONTWAIT);
+    write(_channelid, CHANNEL_MSG_TAG, sizeof(CHANNEL_MSG_TAG));
+    //send(_channelid, CHANNEL_MSG_TAG, sizeof(CHANNEL_MSG_TAG), MSG_DONTWAIT);
 
     return ;
 }

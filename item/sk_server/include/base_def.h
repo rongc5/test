@@ -54,7 +54,6 @@
 #include <mutex>
 #include <stdexcept>
 
-
 #define DAFAULT_EPOLL_SIZE 1000
 #define DEFAULT_EPOLL_WAITE 10
 #define DEFAULT_EPOLL_WAITE_SIZE 10

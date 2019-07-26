@@ -224,14 +224,26 @@ void rquotation_data_process::handle_timeout(std::shared_ptr<timer_msg> & t_msg)
 void rquotation_data_process::destroy()
 {
     LOG_DEBUG("id:%s destroy", _id.c_str());
-    if (!_is_ok)
-    {
-        std::shared_ptr<base_net_obj> connect = get_base_net();
-        if (connect)
-        {
-            common_obj_container * net_container = connect->get_net_container();
+
+    std::shared_ptr<base_net_obj> connect = get_base_net();
+
+    if (connect)
+    {   
+        std::shared_ptr<destroy_msg>  net_obj(new destroy_msg);
+        net_obj->id = _id;
+        net_obj->_msg_op = NORMAL_MSG_DESTROY_QT;
+
+        common_obj_container * net_container = connect->get_net_container();
+        ObjId id; 
+        id._id = OBJ_ID_THREAD;
+        id._thread_index = net_container->get_thread_index();
+        std::shared_ptr<normal_msg> ng = std::static_pointer_cast<normal_msg>(net_obj);
+        base_net_thread::put_obj_msg(id, ng);
+
+        if (!_is_ok) 
+        {   
             net_container->get_domain()->delete_domain(_url_info.domain);
-        }
+        }   
     }
 }
 

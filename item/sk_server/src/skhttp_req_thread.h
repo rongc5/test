@@ -72,6 +72,10 @@ class skhttp_req_thread:public base_net_thread
         uint32_t _single_index;
         bool _req_single;
 
+        uint32_t _quotation_destroy_num;
+        uint32_t _single_destroy_num;
+
+
         time_t real_morning_stime;
         time_t real_morning_etime;
         

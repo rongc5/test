@@ -198,6 +198,10 @@ class base_connect:public base_net_obj
                 {
                     _recv_buf.erase(0, p_ret); 
                 }
+                else if (p_ret > _recv_buf_len)
+                {
+                    _recv_buf.erase(0, _recv_buf_len); 
+                }
             }		
 
             LOG_DEBUG("process_recv_buf _recv_buf[%d] ip[%s]", _recv_buf.length(), _peer_net.ip.c_str());

@@ -14,6 +14,9 @@ skhttp_req_thread::skhttp_req_thread()
     _quotation_index = 0;
     _single_index = 0;
 
+    _quotation_destroy_num = 0;
+    _single_destroy_num = 0;
+
     _req_quotation = true;
     _req_single = true;
 
@@ -22,12 +25,51 @@ skhttp_req_thread::skhttp_req_thread()
 
     _req_date.assign(date);
     first_in_day();
-    _history_quotation_num = 0;
-    _history_single_num = 0;
+
+    proc_data* p_data = proc_data::instance();
+    strategy_conf * strategy = p_data->_conf->_strategy->current();
+
+    _history_quotation_num = strategy->history_quotation_num;
+    _history_single_num = strategy->history_single_num;
 }
 
 void skhttp_req_thread::handle_msg(std::shared_ptr<normal_msg> & p_msg)
 {
+    if (p_msg == nullptr)
+        return;
+
+    proc_data* p_data = proc_data::instance();
+
+    id_dict * id_dic = p_data->_id_dict->current();
+
+    switch(p_msg->_msg_op)
+    {
+        case NORMAL_MSG_DESTROY_QT:
+            {
+                _quotation_destroy_num++;
+                LOG_DEBUG("_quotation_destroy_num:%d, size:%d", _quotation_destroy_num, id_dic->_id_vec.size());
+                if (_quotation_destroy_num >= id_dic->_id_vec.size())
+                {
+                    p_data->_hquoation_dict->update_search_index();
+                    add_quotation_timer();
+                }
+            }
+
+            break;
+        case NORMAL_MSG_DESTROY_ST:
+            {
+                _single_destroy_num++;
+                LOG_DEBUG("_single_destroy_num:%d, size:%d", _single_destroy_num, id_dic->_id_vec.size());
+                if (_single_destroy_num >= id_dic->_id_vec.size())
+                {
+                    p_data->_hsingle_dict->update_search_index();
+                    add_single_timer();
+                }
+
+            }
+            break;
+    }
+
     return;
 }
 
@@ -76,12 +118,12 @@ void skhttp_req_thread::do_single()
         if (_single_index >= id_dic->_id_vec.size())
         {
             _req_single = false;
-            std::shared_ptr<timer_msg> t_msg(new timer_msg);
+            //std::shared_ptr<timer_msg> t_msg(new timer_msg);
 
-            t_msg->_timer_type = TIMER_TYPE_SINGLE_IDLE_2_CURRENT;
-            t_msg->_time_length = p_data->_conf->_strategy->current()->req_http_timeout + 20;
-            t_msg->_obj_id = OBJ_ID_THREAD;
-            add_timer(t_msg);
+            //t_msg->_timer_type = TIMER_TYPE_SINGLE_IDLE_2_CURRENT;
+            //t_msg->_time_length = p_data->_conf->_strategy->current()->req_http_timeout + 20;
+            //t_msg->_obj_id = OBJ_ID_THREAD;
+            //add_timer(t_msg);
         }
     }
 }
@@ -121,12 +163,12 @@ void skhttp_req_thread::do_quotation()
         if (_quotation_index >= id_dic->_id_vec.size())
         {
             _req_quotation = false;
-            std::shared_ptr<timer_msg> t_msg(new timer_msg);
+            //std::shared_ptr<timer_msg> t_msg(new timer_msg);
 
-            t_msg->_timer_type = TIMER_TYPE_QUOTATION_IDLE_2_CURRENT;
-            t_msg->_time_length = p_data->_conf->_strategy->current()->req_http_timeout + 20;
-            t_msg->_obj_id = OBJ_ID_THREAD;
-            add_timer(t_msg);
+            //t_msg->_timer_type = TIMER_TYPE_QUOTATION_IDLE_2_CURRENT;
+            //t_msg->_time_length = p_data->_conf->_strategy->current()->req_http_timeout + 20;
+            //t_msg->_obj_id = OBJ_ID_THREAD;
+            //add_timer(t_msg);
         }
     }
 }
@@ -600,6 +642,7 @@ void skhttp_req_thread::handle_timeout(std::shared_ptr<timer_msg> & t_msg)
             {
                 bool flag = false;
                 _quotation_index = 0;
+                _quotation_destroy_num = 0;
                 if (is_real_time())
                     _req_quotation = true;
                 else
@@ -623,6 +666,7 @@ void skhttp_req_thread::handle_timeout(std::shared_ptr<timer_msg> & t_msg)
             {
                 bool flag = false;
                 _single_index = 0;
+                _single_destroy_num = 0;
                 if (is_real_time())
                     _req_single = true;
                 else

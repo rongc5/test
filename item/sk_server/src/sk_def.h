@@ -380,7 +380,22 @@ enum SETS_OP_TRPE
     SETS_OP_UNION
 };
 
-#define NORMAL_MSG_DUMP 1000
+#define NORMAL_MSG_DESTROY_QT 1000
+#define NORMAL_MSG_DESTROY_ST 1001
+
+class destroy_msg: public normal_msg
+{
+    public:
+        destroy_msg()
+        {   
+            //_msg_op = NORMAL_MSG_DESTROY;
+        }   
+
+        virtual ~destroy_msg(){}
+        std::string id; 
+};
+
+
 
 #define TIMER_TYPE_RELOAD_CONF 10000
 #define TIMER_TYPE_REQ_QUOTATION 10001

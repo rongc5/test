@@ -157,7 +157,8 @@ void history_quotation_dict::update_real_quotation(const std::string & trade_dat
     for (auto ii = _id_date_dict.begin(); ii != _id_date_dict.end(); ii++)
     {
          const std::string & id = ii->first; 
-         for (auto iii = ii->second.begin(); iii != ii->second.end(); iii++)
+         int len = 0;
+         for (auto iii = ii->second.begin(); iii != ii->second.end(); iii++, len++)
          {
               std::string key;
               creat_key(*iii, id, key);
@@ -171,23 +172,17 @@ void history_quotation_dict::update_real_quotation(const std::string & trade_dat
                    std::deque< std::shared_ptr<quotation_t>> tmp_vec;
                    tmp_vec.push_back(kk->second);
                    hqitem->id_quotation.insert(std::make_pair(id, tmp_vec));
-                   std::string item_key;
-                   hquotation_search_item::creat_id_index_key(id, 0, item_key);
-                   hqitem->id_idx_date.insert(std::make_pair(item_key, *iii));
-                   hquotation_search_item::creat_id_date_key(id, *iii, item_key);
-                   hqitem->id_date_idx.insert(std::make_pair(item_key, 0));
                }
               else
               {
-                  int len = mm->second.size();
                   mm->second.push_back(kk->second);
-
-                  std::string item_key;
-                  hquotation_search_item::creat_id_index_key(id, len, item_key);
-                  hqitem->id_idx_date.insert(std::make_pair(item_key, *iii));
-                  hquotation_search_item::creat_id_date_key(id, *iii, item_key);
-                  hqitem->id_date_idx.insert(std::make_pair(item_key, len));
               }
+
+              std::string item_key;
+              hquotation_search_item::creat_id_index_key(id, len, item_key);
+              hqitem->id_idx_date.insert(std::make_pair(item_key, *iii));
+              hquotation_search_item::creat_id_date_key(id, *iii, item_key);
+              hqitem->id_date_idx.insert(std::make_pair(item_key, len));
          }
     }
 
@@ -208,10 +203,9 @@ void history_quotation_dict::update_real_quotation(const std::string & trade_dat
 
             std::shared_ptr<quotation_t> qt = std::make_shared<quotation_t>();
 
-            for (; index < (int)ii->second.size(); index++)
+            for (int p = index; p < (int)ii->second.size(); p++)
             {   
-                int m = 0;
-                *qt += *ii->second[index];
+                *qt += *ii->second[p];
             }
 
             auto mm = hqitem->id_sum_quotation.find(id);
@@ -228,7 +222,20 @@ void history_quotation_dict::update_real_quotation(const std::string & trade_dat
 
             std::shared_ptr<technical_t> tt = std::make_shared<technical_t>();
             
-            get_id_technical(ii->second[index], mm->second, tt);
+            get_id_technical(ii->second[index], hqitem->id_sum_quotation[id], tt);
+
+            
+            auto ff = hqitem->id_technical.find(id);
+            if (ff == hqitem->id_technical.end())
+            {
+                std::deque< std::shared_ptr<technical_t>> dq;
+                dq.push_back(tt);
+                hqitem->id_technical[id] = dq;
+            }
+            else
+            {
+                ff->second.push_back(tt); 
+            }
 
         }
     }
@@ -251,6 +258,11 @@ void history_quotation_dict::update_rquotation_search()
         if (!ii->second.size())
             continue;
 
+        int index = ii->second.size() - 1;
+        std::string date = hqitem->get_date(id, index);
+        if (date != p_data->_trade_date)
+            continue;
+
         {
             std::deque< std::shared_ptr<quotation_t>> dq;
             idl->id_quotation[id] = dq;
@@ -260,7 +272,10 @@ void history_quotation_dict::update_rquotation_search()
                 idl->id_quotation[id] = mm->second;
             }   
 
-            idl->id_quotation[id].push_back(ii->second.back());
+            if (idl->id_quotation[id].empty() || idl->id_quotation[id].back() != ii->second.back())
+            {
+                idl->id_quotation[id].push_back(ii->second.back());
+            }
 
             if (idl->id_quotation[id].size() > p_data->_conf->_strategy->current()->real_quotation_deque_length)
             {
@@ -439,6 +454,8 @@ int history_quotation_dict::load()
     struct stat st;
     stat(_fullpath, &st);
     _last_load = st.st_mtime;
+
+    update_search_index();
 
     return 0;
 }

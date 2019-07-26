@@ -151,7 +151,8 @@ void history_single_dict::update_hsingle_search()
     {
         const std::string & id = ii->first;
         
-        for (auto iii = ii->second.begin(); iii != ii->second.end(); iii++){
+        int len = 0;
+        for (auto iii = ii->second.begin(); iii != ii->second.end(); iii++, len++){
             std::string key;
             creat_key(*iii, id, key);
 
@@ -165,24 +166,17 @@ void history_single_dict::update_hsingle_search()
                 std::deque< std::shared_ptr<single_vec>> tmp_vec;
                  tmp_vec.push_back(kk->second);
                  hsingle_index->id_single.insert(std::make_pair(id, tmp_vec));
-                 std::string item_key;
-                hsingle_search_item::creat_id_index_key(id, 0, item_key);
-                hsingle_index->id_idx_date.insert(std::make_pair(item_key, *iii));
-                hsingle_search_item::creat_id_date_key(id, *iii, item_key);
-                hsingle_index->id_date_idx.insert(std::make_pair(item_key, 0));
             }
             else
             {
-                int len = mm->second.size();
                 mm->second.push_back(kk->second);
-
-                std::string item_key;
-                hsingle_search_item::creat_id_index_key(id, len, item_key);
-                hsingle_index->id_idx_date.insert(std::make_pair(item_key, *iii));
-                hsingle_search_item::creat_id_date_key(id, *iii, item_key);
-                hsingle_index->id_date_idx.insert(std::make_pair(item_key, len));
-
             }
+
+            std::string item_key;
+            hsingle_search_item::creat_id_index_key(id, len, item_key);
+            hsingle_index->id_idx_date.insert(std::make_pair(item_key, *iii));
+            hsingle_search_item::creat_id_date_key(id, *iii, item_key);
+            hsingle_index->id_date_idx.insert(std::make_pair(item_key, len));
         }
     }
 
@@ -204,12 +198,13 @@ void history_single_dict::update_hsingle_search()
 
             std::shared_ptr<single_vec> single = std::make_shared<single_vec>(strategy->real_single_scale.size());
 
-            for (; index < (int)ii->second.size(); index++)
+            for (int p = index; p < (int)ii->second.size(); p++)
             {
                 int m = 0;
-                while (m < (int)ii->second[index]->size())
+                while (m < (int)ii->second[p]->size())
                 {
-                    single->at(m) += ii->second[index]->at(m);
+                    single->at(m) += ii->second[p]->at(m);
+                    m++;
                 }
             }
 
@@ -248,6 +243,11 @@ void history_single_dict::update_rsingle_search()
         if (!ii->second.size())
             continue;
 
+        int index = ii->second.size() - 1;
+        std::string date = hsitem->get_date(id, index);
+        if (date != p_data->_trade_date)
+            continue;
+
         {
             std::deque< std::shared_ptr<single_vec>> dq; 
             idl->id_single[id] = dq; 
@@ -257,7 +257,11 @@ void history_single_dict::update_rsingle_search()
                 idl->id_single[id] = mm->second;
             }   
 
-            idl->id_single[id].push_back(ii->second.back());
+
+            if (idl->id_single[id].empty() || idl->id_single[id].back()->at(0) != ii->second.back()->at(0))
+            {
+                idl->id_single[id].push_back(ii->second.back());
+            }
 
             if (idl->id_single[id].size() > strategy->real_single_deque_length)
             {   
