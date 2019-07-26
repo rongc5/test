@@ -63,6 +63,7 @@ void base_net_thread::put_msg(uint32_t obj_id, std::shared_ptr<normal_msg> & p_m
     if (data_process)
     {
         data_process->put_msg(obj_id, p_msg);
+        channel_connect->set_real_net(true);
     }
 }
 
