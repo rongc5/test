@@ -87,7 +87,8 @@ class skhttp_req_thread:public base_net_thread
         uint32_t _history_quotation_num;
         uint32_t _history_single_num;
 
-
+        id_dict * _id_dic;
+        ua_dict * _ua_dic;
 };
 
 

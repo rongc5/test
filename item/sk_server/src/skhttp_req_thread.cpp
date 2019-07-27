@@ -31,6 +31,10 @@ skhttp_req_thread::skhttp_req_thread()
 
     _history_quotation_num = strategy->history_quotation_num;
     _history_single_num = strategy->history_single_num;
+
+
+    _id_dic = p_data->_id_dict->current();
+    _ua_dic = p_data->_ua_dict->current();
 }
 
 void skhttp_req_thread::handle_msg(std::shared_ptr<normal_msg> & p_msg)
@@ -40,15 +44,14 @@ void skhttp_req_thread::handle_msg(std::shared_ptr<normal_msg> & p_msg)
 
     proc_data* p_data = proc_data::instance();
 
-    id_dict * id_dic = p_data->_id_dict->current();
 
     switch(p_msg->_msg_op)
     {
         case NORMAL_MSG_DESTROY_QT:
             {
                 _quotation_destroy_num++;
-                LOG_DEBUG("_quotation_destroy_num:%d, size:%d", _quotation_destroy_num, id_dic->_id_vec.size());
-                if (_quotation_destroy_num >= id_dic->_id_vec.size())
+                LOG_DEBUG("_quotation_destroy_num:%d, size:%d", _quotation_destroy_num, _id_dic->_id_vec.size());
+                if (_quotation_destroy_num >= _id_dic->_id_vec.size())
                 {
                     p_data->_hquoation_dict->update_search_index();
                     add_quotation_timer();
@@ -59,8 +62,8 @@ void skhttp_req_thread::handle_msg(std::shared_ptr<normal_msg> & p_msg)
         case NORMAL_MSG_DESTROY_ST:
             {
                 _single_destroy_num++;
-                LOG_DEBUG("_single_destroy_num:%d, size:%d", _single_destroy_num, id_dic->_id_vec.size());
-                if (_single_destroy_num >= id_dic->_id_vec.size())
+                LOG_DEBUG("_single_destroy_num:%d, size:%d", _single_destroy_num, _id_dic->_id_vec.size());
+                if (_single_destroy_num >= _id_dic->_id_vec.size())
                 {
                     p_data->_hsingle_dict->update_search_index();
                     add_single_timer();
@@ -107,15 +110,14 @@ void skhttp_req_thread::do_single()
         return;
     }
 
-    id_dict * id_dic = p_data->_id_dict->current();
-    if (id_dic && _single_index < id_dic->_id_vec.size())
+    if (_id_dic && _single_index < _id_dic->_id_vec.size())
     {
-        std::string id = id_dic->_id_vec[_single_index];
-        LOG_DEBUG("single_index:%d id_vec.size:%d id:%s", _single_index, id_dic->_id_vec.size(), id.c_str());
+        std::string id = _id_dic->_id_vec[_single_index];
+        LOG_DEBUG("single_index:%d id_vec.size:%d id:%s", _single_index, _id_dic->_id_vec.size(), id.c_str());
         req_real_single(id);
         _single_index++;
 
-        if (_single_index >= id_dic->_id_vec.size())
+        if (_single_index >= _id_dic->_id_vec.size())
         {
             _req_single = false;
             //std::shared_ptr<timer_msg> t_msg(new timer_msg);
@@ -152,15 +154,14 @@ void skhttp_req_thread::do_quotation()
         return;
     }
 
-    id_dict * id_dic = p_data->_id_dict->current();
-    if (id_dic && _quotation_index < id_dic->_id_vec.size())
+    if (_id_dic && _quotation_index < _id_dic->_id_vec.size())
     {
-        std::string id = id_dic->_id_vec[_quotation_index];
-        LOG_DEBUG("quotation_index: %d id_vec.size: %d id:%s", _quotation_index, id_dic->_id_vec.size(), id.c_str());
+        std::string id = _id_dic->_id_vec[_quotation_index];
+        LOG_DEBUG("quotation_index: %d id_vec.size: %d id:%s", _quotation_index, _id_dic->_id_vec.size(), id.c_str());
         req_real_quotation(id);
         _quotation_index++;
 
-        if (_quotation_index >= id_dic->_id_vec.size())
+        if (_quotation_index >= _id_dic->_id_vec.size())
         {
             _req_quotation = false;
             //std::shared_ptr<timer_msg> t_msg(new timer_msg);
@@ -321,19 +322,28 @@ void skhttp_req_thread::req_real_quotation(const std::string & id)
     proc_data* p_data = proc_data::instance();
     if (p_data)
     {
+        if (p_data->_block_set->do_check_block(id))
         {
-            if (p_data->_block_set->do_check_block(id))
-            {
-                LOG_DEBUG("id: %s is blocked", id.c_str());
-                return;
-            }
+            std::shared_ptr<destroy_msg>  net_obj(new destroy_msg);
+            net_obj->id = id;
+            net_obj->_msg_op = NORMAL_MSG_DESTROY_QT;
+
+            common_obj_container * net_container = get_net_container();
+            ObjId oid; 
+            oid._id = OBJ_ID_THREAD;
+            oid._thread_index = net_container->get_thread_index();
+            std::shared_ptr<normal_msg> ng = std::static_pointer_cast<normal_msg>(net_obj);
+            base_net_thread::put_obj_msg(oid, ng);
+
+
+            LOG_DEBUG("id: %s is blocked", id.c_str());
+            return;
         }
 
         std::map<std::string, std::string> headers;
-        ua_dict * ua_dic = p_data->_ua_dict->current();
 
         headers.insert(std::make_pair("User-Agent", 
-                    ua_dic->_ua_vec[_quotation_index % ua_dic->_ua_vec.size()]));
+                    _ua_dic->_ua_vec[_quotation_index % _ua_dic->_ua_vec.size()]));
 
         rquotation_data_process::gen_net_obj(id, get_net_container(), headers);
     }
@@ -344,19 +354,28 @@ void skhttp_req_thread::req_real_single(const std::string & id)
     proc_data* p_data = proc_data::instance();
     if (p_data)
     {
+        if (p_data->_block_set->do_check_block(id))
         {
-            if (p_data->_block_set->do_check_block(id))
-            {
-                LOG_DEBUG("id: %s is blocked", id.c_str());
-                return;
-            }
+
+            std::shared_ptr<destroy_msg>  net_obj(new destroy_msg);
+            net_obj->id = id;
+            net_obj->_msg_op = NORMAL_MSG_DESTROY_ST;
+
+            common_obj_container * net_container = get_net_container();
+            ObjId oid; 
+            oid._id = OBJ_ID_THREAD;
+            oid._thread_index = net_container->get_thread_index();
+            std::shared_ptr<normal_msg> ng = std::static_pointer_cast<normal_msg>(net_obj);
+            base_net_thread::put_obj_msg(oid, ng);
+
+            LOG_DEBUG("id: %s is blocked", id.c_str());
+            return;
         }
 
         std::map<std::string, std::string> headers;
-        ua_dict * ua_dic = p_data->_ua_dict->current();
 
         headers.insert(std::make_pair("User-Agent", 
-                    ua_dic->_ua_vec[_single_index % ua_dic->_ua_vec.size()]));
+                    _ua_dic->_ua_vec[_single_index % _ua_dic->_ua_vec.size()]));
 
         rsingle_data_process::gen_net_obj(id, get_net_container(), headers);
     }
@@ -643,6 +662,10 @@ void skhttp_req_thread::handle_timeout(std::shared_ptr<timer_msg> & t_msg)
                 bool flag = false;
                 _quotation_index = 0;
                 _quotation_destroy_num = 0;
+                
+                _id_dic = p_data->_id_dict->current();
+                _ua_dic = p_data->_ua_dict->current();
+
                 if (is_real_time())
                     _req_quotation = true;
                 else

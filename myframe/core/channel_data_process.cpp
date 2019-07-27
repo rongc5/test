@@ -21,7 +21,7 @@ size_t channel_data_process::process_recv_buf(const char *buf, size_t len)
     size_t i = 0;
     auto sp = _p_connect.lock();
     std::deque<normal_obj_msg >::iterator it;
-    for (it = _queue.begin(); it != _queue.end() && i < k;i++)
+    for (it = _queue.begin(); it != _queue.end() && i < k; i++)
     {
         if (sp) 
         {
