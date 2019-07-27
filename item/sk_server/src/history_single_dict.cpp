@@ -274,7 +274,7 @@ void history_single_dict::update_rsingle_search()
             const auto & single = ii->second.back();
             for (uint32_t i = 0; i< single->size(); i++)
             {   
-                int diff2 = get_single_diff2(ii->second, i); 
+                int diff2 = get_single_diff2(idl->id_single[id], i); 
                 if (diff2 > 0)
                 {   
                     idl->rsingle_diff2_index[i].insert(std::make_pair(diff2, id));
