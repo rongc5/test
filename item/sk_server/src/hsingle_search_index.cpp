@@ -104,7 +104,7 @@ bool hsingle_search_index::do_hsingle_diff_le(std::string &key, std::string &val
         }
     }
     
-    res = search;
+    search = res;
 
     return true;
 }
@@ -210,7 +210,7 @@ bool hsingle_search_index::do_hsingle_diff_ge(std::string &key, std::string &val
         }
     }
 
-    res = search;
+    search = res;
 
     return true;
 }
@@ -332,7 +332,7 @@ bool hsingle_search_index::do_hsingle_diff_ge_num_ge(std::string &key, std::stri
         }
     }
 
-    res = search;
+    search = res;
 
     return true;
 }
@@ -459,7 +459,7 @@ bool hsingle_search_index::do_hsingle_sum_ge(std::string &key, std::string &valu
         }
     }
 
-    res = search;
+    search = res;
 
     return true;
 }
@@ -586,7 +586,7 @@ bool hsingle_search_index::do_hsingle_sum_le(std::string &key, std::string &valu
         }
     }
 
-    res = search;
+    search = res;
 
     return true;
 }

@@ -527,8 +527,8 @@ void proc_data::reg_search_index()
     _search_index_map["hqrange_percent_le"] = std::bind(&hquotation_search_index::do_hqrange_percent_le, _hquotation_index, _1, _2, _3);
     _search_index_map["hqrange_percent_le_v"] = std::bind(&hquotation_search_index::do_hqrange_percent_le, _hquotation_index, _1, _2, _3);
 
-    _search_index_map["hqpercent_ge_num_ge"] = std::bind(&hquotation_search_index::do_hqrange_percent_ge_num_ge, _hquotation_index, _1, _2, _3);
-    _search_index_map["hqpercent_ge_num_ge_v"] = std::bind(&hquotation_search_index::do_hqrange_percent_ge_num_ge, _hquotation_index, _1, _2, _3);
+    _search_index_map["hqrange_percent_ge_num_ge"] = std::bind(&hquotation_search_index::do_hqrange_percent_ge_num_ge, _hquotation_index, _1, _2, _3);
+    _search_index_map["hqrange_percent_ge_num_ge_v"] = std::bind(&hquotation_search_index::do_hqrange_percent_ge_num_ge, _hquotation_index, _1, _2, _3);
 
     _search_index_map["hq_sum_range_percent_ge"] = std::bind(&hquotation_search_index::do_hq_sum_range_percent_ge, _hquotation_index, _1, _2, _3);
     _search_index_map["hq_sum_range_percent_ge_v"] = std::bind(&hquotation_search_index::do_hq_sum_range_percent_ge, _hquotation_index, _1, _2, _3);
@@ -567,6 +567,9 @@ void proc_data::reg_search_index()
     _search_index_map["hqend_avg_end_le_v"] = std::bind(&hquotation_search_index::do_check_hqend_avg_end_le, _hquotation_index, _1, _2, _3);
     _search_index_map["hqend_avg_end_ge_num_ge"] = std::bind(&hquotation_search_index::do_check_hqend_avg_end_ge_num_ge, _hquotation_index, _1, _2, _3);
     _search_index_map["hqend_avg_end_ge_num_ge_v"] = std::bind(&hquotation_search_index::do_check_hqend_avg_end_ge_num_ge, _hquotation_index, _1, _2, _3);
+
+    _search_index_map["id_substr"] = std::bind(&hquotation_search_index::do_check_id_substr, _hquotation_index, _1, _2, _3);
+    _search_index_map["id_substr_v"] = std::bind(&hquotation_search_index::do_check_id_substr, _hquotation_index, _1, _2, _3);
 }
 
 base_search_index proc_data::get_search_index(std::string & key)

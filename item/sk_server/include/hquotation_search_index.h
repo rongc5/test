@@ -51,6 +51,8 @@ class hquotation_search_index:public ToBufferMgr<hquotation_search_item>
 
         bool do_check_hqend_avg_end_ge_num_ge(std::string &key, std::string &value, std::set<std::string> & search);
 
+        bool do_check_id_substr(std::string &key, std::string &value, std::set<std::string> & search);
+
         struct hidex_item
         {
             int date_index;
@@ -58,6 +60,7 @@ class hquotation_search_index:public ToBufferMgr<hquotation_search_item>
             float fpoint;
             int ipoint;
             int sum;
+            std::string sstr;
             hidex_item()
             {
                 date_index = 0;

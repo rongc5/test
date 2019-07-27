@@ -22,6 +22,7 @@
 #include "sk_util.h"
 #include "rsingle_data_process.h"
 #include "rquotation_data_process.h"
+#include "log_helper.h"
 
 using namespace rapidjson;
 
@@ -107,8 +108,17 @@ int uhandler_select::do_check_select(std::map<std::string, std::string> & url_pa
             continue;
 
         std::set<std::string> tmp;
+
+        if (start_with(key, "hq") || start_with(key, "hs"))
+        {
+            if (end_with(key, "_v"))
+                tmp = negative;
+            else
+                tmp = positive;
+        }
+
         search_index(key, value, tmp);
-        
+
         if (end_with(key, "_v"))
         {
             if (tmp.empty())
@@ -156,6 +166,21 @@ int uhandler_select::do_check_select(std::map<std::string, std::string> & url_pa
     }
 
     std::set_difference(positive.begin(), positive.end(), negative.begin(), negative.end(), std::inserter(res,res.begin()));
+
+    //for (auto ii = positive.begin(); ii != positive.end(); ii++) 
+    //{
+        //LOG_DEBUG("positive:%s", ii->c_str());
+    //}
+
+    //for (auto ii = negative.begin(); ii != negative.end(); ii++) 
+    //{
+        //LOG_DEBUG("negative:%s", ii->c_str());
+    //}
+
+    //for (auto ii = res.begin(); ii != res.end(); ii++) 
+    //{
+        //LOG_DEBUG("res:%s", ii->c_str());
+    //}
 
     return 0;
 }
