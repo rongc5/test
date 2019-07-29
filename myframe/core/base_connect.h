@@ -65,7 +65,7 @@ class base_connect:public base_net_obj
 
             if ((get_event() & EPOLLIN) == EPOLLIN) {
                 LOG_DEBUG("real_net_process real_recv");
-                real_recv();
+                real_recv(true);
             }
 
             if ((get_event() & EPOLLOUT) == EPOLLOUT) {
@@ -173,7 +173,7 @@ class base_connect:public base_net_obj
 
         }
 
-        void real_recv()
+        void real_recv(int flag = false)
         {
             size_t _recv_buf_len = _recv_buf.length();
             size_t tmp_len = MAX_RECV_SIZE - _recv_buf_len; 	
@@ -190,7 +190,7 @@ class base_connect:public base_net_obj
                 }
             }
 
-            if (_recv_buf_len > 0)
+            if (_recv_buf_len > 0 || flag)
             {
                 LOG_DEBUG("process_recv_buf _recv_buf_len[%d] fd[%d]", _recv_buf_len, _fd);
                 p_ret = _process->process_recv_buf(_recv_buf.data(), _recv_buf_len);
