@@ -4,6 +4,7 @@
 #include "ul_sign.h"
 #include "common_util.h"
 #include "proc_data.h"
+#include "id_dict.h"
 
 history_quotation_dict::history_quotation_dict()
 {
@@ -75,6 +76,13 @@ int history_quotation_dict::load_history_quoation(const char * file)
 
         std::shared_ptr<quotation_t> qt(new quotation_t);
         const std::string &id = strVec[0];
+        
+        auto id_dict = p_data->_id_dict->current();
+        auto id_name = id_dict->_id_name_map.find(id);
+        if (id_name != id_dict->_id_name_map.end())
+        {
+            snprintf(qt->name, sizeof(qt->name), "%s", id_name->second.c_str());
+        }
 
         qt->start = atof(strVec[1].c_str());
         qt->end = atof(strVec[2].c_str());

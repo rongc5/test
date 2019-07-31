@@ -45,6 +45,7 @@ int id_dict::load()
         if (tmp_vec.size() >= 2)
         {
             _id_vec.push_back(tmp_vec[0]);
+            _id_name_map[tmp_vec[0]] = tmp_vec[1];
         }
         else
         {
@@ -92,6 +93,7 @@ int id_dict::dump()
 int id_dict::destroy()
 {
     _id_vec.clear();
+    _id_name_map.clear();
 
     return 0;
 }

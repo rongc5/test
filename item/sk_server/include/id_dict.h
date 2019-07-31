@@ -2,6 +2,7 @@
 #define _ID_DICT_H_
 
 #include "base_reload.h"
+#include "sk_def.h"
 
 class id_dict:public reload_inf
 {
@@ -25,6 +26,7 @@ class id_dict:public reload_inf
         time_t _last_load;
     public:
         std::vector<std::string> _id_vec;
+        std::unordered_map<std::string, std::string, str_hasher> _id_name_map;
 };
 
 
