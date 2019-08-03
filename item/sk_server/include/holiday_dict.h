@@ -18,6 +18,14 @@ class holiday_dict:public reload_inf
         virtual int dump();
         virtual int destroy();
 
+    public:
+
+        bool is_trade_date(const char * date);
+
+        void get_trade_date(const std::string & date, std::string & trade_date);
+
+        void get_trade_date(std::string & trade_date);
+
     private:
         void set_path (const char* path);
 

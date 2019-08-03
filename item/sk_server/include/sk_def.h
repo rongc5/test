@@ -207,6 +207,11 @@ struct technical_t
     float avg_end;
     float end_start;
     float end_avg_end;
+    float end_end_5;
+    float end_end_10;
+    float end_end_20;
+    float end_end_30;
+    float end_end_60;
 
     technical_t()
     {
@@ -220,6 +225,12 @@ struct technical_t
         avg_end = 0;
         end_start = 0;
         end_avg_end = 0;
+
+        end_end_5 = 0;
+        end_end_10 = 0;
+        end_end_20 = 0;
+        end_end_30 = 0;
+        end_end_60 = 0;
     }
 };
 

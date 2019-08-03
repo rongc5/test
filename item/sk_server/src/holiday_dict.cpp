@@ -112,4 +112,73 @@ int holiday_dict::destroy()
     return 0;
 }
 
+bool holiday_dict::is_trade_date(const char * date)
+{
+    if (!date)
+        return false;
+
+    int year, mon, day, weekday;
+    int len = strlen(date);
+    if (len < 8)
+        return false;
+
+    {
+        std::string str(date, 0, 4);
+        year = atoi(str.c_str());
+        if (year <= 0)
+            return false;
+    }
+
+    {
+        std::string str(date, 4, 2);
+        mon = atoi(str.c_str());
+
+        if (mon <=0 || mon > 12)
+            return false;
+    }
+
+
+    {
+        std::string str(date, 6, 2);
+        day = atoi(str.c_str());
+        if (day <= 0 || day > 31)
+            return false;
+    }
+
+    weekday = dayofweek(day, mon, year);
+    if (weekday > 5 || weekday < 1)
+        return false;
+
+    auto ii = _date_dict.find(std::string(date));
+    if (ii != _date_dict.end())
+        return false;
+
+    return true;
+}
+
+void holiday_dict::get_trade_date(const std::string & date, std::string & trade_date)
+{
+    std::string tmp_date;
+
+    trade_date = date;
+    int diff = 0;
+
+    while (!is_trade_date(trade_date.c_str()))
+    {
+        diff++;
+        if (diff > 30)// 说明有bug
+            break;
+
+        date_change(date, -1 * diff, trade_date);
+    }
+}
+
+void holiday_dict::get_trade_date(std::string & trade_date)
+{
+    char date[SIZE_LEN_64] = {'\0'};
+    time_t now = get_timestr(date, sizeof(date), "%Y%m%d");
+
+    get_trade_date(date, trade_date);
+}
+
 

@@ -35,8 +35,6 @@ class skhttp_req_thread:public base_net_thread
 
         void first_in_day();
 
-        bool is_trade_date(const char * date);
-
         bool is_real_time();
 
         void req_real_quotation(const std::string & id);
@@ -49,8 +47,6 @@ class skhttp_req_thread:public base_net_thread
 
     protected:
         time_t get_real_time(const char * date, const char * time);
-
-        void get_trade_date(const std::string & date, std::string & trade_date);
 
         bool need_dump_real_quotation();
 

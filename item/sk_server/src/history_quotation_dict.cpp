@@ -314,27 +314,33 @@ void history_quotation_dict::update_rquotation_search()
                 }
 
 
-                idl->down_pointer_index.insert(std::make_pair(iii->second.back()->down_pointer, id));
-                idl->up_pointer_index.insert(std::make_pair(iii->second.back()->up_pointer, id));
-                if (iii->second.back()->avg_end)
+                if (iii->second.back()->down_pointer)
                 {
-                    idl->end_avg_end_index.insert(std::make_pair(ii->second.back()->end/iii->second.back()->avg_end, id));
+                    idl->down_pointer_index.insert(std::make_pair(iii->second.back()->down_pointer, id));
                 }
-                if (iii->second.back()->end_5)
+                if (iii->second.back()->up_pointer)
                 {
-                    idl->end_end5_index.insert(std::make_pair(ii->second.back()->end/iii->second.back()->end_5, id));
+                    idl->up_pointer_index.insert(std::make_pair(iii->second.back()->up_pointer, id));
                 }
-                if (iii->second.back()->end_10)
+                if (iii->second.back()->end_avg_end)
                 {
-                    idl->end_end10_index.insert(std::make_pair(ii->second.back()->end/iii->second.back()->end_10, id));
+                    idl->end_avg_end_index.insert(std::make_pair(iii->second.back()->end_avg_end, id));
                 }
-                if (iii->second.back()->end_20)
+                if (iii->second.back()->end_end_5)
                 {
-                    idl->end_end20_index.insert(std::make_pair(ii->second.back()->end/iii->second.back()->end_20, id));
+                    idl->end_end5_index.insert(std::make_pair(iii->second.back()->end_end_5, id));
                 }
-                if (iii->second.back()->end_30)
+                if (iii->second.back()->end_end_10)
                 {
-                    idl->end_end30_index.insert(std::make_pair(ii->second.back()->end/iii->second.back()->end_30, id));
+                    idl->end_end10_index.insert(std::make_pair(iii->second.back()->end_end_10, id));
+                }
+                if (iii->second.back()->end_end_20)
+                {
+                    idl->end_end20_index.insert(std::make_pair(iii->second.back()->end_end_20, id));
+                }
+                if (iii->second.back()->end_end_30)
+                {
+                    idl->end_end30_index.insert(std::make_pair(iii->second.back()->end_end_30, id));
                 }
             }
         }
@@ -382,6 +388,42 @@ void history_quotation_dict::get_id_technical(std::shared_ptr<quotation_t> qt, s
         snprintf(t_buf, sizeof(t_buf), "%.2f", tt->end_60);
         tt->end_60 = atof(t_buf);
     }
+
+    if (tt->end_5)
+    {
+        tt->end_end_5 = qt->end / tt->end_5;
+        snprintf(t_buf, sizeof(t_buf), "%.2f", tt->end_end_5); 
+        tt->end_end_5 = atof(t_buf);
+    }
+
+    if (tt->end_10)
+    {
+        tt->end_end_10 = qt->end / tt->end_10;
+        snprintf(t_buf, sizeof(t_buf), "%.2f", tt->end_end_10); 
+        tt->end_end_10 = atof(t_buf);
+    }
+
+    if (tt->end_20)
+    {
+        tt->end_end_20 = qt->end / tt->end_20;
+        snprintf(t_buf, sizeof(t_buf), "%.2f", tt->end_end_20); 
+        tt->end_end_20 = atof(t_buf);
+    }
+
+    if (tt->end_30)
+    {
+        tt->end_end_30 = qt->end / tt->end_30;
+        snprintf(t_buf, sizeof(t_buf), "%.2f", tt->end_end_30); 
+        tt->end_end_30 = atof(t_buf);
+    }
+
+    if (tt->end_60)
+    {
+        tt->end_end_60 = qt->end / tt->end_60;
+        snprintf(t_buf, sizeof(t_buf), "%.2f", tt->end_end_60); 
+        tt->end_end_60 = atof(t_buf);
+    }
+
 
     if (qt->end > qt->low)
     {   

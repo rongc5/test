@@ -191,11 +191,14 @@ void skhttp_req_thread::add_quotation_timer()
 
 void skhttp_req_thread::first_in_day()
 {
-    get_trade_date(_req_date, _trade_date);
 
     proc_data* p_data = proc_data::instance();
     if (p_data && p_data->_conf)
     {
+
+        holiday_dict * _holiday_dict = p_data->_holiday_dict->current();
+        _holiday_dict->get_trade_date(_req_date, _trade_date);
+
         p_data->_trade_date = _trade_date;
 
         {
@@ -220,54 +223,6 @@ void skhttp_req_thread::first_in_day()
 
 }
 
-bool skhttp_req_thread::is_trade_date(const char * date)
-{
-    if (!date)
-        return false;
-
-    int year, mon, day, weekday;
-    int len = strlen(date);
-    if (len < 8)
-        return false;
-
-    {
-        std::string str(date, 0, 4);
-        year = atoi(str.c_str());
-        if (year <= 0)
-            return false;
-    }
-
-    {
-        std::string str(date, 4, 2);
-        mon = atoi(str.c_str());
-
-        if (mon <=0 || mon > 12)
-            return false;
-    }
-
-
-    {
-        std::string str(date, 6, 2);
-        day = atoi(str.c_str());
-        if (day <= 0 || day > 31)
-            return false;
-    }
-
-    weekday = dayofweek(day, mon, year);
-    if (weekday > 5 || weekday < 1)
-        return false;
-
-    proc_data* p_data = proc_data::instance();
-    if (p_data) 
-    {
-        holiday_dict * _holiday_dict = p_data->_holiday_dict->current();
-        auto ii = _holiday_dict->_date_dict.find(std::string(date));
-        if (ii != _holiday_dict->_date_dict.end())
-            return false;
-    }
-    return true;
-}
-
 bool skhttp_req_thread::is_real_time()
 {
     char date[SIZE_LEN_64] = {'\0'};
@@ -276,6 +231,9 @@ bool skhttp_req_thread::is_real_time()
     proc_data* p_data = proc_data::instance();
     if (p_data && p_data->_conf)
     {
+
+        holiday_dict * _holiday_dict = p_data->_holiday_dict->current();
+
         if (strncmp(date, _req_date.c_str(), strlen(date)))
         {
             time_t stime = get_real_time(date, "09:15");
@@ -286,7 +244,7 @@ bool skhttp_req_thread::is_real_time()
             }
         }
 
-        if (!is_trade_date(date))
+        if (!_holiday_dict->is_trade_date(date))
             return false;
 
         if (now >= real_morning_stime && now <= real_morning_etime)
@@ -297,23 +255,6 @@ bool skhttp_req_thread::is_real_time()
     }
 
     return false;
-}
-
-void skhttp_req_thread::get_trade_date(const std::string & date, std::string & trade_date)
-{
-    std::string tmp_date;
-
-    trade_date = date;
-    int diff = 0;
-
-    while (!is_trade_date(trade_date.c_str()))
-    {
-        diff++;
-        if (diff > 30)// 说明有bug
-            break;
-
-        date_change(date, -1 * diff, trade_date);
-    }
 }
 
 
@@ -389,9 +330,10 @@ bool skhttp_req_thread::need_dump_real_quotation()
     if (!p_data)
         return false;
 
+    holiday_dict * _holiday_dict = p_data->_holiday_dict->current();
     strategy_conf * strategy = p_data->_conf->_strategy->current();
 
-    if (!is_trade_date(_trade_date.c_str()))
+    if (!_holiday_dict->is_trade_date(_trade_date.c_str()))
         return false;
     
     snprintf(t_buf, sizeof(t_buf), "%s/%s", strategy->real_quotation_path.c_str(), _trade_date.c_str());
@@ -400,7 +342,7 @@ bool skhttp_req_thread::need_dump_real_quotation()
     if (!d)
         return false;
 
-    if (is_trade_date(_req_date.c_str())){
+    if (_holiday_dict->is_trade_date(_req_date.c_str())){
         time_t now = time(NULL);
         if (now > dump_real_time)
             return true;
@@ -419,8 +361,9 @@ bool skhttp_req_thread::need_dump_real_single()
     if (!p_data)
         return false;
 
+    holiday_dict * _holiday_dict = p_data->_holiday_dict->current();
     strategy_conf * strategy = p_data->_conf->_strategy->current();
-    if (!is_trade_date(_trade_date.c_str()))
+    if (!_holiday_dict->is_trade_date(_trade_date.c_str()))
         return false;
     
     snprintf(t_buf, sizeof(t_buf), "%s/%s", strategy->real_single_path.c_str(), _trade_date.c_str());
@@ -429,7 +372,7 @@ bool skhttp_req_thread::need_dump_real_single()
     if (!d)
         return false;
 
-    if (is_trade_date(_req_date.c_str())){
+    if (_holiday_dict->is_trade_date(_req_date.c_str())){
         time_t now = time(NULL);
         if (now > dump_real_time)
             return true;
