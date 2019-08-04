@@ -399,6 +399,11 @@ void skhttp_req_thread::dump_real_quotation()
     {
         std::string tmp;
 
+        if (p_data->_block_set->do_check_block(ii->first))
+        {
+            continue;
+        }
+
         tmp.append(ii->first);
         tmp.append(1, '\t');
 
@@ -576,6 +581,11 @@ void skhttp_req_thread::dump_real_single()
         std::deque<std::shared_ptr<single_vec> > & st = ii->second;
         if (!st.size())
             continue;
+
+        if (p_data->_block_set->do_check_block(ii->first))
+        {
+            continue;
+        }
 
         t_str.append(ii->first.c_str());
         t_str.append(1, '\t');
