@@ -172,26 +172,31 @@ def print_res(res):
         #print res['recode']
 
     tmp_str = ''
+    #key_list = []
     if res.has_key('data'):
         for item in res['data']:
+            #print item
             key_list = []
             for key in item:
                 if 'block' in key:
                     continue
                 key_list.append(key)
             key_list.sort()
+            #print key_list
             for key in key_list:
-                tmp_str = key + '='
+                tmp_str += key + '='
                 myjson = json.dumps(item[key], ensure_ascii=False)
                 tmp_str += myjson
                 tmp_str += '\n'
 
             tmp_str += '\n'
+    #print tmp_str
     return tmp_str
 
 
 def do_query(url):
-    print url
+    url = 'http://%s:%s%s' % (IP, 8088, url)
+    #print url
 
     header = {}
     index = random.randint(0, len(user_agent_list) -1)
@@ -224,10 +229,10 @@ class Handler(BaseHTTPRequestHandler):
 
         response = do_query(self.path)
         self.send_response(200)
-        print 'do_GET receive'
+        #print 'do_GET receive'
         self.send_header("Content-type", 'text/plain')
         self.end_headers()
-        self.wfile.write(response)
+        self.wfile.write(response.encode('gb18030'))
 
 
     def do_POST(self):
@@ -238,12 +243,12 @@ class ThreadedHTTPServer(ThreadingMixIn, HTTPServer):
 
 
 def do():
-    server = ThreadedHTTPServer((I, PORT), Handler)
+    server = ThreadedHTTPServer((IP, PORT), Handler)
     #server = HTTPServer(('localhost', 8080), Handler)
     print 'Starting server, use <Ctrl-C> to stop'
     server.serve_forever()
 
 PORT = 9098
-I="0.0.0.0"
+IP="0.0.0.0"
 if __name__ == '__main__':
     do()
