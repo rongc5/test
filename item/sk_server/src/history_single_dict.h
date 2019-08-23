@@ -27,8 +27,6 @@ class history_single_dict:public reload_inf
         void update_hsingle_search();
         void update_rsingle_search();
 
-        int get_single_diff2(std::deque<std::shared_ptr<single_vec> > & st, uint32_t index);
-
     private:
         void set_path (const char* path);
         int load_history_single(const char * file);

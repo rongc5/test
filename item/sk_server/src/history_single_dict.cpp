@@ -233,7 +233,6 @@ void history_single_dict::update_rsingle_search()
     auto idl = p_data->_rsingle_index->idle();
 
     idl->rsingle_diff_index.resize(strategy->real_single_scale.size());
-    idl->rsingle_diff2_index.resize(strategy->real_single_scale.size());
 
     for (auto ii = hsitem->id_single.begin(); ii != hsitem->id_single.end(); ii++)
     {
@@ -274,12 +273,6 @@ void history_single_dict::update_rsingle_search()
             const auto & single = ii->second.back();
             for (uint32_t i = 0; i< single->size(); i++)
             {   
-                int diff2 = get_single_diff2(idl->id_single[id], i); 
-                if (diff2 > 0)
-                {   
-                    idl->rsingle_diff2_index[i].insert(std::make_pair(diff2, id));
-                }   
-
                 if (single->at(i).diff > 0)
                 {   
                     idl->rsingle_diff_index[i].insert(std::make_pair(single->at(i).diff, id));
@@ -287,22 +280,6 @@ void history_single_dict::update_rsingle_search()
             } 
         }
     }
-}
-
-int history_single_dict::get_single_diff2(std::deque<std::shared_ptr<single_vec> > & st, uint32_t index)
-{
-
-    if (st.size() <= 0 || index >= st.back()->size())
-        return -1; 
-
-    if (st.size() == 1) 
-    {   
-        return 0;
-    }   
-
-    int diff2 = st.back()->at(index).diff - st.front()->at(index).diff;
-
-    return diff2;
 }
 
 int history_single_dict::load()

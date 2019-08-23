@@ -120,14 +120,11 @@ struct rsingle_search_item
 
     //reverse search;
     std::vector<std::multimap<int, std::string> > rsingle_diff_index;
-    
-    std::vector<std::multimap<int, std::string> > rsingle_diff2_index;
 
     void clear()
     {
         id_single.clear();
         rsingle_diff_index.clear();
-        rsingle_diff2_index.clear();
     }
 
 };

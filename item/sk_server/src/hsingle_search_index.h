@@ -19,6 +19,10 @@ class hsingle_search_index:public ToBufferMgr<hsingle_search_item>
 
         bool do_hsingle_sum_le(std::string &key, std::string &value, std::set<std::string> & search);
 
+        bool do_hsingle_diff2_le(std::string &key, std::string &value, std::set<std::string> & search);
+
+        bool do_hsingle_diff2_ge(std::string &key, std::string &value, std::set<std::string> & search);
+
         struct hidex_item
         {
             uint32_t single_index;

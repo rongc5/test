@@ -16,6 +16,25 @@ class rsingle_search_index:public ToBufferMgr<rsingle_search_item>
         bool do_check_rsingle_diff2_le(std::string &key, std::string &value, std::set<std::string> & search);
 
         bool do_check_rsingle_diff2_ge(std::string &key, std::string &value, std::set<std::string> & search);
+
+        struct hidex_item
+        {   
+            uint32_t single_index;
+            int date_index;
+            int date_index_end;
+            int single;
+            int single_diff;
+            int sum;
+            hidex_item()
+            {   
+                single_index = 0;
+                date_index = 0;
+                date_index_end = 0;
+                single = 0;
+                single_diff = 0;
+                sum = 0;
+            }   
+        };  
 };
 
 

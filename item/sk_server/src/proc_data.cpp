@@ -472,39 +472,26 @@ void proc_data::reg_search_index()
     _search_index_map["plate_v"] = std::bind(&plate_search_index::search, _plate_index, _1, _2, _3);
 
     _rsingle_index = std::make_shared<rsingle_search_index>();
-    _search_index_map["rsingle_diff_0_ge"] = std::bind(&rsingle_search_index::do_check_rsingle_ge, _rsingle_index, _1, _2, _3);
-    _search_index_map["rsingle_diff_1_ge"] = std::bind(&rsingle_search_index::do_check_rsingle_ge, _rsingle_index, _1, _2, _3);
-    _search_index_map["rsingle_diff_2_ge"] = std::bind(&rsingle_search_index::do_check_rsingle_ge, _rsingle_index, _1, _2, _3);
-    _search_index_map["rsingle_diff_0_ge_v"] = std::bind(&rsingle_search_index::do_check_rsingle_ge, _rsingle_index, _1, _2, _3);
-    _search_index_map["rsingle_diff_1_ge_v"] = std::bind(&rsingle_search_index::do_check_rsingle_ge, _rsingle_index, _1, _2, _3);
-    _search_index_map["rsingle_diff_2_ge_v"] = std::bind(&rsingle_search_index::do_check_rsingle_ge, _rsingle_index, _1, _2, _3);
+    _search_index_map["rsingle_diff_ge"] = std::bind(&rsingle_search_index::do_check_rsingle_ge, _rsingle_index, _1, _2, _3);
+    _search_index_map["rsingle_diff_ge_v"] = std::bind(&rsingle_search_index::do_check_rsingle_ge, _rsingle_index, _1, _2, _3);
+    _search_index_map["rsingle_diff_le"] = std::bind(&rsingle_search_index::do_check_rsingle_le, _rsingle_index, _1, _2, _3);
+    _search_index_map["rsingle_diff_le_v"] = std::bind(&rsingle_search_index::do_check_rsingle_le, _rsingle_index, _1, _2, _3);
 
-    _search_index_map["rsingle_diff_0_le"] = std::bind(&rsingle_search_index::do_check_rsingle_le, _rsingle_index, _1, _2, _3);
-    _search_index_map["rsingle_diff_1_le"] = std::bind(&rsingle_search_index::do_check_rsingle_le, _rsingle_index, _1, _2, _3);
-    _search_index_map["rsingle_diff_2_le"] = std::bind(&rsingle_search_index::do_check_rsingle_le, _rsingle_index, _1, _2, _3);
-    _search_index_map["rsingle_diff_0_le_v"] = std::bind(&rsingle_search_index::do_check_rsingle_le, _rsingle_index, _1, _2, _3);
-    _search_index_map["rsingle_diff_1_le_v"] = std::bind(&rsingle_search_index::do_check_rsingle_le, _rsingle_index, _1, _2, _3);
-    _search_index_map["rsingle_diff_2_le_v"] = std::bind(&rsingle_search_index::do_check_rsingle_le, _rsingle_index, _1, _2, _3);
-
-    _search_index_map["rsingle_diff2_0_ge"] = std::bind(&rsingle_search_index::do_check_rsingle_diff2_ge, _rsingle_index, _1, _2, _3);
-    _search_index_map["rsingle_diff2_1_ge"] = std::bind(&rsingle_search_index::do_check_rsingle_diff2_ge, _rsingle_index, _1, _2, _3);
-    _search_index_map["rsingle_diff2_2_ge"] = std::bind(&rsingle_search_index::do_check_rsingle_diff2_ge, _rsingle_index, _1, _2, _3);
-    _search_index_map["rsingle_diff2_0_ge_v"] = std::bind(&rsingle_search_index::do_check_rsingle_diff2_ge, _rsingle_index, _1, _2, _3);
-    _search_index_map["rsingle_diff2_1_ge_v"] = std::bind(&rsingle_search_index::do_check_rsingle_diff2_ge, _rsingle_index, _1, _2, _3);
-    _search_index_map["rsingle_diff2_2_ge_v"] = std::bind(&rsingle_search_index::do_check_rsingle_diff2_ge, _rsingle_index, _1, _2, _3);
-
-    _search_index_map["rsingle_diff2_0_le"] = std::bind(&rsingle_search_index::do_check_rsingle_diff2_le, _rsingle_index, _1, _2, _3);
-    _search_index_map["rsingle_diff2_1_le"] = std::bind(&rsingle_search_index::do_check_rsingle_diff2_le, _rsingle_index, _1, _2, _3);
-    _search_index_map["rsingle_diff2_2_le"] = std::bind(&rsingle_search_index::do_check_rsingle_diff2_le, _rsingle_index, _1, _2, _3);
-    _search_index_map["rsingle_diff2_0_le_v"] = std::bind(&rsingle_search_index::do_check_rsingle_diff2_le, _rsingle_index, _1, _2, _3);
-    _search_index_map["rsingle_diff2_1_le_v"] = std::bind(&rsingle_search_index::do_check_rsingle_diff2_le, _rsingle_index, _1, _2, _3);
-    _search_index_map["rsingle_diff2_2_le_v"] = std::bind(&rsingle_search_index::do_check_rsingle_diff2_le, _rsingle_index, _1, _2, _3);
+    _search_index_map["rsingle_diff2_ge"] = std::bind(&rsingle_search_index::do_check_rsingle_diff2_ge, _rsingle_index, _1, _2, _3);
+    _search_index_map["rsingle_diff2_ge_v"] = std::bind(&rsingle_search_index::do_check_rsingle_diff2_ge, _rsingle_index, _1, _2, _3);
+    _search_index_map["rsingle_diff2_le"] = std::bind(&rsingle_search_index::do_check_rsingle_diff2_le, _rsingle_index, _1, _2, _3);
+    _search_index_map["rsingle_diff2_le_v"] = std::bind(&rsingle_search_index::do_check_rsingle_diff2_le, _rsingle_index, _1, _2, _3);
 
     _hsingle_index = std::make_shared<hsingle_search_index>();
     _search_index_map["hsingle_diff_ge"] = std::bind(&hsingle_search_index::do_hsingle_diff_ge, _hsingle_index, _1, _2, _3);
     _search_index_map["hsingle_diff_le"] = std::bind(&hsingle_search_index::do_hsingle_diff_le, _hsingle_index, _1, _2, _3);
     _search_index_map["hsingle_diff_ge_v"] = std::bind(&hsingle_search_index::do_hsingle_diff_ge, _hsingle_index, _1, _2, _3);
     _search_index_map["hsingle_diff_le_v"] = std::bind(&hsingle_search_index::do_hsingle_diff_le, _hsingle_index, _1, _2, _3);
+
+    _search_index_map["hsingle_diff2_ge"] = std::bind(&hsingle_search_index::do_hsingle_diff2_ge, _hsingle_index, _1, _2, _3);
+    _search_index_map["hsingle_diff2_le"] = std::bind(&hsingle_search_index::do_hsingle_diff2_le, _hsingle_index, _1, _2, _3);
+    _search_index_map["hsingle_diff2_ge_v"] = std::bind(&hsingle_search_index::do_hsingle_diff2_ge, _hsingle_index, _1, _2, _3);
+    _search_index_map["hsingle_diff2_le_v"] = std::bind(&hsingle_search_index::do_hsingle_diff2_le, _hsingle_index, _1, _2, _3);
 
     _search_index_map["hsingle_diff_ge_num_ge"] = std::bind(&hsingle_search_index::do_hsingle_diff_ge_num_ge, _hsingle_index, _1, _2, _3);
     _search_index_map["hsingle_diff_ge_num_ge_v"] = std::bind(&hsingle_search_index::do_hsingle_diff_ge_num_ge, _hsingle_index, _1, _2, _3);
