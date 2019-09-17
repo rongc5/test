@@ -19,6 +19,8 @@ class hquotation_search_index:public ToBufferMgr<hquotation_search_item>
 
         bool do_hqrange_percent_ge_num_ge(std::string &key, std::string &value, std::set<std::string> & search);
 
+        bool do_hqrange_percent_le_num_ge(std::string &key, std::string &value, std::set<std::string> & search);
+
         bool do_hq_sum_change_rate_le(std::string &key, std::string &value, std::set<std::string> & search);
 
         bool do_hq_sum_change_rate_ge(std::string &key, std::string &value, std::set<std::string> & search);

@@ -516,6 +516,8 @@ void proc_data::reg_search_index()
 
     _search_index_map["hqrange_percent_ge_num_ge"] = std::bind(&hquotation_search_index::do_hqrange_percent_ge_num_ge, _hquotation_index, _1, _2, _3);
     _search_index_map["hqrange_percent_ge_num_ge_v"] = std::bind(&hquotation_search_index::do_hqrange_percent_ge_num_ge, _hquotation_index, _1, _2, _3);
+    _search_index_map["hqrange_percent_le_num_ge"] = std::bind(&hquotation_search_index::do_hqrange_percent_le_num_ge, _hquotation_index, _1, _2, _3);
+    _search_index_map["hqrange_percent_le_num_ge_v"] = std::bind(&hquotation_search_index::do_hqrange_percent_le_num_ge, _hquotation_index, _1, _2, _3);
 
     _search_index_map["hq_sum_range_percent_ge"] = std::bind(&hquotation_search_index::do_hq_sum_range_percent_ge, _hquotation_index, _1, _2, _3);
     _search_index_map["hq_sum_range_percent_ge_v"] = std::bind(&hquotation_search_index::do_hq_sum_range_percent_ge, _hquotation_index, _1, _2, _3);
