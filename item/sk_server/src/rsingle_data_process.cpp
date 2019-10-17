@@ -252,7 +252,7 @@ void rsingle_data_process::gen_net_obj(std::string id, common_obj_container * ne
     req_head._version = "HTTP/1.1";
 
     req_head._headers.insert(std::make_pair("Host", u_info.domain));
-    req_head._headers.insert(std::make_pair("Accept", "*/*"));
+    //req_head._headers.insert(std::make_pair("Accept", "*/*"));
 
     //req_head._headers["Connection"] = "close";
 

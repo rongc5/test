@@ -89,6 +89,8 @@ void skhttp_req_thread::real_req_start()
         //LOG_DEBUG("the _base_container size > %d", p_data->_conf->max_reqhttp_num);
         return;
     }
+    
+    //usleep(200000);
 
     if (_req_quotation)
     {
@@ -286,6 +288,8 @@ void skhttp_req_thread::req_real_quotation(const std::string & id)
         headers.insert(std::make_pair("User-Agent", 
                     _ua_dic->_ua_vec[_quotation_index % _ua_dic->_ua_vec.size()]));
 
+        headers.insert(std::make_pair("Accept", "*/*"));
+
         rquotation_data_process::gen_net_obj(id, get_net_container(), headers);
     }
 }
@@ -317,6 +321,8 @@ void skhttp_req_thread::req_real_single(const std::string & id)
 
         headers.insert(std::make_pair("User-Agent", 
                     _ua_dic->_ua_vec[_single_index % _ua_dic->_ua_vec.size()]));
+
+        headers.insert(std::make_pair("Accept", "*/*"));
 
         rsingle_data_process::gen_net_obj(id, get_net_container(), headers);
     }

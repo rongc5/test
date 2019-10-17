@@ -510,6 +510,12 @@ int parse_domain(const std::string &sDomain, std::vector<std::string> & vIp)
     struct addrinfo *res, *cur;
     struct sockaddr_in *addr;
 
+    struct addrinfo hint;
+    bzero(&hint, sizeof(hint));
+    hint.ai_family = AF_INET;
+    hint.ai_socktype = SOCK_STREAM;
+    std::set<std::string> ss;
+
     ret = getaddrinfo(sDomain.c_str(), NULL, NULL, &res);
     if (-1 == ret)
     {
@@ -521,10 +527,12 @@ int parse_domain(const std::string &sDomain, std::vector<std::string> & vIp)
     {
         addr = (struct sockaddr_in *)cur->ai_addr;
         inet_ntop(AF_INET, &addr->sin_addr, ipbuf, sizeof(ipbuf));
-        vIp.push_back(ipbuf);
+        ss.insert(ipbuf);
     }
+    vIp.assign(ss.begin(), ss.end());
 
     freeaddrinfo(res);
+
     return 0;
 }
 

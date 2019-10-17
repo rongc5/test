@@ -209,36 +209,45 @@ class base_connect:public base_net_obj
 
         void real_send()
         {
-            if (!_p_send_buf)
+            int i = 0;
+            while (1)
             {
-                _p_send_buf = _process->get_send_buf();
-            }
+                if (i >= MAX_SEND_NUM)
+                    break;
 
-            if (!_p_send_buf) {
-                update_event(get_event() & ~EPOLLOUT);
-                return;
-            }
+                if (!_p_send_buf)
+                {
+                    _p_send_buf = _process->get_send_buf();
+                }
 
-            size_t _send_buf_len = _p_send_buf->length();
-            if (_p_send_buf && _send_buf_len)
-            {
-                ssize_t ret = SEND(_p_send_buf->c_str(), _send_buf_len);				
-                if (ret == (ssize_t)_send_buf_len)
+                if (!_p_send_buf) {
+                    update_event(get_event() & ~EPOLLOUT);
+                    break;
+                }
+
+                i++;
+
+                size_t _send_buf_len = _p_send_buf->length();
+                if (_p_send_buf && _send_buf_len)
+                {
+                    ssize_t ret = SEND(_p_send_buf->c_str(), _send_buf_len);				
+                    if (ret == (ssize_t)_send_buf_len)
+                    {
+                        delete _p_send_buf;
+                        _p_send_buf = NULL; 				
+                    }
+                    else if (ret > 0)
+                    {
+                        _p_send_buf->erase(0, ret);
+                        LOG_WARNING("_p_send_buf erase %d", ret);
+                    }
+                }
+
+                if (_p_send_buf && !_p_send_buf->length())
                 {
                     delete _p_send_buf;
-                    _p_send_buf = NULL; 				
+                    _p_send_buf = NULL;
                 }
-                else if (ret > 0)
-                {
-                    _p_send_buf->erase(0, ret);
-                    LOG_WARNING("_p_send_buf erase %d", ret);
-                }
-            }
-
-            if (_p_send_buf && !_p_send_buf->length())
-            {
-                delete _p_send_buf;
-                _p_send_buf = NULL;
             }
         }
 
