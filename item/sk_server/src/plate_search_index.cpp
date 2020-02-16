@@ -7,7 +7,7 @@ bool plate_search_index::search(std::string &key, std::string &value, std::set<s
     std::vector<std::string> tmp_vec;
     std::vector<std::set<std::string> > tmp_res_vec;
     
-    if (strstr(key.c_str(), "|")) 
+    if (strstr(value.c_str(), "|")) 
     {
         SplitString(value.c_str(), '|', &tmp_vec, SPLIT_MODE_ALL);
         tmp_ot = SETS_OP_UNION;

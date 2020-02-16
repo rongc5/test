@@ -13,6 +13,7 @@ skhttp_req_thread::skhttp_req_thread()
 {
     _quotation_index = 0;
     _single_index = 0;
+    _req_circle_times = 0;
 
     _quotation_destroy_num = 0;
     _single_destroy_num = 0;
@@ -53,6 +54,11 @@ void skhttp_req_thread::handle_msg(std::shared_ptr<normal_msg> & p_msg)
                 LOG_DEBUG("_quotation_destroy_num:%d, size:%d", _quotation_destroy_num, _id_dic->_id_vec.size());
                 if (_quotation_destroy_num >= _id_dic->_id_vec.size())
                 {
+                    _req_circle_times++;
+                    if (_req_circle_times == PER_DAY_MIM_REQ_CIRCLE_TIMES)
+                    {
+                        p_data->_block_set->idle_2_current();
+                    }
                     p_data->_hquoation_dict->update_search_index();
                     add_quotation_timer();
                 }
@@ -204,6 +210,7 @@ void skhttp_req_thread::first_in_day()
         p_data->_trade_date = _trade_date;
 
         {
+            _req_circle_times = 0;
             std::unordered_set<std::string, str_hasher> t_block;
             p_data->_block_set->idle()->swap(t_block);
             p_data->_block_set->idle_2_current();
@@ -248,6 +255,9 @@ bool skhttp_req_thread::is_real_time()
 
         if (!_holiday_dict->is_trade_date(date))
             return false;
+
+        if (now >= (real_morning_stime + 1200) && _req_circle_times < PER_DAY_MIM_REQ_CIRCLE_TIMES)
+            return true;
 
         if (now >= real_morning_stime && now <= real_morning_etime)
             return true;

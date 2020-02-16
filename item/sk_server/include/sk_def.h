@@ -420,4 +420,8 @@ class destroy_msg: public normal_msg
 #define HTPP_RES_ERR 1001
 #define HTPP_REQ_PATH_ERR 1002
 
+
+
+#define PER_DAY_MIM_REQ_CIRCLE_TIMES 2
+
 #endif

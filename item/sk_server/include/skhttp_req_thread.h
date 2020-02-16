@@ -62,13 +62,13 @@ class skhttp_req_thread:public base_net_thread
     protected:
         std::string _req_date;
         std::string _trade_date;
-        uint32_t _quotation_index;
+        uint32_t _quotation_index; //request id_index in id_dict
         bool _req_quotation;
 
         uint32_t _single_index;
         bool _req_single;
 
-        uint32_t _quotation_destroy_num;
+        uint32_t _quotation_destroy_num;//response id_index in id_dict
         uint32_t _single_destroy_num;
 
 
@@ -82,6 +82,8 @@ class skhttp_req_thread:public base_net_thread
 
         uint32_t _history_quotation_num;
         uint32_t _history_single_num;
+
+        uint32_t _req_circle_times;//each day req circle times;
 
         id_dict * _id_dic;
         ua_dict * _ua_dic;
