@@ -55,7 +55,7 @@ void skhttp_req_thread::handle_msg(std::shared_ptr<normal_msg> & p_msg)
                 if (_quotation_destroy_num >= _id_dic->_id_vec.size())
                 {
                     _req_circle_times++;
-                    if (_req_circle_times == PER_DAY_MIM_REQ_CIRCLE_TIMES)
+                    if (_req_circle_times == p_data->_conf->_strategy->current()->per_day_min_req_circle_times)
                     {
                         p_data->_block_set->idle_2_current();
                     }
@@ -256,7 +256,7 @@ bool skhttp_req_thread::is_real_time()
         if (!_holiday_dict->is_trade_date(date))
             return false;
 
-        if (now >= (real_morning_stime + 1200) && _req_circle_times < PER_DAY_MIM_REQ_CIRCLE_TIMES)
+        if (now >= (real_morning_stime + 1200) && _req_circle_times < p_data->_conf->_strategy->current()->per_day_min_req_circle_times)
             return true;
 
         if (now >= real_morning_stime && now <= real_morning_etime)
@@ -606,12 +606,23 @@ void skhttp_req_thread::dump_real_single()
         t_str.append(ii->first.c_str());
         t_str.append(1, '\t');
 
-        for (uint32_t i =0; i < st.back()->size(); i++)
+        uint32_t i = 0;
+        uint32_t k = 0;
+        uint32_t log_single_deque_length = p_data->_conf->_strategy->current()->log_single_deque_length;
+        if (st.size() > log_single_deque_length)
         {
+            i = st.size() - log_single_deque_length;
+        }
+        k = i;
 
-            snprintf(tmp, sizeof(tmp), "%d\t%d\t%d", st.back()->at(i).in, st.back()->at(i).out, st.back()->at(i).diff);
-
-            t_str.append(tmp);
+        for (uint32_t j =0; j < st.back()->size(); j++)
+        {
+            for (i = k; i < st.size(); i++) 
+            {
+                snprintf(tmp, sizeof(tmp), "%d,", st[i]->at(j).diff);
+                t_str.append(tmp);
+            }
+            
             t_str.append(1, '\t');
         }
 

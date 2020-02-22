@@ -18,20 +18,21 @@ struct ban_t
 
 struct single_t
 {
-    int in;
-    int out;
+    //int in;
+    //int out;
     int diff;
 
     single_t()
     {
-        in = 0;
-        out = 0;
+        //in = 0;
+        //out = 0;
         diff = 0;
     }
 
     bool operator != (const single_t & st) const
     {
-        if (this->in != st.in || this->out != st.out || this->diff != st.diff)
+        //if (this->in != st.in || this->out != st.out || this->diff != st.diff)
+        if (this->diff != st.diff)
         {
             return true;
         }
@@ -41,8 +42,8 @@ struct single_t
 
     single_t & operator += (const single_t & st)
     {
-        this->in += st.in;
-        this->out += st.out;
+        //this->in += st.in;
+        //this->out += st.out;
         this->diff += st.diff;
 
         return *this;
@@ -57,7 +58,7 @@ typedef std::function<bool(std::string &key, std::string &value, std::set<std::s
 struct hsingle_search_item
 {
     //id: vector<single_vec>
-    std::unordered_map<std::string, std::deque< std::shared_ptr<single_vec>>, str_hasher> id_single;
+    std::unordered_map<std::string, std::deque<std::deque< std::shared_ptr<single_vec>>>, str_hasher> id_single;
     //id_index (vector -->index), date
     std::unordered_map<std::string, std::string, str_hasher> id_idx_date;
     //id_date, index
@@ -422,6 +423,5 @@ class destroy_msg: public normal_msg
 
 
 
-#define PER_DAY_MIM_REQ_CIRCLE_TIMES 2
 
 #endif

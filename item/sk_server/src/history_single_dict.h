@@ -36,8 +36,10 @@ class history_single_dict:public reload_inf
         char _dumppath[SIZE_LEN_512];
         time_t _last_load;
     public:
+        //<id, diff>
+        std::unordered_map<std::string,  std::deque<std::shared_ptr<single_vec> >, str_hasher> _rs_dict;
         // <date_id, diff> >
-        std::unordered_map<std::string, std::shared_ptr<single_vec>, str_hasher> _date_dict;
+        std::unordered_map<std::string, std::deque<std::shared_ptr<single_vec> >, str_hasher> _date_dict;
         //id, date,
         std::unordered_map<std::string, std::set<std::string>, str_hasher> _id_date_dict;
 };

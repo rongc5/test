@@ -133,25 +133,6 @@ int uhandler_queryid::do_check_queryid(std::map<std::string, std::string> & url_
         root.AddMember(key, child, allocator);
     }
 
-    if (has_key<std::string, std::string>(url_para_map, "single_in"))
-    {
-        Value child(kObjectType);
-        query_single_in(url_para_map["id"], child, allocator);
-
-        key.SetString("single_in", allocator);
-        root.AddMember(key, child, allocator);
-    }
-
-    if (has_key<std::string, std::string>(url_para_map, "single_out"))
-    {
-        Value child(kObjectType);
-        query_single_out(url_para_map["id"], child, allocator);
-
-        key.SetString("single_out", allocator);
-        root.AddMember(key, child, allocator);
-    }
-
-
     {
         query_blocked(url_para_map["id"], root, allocator);
     }
@@ -166,12 +147,6 @@ int uhandler_queryid::do_check_queryid(std::map<std::string, std::string> & url_
 
         query_sum_single(atoi(url_para_map["history_num"].c_str()), url_para_map["id"], root, allocator);
 
-        if (has_key<std::string, std::string>(url_para_map, "single_in"))
-            query_history_single_in(atoi(url_para_map["history_num"].c_str()), url_para_map["id"], root, allocator);
-
-        if (has_key<std::string, std::string>(url_para_map, "single_out"))
-            query_history_single_out(atoi(url_para_map["history_num"].c_str()), url_para_map["id"], root, allocator);
-
         query_history_quotation(atoi(url_para_map["history_num"].c_str()), url_para_map["id"], root, allocator);
         query_sum_quotation(atoi(url_para_map["history_num"].c_str()), url_para_map["id"], root, allocator);
     }
@@ -181,12 +156,6 @@ int uhandler_queryid::do_check_queryid(std::map<std::string, std::string> & url_
         query_history_single(url_para_map["history_date"], url_para_map["id"], root, allocator);
 
         query_sum_single(url_para_map["history_date"], url_para_map["id"], root, allocator);
-
-        if (has_key<std::string, std::string>(url_para_map, "single_in"))
-            query_history_single_in(url_para_map["history_date"], url_para_map["id"], root, allocator);
-
-        if (has_key<std::string, std::string>(url_para_map, "single_out"))
-            query_history_single_out(url_para_map["history_date"], url_para_map["id"], root, allocator);
 
         query_history_quotation(url_para_map["history_date"], url_para_map["id"], root, allocator);
         query_sum_quotation(url_para_map["history_date"], url_para_map["id"], root, allocator);
@@ -372,67 +341,6 @@ void uhandler_queryid::query_single(std::string &id, Value & root, Document::All
     }
 }
 
-void uhandler_queryid::query_single_in(std::string &id, Value & root, Document::AllocatorType & allocator)
-{
-    char t_buf[SIZE_LEN_64];
-    proc_data* p_data = proc_data::instance();
-    strategy_conf * strategy = p_data->_conf->_strategy->current();
-    auto rsingle_dict_index = p_data->_rsingle_index->current();
-
-    auto ii = rsingle_dict_index->id_single.find(id);
-
-    if (ii != rsingle_dict_index->id_single.end())
-    {
-        for (uint32_t i = 0; i < strategy->real_single_scale.size(); i++)
-        {
-            Value key(kStringType);
-            Value child(kArrayType);
-
-            snprintf(t_buf, sizeof(t_buf), "vol_%d", i);
-            key.SetString(t_buf, allocator);
-
-            for (auto ft: ii->second)
-            {
-                if (i < ft->size())
-                {
-                    child.PushBack(Value().SetInt(ft->at(i).in), allocator);
-                }
-            }
-            root.AddMember(key, child, allocator);
-        }
-    }
-}
-
-void uhandler_queryid::query_single_out(std::string &id, Value & root, Document::AllocatorType & allocator)
-{
-    char t_buf[SIZE_LEN_64];
-    proc_data* p_data = proc_data::instance();
-    strategy_conf * strategy = p_data->_conf->_strategy->current();
-    auto rsingle_dict_index = p_data->_rsingle_index->current();
-
-    auto ii = rsingle_dict_index->id_single.find(id);
-
-    if (ii != rsingle_dict_index->id_single.end())
-    {
-        for (uint32_t i = 0; i < strategy->real_single_scale.size(); i++)
-        {
-            Value key(kStringType);
-            Value child(kArrayType);
-
-            snprintf(t_buf, sizeof(t_buf), "vol_%d", i);
-            key.SetString(t_buf, allocator);
-
-            for (auto ft: ii->second)
-            {
-                if (i < ft->size())
-                {
-                    child.PushBack(Value().SetInt(ft->at(i).out), allocator);
-                }
-            }
-            root.AddMember(key, child, allocator);
-        }
-    }
-}
 
 void uhandler_queryid::query_blocked(std::string &id, Value & root, Document::AllocatorType & allocator)
 {
@@ -573,7 +481,7 @@ void uhandler_queryid::query_history_single(uint32_t last_day_num, std::string &
         if (mm != _hsingle_dict->id_idx_date.end())
         {
             Value k(kStringType);
-            Value child(kArrayType);
+            Value child(kObjectType);
 
             std::string t_str;
             t_str.append("single");
@@ -582,11 +490,22 @@ void uhandler_queryid::query_history_single(uint32_t last_day_num, std::string &
 
             k.SetString(t_str.c_str(), allocator);
 
-            const std::shared_ptr<single_vec> & single = ii->second[len];
+            const std::deque<std::shared_ptr<single_vec>> & dq = ii->second[len];
 
-            for (uint32_t k = 0; k < single->size(); k++)
+            for (uint32_t k = 0; !dq.empty() && k < dq[0]->size(); k++)
             {
-                child.PushBack(single->at(k).diff, allocator);
+                Value key_1(kStringType);
+                Value child_1(kArrayType);
+
+                snprintf(t_buf, sizeof(t_buf), "vol_%d", k);
+                key_1.SetString(t_buf, allocator);
+
+                for (uint32_t j = 0; j < dq.size(); j++)
+                {
+                    child_1.PushBack(dq[j]->at(k).diff, allocator);
+                }
+
+                child.AddMember(key_1, child_1, allocator);
             }
 
             root.AddMember(k, child, allocator);
@@ -624,99 +543,10 @@ void uhandler_queryid::query_sum_single(uint32_t last_day_num, std::string &id, 
 
 }
 
-void uhandler_queryid::query_history_single_in(uint32_t last_day_num, std::string &id, Value & root, Document::AllocatorType & allocator)
-{
-    proc_data* p_data = proc_data::instance();
-    char t_buf[SIZE_LEN_64];
-
-    hsingle_search_item * hsitem = p_data->_hsingle_index->current();
-    auto ii = hsitem->id_single.find(id);
-    if (ii == hsitem->id_single.end())
-    {
-        return;
-    }
-
-    int i = 0;
-    int len = 0;
-    std::string date;
-    for (i = last_day_num; i >= 0; i--)
-    {
-        if (i > (int)ii->second.size())
-            continue;
-        len  = ii->second.size() - i;
-        
-        date = hsitem->get_date(id, len);
-        if (!date.empty())
-        {
-            Value k(kStringType);
-            Value child(kArrayType);
-
-            std::string t_str;
-            t_str.append("single_in");
-            t_str.append("_");
-            t_str.append(date);
-
-            k.SetString(t_str.c_str(), allocator);
-
-            for (uint32_t k = 0; k < ii->second[len]->size(); k++)
-            {
-                child.PushBack(ii->second[len]->at(k).in, allocator);
-            }
-
-            root.AddMember(k, child, allocator);
-        }
-    }
-}
-
-void uhandler_queryid::query_history_single_out(uint32_t last_day_num, std::string &id, Value & root, Document::AllocatorType & allocator)
-{
-    proc_data* p_data = proc_data::instance();
-    char t_buf[SIZE_LEN_64];
-
-
-    hsingle_search_item * hsitem = p_data->_hsingle_index->current();
-    auto ii = hsitem->id_single.find(id);
-    if (ii == hsitem->id_single.end())
-    {    
-        return;
-    }    
-
-    int i = 0; 
-    int len = 0; 
-    std::string date;
-
-    for (i = last_day_num; i >= 0; i--) 
-    {    
-        if (i > (int)ii->second.size())
-            continue;
-        len  = ii->second.size() - i; 
-
-        date = hsitem->get_date(id, len);
-        if (!date.empty())
-        {
-            Value k(kStringType);
-            Value child(kArrayType);
-
-            std::string t_str;
-            t_str.append("single_out");
-            t_str.append("_");
-            t_str.append(date);
-
-            k.SetString(t_str.c_str(), allocator);
-
-            for (uint32_t k = 0; k < ii->second[len]->size(); k++)
-            {
-                child.PushBack(ii->second[len]->at(k).out, allocator);
-            }
-
-            root.AddMember(k, child, allocator);
-        }
-    }
-}
-
 void uhandler_queryid::query_history_single(std::string & history_date, std::string &id, Value & root, Document::AllocatorType & allocator)
 {
     proc_data* p_data = proc_data::instance();
+    char t_buf[SIZE_LEN_64];  
 
     hsingle_search_item * hsitem = p_data->_hsingle_index->current();
     auto ii = hsitem->id_single.find(id);
@@ -725,10 +555,10 @@ void uhandler_queryid::query_history_single(std::string & history_date, std::str
         return;
     }
     int index = hsitem->get_index(id, history_date);
-    if (index < 0)
+    if (index > 0)
     {
         Value k(kStringType);
-        Value child(kArrayType);
+        Value child(kObjectType);
 
         std::string t_str;
         t_str.append("single");
@@ -737,9 +567,20 @@ void uhandler_queryid::query_history_single(std::string & history_date, std::str
 
         k.SetString(t_str.c_str(), allocator);
 
-        for (uint32_t k = 0; k < ii->second[index]->size(); k++)
+        for (uint32_t k = 0; k < ii->second[index].back()->size(); k++)
         {
-            child.PushBack(ii->second[index]->at(k).diff, allocator);
+            Value key_1(kStringType);
+            Value child_1(kArrayType);
+
+            snprintf(t_buf, sizeof(t_buf), "vol_%d", k);
+            key_1.SetString(t_buf, allocator);
+
+            for (uint32_t j = 0; j < ii->second[index].size(); j++)
+            {
+                child_1.PushBack(ii->second[index][j]->at(k).diff, allocator);
+            }
+
+            child.AddMember(key_1, child_1, allocator);
         }
 
         root.AddMember(k, child, allocator);
@@ -778,78 +619,6 @@ void uhandler_queryid::query_sum_single(std::string & history_date, std::string 
     }
 }
 
-void uhandler_queryid::query_history_single_in(std::string & history_date, std::string &id, Value & root, Document::AllocatorType & allocator)
-{
-    proc_data* p_data = proc_data::instance();
-
-    hsingle_search_item * hsitem = p_data->_hsingle_index->current();
-    auto ii = hsitem->id_single.find(id);
-    if (ii == hsitem->id_single.end())
-    {    
-        return;
-    }
-    
-    int i = 0; 
-    int len = 0; 
-    std::string date;
-
-
-    len = hsitem->get_index(id, history_date) ;
-    if (len >= 0)
-    {
-        Value k(kStringType);
-        Value child(kArrayType);
-
-        std::string t_str;
-        t_str.append("single_in");
-        t_str.append("_");
-        t_str.append(history_date);
-
-        k.SetString(t_str.c_str(), allocator);
-
-        for (uint32_t k = 0; k < ii->second[len]->size(); k++)
-        {
-            child.PushBack(ii->second[len]->at(k).in, allocator);
-        }
-
-        root.AddMember(k, child, allocator);
-    }
-}
-
-void uhandler_queryid::query_history_single_out(std::string & history_date, std::string &id, Value & root, Document::AllocatorType & allocator)
-{
-    proc_data* p_data = proc_data::instance();
-
-    hsingle_search_item * hsitem = p_data->_hsingle_index->current();  
-    auto ii = hsitem->id_single.find(id);
-    if (ii == hsitem->id_single.end()) 
-        return;
-
-    int i = 0; 
-    int len = 0; 
-    std::string date;
-
-    len = hsitem->get_index(id, history_date) ;
-    if (len >= 0)
-    {
-        Value k(kStringType);
-        Value child(kArrayType);
-
-        std::string t_str;
-        t_str.append("single_out");
-        t_str.append("_");
-        t_str.append(history_date);
-
-        k.SetString(t_str.c_str(), allocator);
-
-        for (uint32_t k = 0; k < ii->second[len]->size(); k++)
-        {
-            child.PushBack(ii->second[len]->at(k).out, allocator);
-        }
-
-        root.AddMember(k, child, allocator);
-    }
-}
 
 void uhandler_queryid::query_history_quotation(uint32_t last_day_num, std::string &id, Value & root, Document::AllocatorType & allocator)
 {

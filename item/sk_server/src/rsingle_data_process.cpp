@@ -127,9 +127,9 @@ void rsingle_data_process::msg_recv_finish()
     for (i = 3; i < ssVec.size() & i + 7 <= ssVec.size(); i += 7)
     {
         single_t sst;
-        sst.in = atoi(ssVec[i + 4].c_str());
-        sst.out = atoi(ssVec[i + 5].c_str());
-        sst.diff = sst.in - sst.out;
+        int in = atoi(ssVec[i + 4].c_str());
+        int out = atoi(ssVec[i + 5].c_str());
+        sst.diff = in - out;
         tmp_single->push_back(sst);
         flag = true;
     }

@@ -97,6 +97,10 @@ class strategy_conf:public reload_inf
 
         uint32_t destroy_idle_millisecond;
 
+        uint32_t per_day_min_req_circle_times;
+
+        uint32_t log_single_deque_length;
+
         std::vector<uint32_t> real_single_scale;
 };
 

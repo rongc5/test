@@ -53,7 +53,7 @@ bool hsingle_search_index::do_hsingle_diff_le(std::string &key, std::string &val
     {
         for (auto ii = search_index->id_single.begin(); ii != search_index->id_single.end(); ii++)
         {
-            const std::deque< std::shared_ptr<single_vec>> &  tt = ii->second;
+            const std::deque<std::deque< std::shared_ptr<single_vec>>> &  tt = ii->second;
             int len = tt.size();
             cnt = 0;
             for (int i = 0; i < (int)vec_idex.size(); i++)
@@ -61,10 +61,10 @@ bool hsingle_search_index::do_hsingle_diff_le(std::string &key, std::string &val
                 if (len  < 1 + abs(vec_idex[i].date_index)) 
                     continue;
 
-                if (tt[len - abs(vec_idex[i].date_index) - 1]->size() <= vec_idex[i].single_index)
+                if (tt[len - abs(vec_idex[i].date_index) - 1].back()->size() <= vec_idex[i].single_index)
                     continue;
 
-                if (tt[len - abs(vec_idex[i].date_index) - 1]->at(vec_idex[i].single_index).diff <= vec_idex[i].single)
+                if (tt[len - abs(vec_idex[i].date_index) - 1].back()->at(vec_idex[i].single_index).diff <= vec_idex[i].single)
                     cnt++;
             }
 
@@ -82,7 +82,7 @@ bool hsingle_search_index::do_hsingle_diff_le(std::string &key, std::string &val
             if (ii == search_index->id_single.end())
                 continue;
 
-            const std::deque< std::shared_ptr<single_vec>> &  tt = ii->second;
+            const std::deque<std::deque< std::shared_ptr<single_vec>>> &  tt = ii->second;
             int len = tt.size();
             cnt = 0;
             for (int i = 0; i < (int)vec_idex.size(); i++)
@@ -90,10 +90,10 @@ bool hsingle_search_index::do_hsingle_diff_le(std::string &key, std::string &val
                 if (len  < 1 + abs(vec_idex[i].date_index)) 
                     continue;
 
-                if (tt[len - abs(vec_idex[i].date_index) - 1]->size() <= vec_idex[i].single_index)
+                if (tt[len - abs(vec_idex[i].date_index) - 1].back()->size() <= vec_idex[i].single_index)
                     continue;
 
-                if (tt[len - abs(vec_idex[i].date_index) - 1]->at(vec_idex[i].single_index).diff <= vec_idex[i].single)
+                if (tt[len - abs(vec_idex[i].date_index) - 1].back()->at(vec_idex[i].single_index).diff <= vec_idex[i].single)
                     cnt++;
             }
 
@@ -159,7 +159,7 @@ bool hsingle_search_index::do_hsingle_diff_ge(std::string &key, std::string &val
     {
         for (auto ii = search_index->id_single.begin(); ii != search_index->id_single.end(); ii++)
         {
-            const std::deque< std::shared_ptr<single_vec>> &  tt = ii->second;
+            const std::deque<std::deque< std::shared_ptr<single_vec>>> &  tt = ii->second;
             int len = tt.size();
             cnt = 0;
             for (int i = 0; i < (int)vec_idex.size(); i++)
@@ -167,10 +167,10 @@ bool hsingle_search_index::do_hsingle_diff_ge(std::string &key, std::string &val
                 if (len  < 1 + abs(vec_idex[i].date_index)) 
                     continue;
 
-                if (tt[len - abs(vec_idex[i].date_index) - 1]->size() <= vec_idex[i].single_index)
+                if (tt[len - abs(vec_idex[i].date_index) - 1].back()->size() <= vec_idex[i].single_index)
                     continue;
 
-                if (tt[len - abs(vec_idex[i].date_index) - 1]->at(vec_idex[i].single_index).diff >= vec_idex[i].single)
+                if (tt[len - abs(vec_idex[i].date_index) - 1].back()->at(vec_idex[i].single_index).diff >= vec_idex[i].single)
                     cnt++;
             }
 
@@ -188,7 +188,7 @@ bool hsingle_search_index::do_hsingle_diff_ge(std::string &key, std::string &val
             if (ii == search_index->id_single.end())
                 continue;
 
-            const std::deque< std::shared_ptr<single_vec>> &  tt = ii->second;
+            const std::deque<std::deque< std::shared_ptr<single_vec>>> &  tt = ii->second;
             int len = tt.size();
             cnt = 0;
             for (int i = 0; i < (int)vec_idex.size(); i++)
@@ -196,10 +196,10 @@ bool hsingle_search_index::do_hsingle_diff_ge(std::string &key, std::string &val
                 if (len  < 1 + abs(vec_idex[i].date_index)) 
                     continue;
 
-                if (tt[len - abs(vec_idex[i].date_index) - 1]->size() <= vec_idex[i].single_index)
+                if (tt[len - abs(vec_idex[i].date_index) - 1].back()->size() <= vec_idex[i].single_index)
                     continue;
 
-                if (tt[len - abs(vec_idex[i].date_index) - 1]->at(vec_idex[i].single_index).diff >= vec_idex[i].single)
+                if (tt[len - abs(vec_idex[i].date_index) - 1].back()->at(vec_idex[i].single_index).diff >= vec_idex[i].single)
                     cnt++;
             }
 
@@ -271,7 +271,7 @@ bool hsingle_search_index::do_hsingle_diff_ge_num_ge(std::string &key, std::stri
     {
         for (auto ii = search_index->id_single.begin(); ii != search_index->id_single.end(); ii++)
         {
-            const std::deque< std::shared_ptr<single_vec>> &  tt = ii->second;
+            const std::deque<std::deque< std::shared_ptr<single_vec>>> &  tt = ii->second;
             int len = tt.size();
             cnt = 0;
             for (int i = 0; i < (int)vec_idex.size(); i++)
@@ -279,12 +279,12 @@ bool hsingle_search_index::do_hsingle_diff_ge_num_ge(std::string &key, std::stri
                 if (len  < 1 + abs(vec_idex[i].date_index)) 
                     continue;
 
-                if (tt[len - abs(vec_idex[i].date_index) - 1]->size() <= vec_idex[i].single_index)
+                if (tt[len - abs(vec_idex[i].date_index) - 1].back()->size() <= vec_idex[i].single_index)
                     continue;
 
                 count = 0;        
                 for (int k = len - abs(vec_idex[i].date_index) - 1; k <= len - abs(vec_idex[i].date_index_end) - 1; k++) {
-                    if (tt[k]->at(vec_idex[i].single_index).diff >= vec_idex[i].single)
+                    if (tt[k].back()->at(vec_idex[i].single_index).diff >= vec_idex[i].single)
                         count++;
                 }
                 if (count >= vec_idex[i].sum)
@@ -305,7 +305,7 @@ bool hsingle_search_index::do_hsingle_diff_ge_num_ge(std::string &key, std::stri
             if (ii == search_index->id_single.end())
                 continue;
 
-            const std::deque< std::shared_ptr<single_vec>> &  tt = ii->second;
+            const std::deque<std::deque< std::shared_ptr<single_vec>>> &  tt = ii->second;
             int len = tt.size();
             cnt = 0;
             for (int i = 0; i < (int)vec_idex.size(); i++)
@@ -313,12 +313,12 @@ bool hsingle_search_index::do_hsingle_diff_ge_num_ge(std::string &key, std::stri
                 if (len  < 1 + abs(vec_idex[i].date_index)) 
                     continue;
 
-                if (tt[len - abs(vec_idex[i].date_index) - 1]->size() <= vec_idex[i].single_index)
+                if (tt[len - abs(vec_idex[i].date_index) - 1].back()->size() <= vec_idex[i].single_index)
                     continue;
 
                 count = 0;        
                 for (int k = len - abs(vec_idex[i].date_index) - 1; k <= len - abs(vec_idex[i].date_index_end) - 1; k++) {
-                    if (tt[k]->at(vec_idex[i].single_index).diff >= vec_idex[i].single)
+                    if (tt[k].back()->at(vec_idex[i].single_index).diff >= vec_idex[i].single)
                         count++;
                 }
                 if (count >= vec_idex[i].sum)
@@ -643,7 +643,7 @@ bool hsingle_search_index::do_hsingle_diff2_le(std::string &key, std::string &va
     {
         for (auto ii = search_index->id_single.begin(); ii != search_index->id_single.end(); ii++)
         {
-            const std::deque< std::shared_ptr<single_vec>> &  tt = ii->second;
+            const std::deque<std::deque< std::shared_ptr<single_vec>>> &  tt = ii->second;
             int len = tt.size();
             cnt = 0;
             for (int i = 0; i < (int)vec_idex.size(); i++)
@@ -651,14 +651,14 @@ bool hsingle_search_index::do_hsingle_diff2_le(std::string &key, std::string &va
                 if (len  < 1 + abs(vec_idex[i].date_index) || len  < 1 + abs(vec_idex[i].date_index_end)) 
                     continue;
 
-                if (tt[len - abs(vec_idex[i].date_index) - 1]->size() <= vec_idex[i].single_index)
+                if (tt[len - abs(vec_idex[i].date_index) - 1].back()->size() <= vec_idex[i].single_index)
                     continue;
 
-                if (tt[len - abs(vec_idex[i].date_index_end) - 1]->size() <= vec_idex[i].single_index)
+                if (tt[len - abs(vec_idex[i].date_index_end) - 1].back()->size() <= vec_idex[i].single_index)
                     continue;
 
-                int sdiff = tt[len - abs(vec_idex[i].date_index) - 1]->at(vec_idex[i].single_index).diff;
-                int ediff = tt[len - abs(vec_idex[i].date_index_end) - 1]->at(vec_idex[i].single_index).diff;
+                int sdiff = tt[len - abs(vec_idex[i].date_index) - 1].back()->at(vec_idex[i].single_index).diff;
+                int ediff = tt[len - abs(vec_idex[i].date_index_end) - 1].back()->at(vec_idex[i].single_index).diff;
                 if (sdiff <= vec_idex[i].single + ediff)
                     cnt++;
             }
@@ -677,7 +677,7 @@ bool hsingle_search_index::do_hsingle_diff2_le(std::string &key, std::string &va
             if (ii == search_index->id_single.end())
                 continue;
 
-            const std::deque< std::shared_ptr<single_vec>> &  tt = ii->second;
+            const std::deque<std::deque< std::shared_ptr<single_vec>>> &  tt = ii->second;
             int len = tt.size();
             cnt = 0;
             for (int i = 0; i < (int)vec_idex.size(); i++)
@@ -685,14 +685,14 @@ bool hsingle_search_index::do_hsingle_diff2_le(std::string &key, std::string &va
                 if (len  < 1 + abs(vec_idex[i].date_index) || len  < 1 + abs(vec_idex[i].date_index_end)) 
                     continue;
 
-                if (tt[len - abs(vec_idex[i].date_index) - 1]->size() <= vec_idex[i].single_index)
+                if (tt[len - abs(vec_idex[i].date_index) - 1].back()->size() <= vec_idex[i].single_index)
                     continue;
 
-                if (tt[len - abs(vec_idex[i].date_index_end) - 1]->size() <= vec_idex[i].single_index)
+                if (tt[len - abs(vec_idex[i].date_index_end) - 1].back()->size() <= vec_idex[i].single_index)
                     continue;
 
-                int sdiff = tt[len - abs(vec_idex[i].date_index) - 1]->at(vec_idex[i].single_index).diff;
-                int ediff = tt[len - abs(vec_idex[i].date_index_end) - 1]->at(vec_idex[i].single_index).diff;
+                int sdiff = tt[len - abs(vec_idex[i].date_index) - 1].back()->at(vec_idex[i].single_index).diff;
+                int ediff = tt[len - abs(vec_idex[i].date_index_end) - 1].back()->at(vec_idex[i].single_index).diff;
 
                 if (sdiff <= vec_idex[i].single + ediff)
                     cnt++;
@@ -761,7 +761,7 @@ bool hsingle_search_index::do_hsingle_diff2_ge(std::string &key, std::string &va
     {
         for (auto ii = search_index->id_single.begin(); ii != search_index->id_single.end(); ii++)
         {
-            const std::deque< std::shared_ptr<single_vec>> &  tt = ii->second;
+            const std::deque<std::deque< std::shared_ptr<single_vec>>> &  tt = ii->second;
             int len = tt.size();
             cnt = 0;
             for (int i = 0; i < (int)vec_idex.size(); i++)
@@ -769,14 +769,14 @@ bool hsingle_search_index::do_hsingle_diff2_ge(std::string &key, std::string &va
                 if (len  < 1 + abs(vec_idex[i].date_index) || len  < 1 + abs(vec_idex[i].date_index_end)) 
                     continue;
 
-                if (tt[len - abs(vec_idex[i].date_index) - 1]->size() <= vec_idex[i].single_index)
+                if (tt[len - abs(vec_idex[i].date_index) - 1].back()->size() <= vec_idex[i].single_index)
                     continue;
                 
-                if (tt[len - abs(vec_idex[i].date_index_end) - 1]->size() <= vec_idex[i].single_index)
+                if (tt[len - abs(vec_idex[i].date_index_end) - 1].back()->size() <= vec_idex[i].single_index)
                     continue;
 
-                int sdiff = tt[len - abs(vec_idex[i].date_index) - 1]->at(vec_idex[i].single_index).diff;
-                int ediff = tt[len - abs(vec_idex[i].date_index_end) - 1]->at(vec_idex[i].single_index).diff;
+                int sdiff = tt[len - abs(vec_idex[i].date_index) - 1].back()->at(vec_idex[i].single_index).diff;
+                int ediff = tt[len - abs(vec_idex[i].date_index_end) - 1].back()->at(vec_idex[i].single_index).diff;
 
                 if (sdiff >= vec_idex[i].single + ediff)
                     cnt++;
@@ -796,7 +796,7 @@ bool hsingle_search_index::do_hsingle_diff2_ge(std::string &key, std::string &va
             if (ii == search_index->id_single.end())
                 continue;
 
-            const std::deque< std::shared_ptr<single_vec>> &  tt = ii->second;
+            const std::deque<std::deque< std::shared_ptr<single_vec>>> &  tt = ii->second;
             int len = tt.size();
             cnt = 0;
             for (int i = 0; i < (int)vec_idex.size(); i++)
@@ -804,14 +804,14 @@ bool hsingle_search_index::do_hsingle_diff2_ge(std::string &key, std::string &va
                 if (len  < 1 + abs(vec_idex[i].date_index) || len  < 1 + abs(vec_idex[i].date_index_end)) 
                     continue;
 
-                if (tt[len - abs(vec_idex[i].date_index) - 1]->size() <= vec_idex[i].single_index)
+                if (tt[len - abs(vec_idex[i].date_index) - 1].back()->size() <= vec_idex[i].single_index)
                     continue;
 
-                if (tt[len - abs(vec_idex[i].date_index_end) - 1]->size() <= vec_idex[i].single_index)
+                if (tt[len - abs(vec_idex[i].date_index_end) - 1].back()->size() <= vec_idex[i].single_index)
                     continue;
 
-                int sdiff = tt[len - abs(vec_idex[i].date_index) - 1]->at(vec_idex[i].single_index).diff;
-                int ediff = tt[len - abs(vec_idex[i].date_index_end) - 1]->at(vec_idex[i].single_index).diff;
+                int sdiff = tt[len - abs(vec_idex[i].date_index) - 1].back()->at(vec_idex[i].single_index).diff;
+                int ediff = tt[len - abs(vec_idex[i].date_index_end) - 1].back()->at(vec_idex[i].single_index).diff;
 
                 if (sdiff >= vec_idex[i].single + ediff)
                     cnt++;
