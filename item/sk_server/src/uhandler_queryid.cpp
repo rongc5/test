@@ -555,7 +555,7 @@ void uhandler_queryid::query_history_single(std::string & history_date, std::str
         return;
     }
     int index = hsitem->get_index(id, history_date);
-    if (index > 0)
+    if (index >= 0)
     {
         Value k(kStringType);
         Value child(kObjectType);
@@ -604,7 +604,7 @@ void uhandler_queryid::query_sum_single(std::string & history_date, std::string 
         Value child(kArrayType);
 
         std::string t_str;
-        t_str.append("sum_single");
+        t_str.append("single_sum");
         t_str.append("_");
         t_str.append(history_date);
 
@@ -781,7 +781,7 @@ void uhandler_queryid::query_sum_quotation(std::string & history_date, std::stri
         Value value(kStringType);
 
         std::string t_str;
-        t_str.append("sum_quotation");
+        t_str.append("quotation_sum");
         t_str.append("_");
         t_str.append(history_date);
 

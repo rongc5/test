@@ -46,6 +46,8 @@ int history_single_dict::load_history_single(const char * file)
     std::string date = basename((char *)file);
 
     proc_data* p_data = proc_data::instance();
+    strategy_conf * strategy = p_data->_conf->_strategy->current();
+    uint32_t log_single_deque_length = p_data->_conf->_strategy->current()->log_single_deque_length;
 
     FILE * fp = fopen(file, "r");
     ASSERT_WARNING(fp != NULL,"open file failed. file[%s]", file);
@@ -91,8 +93,14 @@ int history_single_dict::load_history_single(const char * file)
             for (uint32_t i = 1; i < strVec.size() && i+1 < strVec.size(); i ++)
             {
                 SplitString(strVec[i].c_str(), ',', &tmpVec, SPLIT_MODE_ALL | SPLIT_MODE_TRIM); 
+                
+                uint32_t j = 0;
+                if (tmpVec.size() > log_single_deque_length && log_single_deque_length > 0)
+                {
+                    j = tmpVec.size() - log_single_deque_length;
+                }
 
-                for (uint32_t j = 0; i < tmpVec.size(); j++)
+                for (; j < tmpVec.size(); j++)
                 {
                     if (st.size() < tmpVec.size())
                     {
@@ -186,7 +194,7 @@ void history_single_dict::update_real_single(const std::string & trade_date, con
             _date_dict.insert(std::make_pair(key, dq));
         }
 
-        if (_date_dict[key].size() > strategy->log_single_deque_length)
+        if (strategy->log_single_deque_length > 0 && _date_dict[key].size() > strategy->log_single_deque_length)
         {
             _date_dict[key].pop_front();
         }
@@ -277,7 +285,7 @@ void history_single_dict::update_hsingle_search()
 
             std::shared_ptr<single_vec> single = std::make_shared<single_vec>(strategy->real_single_scale.size());
 
-            for (int p = index; p < (int)ii->second.back().size(); p++)
+            for (int p = index; p < (int)ii->second.size(); p++)
             {
                 int m = 0;
                 while (m < (int)ii->second[p].back()->size())

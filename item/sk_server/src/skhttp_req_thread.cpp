@@ -608,10 +608,10 @@ void skhttp_req_thread::dump_real_single()
 
         uint32_t i = 0;
         uint32_t k = 0;
-        uint32_t log_single_deque_length = p_data->_conf->_strategy->current()->log_single_deque_length;
-        if (st.size() > log_single_deque_length)
+        uint32_t log_single_deque_length_max = p_data->_conf->_strategy->current()->log_single_deque_length_max;
+        if (st.size() > log_single_deque_length_max && log_single_deque_length_max > 0)
         {
-            i = st.size() - log_single_deque_length;
+            i = st.size() - log_single_deque_length_max;
         }
         k = i;
 

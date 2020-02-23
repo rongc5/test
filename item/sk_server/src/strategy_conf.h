@@ -101,6 +101,8 @@ class strategy_conf:public reload_inf
 
         uint32_t log_single_deque_length;
 
+        uint32_t log_single_deque_length_max;
+
         std::vector<uint32_t> real_single_scale;
 };
 

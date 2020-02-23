@@ -256,6 +256,11 @@ void strategy_conf::do_parse()
         log_single_deque_length = atoi(_cfg["log_single_deque_length"].c_str());
     }
 
+    if (has_key<std::string, std::string>(_cfg, "log_single_deque_length_max"))
+    {
+        log_single_deque_length_max = atoi(_cfg["log_single_deque_length_max"].c_str());
+    }
+
     if (has_key<std::string, std::string>(_cfg, "per_day_min_req_circle_times"))
     {
         per_day_min_req_circle_times = atoi(_cfg["per_day_min_req_circle_times"].c_str());
