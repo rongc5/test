@@ -251,8 +251,8 @@ bool hsingle_search_index::do_hsingle_diff_ge_num_ge(std::string &key, std::stri
         hidex_item hi;
         hi.date_index = atoi(t_vec[0].c_str());
         hi.date_index_end = atoi(t_vec[1].c_str());
-        hi.single_index = atoi(t_vec[2].c_str());
-        hi.sum = atoi(t_vec[3].c_str());
+        hi.sum = atoi(t_vec[2].c_str());
+        hi.single_index = atoi(t_vec[3].c_str());
         hi.single = atoi(t_vec[4].c_str());
         vec_idex.push_back(hi);
 
