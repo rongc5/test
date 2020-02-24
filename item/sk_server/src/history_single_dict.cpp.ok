@@ -154,6 +154,28 @@ void history_single_dict::update_real_single(const std::string & trade_date, con
     strategy_conf * strategy = p_data->_conf->_strategy->current();
 
     {
+        auto li = _rs_dict.find(id);
+        if (li != _rs_dict.end())
+        {
+            if (li->second.empty() || li->second.back()->at(0) != single->at(0))
+            {
+                _rs_dict[id].push_back(single);
+            }
+        }
+        else 
+        {
+            std::deque<std::shared_ptr<single_vec> > dq;
+            dq.push_back(single);
+            _rs_dict.insert(std::make_pair(id, dq));
+        }
+
+        if (_rs_dict[id].size() > strategy->real_single_deque_length)
+        {
+            _rs_dict[id].pop_front();
+        }
+    }
+
+    {
         std::string key;
 
         creat_key(trade_date, id, key);
@@ -294,61 +316,31 @@ void history_single_dict::update_rsingle_search()
     proc_data* p_data = proc_data::instance();
     strategy_conf * strategy = p_data->_conf->_strategy->current();
 
-    auto cur = p_data->_rsingle_index->current();
     auto idl = p_data->_rsingle_index->idle();
 
     idl->rsingle_diff_index.resize(strategy->real_single_scale.size());
 
-    for (auto ii = _id_date_dict.begin(); ii != _id_date_dict.end(); ii++)
+    for (auto ii = _rs_dict.begin(); ii != _rs_dict.end(); ii++)
     {
         const std::string & id = ii->first;
-        std::string key;
-        creat_key(p_data->_trade_date, id, key);
-
-        auto kk = _date_dict.find(key);
-        if (kk == _date_dict.end())
-        {
-            continue;
-        }
 
         if (p_data->_block_set->do_check_block(id))
         {
             continue;
         }
 
-        {
-            std::deque< std::shared_ptr<single_vec>> dq; 
-            idl->id_single[id] = dq; 
-            auto mm = cur->id_single.find(id);
-            if (mm != cur->id_single.end()) 
-            {   
-                idl->id_single[id] = mm->second;
-            }   
-
-
-            if (idl->id_single[id].empty() || idl->id_single[id].back()->at(0) != kk->second.back()->at(0))
-            {
-                idl->id_single[id].push_back(kk->second.back());
-            }
-
-            if (idl->id_single[id].size() > strategy->real_single_deque_length && strategy->real_single_deque_length > 0)
-            {   
-                idl->id_single[id].pop_front();
-            }
-        }
+        idl->id_single[id] = ii->second;
 
         {
-            const auto & single = kk->second.back();
+            const auto & single = ii->second.back();
             for (uint32_t i = 0; i< single->size(); i++)
             {   
                 if (single->at(i).diff > 0)
                 {   
                     idl->rsingle_diff_index[i].insert(std::make_pair(single->at(i).diff, id));
-                }   
+                } 
             } 
         }
-
-
     }
 }
 
@@ -438,6 +430,10 @@ int history_single_dict::dump()
 int history_single_dict::destroy()
 {
     proc_data* p_data = proc_data::instance();
+    {
+        std::unordered_map<std::string, std::deque<std::shared_ptr<single_vec>>, str_hasher> tmp;
+        _rs_dict.swap(tmp);
+    }
 
     {
         std::unordered_map<std::string, std::deque<std::shared_ptr<single_vec>>, str_hasher> tmp;
