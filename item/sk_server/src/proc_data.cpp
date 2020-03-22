@@ -568,6 +568,11 @@ void proc_data::reg_search_index()
     _search_index_map["rlow_hlow_ge_num_ge"] = std::bind(&hquotation_search_index::do_check_rlow_hlow_ge_num_ge, _hquotation_index, _1, _2, _3);
     _search_index_map["rlow_hlow_ge_num_ge_v"] = std::bind(&hquotation_search_index::do_check_rlow_hlow_ge_num_ge, _hquotation_index, _1, _2, _3);
 
+    _search_index_map["rlow_hlowest_ge"] = std::bind(&hquotation_search_index::do_check_rlow_hlowest_ge, _hquotation_index, _1, _2, _3);
+    _search_index_map["rlow_hlowest_ge_v"] = std::bind(&hquotation_search_index::do_check_rlow_hlowest_ge, _hquotation_index, _1, _2, _3);
+    _search_index_map["rlow_hlowest_le"] = std::bind(&hquotation_search_index::do_check_rlow_hlowest_le, _hquotation_index, _1, _2, _3);
+    _search_index_map["rlow_hlowest_le_v"] = std::bind(&hquotation_search_index::do_check_rlow_hlowest_le, _hquotation_index, _1, _2, _3);
+
     _search_index_map["rhigh_hhigh_ge"] = std::bind(&hquotation_search_index::do_check_rhigh_hhigh_ge, _hquotation_index, _1, _2, _3);
     _search_index_map["rhigh_hhigh_ge_v"] = std::bind(&hquotation_search_index::do_check_rhigh_hhigh_ge, _hquotation_index, _1, _2, _3);
     _search_index_map["rhigh_hhigh_le"] = std::bind(&hquotation_search_index::do_check_rhigh_hhigh_le, _hquotation_index, _1, _2, _3);
@@ -575,6 +580,10 @@ void proc_data::reg_search_index()
     _search_index_map["rhigh_hhigh_ge_num_ge"] = std::bind(&hquotation_search_index::do_check_rhigh_hhigh_ge_num_ge, _hquotation_index, _1, _2, _3);
     _search_index_map["rhigh_hhigh_ge_num_ge_v"] = std::bind(&hquotation_search_index::do_check_rhigh_hhigh_ge_num_ge, _hquotation_index, _1, _2, _3);
 
+    _search_index_map["rhigh_hhighest_ge"] = std::bind(&hquotation_search_index::do_check_rhigh_hhighest_ge, _hquotation_index, _1, _2, _3);
+    _search_index_map["rhigh_hhighest_ge_v"] = std::bind(&hquotation_search_index::do_check_rhigh_hhighest_ge, _hquotation_index, _1, _2, _3);
+    _search_index_map["rhigh_hhighest_le"] = std::bind(&hquotation_search_index::do_check_rhigh_hhighest_le, _hquotation_index, _1, _2, _3);
+    _search_index_map["rhigh_hhighest_le_v"] = std::bind(&hquotation_search_index::do_check_rhigh_hhighest_le, _hquotation_index, _1, _2, _3);
 
     _search_index_map["hqend_end_5_ge"] = std::bind(&hquotation_search_index::do_check_hqend_end_5_ge, _hquotation_index, _1, _2, _3);
     _search_index_map["hqend_end_5_ge_v"] = std::bind(&hquotation_search_index::do_check_hqend_end_5_ge, _hquotation_index, _1, _2, _3);
