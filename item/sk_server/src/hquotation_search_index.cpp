@@ -2496,19 +2496,24 @@ bool hquotation_search_index::do_check_rlow_hlowest_ge(std::string &key, std::st
     if (!tmp_vec.size())
         tmp_vec.push_back(value);
 
-    //-10:1.0;-5:1
+    //-10:1:1.0;-5:1:1
     for (uint32_t i = 0; i< tmp_vec.size(); i++)
     {
         std::vector<std::string> t_vec;
         SplitString(tmp_vec[i].c_str(), ':', &t_vec, SPLIT_MODE_ALL);
-        if (t_vec.size() < 2) 
+        if (t_vec.size() < 3) 
         { 
             continue;
         }
 
         hidex_item hi;
         hi.date_index = atoi(t_vec[0].c_str());
-        hi.fpoint = atof(t_vec[1].c_str());
+        hi.date_index_end = atoi(t_vec[1].c_str());
+        hi.fpoint = atof(t_vec[2].c_str());
+
+        if (abs(hi.date_index) < abs(hi.date_index_end))
+            continue;
+
         vec_idex.push_back(hi);
     }
 
@@ -2527,7 +2532,7 @@ bool hquotation_search_index::do_check_rlow_hlowest_ge(std::string &key, std::st
                      continue;
 
                  float min = tt[len - 1]->low;                                        
-                 for (int k = len - abs(vec_idex[i].date_index) - 1; k <= len  - 1; k++) 
+                 for (int k = len - abs(vec_idex[i].date_index) - 1; k <= len  - abs(vec_idex[i].date_index_end) - 1; k++) 
                      if (min >= tt[k]->low)
                          min = tt[k]->low;
 
@@ -2558,7 +2563,7 @@ bool hquotation_search_index::do_check_rlow_hlowest_ge(std::string &key, std::st
                      continue;
 
                  float min = tt[len - 1]->low;                                        
-                 for (int k = len - abs(vec_idex[i].date_index) - 1; k <= len  - 1; k++) 
+                 for (int k = len - abs(vec_idex[i].date_index) - 1; k <= len  - abs(vec_idex[i].date_index_end) - 1; k++) 
                      if (min >= tt[k]->low)
                          min = tt[k]->low;
 
@@ -2602,19 +2607,24 @@ bool hquotation_search_index::do_check_rlow_hlowest_le(std::string &key, std::st
     if (!tmp_vec.size())
         tmp_vec.push_back(value);
 
-    //-10:1.0;-5:1
+    //-10:1:1.0;-5:1:1
     for (uint32_t i = 0; i< tmp_vec.size(); i++)
     {
         std::vector<std::string> t_vec;
         SplitString(tmp_vec[i].c_str(), ':', &t_vec, SPLIT_MODE_ALL);
-        if (t_vec.size() < 2) 
+        if (t_vec.size() < 3) 
         { 
             continue;
         }
 
         hidex_item hi;
         hi.date_index = atoi(t_vec[0].c_str());
-        hi.fpoint = atof(t_vec[1].c_str());
+        hi.date_index_end = atoi(t_vec[1].c_str());
+        hi.fpoint = atof(t_vec[2].c_str());
+
+        if (abs(hi.date_index) < abs(hi.date_index_end))
+            continue;
+
         vec_idex.push_back(hi);
     }
 
@@ -2633,7 +2643,7 @@ bool hquotation_search_index::do_check_rlow_hlowest_le(std::string &key, std::st
                      continue;
 
                  float min = tt[len - 1]->low;                                        
-                 for (int k = len - abs(vec_idex[i].date_index) - 1; k <= len  - 1; k++) 
+                 for (int k = len - abs(vec_idex[i].date_index) - 1; k <= len - abs(vec_idex[i].date_index_end) - 1; k++) 
                      if (min >= tt[k]->low)
                          min = tt[k]->low;
 
@@ -2664,7 +2674,7 @@ bool hquotation_search_index::do_check_rlow_hlowest_le(std::string &key, std::st
                      continue;
 
                  float min = tt[len - 1]->low;                                        
-                 for (int k = len - abs(vec_idex[i].date_index) - 1; k <= len  - 1; k++) 
+                 for (int k = len - abs(vec_idex[i].date_index) - 1; k <= len - abs(vec_idex[i].date_index_end) - 1; k++) 
                      if (min >= tt[k]->low)
                          min = tt[k]->low;
 
@@ -2709,19 +2719,24 @@ bool hquotation_search_index::do_check_rhigh_hhighest_ge(std::string &key, std::
     if (!tmp_vec.size())
         tmp_vec.push_back(value);
 
-    //-10:1.0;-5:1
+    //-10:1:1.0;-5:1:1
     for (uint32_t i = 0; i< tmp_vec.size(); i++)
     {
         std::vector<std::string> t_vec;
         SplitString(tmp_vec[i].c_str(), ':', &t_vec, SPLIT_MODE_ALL);
-        if (t_vec.size() < 2) 
+        if (t_vec.size() < 3) 
         { 
             continue;
         }
 
         hidex_item hi;
         hi.date_index = atoi(t_vec[0].c_str());
-        hi.fpoint = atof(t_vec[1].c_str());
+        hi.date_index_end = atoi(t_vec[1].c_str());
+        hi.fpoint = atof(t_vec[2].c_str());
+
+        if (abs(hi.date_index) < abs(hi.date_index_end))
+            continue;
+
         vec_idex.push_back(hi);
     }
 
@@ -2740,7 +2755,7 @@ bool hquotation_search_index::do_check_rhigh_hhighest_ge(std::string &key, std::
                      continue;
 
                  float max = tt[len - 1]->high;                                        
-                 for (int k = len - abs(vec_idex[i].date_index) - 1; k <= len  - 1; k++) 
+                 for (int k = len - abs(vec_idex[i].date_index) - 1; k <= len  -abs(vec_idex[i].date_index_end)- 1; k++) 
                      if (max <= tt[k]->high)
                          max = tt[k]->high;
 
@@ -2771,7 +2786,7 @@ bool hquotation_search_index::do_check_rhigh_hhighest_ge(std::string &key, std::
                      continue;
 
                  float max = tt[len - 1]->high;                                        
-                 for (int k = len - abs(vec_idex[i].date_index) - 1; k <= len  - 1; k++) 
+                 for (int k = len - abs(vec_idex[i].date_index) - 1; k <= len -abs(vec_idex[i].date_index_end) - 1; k++) 
                      if (max <= tt[k]->high)
                          max = tt[k]->high;
 
@@ -2815,19 +2830,22 @@ bool hquotation_search_index::do_check_rhigh_hhighest_le(std::string &key, std::
     if (!tmp_vec.size())
         tmp_vec.push_back(value);
 
-    //-10:1.0;-5:1
+    //-10:1:1.0;-5:1:1
     for (uint32_t i = 0; i< tmp_vec.size(); i++)
     {
         std::vector<std::string> t_vec;
         SplitString(tmp_vec[i].c_str(), ':', &t_vec, SPLIT_MODE_ALL);
-        if (t_vec.size() < 2) 
+        if (t_vec.size() < 3) 
         { 
             continue;
         }
 
         hidex_item hi;
         hi.date_index = atoi(t_vec[0].c_str());
-        hi.fpoint = atof(t_vec[1].c_str());
+        hi.date_index_end = atoi(t_vec[1].c_str());
+        hi.fpoint = atof(t_vec[2].c_str());
+        if (abs(hi.date_index) < abs(hi.date_index_end))
+            continue;
         vec_idex.push_back(hi);
     }
 
@@ -2846,7 +2864,7 @@ bool hquotation_search_index::do_check_rhigh_hhighest_le(std::string &key, std::
                      continue;
 
                  float max = tt[len - 1]->high;                                        
-                 for (int k = len - abs(vec_idex[i].date_index) - 1; k <= len  - 1; k++) 
+                 for (int k = len - abs(vec_idex[i].date_index) - 1; k <= len  -abs(vec_idex[i].date_index_end)- 1; k++) 
                      if (max <= tt[k]->high)
                          max = tt[k]->high;
 
@@ -2877,7 +2895,7 @@ bool hquotation_search_index::do_check_rhigh_hhighest_le(std::string &key, std::
                      continue;
 
                  float max = tt[len - 1]->high;                                        
-                 for (int k = len - abs(vec_idex[i].date_index) - 1; k <= len  - 1; k++) 
+                 for (int k = len - abs(vec_idex[i].date_index) - 1; k <= len  -abs(vec_idex[i].date_index_end)- 1; k++) 
                      if (max <= tt[k]->high)
                          max = tt[k]->high;
 
