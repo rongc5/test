@@ -530,10 +530,10 @@ void uhandler_queryid::query_sum_single(uint32_t last_day_num, std::string &id, 
     int len = 0;
     for ( i = last_day_num;  i >= 0; i--)
     {
-        if (i > (int)ii->second.size())
+        if (i > (int)ii->second.size() - 1)
             continue;
         
-        len  = ii->second.size() - i;
+        len  = ii->second.size() - i -1;
         date = hsitem->get_date(id, len);
         if (!date.empty()) {
             query_sum_single(date, id, root, allocator);
@@ -610,9 +610,9 @@ void uhandler_queryid::query_sum_single(std::string & history_date, std::string 
 
         k.SetString(t_str.c_str(), allocator);
 
-        for (uint32_t k = 0; k < ii->second[index]->size(); k++)
+        for (int k = ii->second[index]->size() - 1;k >= 0; k--)
         {
-            child.PushBack(ii->second[index]->at(k).diff, allocator);
+            child.PushBack(ii->second[ii->second.size() - 1]->at(k).diff - ii->second[index]->at(k).diff, allocator);
         }
 
         root.AddMember(k, child, allocator);
@@ -701,10 +701,10 @@ void uhandler_queryid::query_sum_quotation(uint32_t last_day_num, std::string &i
     int len = 0;
     for ( i = last_day_num;  i >= 0; i--)
     {
-        if (i > (int)ii->second.size())
+        if (i > (int)ii->second.size() - 1)
             continue;
 
-        len  = ii->second.size() - i;
+        len  = ii->second.size() - i - 1;
         date = hqitem->get_date(id, len);
         if (!date.empty()) {
             query_sum_quotation(date, id, root, allocator);
@@ -772,7 +772,7 @@ void uhandler_queryid::query_sum_quotation(std::string & history_date, std::stri
     int index = hqitem->get_index(id, history_date);
     auto ii = hqitem->id_sum_quotation.find(id);
 
-    if (ii != hqitem->id_sum_quotation.end() && index >= 0)
+    if (ii != hqitem->id_sum_quotation.end() && index >= 1)
     {
         Value k(kStringType);
         Value v(kObjectType);
@@ -789,7 +789,7 @@ void uhandler_queryid::query_sum_quotation(std::string & history_date, std::stri
 
         {
             key.SetString("range_percent", allocator); 
-            value.SetString(float_2_str(ii->second[index]->range_percent).c_str(), allocator); 
+            value.SetString(float_2_str(ii->second[ii->second.size() - 1]->range_percent - ii->second[index]->range_percent).c_str(), allocator); 
 
             v.AddMember(key, value, allocator);
         }

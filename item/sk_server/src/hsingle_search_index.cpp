@@ -245,7 +245,7 @@ bool hsingle_search_index::do_hsingle_diff_ge_num_ge(std::string &key, std::stri
     {
         std::vector<std::string> t_vec;
         SplitString(tmp_vec[i].c_str(), ':', &t_vec, SPLIT_MODE_ALL);
-        if (t_vec.size() < 3)
+        if (t_vec.size() < 5)
             continue;
 
         hidex_item hi;
@@ -367,7 +367,7 @@ bool hsingle_search_index::do_hsingle_sum_ge(std::string &key, std::string &valu
     {
         std::vector<std::string> t_vec;
         SplitString(tmp_vec[i].c_str(), ':', &t_vec, SPLIT_MODE_ALL);
-        if (t_vec.size() < 3)
+        if (t_vec.size() < 4)
             continue;
 
         hidex_item hi;
@@ -397,7 +397,7 @@ bool hsingle_search_index::do_hsingle_sum_ge(std::string &key, std::string &valu
             cnt = 0;
             for (int i = 0; i < (int)vec_idex.size(); i++)
             {
-                if (len  < 1 + abs(vec_idex[i].date_index)) 
+                if (len  < 2 + abs(vec_idex[i].date_index)) 
                     continue;
 
                 if (tt[len - abs(vec_idex[i].date_index) - 1]->size() <= vec_idex[i].single_index)
@@ -406,10 +406,7 @@ bool hsingle_search_index::do_hsingle_sum_ge(std::string &key, std::string &valu
                 count = 0;        
                 
                 int k = len - abs(vec_idex[i].date_index) - 2;
-                if (k < 0)
-                    count = tt[len - abs(vec_idex[i].date_index_end) -1]->at(vec_idex[i].single_index).diff;
-                else
-                    count = tt[len - abs(vec_idex[i].date_index_end) -1]->at(vec_idex[i].single_index).diff - tt[k]->at(vec_idex[i].single_index).diff;
+                count = tt[len - abs(vec_idex[i].date_index_end) -1]->at(vec_idex[i].single_index).diff - tt[k]->at(vec_idex[i].single_index).diff;
 
                 if (count >= vec_idex[i].single)
                     cnt++;
@@ -434,7 +431,7 @@ bool hsingle_search_index::do_hsingle_sum_ge(std::string &key, std::string &valu
             cnt = 0;
             for (int i = 0; i < (int)vec_idex.size(); i++)
             {
-                if (len  < 1 + abs(vec_idex[i].date_index)) 
+                if (len  < 2 + abs(vec_idex[i].date_index)) 
                     continue;
 
                 if (tt[len - abs(vec_idex[i].date_index) - 1]->size() <= vec_idex[i].single_index)
@@ -443,10 +440,7 @@ bool hsingle_search_index::do_hsingle_sum_ge(std::string &key, std::string &valu
                 count = 0;        
 
                 int k = len - abs(vec_idex[i].date_index) - 2;
-                if (k < 0)
-                    count = tt[len - abs(vec_idex[i].date_index_end) -1]->at(vec_idex[i].single_index).diff;
-                else
-                    count = tt[len - abs(vec_idex[i].date_index_end) -1]->at(vec_idex[i].single_index).diff - tt[k]->at(vec_idex[i].single_index).diff;
+                count = tt[len - abs(vec_idex[i].date_index_end) -1]->at(vec_idex[i].single_index).diff - tt[k]->at(vec_idex[i].single_index).diff;
                 
                 if (count >= vec_idex[i].single)
                     cnt++;
@@ -524,7 +518,7 @@ bool hsingle_search_index::do_hsingle_sum_le(std::string &key, std::string &valu
             cnt = 0;
             for (int i = 0; i < (int)vec_idex.size(); i++)
             {
-                if (len  < 1 + abs(vec_idex[i].date_index)) 
+                if (len  < 2 + abs(vec_idex[i].date_index)) 
                     continue;
 
                 if (tt[len - abs(vec_idex[i].date_index) - 1]->size() <= vec_idex[i].single_index)
@@ -533,10 +527,7 @@ bool hsingle_search_index::do_hsingle_sum_le(std::string &key, std::string &valu
                 count = 0;        
 
                 int k = len - abs(vec_idex[i].date_index) - 2;
-                if (k < 0)
-                    count = tt[len - abs(vec_idex[i].date_index_end) -1]->at(vec_idex[i].single_index).diff;
-                else
-                    count = tt[len - abs(vec_idex[i].date_index_end) -1]->at(vec_idex[i].single_index).diff - tt[k]->at(vec_idex[i].single_index).diff;
+                count = tt[len - abs(vec_idex[i].date_index_end) -1]->at(vec_idex[i].single_index).diff - tt[k]->at(vec_idex[i].single_index).diff;
 
                 if (count <= vec_idex[i].single)
                     cnt++;
@@ -561,7 +552,7 @@ bool hsingle_search_index::do_hsingle_sum_le(std::string &key, std::string &valu
             cnt = 0;
             for (int i = 0; i < (int)vec_idex.size(); i++)
             {
-                if (len  < 1 + abs(vec_idex[i].date_index)) 
+                if (len  < 2 + abs(vec_idex[i].date_index)) 
                     continue;
 
                 if (tt[len - abs(vec_idex[i].date_index) - 1]->size() <= vec_idex[i].single_index)
@@ -570,10 +561,7 @@ bool hsingle_search_index::do_hsingle_sum_le(std::string &key, std::string &valu
                 count = 0;        
 
                 int k = len - abs(vec_idex[i].date_index) - 2;
-                if (k < 0)
-                    count = tt[len - abs(vec_idex[i].date_index_end) -1]->at(vec_idex[i].single_index).diff;
-                else
-                    count = tt[len - abs(vec_idex[i].date_index_end) -1]->at(vec_idex[i].single_index).diff - tt[k]->at(vec_idex[i].single_index).diff;
+                count = tt[len - abs(vec_idex[i].date_index_end) -1]->at(vec_idex[i].single_index).diff - tt[k]->at(vec_idex[i].single_index).diff;
 
                 if (count <= vec_idex[i].single)
                     cnt++;

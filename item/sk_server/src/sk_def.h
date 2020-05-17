@@ -170,6 +170,8 @@ struct quotation_t
         return *this;
     }
 
+
+
     quotation_t()
     {
         name[0] = '\0';

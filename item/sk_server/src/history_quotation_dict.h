@@ -25,7 +25,7 @@ class history_quotation_dict:public reload_inf
         void update_search_index();
 
     private:
-        void get_id_technical(std::shared_ptr<quotation_t> qt, std::deque< std::shared_ptr<quotation_t>> & sum_quotation, std::shared_ptr<technical_t> tt);
+        void get_id_technical(std::shared_ptr<quotation_t> qt, std::deque< std::shared_ptr<quotation_t>> & sum_quotation, int p, std::shared_ptr<technical_t> tt);
 
         void update_hquotation_search();
 
@@ -48,5 +48,6 @@ class history_quotation_dict:public reload_inf
 };
 
 
+std::shared_ptr<quotation_t> operator + (const std::shared_ptr<quotation_t>  qt, const std::shared_ptr<quotation_t>  mm);
 
 #endif

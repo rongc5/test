@@ -6,6 +6,26 @@
 #include "proc_data.h"
 #include "id_dict.h"
 
+std::shared_ptr<quotation_t> operator + (const std::shared_ptr<quotation_t>  qt, const std::shared_ptr<quotation_t>  mm)
+{   
+    std::shared_ptr<quotation_t> qq = std::make_shared<quotation_t>();
+
+    qq->start = mm->start + qt->start;
+    qq->end = mm->end + qt->end; 
+    qq->high = mm->high + qt->high; 
+    qq->low = mm->low + qt->low; 
+    qq->last_closed = mm->last_closed + qt->last_closed;
+    qq->vol = mm->vol + qt->vol; 
+    qq->vol = mm->buy_vol + qt->buy_vol;
+    qq->sell_vol = mm->sell_vol + qt->sell_vol;
+    qq->swing = mm->swing + qt->swing;
+    qq->change_rate = mm->change_rate + qt->change_rate;
+    qq->range_percent = mm->range_percent + qt->range_percent; 
+    qq->total_price = mm->total_price + qt->total_price;
+
+    return qq;
+}   
+
 history_quotation_dict::history_quotation_dict()
 {
 }
@@ -203,36 +223,19 @@ void history_quotation_dict::update_real_quotation(const std::string & trade_dat
         if (kk == _id_date_dict.end())
             continue;
 
-        for (auto iii = kk->second.begin(); iii != kk->second.end(); iii++)
-        {
-            int index = hqitem->get_index(id, *iii); 
-            if (index < 0)
-                continue;
+        std::shared_ptr<quotation_t> qt = std::make_shared<quotation_t>();
+        std::deque<std::shared_ptr<quotation_t>> dp((int)ii->second.size() + 1, qt);
 
-            std::shared_ptr<quotation_t> qt = std::make_shared<quotation_t>();
 
-            for (int p = index; p < (int)ii->second.size(); p++)
-            {   
-                *qt += *ii->second[p];
-            }
-
-            auto mm = hqitem->id_sum_quotation.find(id);
-            if (mm == hqitem->id_sum_quotation.end())
-            {
-                std::deque< std::shared_ptr<quotation_t>> tmp_vec;
-                tmp_vec.push_back(qt);
-                hqitem->id_sum_quotation.insert(std::make_pair(id, tmp_vec));
-            }
-            else
-            {
-                mm->second.push_back(qt);
-            }
+        for (int p = 0; p < (int)ii->second.size(); p++)
+        {   
+            dp[p+1] = dp[p] + ii->second[p];
 
             std::shared_ptr<technical_t> tt = std::make_shared<technical_t>();
-            
-            get_id_technical(ii->second[index], hqitem->id_sum_quotation[id], tt);
 
-            
+            get_id_technical(ii->second[p], dp, p, tt);
+
+
             auto ff = hqitem->id_technical.find(id);
             if (ff == hqitem->id_technical.end())
             {
@@ -244,8 +247,9 @@ void history_quotation_dict::update_real_quotation(const std::string & trade_dat
             {
                 ff->second.push_back(tt); 
             }
-
         }
+
+        hqitem->id_sum_quotation[id] = dp;
     }
 
 }
@@ -348,43 +352,43 @@ void history_quotation_dict::update_rquotation_search()
 
 }
 
-void history_quotation_dict::get_id_technical(std::shared_ptr<quotation_t> qt, std::deque< std::shared_ptr<quotation_t>> & sum_quotation, std::shared_ptr<technical_t> tt)
+void history_quotation_dict::get_id_technical(std::shared_ptr<quotation_t> qt, std::deque< std::shared_ptr<quotation_t>> & sum_quotation, int p, std::shared_ptr<technical_t> tt)
 {
     char t_buf[SIZE_LEN_1024];
     t_buf[0] = '\0';
 
     int len = sum_quotation.size();
-    if (len >= 5)
+    if (p >= 5)
     {
-        tt->end_5 = sum_quotation[len - 5]->end/5;
+        tt->end_5 = (sum_quotation[p]->end - sum_quotation[p - 5]->end)/5;
         snprintf(t_buf, sizeof(t_buf), "%.2f", tt->end_5);
         tt->end_5 = atof(t_buf);
     }
 
-    if (len >= 10)
+    if (p >= 10)
     {
-        tt->end_10 = sum_quotation[len - 10]->end/10;
+        tt->end_10 = (sum_quotation[p]->end - sum_quotation[p - 10]->end)/10;
         snprintf(t_buf, sizeof(t_buf), "%.2f", tt->end_10);
         tt->end_10 = atof(t_buf);
     }
 
-    if (len >= 20)
+    if (p >= 20)
     {
-        tt->end_20 = sum_quotation[len - 20]->end/20;
+        tt->end_20 = (sum_quotation[p]->end - sum_quotation[p - 20]->end)/20;
         snprintf(t_buf, sizeof(t_buf), "%.2f", tt->end_20);
         tt->end_20 = atof(t_buf);
     }
 
-    if (len >= 30)
+    if (p >= 30)
     {
-        tt->end_30 = sum_quotation[len - 30]->end/30;
+        tt->end_30 = (sum_quotation[p]->end - sum_quotation[p - 30]->end)/30;
         snprintf(t_buf, sizeof(t_buf), "%.2f", tt->end_30);
         tt->end_30 = atof(t_buf);
     }
 
     if (len >= 60)
     {
-        tt->end_60 = sum_quotation[len - 60]->end/60;
+        tt->end_60 = (sum_quotation[p]->end - sum_quotation[p - 60]->end)/60;
         snprintf(t_buf, sizeof(t_buf), "%.2f", tt->end_60);
         tt->end_60 = atof(t_buf);
     }

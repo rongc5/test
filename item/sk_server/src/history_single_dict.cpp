@@ -256,36 +256,25 @@ void history_single_dict::update_hsingle_search()
         if (kk == _id_date_dict.end())
             continue;
 
-        for (auto iii = kk->second.begin(); iii != kk->second.end(); iii++)
+        std::shared_ptr<single_vec> single = std::make_shared<single_vec>(strategy->real_single_scale.size());
+        std::deque< std::shared_ptr<single_vec>> dp((int)ii->second.size() + 1, single);
+
+
+        for (int p = 0; p < (int)ii->second.size(); p++)
         {
-            int index = hsingle_index->get_index(id, *iii);
-            if (index < 0)
-                continue;
-
-            std::shared_ptr<single_vec> single = std::make_shared<single_vec>(strategy->real_single_scale.size());
-
-            for (int p = index; p < (int)ii->second.size(); p++)
+            int m = 0;
+            std::shared_ptr<single_vec> ss = std::make_shared<single_vec>(strategy->real_single_scale.size());
+            while (m < (int)ii->second[p].back()->size())
             {
-                int m = 0;
-                while (m < (int)ii->second[p].back()->size())
-                {
-                    single->at(m) += ii->second[p].back()->at(m);
-                    m++;
-                }
+
+                ss->at(m).diff = dp[p]->at(m).diff + ii->second[p].back()->at(m).diff;
+                m++;
             }
 
-            auto mm = hsingle_index->id_sum_single.find(id);
-            if (mm == hsingle_index->id_sum_single.end())
-            {
-                std::deque< std::shared_ptr<single_vec>> tmp_vec;
-                tmp_vec.push_back(single);
-                hsingle_index->id_sum_single.insert(std::make_pair(id, tmp_vec));
-            }
-            else
-            {
-                mm->second.push_back(single);
-            }
+            dp[p+1] = ss;
         }
+
+        hsingle_index->id_sum_single[id] = dp;
     }
 }
 

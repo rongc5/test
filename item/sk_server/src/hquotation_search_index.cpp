@@ -669,15 +669,12 @@ bool hquotation_search_index::do_hq_sum_change_rate_le(std::string &key, std::st
             cnt = 0;
             for (int i = 0; i < (int)vec_idex.size(); i++) 
             {
-                 if (len  < 1 + abs(vec_idex[i].date_index))
+                 if (len  < 2 + abs(vec_idex[i].date_index))
                      continue;
                 
                  count = 0;
                  int k = len - abs(vec_idex[i].date_index) - 2;
-                 if (k < 0)
-                     count = tt[len - abs(vec_idex[i].date_index_end) -1]->change_rate;
-                 else
-                     count = tt[len - abs(vec_idex[i].date_index_end) -1]->change_rate - tt[k]->change_rate;
+                 count = tt[len - abs(vec_idex[i].date_index_end) -1]->change_rate - tt[k]->change_rate;
 
                  if (count <= vec_idex[i].fpoint)
                      cnt++;
@@ -702,15 +699,12 @@ bool hquotation_search_index::do_hq_sum_change_rate_le(std::string &key, std::st
             cnt = 0;
             for (int i = 0; i < (int)vec_idex.size(); i++) 
             {
-                 if (len  < 1 + abs(vec_idex[i].date_index))
+                 if (len  < 2 + abs(vec_idex[i].date_index))
                      continue;
 
                  count = 0;
 
                  int k = len - abs(vec_idex[i].date_index) - 2;
-                 if (k < 0)
-                     count = tt[len - abs(vec_idex[i].date_index_end) -1]->change_rate;
-                 else
                      count = tt[len - abs(vec_idex[i].date_index_end) -1]->change_rate - tt[k]->change_rate;
 
                  if (count <= vec_idex[i].fpoint)
@@ -785,15 +779,12 @@ bool hquotation_search_index::do_hq_sum_change_rate_ge(std::string &key, std::st
             cnt = 0;
             for (int i = 0; i < (int)vec_idex.size(); i++) 
             {
-                 if (len  < 1 + abs(vec_idex[i].date_index))
+                 if (len  < 2 + abs(vec_idex[i].date_index))
                      continue;
                 
                  count = 0;
 
                  int k = len - abs(vec_idex[i].date_index) - 2;
-                 if (k < 0)
-                     count = tt[len - abs(vec_idex[i].date_index_end) -1]->change_rate;
-                 else
                      count = tt[len - abs(vec_idex[i].date_index_end) -1]->change_rate - tt[k]->change_rate;
 
                  if (count >= vec_idex[i].fpoint)
@@ -819,15 +810,12 @@ bool hquotation_search_index::do_hq_sum_change_rate_ge(std::string &key, std::st
             cnt = 0;
             for (int i = 0; i < (int)vec_idex.size(); i++) 
             {
-                 if (len  < 1 + abs(vec_idex[i].date_index))
+                 if (len  < 2 + abs(vec_idex[i].date_index))
                      continue;
 
                  count = 0;
 
                  int k = len - abs(vec_idex[i].date_index) - 2;
-                 if (k < 0)
-                     count = tt[len - abs(vec_idex[i].date_index_end) -1]->change_rate;
-                 else
                      count = tt[len - abs(vec_idex[i].date_index_end) -1]->change_rate - tt[k]->change_rate;
 
                  if (count >= vec_idex[i].fpoint)
@@ -902,14 +890,11 @@ bool hquotation_search_index::do_hq_sum_range_percent_le(std::string &key, std::
             cnt = 0;
             for (int i = 0; i < (int)vec_idex.size(); i++) 
             {
-                 if (len  < 1 + abs(vec_idex[i].date_index))
+                 if (len  < 2 + abs(vec_idex[i].date_index))
                      continue;
                 
                  count = 0;
                  int k = len - abs(vec_idex[i].date_index) - 2;
-                 if (k < 0)
-                     count = tt[len - abs(vec_idex[i].date_index_end) -1]->range_percent;
-                 else
                      count = tt[len - abs(vec_idex[i].date_index_end) -1]->range_percent - tt[k]->range_percent;
 
                  if (count <= vec_idex[i].fpoint)
@@ -935,14 +920,11 @@ bool hquotation_search_index::do_hq_sum_range_percent_le(std::string &key, std::
             cnt = 0;
             for (int i = 0; i < (int)vec_idex.size(); i++) 
             {
-                 if (len  < 1 + abs(vec_idex[i].date_index))
+                 if (len  < 2 + abs(vec_idex[i].date_index))
                      continue;
 
                  count = 0;
                  int k = len - abs(vec_idex[i].date_index) - 2;
-                 if (k < 0)
-                     count = tt[len - abs(vec_idex[i].date_index_end) -1]->range_percent;
-                 else
                      count = tt[len - abs(vec_idex[i].date_index_end) -1]->range_percent - tt[k]->range_percent;
 
                  if (count <= vec_idex[i].fpoint)
@@ -1018,13 +1000,10 @@ bool hquotation_search_index::do_hq_sum_range_percent_ge(std::string &key, std::
             cnt = 0;
             for (int i = 0; i < (int)vec_idex.size(); i++) 
             {
-                 if (len  < 1 + abs(vec_idex[i].date_index))
+                 if (len  < 2 + abs(vec_idex[i].date_index))
                      continue; 
 
                  int k = len - abs(vec_idex[i].date_index) - 2;
-                 if (k < 0)
-                     count = tt[len - abs(vec_idex[i].date_index_end) -1]->range_percent;
-                 else
                      count = tt[len - abs(vec_idex[i].date_index_end) -1]->range_percent - tt[k]->range_percent;
 
                  if (count >= vec_idex[i].fpoint)
@@ -1050,14 +1029,11 @@ bool hquotation_search_index::do_hq_sum_range_percent_ge(std::string &key, std::
             cnt = 0;
             for (int i = 0; i < (int)vec_idex.size(); i++) 
             {
-                 if (len  < 1 + abs(vec_idex[i].date_index))
+                 if (len  < 2 + abs(vec_idex[i].date_index))
                      continue;
 
                  count = 0;
                  int k = len - abs(vec_idex[i].date_index) - 2;
-                 if (k < 0)
-                     count = tt[len - abs(vec_idex[i].date_index_end) -1]->range_percent;
-                 else
                      count = tt[len - abs(vec_idex[i].date_index_end) -1]->range_percent - tt[k]->range_percent;
 
                  if (count >= vec_idex[i].fpoint)
