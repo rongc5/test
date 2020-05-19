@@ -42,15 +42,18 @@ void uhandler_select::perform(http_req_head_para * req_head, std::string * recv_
     Value data_array(kArrayType);
 
     std::set<std::string> res;
-    std::map<std::string, std::string> url_para_map;
+    std::vector<std::map<std::string, std::string>> url_para_map;
 
     std::string decode_path;
     UrlDecode(req_head->_url_path, decode_path);
     parse_url_para(decode_path, url_para_map);
 
-    if (!has_key<std::string, std::string>(url_para_map, "block") && !has_key<std::string, std::string>(url_para_map, "block_v"))
+    if (!strstr(decode_path.c_str(), "block") && !strstr(decode_path.c_str(), "block_v"))
         {
-            url_para_map["block_v"] = "1";    
+            std::map<std::string, std::string> tmap;
+            tmap["block_v"] = "1";    
+
+            url_para_map.push_back(tmap);
         }
 
     do_check_select(url_para_map, res);
@@ -88,33 +91,32 @@ void uhandler_select::perform(http_req_head_para * req_head, std::string * recv_
     res_head->_headers.insert(std::make_pair("Content-Length", t_buf));
 }
 
-int uhandler_select::do_check_select(std::map<std::string, std::string> & url_para_map, std::set<std::string> & res)
+int uhandler_select::do_check_select(std::vector<std::map<std::string, std::string>> & url_para_map, std::set<std::string> & res)
 {
     proc_data* p_data = proc_data::instance();
     if (!p_data)
         return -1;
 
-    std::map<std::string, std::string>::iterator it;
     base_search_index  search_index;
     std::set<std::string> positive, negative;
+    search_res tmp;
 
-    for (it = url_para_map.begin(); it != url_para_map.end(); it++)
+    for (auto it = url_para_map.begin(); it != url_para_map.end(); it++)
     {
-        std::string key = it->first;
-        std::string value = it->second;
+        std::string key = it->begin()->first;
+        std::string value = it->begin()->second;
 
         search_index = p_data->get_search_index(key);
         if (!search_index)
             continue;
 
-        std::set<std::string> tmp;
 
         if (start_with(key, "hq") || start_with(key, "hs"))
         {
             if (end_with(key, "_v"))
-                tmp = negative;
+                tmp._id_sets = negative;
             else
-                tmp = positive;
+                tmp._id_sets = positive;
         }
 
         search_index(key, value, tmp);
@@ -126,13 +128,13 @@ int uhandler_select::do_check_select(std::map<std::string, std::string> & url_pa
 
             if (negative.empty())
             {
-                negative = tmp;
+                negative = tmp._id_sets;
             }
             else
             {
                 std::vector<std::set<std::string> >  arr;
                 arr.push_back(negative);
-                arr.push_back(tmp);
+                arr.push_back(tmp._id_sets);
 
                 get_union(arr, negative);
             }
@@ -146,13 +148,13 @@ int uhandler_select::do_check_select(std::map<std::string, std::string> & url_pa
             
             if (positive.empty())
             {
-                positive = tmp;
+                positive = tmp._id_sets;
             }
             else 
             {
                 std::vector<std::set<std::string> >  arr;
                 arr.push_back(positive);
-                arr.push_back(tmp);
+                arr.push_back(tmp._id_sets);
 
                 get_intersection(arr, positive);
 

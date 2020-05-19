@@ -52,8 +52,22 @@ struct single_t
 
 typedef std::vector<single_t> single_vec;
 
+struct search_res
+{
+    //key, id, list
+    std::unordered_map<std::string, std::unordered_map<std::string, std::deque<int>, str_hasher>, str_hasher> _key_map;
+    bool empty()
+    {
+        return _id_sets.empty();
+    }
+
+    std::set<std::string> _id_sets;
+};
+
 using namespace std::placeholders;
-typedef std::function<bool(std::string &key, std::string &value, std::set<std::string> & search)> base_search_index;
+typedef std::function<bool(std::string &key, std::string &value, search_res & search)> base_search_index;
+
+typedef std::function<int(std::string & id, int date_index, int date_index_end)> search_sstr_index;
 
 struct hsingle_search_item
 {

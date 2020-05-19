@@ -9,7 +9,7 @@ class plate_search_index:public ToBufferMgr<std::unordered_multimap<std::shared_
     public:
         virtual ~plate_search_index(){}
 
-        bool search(std::string &key, std::string &value, std::set<std::string> & search);
+        bool search(std::string &key, std::string &value, search_res & search);
 };
 
 

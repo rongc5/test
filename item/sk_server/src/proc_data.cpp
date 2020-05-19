@@ -21,6 +21,7 @@ int proc_data::init(sk_conf * conf)
 
     reg_search_index();
     reg_handler();
+    reg_search_sstr();
 
     _conf = conf;
     
@@ -550,6 +551,9 @@ void proc_data::reg_search_index()
     _search_index_map["hqend_start_ge_num_ge"] = std::bind(&hquotation_search_index::do_check_hqend_start_ge_num_ge, _hquotation_index, _1, _2, _3);
     _search_index_map["hqend_start_ge_num_ge_v"] = std::bind(&hquotation_search_index::do_check_hqend_start_ge_num_ge, _hquotation_index, _1, _2, _3);
 
+    _search_index_map["hqend_start_ge_ratio_ge"] = std::bind(&hquotation_search_index::do_check_hqend_start_ge_ratio_ge, _hquotation_index, _1, _2, _3);
+    _search_index_map["hqend_start_ge_ratio_ge_v"] = std::bind(&hquotation_search_index::do_check_hqend_start_ge_ratio_ge, _hquotation_index, _1, _2, _3);
+
     _search_index_map["hqend_avg_end_ge"] = std::bind(&hquotation_search_index::do_check_hqend_avg_end_ge, _hquotation_index, _1, _2, _3);
     _search_index_map["hqend_avg_end_ge_v"] = std::bind(&hquotation_search_index::do_check_hqend_avg_end_ge, _hquotation_index, _1, _2, _3);
     _search_index_map["hqend_avg_end_le"] = std::bind(&hquotation_search_index::do_check_hqend_avg_end_le, _hquotation_index, _1, _2, _3);
@@ -658,4 +662,85 @@ std::shared_ptr<url_handler> proc_data::get_url_handler(std::string & key)
 
     return ii->second;
 
+}
+
+int proc_data::get_highest_index(std::string & id, int date_index, int date_index_end)
+{
+    proc_data* p_data = proc_data::instance();
+
+    hquotation_search_item * search_index = p_data->_hquotation_index->current();
+
+    auto ii = search_index->id_quotation.find(id);
+    if (ii == search_index->id_quotation.end())
+    {
+        return -1;
+    }
+
+    const std::deque< std::shared_ptr<quotation_t>> &  tt = ii->second;
+    int len = tt.size();
+    int index;
+    if (len  < 1 + abs(date_index))
+        return -1;
+
+    float max = tt[len - abs(date_index_end) - 1]->high;                                        
+    index = len  -abs(date_index_end)- 1;
+    for (int k = len - abs(date_index) - 1; k <= len  -abs(date_index_end)- 1; k++) 
+        if (max <= tt[k]->high)
+        {
+            max = tt[k]->high;
+            index = k;
+        }
+
+    return index;
+}
+
+int proc_data::get_lowest_index(std::string & id, int date_index, int date_index_end)
+{
+    proc_data* p_data = proc_data::instance();
+
+    hquotation_search_item * search_index = p_data->_hquotation_index->current();
+
+    auto ii = search_index->id_quotation.find(id);
+    if (ii == search_index->id_quotation.end())
+    {
+        return -1;
+    }
+
+    const std::deque< std::shared_ptr<quotation_t>> &  tt = ii->second;
+    int len = tt.size();
+    int index;
+    if (len  < 1 + abs(date_index))
+        return -1;
+
+    float max = tt[len - abs(date_index_end) - 1]->low;
+    index = len  -abs(date_index_end)- 1;
+    for (int k = len - abs(date_index) - 1; k <= len  -abs(date_index_end)- 1; k++)
+        if (max >= tt[k]->low)
+        {
+            max = tt[k]->low;
+            index = k;
+        }
+
+    return index;
+}
+
+void proc_data::reg_search_sstr()
+{
+    _search_sstr_map["highest"] = std::bind(&proc_data::get_highest_index, _1, _2, _3);
+    _search_sstr_map["lowest"] = std::bind(&proc_data::get_lowest_index, _1, _2, _3);
+}
+
+
+int proc_data::get_search_sstr(std::string & id, std::string & sstr, int date_index, int date_index_end)
+{
+    auto ii = _search_sstr_map.find(sstr);
+    if (ii == _search_sstr_map.end())
+    {
+        return -1;
+    }
+
+    int ret = ii->second(id, date_index, date_index_end);
+
+
+    return ret;
 }

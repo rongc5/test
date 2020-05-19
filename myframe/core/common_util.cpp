@@ -586,8 +586,17 @@ int parse_url(const std::string &url, url_info & info)
 
     return 0;
 }
-
 void parse_url_para(const std::string &url_path, std::map<std::string, std::string> &url_para_map)
+{
+    std::vector<std::map<std::string, std::string>> tmap;
+    parse_url_para(url_path, tmap);
+    for (auto ii = tmap.begin(); ii != tmap.end(); ii++)
+    {
+        url_para_map[ii->begin()->first] = ii->begin()->second;
+    }
+}
+
+void parse_url_para(const std::string &url_path, std::vector<std::map<std::string, std::string>> &url_para_map)
 {
     size_t pos = url_path.find("?");
     if (pos == std::string::npos)
@@ -610,11 +619,13 @@ void parse_url_para(const std::string &url_path, std::map<std::string, std::stri
         SplitString(vec_str[ii].c_str(), "=", &tmp_vec, SPLIT_MODE_ONE);
         if (tmp_vec.size() == 2)
         {
+            std::map<std::string, std::string> tmap;
             StringTrim(tmp_vec[0]);
             StringTrim(tmp_vec[1]);
             std::string tmp_para;
             UrlDecode(tmp_vec[1], tmp_para);
-            url_para_map.insert(std::make_pair(tmp_vec[0], tmp_para));
+            tmap.insert(std::make_pair(tmp_vec[0], tmp_para));
+            url_para_map.push_back(tmap);
         }
     }               
 }

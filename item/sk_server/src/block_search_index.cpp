@@ -2,7 +2,7 @@
 #include "sk_util.h"
 #include "proc_data.h"
 
-bool block_search_index::search(std::string &key, std::string &value, std::set<std::string> & search)
+bool block_search_index::search(std::string &key, std::string &value, search_res & search)
 {
    if (!key.compare("block") || !key.compare("block_v"))
    {
@@ -12,7 +12,7 @@ bool block_search_index::search(std::string &key, std::string &value, std::set<s
    return false;
 }
 
-bool block_search_index::do_check_block_search(std::string &key, std::string &value, std::set<std::string> & search)
+bool block_search_index::do_check_block_search(std::string &key, std::string &value, search_res & search)
 {
     std::unordered_set<std::string, str_hasher>::iterator it_le, it_ge, it;
 
@@ -23,7 +23,7 @@ bool block_search_index::do_check_block_search(std::string &key, std::string &va
 
     for (it = it_ge; it != it_le; ++it)
     {
-        search.insert(*it);
+        search._id_sets.insert(*it);
     }
 
     return true;

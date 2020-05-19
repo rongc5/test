@@ -1,6 +1,6 @@
 #include "address_search_index.h"
 
-bool address_search_index::search(std::string &key, std::string &value, std::set<std::string> & search)
+bool address_search_index::search(std::string &key, std::string &value, search_res & search)
 {
     std::vector<std::string> tmp_vec;
     SplitString(value.c_str(), '|', &tmp_vec, SPLIT_MODE_ALL);
@@ -14,7 +14,7 @@ bool address_search_index::search(std::string &key, std::string &value, std::set
         auto range = search_index->equal_range(ss);
         for (auto it = range.first; it != range.second; ++it)
         {
-                search.insert(it->second);
+                search._id_sets.insert(it->second);
         }   
     }
 

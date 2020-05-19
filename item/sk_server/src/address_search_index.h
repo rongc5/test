@@ -9,7 +9,7 @@ class address_search_index:public ToBufferMgr<std::unordered_multimap<std::share
     public:
         virtual ~address_search_index(){}
 
-        bool search(std::string &key, std::string &value, std::set<std::string> & search);
+        bool search(std::string &key, std::string &value, search_res & search);
 };
 
 

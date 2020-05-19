@@ -3,7 +3,7 @@
 #include "proc_data.h"
 #include "history_single_dict.h"
 
-bool hsingle_search_index::do_hsingle_diff_le(std::string &key, std::string &value, std::set<std::string> & search)
+bool hsingle_search_index::do_hsingle_diff_le(std::string &key, std::string &value, search_res & search)
 {
     std::vector<hidex_item> vec_idex;
     hsingle_search_item * search_index = current();
@@ -76,7 +76,7 @@ bool hsingle_search_index::do_hsingle_diff_le(std::string &key, std::string &val
     }
     else
     {
-        for (auto k = search.begin(); k != search.end(); k++)
+        for (auto k = search._id_sets.begin(); k != search._id_sets.end(); k++)
         {
             auto ii = search_index->id_single.find(*k);
             if (ii == search_index->id_single.end())
@@ -104,12 +104,12 @@ bool hsingle_search_index::do_hsingle_diff_le(std::string &key, std::string &val
         }
     }
     
-    search = res;
+    search._id_sets = res;
 
     return true;
 }
 
-bool hsingle_search_index::do_hsingle_diff_ge(std::string &key, std::string &value, std::set<std::string> & search)
+bool hsingle_search_index::do_hsingle_diff_ge(std::string &key, std::string &value, search_res & search)
 {
     std::vector<hidex_item> vec_idex;
     hsingle_search_item * search_index = current();
@@ -182,7 +182,7 @@ bool hsingle_search_index::do_hsingle_diff_ge(std::string &key, std::string &val
     }
     else
     {
-        for (auto k = search.begin(); k != search.end(); k++)
+        for (auto k = search._id_sets.begin(); k != search._id_sets.end(); k++)
         {
             auto ii = search_index->id_single.find(*k);
             if (ii == search_index->id_single.end())
@@ -210,12 +210,12 @@ bool hsingle_search_index::do_hsingle_diff_ge(std::string &key, std::string &val
         }
     }
 
-    search = res;
+    search._id_sets = res;
 
     return true;
 }
 
-bool hsingle_search_index::do_hsingle_diff_ge_num_ge(std::string &key, std::string &value, std::set<std::string> & search)
+bool hsingle_search_index::do_hsingle_diff_ge_num_ge(std::string &key, std::string &value, search_res & search)
 {
     std::vector<hidex_item> vec_idex;
     hsingle_search_item * search_index = current();
@@ -299,7 +299,7 @@ bool hsingle_search_index::do_hsingle_diff_ge_num_ge(std::string &key, std::stri
     }
     else
     {
-        for (auto k = search.begin(); k != search.end(); k++)
+        for (auto k = search._id_sets.begin(); k != search._id_sets.end(); k++)
         {
             auto ii = search_index->id_single.find(*k);
             if (ii == search_index->id_single.end())
@@ -332,12 +332,12 @@ bool hsingle_search_index::do_hsingle_diff_ge_num_ge(std::string &key, std::stri
         }
     }
 
-    search = res;
+    search._id_sets = res;
 
     return true;
 }
 
-bool hsingle_search_index::do_hsingle_sum_ge(std::string &key, std::string &value, std::set<std::string> & search)
+bool hsingle_search_index::do_hsingle_sum_ge(std::string &key, std::string &value, search_res & search)
 {
     std::vector<hidex_item> vec_idex;
     hsingle_search_item * search_index = current();
@@ -420,7 +420,7 @@ bool hsingle_search_index::do_hsingle_sum_ge(std::string &key, std::string &valu
     }
     else
     {
-        for (auto k = search.begin(); k != search.end(); k++)
+        for (auto k = search._id_sets.begin(); k != search._id_sets.end(); k++)
         {
             auto ii = search_index->id_sum_single.find(*k);
             if (ii == search_index->id_sum_single.end())
@@ -453,12 +453,12 @@ bool hsingle_search_index::do_hsingle_sum_ge(std::string &key, std::string &valu
         }
     }
 
-    search = res;
+    search._id_sets = res;
 
     return true;
 }
 
-bool hsingle_search_index::do_hsingle_sum_le(std::string &key, std::string &value, std::set<std::string> & search)
+bool hsingle_search_index::do_hsingle_sum_le(std::string &key, std::string &value, search_res & search)
 {
     std::vector<hidex_item> vec_idex;
     hsingle_search_item * search_index = current();
@@ -541,7 +541,7 @@ bool hsingle_search_index::do_hsingle_sum_le(std::string &key, std::string &valu
     }
     else
     {
-        for (auto k = search.begin(); k != search.end(); k++)
+        for (auto k = search._id_sets.begin(); k != search._id_sets.end(); k++)
         {
             auto ii = search_index->id_sum_single.find(*k);
             if (ii == search_index->id_sum_single.end())
@@ -574,13 +574,13 @@ bool hsingle_search_index::do_hsingle_sum_le(std::string &key, std::string &valu
         }
     }
 
-    search = res;
+    search._id_sets = res;
 
     return true;
 }
 
 
-bool hsingle_search_index::do_hsingle_diff2_le(std::string &key, std::string &value, std::set<std::string> & search)
+bool hsingle_search_index::do_hsingle_diff2_le(std::string &key, std::string &value, search_res & search)
 {
     std::vector<hidex_item> vec_idex;
     hsingle_search_item * search_index = current();
@@ -659,7 +659,7 @@ bool hsingle_search_index::do_hsingle_diff2_le(std::string &key, std::string &va
     }
     else
     {
-        for (auto k = search.begin(); k != search.end(); k++)
+        for (auto k = search._id_sets.begin(); k != search._id_sets.end(); k++)
         {
             auto ii = search_index->id_single.find(*k);
             if (ii == search_index->id_single.end())
@@ -693,12 +693,12 @@ bool hsingle_search_index::do_hsingle_diff2_le(std::string &key, std::string &va
         }
     }
     
-    search = res;
+    search._id_sets = res;
 
     return true;
 }
 
-bool hsingle_search_index::do_hsingle_diff2_ge(std::string &key, std::string &value, std::set<std::string> & search)
+bool hsingle_search_index::do_hsingle_diff2_ge(std::string &key, std::string &value, search_res & search)
 {
     std::vector<hidex_item> vec_idex;
     hsingle_search_item * search_index = current();
@@ -778,7 +778,7 @@ bool hsingle_search_index::do_hsingle_diff2_ge(std::string &key, std::string &va
     }
     else
     {
-        for (auto k = search.begin(); k != search.end(); k++)
+        for (auto k = search._id_sets.begin(); k != search._id_sets.end(); k++)
         {
             auto ii = search_index->id_single.find(*k);
             if (ii == search_index->id_single.end())
@@ -812,7 +812,7 @@ bool hsingle_search_index::do_hsingle_diff2_ge(std::string &key, std::string &va
         }
     }
 
-    search = res;
+    search._id_sets = res;
 
     return true;
 }

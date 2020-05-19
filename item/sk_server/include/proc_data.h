@@ -90,6 +90,15 @@ class proc_data:public reload_inf
         std::shared_ptr<finance_search_index> _finance_index;
 
         std::shared_ptr<rquotation_search_index> _rquotation_index;
+    public:
+
+        void reg_search_sstr();
+        int get_search_sstr(std::string & id, std::string & sstr, int date_index, int date_index_end);
+
+
+
+        static int get_highest_index(std::string & id, int date_index, int date_index_end);
+        static int get_lowest_index(std::string & id, int date_index, int date_index_end);
 
     public:
         char proc_name[SIZE_LEN_256];
@@ -99,6 +108,9 @@ class proc_data:public reload_inf
         std::map<std::string, base_search_index> _search_index_map;
 
         std::map<std::string, std::shared_ptr<url_handler> > _uhandler_map;
+
+        std::map<std::string, search_sstr_index> _search_sstr_map;
+
 
     private:
         static proc_data* _singleton;

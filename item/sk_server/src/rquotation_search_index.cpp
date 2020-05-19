@@ -3,7 +3,7 @@
 #include "proc_data.h"
 #include "history_quotation_dict.h"
 
-bool rquotation_search_index::do_check_end_le(std::string &key, std::string &value, std::set<std::string> & search)
+bool rquotation_search_index::do_check_end_le(std::string &key, std::string &value, search_res & search)
 {
     float end = 0;
     std::multimap<float, std::string>::iterator it_le, it_ge, it;
@@ -18,13 +18,13 @@ bool rquotation_search_index::do_check_end_le(std::string &key, std::string &val
 
     for (it = it_ge; it != it_le; ++it)
     {
-        search.insert(it->second);
+        search._id_sets.insert(it->second);
     }
 
     return true;
 }
 
-bool rquotation_search_index::do_check_end_ge(std::string &key, std::string &value, std::set<std::string> & search)
+bool rquotation_search_index::do_check_end_ge(std::string &key, std::string &value, search_res & search)
 {
     float end = 0;
     std::multimap<float, std::string>::iterator it_le, it_ge, it;
@@ -38,13 +38,13 @@ bool rquotation_search_index::do_check_end_ge(std::string &key, std::string &val
 
     for (it = it_ge; it != it_le; ++it)
     {
-        search.insert(it->second);
+        search._id_sets.insert(it->second);
     }
 
     return true;
 }            
 
-bool rquotation_search_index::do_check_change_rate_le(std::string &key, std::string &value, std::set<std::string> & search)
+bool rquotation_search_index::do_check_change_rate_le(std::string &key, std::string &value, search_res & search)
 {
     float end = 0;
     std::multimap<float, std::string>::iterator it_le, it_ge, it;
@@ -59,13 +59,13 @@ bool rquotation_search_index::do_check_change_rate_le(std::string &key, std::str
 
     for (it = it_ge; it != it_le; ++it)
     {
-        search.insert(it->second);
+        search._id_sets.insert(it->second);
     }
 
     return true;
 }
 
-bool rquotation_search_index::do_check_change_rate_ge(std::string &key, std::string &value, std::set<std::string> & search)
+bool rquotation_search_index::do_check_change_rate_ge(std::string &key, std::string &value, search_res & search)
 {
     float end = 0;
     std::multimap<float, std::string>::iterator it_le, it_ge, it;
@@ -79,13 +79,13 @@ bool rquotation_search_index::do_check_change_rate_ge(std::string &key, std::str
 
     for (it = it_ge; it != it_le; ++it)
     {
-        search.insert(it->second);
+        search._id_sets.insert(it->second);
     }
 
     return true;
 }
 
-bool rquotation_search_index::do_check_range_percent_le(std::string &key, std::string &value, std::set<std::string> & search)
+bool rquotation_search_index::do_check_range_percent_le(std::string &key, std::string &value, search_res & search)
 {
     float end = 0;
     std::multimap<float, std::string>::iterator it_le, it_ge, it; 
@@ -100,13 +100,13 @@ bool rquotation_search_index::do_check_range_percent_le(std::string &key, std::s
 
     for (it = it_ge; it != it_le; ++it)
     {   
-        search.insert(it->second);
+        search._id_sets.insert(it->second);
     }   
 
     return true;
 }
 
-bool rquotation_search_index::do_check_range_percent_ge(std::string &key, std::string &value, std::set<std::string> & search)
+bool rquotation_search_index::do_check_range_percent_ge(std::string &key, std::string &value, search_res & search)
 {
     float end = 0;
     std::multimap<float, std::string>::iterator it_le, it_ge, it; 
@@ -120,13 +120,13 @@ bool rquotation_search_index::do_check_range_percent_ge(std::string &key, std::s
 
     for (it = it_ge; it != it_le; ++it)
     {   
-        search.insert(it->second);
+        search._id_sets.insert(it->second);
     }
 
     return true;
 }
 
-bool rquotation_search_index::do_check_down_pointer_le(std::string &key, std::string &value, std::set<std::string> & search)
+bool rquotation_search_index::do_check_down_pointer_le(std::string &key, std::string &value, search_res & search)
 {
     float end = 0;
     std::multimap<float, std::string>::iterator it_le, it_ge, it; 
@@ -141,13 +141,13 @@ bool rquotation_search_index::do_check_down_pointer_le(std::string &key, std::st
 
     for (it = it_ge; it != it_le; ++it)
     {   
-        search.insert(it->second);
+        search._id_sets.insert(it->second);
     }   
 
     return true;
 }
 
-bool rquotation_search_index::do_check_down_pointer_ge(std::string &key, std::string &value, std::set<std::string> & search)
+bool rquotation_search_index::do_check_down_pointer_ge(std::string &key, std::string &value, search_res & search)
 {
     float end = 0;
     std::multimap<float, std::string>::iterator it_le, it_ge, it; 
@@ -161,13 +161,13 @@ bool rquotation_search_index::do_check_down_pointer_ge(std::string &key, std::st
 
     for (it = it_ge; it != it_le; ++it)
     {   
-        search.insert(it->second);
+        search._id_sets.insert(it->second);
     }
 
     return true;
 }
 
-bool rquotation_search_index::do_check_up_pointer_le(std::string &key, std::string &value, std::set<std::string> & search)
+bool rquotation_search_index::do_check_up_pointer_le(std::string &key, std::string &value, search_res & search)
 {
     float end = 0;
     std::multimap<float, std::string>::iterator it_le, it_ge, it; 
@@ -182,13 +182,13 @@ bool rquotation_search_index::do_check_up_pointer_le(std::string &key, std::stri
 
     for (it = it_ge; it != it_le; ++it)
     {   
-        search.insert(it->second);
+        search._id_sets.insert(it->second);
     }   
 
     return true;
 }
 
-bool rquotation_search_index::do_check_up_pointer_ge(std::string &key, std::string &value, std::set<std::string> & search)
+bool rquotation_search_index::do_check_up_pointer_ge(std::string &key, std::string &value, search_res & search)
 {
     float end = 0;
     std::multimap<float, std::string>::iterator it_le, it_ge, it; 
@@ -202,13 +202,13 @@ bool rquotation_search_index::do_check_up_pointer_ge(std::string &key, std::stri
 
     for (it = it_ge; it != it_le; ++it)
     {   
-        search.insert(it->second);
+        search._id_sets.insert(it->second);
     }
 
     return true;
 }
 
-bool rquotation_search_index::do_check_end_avg_end_le(std::string &key, std::string &value, std::set<std::string> & search)
+bool rquotation_search_index::do_check_end_avg_end_le(std::string &key, std::string &value, search_res & search)
 {
     float end = 0;
     std::multimap<float, std::string>::iterator it_le, it_ge, it; 
@@ -223,13 +223,13 @@ bool rquotation_search_index::do_check_end_avg_end_le(std::string &key, std::str
 
     for (it = it_ge; it != it_le; ++it)
     {   
-        search.insert(it->second);
+        search._id_sets.insert(it->second);
     }   
 
     return true;
 }
 
-bool rquotation_search_index::do_check_end_avg_end_ge(std::string &key, std::string &value, std::set<std::string> & search)
+bool rquotation_search_index::do_check_end_avg_end_ge(std::string &key, std::string &value, search_res & search)
 {
     float end = 0;
     std::multimap<float, std::string>::iterator it_le, it_ge, it; 
@@ -243,13 +243,13 @@ bool rquotation_search_index::do_check_end_avg_end_ge(std::string &key, std::str
 
     for (it = it_ge; it != it_le; ++it)
     {   
-        search.insert(it->second);
+        search._id_sets.insert(it->second);
     }
 
     return true;
 }
 
-bool rquotation_search_index::do_check_end_end5_le(std::string &key, std::string &value, std::set<std::string> & search)
+bool rquotation_search_index::do_check_end_end5_le(std::string &key, std::string &value, search_res & search)
 {
     float end = 0;
     std::multimap<float, std::string>::iterator it_le, it_ge, it; 
@@ -264,13 +264,13 @@ bool rquotation_search_index::do_check_end_end5_le(std::string &key, std::string
 
     for (it = it_ge; it != it_le; ++it)
     {   
-        search.insert(it->second);
+        search._id_sets.insert(it->second);
     }   
 
     return true;
 }
 
-bool rquotation_search_index::do_check_end_end5_ge(std::string &key, std::string &value, std::set<std::string> & search)
+bool rquotation_search_index::do_check_end_end5_ge(std::string &key, std::string &value, search_res & search)
 {
     float end = 0;
     std::multimap<float, std::string>::iterator it_le, it_ge, it; 
@@ -284,13 +284,13 @@ bool rquotation_search_index::do_check_end_end5_ge(std::string &key, std::string
 
     for (it = it_ge; it != it_le; ++it)
     {   
-        search.insert(it->second);
+        search._id_sets.insert(it->second);
     }
 
     return true;
 }
 
-bool rquotation_search_index::do_check_end_end10_le(std::string &key, std::string &value, std::set<std::string> & search)
+bool rquotation_search_index::do_check_end_end10_le(std::string &key, std::string &value, search_res & search)
 {
     float end = 0;
     std::multimap<float, std::string>::iterator it_le, it_ge, it; 
@@ -305,13 +305,13 @@ bool rquotation_search_index::do_check_end_end10_le(std::string &key, std::strin
 
     for (it = it_ge; it != it_le; ++it)
     {   
-        search.insert(it->second);
+        search._id_sets.insert(it->second);
     }   
 
     return true;
 }
 
-bool rquotation_search_index::do_check_end_end10_ge(std::string &key, std::string &value, std::set<std::string> & search)
+bool rquotation_search_index::do_check_end_end10_ge(std::string &key, std::string &value, search_res & search)
 {
     float end = 0;
     std::multimap<float, std::string>::iterator it_le, it_ge, it; 
@@ -325,13 +325,13 @@ bool rquotation_search_index::do_check_end_end10_ge(std::string &key, std::strin
 
     for (it = it_ge; it != it_le; ++it)
     {   
-        search.insert(it->second);
+        search._id_sets.insert(it->second);
     }
 
     return true;
 }
 
-bool rquotation_search_index::do_check_end_end20_le(std::string &key, std::string &value, std::set<std::string> & search)
+bool rquotation_search_index::do_check_end_end20_le(std::string &key, std::string &value, search_res & search)
 {
     float end = 0;
     std::multimap<float, std::string>::iterator it_le, it_ge, it; 
@@ -346,13 +346,13 @@ bool rquotation_search_index::do_check_end_end20_le(std::string &key, std::strin
 
     for (it = it_ge; it != it_le; ++it)
     {   
-        search.insert(it->second);
+        search._id_sets.insert(it->second);
     }   
 
     return true;
 }
 
-bool rquotation_search_index::do_check_end_end20_ge(std::string &key, std::string &value, std::set<std::string> & search)
+bool rquotation_search_index::do_check_end_end20_ge(std::string &key, std::string &value, search_res & search)
 {
     float end = 0;
     std::multimap<float, std::string>::iterator it_le, it_ge, it; 
@@ -366,13 +366,13 @@ bool rquotation_search_index::do_check_end_end20_ge(std::string &key, std::strin
 
     for (it = it_ge; it != it_le; ++it)
     {   
-        search.insert(it->second);
+        search._id_sets.insert(it->second);
     }
 
     return true;
 }
 
-bool rquotation_search_index::do_check_end_end30_le(std::string &key, std::string &value, std::set<std::string> & search)
+bool rquotation_search_index::do_check_end_end30_le(std::string &key, std::string &value, search_res & search)
 {
     float end = 0;
     std::multimap<float, std::string>::iterator it_le, it_ge, it; 
@@ -387,13 +387,13 @@ bool rquotation_search_index::do_check_end_end30_le(std::string &key, std::strin
 
     for (it = it_ge; it != it_le; ++it)
     {   
-        search.insert(it->second);
+        search._id_sets.insert(it->second);
     }   
 
     return true;
 }
 
-bool rquotation_search_index::do_check_end_end30_ge(std::string &key, std::string &value, std::set<std::string> & search)
+bool rquotation_search_index::do_check_end_end30_ge(std::string &key, std::string &value, search_res & search)
 {
     float end = 0;
     std::multimap<float, std::string>::iterator it_le, it_ge, it; 
@@ -407,7 +407,7 @@ bool rquotation_search_index::do_check_end_end30_ge(std::string &key, std::strin
 
     for (it = it_ge; it != it_le; ++it)
     {   
-        search.insert(it->second);
+        search._id_sets.insert(it->second);
     }
 
     return true;

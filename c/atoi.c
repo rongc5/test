@@ -15,5 +15,8 @@ int main(int c, char **v)
 
 	printf("%d\n", atoi(ptr));
 
+
+	printf("%d\n", atoi("20high"));
+
 	return 0;
 }

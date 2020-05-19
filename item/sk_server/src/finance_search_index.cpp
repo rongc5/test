@@ -3,7 +3,7 @@
 #include "proc_data.h"
 #include "history_quotation_dict.h"
 
-bool finance_search_index::do_check_pe_le(std::string &key, std::string &value, std::set<std::string> & search)
+bool finance_search_index::do_check_pe_le(std::string &key, std::string &value, search_res & search)
 {
     int end = 0;
     std::multimap<int, std::string>::iterator it_le, it_ge, it;
@@ -18,13 +18,13 @@ bool finance_search_index::do_check_pe_le(std::string &key, std::string &value, 
 
     for (it = it_ge; it != it_le; ++it)
     {
-        search.insert(it->second);
+        search._id_sets.insert(it->second);
     }
 
     return true;
 }
 
-bool finance_search_index::do_check_pe_ge(std::string &key, std::string &value, std::set<std::string> & search)
+bool finance_search_index::do_check_pe_ge(std::string &key, std::string &value, search_res & search)
 {
     int end = 0;
     std::multimap<int, std::string>::iterator it_le, it_ge, it;
@@ -38,13 +38,13 @@ bool finance_search_index::do_check_pe_ge(std::string &key, std::string &value, 
 
     for (it = it_ge; it != it_le; ++it)
     {
-        search.insert(it->second);
+        search._id_sets.insert(it->second);
     }
 
     return true;
 }                 
 
-bool finance_search_index::do_check_pb_le(std::string &key, std::string &value, std::set<std::string> & search)
+bool finance_search_index::do_check_pb_le(std::string &key, std::string &value, search_res & search)
 {
     int end = 0;
     std::multimap<int, std::string>::iterator it_le, it_ge, it;
@@ -59,13 +59,13 @@ bool finance_search_index::do_check_pb_le(std::string &key, std::string &value, 
 
     for (it = it_ge; it != it_le; ++it)
     {
-        search.insert(it->second);
+        search._id_sets.insert(it->second);
     }
 
     return true;
 }
 
-bool finance_search_index::do_check_pb_ge(std::string &key, std::string &value, std::set<std::string> & search)
+bool finance_search_index::do_check_pb_ge(std::string &key, std::string &value, search_res & search)
 {
     int end = 0;
     std::multimap<int, std::string>::iterator it_le, it_ge, it;
@@ -79,13 +79,13 @@ bool finance_search_index::do_check_pb_ge(std::string &key, std::string &value, 
 
     for (it = it_ge; it != it_le; ++it)
     {
-        search.insert(it->second);
+        search._id_sets.insert(it->second);
     }
 
     return true;
 }
 
-bool finance_search_index::do_check_value_le(std::string &key, std::string &value, std::set<std::string> & search)
+bool finance_search_index::do_check_value_le(std::string &key, std::string &value, search_res & search)
 {
     int end = 0;
     std::multimap<int, std::string>::iterator it_le, it_ge, it;
@@ -100,13 +100,13 @@ bool finance_search_index::do_check_value_le(std::string &key, std::string &valu
 
     for (it = it_ge; it != it_le; ++it)
     {
-        search.insert(it->second);
+        search._id_sets.insert(it->second);
     }
 
     return true;
 }
 
-bool finance_search_index::do_check_value_ge(std::string &key, std::string &value, std::set<std::string> & search)
+bool finance_search_index::do_check_value_ge(std::string &key, std::string &value, search_res & search)
 {
     int end = 0;
     std::multimap<int, std::string>::iterator it_le, it_ge, it;
@@ -120,14 +120,14 @@ bool finance_search_index::do_check_value_ge(std::string &key, std::string &valu
 
     for (it = it_ge; it != it_le; ++it)
     {
-        search.insert(it->second);
+        search._id_sets.insert(it->second);
     }
 
     return true;
 }
 
 
-bool finance_search_index::do_check_cir_value_le(std::string &key, std::string &value, std::set<std::string> & search)
+bool finance_search_index::do_check_cir_value_le(std::string &key, std::string &value, search_res & search)
 {
     int end = 0;
     std::multimap<int, std::string>::iterator it_le, it_ge, it;
@@ -142,13 +142,13 @@ bool finance_search_index::do_check_cir_value_le(std::string &key, std::string &
 
     for (it = it_ge; it != it_le; ++it)
     {
-        search.insert(it->second);
+        search._id_sets.insert(it->second);
     }
 
     return true;
 }
 
-bool finance_search_index::do_check_cir_value_ge(std::string &key, std::string &value, std::set<std::string> & search)
+bool finance_search_index::do_check_cir_value_ge(std::string &key, std::string &value, search_res & search)
 {
     int end = 0;
     std::multimap<int, std::string>::iterator it_le, it_ge, it;
@@ -162,13 +162,13 @@ bool finance_search_index::do_check_cir_value_ge(std::string &key, std::string &
 
     for (it = it_ge; it != it_le; ++it)
     {
-        search.insert(it->second);
+        search._id_sets.insert(it->second);
     }
 
     return true;
 }
 
-bool finance_search_index::do_check_mgxj_le(std::string &key, std::string &value, std::set<std::string> & search)
+bool finance_search_index::do_check_mgxj_le(std::string &key, std::string &value, search_res & search)
 {
     float end = 0;
     std::multimap<float, std::string>::iterator it_le, it_ge, it;
@@ -183,13 +183,13 @@ bool finance_search_index::do_check_mgxj_le(std::string &key, std::string &value
 
     for (it = it_ge; it != it_le; ++it)
     {
-        search.insert(it->second);
+        search._id_sets.insert(it->second);
     }
 
     return true;
 }
 
-bool finance_search_index::do_check_mgxj_ge(std::string &key, std::string &value, std::set<std::string> & search)
+bool finance_search_index::do_check_mgxj_ge(std::string &key, std::string &value, search_res & search)
 {
     float end = 0;
     std::multimap<float, std::string>::iterator it_le, it_ge, it;
@@ -203,13 +203,13 @@ bool finance_search_index::do_check_mgxj_ge(std::string &key, std::string &value
 
     for (it = it_ge; it != it_le; ++it)
     {
-        search.insert(it->second);
+        search._id_sets.insert(it->second);
     }
 
     return true;
 }
 
-bool finance_search_index::do_check_mgsy_le(std::string &key, std::string &value, std::set<std::string> & search)
+bool finance_search_index::do_check_mgsy_le(std::string &key, std::string &value, search_res & search)
 {
     float end = 0;
     std::multimap<float, std::string>::iterator it_le, it_ge, it;
@@ -224,13 +224,13 @@ bool finance_search_index::do_check_mgsy_le(std::string &key, std::string &value
 
     for (it = it_ge; it != it_le; ++it)
     {
-        search.insert(it->second);
+        search._id_sets.insert(it->second);
     }
 
     return true;
 }
 
-bool finance_search_index::do_check_mgsy_ge(std::string &key, std::string &value, std::set<std::string> & search)
+bool finance_search_index::do_check_mgsy_ge(std::string &key, std::string &value, search_res & search)
 {
     float end = 0;
     std::multimap<float, std::string>::iterator it_le, it_ge, it;
@@ -244,13 +244,13 @@ bool finance_search_index::do_check_mgsy_ge(std::string &key, std::string &value
 
     for (it = it_ge; it != it_le; ++it)
     {
-        search.insert(it->second);
+        search._id_sets.insert(it->second);
     }
 
     return true;
 }
 
-bool finance_search_index::do_check_zysrgr_le(std::string &key, std::string &value, std::set<std::string> & search)
+bool finance_search_index::do_check_zysrgr_le(std::string &key, std::string &value, search_res & search)
 {
     float end = 0;
     std::multimap<float, std::string>::iterator it_le, it_ge, it;
@@ -265,13 +265,13 @@ bool finance_search_index::do_check_zysrgr_le(std::string &key, std::string &val
 
     for (it = it_ge; it != it_le; ++it)
     {
-        search.insert(it->second);
+        search._id_sets.insert(it->second);
     }
 
     return true;
 }
 
-bool finance_search_index::do_check_zysrgr_ge(std::string &key, std::string &value, std::set<std::string> & search)
+bool finance_search_index::do_check_zysrgr_ge(std::string &key, std::string &value, search_res & search)
 {
     float end = 0;
     std::multimap<float, std::string>::iterator it_le, it_ge, it;
@@ -285,13 +285,13 @@ bool finance_search_index::do_check_zysrgr_ge(std::string &key, std::string &val
 
     for (it = it_ge; it != it_le; ++it)
     {
-        search.insert(it->second);
+        search._id_sets.insert(it->second);
     }
 
     return true;
 }
 
-bool finance_search_index::do_check_jlrgr_le(std::string &key, std::string &value, std::set<std::string> & search)
+bool finance_search_index::do_check_jlrgr_le(std::string &key, std::string &value, search_res & search)
 {
     float end = 0;
     std::multimap<float, std::string>::iterator it_le, it_ge, it;
@@ -306,13 +306,13 @@ bool finance_search_index::do_check_jlrgr_le(std::string &key, std::string &valu
 
     for (it = it_ge; it != it_le; ++it)
     {
-        search.insert(it->second);
+        search._id_sets.insert(it->second);
     }
 
     return true;
 }
 
-bool finance_search_index::do_check_jlrgr_ge(std::string &key, std::string &value, std::set<std::string> & search)
+bool finance_search_index::do_check_jlrgr_ge(std::string &key, std::string &value, search_res & search)
 {
     float end = 0;
     std::multimap<float, std::string>::iterator it_le, it_ge, it;
@@ -326,7 +326,7 @@ bool finance_search_index::do_check_jlrgr_ge(std::string &key, std::string &valu
 
     for (it = it_ge; it != it_le; ++it)
     {
-        search.insert(it->second);
+        search._id_sets.insert(it->second);
     }
 
     return true;

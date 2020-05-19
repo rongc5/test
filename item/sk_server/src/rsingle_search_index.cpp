@@ -1,7 +1,7 @@
 #include "rsingle_search_index.h"
 #include "proc_data.h"
 
-bool rsingle_search_index::do_check_rsingle_le(std::string &key, std::string &value, std::set<std::string> & search)
+bool rsingle_search_index::do_check_rsingle_le(std::string &key, std::string &value, search_res & search)
 {
     uint32_t index = 0;
     int end = 0;
@@ -30,13 +30,13 @@ bool rsingle_search_index::do_check_rsingle_le(std::string &key, std::string &va
 
     for (it = it_ge; it != it_le; ++it)
     {
-        search.insert(it->second);
+        search._id_sets.insert(it->second);
     }
 
     return true;
 }
 
-bool rsingle_search_index::do_check_rsingle_ge(std::string &key, std::string &value, std::set<std::string> & search)
+bool rsingle_search_index::do_check_rsingle_ge(std::string &key, std::string &value, search_res & search)
 {
     uint32_t index = 0;
     int end = 0;
@@ -65,13 +65,13 @@ bool rsingle_search_index::do_check_rsingle_ge(std::string &key, std::string &va
 
     for (it = it_ge; it != it_le; ++it)
     {
-        search.insert(it->second);
+        search._id_sets.insert(it->second);
     }
 
     return true;
 }
 
-bool rsingle_search_index::do_check_rsingle_diff2_le(std::string &key, std::string &value, std::set<std::string> & search)
+bool rsingle_search_index::do_check_rsingle_diff2_le(std::string &key, std::string &value, search_res & search)
 {
     std::vector<hidex_item> vec_idex;
     auto * search_index = current();
@@ -150,7 +150,7 @@ bool rsingle_search_index::do_check_rsingle_diff2_le(std::string &key, std::stri
     }
     else
     {
-        for (auto k = search.begin(); k != search.end(); k++)
+        for (auto k = search._id_sets.begin(); k != search._id_sets.end(); k++)
         {
             auto ii = search_index->id_single.find(*k);
             if (ii == search_index->id_single.end())
@@ -184,12 +184,12 @@ bool rsingle_search_index::do_check_rsingle_diff2_le(std::string &key, std::stri
         }
     }
 
-    search = res;
+    search._id_sets = res;
 
     return true;
 }
 
-bool rsingle_search_index::do_check_rsingle_diff2_ge(std::string &key, std::string &value, std::set<std::string> & search)
+bool rsingle_search_index::do_check_rsingle_diff2_ge(std::string &key, std::string &value, search_res & search)
 {
     std::vector<hidex_item> vec_idex;
     auto * search_index = current();
@@ -268,7 +268,7 @@ bool rsingle_search_index::do_check_rsingle_diff2_ge(std::string &key, std::stri
     }
     else
     {
-        for (auto k = search.begin(); k != search.end(); k++)
+        for (auto k = search._id_sets.begin(); k != search._id_sets.end(); k++)
         {
             auto ii = search_index->id_single.find(*k);
             if (ii == search_index->id_single.end())
@@ -302,7 +302,7 @@ bool rsingle_search_index::do_check_rsingle_diff2_ge(std::string &key, std::stri
         }
     }
 
-    search = res;
+    search._id_sets = res;
 
     return true;
 

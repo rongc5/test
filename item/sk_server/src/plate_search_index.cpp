@@ -1,7 +1,7 @@
 #include "plate_search_index.h"
 #include "sk_util.h"
 
-bool plate_search_index::search(std::string &key, std::string &value, std::set<std::string> & search)
+bool plate_search_index::search(std::string &key, std::string &value, search_res & search)
 {
     SETS_OP_TRPE tmp_ot;
     std::vector<std::string> tmp_vec;
@@ -36,9 +36,9 @@ bool plate_search_index::search(std::string &key, std::string &value, std::set<s
     }
 
     if (tmp_ot == SETS_OP_INTERSECTION)
-        get_intersection(tmp_res_vec, search);
+        get_intersection(tmp_res_vec, search._id_sets);
     else
-        get_union(tmp_res_vec, search);
+        get_union(tmp_res_vec, search._id_sets);
 
 
    return true;

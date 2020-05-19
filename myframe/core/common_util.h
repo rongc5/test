@@ -219,6 +219,7 @@ int parse_domain(const std::string &sDomain, std::vector<std::string> & vIp);
 
 int parse_url(const std::string &url, url_info & info);
 
+void parse_url_para(const std::string &url_path, std::vector<std::map<std::string, std::string>> &url_para_map);
 void parse_url_para(const std::string &url_path, std::map<std::string, std::string> &url_para_map);
 
 template <class T, class U>

@@ -3,7 +3,7 @@
 #include "proc_data.h"
 #include "history_quotation_dict.h"
 
-bool hquotation_search_index::do_hqchange_rate_le(std::string &key, std::string &value, std::set<std::string> & search)
+bool hquotation_search_index::do_hqchange_rate_le(std::string &key, std::string &value, search_res & search)
 {
     hquotation_search_item * search_index = current();
     SETS_OP_TRPE tmp_ot;
@@ -68,7 +68,7 @@ bool hquotation_search_index::do_hqchange_rate_le(std::string &key, std::string 
     }
     else
     {
-        for (auto k = search.begin(); k != search.end(); k++)
+        for (auto k = search._id_sets.begin(); k != search._id_sets.end(); k++)
         {
             auto ii = search_index->id_quotation.find(*k);
             if (ii == search_index->id_quotation.end())
@@ -93,12 +93,12 @@ bool hquotation_search_index::do_hqchange_rate_le(std::string &key, std::string 
         }
     }
 
-    search = res;
+    search._id_sets = res;
 
     return true;
 }
 
-bool hquotation_search_index::do_hqchange_rate_ge(std::string &key, std::string &value, std::set<std::string> & search)
+bool hquotation_search_index::do_hqchange_rate_ge(std::string &key, std::string &value, search_res & search)
 {
     hquotation_search_item * search_index = current();
     SETS_OP_TRPE tmp_ot;
@@ -163,7 +163,7 @@ bool hquotation_search_index::do_hqchange_rate_ge(std::string &key, std::string 
     }
     else
     {
-        for (auto k = search.begin(); k != search.end(); k++)
+        for (auto k = search._id_sets.begin(); k != search._id_sets.end(); k++)
         {
             auto ii = search_index->id_quotation.find(*k);
             if (ii == search_index->id_quotation.end())
@@ -188,12 +188,12 @@ bool hquotation_search_index::do_hqchange_rate_ge(std::string &key, std::string 
         }
     }
 
-    search = res;
+    search._id_sets = res;
 
     return true;
 }
 
-bool hquotation_search_index::do_hqrange_percent_le(std::string &key, std::string &value, std::set<std::string> & search)
+bool hquotation_search_index::do_hqrange_percent_le(std::string &key, std::string &value, search_res & search)
 {
     hquotation_search_item * search_index = current();
     SETS_OP_TRPE tmp_ot;
@@ -258,7 +258,7 @@ bool hquotation_search_index::do_hqrange_percent_le(std::string &key, std::strin
     }
     else
     {
-        for (auto k = search.begin(); k != search.end(); k++)
+        for (auto k = search._id_sets.begin(); k != search._id_sets.end(); k++)
         {
             auto ii = search_index->id_quotation.find(*k);
             if (ii == search_index->id_quotation.end())
@@ -283,12 +283,12 @@ bool hquotation_search_index::do_hqrange_percent_le(std::string &key, std::strin
         }
     }
 
-    search = res;
+    search._id_sets = res;
 
     return true;
 }
 
-bool hquotation_search_index::do_hqrange_percent_ge(std::string &key, std::string &value, std::set<std::string> & search)
+bool hquotation_search_index::do_hqrange_percent_ge(std::string &key, std::string &value, search_res & search)
 {
     hquotation_search_item * search_index = current();
     SETS_OP_TRPE tmp_ot;
@@ -353,7 +353,7 @@ bool hquotation_search_index::do_hqrange_percent_ge(std::string &key, std::strin
     }
     else
     {
-        for (auto k = search.begin(); k != search.end(); k++)
+        for (auto k = search._id_sets.begin(); k != search._id_sets.end(); k++)
         {
             auto ii = search_index->id_quotation.find(*k);
             if (ii == search_index->id_quotation.end())
@@ -378,12 +378,12 @@ bool hquotation_search_index::do_hqrange_percent_ge(std::string &key, std::strin
         }
     }
 
-    search = res;
+    search._id_sets = res;
 
     return true;
 }
 
-bool hquotation_search_index::do_hqrange_percent_ge_num_ge(std::string &key, std::string &value, std::set<std::string> & search)
+bool hquotation_search_index::do_hqrange_percent_ge_num_ge(std::string &key, std::string &value, search_res & search)
 {
     hquotation_search_item * search_index = current();
     SETS_OP_TRPE tmp_ot;
@@ -461,7 +461,7 @@ bool hquotation_search_index::do_hqrange_percent_ge_num_ge(std::string &key, std
     }
     else
     {
-        for (auto k = search.begin(); k != search.end(); k++)
+        for (auto k = search._id_sets.begin(); k != search._id_sets.end(); k++)
         {
             auto ii = search_index->id_quotation.find(*k);
             if (ii == search_index->id_quotation.end())
@@ -493,12 +493,12 @@ bool hquotation_search_index::do_hqrange_percent_ge_num_ge(std::string &key, std
         }
     }
 
-    search = res;
+    search._id_sets = res;
 
     return true;
 }
 
-bool hquotation_search_index::do_hqrange_percent_le_num_ge(std::string &key, std::string &value, std::set<std::string> & search)
+bool hquotation_search_index::do_hqrange_percent_le_num_ge(std::string &key, std::string &value, search_res & search)
 {
     hquotation_search_item * search_index = current();
     SETS_OP_TRPE tmp_ot;
@@ -576,7 +576,7 @@ bool hquotation_search_index::do_hqrange_percent_le_num_ge(std::string &key, std
     }
     else
     {
-        for (auto k = search.begin(); k != search.end(); k++)
+        for (auto k = search._id_sets.begin(); k != search._id_sets.end(); k++)
         {
             auto ii = search_index->id_quotation.find(*k);
             if (ii == search_index->id_quotation.end())
@@ -608,12 +608,12 @@ bool hquotation_search_index::do_hqrange_percent_le_num_ge(std::string &key, std
         }
     }
 
-    search = res;
+    search._id_sets = res;
 
     return true;
 }
 
-bool hquotation_search_index::do_hq_sum_change_rate_le(std::string &key, std::string &value, std::set<std::string> & search)
+bool hquotation_search_index::do_hq_sum_change_rate_le(std::string &key, std::string &value, search_res & search)
 {
     hquotation_search_item * search_index = current();
     SETS_OP_TRPE tmp_ot;
@@ -688,7 +688,7 @@ bool hquotation_search_index::do_hq_sum_change_rate_le(std::string &key, std::st
     }
     else
     {
-        for (auto k = search.begin(); k != search.end(); k++)
+        for (auto k = search._id_sets.begin(); k != search._id_sets.end(); k++)
         {
             auto ii = search_index->id_sum_quotation.find(*k);
             if (ii == search_index->id_sum_quotation.end())
@@ -718,12 +718,12 @@ bool hquotation_search_index::do_hq_sum_change_rate_le(std::string &key, std::st
         }
     }
 
-    search = res;
+    search._id_sets = res;
 
     return true;
 }
 
-bool hquotation_search_index::do_hq_sum_change_rate_ge(std::string &key, std::string &value, std::set<std::string> & search)
+bool hquotation_search_index::do_hq_sum_change_rate_ge(std::string &key, std::string &value, search_res & search)
 {
     hquotation_search_item * search_index = current();
     SETS_OP_TRPE tmp_ot;
@@ -799,7 +799,7 @@ bool hquotation_search_index::do_hq_sum_change_rate_ge(std::string &key, std::st
     }
     else
     {
-        for (auto k = search.begin(); k != search.end(); k++)
+        for (auto k = search._id_sets.begin(); k != search._id_sets.end(); k++)
         {
             auto ii = search_index->id_sum_quotation.find(*k);
             if (ii == search_index->id_sum_quotation.end())
@@ -829,12 +829,12 @@ bool hquotation_search_index::do_hq_sum_change_rate_ge(std::string &key, std::st
         }
     }
 
-    search = res;
+    search._id_sets = res;
 
     return true;
 }
 
-bool hquotation_search_index::do_hq_sum_range_percent_le(std::string &key, std::string &value, std::set<std::string> & search)
+bool hquotation_search_index::do_hq_sum_range_percent_le(std::string &key, std::string &value, search_res & search)
 {
     hquotation_search_item * search_index = current();
     SETS_OP_TRPE tmp_ot;
@@ -909,7 +909,7 @@ bool hquotation_search_index::do_hq_sum_range_percent_le(std::string &key, std::
     }
     else
     {
-        for (auto k = search.begin(); k != search.end(); k++)
+        for (auto k = search._id_sets.begin(); k != search._id_sets.end(); k++)
         {
             auto ii = search_index->id_sum_quotation.find(*k);
             if (ii == search_index->id_sum_quotation.end())
@@ -938,13 +938,13 @@ bool hquotation_search_index::do_hq_sum_range_percent_le(std::string &key, std::
         }
     }
 
-    search = res;
+    search._id_sets = res;
 
     return true;
 }
 
 
-bool hquotation_search_index::do_hq_sum_range_percent_ge(std::string &key, std::string &value, std::set<std::string> & search)
+bool hquotation_search_index::do_hq_sum_range_percent_ge(std::string &key, std::string &value, search_res & search)
 {
     hquotation_search_item * search_index = current();
     SETS_OP_TRPE tmp_ot;
@@ -1018,7 +1018,7 @@ bool hquotation_search_index::do_hq_sum_range_percent_ge(std::string &key, std::
     }
     else
     {
-        for (auto k = search.begin(); k != search.end(); k++)
+        for (auto k = search._id_sets.begin(); k != search._id_sets.end(); k++)
         {
             auto ii = search_index->id_sum_quotation.find(*k);
             if (ii == search_index->id_sum_quotation.end())
@@ -1047,12 +1047,12 @@ bool hquotation_search_index::do_hq_sum_range_percent_ge(std::string &key, std::
         }
     }
 
-    search = res;
+    search._id_sets = res;
 
     return true;
 }
 
-bool hquotation_search_index::do_check_hqdown_pointer_ge(std::string &key, std::string &value, std::set<std::string> & search)                                              
+bool hquotation_search_index::do_check_hqdown_pointer_ge(std::string &key, std::string &value, search_res & search)                                              
 {
     hquotation_search_item * search_index = current();
     SETS_OP_TRPE tmp_ot;
@@ -1117,7 +1117,7 @@ bool hquotation_search_index::do_check_hqdown_pointer_ge(std::string &key, std::
     }
     else
     {
-        for (auto k = search.begin(); k != search.end(); k++)
+        for (auto k = search._id_sets.begin(); k != search._id_sets.end(); k++)
         {
             auto ii = search_index->id_technical.find(*k);
             if (ii == search_index->id_technical.end())
@@ -1142,12 +1142,12 @@ bool hquotation_search_index::do_check_hqdown_pointer_ge(std::string &key, std::
         }
     }
 
-    search = res;
+    search._id_sets = res;
 
     return true;
 }
 
-bool hquotation_search_index::do_check_hqdown_pointer_le(std::string &key, std::string &value, std::set<std::string> & search)
+bool hquotation_search_index::do_check_hqdown_pointer_le(std::string &key, std::string &value, search_res & search)
 {
     hquotation_search_item * search_index = current();
     SETS_OP_TRPE tmp_ot;
@@ -1212,7 +1212,7 @@ bool hquotation_search_index::do_check_hqdown_pointer_le(std::string &key, std::
     }
     else
     {
-        for (auto k = search.begin(); k != search.end(); k++)
+        for (auto k = search._id_sets.begin(); k != search._id_sets.end(); k++)
         {
             auto ii = search_index->id_technical.find(*k);
             if (ii == search_index->id_technical.end())
@@ -1237,12 +1237,12 @@ bool hquotation_search_index::do_check_hqdown_pointer_le(std::string &key, std::
         }
     }
 
-    search = res;
+    search._id_sets = res;
 
     return true;
 }
 
-bool hquotation_search_index::do_check_hqdown_pointer_ge_num_ge(std::string &key, std::string &value, std::set<std::string> & search)
+bool hquotation_search_index::do_check_hqdown_pointer_ge_num_ge(std::string &key, std::string &value, search_res & search)
 {
     hquotation_search_item * search_index = current();
     SETS_OP_TRPE tmp_ot;
@@ -1320,7 +1320,7 @@ bool hquotation_search_index::do_check_hqdown_pointer_ge_num_ge(std::string &key
     }
     else
     {
-        for (auto k = search.begin(); k != search.end(); k++)
+        for (auto k = search._id_sets.begin(); k != search._id_sets.end(); k++)
         {
             auto ii = search_index->id_technical.find(*k);
             if (ii == search_index->id_technical.end())
@@ -1352,13 +1352,13 @@ bool hquotation_search_index::do_check_hqdown_pointer_ge_num_ge(std::string &key
         }
     }
 
-    search = res;
+    search._id_sets = res;
 
     return true;
 }
 
 
-bool hquotation_search_index::do_check_hqup_pointer_ge(std::string &key, std::string &value, std::set<std::string> & search)                                              
+bool hquotation_search_index::do_check_hqup_pointer_ge(std::string &key, std::string &value, search_res & search)                                              
 {
     hquotation_search_item * search_index = current();
     SETS_OP_TRPE tmp_ot;
@@ -1423,7 +1423,7 @@ bool hquotation_search_index::do_check_hqup_pointer_ge(std::string &key, std::st
     }
     else
     {
-        for (auto k = search.begin(); k != search.end(); k++)
+        for (auto k = search._id_sets.begin(); k != search._id_sets.end(); k++)
         {
             auto ii = search_index->id_technical.find(*k);
             if (ii == search_index->id_technical.end())
@@ -1448,12 +1448,12 @@ bool hquotation_search_index::do_check_hqup_pointer_ge(std::string &key, std::st
         }
     }
 
-    search = res;
+    search._id_sets = res;
 
     return true;
 }
 
-bool hquotation_search_index::do_check_hqup_pointer_le(std::string &key, std::string &value, std::set<std::string> & search)
+bool hquotation_search_index::do_check_hqup_pointer_le(std::string &key, std::string &value, search_res & search)
 {
     hquotation_search_item * search_index = current();
     SETS_OP_TRPE tmp_ot;
@@ -1518,7 +1518,7 @@ bool hquotation_search_index::do_check_hqup_pointer_le(std::string &key, std::st
     }
     else
     {
-        for (auto k = search.begin(); k != search.end(); k++)
+        for (auto k = search._id_sets.begin(); k != search._id_sets.end(); k++)
         {
             auto ii = search_index->id_technical.find(*k);
             if (ii == search_index->id_technical.end())
@@ -1543,12 +1543,12 @@ bool hquotation_search_index::do_check_hqup_pointer_le(std::string &key, std::st
         }
     }
 
-    search = res;
+    search._id_sets = res;
 
     return true;
 }
 
-bool hquotation_search_index::do_check_hqup_pointer_ge_num_ge(std::string &key, std::string &value, std::set<std::string> & search)
+bool hquotation_search_index::do_check_hqup_pointer_ge_num_ge(std::string &key, std::string &value, search_res & search)
 {
     hquotation_search_item * search_index = current();
     SETS_OP_TRPE tmp_ot;
@@ -1626,7 +1626,7 @@ bool hquotation_search_index::do_check_hqup_pointer_ge_num_ge(std::string &key, 
     }
     else
     {
-        for (auto k = search.begin(); k != search.end(); k++)
+        for (auto k = search._id_sets.begin(); k != search._id_sets.end(); k++)
         {
             auto ii = search_index->id_technical.find(*k);
             if (ii == search_index->id_technical.end())
@@ -1658,12 +1658,12 @@ bool hquotation_search_index::do_check_hqup_pointer_ge_num_ge(std::string &key, 
         }
     }
 
-    search = res;
+    search._id_sets = res;
 
     return true;
 }
 
-bool hquotation_search_index::do_check_hqend_start_ge(std::string &key, std::string &value, std::set<std::string> & search)                                              
+bool hquotation_search_index::do_check_hqend_start_ge(std::string &key, std::string &value, search_res & search)                                              
 {
     hquotation_search_item * search_index = current();
     SETS_OP_TRPE tmp_ot;
@@ -1728,7 +1728,7 @@ bool hquotation_search_index::do_check_hqend_start_ge(std::string &key, std::str
     }
     else
     {
-        for (auto k = search.begin(); k != search.end(); k++)
+        for (auto k = search._id_sets.begin(); k != search._id_sets.end(); k++)
         {
             auto ii = search_index->id_technical.find(*k);
             if (ii == search_index->id_technical.end())
@@ -1753,12 +1753,12 @@ bool hquotation_search_index::do_check_hqend_start_ge(std::string &key, std::str
         }
     }
 
-    search = res;
+    search._id_sets = res;
 
     return true;
 }
 
-bool hquotation_search_index::do_check_hqend_start_le(std::string &key, std::string &value, std::set<std::string> & search)
+bool hquotation_search_index::do_check_hqend_start_le(std::string &key, std::string &value, search_res & search)
 {
     hquotation_search_item * search_index = current();
     SETS_OP_TRPE tmp_ot;
@@ -1823,7 +1823,7 @@ bool hquotation_search_index::do_check_hqend_start_le(std::string &key, std::str
     }
     else
     {
-        for (auto k = search.begin(); k != search.end(); k++)
+        for (auto k = search._id_sets.begin(); k != search._id_sets.end(); k++)
         {
             auto ii = search_index->id_technical.find(*k);
             if (ii == search_index->id_technical.end())
@@ -1848,12 +1848,12 @@ bool hquotation_search_index::do_check_hqend_start_le(std::string &key, std::str
         }
     }
 
-    search = res;
+    search._id_sets = res;
 
     return true;
 }
 
-bool hquotation_search_index::do_check_hqend_start_ge_num_ge(std::string &key, std::string &value, std::set<std::string> & search)
+bool hquotation_search_index::do_check_hqend_start_ge_num_ge(std::string &key, std::string &value, search_res & search)
 {
     hquotation_search_item * search_index = current();
     SETS_OP_TRPE tmp_ot;
@@ -1931,7 +1931,7 @@ bool hquotation_search_index::do_check_hqend_start_ge_num_ge(std::string &key, s
     }
     else
     {
-        for (auto k = search.begin(); k != search.end(); k++)
+        for (auto k = search._id_sets.begin(); k != search._id_sets.end(); k++)
         {
             auto ii = search_index->id_technical.find(*k);
             if (ii == search_index->id_technical.end())
@@ -1963,13 +1963,129 @@ bool hquotation_search_index::do_check_hqend_start_ge_num_ge(std::string &key, s
         }
     }
 
-    search = res;
+    search._id_sets = res;
 
     return true;
 }
 
 
-bool hquotation_search_index::do_check_hqend_avg_end_ge(std::string &key, std::string &value, std::set<std::string> & search)                                              
+bool hquotation_search_index::do_check_hqend_start_ge_ratio_ge(std::string &key, std::string &value, search_res & search)
+{
+    hquotation_search_item * search_index = current();
+    SETS_OP_TRPE tmp_ot;
+    proc_data* p_data = proc_data::instance();
+
+    std::vector<std::string> tmp_vec;
+    std::vector<hidex_item> vec_idex;
+
+    if (strstr(value.c_str(), "|")) 
+    {
+        SplitString(value.c_str(), '|', &tmp_vec, SPLIT_MODE_ALL);
+        tmp_ot = SETS_OP_UNION;
+    }
+    else 
+    {
+        SplitString(value.c_str(), ';', &tmp_vec, SPLIT_MODE_ALL); 
+        tmp_ot = SETS_OP_INTERSECTION;
+    }
+
+    if (!tmp_vec.size())
+        tmp_vec.push_back(value);
+
+    //-5:0:0.8:1.0&-2:0:0.8:1
+    for (uint32_t i = 0; i< tmp_vec.size(); i++)
+    {
+        std::vector<std::string> t_vec;
+        SplitString(tmp_vec[i].c_str(), ':', &t_vec, SPLIT_MODE_ALL);
+        if (t_vec.size() < 4) 
+        { 
+            continue;
+        }
+
+        hidex_item hi;
+        hi.date_index = atoi(t_vec[0].c_str());
+        hi.date_index_end = atoi(t_vec[1].c_str());
+        hi.sum = atoi(t_vec[2].c_str());
+        hi.fpoint = atof(t_vec[3].c_str());
+        
+        if (abs(hi.date_index) < abs(hi.date_index_end))
+            continue;
+
+        vec_idex.push_back(hi);
+    }
+
+     int cnt = 0;
+      int count = 0;
+    std::set<std::string> res;
+    if (search.empty())
+    {
+        for (auto ii = search_index->id_technical.begin(); ii != search_index->id_technical.end(); ii++)
+        {
+            const std::deque< std::shared_ptr<technical_t>> &  tt = ii->second;
+            int len = tt.size();
+            cnt = 0;
+            for (int i = 0; i < (int)vec_idex.size(); i++) 
+            {
+                 if (len  < 1 + abs(vec_idex[i].date_index))
+                     continue;
+
+                 count = 0;               
+                 for (int k = len - abs(vec_idex[i].date_index) - 1; k <= len - abs(vec_idex[i].date_index_end) - 1; k++) {
+                     if (tt[k]->end_start >= vec_idex[i].fpoint)
+                         count++;
+                 }
+                
+                 if (count >= vec_idex[i].sum * (abs(vec_idex[i].date_index) -  abs(vec_idex[i].date_index_end) + 1))
+                     cnt++;
+            }
+
+            if (tmp_ot == SETS_OP_INTERSECTION && cnt == (int)vec_idex.size())
+                res.insert(ii->first);  
+            else if (tmp_ot == SETS_OP_UNION && cnt)
+                res.insert(ii->first); 
+        }
+    }
+    else
+    {
+        for (auto k = search._id_sets.begin(); k != search._id_sets.end(); k++)
+        {
+            auto ii = search_index->id_technical.find(*k);
+            if (ii == search_index->id_technical.end())
+                continue;
+
+            const std::deque< std::shared_ptr<technical_t>> &  tt = ii->second;
+            int len = tt.size();
+            cnt = 0;
+            for (int i = 0; i < (int)vec_idex.size(); i++) 
+            {
+                 if (len  < 1 + abs(vec_idex[i].date_index))
+                     continue;
+
+                 count = 0;               
+                 for (int k = len - abs(vec_idex[i].date_index) - 1; k <= len - abs(vec_idex[i].date_index_end) - 1; k++) {
+                     if (tt[k]->end_start >= vec_idex[i].fpoint)
+                         count++;
+                 }
+
+                
+                 if (count >= vec_idex[i].sum * (abs(vec_idex[i].date_index) -  abs(vec_idex[i].date_index_end) + 1))
+                     cnt++;
+            }
+
+            if (tmp_ot == SETS_OP_INTERSECTION && cnt == (int)vec_idex.size())
+                res.insert(ii->first);  
+            else if (tmp_ot == SETS_OP_UNION && cnt)
+                res.insert(ii->first); 
+        }
+    }
+
+    search._id_sets = res;
+
+    return true;
+}
+
+
+bool hquotation_search_index::do_check_hqend_avg_end_ge(std::string &key, std::string &value, search_res & search)                                              
 {
     hquotation_search_item * search_index = current();
     SETS_OP_TRPE tmp_ot;
@@ -2034,7 +2150,7 @@ bool hquotation_search_index::do_check_hqend_avg_end_ge(std::string &key, std::s
     }
     else
     {
-        for (auto k = search.begin(); k != search.end(); k++)
+        for (auto k = search._id_sets.begin(); k != search._id_sets.end(); k++)
         {
             auto ii = search_index->id_technical.find(*k);
             if (ii == search_index->id_technical.end())
@@ -2059,12 +2175,12 @@ bool hquotation_search_index::do_check_hqend_avg_end_ge(std::string &key, std::s
         }
     }
 
-    search = res;
+    search._id_sets = res;
 
     return true;
 }
 
-bool hquotation_search_index::do_check_hqend_avg_end_le(std::string &key, std::string &value, std::set<std::string> & search)
+bool hquotation_search_index::do_check_hqend_avg_end_le(std::string &key, std::string &value, search_res & search)
 {
     hquotation_search_item * search_index = current();
     SETS_OP_TRPE tmp_ot;
@@ -2129,7 +2245,7 @@ bool hquotation_search_index::do_check_hqend_avg_end_le(std::string &key, std::s
     }
     else
     {
-        for (auto k = search.begin(); k != search.end(); k++)
+        for (auto k = search._id_sets.begin(); k != search._id_sets.end(); k++)
         {
             auto ii = search_index->id_technical.find(*k);
             if (ii == search_index->id_technical.end())
@@ -2154,12 +2270,12 @@ bool hquotation_search_index::do_check_hqend_avg_end_le(std::string &key, std::s
         }
     }
 
-    search = res;
+    search._id_sets = res;
 
     return true;
 }
 
-bool hquotation_search_index::do_check_hqend_avg_end_ge_num_ge(std::string &key, std::string &value, std::set<std::string> & search)
+bool hquotation_search_index::do_check_hqend_avg_end_ge_num_ge(std::string &key, std::string &value, search_res & search)
 {
     hquotation_search_item * search_index = current();
     SETS_OP_TRPE tmp_ot;
@@ -2237,7 +2353,7 @@ bool hquotation_search_index::do_check_hqend_avg_end_ge_num_ge(std::string &key,
     }
     else
     {
-        for (auto k = search.begin(); k != search.end(); k++)
+        for (auto k = search._id_sets.begin(); k != search._id_sets.end(); k++)
         {
             auto ii = search_index->id_technical.find(*k);
             if (ii == search_index->id_technical.end())
@@ -2269,12 +2385,12 @@ bool hquotation_search_index::do_check_hqend_avg_end_ge_num_ge(std::string &key,
         }
     }
 
-    search = res;
+    search._id_sets = res;
 
     return true;
 }
 
-bool hquotation_search_index::do_check_id_substr(std::string &key, std::string &value, std::set<std::string> & search)
+bool hquotation_search_index::do_check_id_substr(std::string &key, std::string &value, search_res & search)
 {
     hquotation_search_item * search_index = current();
     SETS_OP_TRPE tmp_ot;
@@ -2327,7 +2443,7 @@ bool hquotation_search_index::do_check_id_substr(std::string &key, std::string &
     }
     else
     {
-        for (auto k = search.begin(); k != search.end(); k++)
+        for (auto k = search._id_sets.begin(); k != search._id_sets.end(); k++)
         {
             auto ii = search_index->id_quotation.find(*k);
             if (ii == search_index->id_quotation.end())
@@ -2348,12 +2464,12 @@ bool hquotation_search_index::do_check_id_substr(std::string &key, std::string &
         }
     }
 
-    search = res;
+    search._id_sets = res;
 
     return true;
 }
 
-bool hquotation_search_index::do_check_rlow_hlow_ge(std::string &key, std::string &value, std::set<std::string> & search)                                              
+bool hquotation_search_index::do_check_rlow_hlow_ge(std::string &key, std::string &value, search_res & search)                                              
 {
     hquotation_search_item * search_index = current();
     SETS_OP_TRPE tmp_ot;
@@ -2418,7 +2534,7 @@ bool hquotation_search_index::do_check_rlow_hlow_ge(std::string &key, std::strin
     }
     else
     {
-        for (auto k = search.begin(); k != search.end(); k++)
+        for (auto k = search._id_sets.begin(); k != search._id_sets.end(); k++)
         {
             auto ii = search_index->id_quotation.find(*k);
             if (ii == search_index->id_quotation.end())
@@ -2443,13 +2559,13 @@ bool hquotation_search_index::do_check_rlow_hlow_ge(std::string &key, std::strin
         }
     }
 
-    search = res;
+    search._id_sets = res;
 
     return true;
 }
 
 
-bool hquotation_search_index::do_check_rlow_hlowest_ge(std::string &key, std::string &value, std::set<std::string> & search)                                              
+bool hquotation_search_index::do_check_rlow_hlowest_ge(std::string &key, std::string &value, search_res & search)                                              
 {
     hquotation_search_item * search_index = current();
     SETS_OP_TRPE tmp_ot;
@@ -2524,7 +2640,7 @@ bool hquotation_search_index::do_check_rlow_hlowest_ge(std::string &key, std::st
     }
     else
     {
-        for (auto k = search.begin(); k != search.end(); k++)
+        for (auto k = search._id_sets.begin(); k != search._id_sets.end(); k++)
         {
             auto ii = search_index->id_quotation.find(*k);
             if (ii == search_index->id_quotation.end())
@@ -2554,13 +2670,13 @@ bool hquotation_search_index::do_check_rlow_hlowest_ge(std::string &key, std::st
         }
     }
 
-    search = res;
+    search._id_sets = res;
 
     return true;
 }
 
 
-bool hquotation_search_index::do_check_rlow_hlowest_le(std::string &key, std::string &value, std::set<std::string> & search)                                              
+bool hquotation_search_index::do_check_rlow_hlowest_le(std::string &key, std::string &value, search_res & search)                                              
 {
     hquotation_search_item * search_index = current();
     SETS_OP_TRPE tmp_ot;
@@ -2635,7 +2751,7 @@ bool hquotation_search_index::do_check_rlow_hlowest_le(std::string &key, std::st
     }
     else
     {
-        for (auto k = search.begin(); k != search.end(); k++)
+        for (auto k = search._id_sets.begin(); k != search._id_sets.end(); k++)
         {
             auto ii = search_index->id_quotation.find(*k);
             if (ii == search_index->id_quotation.end())
@@ -2666,13 +2782,13 @@ bool hquotation_search_index::do_check_rlow_hlowest_le(std::string &key, std::st
         }
     }
 
-    search = res;
+    search._id_sets = res;
 
     return true;
 }
 
 
-bool hquotation_search_index::do_check_rhigh_hhighest_ge(std::string &key, std::string &value, std::set<std::string> & search)                                              
+bool hquotation_search_index::do_check_rhigh_hhighest_ge(std::string &key, std::string &value, search_res & search)                                              
 {
     hquotation_search_item * search_index = current();
     SETS_OP_TRPE tmp_ot;
@@ -2730,7 +2846,7 @@ bool hquotation_search_index::do_check_rhigh_hhighest_ge(std::string &key, std::
                  if (len  < 1 + abs(vec_idex[i].date_index))
                      continue;
 
-                 float max = tt[len - 1]->high;                                        
+                 float max = tt[len -abs(vec_idex[i].date_index)- 1]->high;                                        
                  for (int k = len - abs(vec_idex[i].date_index) - 1; k <= len  -abs(vec_idex[i].date_index_end)- 1; k++) 
                      if (max <= tt[k]->high)
                          max = tt[k]->high;
@@ -2747,7 +2863,7 @@ bool hquotation_search_index::do_check_rhigh_hhighest_ge(std::string &key, std::
     }
     else
     {
-        for (auto k = search.begin(); k != search.end(); k++)
+        for (auto k = search._id_sets.begin(); k != search._id_sets.end(); k++)
         {
             auto ii = search_index->id_quotation.find(*k);
             if (ii == search_index->id_quotation.end())
@@ -2761,7 +2877,7 @@ bool hquotation_search_index::do_check_rhigh_hhighest_ge(std::string &key, std::
                  if (len  < 1 + abs(vec_idex[i].date_index))
                      continue;
 
-                 float max = tt[len - 1]->high;                                        
+                 float max = tt[len -abs(vec_idex[i].date_index)- 1]->high;                                        
                  for (int k = len - abs(vec_idex[i].date_index) - 1; k <= len -abs(vec_idex[i].date_index_end) - 1; k++) 
                      if (max <= tt[k]->high)
                          max = tt[k]->high;
@@ -2777,13 +2893,13 @@ bool hquotation_search_index::do_check_rhigh_hhighest_ge(std::string &key, std::
         }
     }
 
-    search = res;
+    search._id_sets = res;
 
     return true;
 }
 
 
-bool hquotation_search_index::do_check_rhigh_hhighest_le(std::string &key, std::string &value, std::set<std::string> & search)                                              
+bool hquotation_search_index::do_check_rhigh_hhighest_le(std::string &key, std::string &value, search_res & search)                                              
 {
     hquotation_search_item * search_index = current();
     SETS_OP_TRPE tmp_ot;
@@ -2839,7 +2955,7 @@ bool hquotation_search_index::do_check_rhigh_hhighest_le(std::string &key, std::
                  if (len  < 1 + abs(vec_idex[i].date_index))
                      continue;
 
-                 float max = tt[len - 1]->high;                                        
+                 float max = tt[len -abs(vec_idex[i].date_index)- 1]->high;                                        
                  for (int k = len - abs(vec_idex[i].date_index) - 1; k <= len  -abs(vec_idex[i].date_index_end)- 1; k++) 
                      if (max <= tt[k]->high)
                          max = tt[k]->high;
@@ -2856,7 +2972,7 @@ bool hquotation_search_index::do_check_rhigh_hhighest_le(std::string &key, std::
     }
     else
     {
-        for (auto k = search.begin(); k != search.end(); k++)
+        for (auto k = search._id_sets.begin(); k != search._id_sets.end(); k++)
         {
             auto ii = search_index->id_quotation.find(*k);
             if (ii == search_index->id_quotation.end())
@@ -2870,7 +2986,7 @@ bool hquotation_search_index::do_check_rhigh_hhighest_le(std::string &key, std::
                  if (len  < 1 + abs(vec_idex[i].date_index))
                      continue;
 
-                 float max = tt[len - 1]->high;                                        
+                 float max = tt[len -abs(vec_idex[i].date_index)- 1]->high;                                        
                  for (int k = len - abs(vec_idex[i].date_index) - 1; k <= len  -abs(vec_idex[i].date_index_end)- 1; k++) 
                      if (max <= tt[k]->high)
                          max = tt[k]->high;
@@ -2886,13 +3002,13 @@ bool hquotation_search_index::do_check_rhigh_hhighest_le(std::string &key, std::
         }
     }
 
-    search = res;
+    search._id_sets = res;
 
     return true;
 }
 
 
-bool hquotation_search_index::do_check_rlow_hlow_le(std::string &key, std::string &value, std::set<std::string> & search)
+bool hquotation_search_index::do_check_rlow_hlow_le(std::string &key, std::string &value, search_res & search)
 {
     hquotation_search_item * search_index = current();
     SETS_OP_TRPE tmp_ot;
@@ -2957,7 +3073,7 @@ bool hquotation_search_index::do_check_rlow_hlow_le(std::string &key, std::strin
     }
     else
     {
-        for (auto k = search.begin(); k != search.end(); k++)
+        for (auto k = search._id_sets.begin(); k != search._id_sets.end(); k++)
         {
             auto ii = search_index->id_quotation.find(*k);
             if (ii == search_index->id_quotation.end())
@@ -2982,12 +3098,12 @@ bool hquotation_search_index::do_check_rlow_hlow_le(std::string &key, std::strin
         }
     }
 
-    search = res;
+    search._id_sets = res;
 
     return true;
 }
 
-bool hquotation_search_index::do_check_rlow_hlow_ge_num_ge(std::string &key, std::string &value, std::set<std::string> & search)
+bool hquotation_search_index::do_check_rlow_hlow_ge_num_ge(std::string &key, std::string &value, search_res & search)
 {
     hquotation_search_item * search_index = current();
     SETS_OP_TRPE tmp_ot;
@@ -3065,7 +3181,7 @@ bool hquotation_search_index::do_check_rlow_hlow_ge_num_ge(std::string &key, std
     }
     else
     {
-        for (auto k = search.begin(); k != search.end(); k++)
+        for (auto k = search._id_sets.begin(); k != search._id_sets.end(); k++)
         {
             auto ii = search_index->id_quotation.find(*k);
             if (ii == search_index->id_quotation.end())
@@ -3097,13 +3213,13 @@ bool hquotation_search_index::do_check_rlow_hlow_ge_num_ge(std::string &key, std
         }
     }
 
-    search = res;
+    search._id_sets = res;
 
     return true;
 }
 
 
-bool hquotation_search_index::do_check_rhigh_hhigh_ge(std::string &key, std::string &value, std::set<std::string> & search)                                              
+bool hquotation_search_index::do_check_rhigh_hhigh_ge(std::string &key, std::string &value, search_res & search)                                              
 {
     hquotation_search_item * search_index = current();
     SETS_OP_TRPE tmp_ot;
@@ -3168,7 +3284,7 @@ bool hquotation_search_index::do_check_rhigh_hhigh_ge(std::string &key, std::str
     }
     else
     {
-        for (auto k = search.begin(); k != search.end(); k++)
+        for (auto k = search._id_sets.begin(); k != search._id_sets.end(); k++)
         {
             auto ii = search_index->id_quotation.find(*k);
             if (ii == search_index->id_quotation.end())
@@ -3193,12 +3309,12 @@ bool hquotation_search_index::do_check_rhigh_hhigh_ge(std::string &key, std::str
         }
     }
 
-    search = res;
+    search._id_sets = res;
 
     return true;
 }
 
-bool hquotation_search_index::do_check_rhigh_hhigh_le(std::string &key, std::string &value, std::set<std::string> & search)
+bool hquotation_search_index::do_check_rhigh_hhigh_le(std::string &key, std::string &value, search_res & search)
 {
     hquotation_search_item * search_index = current();
     SETS_OP_TRPE tmp_ot;
@@ -3263,7 +3379,7 @@ bool hquotation_search_index::do_check_rhigh_hhigh_le(std::string &key, std::str
     }
     else
     {
-        for (auto k = search.begin(); k != search.end(); k++)
+        for (auto k = search._id_sets.begin(); k != search._id_sets.end(); k++)
         {
             auto ii = search_index->id_quotation.find(*k);
             if (ii == search_index->id_quotation.end())
@@ -3288,12 +3404,12 @@ bool hquotation_search_index::do_check_rhigh_hhigh_le(std::string &key, std::str
         }
     }
 
-    search = res;
+    search._id_sets = res;
 
     return true;
 }
 
-bool hquotation_search_index::do_check_rhigh_hhigh_ge_num_ge(std::string &key, std::string &value, std::set<std::string> & search)
+bool hquotation_search_index::do_check_rhigh_hhigh_ge_num_ge(std::string &key, std::string &value, search_res & search)
 {
     hquotation_search_item * search_index = current();
     SETS_OP_TRPE tmp_ot;
@@ -3371,7 +3487,7 @@ bool hquotation_search_index::do_check_rhigh_hhigh_ge_num_ge(std::string &key, s
     }
     else
     {
-        for (auto k = search.begin(); k != search.end(); k++)
+        for (auto k = search._id_sets.begin(); k != search._id_sets.end(); k++)
         {
             auto ii = search_index->id_quotation.find(*k);
             if (ii == search_index->id_quotation.end())
@@ -3403,12 +3519,12 @@ bool hquotation_search_index::do_check_rhigh_hhigh_ge_num_ge(std::string &key, s
         }
     }
 
-    search = res;
+    search._id_sets = res;
 
     return true;
 }
 
-bool hquotation_search_index::do_check_hqend_end_5_ge(std::string &key, std::string &value, std::set<std::string> & search)                                              
+bool hquotation_search_index::do_check_hqend_end_5_ge(std::string &key, std::string &value, search_res & search)                                              
 {
     hquotation_search_item * search_index = current();
     SETS_OP_TRPE tmp_ot;
@@ -3473,7 +3589,7 @@ bool hquotation_search_index::do_check_hqend_end_5_ge(std::string &key, std::str
     }
     else
     {
-        for (auto k = search.begin(); k != search.end(); k++)
+        for (auto k = search._id_sets.begin(); k != search._id_sets.end(); k++)
         {
             auto ii = search_index->id_technical.find(*k);
             if (ii == search_index->id_technical.end())
@@ -3498,12 +3614,12 @@ bool hquotation_search_index::do_check_hqend_end_5_ge(std::string &key, std::str
         }
     }
 
-    search = res;
+    search._id_sets = res;
 
     return true;
 }
 
-bool hquotation_search_index::do_check_hqend_end_5_le(std::string &key, std::string &value, std::set<std::string> & search)
+bool hquotation_search_index::do_check_hqend_end_5_le(std::string &key, std::string &value, search_res & search)
 {
     hquotation_search_item * search_index = current();
     SETS_OP_TRPE tmp_ot;
@@ -3568,7 +3684,7 @@ bool hquotation_search_index::do_check_hqend_end_5_le(std::string &key, std::str
     }
     else
     {
-        for (auto k = search.begin(); k != search.end(); k++)
+        for (auto k = search._id_sets.begin(); k != search._id_sets.end(); k++)
         {
             auto ii = search_index->id_technical.find(*k);
             if (ii == search_index->id_technical.end())
@@ -3593,12 +3709,12 @@ bool hquotation_search_index::do_check_hqend_end_5_le(std::string &key, std::str
         }
     }
 
-    search = res;
+    search._id_sets = res;
 
     return true;
 }
 
-bool hquotation_search_index::do_check_hqend_end_5_ge_num_ge(std::string &key, std::string &value, std::set<std::string> & search)
+bool hquotation_search_index::do_check_hqend_end_5_ge_num_ge(std::string &key, std::string &value, search_res & search)
 {
     hquotation_search_item * search_index = current();
     SETS_OP_TRPE tmp_ot;
@@ -3676,7 +3792,7 @@ bool hquotation_search_index::do_check_hqend_end_5_ge_num_ge(std::string &key, s
     }
     else
     {
-        for (auto k = search.begin(); k != search.end(); k++)
+        for (auto k = search._id_sets.begin(); k != search._id_sets.end(); k++)
         {
             auto ii = search_index->id_technical.find(*k);
             if (ii == search_index->id_technical.end())
@@ -3708,13 +3824,13 @@ bool hquotation_search_index::do_check_hqend_end_5_ge_num_ge(std::string &key, s
         }
     }
 
-    search = res;
+    search._id_sets = res;
 
     return true;
 }
 
 
-bool hquotation_search_index::do_check_hqend_end_10_ge(std::string &key, std::string &value, std::set<std::string> & search)                                              
+bool hquotation_search_index::do_check_hqend_end_10_ge(std::string &key, std::string &value, search_res & search)                                              
 {
     hquotation_search_item * search_index = current();
     SETS_OP_TRPE tmp_ot;
@@ -3779,7 +3895,7 @@ bool hquotation_search_index::do_check_hqend_end_10_ge(std::string &key, std::st
     }
     else
     {
-        for (auto k = search.begin(); k != search.end(); k++)
+        for (auto k = search._id_sets.begin(); k != search._id_sets.end(); k++)
         {
             auto ii = search_index->id_technical.find(*k);
             if (ii == search_index->id_technical.end())
@@ -3804,12 +3920,12 @@ bool hquotation_search_index::do_check_hqend_end_10_ge(std::string &key, std::st
         }
     }
 
-    search = res;
+    search._id_sets = res;
 
     return true;
 }
 
-bool hquotation_search_index::do_check_hqend_end_10_le(std::string &key, std::string &value, std::set<std::string> & search)
+bool hquotation_search_index::do_check_hqend_end_10_le(std::string &key, std::string &value, search_res & search)
 {
     hquotation_search_item * search_index = current();
     SETS_OP_TRPE tmp_ot;
@@ -3874,7 +3990,7 @@ bool hquotation_search_index::do_check_hqend_end_10_le(std::string &key, std::st
     }
     else
     {
-        for (auto k = search.begin(); k != search.end(); k++)
+        for (auto k = search._id_sets.begin(); k != search._id_sets.end(); k++)
         {
             auto ii = search_index->id_technical.find(*k);
             if (ii == search_index->id_technical.end())
@@ -3899,12 +4015,12 @@ bool hquotation_search_index::do_check_hqend_end_10_le(std::string &key, std::st
         }
     }
 
-    search = res;
+    search._id_sets = res;
 
     return true;
 }
 
-bool hquotation_search_index::do_check_hqend_end_10_ge_num_ge(std::string &key, std::string &value, std::set<std::string> & search)
+bool hquotation_search_index::do_check_hqend_end_10_ge_num_ge(std::string &key, std::string &value, search_res & search)
 {
     hquotation_search_item * search_index = current();
     SETS_OP_TRPE tmp_ot;
@@ -3982,7 +4098,7 @@ bool hquotation_search_index::do_check_hqend_end_10_ge_num_ge(std::string &key, 
     }
     else
     {
-        for (auto k = search.begin(); k != search.end(); k++)
+        for (auto k = search._id_sets.begin(); k != search._id_sets.end(); k++)
         {
             auto ii = search_index->id_technical.find(*k);
             if (ii == search_index->id_technical.end())
@@ -4014,12 +4130,12 @@ bool hquotation_search_index::do_check_hqend_end_10_ge_num_ge(std::string &key, 
         }
     }
 
-    search = res;
+    search._id_sets = res;
 
     return true;
 }
 
-bool hquotation_search_index::do_check_hqend_end_20_ge(std::string &key, std::string &value, std::set<std::string> & search)                                              
+bool hquotation_search_index::do_check_hqend_end_20_ge(std::string &key, std::string &value, search_res & search)                                              
 {
     hquotation_search_item * search_index = current();
     SETS_OP_TRPE tmp_ot;
@@ -4084,7 +4200,7 @@ bool hquotation_search_index::do_check_hqend_end_20_ge(std::string &key, std::st
     }
     else
     {
-        for (auto k = search.begin(); k != search.end(); k++)
+        for (auto k = search._id_sets.begin(); k != search._id_sets.end(); k++)
         {
             auto ii = search_index->id_technical.find(*k);
             if (ii == search_index->id_technical.end())
@@ -4109,12 +4225,12 @@ bool hquotation_search_index::do_check_hqend_end_20_ge(std::string &key, std::st
         }
     }
 
-    search = res;
+    search._id_sets = res;
 
     return true;
 }
 
-bool hquotation_search_index::do_check_hqend_end_20_le(std::string &key, std::string &value, std::set<std::string> & search)
+bool hquotation_search_index::do_check_hqend_end_20_le(std::string &key, std::string &value, search_res & search)
 {
     hquotation_search_item * search_index = current();
     SETS_OP_TRPE tmp_ot;
@@ -4179,7 +4295,7 @@ bool hquotation_search_index::do_check_hqend_end_20_le(std::string &key, std::st
     }
     else
     {
-        for (auto k = search.begin(); k != search.end(); k++)
+        for (auto k = search._id_sets.begin(); k != search._id_sets.end(); k++)
         {
             auto ii = search_index->id_technical.find(*k);
             if (ii == search_index->id_technical.end())
@@ -4204,12 +4320,12 @@ bool hquotation_search_index::do_check_hqend_end_20_le(std::string &key, std::st
         }
     }
 
-    search = res;
+    search._id_sets = res;
 
     return true;
 }
 
-bool hquotation_search_index::do_check_hqend_end_20_ge_num_ge(std::string &key, std::string &value, std::set<std::string> & search)
+bool hquotation_search_index::do_check_hqend_end_20_ge_num_ge(std::string &key, std::string &value, search_res & search)
 {
     hquotation_search_item * search_index = current();
     SETS_OP_TRPE tmp_ot;
@@ -4287,7 +4403,7 @@ bool hquotation_search_index::do_check_hqend_end_20_ge_num_ge(std::string &key, 
     }
     else
     {
-        for (auto k = search.begin(); k != search.end(); k++)
+        for (auto k = search._id_sets.begin(); k != search._id_sets.end(); k++)
         {
             auto ii = search_index->id_technical.find(*k);
             if (ii == search_index->id_technical.end())
@@ -4319,12 +4435,12 @@ bool hquotation_search_index::do_check_hqend_end_20_ge_num_ge(std::string &key, 
         }
     }
 
-    search = res;
+    search._id_sets = res;
 
     return true;
 }
 
-bool hquotation_search_index::do_check_hqend_end_30_ge(std::string &key, std::string &value, std::set<std::string> & search)                                              
+bool hquotation_search_index::do_check_hqend_end_30_ge(std::string &key, std::string &value, search_res & search)                                              
 {
     hquotation_search_item * search_index = current();
     SETS_OP_TRPE tmp_ot;
@@ -4389,7 +4505,7 @@ bool hquotation_search_index::do_check_hqend_end_30_ge(std::string &key, std::st
     }
     else
     {
-        for (auto k = search.begin(); k != search.end(); k++)
+        for (auto k = search._id_sets.begin(); k != search._id_sets.end(); k++)
         {
             auto ii = search_index->id_technical.find(*k);
             if (ii == search_index->id_technical.end())
@@ -4414,12 +4530,12 @@ bool hquotation_search_index::do_check_hqend_end_30_ge(std::string &key, std::st
         }
     }
 
-    search = res;
+    search._id_sets = res;
 
     return true;
 }
 
-bool hquotation_search_index::do_check_hqend_end_30_le(std::string &key, std::string &value, std::set<std::string> & search)
+bool hquotation_search_index::do_check_hqend_end_30_le(std::string &key, std::string &value, search_res & search)
 {
     hquotation_search_item * search_index = current();
     SETS_OP_TRPE tmp_ot;
@@ -4484,7 +4600,7 @@ bool hquotation_search_index::do_check_hqend_end_30_le(std::string &key, std::st
     }
     else
     {
-        for (auto k = search.begin(); k != search.end(); k++)
+        for (auto k = search._id_sets.begin(); k != search._id_sets.end(); k++)
         {
             auto ii = search_index->id_technical.find(*k);
             if (ii == search_index->id_technical.end())
@@ -4509,12 +4625,12 @@ bool hquotation_search_index::do_check_hqend_end_30_le(std::string &key, std::st
         }
     }
 
-    search = res;
+    search._id_sets = res;
 
     return true;
 }
 
-bool hquotation_search_index::do_check_hqend_end_30_ge_num_ge(std::string &key, std::string &value, std::set<std::string> & search)
+bool hquotation_search_index::do_check_hqend_end_30_ge_num_ge(std::string &key, std::string &value, search_res & search)
 {
     hquotation_search_item * search_index = current();
     SETS_OP_TRPE tmp_ot;
@@ -4592,7 +4708,7 @@ bool hquotation_search_index::do_check_hqend_end_30_ge_num_ge(std::string &key, 
     }
     else
     {
-        for (auto k = search.begin(); k != search.end(); k++)
+        for (auto k = search._id_sets.begin(); k != search._id_sets.end(); k++)
         {
             auto ii = search_index->id_technical.find(*k);
             if (ii == search_index->id_technical.end())
@@ -4624,12 +4740,12 @@ bool hquotation_search_index::do_check_hqend_end_30_ge_num_ge(std::string &key, 
         }
     }
 
-    search = res;
+    search._id_sets = res;
 
     return true;
 }
 
-bool hquotation_search_index::do_check_hqredvol_greenvol_ge(std::string &key, std::string &value, std::set<std::string> & search)                                              
+bool hquotation_search_index::do_check_hqredvol_greenvol_ge(std::string &key, std::string &value, search_res & search)                                              
 {
     hquotation_search_item * search_index = current();
     SETS_OP_TRPE tmp_ot;
@@ -4714,7 +4830,7 @@ bool hquotation_search_index::do_check_hqredvol_greenvol_ge(std::string &key, st
     }
     else
     {
-        for (auto k = search.begin(); k != search.end(); k++)
+        for (auto k = search._id_sets.begin(); k != search._id_sets.end(); k++)
         {
             auto ii = search_index->id_quotation.find(*k);
             if (ii == search_index->id_quotation.end())
@@ -4753,12 +4869,12 @@ bool hquotation_search_index::do_check_hqredvol_greenvol_ge(std::string &key, st
         }
     }
 
-    search = res;
+    search._id_sets = res;
 
     return true;
 }
 
-bool hquotation_search_index::do_check_hqredvol_greenvol_le(std::string &key, std::string &value, std::set<std::string> & search)
+bool hquotation_search_index::do_check_hqredvol_greenvol_le(std::string &key, std::string &value, search_res & search)
 {
     hquotation_search_item * search_index = current();
     SETS_OP_TRPE tmp_ot;
@@ -4844,7 +4960,7 @@ bool hquotation_search_index::do_check_hqredvol_greenvol_le(std::string &key, st
     }
     else
     {
-        for (auto k = search.begin(); k != search.end(); k++)
+        for (auto k = search._id_sets.begin(); k != search._id_sets.end(); k++)
         {
             auto ii = search_index->id_quotation.find(*k);
             if (ii == search_index->id_quotation.end())
@@ -4882,7 +4998,7 @@ bool hquotation_search_index::do_check_hqredvol_greenvol_le(std::string &key, st
         }
     }
 
-    search = res;
+    search._id_sets = res;
 
     return true;
 }
