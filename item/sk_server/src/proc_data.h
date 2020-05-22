@@ -13,6 +13,7 @@
 #include "hquotation_search_index.h"
 #include "rquotation_search_index.h"
 #include "finance_search_index.h"
+#include "op_search_index.h"
 
 class ua_dict;
 class ban_dict;
@@ -90,6 +91,8 @@ class proc_data:public reload_inf
         std::shared_ptr<finance_search_index> _finance_index;
 
         std::shared_ptr<rquotation_search_index> _rquotation_index;
+
+        std::shared_ptr<op_search_index> _op_index;
     public:
 
         void reg_search_sstr();
@@ -99,8 +102,6 @@ class proc_data:public reload_inf
 
         static int get_highest_index(std::string & id, int date_index, int date_index_end);
         static int get_lowest_index(std::string & id, int date_index, int date_index_end);
-
-        static bool do_check_select_op(std::string &key, std::string &value, search_res & search);
 
     public:
         char proc_name[SIZE_LEN_256];

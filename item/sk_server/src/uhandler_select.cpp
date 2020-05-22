@@ -48,14 +48,6 @@ void uhandler_select::perform(http_req_head_para * req_head, std::string * recv_
     UrlDecode(req_head->_url_path, decode_path);
     parse_url_para(decode_path, url_para_map);
 
-    if (!strstr(decode_path.c_str(), "block") && !strstr(decode_path.c_str(), "block_v"))
-        {
-            std::map<std::string, std::string> tmap;
-            tmap["block_v"] = "1";    
-
-            url_para_map.push_back(tmap);
-        }
-
     do_check_select(url_para_map, res);
     std::map<std::string, std::string> tmp_map;
 
@@ -107,7 +99,7 @@ int uhandler_select::do_check_select(std::vector<std::map<std::string, std::stri
 
         tmp.clear_set();
 
-        SplitString(it->begin()->first.c_str(), '%', &tmp_vec, SPLIT_MODE_ONE);
+        SplitString(it->begin()->first.c_str(), '|', &tmp_vec, SPLIT_MODE_ONE);
         if (!tmp_vec.size())
         {
             name = it->begin()->first;   
@@ -123,7 +115,7 @@ int uhandler_select::do_check_select(std::vector<std::map<std::string, std::stri
         //k1 = key%...
         //k2 = op%k1+k3
 
-        SplitString(it->begin()->second.c_str(), '%', &tmp_vec, SPLIT_MODE_ONE);
+        SplitString(it->begin()->second.c_str(), '|', &tmp_vec, SPLIT_MODE_ONE);
         if (tmp_vec.size() != 2)
         {
             continue;
