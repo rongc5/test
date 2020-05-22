@@ -106,7 +106,9 @@ class hquotation_search_index:public ToBufferMgr<hquotation_search_item>
             float fpoint;
             int ipoint;
             int sum;
+            int step;
             std::string sstr;
+            std::string name;
             hidex_item()
             {
                 date_index = 0;
@@ -114,6 +116,7 @@ class hquotation_search_index:public ToBufferMgr<hquotation_search_item>
                 fpoint = 0;
                 ipoint = 0;
                 sum = 0;
+                step = 0;
             }
         };
 };

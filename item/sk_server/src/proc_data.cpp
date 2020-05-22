@@ -368,259 +368,164 @@ int proc_data::destroy_idle()
 
 void proc_data::reg_search_index()
 {
+
+    _search_index_map["op"] = std::bind(&proc_data::do_check_select_op, _1, _2, _3);
+
     _block_set = std::make_shared<block_search_index>();
-    _search_index_map["block"] = std::bind(&block_search_index::search, _block_set, _1, _2, _3);
-    _search_index_map["block_v"] = std::bind(&block_search_index::search, _block_set, _1, _2, _3);
+    _search_index_map["block"] = std::bind(&block_search_index::do_check_block_search, _block_set, _1, _2, _3);
 
     _rquotation_index = std::make_shared<rquotation_search_index>();
     _search_index_map["end_le"] = std::bind(&rquotation_search_index::do_check_end_le, _rquotation_index, _1, _2, _3);
-    _search_index_map["end_le_v"] = std::bind(&rquotation_search_index::do_check_end_le, _rquotation_index, _1, _2, _3);
     _search_index_map["end_ge"] = std::bind(&rquotation_search_index::do_check_end_ge, _rquotation_index, _1, _2, _3);
-    _search_index_map["end_ge_v"] = std::bind(&rquotation_search_index::do_check_end_ge, _rquotation_index, _1, _2, _3);
 
     _search_index_map["change_rate_le"] = std::bind(&rquotation_search_index::do_check_change_rate_le, _rquotation_index, _1, _2, _3);
-    _search_index_map["change_rate_le_v"] = std::bind(&rquotation_search_index::do_check_change_rate_le, _rquotation_index, _1, _2, _3);
     _search_index_map["change_rate_ge"] = std::bind(&rquotation_search_index::do_check_change_rate_ge, _rquotation_index, _1, _2, _3);
-    _search_index_map["change_rate_ge_v"] = std::bind(&rquotation_search_index::do_check_change_rate_ge, _rquotation_index, _1, _2, _3);
 
     _search_index_map["range_percent_le"] = std::bind(&rquotation_search_index::do_check_range_percent_le, _rquotation_index, _1, _2, _3);
-    _search_index_map["range_percent_le_v"] = std::bind(&rquotation_search_index::do_check_range_percent_le, _rquotation_index, _1, _2, _3);
     _search_index_map["range_percent_ge"] = std::bind(&rquotation_search_index::do_check_range_percent_ge, _rquotation_index, _1, _2, _3);
-    _search_index_map["range_percent_ge_v"] = std::bind(&rquotation_search_index::do_check_range_percent_ge, _rquotation_index, _1, _2, _3);
 
     _search_index_map["down_pointer_le"] = std::bind(&rquotation_search_index::do_check_down_pointer_le, _rquotation_index, _1, _2, _3);
-    _search_index_map["down_pointer_le_v"] = std::bind(&rquotation_search_index::do_check_down_pointer_le, _rquotation_index, _1, _2, _3);
     _search_index_map["down_pointer_ge"] = std::bind(&rquotation_search_index::do_check_down_pointer_ge, _rquotation_index, _1, _2, _3);
-    _search_index_map["down_pointer_ge_v"] = std::bind(&rquotation_search_index::do_check_down_pointer_ge, _rquotation_index, _1, _2, _3);
 
     _search_index_map["up_pointer_le"] = std::bind(&rquotation_search_index::do_check_up_pointer_le, _rquotation_index, _1, _2, _3);
-    _search_index_map["up_pointer_le_v"] = std::bind(&rquotation_search_index::do_check_up_pointer_le, _rquotation_index, _1, _2, _3);
     _search_index_map["up_pointer_ge"] = std::bind(&rquotation_search_index::do_check_up_pointer_ge, _rquotation_index, _1, _2, _3);
-    _search_index_map["up_pointer_ge_v"] = std::bind(&rquotation_search_index::do_check_up_pointer_ge, _rquotation_index, _1, _2, _3);
 
     _search_index_map["end_avg_end_le"] = std::bind(&rquotation_search_index::do_check_end_avg_end_le, _rquotation_index, _1, _2, _3);
-    _search_index_map["end_avg_end_le_v"] = std::bind(&rquotation_search_index::do_check_end_avg_end_le, _rquotation_index, _1, _2, _3);
     _search_index_map["end_avg_end_ge"] = std::bind(&rquotation_search_index::do_check_end_avg_end_ge, _rquotation_index, _1, _2, _3);
-    _search_index_map["end_avg_end_ge_v"] = std::bind(&rquotation_search_index::do_check_end_avg_end_ge, _rquotation_index, _1, _2, _3);
 
     _search_index_map["end_end5_le"] = std::bind(&rquotation_search_index::do_check_end_end5_le, _rquotation_index, _1, _2, _3);
-    _search_index_map["end_end5_le_v"] = std::bind(&rquotation_search_index::do_check_end_end5_le, _rquotation_index, _1, _2, _3);
     _search_index_map["end_end5_ge"] = std::bind(&rquotation_search_index::do_check_end_end5_ge, _rquotation_index, _1, _2, _3);
-    _search_index_map["end_end5_ge_v"] = std::bind(&rquotation_search_index::do_check_end_end5_ge, _rquotation_index, _1, _2, _3);
 
     _search_index_map["end_end10_le"] = std::bind(&rquotation_search_index::do_check_end_end10_le, _rquotation_index, _1, _2, _3);
-    _search_index_map["end_end10_le_v"] = std::bind(&rquotation_search_index::do_check_end_end10_le, _rquotation_index, _1, _2, _3);
     _search_index_map["end_end10_ge"] = std::bind(&rquotation_search_index::do_check_end_end10_ge, _rquotation_index, _1, _2, _3);
-    _search_index_map["end_end10_ge_v"] = std::bind(&rquotation_search_index::do_check_end_end10_ge, _rquotation_index, _1, _2, _3);
 
     _search_index_map["end_end20_le"] = std::bind(&rquotation_search_index::do_check_end_end20_le, _rquotation_index, _1, _2, _3);
-    _search_index_map["end_end20_le_v"] = std::bind(&rquotation_search_index::do_check_end_end20_le, _rquotation_index, _1, _2, _3);
     _search_index_map["end_end20_ge"] = std::bind(&rquotation_search_index::do_check_end_end20_ge, _rquotation_index, _1, _2, _3);
-    _search_index_map["end_end20_ge_v"] = std::bind(&rquotation_search_index::do_check_end_end20_ge, _rquotation_index, _1, _2, _3);
 
     _search_index_map["end_end30_le"] = std::bind(&rquotation_search_index::do_check_end_end30_le, _rquotation_index, _1, _2, _3);
-    _search_index_map["end_end30_le_v"] = std::bind(&rquotation_search_index::do_check_end_end30_le, _rquotation_index, _1, _2, _3);
     _search_index_map["end_end30_ge"] = std::bind(&rquotation_search_index::do_check_end_end30_ge, _rquotation_index, _1, _2, _3);
-    _search_index_map["end_end30_ge_v"] = std::bind(&rquotation_search_index::do_check_end_end30_ge, _rquotation_index, _1, _2, _3);
 
     _finance_index = std::make_shared<finance_search_index>();
     _search_index_map["pe_le"] = std::bind(&finance_search_index::do_check_pe_le, _finance_index, _1, _2, _3);
     _search_index_map["pe_ge"] = std::bind(&finance_search_index::do_check_pe_ge, _finance_index, _1, _2, _3);
-    _search_index_map["pe_le_v"] = std::bind(&finance_search_index::do_check_pe_le, _finance_index, _1, _2, _3);
-    _search_index_map["pe_ge_v"] = std::bind(&finance_search_index::do_check_pe_ge, _finance_index, _1, _2, _3);
 
     _search_index_map["pb_le"] = std::bind(&finance_search_index::do_check_pb_le, _finance_index, _1, _2, _3);
     _search_index_map["pb_ge"] = std::bind(&finance_search_index::do_check_pb_ge, _finance_index, _1, _2, _3);
-    _search_index_map["pb_le_v"] = std::bind(&finance_search_index::do_check_pb_le, _finance_index, _1, _2, _3);
-    _search_index_map["pb_ge_v"] = std::bind(&finance_search_index::do_check_pb_ge, _finance_index, _1, _2, _3);
 
     _search_index_map["value_le"] = std::bind(&finance_search_index::do_check_value_le, _finance_index, _1, _2, _3);
     _search_index_map["value_ge"] = std::bind(&finance_search_index::do_check_value_ge, _finance_index, _1, _2, _3);
-    _search_index_map["value_le_v"] = std::bind(&finance_search_index::do_check_value_le, _finance_index, _1, _2, _3);
-    _search_index_map["value_ge_v"] = std::bind(&finance_search_index::do_check_value_ge, _finance_index, _1, _2, _3);
 
     _search_index_map["cir_value_le"] = std::bind(&finance_search_index::do_check_cir_value_le, _finance_index, _1, _2, _3);
     _search_index_map["cir_value_ge"] = std::bind(&finance_search_index::do_check_cir_value_ge, _finance_index, _1, _2, _3);
-    _search_index_map["cir_value_le_v"] = std::bind(&finance_search_index::do_check_cir_value_le, _finance_index, _1, _2, _3);
-    _search_index_map["cir_value_ge_v"] = std::bind(&finance_search_index::do_check_cir_value_ge, _finance_index, _1, _2, _3);
 
     _search_index_map["mgxj_le"] = std::bind(&finance_search_index::do_check_mgxj_le, _finance_index, _1, _2, _3);
     _search_index_map["mgxj_ge"] = std::bind(&finance_search_index::do_check_mgxj_ge, _finance_index, _1, _2, _3);
-    _search_index_map["mgxj_le_v"] = std::bind(&finance_search_index::do_check_mgxj_le, _finance_index, _1, _2, _3);
-    _search_index_map["mgxj_ge_v"] = std::bind(&finance_search_index::do_check_mgxj_ge, _finance_index, _1, _2, _3);
 
     _search_index_map["mgsy_le"] = std::bind(&finance_search_index::do_check_mgsy_le, _finance_index, _1, _2, _3);
     _search_index_map["mgsy_ge"] = std::bind(&finance_search_index::do_check_mgsy_ge, _finance_index, _1, _2, _3);
-    _search_index_map["mgsy_le_v"] = std::bind(&finance_search_index::do_check_mgsy_le, _finance_index, _1, _2, _3);
-    _search_index_map["mgsy_ge_v"] = std::bind(&finance_search_index::do_check_mgsy_ge, _finance_index, _1, _2, _3);
 
     _search_index_map["zysrgr_le"] = std::bind(&finance_search_index::do_check_zysrgr_le, _finance_index, _1, _2, _3);
     _search_index_map["zysrgr_ge"] = std::bind(&finance_search_index::do_check_zysrgr_ge, _finance_index, _1, _2, _3);
-    _search_index_map["zysrgr_le_v"] = std::bind(&finance_search_index::do_check_zysrgr_le, _finance_index, _1, _2, _3);
-    _search_index_map["zysrgr_ge_v"] = std::bind(&finance_search_index::do_check_zysrgr_ge, _finance_index, _1, _2, _3);
 
     _search_index_map["jlrgr_le"] = std::bind(&finance_search_index::do_check_jlrgr_le, _finance_index, _1, _2, _3);
     _search_index_map["jlrgr_ge"] = std::bind(&finance_search_index::do_check_jlrgr_ge, _finance_index, _1, _2, _3);
-    _search_index_map["jlrgr_le_v"] = std::bind(&finance_search_index::do_check_jlrgr_le, _finance_index, _1, _2, _3);
-    _search_index_map["jlrgr_ge_v"] = std::bind(&finance_search_index::do_check_jlrgr_ge, _finance_index, _1, _2, _3);
 
     _address_index = std::make_shared<address_search_index>();
     _search_index_map["address"] = std::bind(&address_search_index::search, _address_index, _1, _2, _3);
-    _search_index_map["address_v"] = std::bind(&address_search_index::search, _address_index, _1, _2, _3);
 
     _plate_index = std::make_shared<plate_search_index>();
     _search_index_map["plate"] = std::bind(&plate_search_index::search, _plate_index, _1, _2, _3);
-    _search_index_map["plate_v"] = std::bind(&plate_search_index::search, _plate_index, _1, _2, _3);
 
     _rsingle_index = std::make_shared<rsingle_search_index>();
     _search_index_map["rsingle_diff_ge"] = std::bind(&rsingle_search_index::do_check_rsingle_ge, _rsingle_index, _1, _2, _3);
-    _search_index_map["rsingle_diff_ge_v"] = std::bind(&rsingle_search_index::do_check_rsingle_ge, _rsingle_index, _1, _2, _3);
     _search_index_map["rsingle_diff_le"] = std::bind(&rsingle_search_index::do_check_rsingle_le, _rsingle_index, _1, _2, _3);
-    _search_index_map["rsingle_diff_le_v"] = std::bind(&rsingle_search_index::do_check_rsingle_le, _rsingle_index, _1, _2, _3);
 
     _search_index_map["rsingle_diff2_ge"] = std::bind(&rsingle_search_index::do_check_rsingle_diff2_ge, _rsingle_index, _1, _2, _3);
-    _search_index_map["rsingle_diff2_ge_v"] = std::bind(&rsingle_search_index::do_check_rsingle_diff2_ge, _rsingle_index, _1, _2, _3);
     _search_index_map["rsingle_diff2_le"] = std::bind(&rsingle_search_index::do_check_rsingle_diff2_le, _rsingle_index, _1, _2, _3);
-    _search_index_map["rsingle_diff2_le_v"] = std::bind(&rsingle_search_index::do_check_rsingle_diff2_le, _rsingle_index, _1, _2, _3);
 
     _hsingle_index = std::make_shared<hsingle_search_index>();
     _search_index_map["hsingle_diff_ge"] = std::bind(&hsingle_search_index::do_hsingle_diff_ge, _hsingle_index, _1, _2, _3);
     _search_index_map["hsingle_diff_le"] = std::bind(&hsingle_search_index::do_hsingle_diff_le, _hsingle_index, _1, _2, _3);
-    _search_index_map["hsingle_diff_ge_v"] = std::bind(&hsingle_search_index::do_hsingle_diff_ge, _hsingle_index, _1, _2, _3);
-    _search_index_map["hsingle_diff_le_v"] = std::bind(&hsingle_search_index::do_hsingle_diff_le, _hsingle_index, _1, _2, _3);
 
     _search_index_map["hsingle_diff2_ge"] = std::bind(&hsingle_search_index::do_hsingle_diff2_ge, _hsingle_index, _1, _2, _3);
     _search_index_map["hsingle_diff2_le"] = std::bind(&hsingle_search_index::do_hsingle_diff2_le, _hsingle_index, _1, _2, _3);
-    _search_index_map["hsingle_diff2_ge_v"] = std::bind(&hsingle_search_index::do_hsingle_diff2_ge, _hsingle_index, _1, _2, _3);
-    _search_index_map["hsingle_diff2_le_v"] = std::bind(&hsingle_search_index::do_hsingle_diff2_le, _hsingle_index, _1, _2, _3);
 
     _search_index_map["hsingle_diff_ge_num_ge"] = std::bind(&hsingle_search_index::do_hsingle_diff_ge_num_ge, _hsingle_index, _1, _2, _3);
-    _search_index_map["hsingle_diff_ge_num_ge_v"] = std::bind(&hsingle_search_index::do_hsingle_diff_ge_num_ge, _hsingle_index, _1, _2, _3);
 
     _search_index_map["hsingle_diff_sum_ge"] = std::bind(&hsingle_search_index::do_hsingle_sum_ge, _hsingle_index, _1, _2, _3);
-    _search_index_map["hsingle_diff_sum_ge_v"] = std::bind(&hsingle_search_index::do_hsingle_sum_ge, _hsingle_index, _1, _2, _3);
 
     _search_index_map["hsingle_diff_sum_le"] = std::bind(&hsingle_search_index::do_hsingle_sum_le, _hsingle_index, _1, _2, _3);
-    _search_index_map["hsingle_diff_sum_le_v"] = std::bind(&hsingle_search_index::do_hsingle_sum_le, _hsingle_index, _1, _2, _3);
 
     _hquotation_index = std::make_shared<hquotation_search_index>();
 
     _search_index_map["hqchange_rate_ge"] = std::bind(&hquotation_search_index::do_hqchange_rate_ge, _hquotation_index, _1, _2, _3);
-    _search_index_map["hqchange_rate_ge_v"] = std::bind(&hquotation_search_index::do_hqchange_rate_ge, _hquotation_index, _1, _2, _3);
     _search_index_map["hqchange_rate_le"] = std::bind(&hquotation_search_index::do_hqchange_rate_le, _hquotation_index, _1, _2, _3);
-    _search_index_map["hqchange_rate_le_v"] = std::bind(&hquotation_search_index::do_hqchange_rate_le, _hquotation_index, _1, _2, _3);
 
     _search_index_map["hqrange_percent_ge"] = std::bind(&hquotation_search_index::do_hqrange_percent_ge, _hquotation_index, _1, _2, _3);
-    _search_index_map["hqrange_percent_ge_v"] = std::bind(&hquotation_search_index::do_hqrange_percent_ge, _hquotation_index, _1, _2, _3);
     _search_index_map["hqrange_percent_le"] = std::bind(&hquotation_search_index::do_hqrange_percent_le, _hquotation_index, _1, _2, _3);
-    _search_index_map["hqrange_percent_le_v"] = std::bind(&hquotation_search_index::do_hqrange_percent_le, _hquotation_index, _1, _2, _3);
 
     _search_index_map["hqrange_percent_ge_num_ge"] = std::bind(&hquotation_search_index::do_hqrange_percent_ge_num_ge, _hquotation_index, _1, _2, _3);
-    _search_index_map["hqrange_percent_ge_num_ge_v"] = std::bind(&hquotation_search_index::do_hqrange_percent_ge_num_ge, _hquotation_index, _1, _2, _3);
     _search_index_map["hqrange_percent_le_num_ge"] = std::bind(&hquotation_search_index::do_hqrange_percent_le_num_ge, _hquotation_index, _1, _2, _3);
-    _search_index_map["hqrange_percent_le_num_ge_v"] = std::bind(&hquotation_search_index::do_hqrange_percent_le_num_ge, _hquotation_index, _1, _2, _3);
 
     _search_index_map["hq_sum_range_percent_ge"] = std::bind(&hquotation_search_index::do_hq_sum_range_percent_ge, _hquotation_index, _1, _2, _3);
-    _search_index_map["hq_sum_range_percent_ge_v"] = std::bind(&hquotation_search_index::do_hq_sum_range_percent_ge, _hquotation_index, _1, _2, _3);
     _search_index_map["hq_sum_range_percent_le"] = std::bind(&hquotation_search_index::do_hq_sum_range_percent_le, _hquotation_index, _1, _2, _3);
-    _search_index_map["hq_sum_range_percent_le_v"] = std::bind(&hquotation_search_index::do_hq_sum_range_percent_le, _hquotation_index, _1, _2, _3);
 
     _search_index_map["hq_sum_change_rate_ge"] = std::bind(&hquotation_search_index::do_hq_sum_change_rate_ge, _hquotation_index, _1, _2, _3);
-    _search_index_map["hq_sum_change_rate_ge_v"] = std::bind(&hquotation_search_index::do_hq_sum_change_rate_ge, _hquotation_index, _1, _2, _3);
     _search_index_map["hq_sum_change_rate_le"] = std::bind(&hquotation_search_index::do_hq_sum_change_rate_le, _hquotation_index, _1, _2, _3);
-    _search_index_map["hq_sum_change_rate_le_v"] = std::bind(&hquotation_search_index::do_hq_sum_change_rate_le, _hquotation_index, _1, _2, _3);
 
     _search_index_map["hqdown_pointer_ge"] = std::bind(&hquotation_search_index::do_check_hqdown_pointer_ge, _hquotation_index, _1, _2, _3);
-    _search_index_map["hqdown_pointer_ge_v"] = std::bind(&hquotation_search_index::do_check_hqdown_pointer_ge, _hquotation_index, _1, _2, _3);
     _search_index_map["hqdown_pointer_le"] = std::bind(&hquotation_search_index::do_check_hqdown_pointer_le, _hquotation_index, _1, _2, _3);
-    _search_index_map["hqdown_pointer_le_v"] = std::bind(&hquotation_search_index::do_check_hqdown_pointer_le, _hquotation_index, _1, _2, _3);
     _search_index_map["hqdown_pointer_ge_num_ge"] = std::bind(&hquotation_search_index::do_check_hqdown_pointer_ge_num_ge, _hquotation_index, _1, _2, _3);
-    _search_index_map["hqdown_pointer_ge_num_ge_v"] = std::bind(&hquotation_search_index::do_check_hqdown_pointer_ge_num_ge, _hquotation_index, _1, _2, _3);
 
     _search_index_map["hqup_pointer_ge"] = std::bind(&hquotation_search_index::do_check_hqup_pointer_ge, _hquotation_index, _1, _2, _3);
-    _search_index_map["hqup_pointer_ge_v"] = std::bind(&hquotation_search_index::do_check_hqup_pointer_ge, _hquotation_index, _1, _2, _3);
     _search_index_map["hqup_pointer_le"] = std::bind(&hquotation_search_index::do_check_hqup_pointer_le, _hquotation_index, _1, _2, _3);
-    _search_index_map["hqup_pointer_le_v"] = std::bind(&hquotation_search_index::do_check_hqup_pointer_le, _hquotation_index, _1, _2, _3);
     _search_index_map["hqup_pointer_ge_num_ge"] = std::bind(&hquotation_search_index::do_check_hqup_pointer_ge_num_ge, _hquotation_index, _1, _2, _3);
-    _search_index_map["hqup_pointer_ge_num_ge_v"] = std::bind(&hquotation_search_index::do_check_hqup_pointer_ge_num_ge, _hquotation_index, _1, _2, _3);
 
     _search_index_map["hqend_start_ge"] = std::bind(&hquotation_search_index::do_check_hqend_start_ge, _hquotation_index, _1, _2, _3);
-    _search_index_map["hqend_start_ge_v"] = std::bind(&hquotation_search_index::do_check_hqend_start_ge, _hquotation_index, _1, _2, _3);
     _search_index_map["hqend_start_le"] = std::bind(&hquotation_search_index::do_check_hqend_start_le, _hquotation_index, _1, _2, _3);
-    _search_index_map["hqend_start_le_v"] = std::bind(&hquotation_search_index::do_check_hqend_start_le, _hquotation_index, _1, _2, _3);
     _search_index_map["hqend_start_ge_num_ge"] = std::bind(&hquotation_search_index::do_check_hqend_start_ge_num_ge, _hquotation_index, _1, _2, _3);
-    _search_index_map["hqend_start_ge_num_ge_v"] = std::bind(&hquotation_search_index::do_check_hqend_start_ge_num_ge, _hquotation_index, _1, _2, _3);
 
     _search_index_map["hqend_start_ge_ratio_ge"] = std::bind(&hquotation_search_index::do_check_hqend_start_ge_ratio_ge, _hquotation_index, _1, _2, _3);
-    _search_index_map["hqend_start_ge_ratio_ge_v"] = std::bind(&hquotation_search_index::do_check_hqend_start_ge_ratio_ge, _hquotation_index, _1, _2, _3);
 
     _search_index_map["hqend_avg_end_ge"] = std::bind(&hquotation_search_index::do_check_hqend_avg_end_ge, _hquotation_index, _1, _2, _3);
-    _search_index_map["hqend_avg_end_ge_v"] = std::bind(&hquotation_search_index::do_check_hqend_avg_end_ge, _hquotation_index, _1, _2, _3);
     _search_index_map["hqend_avg_end_le"] = std::bind(&hquotation_search_index::do_check_hqend_avg_end_le, _hquotation_index, _1, _2, _3);
-    _search_index_map["hqend_avg_end_le_v"] = std::bind(&hquotation_search_index::do_check_hqend_avg_end_le, _hquotation_index, _1, _2, _3);
     _search_index_map["hqend_avg_end_ge_num_ge"] = std::bind(&hquotation_search_index::do_check_hqend_avg_end_ge_num_ge, _hquotation_index, _1, _2, _3);
-    _search_index_map["hqend_avg_end_ge_num_ge_v"] = std::bind(&hquotation_search_index::do_check_hqend_avg_end_ge_num_ge, _hquotation_index, _1, _2, _3);
 
     _search_index_map["id_substr"] = std::bind(&hquotation_search_index::do_check_id_substr, _hquotation_index, _1, _2, _3);
-    _search_index_map["id_substr_v"] = std::bind(&hquotation_search_index::do_check_id_substr, _hquotation_index, _1, _2, _3);
 
 
     _search_index_map["rlow_hlow_ge"] = std::bind(&hquotation_search_index::do_check_rlow_hlow_ge, _hquotation_index, _1, _2, _3);
-    _search_index_map["rlow_hlow_ge_v"] = std::bind(&hquotation_search_index::do_check_rlow_hlow_ge, _hquotation_index, _1, _2, _3);
     _search_index_map["rlow_hlow_le"] = std::bind(&hquotation_search_index::do_check_rlow_hlow_le, _hquotation_index, _1, _2, _3);
-    _search_index_map["rlow_hlow_le_v"] = std::bind(&hquotation_search_index::do_check_rlow_hlow_le, _hquotation_index, _1, _2, _3);
     _search_index_map["rlow_hlow_ge_num_ge"] = std::bind(&hquotation_search_index::do_check_rlow_hlow_ge_num_ge, _hquotation_index, _1, _2, _3);
-    _search_index_map["rlow_hlow_ge_num_ge_v"] = std::bind(&hquotation_search_index::do_check_rlow_hlow_ge_num_ge, _hquotation_index, _1, _2, _3);
 
     _search_index_map["rlow_hlowest_ge"] = std::bind(&hquotation_search_index::do_check_rlow_hlowest_ge, _hquotation_index, _1, _2, _3);
-    _search_index_map["rlow_hlowest_ge_v"] = std::bind(&hquotation_search_index::do_check_rlow_hlowest_ge, _hquotation_index, _1, _2, _3);
     _search_index_map["rlow_hlowest_le"] = std::bind(&hquotation_search_index::do_check_rlow_hlowest_le, _hquotation_index, _1, _2, _3);
-    _search_index_map["rlow_hlowest_le_v"] = std::bind(&hquotation_search_index::do_check_rlow_hlowest_le, _hquotation_index, _1, _2, _3);
 
     _search_index_map["rhigh_hhigh_ge"] = std::bind(&hquotation_search_index::do_check_rhigh_hhigh_ge, _hquotation_index, _1, _2, _3);
-    _search_index_map["rhigh_hhigh_ge_v"] = std::bind(&hquotation_search_index::do_check_rhigh_hhigh_ge, _hquotation_index, _1, _2, _3);
     _search_index_map["rhigh_hhigh_le"] = std::bind(&hquotation_search_index::do_check_rhigh_hhigh_le, _hquotation_index, _1, _2, _3);
-    _search_index_map["rhigh_hhigh_le_v"] = std::bind(&hquotation_search_index::do_check_rhigh_hhigh_le, _hquotation_index, _1, _2, _3);
     _search_index_map["rhigh_hhigh_ge_num_ge"] = std::bind(&hquotation_search_index::do_check_rhigh_hhigh_ge_num_ge, _hquotation_index, _1, _2, _3);
-    _search_index_map["rhigh_hhigh_ge_num_ge_v"] = std::bind(&hquotation_search_index::do_check_rhigh_hhigh_ge_num_ge, _hquotation_index, _1, _2, _3);
 
     _search_index_map["rhigh_hhighest_ge"] = std::bind(&hquotation_search_index::do_check_rhigh_hhighest_ge, _hquotation_index, _1, _2, _3);
-    _search_index_map["rhigh_hhighest_ge_v"] = std::bind(&hquotation_search_index::do_check_rhigh_hhighest_ge, _hquotation_index, _1, _2, _3);
     _search_index_map["rhigh_hhighest_le"] = std::bind(&hquotation_search_index::do_check_rhigh_hhighest_le, _hquotation_index, _1, _2, _3);
-    _search_index_map["rhigh_hhighest_le_v"] = std::bind(&hquotation_search_index::do_check_rhigh_hhighest_le, _hquotation_index, _1, _2, _3);
 
     _search_index_map["hqend_end_5_ge"] = std::bind(&hquotation_search_index::do_check_hqend_end_5_ge, _hquotation_index, _1, _2, _3);
-    _search_index_map["hqend_end_5_ge_v"] = std::bind(&hquotation_search_index::do_check_hqend_end_5_ge, _hquotation_index, _1, _2, _3);
     _search_index_map["hqend_end_5_le"] = std::bind(&hquotation_search_index::do_check_hqend_end_5_le, _hquotation_index, _1, _2, _3);
-    _search_index_map["hqend_end_5_le_v"] = std::bind(&hquotation_search_index::do_check_hqend_end_5_le, _hquotation_index, _1, _2, _3);
     _search_index_map["hqend_end_5_ge_num_ge"] = std::bind(&hquotation_search_index::do_check_hqend_end_5_ge_num_ge, _hquotation_index, _1, _2, _3);
-    _search_index_map["hqend_end_5_ge_num_ge_v"] = std::bind(&hquotation_search_index::do_check_hqend_end_5_ge_num_ge, _hquotation_index, _1, _2, _3);
 
     _search_index_map["hqend_end_10_ge"] = std::bind(&hquotation_search_index::do_check_hqend_end_10_ge, _hquotation_index, _1, _2, _3);
-    _search_index_map["hqend_end_10_ge_v"] = std::bind(&hquotation_search_index::do_check_hqend_end_10_ge, _hquotation_index, _1, _2, _3);
     _search_index_map["hqend_end_10_le"] = std::bind(&hquotation_search_index::do_check_hqend_end_10_le, _hquotation_index, _1, _2, _3);
-    _search_index_map["hqend_end_10_le_v"] = std::bind(&hquotation_search_index::do_check_hqend_end_10_le, _hquotation_index, _1, _2, _3);
     _search_index_map["hqend_end_10_ge_num_ge"] = std::bind(&hquotation_search_index::do_check_hqend_end_10_ge_num_ge, _hquotation_index, _1, _2, _3);
-    _search_index_map["hqend_end_10_ge_num_ge_v"] = std::bind(&hquotation_search_index::do_check_hqend_end_10_ge_num_ge, _hquotation_index, _1, _2, _3);
 
     _search_index_map["hqend_end_20_ge"] = std::bind(&hquotation_search_index::do_check_hqend_end_20_ge, _hquotation_index, _1, _2, _3);
-    _search_index_map["hqend_end_20_ge_v"] = std::bind(&hquotation_search_index::do_check_hqend_end_20_ge, _hquotation_index, _1, _2, _3);
     _search_index_map["hqend_end_20_le"] = std::bind(&hquotation_search_index::do_check_hqend_end_20_le, _hquotation_index, _1, _2, _3);
-    _search_index_map["hqend_end_20_le_v"] = std::bind(&hquotation_search_index::do_check_hqend_end_20_le, _hquotation_index, _1, _2, _3);
     _search_index_map["hqend_end_20_ge_num_ge"] = std::bind(&hquotation_search_index::do_check_hqend_end_20_ge_num_ge, _hquotation_index, _1, _2, _3);
-    _search_index_map["hqend_end_20_ge_num_ge_v"] = std::bind(&hquotation_search_index::do_check_hqend_end_20_ge_num_ge, _hquotation_index, _1, _2, _3);
 
     _search_index_map["hqend_end_30_ge"] = std::bind(&hquotation_search_index::do_check_hqend_end_30_ge, _hquotation_index, _1, _2, _3);
-    _search_index_map["hqend_end_30_ge_v"] = std::bind(&hquotation_search_index::do_check_hqend_end_30_ge, _hquotation_index, _1, _2, _3);
     _search_index_map["hqend_end_30_le"] = std::bind(&hquotation_search_index::do_check_hqend_end_30_le, _hquotation_index, _1, _2, _3);
-    _search_index_map["hqend_end_30_le_v"] = std::bind(&hquotation_search_index::do_check_hqend_end_30_le, _hquotation_index, _1, _2, _3);
     _search_index_map["hqend_end_30_ge_num_ge"] = std::bind(&hquotation_search_index::do_check_hqend_end_30_ge_num_ge, _hquotation_index, _1, _2, _3);
-    _search_index_map["hqend_end_30_ge_num_ge_v"] = std::bind(&hquotation_search_index::do_check_hqend_end_30_ge_num_ge, _hquotation_index, _1, _2, _3);
 
     _search_index_map["hqredvol_greenvol_ge"] = std::bind(&hquotation_search_index::do_check_hqredvol_greenvol_ge, _hquotation_index, _1, _2, _3);
-    _search_index_map["hqredvol_greenvol_ge_v"] = std::bind(&hquotation_search_index::do_check_hqredvol_greenvol_ge, _hquotation_index, _1, _2, _3);
     _search_index_map["hqredvol_greenvol_le"] = std::bind(&hquotation_search_index::do_check_hqredvol_greenvol_le, _hquotation_index, _1, _2, _3);
-    _search_index_map["hqredvol_greenvol_le_v"] = std::bind(&hquotation_search_index::do_check_hqredvol_greenvol_le, _hquotation_index, _1, _2, _3);
 }
 
 base_search_index proc_data::get_search_index(std::string & key)
@@ -743,4 +648,77 @@ int proc_data::get_search_sstr(std::string & id, std::string & sstr, int date_in
 
 
     return ret;
+}
+
+bool proc_data::do_check_select_op(std::string &key, std::string &value, search_res & search)
+{
+    std::vector<std::string> vec;
+    int pos = 0;
+    for (int i = 0 ; i < (int)value.size(); i++)
+    {
+        if (value[i] == '*' || value[i] == '+' || value[i] == '-' || value[i] == '(' || value[i] == ')')
+        {
+            std::string str;
+            if (i - pos != 0)
+            {
+                str = value.substr(pos, i - pos);
+                str = StringTrim(str);
+                if (!str.empty())
+                    vec.push_back(str);
+            }
+            vec.push_back(std::string(1, value[i]));
+
+            pos = i + 1;
+        }
+    }
+
+    std::stack<std::string> name;
+    std::stack<std::string> op;
+    std::string tmp_name = "ai,Aguhaonana";
+
+    for (int i = 0; i < (int)vec.size(); i++)
+    {
+            if (vec[i] == "(" || vec[i] == "*" || vec[i] == "+" || vec[i] == "-")
+            {
+                op.push(vec[i]);
+            }
+            else if (vec[i] == ")")
+            {
+                if (op.top() != "(")
+                    return false;
+                op.pop();
+            }
+            else
+            {
+                if (name.empty())
+                {
+                    name.push(vec[i]);
+                    continue;
+                }
+                
+                if (op.top() == "*")
+                {
+                    search.get_intersection(name.top(), vec[i], key);
+                }
+                else if (op.top() == "+")
+                {
+                    search.get_union(name.top(), vec[i], key);
+                }
+                else if (op.top() == "-")
+                {
+                    search.get_diff(name.top(), vec[i], key);
+                }
+                
+                op.pop();
+                name.pop();
+                if (name.top() != key)
+                    search.earse_bykey(name.top());
+                search.earse_bykey(vec[i]);
+                name.push(key);
+            }
+    }
+
+
+
+    return true;
 }

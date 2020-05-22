@@ -3,28 +3,16 @@
 #include "proc_data.h"
 #include "history_single_dict.h"
 
-bool hsingle_search_index::do_hsingle_diff_le(std::string &key, std::string &value, search_res & search)
+bool hsingle_search_index::do_hsingle_diff_le(std::string &name, std::string &value, search_res & search)
 {
     std::vector<hidex_item> vec_idex;
     hsingle_search_item * search_index = current();
-    SETS_OP_TRPE tmp_ot;
     proc_data* p_data = proc_data::instance();
     strategy_conf * strategy = p_data->_conf->_strategy->current(); 
 
     std::vector<std::string> tmp_vec;
 
-    if (strstr(value.c_str(), "|")) 
-    {
-        SplitString(value.c_str(), '|', &tmp_vec, SPLIT_MODE_ALL);
-        tmp_ot = SETS_OP_UNION;
-    }
-    else 
-    {
-        SplitString(value.c_str(), ';', &tmp_vec, SPLIT_MODE_ALL); 
-        tmp_ot = SETS_OP_INTERSECTION;
-    }
 
-    if (!tmp_vec.size())
         tmp_vec.push_back(value);
 
     //-1:1:10000&-2:2:50000
@@ -48,7 +36,7 @@ bool hsingle_search_index::do_hsingle_diff_le(std::string &key, std::string &val
     }
 
     int cnt = 0;
-    std::set<std::string> res;
+    
     if (search.empty())
     {
         for (auto ii = search_index->id_single.begin(); ii != search_index->id_single.end(); ii++)
@@ -68,10 +56,8 @@ bool hsingle_search_index::do_hsingle_diff_le(std::string &key, std::string &val
                     cnt++;
             }
 
-            if (tmp_ot == SETS_OP_INTERSECTION && cnt == (int)vec_idex.size())
-                res.insert(ii->first);  
-            else if (tmp_ot == SETS_OP_UNION && cnt)
-                res.insert(ii->first);  
+            if (cnt)
+                search.append(name, ii->first);
         }
     }
     else
@@ -97,40 +83,26 @@ bool hsingle_search_index::do_hsingle_diff_le(std::string &key, std::string &val
                     cnt++;
             }
 
-            if (tmp_ot == SETS_OP_INTERSECTION && cnt == (int)vec_idex.size())
-                res.insert(ii->first);  
-            else if (tmp_ot == SETS_OP_UNION && cnt)
-                res.insert(ii->first);  
+            if (cnt)
+                search.append(name, ii->first);
         }
     }
     
-    search._id_sets = res;
+    
 
     return true;
 }
 
-bool hsingle_search_index::do_hsingle_diff_ge(std::string &key, std::string &value, search_res & search)
+bool hsingle_search_index::do_hsingle_diff_ge(std::string &name, std::string &value, search_res & search)
 {
     std::vector<hidex_item> vec_idex;
     hsingle_search_item * search_index = current();
-    SETS_OP_TRPE tmp_ot;
     proc_data* p_data = proc_data::instance();
     strategy_conf * strategy = p_data->_conf->_strategy->current(); 
 
     std::vector<std::string> tmp_vec;
 
-    if (strstr(value.c_str(), "|")) 
-    {
-        SplitString(value.c_str(), '|', &tmp_vec, SPLIT_MODE_ALL);
-        tmp_ot = SETS_OP_UNION;
-    }
-    else 
-    {
-        SplitString(value.c_str(), ';', &tmp_vec, SPLIT_MODE_ALL); 
-        tmp_ot = SETS_OP_INTERSECTION;
-    }
 
-    if (!tmp_vec.size())
         tmp_vec.push_back(value);
 
     //-1:1:10000&-2:2:50000
@@ -154,7 +126,7 @@ bool hsingle_search_index::do_hsingle_diff_ge(std::string &key, std::string &val
     }
 
     int cnt = 0;
-    std::set<std::string> res;
+    
     if (search.empty()) 
     {
         for (auto ii = search_index->id_single.begin(); ii != search_index->id_single.end(); ii++)
@@ -174,10 +146,8 @@ bool hsingle_search_index::do_hsingle_diff_ge(std::string &key, std::string &val
                     cnt++;
             }
 
-            if (tmp_ot == SETS_OP_INTERSECTION && cnt == (int)vec_idex.size())
-                res.insert(ii->first);  
-            else if (tmp_ot == SETS_OP_UNION && cnt)
-                res.insert(ii->first);  
+            if (cnt)
+                search.append(name, ii->first);
         }
     }
     else
@@ -203,40 +173,26 @@ bool hsingle_search_index::do_hsingle_diff_ge(std::string &key, std::string &val
                     cnt++;
             }
 
-            if (tmp_ot == SETS_OP_INTERSECTION && cnt == (int)vec_idex.size())
-                res.insert(ii->first);  
-            else if (tmp_ot == SETS_OP_UNION && cnt)
-                res.insert(ii->first);  
+            if (cnt)
+                search.append(name, ii->first);
         }
     }
 
-    search._id_sets = res;
+    
 
     return true;
 }
 
-bool hsingle_search_index::do_hsingle_diff_ge_num_ge(std::string &key, std::string &value, search_res & search)
+bool hsingle_search_index::do_hsingle_diff_ge_num_ge(std::string &name, std::string &value, search_res & search)
 {
     std::vector<hidex_item> vec_idex;
     hsingle_search_item * search_index = current();
-    SETS_OP_TRPE tmp_ot;
     proc_data* p_data = proc_data::instance();
     strategy_conf * strategy = p_data->_conf->_strategy->current(); 
 
     std::vector<std::string> tmp_vec;
 
-    if (strstr(value.c_str(), "|")) 
-    {
-        SplitString(value.c_str(), '|', &tmp_vec, SPLIT_MODE_ALL);
-        tmp_ot = SETS_OP_UNION;
-    }
-    else 
-    {
-        SplitString(value.c_str(), ';', &tmp_vec, SPLIT_MODE_ALL); 
-        tmp_ot = SETS_OP_INTERSECTION;
-    }
 
-    if (!tmp_vec.size())
         tmp_vec.push_back(value);
 
     //-1:0:1:2:10000&-2:0:2:1:50000
@@ -266,7 +222,7 @@ bool hsingle_search_index::do_hsingle_diff_ge_num_ge(std::string &key, std::stri
 
     int cnt = 0;
     int count = 0;
-    std::set<std::string> res;
+    
     if (search.empty()) 
     {
         for (auto ii = search_index->id_single.begin(); ii != search_index->id_single.end(); ii++)
@@ -291,10 +247,8 @@ bool hsingle_search_index::do_hsingle_diff_ge_num_ge(std::string &key, std::stri
                     cnt++;
             }
 
-            if (tmp_ot == SETS_OP_INTERSECTION && cnt == (int)vec_idex.size())
-                res.insert(ii->first);  
-            else if (tmp_ot == SETS_OP_UNION && cnt)
-                res.insert(ii->first);  
+            if (cnt)
+                search.append(name, ii->first);
         }
     }
     else
@@ -325,40 +279,26 @@ bool hsingle_search_index::do_hsingle_diff_ge_num_ge(std::string &key, std::stri
                     cnt++;
             }
 
-            if (tmp_ot == SETS_OP_INTERSECTION && cnt == (int)vec_idex.size())
-                res.insert(ii->first);  
-            else if (tmp_ot == SETS_OP_UNION && cnt)
-                res.insert(ii->first);  
+            if (cnt)
+                search.append(name, ii->first);
         }
     }
 
-    search._id_sets = res;
+    
 
     return true;
 }
 
-bool hsingle_search_index::do_hsingle_sum_ge(std::string &key, std::string &value, search_res & search)
+bool hsingle_search_index::do_hsingle_sum_ge(std::string &name, std::string &value, search_res & search)
 {
     std::vector<hidex_item> vec_idex;
     hsingle_search_item * search_index = current();
-    SETS_OP_TRPE tmp_ot;
     proc_data* p_data = proc_data::instance();
     strategy_conf * strategy = p_data->_conf->_strategy->current(); 
 
     std::vector<std::string> tmp_vec;
 
-    if (strstr(value.c_str(), "|")) 
-    {
-        SplitString(value.c_str(), '|', &tmp_vec, SPLIT_MODE_ALL);
-        tmp_ot = SETS_OP_UNION;
-    }
-    else 
-    {
-        SplitString(value.c_str(), ';', &tmp_vec, SPLIT_MODE_ALL); 
-        tmp_ot = SETS_OP_INTERSECTION;
-    }
 
-    if (!tmp_vec.size())
         tmp_vec.push_back(value);
 
     //-1:0:1:10000&-2:0:2:50000
@@ -387,7 +327,7 @@ bool hsingle_search_index::do_hsingle_sum_ge(std::string &key, std::string &valu
 
     int cnt = 0;
     int count = 0;
-    std::set<std::string> res;
+    
     if (search.empty())
     {
         for (auto ii = search_index->id_sum_single.begin(); ii != search_index->id_sum_single.end(); ii++)
@@ -412,10 +352,8 @@ bool hsingle_search_index::do_hsingle_sum_ge(std::string &key, std::string &valu
                     cnt++;
             }
 
-            if (tmp_ot == SETS_OP_INTERSECTION && cnt == (int)vec_idex.size())
-                res.insert(ii->first);  
-            else if (tmp_ot == SETS_OP_UNION && cnt)
-                res.insert(ii->first);  
+            if (cnt)
+                search.append(name, ii->first);
         }
     }
     else
@@ -446,40 +384,26 @@ bool hsingle_search_index::do_hsingle_sum_ge(std::string &key, std::string &valu
                     cnt++;
             }
 
-            if (tmp_ot == SETS_OP_INTERSECTION && cnt == (int)vec_idex.size())
-                res.insert(ii->first);  
-            else if (tmp_ot == SETS_OP_UNION && cnt)
-                res.insert(ii->first);  
+            if (cnt)
+                search.append(name, ii->first);
         }
     }
 
-    search._id_sets = res;
+    
 
     return true;
 }
 
-bool hsingle_search_index::do_hsingle_sum_le(std::string &key, std::string &value, search_res & search)
+bool hsingle_search_index::do_hsingle_sum_le(std::string &name, std::string &value, search_res & search)
 {
     std::vector<hidex_item> vec_idex;
     hsingle_search_item * search_index = current();
-    SETS_OP_TRPE tmp_ot;
     proc_data* p_data = proc_data::instance();
     strategy_conf * strategy = p_data->_conf->_strategy->current(); 
 
     std::vector<std::string> tmp_vec;
 
-    if (strstr(value.c_str(), "|")) 
-    {
-        SplitString(value.c_str(), '|', &tmp_vec, SPLIT_MODE_ALL);
-        tmp_ot = SETS_OP_UNION;
-    }
-    else 
-    {
-        SplitString(value.c_str(), ';', &tmp_vec, SPLIT_MODE_ALL); 
-        tmp_ot = SETS_OP_INTERSECTION;
-    }
 
-    if (!tmp_vec.size())
         tmp_vec.push_back(value);
 
     //-1:0:1:10000&-2:0:2:50000
@@ -508,7 +432,7 @@ bool hsingle_search_index::do_hsingle_sum_le(std::string &key, std::string &valu
 
     int cnt = 0;
     int count = 0;
-    std::set<std::string> res;
+    
     if (search.empty())
     {
         for (auto ii = search_index->id_sum_single.begin(); ii != search_index->id_sum_single.end(); ii++)
@@ -533,10 +457,8 @@ bool hsingle_search_index::do_hsingle_sum_le(std::string &key, std::string &valu
                     cnt++;
             }
 
-            if (tmp_ot == SETS_OP_INTERSECTION && cnt == (int)vec_idex.size())
-                res.insert(ii->first);  
-            else if (tmp_ot == SETS_OP_UNION && cnt)
-                res.insert(ii->first);  
+            if (cnt)
+                search.append(name, ii->first);
         }
     }
     else
@@ -567,41 +489,27 @@ bool hsingle_search_index::do_hsingle_sum_le(std::string &key, std::string &valu
                     cnt++;
             }
 
-            if (tmp_ot == SETS_OP_INTERSECTION && cnt == (int)vec_idex.size())
-                res.insert(ii->first);  
-            else if (tmp_ot == SETS_OP_UNION && cnt)
-                res.insert(ii->first);  
+            if (cnt)
+                search.append(name, ii->first);
         }
     }
 
-    search._id_sets = res;
+    
 
     return true;
 }
 
 
-bool hsingle_search_index::do_hsingle_diff2_le(std::string &key, std::string &value, search_res & search)
+bool hsingle_search_index::do_hsingle_diff2_le(std::string &name, std::string &value, search_res & search)
 {
     std::vector<hidex_item> vec_idex;
     hsingle_search_item * search_index = current();
-    SETS_OP_TRPE tmp_ot;
     proc_data* p_data = proc_data::instance();
     strategy_conf * strategy = p_data->_conf->_strategy->current(); 
 
     std::vector<std::string> tmp_vec;
 
-    if (strstr(value.c_str(), "|")) 
-    {
-        SplitString(value.c_str(), '|', &tmp_vec, SPLIT_MODE_ALL);
-        tmp_ot = SETS_OP_UNION;
-    }
-    else 
-    {
-        SplitString(value.c_str(), ';', &tmp_vec, SPLIT_MODE_ALL); 
-        tmp_ot = SETS_OP_INTERSECTION;
-    }
 
-    if (!tmp_vec.size())
         tmp_vec.push_back(value);
 
     //-1:-2:1:10000&-2:-3:2:50000
@@ -626,7 +534,7 @@ bool hsingle_search_index::do_hsingle_diff2_le(std::string &key, std::string &va
     }
 
     int cnt = 0;
-    std::set<std::string> res;
+    
     if (search.empty())
     {
         for (auto ii = search_index->id_single.begin(); ii != search_index->id_single.end(); ii++)
@@ -651,10 +559,8 @@ bool hsingle_search_index::do_hsingle_diff2_le(std::string &key, std::string &va
                     cnt++;
             }
 
-            if (tmp_ot == SETS_OP_INTERSECTION && cnt == (int)vec_idex.size())
-                res.insert(ii->first);  
-            else if (tmp_ot == SETS_OP_UNION && cnt)
-                res.insert(ii->first);  
+            if (cnt)
+                search.append(name, ii->first);
         }
     }
     else
@@ -686,40 +592,26 @@ bool hsingle_search_index::do_hsingle_diff2_le(std::string &key, std::string &va
                     cnt++;
             }
 
-            if (tmp_ot == SETS_OP_INTERSECTION && cnt == (int)vec_idex.size())
-                res.insert(ii->first);  
-            else if (tmp_ot == SETS_OP_UNION && cnt)
-                res.insert(ii->first);  
+            if (cnt)
+                search.append(name, ii->first);
         }
     }
     
-    search._id_sets = res;
+    
 
     return true;
 }
 
-bool hsingle_search_index::do_hsingle_diff2_ge(std::string &key, std::string &value, search_res & search)
+bool hsingle_search_index::do_hsingle_diff2_ge(std::string &name, std::string &value, search_res & search)
 {
     std::vector<hidex_item> vec_idex;
     hsingle_search_item * search_index = current();
-    SETS_OP_TRPE tmp_ot;
     proc_data* p_data = proc_data::instance();
     strategy_conf * strategy = p_data->_conf->_strategy->current(); 
 
     std::vector<std::string> tmp_vec;
 
-    if (strstr(value.c_str(), "|")) 
-    {
-        SplitString(value.c_str(), '|', &tmp_vec, SPLIT_MODE_ALL);
-        tmp_ot = SETS_OP_UNION;
-    }
-    else 
-    {
-        SplitString(value.c_str(), ';', &tmp_vec, SPLIT_MODE_ALL); 
-        tmp_ot = SETS_OP_INTERSECTION;
-    }
 
-    if (!tmp_vec.size())
         tmp_vec.push_back(value);
 
     //-1:-2:1:10000&-2:-3:2:50000
@@ -744,7 +636,7 @@ bool hsingle_search_index::do_hsingle_diff2_ge(std::string &key, std::string &va
     }
 
     int cnt = 0;
-    std::set<std::string> res;
+    
     if (search.empty()) 
     {
         for (auto ii = search_index->id_single.begin(); ii != search_index->id_single.end(); ii++)
@@ -770,10 +662,8 @@ bool hsingle_search_index::do_hsingle_diff2_ge(std::string &key, std::string &va
                     cnt++;
             }
 
-            if (tmp_ot == SETS_OP_INTERSECTION && cnt == (int)vec_idex.size())
-                res.insert(ii->first);  
-            else if (tmp_ot == SETS_OP_UNION && cnt)
-                res.insert(ii->first);  
+            if (cnt)
+                search.append(name, ii->first);
         }
     }
     else
@@ -805,14 +695,12 @@ bool hsingle_search_index::do_hsingle_diff2_ge(std::string &key, std::string &va
                     cnt++;
             }
 
-            if (tmp_ot == SETS_OP_INTERSECTION && cnt == (int)vec_idex.size())
-                res.insert(ii->first);  
-            else if (tmp_ot == SETS_OP_UNION && cnt)
-                res.insert(ii->first);  
+            if (cnt)
+                search.append(name, ii->first);
         }
     }
 
-    search._id_sets = res;
+    
 
     return true;
 }

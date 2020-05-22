@@ -106,7 +106,7 @@ int SplitString(const char *srcStr, const char *delim, std::vector<std::string> 
 //delim 字符
 int SplitString(const char *srcStr, char delim, std::vector<std::string> * strVec, int s_mode);
 
-void StringTrim(std::string &sSrc);
+std::string StringTrim(std::string &sSrc);
 
 std::string trim(const char * source, char const* delims = " \t\r\n");
 

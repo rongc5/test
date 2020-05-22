@@ -98,91 +98,50 @@ int uhandler_select::do_check_select(std::vector<std::map<std::string, std::stri
         return -1;
 
     base_search_index  search_index;
-    std::set<std::string> positive, negative;
     search_res tmp;
+    std::string name;
 
     for (auto it = url_para_map.begin(); it != url_para_map.end(); it++)
     {
-        std::string key = it->begin()->first;
-        std::string value = it->begin()->second;
+        std::vector<std::string> tmp_vec;
+
+        tmp.clear_set();
+
+        SplitString(it->begin()->first.c_str(), '%', &tmp_vec, SPLIT_MODE_ONE);
+        if (!tmp_vec.size())
+        {
+            name = it->begin()->first;   
+        }
+        else
+        {
+            tmp.set_bykey(tmp_vec[0]);
+            name = tmp_vec[1];
+        }
+
+
+
+        //k1 = key%...
+        //k2 = op%k1+k3
+
+        SplitString(it->begin()->second.c_str(), '%', &tmp_vec, SPLIT_MODE_ONE);
+        if (tmp_vec.size() != 2)
+        {
+            continue;
+        }
+
+        std::string key = StringTrim(tmp_vec[0]);
+        std::string value = StringTrim(tmp_vec[1]);
 
         search_index = p_data->get_search_index(key);
         if (!search_index)
             continue;
 
 
-        if (start_with(key, "hq") || start_with(key, "hs"))
-        {
-            if (end_with(key, "_v"))
-                tmp._id_sets = negative;
-            else
-                tmp._id_sets = positive;
-        }
-
-        search_index(key, value, tmp);
-
-        if (end_with(key, "_v"))
-        {
-            if (tmp.empty())
-                continue;
-
-            if (negative.empty())
-            {
-                negative = tmp._id_sets;
-            }
-            else
-            {
-                std::vector<std::set<std::string> >  arr;
-                arr.push_back(negative);
-                arr.push_back(tmp._id_sets);
-
-                get_union(arr, negative);
-            }
-        }
-        else
-        {
-            if (tmp.empty())
-            {
-                return -1;
-            }
-            
-            if (positive.empty())
-            {
-                positive = tmp._id_sets;
-            }
-            else 
-            {
-                std::vector<std::set<std::string> >  arr;
-                arr.push_back(positive);
-                arr.push_back(tmp._id_sets);
-
-                get_intersection(arr, positive);
-
-                if (positive.empty())
-                {
-                    return -1;
-                }
-            }
-
-        }
+        search_index(name, value, tmp);
     }
 
-    std::set_difference(positive.begin(), positive.end(), negative.begin(), negative.end(), std::inserter(res,res.begin()));
+    tmp.get_bykey(name, res);
 
-    //for (auto ii = positive.begin(); ii != positive.end(); ii++) 
-    //{
-        //LOG_DEBUG("positive:%s", ii->c_str());
-    //}
-
-    //for (auto ii = negative.begin(); ii != negative.end(); ii++) 
-    //{
-        //LOG_DEBUG("negative:%s", ii->c_str());
-    //}
-
-    //for (auto ii = res.begin(); ii != res.end(); ii++) 
-    //{
-        //LOG_DEBUG("res:%s", ii->c_str());
-    //}
 
     return 0;
 }

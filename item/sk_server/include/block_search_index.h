@@ -9,8 +9,6 @@ class block_search_index:public ToBufferMgr<std::unordered_set<std::string, str_
     public:
         virtual ~block_search_index(){}
 
-        virtual bool search(std::string &key, std::string &value, search_res & search);
-
         bool do_check_block_search(std::string &key, std::string &value, search_res & search);
 
         bool do_check_block(const std::string &key);

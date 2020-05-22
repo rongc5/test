@@ -100,6 +100,8 @@ class proc_data:public reload_inf
         static int get_highest_index(std::string & id, int date_index, int date_index_end);
         static int get_lowest_index(std::string & id, int date_index, int date_index_end);
 
+        static bool do_check_select_op(std::string &key, std::string &value, search_res & search);
+
     public:
         char proc_name[SIZE_LEN_256];
         std::string _trade_date;

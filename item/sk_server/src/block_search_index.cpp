@@ -2,17 +2,8 @@
 #include "sk_util.h"
 #include "proc_data.h"
 
-bool block_search_index::search(std::string &key, std::string &value, search_res & search)
-{
-   if (!key.compare("block") || !key.compare("block_v"))
-   {
-       return do_check_block_search(key, value, search);
-   }
 
-   return false;
-}
-
-bool block_search_index::do_check_block_search(std::string &key, std::string &value, search_res & search)
+bool block_search_index::do_check_block_search(std::string &name, std::string &value, search_res & search)
 {
     std::unordered_set<std::string, str_hasher>::iterator it_le, it_ge, it;
 
@@ -23,18 +14,22 @@ bool block_search_index::do_check_block_search(std::string &key, std::string &va
 
     for (it = it_ge; it != it_le; ++it)
     {
-        search._id_sets.insert(*it);
+        if (search.empty() || search._id_sets.count(*it))
+        {
+            search.append(name, *it);
+        }
+
     }
 
     return true;
 }
 
-bool block_search_index::do_check_block(const std::string &key)
+bool block_search_index::do_check_block(const std::string &name)
 {
     std::unordered_set<std::string, str_hasher>::iterator it;
     std::unordered_set<std::string, str_hasher> * search_index = current();
 
-    it = search_index->find(key);
+    it = search_index->find(name);
     if (it != search_index->end())
     {
         return true;

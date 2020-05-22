@@ -210,7 +210,7 @@ int GetCaseStringByLabel(const std::string &sSrc,const std::string &sLabel1,cons
     return ret;
 }
 
-void StringTrim(std::string &sSrc)
+std::string  StringTrim(std::string &sSrc)
 {       
     int i = 0;
     while ((sSrc[i] == ' ' || sSrc[i] == '\t' || sSrc[i] == '\r' || sSrc[i] == '\n') && i < (int)sSrc.length())
@@ -225,6 +225,8 @@ void StringTrim(std::string &sSrc)
     }
     int nEnd = i;
     sSrc = sSrc.substr(nBeginPos, nEnd - nBeginPos + 1);        
+
+    return sSrc;
 }
 
 std::string trim(const char * source, char const* delims)

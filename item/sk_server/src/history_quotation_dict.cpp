@@ -386,7 +386,7 @@ void history_quotation_dict::get_id_technical(std::shared_ptr<quotation_t> qt, s
         tt->end_30 = atof(t_buf);
     }
 
-    if (len >= 60)
+    if (p >= 60)
     {
         tt->end_60 = (sum_quotation[p]->end - sum_quotation[p - 60]->end)/60;
         snprintf(t_buf, sizeof(t_buf), "%.2f", tt->end_60);

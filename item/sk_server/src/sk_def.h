@@ -3,6 +3,7 @@
 
 #include "common_util.h"
 
+#include <stack>
 
 struct ban_t
 {
@@ -55,11 +56,191 @@ typedef std::vector<single_t> single_vec;
 struct search_res
 {
     //key, id, list
-    std::unordered_map<std::string, std::unordered_map<std::string, std::deque<int>, str_hasher>, str_hasher> _key_map;
+    std::unordered_map<std::string, std::unordered_map<std::string, std::set<int>, str_hasher>, str_hasher> _key_map;
     bool empty()
     {
         return _id_sets.empty();
     }
+
+    void earse_bykey(std::string & key)
+    {
+        _key_map.erase(key);
+    }
+
+    //c = a * B
+    void get_intersection(std::string & A, std::string & B, std::string & C)
+    {
+        auto ia = _key_map.find(A);
+        auto ib = _key_map.find(B);
+
+        std::unordered_map<std::string, std::set<int>, str_hasher> mm;
+        std::set<int> dq;
+
+        if (ia == _key_map.end() || ib == _key_map.end())
+        {
+            _key_map[C] = mm;
+            return;
+        }
+
+        for (auto ii = ia->second.begin(); ii != ia->second.end(); ii++)
+        {
+            if (ib->second.count(ii->first))
+            {
+                mm[ii->first] = dq;
+            }
+        }
+
+        _key_map[C] = mm;
+    }
+
+    //c = a + B
+    void get_union(std::string & A, std::string & B, std::string & C)
+    {
+        auto ia = _key_map.find(A);
+        auto ib = _key_map.find(B);
+
+        std::unordered_map<std::string, std::set<int>, str_hasher> mm;
+        std::set<int> dq;
+
+        if (ia == _key_map.end() && ib == _key_map.end())
+        {
+            _key_map[C] = mm;
+            return;
+        }
+
+        for (auto ii = ia->second.begin(); ii != ia->second.end(); ii++)
+        {
+            mm[ii->first] = dq; 
+        }
+
+        for (auto ii = ib->second.begin(); ii != ib->second.end(); ii++)
+        {
+            mm[ii->first] = dq; 
+        }
+
+        _key_map[C] = mm; 
+    }
+
+    // C = A - B
+    void get_diff(std::string & A, std::string & B, std::string & C)
+    {
+        auto ia = _key_map.find(A);
+        auto ib = _key_map.find(B);
+
+        std::unordered_map<std::string, std::set<int>, str_hasher> mm;
+        std::set<int> dq;
+        if (ia == _key_map.end())
+        {
+            _key_map[C] = mm;
+            return;
+        }
+
+        if (ib == _key_map.end())
+        {
+            _key_map[C] = _key_map[A];
+            return;
+        }
+
+         for (auto ii = ia->second.begin(); ii != ia->second.end(); ii++)
+         {
+            if (!ib->second.count(ii->first))
+            {
+                mm[ii->first] = dq;
+            }
+         }
+
+        _key_map[C] = mm;
+    }
+
+    void append(std::string &key, const std::string &id)
+    {
+        auto ii = _key_map.find(key);
+        if (ii == _key_map.end())
+        {
+            std::unordered_map<std::string, std::set<int>, str_hasher> mm;
+            std::set<int> dq;
+            mm[id] = dq;
+            _key_map[key] = mm;
+        }
+        else 
+        {
+            auto iii = ii->second.find(id);
+            if (iii == ii->second.end())
+            {
+                std::set<int> dq;
+                ii->second[id] = dq;
+
+            }
+        }
+    }
+
+    void append(std::string &key, const std::string &id, int index)
+    {
+        auto ii = _key_map.find(key);
+        if (ii == _key_map.end())
+        {
+            std::unordered_map<std::string, std::set<int>, str_hasher> mm;
+            std::set<int> dq;
+            dq.insert(index);
+            mm[id] = dq;
+            _key_map[key] = mm;
+        }
+        else 
+        {
+            auto iii = ii->second.find(id);
+            if (iii == ii->second.end())
+            {
+                std::set<int> dq;
+                dq.insert(index);
+                ii->second[id] = dq;
+
+            }
+            else
+            {
+                iii->second.insert(index);
+            }
+        }
+    }
+
+    void set_bykey(std::string &key)
+    {
+        std::set<std::string> tmp;
+        _id_sets.swap(tmp);
+
+        auto ii = _key_map.find(key); 
+        if (ii == _key_map.end()) 
+        {
+
+            return;
+        }
+
+        for (auto iii = ii->second.begin(); iii != ii->second.end(); iii++)
+        {
+            _id_sets.insert(iii->first);
+        }
+    }
+
+    void get_bykey(std::string &key, std::set<std::string> & res)
+    {
+        auto ii = _key_map.find(key); 
+        if (ii == _key_map.end()) 
+        {
+
+            return;
+        }
+
+        for (auto iii = ii->second.begin(); iii != ii->second.end(); iii++)
+        {
+            res.insert(iii->first);
+        }
+
+    }
+
+    void clear_set()
+    {
+        _id_sets.clear();
+    }
+
 
     std::set<std::string> _id_sets;
 };
