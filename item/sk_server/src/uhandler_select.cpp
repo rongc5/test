@@ -103,14 +103,21 @@ int uhandler_select::do_check_select(std::vector<std::map<std::string, std::stri
         if (!tmp_vec.size())
         {
             name = it->begin()->first;   
+            name = StringTrim(name);
         }
         else
         {
-            tmp.set_bykey(tmp_vec[0]);
-            name = tmp_vec[1];
+            std::string ss = tmp_vec[0];
+            ss = StringTrim(ss);
+            tmp.set_bykey(ss);
+            name = StringTrim(tmp_vec[1]);
+
+            if (tmp.empty())
+            {
+                tmp.append(name);
+                continue;
+            }
         }
-
-
 
         //k1 = key%...
         //k2 = op%k1+k3

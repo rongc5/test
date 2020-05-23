@@ -108,14 +108,20 @@ struct search_res
             return;
         }
 
-        for (auto ii = ia->second.begin(); ii != ia->second.end(); ii++)
+        if (ia != _key_map.end())
         {
-            mm[ii->first] = dq; 
+            for (auto ii = ia->second.begin(); ii != ia->second.end(); ii++)
+            {
+                mm[ii->first] = dq; 
+            }
         }
 
-        for (auto ii = ib->second.begin(); ii != ib->second.end(); ii++)
+        if (ib != _key_map.end())
         {
-            mm[ii->first] = dq; 
+            for (auto ii = ib->second.begin(); ii != ib->second.end(); ii++)
+            {
+                mm[ii->first] = dq; 
+            }
         }
 
         _key_map[C] = mm; 
@@ -171,6 +177,16 @@ struct search_res
                 ii->second[id] = dq;
 
             }
+        }
+    }
+
+    void append(std::string & key)
+    {
+        auto ii = _key_map.find(key);
+        if (ii == _key_map.end())
+        {
+            std::unordered_map<std::string, std::set<int>, str_hasher> mm;
+            _key_map[key] = mm;
         }
     }
 

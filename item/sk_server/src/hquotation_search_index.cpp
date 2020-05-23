@@ -2180,7 +2180,7 @@ bool hquotation_search_index::do_check_rlow_hlowest_ge(std::string &name, std::s
     {
         std::vector<std::string> t_vec;
         SplitString(tmp_vec[i].c_str(), ':', &t_vec, SPLIT_MODE_ALL);
-        if (t_vec.size() < 4) 
+        if (t_vec.size() < 3) 
         { 
             continue;
         }
@@ -2188,10 +2188,7 @@ bool hquotation_search_index::do_check_rlow_hlowest_ge(std::string &name, std::s
         hidex_item hi;
         hi.date_index = atoi(t_vec[0].c_str());
         hi.date_index_end = atoi(t_vec[1].c_str());
-        hi.step = atoi(t_vec[2].c_str());
-        hi.fpoint = atof(t_vec[3].c_str());
-        if (t_vec.size() > 4)
-            hi.name = t_vec[4];
+        hi.fpoint = atof(t_vec[2].c_str());
 
         if (abs(hi.date_index) < abs(hi.date_index_end))
             continue;
