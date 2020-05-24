@@ -52,31 +52,38 @@ bool op_search_index::do_check_op_search(std::string &key, std::string &value, s
         }
         else
         {
-            if (name.empty())
+            if (name.empty()|| (!op.empty() && op.top() == "("))
             {
                 name.push(vec[i]);
                 continue;
             }
-
-            if (!op.empty() && op.top() == "*" && !name.empty())
+            
+            do
             {
-                search.get_intersection(name.top(), vec[i], key);
-            }
-            else if (!op.empty() && op.top() == "+" && !name.empty())
-            {
-                search.get_union(name.top(), vec[i], key);
-            }
-            else if (!op.empty() && op.top() == "-" && !name.empty())
-            {
-                search.get_diff(name.top(), vec[i], key);
-            }
 
-            if (!name.empty() && name.top() != key)
-                search.earse_bykey(name.top());
-            search.earse_bykey(vec[i]);                         
+                if (!op.empty() && op.top() == "*" && !name.empty())
+                {
+                    search.get_intersection(name.top(), vec[i], key);
+                }
+                else if (!op.empty() && op.top() == "+" && !name.empty())
+                {
+                    search.get_union(name.top(), vec[i], key);
+                }
+                else if (!op.empty() && op.top() == "-" && !name.empty())
+                {
+                    search.get_diff(name.top(), vec[i], key);
+                }
 
-            op.pop();
-            name.pop();
+                if (!name.empty() && name.top() != key)
+                    search.earse_bykey(name.top());
+                search.earse_bykey(vec[i]);                         
+
+                op.pop();
+                name.pop();
+
+                vec[i] = key;
+            
+            } while (!op.empty() && (op.top() == "*" || op.top() == "+" || op.top() == "-"));
 
             name.push(key);
         }
