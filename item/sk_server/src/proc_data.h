@@ -14,6 +14,7 @@
 #include "rquotation_search_index.h"
 #include "finance_search_index.h"
 #include "op_search_index.h"
+#include "lruSsr_search_index.h"
 
 class ua_dict;
 class ban_dict;
@@ -93,15 +94,19 @@ class proc_data:public reload_inf
         std::shared_ptr<rquotation_search_index> _rquotation_index;
 
         std::shared_ptr<op_search_index> _op_index;
+
+        std::shared_ptr<lruSsr_search_index> _lrussr_index;
+
     public:
 
         void reg_search_sstr();
-        int get_search_sstr(std::string & id, std::string & sstr, int date_index, int date_index_end);
+        int get_search_sstr(const std::string & id, const std::string & sstr, int date_index, int date_index_end);
+        void parse_sstr(const std::string & sstr, std::vector<std::string> & res);
 
 
 
-        static int get_highest_index(std::string & id, int date_index, int date_index_end);
-        static int get_lowest_index(std::string & id, int date_index, int date_index_end);
+        static int get_highest_index(const std::string & id, int date_index, int date_index_end);
+        static int get_lowest_index(const std::string & id, int date_index, int date_index_end);
 
     public:
         char proc_name[SIZE_LEN_256];

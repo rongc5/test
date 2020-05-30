@@ -13,6 +13,7 @@ class block_search_index:public ToBufferMgr<std::unordered_set<std::string, str_
 
         bool do_check_block(const std::string &key);
 
+        void destroy_idle();
 };
 
 

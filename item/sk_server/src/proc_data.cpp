@@ -368,6 +368,7 @@ int proc_data::destroy_idle()
 
 void proc_data::reg_search_index()
 {
+    _lrussr_index = std::make_shared<lruSsr_search_index>();
 
     _op_index = std::make_shared<op_search_index>();
     _search_index_map["op"] = std::bind(&op_search_index::do_check_op_search, _op_index, _1, _2, _3);
@@ -570,7 +571,7 @@ std::shared_ptr<url_handler> proc_data::get_url_handler(std::string & key)
 
 }
 
-int proc_data::get_highest_index(std::string & id, int date_index, int date_index_end)
+int proc_data::get_highest_index(const std::string & id, int date_index, int date_index_end)
 {
     proc_data* p_data = proc_data::instance();
 
@@ -585,7 +586,7 @@ int proc_data::get_highest_index(std::string & id, int date_index, int date_inde
     const std::deque< std::shared_ptr<quotation_t>> &  tt = ii->second;
     int len = tt.size();
     int index;
-    if (len  < 1 + abs(date_index))
+    if (len  < 1 + abs(date_index) || len < 1 + abs(date_index_end))
         return -1;
 
     float max = tt[len - abs(date_index_end) - 1]->high;                                        
@@ -597,10 +598,10 @@ int proc_data::get_highest_index(std::string & id, int date_index, int date_inde
             index = k;
         }
 
-    return index;
+    return len - index - 1 ;
 }
 
-int proc_data::get_lowest_index(std::string & id, int date_index, int date_index_end)
+int proc_data::get_lowest_index(const std::string & id, int date_index, int date_index_end)
 {
     proc_data* p_data = proc_data::instance();
 
@@ -615,7 +616,7 @@ int proc_data::get_lowest_index(std::string & id, int date_index, int date_index
     const std::deque< std::shared_ptr<quotation_t>> &  tt = ii->second;
     int len = tt.size();
     int index;
-    if (len  < 1 + abs(date_index))
+    if (len  < 1 + abs(date_index) || len < 1 + abs(date_index_end))
         return -1;
 
     float max = tt[len - abs(date_index_end) - 1]->low;
@@ -627,7 +628,7 @@ int proc_data::get_lowest_index(std::string & id, int date_index, int date_index
             index = k;
         }
 
-    return index;
+    return len - index - 1 ;
 }
 
 void proc_data::reg_search_sstr()
@@ -637,17 +638,80 @@ void proc_data::reg_search_sstr()
 }
 
 
-int proc_data::get_search_sstr(std::string & id, std::string & sstr, int date_index, int date_index_end)
+int proc_data::get_search_sstr(const std::string & id, const std::string & sstr, int date_index, int date_index_end)
 {
-    auto ii = _search_sstr_map.find(sstr);
-    if (ii == _search_sstr_map.end())
-    {
+    std::vector<std::string> vec;
+    parse_sstr(sstr, vec);
+    if (vec.empty())
         return -1;
+
+    date_index =  abs(date_index);
+    date_index_end = abs(date_index_end);
+
+    int ret = 0;
+    int tmp;
+    ret = _lrussr_index->get_search_sstr(id, vec[0], date_index, date_index_end);
+    if (ret < 0)
+    {
+        auto ii = _search_sstr_map.find(vec[0]);
+        if (ii == _search_sstr_map.end())
+        {
+            return -1;
+        }
+
+        ret = ii->second(id, date_index, date_index_end);
     }
 
-    int ret = ii->second(id, date_index, date_index_end);
+    tmp = ret;
+    if (ret >= 0)
+    {
+        _lrussr_index->add_search_sstr(id, vec[0], date_index, date_index_end, ret);
 
+        if (vec.size() == 3)
+        {
+            if (vec[1]  == "+")
+            {
+                tmp = ret + atoi(vec[2].c_str());           
+            }
+            else if (vec[2] == "-")
+            {
+                tmp = ret - atoi(vec[2].c_str());
+            }
+
+            ret = tmp;
+        }
+    }
 
     return ret;
 }
 
+void proc_data::parse_sstr(const std::string & value, std::vector<std::string> & vec)
+{
+    vec.clear();
+    int pos = 0 ;
+    for (int i = 0 ; i < (int)value.size(); i++)
+    {
+        if (value[i] == '+' || value[i] == '-' )
+        {
+            std::string str;
+            if (i - pos > 0)
+           {
+               str = value.substr(pos, i - pos);
+                str = StringTrim(str);
+                if (!str.empty())
+                    vec.push_back(str);
+            }
+            vec.push_back(std::string(1, value[i]));
+            pos = i + 1;
+        }
+    }
+
+    if (pos != (int)value.size())
+    {   
+        std::string str = value.substr(pos, (int)value.size() - pos);
+        str = StringTrim(str);
+        if (!str.empty())
+            vec.push_back(str);
+    }   
+
+}

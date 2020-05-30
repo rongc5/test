@@ -7,6 +7,7 @@
 #include "proc_data.h"
 #include "history_single_dict.h"
 #include "history_quotation_dict.h"
+#include "lruSsr_search_index.h"
 
 
 skhttp_req_thread::skhttp_req_thread()
@@ -57,6 +58,7 @@ void skhttp_req_thread::handle_msg(std::shared_ptr<normal_msg> & p_msg)
                     _req_circle_times++;
                     if (_req_circle_times == p_data->_conf->_strategy->current()->per_day_min_req_circle_times)
                     {
+                        p_data->_block_set->destroy_idle();
                         p_data->_block_set->idle_2_current();
                     }
                     p_data->_hquoation_dict->update_search_index();
@@ -211,9 +213,11 @@ void skhttp_req_thread::first_in_day()
 
         {
             _req_circle_times = 0;
-            std::unordered_set<std::string, str_hasher> t_block;
-            p_data->_block_set->idle()->swap(t_block);
+            p_data->_block_set->destroy_idle();
             p_data->_block_set->idle_2_current();
+
+            p_data->_lrussr_index->destroy_idle();
+            p_data->_lrussr_index->idle_2_current();
         }
 
         real_morning_stime = get_real_time(_req_date.c_str(), 

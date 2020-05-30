@@ -39,4 +39,10 @@ bool block_search_index::do_check_block(const std::string &name)
 }
 
 
+void block_search_index::destroy_idle()
+{
 
+    std::unordered_set<std::string, str_hasher> * search_index = idle();
+    std::unordered_set<std::string, str_hasher> t_block;
+    search_index->swap(t_block);
+}

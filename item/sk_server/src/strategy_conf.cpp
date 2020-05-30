@@ -266,6 +266,11 @@ void strategy_conf::do_parse()
         per_day_min_req_circle_times = atoi(_cfg["per_day_min_req_circle_times"].c_str());
     }
 
+    if (has_key<std::string, std::string>(_cfg, "lru_ssr_length"))
+    {
+        lru_ssr_length = atoi(_cfg["lru_ssr_length"].c_str());
+    }
+
     if (has_key<std::string, std::string>(_cfg, "real_quotation_path"))
     {
         real_quotation_path = _cfg["real_quotation_path"];

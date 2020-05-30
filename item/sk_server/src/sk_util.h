@@ -71,5 +71,8 @@ void get_union(std::vector<std::set<std::string> > & arr, std::set<std::string> 
 
 void get_intersection(std::vector<std::set<std::string> > & arr, std::set<std::string> &res);
 
+void get_first_not_numstr(std::string & src, std::string & dst);
+
+
 
 #endif

@@ -25,7 +25,9 @@ bool hquotation_search_index::do_hqchange_rate_le(std::string &name, std::string
         }
 
         hidex_item hi;
-        hi.date_index = atoi(t_vec[0].c_str());
+        hi.date_index = abs(atoi(t_vec[0].c_str()));
+        get_first_not_numstr(t_vec[0], hi.start_str);
+
         hi.fpoint = atof(t_vec[1].c_str());
         vec_idex.push_back(hi);
     }
@@ -40,10 +42,20 @@ bool hquotation_search_index::do_hqchange_rate_le(std::string &name, std::string
             cnt = 0;
             for (int i = 0; i < (int)vec_idex.size(); i++) 
             {
-                if (len  < 1 + abs(vec_idex[i].date_index))
+                int date_index = vec_idex[i].date_index;
+                int date_index_end = vec_idex[i].date_index_end;
+
+                if (!vec_idex[i].start_str.empty())
+                {    
+                    date_index = p_data->get_search_sstr(ii->first, vec_idex[i].start_str, date_index, date_index_end);
+                    if (date_index < 0) 
+                        continue;
+                }  
+
+                if (len  < 1 + date_index)
                     continue;
 
-                if (tt[len - abs(vec_idex[i].date_index) - 1]->change_rate <= vec_idex[i].fpoint)
+                if (tt[len - date_index - 1]->change_rate <= vec_idex[i].fpoint)
                     cnt++;
             }
 
@@ -64,10 +76,19 @@ bool hquotation_search_index::do_hqchange_rate_le(std::string &name, std::string
             cnt = 0;
             for (int i = 0; i < (int)vec_idex.size(); i++) 
             {
-                if (len  < 1 + abs(vec_idex[i].date_index))
+                int date_index = vec_idex[i].date_index;
+                int date_index_end = vec_idex[i].date_index_end;
+                if (!vec_idex[i].start_str.empty())
+                {    
+                    date_index = p_data->get_search_sstr(ii->first, vec_idex[i].start_str, date_index, date_index_end);
+                    if (date_index < 0) 
+                        continue;
+                }  
+
+                if (len  < 1 + date_index)
                     continue;
 
-                if (tt[len - abs(vec_idex[i].date_index) - 1]->change_rate <= vec_idex[i].fpoint)
+                if (tt[len - date_index - 1]->change_rate <= vec_idex[i].fpoint)
                     cnt++;
             }
 
@@ -102,7 +123,8 @@ bool hquotation_search_index::do_hqchange_rate_ge(std::string &name, std::string
         }
 
         hidex_item hi;
-        hi.date_index = atoi(t_vec[0].c_str());
+        hi.date_index = abs(atoi(t_vec[0].c_str()));
+        get_first_not_numstr(t_vec[0], hi.start_str);
         hi.fpoint = atof(t_vec[1].c_str());
         vec_idex.push_back(hi);
     }
@@ -118,10 +140,19 @@ bool hquotation_search_index::do_hqchange_rate_ge(std::string &name, std::string
             cnt = 0;
             for (int i = 0; i < (int)vec_idex.size(); i++) 
             {
-                if (len  < 1 + abs(vec_idex[i].date_index))
+                int date_index = vec_idex[i].date_index;
+                int date_index_end = vec_idex[i].date_index_end;
+                if (!vec_idex[i].start_str.empty())
+                {    
+                    date_index = p_data->get_search_sstr(ii->first, vec_idex[i].start_str, date_index, date_index_end);
+                    if (date_index < 0) 
+                        continue;
+                }  
+
+                if (len  < 1 + date_index)
                     continue;
 
-                if (tt[len - abs(vec_idex[i].date_index) - 1]->change_rate >= vec_idex[i].fpoint)
+                if (tt[len - date_index - 1]->change_rate >= vec_idex[i].fpoint)
                     cnt++;
             }
 
@@ -142,10 +173,19 @@ bool hquotation_search_index::do_hqchange_rate_ge(std::string &name, std::string
             cnt = 0;
             for (int i = 0; i < (int)vec_idex.size(); i++) 
             {
-                if (len  < 1 + abs(vec_idex[i].date_index))
+                int date_index = vec_idex[i].date_index;
+                int date_index_end = vec_idex[i].date_index_end;
+                if (!vec_idex[i].start_str.empty())
+                {    
+                    date_index = p_data->get_search_sstr(ii->first, vec_idex[i].start_str, date_index, date_index_end);
+                    if (date_index < 0) 
+                        continue;
+                }  
+
+                if (len  < 1 + date_index)
                     continue;
 
-                if (tt[len - abs(vec_idex[i].date_index) - 1]->change_rate >= vec_idex[i].fpoint)
+                if (tt[len - date_index - 1]->change_rate >= vec_idex[i].fpoint)
                     cnt++;
             }
 
@@ -181,7 +221,8 @@ bool hquotation_search_index::do_hqrange_percent_le(std::string &name, std::stri
         }
 
         hidex_item hi;
-        hi.date_index = atoi(t_vec[0].c_str());
+        hi.date_index = abs(atoi(t_vec[0].c_str()));
+        get_first_not_numstr(t_vec[0], hi.start_str);
         hi.fpoint = atof(t_vec[1].c_str());
         vec_idex.push_back(hi);
     }
@@ -197,10 +238,19 @@ bool hquotation_search_index::do_hqrange_percent_le(std::string &name, std::stri
             cnt = 0;
             for (int i = 0; i < (int)vec_idex.size(); i++) 
             {
-                if (len  < 1 + abs(vec_idex[i].date_index))
+                int date_index = vec_idex[i].date_index;
+                int date_index_end = vec_idex[i].date_index_end;
+                if (!vec_idex[i].start_str.empty())
+                {    
+                    date_index = p_data->get_search_sstr(ii->first, vec_idex[i].start_str, date_index, date_index_end);
+                    if (date_index < 0) 
+                        continue;
+                }  
+
+                if (len  < 1 + date_index)
                     continue;
 
-                if (tt[len - abs(vec_idex[i].date_index) - 1]->range_percent <= vec_idex[i].fpoint)
+                if (tt[len - date_index - 1]->range_percent <= vec_idex[i].fpoint)
                     cnt++;
             }
 
@@ -221,10 +271,19 @@ bool hquotation_search_index::do_hqrange_percent_le(std::string &name, std::stri
             cnt = 0;
             for (int i = 0; i < (int)vec_idex.size(); i++) 
             {
-                if (len  < 1 + abs(vec_idex[i].date_index))
+                int date_index = vec_idex[i].date_index;
+                int date_index_end = vec_idex[i].date_index_end;
+                if (!vec_idex[i].start_str.empty())
+                {    
+                    date_index = p_data->get_search_sstr(ii->first, vec_idex[i].start_str, date_index, date_index_end);
+                    if (date_index < 0) 
+                        continue;
+                }  
+
+                if (len  < 1 + date_index)
                     continue;
 
-                if (tt[len - abs(vec_idex[i].date_index) - 1]->range_percent <= vec_idex[i].fpoint)
+                if (tt[len - date_index - 1]->range_percent <= vec_idex[i].fpoint)
                     cnt++;
             }
 
@@ -260,7 +319,8 @@ bool hquotation_search_index::do_hqrange_percent_ge(std::string &name, std::stri
         }
 
         hidex_item hi;
-        hi.date_index = atoi(t_vec[0].c_str());
+        hi.date_index = abs(atoi(t_vec[0].c_str()));
+        get_first_not_numstr(t_vec[0], hi.start_str);
         hi.fpoint = atof(t_vec[1].c_str());
         vec_idex.push_back(hi);
     }
@@ -276,10 +336,19 @@ bool hquotation_search_index::do_hqrange_percent_ge(std::string &name, std::stri
             cnt = 0;
             for (int i = 0; i < (int)vec_idex.size(); i++) 
             {
-                if (len  < 1 + abs(vec_idex[i].date_index))
+                int date_index = vec_idex[i].date_index;
+                int date_index_end = vec_idex[i].date_index_end;
+                if (!vec_idex[i].start_str.empty())
+                {    
+                    date_index = p_data->get_search_sstr(ii->first, vec_idex[i].start_str, date_index, date_index_end);
+                    if (date_index < 0) 
+                        continue;
+                }  
+
+                if (len  < 1 + date_index)
                     continue;
 
-                if (tt[len - abs(vec_idex[i].date_index) - 1]->range_percent >= vec_idex[i].fpoint)
+                if (tt[len - date_index - 1]->range_percent >= vec_idex[i].fpoint)
                     cnt++;
             }
 
@@ -300,10 +369,19 @@ bool hquotation_search_index::do_hqrange_percent_ge(std::string &name, std::stri
             cnt = 0;
             for (int i = 0; i < (int)vec_idex.size(); i++) 
             {
-                if (len  < 1 + abs(vec_idex[i].date_index))
+                int date_index = vec_idex[i].date_index;
+                int date_index_end = vec_idex[i].date_index_end;
+                if (!vec_idex[i].start_str.empty())
+                {    
+                    date_index = p_data->get_search_sstr(ii->first, vec_idex[i].start_str, date_index, date_index_end);
+                    if (date_index < 0) 
+                        continue;
+                }  
+
+                if (len  < 1 + date_index)
                     continue;
 
-                if (tt[len - abs(vec_idex[i].date_index) - 1]->range_percent >= vec_idex[i].fpoint)
+                if (tt[len - date_index - 1]->range_percent >= vec_idex[i].fpoint)
                     cnt++;
             }
 
@@ -339,13 +417,14 @@ bool hquotation_search_index::do_hqrange_percent_ge_num_ge(std::string &name, st
         }
 
         hidex_item hi;
-        hi.date_index = atoi(t_vec[0].c_str());
-        hi.date_index_end = atoi(t_vec[1].c_str());
+        hi.date_index = abs(atoi(t_vec[0].c_str()));
+        get_first_not_numstr(t_vec[0], hi.start_str);
+
+        hi.date_index_end = abs(atoi(t_vec[1].c_str()));
+        get_first_not_numstr(t_vec[1], hi.end_str);
+
         hi.sum = atoi(t_vec[2].c_str());
         hi.fpoint = atof(t_vec[3].c_str());
-
-        if (abs(hi.date_index) < abs(hi.date_index_end))
-            continue;
 
         vec_idex.push_back(hi);
     }
@@ -362,11 +441,30 @@ bool hquotation_search_index::do_hqrange_percent_ge_num_ge(std::string &name, st
             cnt = 0;
             for (int i = 0; i < (int)vec_idex.size(); i++) 
             {
-                if (len  < 1 + abs(vec_idex[i].date_index))
+                int date_index = vec_idex[i].date_index;
+                int date_index_end = vec_idex[i].date_index_end;
+                if (!vec_idex[i].start_str.empty())
+                {
+                    date_index = p_data->get_search_sstr(ii->first, vec_idex[i].start_str, date_index, date_index_end);
+                    if (date_index < 0)
+                        continue;
+                }
+
+                if (!vec_idex[i].end_str.empty())
+                {
+                    date_index_end = p_data->get_search_sstr(ii->first, vec_idex[i].end_str, date_index, date_index_end);
+                    if (date_index_end < 0)
+                        continue;
+                }
+
+                if (date_index < date_index_end)
+                    continue;
+
+                if (len  < 1 + date_index)
                     continue;
 
                 count = 0;               
-                for (int k = len - abs(vec_idex[i].date_index) - 1; k <= len - abs(vec_idex[i].date_index_end) - 1; k++) {
+                for (int k = len - date_index - 1; k <= len - date_index_end - 1; k++) {
                     if (tt[k]->range_percent >= vec_idex[i].fpoint)
                         count++;
                 }
@@ -392,11 +490,30 @@ bool hquotation_search_index::do_hqrange_percent_ge_num_ge(std::string &name, st
             cnt = 0;
             for (int i = 0; i < (int)vec_idex.size(); i++) 
             {
-                if (len  < 1 + abs(vec_idex[i].date_index))
+                int date_index = vec_idex[i].date_index;
+                int date_index_end = vec_idex[i].date_index_end;
+                if (!vec_idex[i].start_str.empty())
+                {
+                    date_index = p_data->get_search_sstr(ii->first, vec_idex[i].start_str, date_index, date_index_end);
+                    if (date_index < 0)
+                        continue;
+                }
+
+                if (!vec_idex[i].end_str.empty())
+                {
+                    date_index_end = p_data->get_search_sstr(ii->first, vec_idex[i].end_str, date_index, date_index_end);
+                    if (date_index_end < 0)
+                        continue;
+                }
+
+                if (date_index < date_index_end)
+                    continue;
+
+                if (len  < 1 + date_index)
                     continue;
 
                 count = 0;               
-                for (int k = len - abs(vec_idex[i].date_index) - 1; k <= len - abs(vec_idex[i].date_index_end) - 1; k++) {
+                for (int k = len - date_index - 1; k <= len - date_index_end - 1; k++) {
                     if (tt[k]->range_percent >= vec_idex[i].fpoint)
                         count++;
                 }
@@ -410,8 +527,6 @@ bool hquotation_search_index::do_hqrange_percent_ge_num_ge(std::string &name, st
                 search.append(name, ii->first);
         }
     }
-
-
 
     return true;
 }
@@ -438,13 +553,15 @@ bool hquotation_search_index::do_hqrange_percent_le_num_ge(std::string &name, st
         }
 
         hidex_item hi;
-        hi.date_index = atoi(t_vec[0].c_str());
-        hi.date_index_end = atoi(t_vec[1].c_str());
+        hi.date_index = abs(atoi(t_vec[0].c_str()));
+        get_first_not_numstr(t_vec[0], hi.start_str);
+
+        hi.date_index_end = abs(atoi(t_vec[1].c_str()));
+        get_first_not_numstr(t_vec[1], hi.end_str);
+
         hi.sum = atoi(t_vec[2].c_str());
         hi.fpoint = atof(t_vec[3].c_str());
 
-        if (abs(hi.date_index) < abs(hi.date_index_end))
-            continue;
 
         vec_idex.push_back(hi);
     }
@@ -461,11 +578,30 @@ bool hquotation_search_index::do_hqrange_percent_le_num_ge(std::string &name, st
             cnt = 0;
             for (int i = 0; i < (int)vec_idex.size(); i++) 
             {
-                if (len  < 1 + abs(vec_idex[i].date_index))
+                int date_index = vec_idex[i].date_index;
+                int date_index_end = vec_idex[i].date_index_end;
+                if (!vec_idex[i].start_str.empty())
+                {
+                    date_index = p_data->get_search_sstr(ii->first, vec_idex[i].start_str, date_index, date_index_end);
+                    if (date_index < 0)
+                        continue;
+                }
+
+                if (!vec_idex[i].end_str.empty())
+                {
+                    date_index_end = p_data->get_search_sstr(ii->first, vec_idex[i].end_str, date_index, date_index_end);
+                    if (date_index_end < 0)
+                        continue;
+                }
+
+                if (date_index < date_index_end)
+                    continue;
+
+                if (len  < 1 + date_index)
                     continue;
 
                 count = 0;               
-                for (int k = len - abs(vec_idex[i].date_index) - 1; k <= len - abs(vec_idex[i].date_index_end) - 1; k++) {
+                for (int k = len - date_index - 1; k <= len - date_index_end - 1; k++) {
                     if (tt[k]->range_percent <= vec_idex[i].fpoint)
                         count++;
                 }
@@ -491,11 +627,30 @@ bool hquotation_search_index::do_hqrange_percent_le_num_ge(std::string &name, st
             cnt = 0;
             for (int i = 0; i < (int)vec_idex.size(); i++) 
             {
-                if (len  < 1 + abs(vec_idex[i].date_index))
+                int date_index = vec_idex[i].date_index;
+                int date_index_end = vec_idex[i].date_index_end;
+                if (!vec_idex[i].start_str.empty())
+                {
+                    date_index = p_data->get_search_sstr(ii->first, vec_idex[i].start_str, date_index, date_index_end);
+                    if (date_index < 0)
+                        continue;
+                }
+
+                if (!vec_idex[i].end_str.empty())
+                {
+                    date_index_end = p_data->get_search_sstr(ii->first, vec_idex[i].end_str, date_index, date_index_end);
+                    if (date_index_end < 0)
+                        continue;
+                }
+
+                if (date_index < date_index_end)
+                    continue;
+
+                if (len  < 1 + date_index)
                     continue;
 
                 count = 0;               
-                for (int k = len - abs(vec_idex[i].date_index) - 1; k <= len - abs(vec_idex[i].date_index_end) - 1; k++) {
+                for (int k = len - date_index - 1; k <= len - date_index_end - 1; k++) {
                     if (tt[k]->range_percent <= vec_idex[i].fpoint)
                         count++;
                 }
@@ -537,11 +692,12 @@ bool hquotation_search_index::do_hq_sum_change_rate_le(std::string &name, std::s
         }
 
         hidex_item hi;
-        hi.date_index = atoi(t_vec[0].c_str());
-        hi.date_index_end = atoi(t_vec[1].c_str());
+        hi.date_index = abs(atoi(t_vec[0].c_str()));
+        get_first_not_numstr(t_vec[0], hi.start_str);
 
-        if (abs(hi.date_index) < abs(hi.date_index_end))
-            continue;
+        hi.date_index_end = abs(atoi(t_vec[1].c_str()));
+        get_first_not_numstr(t_vec[1], hi.end_str);
+
 
         hi.fpoint = atof(t_vec[2].c_str());
         vec_idex.push_back(hi);
@@ -559,12 +715,31 @@ bool hquotation_search_index::do_hq_sum_change_rate_le(std::string &name, std::s
             cnt = 0;
             for (int i = 0; i < (int)vec_idex.size(); i++) 
             {
-                if (len  < 2 + abs(vec_idex[i].date_index))
+                int date_index = vec_idex[i].date_index;
+                int date_index_end = vec_idex[i].date_index_end;
+                if (!vec_idex[i].start_str.empty())
+                {
+                    date_index = p_data->get_search_sstr(ii->first, vec_idex[i].start_str, date_index, date_index_end);
+                    if (date_index < 0)
+                        continue;
+                }
+
+                if (!vec_idex[i].end_str.empty())
+                {
+                    date_index_end = p_data->get_search_sstr(ii->first, vec_idex[i].end_str, date_index, date_index_end);
+                    if (date_index_end < 0)
+                        continue;
+                }
+
+                if (date_index < date_index_end)
+                    continue;
+
+                if (len  < 2 + date_index)
                     continue;
 
                 count = 0;
-                int k = len - abs(vec_idex[i].date_index) - 2;
-                count = tt[len - abs(vec_idex[i].date_index_end) -1]->change_rate - tt[k]->change_rate;
+                int k = len - date_index - 2;
+                count = tt[len - date_index_end -1]->change_rate - tt[k]->change_rate;
 
                 if (count <= vec_idex[i].fpoint)
                     cnt++;
@@ -587,13 +762,31 @@ bool hquotation_search_index::do_hq_sum_change_rate_le(std::string &name, std::s
             cnt = 0;
             for (int i = 0; i < (int)vec_idex.size(); i++) 
             {
-                if (len  < 2 + abs(vec_idex[i].date_index))
+                int date_index = vec_idex[i].date_index;
+                int date_index_end = vec_idex[i].date_index_end;
+                if (!vec_idex[i].start_str.empty())
+                {
+                    date_index = p_data->get_search_sstr(ii->first, vec_idex[i].start_str, date_index, date_index_end);
+                    if (date_index < 0)
+                        continue;
+                }
+
+                if (!vec_idex[i].end_str.empty())
+                {
+                    date_index_end = p_data->get_search_sstr(ii->first, vec_idex[i].end_str, date_index, date_index_end);
+                    if (date_index_end < 0)
+                        continue;
+                }
+
+                if (date_index < date_index_end)
+                    continue;
+                if (len  < 2 + date_index)
                     continue;
 
                 count = 0;
 
-                int k = len - abs(vec_idex[i].date_index) - 2;
-                count = tt[len - abs(vec_idex[i].date_index_end) -1]->change_rate - tt[k]->change_rate;
+                int k = len - date_index - 2;
+                count = tt[len - date_index_end -1]->change_rate - tt[k]->change_rate;
 
                 if (count <= vec_idex[i].fpoint)
                     cnt++;
@@ -631,11 +824,12 @@ bool hquotation_search_index::do_hq_sum_change_rate_ge(std::string &name, std::s
         }
 
         hidex_item hi;
-        hi.date_index = atoi(t_vec[0].c_str());
-        hi.date_index_end = atoi(t_vec[1].c_str());
+        hi.date_index = abs(atoi(t_vec[0].c_str()));
+        get_first_not_numstr(t_vec[0], hi.start_str);
 
-        if (abs(hi.date_index) < abs(hi.date_index_end))
-            continue;
+        hi.date_index_end = abs(atoi(t_vec[1].c_str()));
+        get_first_not_numstr(t_vec[1], hi.end_str);
+
 
         hi.fpoint = atof(t_vec[2].c_str());
         vec_idex.push_back(hi);
@@ -653,13 +847,31 @@ bool hquotation_search_index::do_hq_sum_change_rate_ge(std::string &name, std::s
             cnt = 0;
             for (int i = 0; i < (int)vec_idex.size(); i++) 
             {
-                if (len  < 2 + abs(vec_idex[i].date_index))
+                int date_index = vec_idex[i].date_index;
+                int date_index_end = vec_idex[i].date_index_end;
+                if (!vec_idex[i].start_str.empty())
+                {
+                    date_index = p_data->get_search_sstr(ii->first, vec_idex[i].start_str, date_index, date_index_end);
+                    if (date_index < 0)
+                        continue;
+                }
+
+                if (!vec_idex[i].end_str.empty())
+                {
+                    date_index_end = p_data->get_search_sstr(ii->first, vec_idex[i].end_str, date_index, date_index_end);
+                    if (date_index_end < 0)
+                        continue;
+                }
+
+                if (date_index < date_index_end)
+                    continue;
+                if (len  < 2 + date_index)
                     continue;
 
                 count = 0;
 
-                int k = len - abs(vec_idex[i].date_index) - 2;
-                count = tt[len - abs(vec_idex[i].date_index_end) -1]->change_rate - tt[k]->change_rate;
+                int k = len - date_index - 2;
+                count = tt[len - date_index_end -1]->change_rate - tt[k]->change_rate;
 
                 if (count >= vec_idex[i].fpoint)
                     cnt++;
@@ -682,13 +894,31 @@ bool hquotation_search_index::do_hq_sum_change_rate_ge(std::string &name, std::s
             cnt = 0;
             for (int i = 0; i < (int)vec_idex.size(); i++) 
             {
-                if (len  < 2 + abs(vec_idex[i].date_index))
+                int date_index = vec_idex[i].date_index;
+                int date_index_end = vec_idex[i].date_index_end;
+                if (!vec_idex[i].start_str.empty())
+                {
+                    date_index = p_data->get_search_sstr(ii->first, vec_idex[i].start_str, date_index, date_index_end);
+                    if (date_index < 0)
+                        continue;
+                }
+
+                if (!vec_idex[i].end_str.empty())
+                {
+                    date_index_end = p_data->get_search_sstr(ii->first, vec_idex[i].end_str, date_index, date_index_end);
+                    if (date_index_end < 0)
+                        continue;
+                }
+
+                if (date_index < date_index_end)
+                    continue;
+                if (len  < 2 + date_index)
                     continue;
 
                 count = 0;
 
-                int k = len - abs(vec_idex[i].date_index) - 2;
-                count = tt[len - abs(vec_idex[i].date_index_end) -1]->change_rate - tt[k]->change_rate;
+                int k = len - date_index - 2;
+                count = tt[len - date_index_end -1]->change_rate - tt[k]->change_rate;
 
                 if (count >= vec_idex[i].fpoint)
                     cnt++;
@@ -726,11 +956,12 @@ bool hquotation_search_index::do_hq_sum_range_percent_le(std::string &name, std:
         }
 
         hidex_item hi;
-        hi.date_index = atoi(t_vec[0].c_str());
-        hi.date_index_end = atoi(t_vec[1].c_str());
+        hi.date_index = abs(atoi(t_vec[0].c_str()));
+        get_first_not_numstr(t_vec[0], hi.start_str);
+        hi.date_index_end = abs(atoi(t_vec[1].c_str()));
+        get_first_not_numstr(t_vec[1], hi.end_str);
 
-        if (abs(hi.date_index) < abs(hi.date_index_end))
-            continue;
+
 
         hi.fpoint = atof(t_vec[2].c_str());
         vec_idex.push_back(hi);
@@ -748,12 +979,30 @@ bool hquotation_search_index::do_hq_sum_range_percent_le(std::string &name, std:
             cnt = 0;
             for (int i = 0; i < (int)vec_idex.size(); i++) 
             {
-                if (len  < 2 + abs(vec_idex[i].date_index))
+                int date_index = vec_idex[i].date_index;
+                int date_index_end = vec_idex[i].date_index_end;
+                if (!vec_idex[i].start_str.empty())
+                {
+                    date_index = p_data->get_search_sstr(ii->first, vec_idex[i].start_str, date_index, date_index_end);
+                    if (date_index < 0)
+                        continue;
+                }
+
+                if (!vec_idex[i].end_str.empty())
+                {
+                    date_index_end = p_data->get_search_sstr(ii->first, vec_idex[i].end_str, date_index, date_index_end);
+                    if (date_index_end < 0)
+                        continue;
+                }
+
+                if (date_index < date_index_end)
+                    continue;
+                if (len  < 2 + date_index)
                     continue;
 
                 count = 0;
-                int k = len - abs(vec_idex[i].date_index) - 2;
-                count = tt[len - abs(vec_idex[i].date_index_end) -1]->range_percent - tt[k]->range_percent;
+                int k = len - date_index - 2;
+                count = tt[len - date_index_end -1]->range_percent - tt[k]->range_percent;
 
                 if (count <= vec_idex[i].fpoint)
                     cnt++;
@@ -776,12 +1025,30 @@ bool hquotation_search_index::do_hq_sum_range_percent_le(std::string &name, std:
             cnt = 0;
             for (int i = 0; i < (int)vec_idex.size(); i++) 
             {
-                if (len  < 2 + abs(vec_idex[i].date_index))
+                int date_index = vec_idex[i].date_index;
+                int date_index_end = vec_idex[i].date_index_end;
+                if (!vec_idex[i].start_str.empty())
+                {
+                    date_index = p_data->get_search_sstr(ii->first, vec_idex[i].start_str, date_index, date_index_end);
+                    if (date_index < 0)
+                        continue;
+                }
+
+                if (!vec_idex[i].end_str.empty())
+                {
+                    date_index_end = p_data->get_search_sstr(ii->first, vec_idex[i].end_str, date_index, date_index_end);
+                    if (date_index_end < 0)
+                        continue;
+                }
+
+                if (date_index < date_index_end)
+                    continue;
+                if (len  < 2 + date_index)
                     continue;
 
                 count = 0;
-                int k = len - abs(vec_idex[i].date_index) - 2;
-                count = tt[len - abs(vec_idex[i].date_index_end) -1]->range_percent - tt[k]->range_percent;
+                int k = len - date_index - 2;
+                count = tt[len - date_index_end -1]->range_percent - tt[k]->range_percent;
 
                 if (count <= vec_idex[i].fpoint)
                     cnt++;
@@ -820,11 +1087,11 @@ bool hquotation_search_index::do_hq_sum_range_percent_ge(std::string &name, std:
         }
 
         hidex_item hi;
-        hi.date_index = atoi(t_vec[0].c_str());
-        hi.date_index_end = atoi(t_vec[1].c_str());
+        hi.date_index = abs(atoi(t_vec[0].c_str()));
+        get_first_not_numstr(t_vec[0], hi.start_str);
+        hi.date_index_end = abs(atoi(t_vec[1].c_str()));
+        get_first_not_numstr(t_vec[1], hi.end_str);
 
-        if (abs(hi.date_index) < abs(hi.date_index_end))
-            continue;
 
         hi.fpoint = atof(t_vec[2].c_str());
         vec_idex.push_back(hi);
@@ -842,11 +1109,29 @@ bool hquotation_search_index::do_hq_sum_range_percent_ge(std::string &name, std:
             cnt = 0;
             for (int i = 0; i < (int)vec_idex.size(); i++) 
             {
-                if (len  < 2 + abs(vec_idex[i].date_index))
+                int date_index = vec_idex[i].date_index;
+                int date_index_end = vec_idex[i].date_index_end;
+                if (!vec_idex[i].start_str.empty())
+                {
+                    date_index = p_data->get_search_sstr(ii->first, vec_idex[i].start_str, date_index, date_index_end);
+                    if (date_index < 0)
+                        continue;
+                }
+
+                if (!vec_idex[i].end_str.empty())
+                {
+                    date_index_end = p_data->get_search_sstr(ii->first, vec_idex[i].end_str, date_index, date_index_end);
+                    if (date_index_end < 0)
+                        continue;
+                }
+
+                if (date_index < date_index_end)
+                    continue;
+                if (len  < 2 + date_index)
                     continue; 
 
-                int k = len - abs(vec_idex[i].date_index) - 2;
-                count = tt[len - abs(vec_idex[i].date_index_end) -1]->range_percent - tt[k]->range_percent;
+                int k = len - date_index - 2;
+                count = tt[len - date_index_end -1]->range_percent - tt[k]->range_percent;
 
                 if (count >= vec_idex[i].fpoint)
                     cnt++;
@@ -869,12 +1154,30 @@ bool hquotation_search_index::do_hq_sum_range_percent_ge(std::string &name, std:
             cnt = 0;
             for (int i = 0; i < (int)vec_idex.size(); i++) 
             {
-                if (len  < 2 + abs(vec_idex[i].date_index))
+                int date_index = vec_idex[i].date_index;
+                int date_index_end = vec_idex[i].date_index_end;
+                if (!vec_idex[i].start_str.empty())
+                {
+                    date_index = p_data->get_search_sstr(ii->first, vec_idex[i].start_str, date_index, date_index_end);
+                    if (date_index < 0)
+                        continue;
+                }
+
+                if (!vec_idex[i].end_str.empty())
+                {
+                    date_index_end = p_data->get_search_sstr(ii->first, vec_idex[i].end_str, date_index, date_index_end);
+                    if (date_index_end < 0)
+                        continue;
+                }
+
+                if (date_index < date_index_end)
+                    continue;
+                if (len  < 2 + date_index)
                     continue;
 
                 count = 0;
-                int k = len - abs(vec_idex[i].date_index) - 2;
-                count = tt[len - abs(vec_idex[i].date_index_end) -1]->range_percent - tt[k]->range_percent;
+                int k = len - date_index - 2;
+                count = tt[len - date_index_end -1]->range_percent - tt[k]->range_percent;
 
                 if (count >= vec_idex[i].fpoint)
                     cnt++;
@@ -913,7 +1216,9 @@ bool hquotation_search_index::do_check_hqdown_pointer_ge(std::string &name, std:
         }
 
         hidex_item hi;
-        hi.date_index = atoi(t_vec[0].c_str());
+        hi.date_index = abs(atoi(t_vec[0].c_str()));
+        get_first_not_numstr(t_vec[0], hi.start_str);
+
         hi.fpoint = atof(t_vec[1].c_str());
         vec_idex.push_back(hi);
     }
@@ -929,10 +1234,28 @@ bool hquotation_search_index::do_check_hqdown_pointer_ge(std::string &name, std:
             cnt = 0;
             for (int i = 0; i < (int)vec_idex.size(); i++) 
             {
-                if (len  < 1 + abs(vec_idex[i].date_index))
+                int date_index = vec_idex[i].date_index;
+                int date_index_end = vec_idex[i].date_index_end;
+                if (!vec_idex[i].start_str.empty())
+                {
+                    date_index = p_data->get_search_sstr(ii->first, vec_idex[i].start_str, date_index, date_index_end);
+                    if (date_index < 0)
+                        continue;
+                }
+
+                if (!vec_idex[i].end_str.empty())
+                {
+                    date_index_end = p_data->get_search_sstr(ii->first, vec_idex[i].end_str, date_index, date_index_end);
+                    if (date_index_end < 0)
+                        continue;
+                }
+
+                if (date_index < date_index_end)
+                    continue;
+                if (len  < 1 + date_index)
                     continue;
 
-                if (tt[len - abs(vec_idex[i].date_index) - 1]->down_pointer >= vec_idex[i].fpoint)
+                if (tt[len - date_index - 1]->down_pointer >= vec_idex[i].fpoint)
                     cnt++;
             }
 
@@ -953,10 +1276,28 @@ bool hquotation_search_index::do_check_hqdown_pointer_ge(std::string &name, std:
             cnt = 0;
             for (int i = 0; i < (int)vec_idex.size(); i++) 
             {
-                if (len  < 1 + abs(vec_idex[i].date_index))
+                int date_index = vec_idex[i].date_index;
+                int date_index_end = vec_idex[i].date_index_end;
+                if (!vec_idex[i].start_str.empty())
+                {
+                    date_index = p_data->get_search_sstr(ii->first, vec_idex[i].start_str, date_index, date_index_end);
+                    if (date_index < 0)
+                        continue;
+                }
+
+                if (!vec_idex[i].end_str.empty())
+                {
+                    date_index_end = p_data->get_search_sstr(ii->first, vec_idex[i].end_str, date_index, date_index_end);
+                    if (date_index_end < 0)
+                        continue;
+                }
+
+                if (date_index < date_index_end)
+                    continue;
+                if (len  < 1 + date_index)
                     continue;
 
-                if (tt[len - abs(vec_idex[i].date_index) - 1]->down_pointer >= vec_idex[i].fpoint)
+                if (tt[len - date_index - 1]->down_pointer >= vec_idex[i].fpoint)
                     cnt++;
             }
 
@@ -992,8 +1333,10 @@ bool hquotation_search_index::do_check_hqdown_pointer_le(std::string &name, std:
         }
 
         hidex_item hi;
-        hi.date_index = atoi(t_vec[0].c_str());
+        hi.date_index = abs(atoi(t_vec[0].c_str()));
+        get_first_not_numstr(t_vec[0], hi.start_str);
         hi.fpoint = atof(t_vec[1].c_str());
+
         vec_idex.push_back(hi);
     }
 
@@ -1008,10 +1351,28 @@ bool hquotation_search_index::do_check_hqdown_pointer_le(std::string &name, std:
             cnt = 0;
             for (int i = 0; i < (int)vec_idex.size(); i++) 
             {
-                if (len  < 1 + abs(vec_idex[i].date_index))
+                int date_index = vec_idex[i].date_index;
+                int date_index_end = vec_idex[i].date_index_end;
+                if (!vec_idex[i].start_str.empty())
+                {
+                    date_index = p_data->get_search_sstr(ii->first, vec_idex[i].start_str, date_index, date_index_end);
+                    if (date_index < 0)
+                        continue;
+                }
+
+                if (!vec_idex[i].end_str.empty())
+                {
+                    date_index_end = p_data->get_search_sstr(ii->first, vec_idex[i].end_str, date_index, date_index_end);
+                    if (date_index_end < 0)
+                        continue;
+                }
+
+                if (date_index < date_index_end)
+                    continue;
+                if (len  < 1 + date_index)
                     continue;
 
-                if (tt[len - abs(vec_idex[i].date_index) - 1]->down_pointer <= vec_idex[i].fpoint)
+                if (tt[len - date_index - 1]->down_pointer <= vec_idex[i].fpoint)
                     cnt++;
             }
 
@@ -1032,10 +1393,28 @@ bool hquotation_search_index::do_check_hqdown_pointer_le(std::string &name, std:
             cnt = 0;
             for (int i = 0; i < (int)vec_idex.size(); i++) 
             {
-                if (len  < 1 + abs(vec_idex[i].date_index))
+                int date_index = vec_idex[i].date_index;
+                int date_index_end = vec_idex[i].date_index_end;
+                if (!vec_idex[i].start_str.empty())
+                {
+                    date_index = p_data->get_search_sstr(ii->first, vec_idex[i].start_str, date_index, date_index_end);
+                    if (date_index < 0)
+                        continue;
+                }
+
+                if (!vec_idex[i].end_str.empty())
+                {
+                    date_index_end = p_data->get_search_sstr(ii->first, vec_idex[i].end_str, date_index, date_index_end);
+                    if (date_index_end < 0)
+                        continue;
+                }
+
+                if (date_index < date_index_end)
+                    continue;
+                if (len  < 1 + date_index)
                     continue;
 
-                if (tt[len - abs(vec_idex[i].date_index) - 1]->down_pointer <= vec_idex[i].fpoint)
+                if (tt[len - date_index - 1]->down_pointer <= vec_idex[i].fpoint)
                     cnt++;
             }
 
@@ -1071,13 +1450,14 @@ bool hquotation_search_index::do_check_hqdown_pointer_ge_num_ge(std::string &nam
         }
 
         hidex_item hi;
-        hi.date_index = atoi(t_vec[0].c_str());
-        hi.date_index_end = atoi(t_vec[1].c_str());
+        hi.date_index = abs(atoi(t_vec[0].c_str()));
+        get_first_not_numstr(t_vec[0], hi.start_str);
+        hi.date_index_end = abs(atoi(t_vec[1].c_str()));
+        get_first_not_numstr(t_vec[1], hi.end_str);
+
         hi.sum = atoi(t_vec[2].c_str());
         hi.fpoint = atof(t_vec[3].c_str());
 
-        if (abs(hi.date_index) < abs(hi.date_index_end))
-            continue;
 
         vec_idex.push_back(hi);
     }
@@ -1094,11 +1474,29 @@ bool hquotation_search_index::do_check_hqdown_pointer_ge_num_ge(std::string &nam
             cnt = 0;
             for (int i = 0; i < (int)vec_idex.size(); i++) 
             {
-                if (len  < 1 + abs(vec_idex[i].date_index))
+                int date_index = vec_idex[i].date_index;
+                int date_index_end = vec_idex[i].date_index_end;
+                if (!vec_idex[i].start_str.empty())
+                {
+                    date_index = p_data->get_search_sstr(ii->first, vec_idex[i].start_str, date_index, date_index_end);
+                    if (date_index < 0)
+                        continue;
+                }
+
+                if (!vec_idex[i].end_str.empty())
+                {
+                    date_index_end = p_data->get_search_sstr(ii->first, vec_idex[i].end_str, date_index, date_index_end);
+                    if (date_index_end < 0)
+                        continue;
+                }
+
+                if (date_index < date_index_end)
+                    continue;
+                if (len  < 1 + date_index)
                     continue;
 
                 count = 0;               
-                for (int k = len - abs(vec_idex[i].date_index) - 1; k <= len - abs(vec_idex[i].date_index_end) - 1; k++) {
+                for (int k = len - date_index - 1; k <= len - date_index_end - 1; k++) {
                     if (tt[k]->down_pointer >= vec_idex[i].fpoint)
                         count++;
                 }
@@ -1124,11 +1522,29 @@ bool hquotation_search_index::do_check_hqdown_pointer_ge_num_ge(std::string &nam
             cnt = 0;
             for (int i = 0; i < (int)vec_idex.size(); i++) 
             {
-                if (len  < 1 + abs(vec_idex[i].date_index))
+                int date_index = vec_idex[i].date_index;
+                int date_index_end = vec_idex[i].date_index_end;
+                if (!vec_idex[i].start_str.empty())
+                {
+                    date_index = p_data->get_search_sstr(ii->first, vec_idex[i].start_str, date_index, date_index_end);
+                    if (date_index < 0)
+                        continue;
+                }
+
+                if (!vec_idex[i].end_str.empty())
+                {
+                    date_index_end = p_data->get_search_sstr(ii->first, vec_idex[i].end_str, date_index, date_index_end);
+                    if (date_index_end < 0)
+                        continue;
+                }
+
+                if (date_index < date_index_end)
+                    continue;
+                if (len  < 1 + date_index)
                     continue;
 
                 count = 0;               
-                for (int k = len - abs(vec_idex[i].date_index) - 1; k <= len - abs(vec_idex[i].date_index_end) - 1; k++) {
+                for (int k = len - date_index - 1; k <= len - date_index_end - 1; k++) {
                     if (tt[k]->down_pointer >= vec_idex[i].fpoint)
                         count++;
                 }
@@ -1171,8 +1587,11 @@ bool hquotation_search_index::do_check_hqup_pointer_ge(std::string &name, std::s
         }
 
         hidex_item hi;
-        hi.date_index = atoi(t_vec[0].c_str());
+        hi.date_index = abs(atoi(t_vec[0].c_str()));
+        get_first_not_numstr(t_vec[0], hi.start_str);
+
         hi.fpoint = atof(t_vec[1].c_str());
+
         vec_idex.push_back(hi);
     }
 
@@ -1187,10 +1606,28 @@ bool hquotation_search_index::do_check_hqup_pointer_ge(std::string &name, std::s
             cnt = 0;
             for (int i = 0; i < (int)vec_idex.size(); i++) 
             {
-                if (len  < 1 + abs(vec_idex[i].date_index))
+                int date_index = vec_idex[i].date_index;
+                int date_index_end = vec_idex[i].date_index_end;
+                if (!vec_idex[i].start_str.empty())
+                {
+                    date_index = p_data->get_search_sstr(ii->first, vec_idex[i].start_str, date_index, date_index_end);
+                    if (date_index < 0)
+                        continue;
+                }
+
+                if (!vec_idex[i].end_str.empty())
+                {
+                    date_index_end = p_data->get_search_sstr(ii->first, vec_idex[i].end_str, date_index, date_index_end);
+                    if (date_index_end < 0)
+                        continue;
+                }
+
+                if (date_index < date_index_end)
+                    continue;
+                if (len  < 1 + date_index)
                     continue;
 
-                if (tt[len - abs(vec_idex[i].date_index) - 1]->up_pointer >= vec_idex[i].fpoint)
+                if (tt[len - date_index - 1]->up_pointer >= vec_idex[i].fpoint)
                     cnt++;
             }
 
@@ -1211,10 +1648,28 @@ bool hquotation_search_index::do_check_hqup_pointer_ge(std::string &name, std::s
             cnt = 0;
             for (int i = 0; i < (int)vec_idex.size(); i++) 
             {
-                if (len  < 1 + abs(vec_idex[i].date_index))
+                int date_index = vec_idex[i].date_index;
+                int date_index_end = vec_idex[i].date_index_end;
+                if (!vec_idex[i].start_str.empty())
+                {
+                    date_index = p_data->get_search_sstr(ii->first, vec_idex[i].start_str, date_index, date_index_end);
+                    if (date_index < 0)
+                        continue;
+                }
+
+                if (!vec_idex[i].end_str.empty())
+                {
+                    date_index_end = p_data->get_search_sstr(ii->first, vec_idex[i].end_str, date_index, date_index_end);
+                    if (date_index_end < 0)
+                        continue;
+                }
+
+                if (date_index < date_index_end)
+                    continue;
+                if (len  < 1 + date_index)
                     continue;
 
-                if (tt[len - abs(vec_idex[i].date_index) - 1]->up_pointer >= vec_idex[i].fpoint)
+                if (tt[len - date_index - 1]->up_pointer >= vec_idex[i].fpoint)
                     cnt++;
             }
 
@@ -1250,7 +1705,9 @@ bool hquotation_search_index::do_check_hqup_pointer_le(std::string &name, std::s
         }
 
         hidex_item hi;
-        hi.date_index = atoi(t_vec[0].c_str());
+        hi.date_index = abs(atoi(t_vec[0].c_str()));
+        get_first_not_numstr(t_vec[0], hi.start_str);
+
         hi.fpoint = atof(t_vec[1].c_str());
         vec_idex.push_back(hi);
     }
@@ -1266,10 +1723,28 @@ bool hquotation_search_index::do_check_hqup_pointer_le(std::string &name, std::s
             cnt = 0;
             for (int i = 0; i < (int)vec_idex.size(); i++) 
             {
-                if (len  < 1 + abs(vec_idex[i].date_index))
+                int date_index = vec_idex[i].date_index;
+                int date_index_end = vec_idex[i].date_index_end;
+                if (!vec_idex[i].start_str.empty())
+                {
+                    date_index = p_data->get_search_sstr(ii->first, vec_idex[i].start_str, date_index, date_index_end);
+                    if (date_index < 0)
+                        continue;
+                }
+
+                if (!vec_idex[i].end_str.empty())
+                {
+                    date_index_end = p_data->get_search_sstr(ii->first, vec_idex[i].end_str, date_index, date_index_end);
+                    if (date_index_end < 0)
+                        continue;
+                }
+
+                if (date_index < date_index_end)
+                    continue;
+                if (len  < 1 + date_index)
                     continue;
 
-                if (tt[len - abs(vec_idex[i].date_index) - 1]->up_pointer <= vec_idex[i].fpoint)
+                if (tt[len - date_index - 1]->up_pointer <= vec_idex[i].fpoint)
                     cnt++;
             }
 
@@ -1290,10 +1765,28 @@ bool hquotation_search_index::do_check_hqup_pointer_le(std::string &name, std::s
             cnt = 0;
             for (int i = 0; i < (int)vec_idex.size(); i++) 
             {
-                if (len  < 1 + abs(vec_idex[i].date_index))
+                int date_index = vec_idex[i].date_index;
+                int date_index_end = vec_idex[i].date_index_end;
+                if (!vec_idex[i].start_str.empty())
+                {
+                    date_index = p_data->get_search_sstr(ii->first, vec_idex[i].start_str, date_index, date_index_end);
+                    if (date_index < 0)
+                        continue;
+                }
+
+                if (!vec_idex[i].end_str.empty())
+                {
+                    date_index_end = p_data->get_search_sstr(ii->first, vec_idex[i].end_str, date_index, date_index_end);
+                    if (date_index_end < 0)
+                        continue;
+                }
+
+                if (date_index < date_index_end)
+                    continue;
+                if (len  < 1 + date_index)
                     continue;
 
-                if (tt[len - abs(vec_idex[i].date_index) - 1]->up_pointer <= vec_idex[i].fpoint)
+                if (tt[len - date_index - 1]->up_pointer <= vec_idex[i].fpoint)
                     cnt++;
             }
 
@@ -1329,13 +1822,15 @@ bool hquotation_search_index::do_check_hqup_pointer_ge_num_ge(std::string &name,
         }
 
         hidex_item hi;
-        hi.date_index = atoi(t_vec[0].c_str());
-        hi.date_index_end = atoi(t_vec[1].c_str());
+        hi.date_index = abs(atoi(t_vec[0].c_str()));
+        get_first_not_numstr(t_vec[0], hi.start_str);
+
+        hi.date_index_end = abs(atoi(t_vec[1].c_str()));
+        get_first_not_numstr(t_vec[1], hi.end_str);
+
         hi.sum = atoi(t_vec[2].c_str());
         hi.fpoint = atof(t_vec[3].c_str());
 
-        if (abs(hi.date_index) < abs(hi.date_index_end))
-            continue;
 
         vec_idex.push_back(hi);
     }
@@ -1352,11 +1847,29 @@ bool hquotation_search_index::do_check_hqup_pointer_ge_num_ge(std::string &name,
             cnt = 0;
             for (int i = 0; i < (int)vec_idex.size(); i++) 
             {
-                if (len  < 1 + abs(vec_idex[i].date_index))
+                int date_index = vec_idex[i].date_index;
+                int date_index_end = vec_idex[i].date_index_end;
+                if (!vec_idex[i].start_str.empty())
+                {
+                    date_index = p_data->get_search_sstr(ii->first, vec_idex[i].start_str, date_index, date_index_end);
+                    if (date_index < 0)
+                        continue;
+                }
+
+                if (!vec_idex[i].end_str.empty())
+                {
+                    date_index_end = p_data->get_search_sstr(ii->first, vec_idex[i].end_str, date_index, date_index_end);
+                    if (date_index_end < 0)
+                        continue;
+                }
+
+                if (date_index < date_index_end)
+                    continue;
+                if (len  < 1 + date_index)
                     continue;
 
                 count = 0;               
-                for (int k = len - abs(vec_idex[i].date_index) - 1; k <= len - abs(vec_idex[i].date_index_end) - 1; k++) {
+                for (int k = len - date_index - 1; k <= len - date_index_end - 1; k++) {
                     if (tt[k]->up_pointer >= vec_idex[i].fpoint)
                         count++;
                 }
@@ -1382,11 +1895,29 @@ bool hquotation_search_index::do_check_hqup_pointer_ge_num_ge(std::string &name,
             cnt = 0;
             for (int i = 0; i < (int)vec_idex.size(); i++) 
             {
-                if (len  < 1 + abs(vec_idex[i].date_index))
+                int date_index = vec_idex[i].date_index;
+                int date_index_end = vec_idex[i].date_index_end;
+                if (!vec_idex[i].start_str.empty())
+                {
+                    date_index = p_data->get_search_sstr(ii->first, vec_idex[i].start_str, date_index, date_index_end);
+                    if (date_index < 0)
+                        continue;
+                }
+
+                if (!vec_idex[i].end_str.empty())
+                {
+                    date_index_end = p_data->get_search_sstr(ii->first, vec_idex[i].end_str, date_index, date_index_end);
+                    if (date_index_end < 0)
+                        continue;
+                }
+
+                if (date_index < date_index_end)
+                    continue;
+                if (len  < 1 + date_index)
                     continue;
 
                 count = 0;               
-                for (int k = len - abs(vec_idex[i].date_index) - 1; k <= len - abs(vec_idex[i].date_index_end) - 1; k++) {
+                for (int k = len - date_index - 1; k <= len - date_index_end - 1; k++) {
                     if (tt[k]->up_pointer >= vec_idex[i].fpoint)
                         count++;
                 }
@@ -1428,7 +1959,9 @@ bool hquotation_search_index::do_check_hqend_start_ge(std::string &name, std::st
         }
 
         hidex_item hi;
-        hi.date_index = atoi(t_vec[0].c_str());
+        hi.date_index = abs(atoi(t_vec[0].c_str()));
+        get_first_not_numstr(t_vec[0], hi.start_str);
+
         hi.fpoint = atof(t_vec[1].c_str());
         vec_idex.push_back(hi);
     }
@@ -1444,10 +1977,28 @@ bool hquotation_search_index::do_check_hqend_start_ge(std::string &name, std::st
             cnt = 0;
             for (int i = 0; i < (int)vec_idex.size(); i++) 
             {
-                if (len  < 1 + abs(vec_idex[i].date_index))
+                int date_index = vec_idex[i].date_index;
+                int date_index_end = vec_idex[i].date_index_end;
+                if (!vec_idex[i].start_str.empty())
+                {
+                    date_index = p_data->get_search_sstr(ii->first, vec_idex[i].start_str, date_index, date_index_end);
+                    if (date_index < 0)
+                        continue;
+                }
+
+                if (!vec_idex[i].end_str.empty())
+                {
+                    date_index_end = p_data->get_search_sstr(ii->first, vec_idex[i].end_str, date_index, date_index_end);
+                    if (date_index_end < 0)
+                        continue;
+                }
+
+                if (date_index < date_index_end)
+                    continue;
+                if (len  < 1 + date_index)
                     continue;
 
-                if (tt[len - abs(vec_idex[i].date_index) - 1]->end_start >= vec_idex[i].fpoint)
+                if (tt[len - date_index - 1]->end_start >= vec_idex[i].fpoint)
                     cnt++;
             }
 
@@ -1468,10 +2019,28 @@ bool hquotation_search_index::do_check_hqend_start_ge(std::string &name, std::st
             cnt = 0;
             for (int i = 0; i < (int)vec_idex.size(); i++) 
             {
-                if (len  < 1 + abs(vec_idex[i].date_index))
+                int date_index = vec_idex[i].date_index;
+                int date_index_end = vec_idex[i].date_index_end;
+                if (!vec_idex[i].start_str.empty())
+                {
+                    date_index = p_data->get_search_sstr(ii->first, vec_idex[i].start_str, date_index, date_index_end);
+                    if (date_index < 0)
+                        continue;
+                }
+
+                if (!vec_idex[i].end_str.empty())
+                {
+                    date_index_end = p_data->get_search_sstr(ii->first, vec_idex[i].end_str, date_index, date_index_end);
+                    if (date_index_end < 0)
+                        continue;
+                }
+
+                if (date_index < date_index_end)
+                    continue;
+                if (len  < 1 + date_index)
                     continue;
 
-                if (tt[len - abs(vec_idex[i].date_index) - 1]->end_start >= vec_idex[i].fpoint)
+                if (tt[len - date_index - 1]->end_start >= vec_idex[i].fpoint)
                     cnt++;
             }
 
@@ -1507,7 +2076,8 @@ bool hquotation_search_index::do_check_hqend_start_le(std::string &name, std::st
         }
 
         hidex_item hi;
-        hi.date_index = atoi(t_vec[0].c_str());
+        hi.date_index = abs(atoi(t_vec[0].c_str()));
+        get_first_not_numstr(t_vec[0], hi.start_str);
         hi.fpoint = atof(t_vec[1].c_str());
         vec_idex.push_back(hi);
     }
@@ -1523,10 +2093,28 @@ bool hquotation_search_index::do_check_hqend_start_le(std::string &name, std::st
             cnt = 0;
             for (int i = 0; i < (int)vec_idex.size(); i++) 
             {
-                if (len  < 1 + abs(vec_idex[i].date_index))
+                int date_index = vec_idex[i].date_index;
+                int date_index_end = vec_idex[i].date_index_end;
+                if (!vec_idex[i].start_str.empty())
+                {
+                    date_index = p_data->get_search_sstr(ii->first, vec_idex[i].start_str, date_index, date_index_end);
+                    if (date_index < 0)
+                        continue;
+                }
+
+                if (!vec_idex[i].end_str.empty())
+                {
+                    date_index_end = p_data->get_search_sstr(ii->first, vec_idex[i].end_str, date_index, date_index_end);
+                    if (date_index_end < 0)
+                        continue;
+                }
+
+                if (date_index < date_index_end)
+                    continue;
+                if (len  < 1 + date_index)
                     continue;
 
-                if (tt[len - abs(vec_idex[i].date_index) - 1]->end_start <= vec_idex[i].fpoint)
+                if (tt[len - date_index - 1]->end_start <= vec_idex[i].fpoint)
                     cnt++;
             }
 
@@ -1547,10 +2135,28 @@ bool hquotation_search_index::do_check_hqend_start_le(std::string &name, std::st
             cnt = 0;
             for (int i = 0; i < (int)vec_idex.size(); i++) 
             {
-                if (len  < 1 + abs(vec_idex[i].date_index))
+                int date_index = vec_idex[i].date_index;
+                int date_index_end = vec_idex[i].date_index_end;
+                if (!vec_idex[i].start_str.empty())
+                {
+                    date_index = p_data->get_search_sstr(ii->first, vec_idex[i].start_str, date_index, date_index_end);
+                    if (date_index < 0)
+                        continue;
+                }
+
+                if (!vec_idex[i].end_str.empty())
+                {
+                    date_index_end = p_data->get_search_sstr(ii->first, vec_idex[i].end_str, date_index, date_index_end);
+                    if (date_index_end < 0)
+                        continue;
+                }
+
+                if (date_index < date_index_end)
+                    continue;
+                if (len  < 1 + date_index)
                     continue;
 
-                if (tt[len - abs(vec_idex[i].date_index) - 1]->end_start <= vec_idex[i].fpoint)
+                if (tt[len - date_index - 1]->end_start <= vec_idex[i].fpoint)
                     cnt++;
             }
 
@@ -1586,13 +2192,15 @@ bool hquotation_search_index::do_check_hqend_start_ge_num_ge(std::string &name, 
         }
 
         hidex_item hi;
-        hi.date_index = atoi(t_vec[0].c_str());
-        hi.date_index_end = atoi(t_vec[1].c_str());
+        hi.date_index = abs(atoi(t_vec[0].c_str()));
+        get_first_not_numstr(t_vec[0], hi.start_str);
+
+        hi.date_index_end = abs(atoi(t_vec[1].c_str()));
+        get_first_not_numstr(t_vec[1], hi.end_str);
+
         hi.sum = atoi(t_vec[2].c_str());
         hi.fpoint = atof(t_vec[3].c_str());
 
-        if (abs(hi.date_index) < abs(hi.date_index_end))
-            continue;
 
         vec_idex.push_back(hi);
     }
@@ -1609,11 +2217,29 @@ bool hquotation_search_index::do_check_hqend_start_ge_num_ge(std::string &name, 
             cnt = 0;
             for (int i = 0; i < (int)vec_idex.size(); i++) 
             {
-                if (len  < 1 + abs(vec_idex[i].date_index))
+                int date_index = vec_idex[i].date_index;
+                int date_index_end = vec_idex[i].date_index_end;
+                if (!vec_idex[i].start_str.empty())
+                {
+                    date_index = p_data->get_search_sstr(ii->first, vec_idex[i].start_str, date_index, date_index_end);
+                    if (date_index < 0)
+                        continue;
+                }
+
+                if (!vec_idex[i].end_str.empty())
+                {
+                    date_index_end = p_data->get_search_sstr(ii->first, vec_idex[i].end_str, date_index, date_index_end);
+                    if (date_index_end < 0)
+                        continue;
+                }
+
+                if (date_index < date_index_end)
+                    continue;
+                if (len  < 1 + date_index)
                     continue;
 
                 count = 0;               
-                for (int k = len - abs(vec_idex[i].date_index) - 1; k <= len - abs(vec_idex[i].date_index_end) - 1; k++) {
+                for (int k = len - date_index - 1; k <= len - date_index_end - 1; k++) {
                     if (tt[k]->end_start >= vec_idex[i].fpoint)
                         count++;
                 }
@@ -1639,11 +2265,29 @@ bool hquotation_search_index::do_check_hqend_start_ge_num_ge(std::string &name, 
             cnt = 0;
             for (int i = 0; i < (int)vec_idex.size(); i++) 
             {
-                if (len  < 1 + abs(vec_idex[i].date_index))
+                int date_index = vec_idex[i].date_index;
+                int date_index_end = vec_idex[i].date_index_end;
+                if (!vec_idex[i].start_str.empty())
+                {
+                    date_index = p_data->get_search_sstr(ii->first, vec_idex[i].start_str, date_index, date_index_end);
+                    if (date_index < 0)
+                        continue;
+                }
+
+                if (!vec_idex[i].end_str.empty())
+                {
+                    date_index_end = p_data->get_search_sstr(ii->first, vec_idex[i].end_str, date_index, date_index_end);
+                    if (date_index_end < 0)
+                        continue;
+                }
+
+                if (date_index < date_index_end)
+                    continue;
+                if (len  < 1 + date_index)
                     continue;
 
                 count = 0;               
-                for (int k = len - abs(vec_idex[i].date_index) - 1; k <= len - abs(vec_idex[i].date_index_end) - 1; k++) {
+                for (int k = len - date_index - 1; k <= len - date_index_end - 1; k++) {
                     if (tt[k]->end_start >= vec_idex[i].fpoint)
                         count++;
                 }
@@ -1686,13 +2330,15 @@ bool hquotation_search_index::do_check_hqend_start_ge_ratio_ge(std::string &name
         }
 
         hidex_item hi;
-        hi.date_index = atoi(t_vec[0].c_str());
-        hi.date_index_end = atoi(t_vec[1].c_str());
+        hi.date_index = abs(atoi(t_vec[0].c_str()));
+        get_first_not_numstr(t_vec[0], hi.start_str);
+
+        hi.date_index_end = abs(atoi(t_vec[1].c_str()));
+        get_first_not_numstr(t_vec[1], hi.end_str);
+
         hi.sum = atoi(t_vec[2].c_str());
         hi.fpoint = atof(t_vec[3].c_str());
 
-        if (abs(hi.date_index) < abs(hi.date_index_end))
-            continue;
 
         vec_idex.push_back(hi);
     }
@@ -1709,16 +2355,34 @@ bool hquotation_search_index::do_check_hqend_start_ge_ratio_ge(std::string &name
             cnt = 0;
             for (int i = 0; i < (int)vec_idex.size(); i++) 
             {
-                if (len  < 1 + abs(vec_idex[i].date_index))
+                int date_index = vec_idex[i].date_index;
+                int date_index_end = vec_idex[i].date_index_end;
+                if (!vec_idex[i].start_str.empty())
+                {
+                    date_index = p_data->get_search_sstr(ii->first, vec_idex[i].start_str, date_index, date_index_end);
+                    if (date_index < 0)
+                        continue;
+                }
+
+                if (!vec_idex[i].end_str.empty())
+                {
+                    date_index_end = p_data->get_search_sstr(ii->first, vec_idex[i].end_str, date_index, date_index_end);
+                    if (date_index_end < 0)
+                        continue;
+                }
+
+                if (date_index < date_index_end)
+                    continue;
+                if (len  < 1 + date_index)
                     continue;
 
                 count = 0;               
-                for (int k = len - abs(vec_idex[i].date_index) - 1; k <= len - abs(vec_idex[i].date_index_end) - 1; k++) {
+                for (int k = len - date_index - 1; k <= len - date_index_end - 1; k++) {
                     if (tt[k]->end_start >= vec_idex[i].fpoint)
                         count++;
                 }
 
-                if (count >= vec_idex[i].sum * (abs(vec_idex[i].date_index) -  abs(vec_idex[i].date_index_end) + 1))
+                if (count >= vec_idex[i].sum * (date_index -  date_index_end + 1))
                     cnt++;
             }
 
@@ -1739,17 +2403,35 @@ bool hquotation_search_index::do_check_hqend_start_ge_ratio_ge(std::string &name
             cnt = 0;
             for (int i = 0; i < (int)vec_idex.size(); i++) 
             {
-                if (len  < 1 + abs(vec_idex[i].date_index))
+                int date_index = vec_idex[i].date_index;
+                int date_index_end = vec_idex[i].date_index_end;
+                if (!vec_idex[i].start_str.empty())
+                {
+                    date_index = p_data->get_search_sstr(ii->first, vec_idex[i].start_str, date_index, date_index_end);
+                    if (date_index < 0)
+                        continue;
+                }
+
+                if (!vec_idex[i].end_str.empty())
+                {
+                    date_index_end = p_data->get_search_sstr(ii->first, vec_idex[i].end_str, date_index, date_index_end);
+                    if (date_index_end < 0)
+                        continue;
+                }
+
+                if (date_index < date_index_end)
+                    continue;
+                if (len  < 1 + date_index)
                     continue;
 
                 count = 0;               
-                for (int k = len - abs(vec_idex[i].date_index) - 1; k <= len - abs(vec_idex[i].date_index_end) - 1; k++) {
+                for (int k = len - date_index - 1; k <= len - date_index_end - 1; k++) {
                     if (tt[k]->end_start >= vec_idex[i].fpoint)
                         count++;
                 }
 
 
-                if (count >= vec_idex[i].sum * (abs(vec_idex[i].date_index) -  abs(vec_idex[i].date_index_end) + 1))
+                if (count >= vec_idex[i].sum * (date_index -  date_index_end + 1))
                     cnt++;
             }
 
@@ -1786,8 +2468,11 @@ bool hquotation_search_index::do_check_hqend_avg_end_ge(std::string &name, std::
         }
 
         hidex_item hi;
-        hi.date_index = atoi(t_vec[0].c_str());
+        hi.date_index = abs(atoi(t_vec[0].c_str()));
+        get_first_not_numstr(t_vec[0], hi.start_str);
+
         hi.fpoint = atof(t_vec[1].c_str());
+
         vec_idex.push_back(hi);
     }
 
@@ -1802,10 +2487,28 @@ bool hquotation_search_index::do_check_hqend_avg_end_ge(std::string &name, std::
             cnt = 0;
             for (int i = 0; i < (int)vec_idex.size(); i++) 
             {
-                if (len  < 1 + abs(vec_idex[i].date_index))
+                int date_index = vec_idex[i].date_index;
+                int date_index_end = vec_idex[i].date_index_end;
+                if (!vec_idex[i].start_str.empty())
+                {
+                    date_index = p_data->get_search_sstr(ii->first, vec_idex[i].start_str, date_index, date_index_end);
+                    if (date_index < 0)
+                        continue;
+                }
+
+                if (!vec_idex[i].end_str.empty())
+                {
+                    date_index_end = p_data->get_search_sstr(ii->first, vec_idex[i].end_str, date_index, date_index_end);
+                    if (date_index_end < 0)
+                        continue;
+                }
+
+                if (date_index < date_index_end)
+                    continue;
+                if (len  < 1 + date_index)
                     continue;
 
-                if (tt[len - abs(vec_idex[i].date_index) - 1]->end_avg_end >= vec_idex[i].fpoint)
+                if (tt[len - date_index - 1]->end_avg_end >= vec_idex[i].fpoint)
                     cnt++;
             }
 
@@ -1826,10 +2529,28 @@ bool hquotation_search_index::do_check_hqend_avg_end_ge(std::string &name, std::
             cnt = 0;
             for (int i = 0; i < (int)vec_idex.size(); i++) 
             {
-                if (len  < 1 + abs(vec_idex[i].date_index))
+                int date_index = vec_idex[i].date_index;
+                int date_index_end = vec_idex[i].date_index_end;
+                if (!vec_idex[i].start_str.empty())
+                {
+                    date_index = p_data->get_search_sstr(ii->first, vec_idex[i].start_str, date_index, date_index_end);
+                    if (date_index < 0)
+                        continue;
+                }
+
+                if (!vec_idex[i].end_str.empty())
+                {
+                    date_index_end = p_data->get_search_sstr(ii->first, vec_idex[i].end_str, date_index, date_index_end);
+                    if (date_index_end < 0)
+                        continue;
+                }
+
+                if (date_index < date_index_end)
+                    continue;
+                if (len  < 1 + date_index)
                     continue;
 
-                if (tt[len - abs(vec_idex[i].date_index) - 1]->end_avg_end >= vec_idex[i].fpoint)
+                if (tt[len - date_index - 1]->end_avg_end >= vec_idex[i].fpoint)
                     cnt++;
             }
 
@@ -1865,7 +2586,8 @@ bool hquotation_search_index::do_check_hqend_avg_end_le(std::string &name, std::
         }
 
         hidex_item hi;
-        hi.date_index = atoi(t_vec[0].c_str());
+        hi.date_index = abs(atoi(t_vec[0].c_str()));
+        get_first_not_numstr(t_vec[0], hi.start_str);
         hi.fpoint = atof(t_vec[1].c_str());
         vec_idex.push_back(hi);
     }
@@ -1881,10 +2603,28 @@ bool hquotation_search_index::do_check_hqend_avg_end_le(std::string &name, std::
             cnt = 0;
             for (int i = 0; i < (int)vec_idex.size(); i++) 
             {
-                if (len  < 1 + abs(vec_idex[i].date_index))
+                int date_index = vec_idex[i].date_index;
+                int date_index_end = vec_idex[i].date_index_end;
+                if (!vec_idex[i].start_str.empty())
+                {
+                    date_index = p_data->get_search_sstr(ii->first, vec_idex[i].start_str, date_index, date_index_end);
+                    if (date_index < 0)
+                        continue;
+                }
+
+                if (!vec_idex[i].end_str.empty())
+                {
+                    date_index_end = p_data->get_search_sstr(ii->first, vec_idex[i].end_str, date_index, date_index_end);
+                    if (date_index_end < 0)
+                        continue;
+                }
+
+                if (date_index < date_index_end)
+                    continue;
+                if (len  < 1 + date_index)
                     continue;
 
-                if (tt[len - abs(vec_idex[i].date_index) - 1]->end_avg_end <= vec_idex[i].fpoint)
+                if (tt[len - date_index - 1]->end_avg_end <= vec_idex[i].fpoint)
                     cnt++;
             }
 
@@ -1905,10 +2645,28 @@ bool hquotation_search_index::do_check_hqend_avg_end_le(std::string &name, std::
             cnt = 0;
             for (int i = 0; i < (int)vec_idex.size(); i++) 
             {
-                if (len  < 1 + abs(vec_idex[i].date_index))
+                int date_index = vec_idex[i].date_index;
+                int date_index_end = vec_idex[i].date_index_end;
+                if (!vec_idex[i].start_str.empty())
+                {
+                    date_index = p_data->get_search_sstr(ii->first, vec_idex[i].start_str, date_index, date_index_end);
+                    if (date_index < 0)
+                        continue;
+                }
+
+                if (!vec_idex[i].end_str.empty())
+                {
+                    date_index_end = p_data->get_search_sstr(ii->first, vec_idex[i].end_str, date_index, date_index_end);
+                    if (date_index_end < 0)
+                        continue;
+                }
+
+                if (date_index < date_index_end)
+                    continue;
+                if (len  < 1 + date_index)
                     continue;
 
-                if (tt[len - abs(vec_idex[i].date_index) - 1]->end_avg_end <= vec_idex[i].fpoint)
+                if (tt[len - date_index - 1]->end_avg_end <= vec_idex[i].fpoint)
                     cnt++;
             }
 
@@ -1944,13 +2702,15 @@ bool hquotation_search_index::do_check_hqend_avg_end_ge_num_ge(std::string &name
         }
 
         hidex_item hi;
-        hi.date_index = atoi(t_vec[0].c_str());
-        hi.date_index_end = atoi(t_vec[1].c_str());
+        hi.date_index = abs(atoi(t_vec[0].c_str()));
+        get_first_not_numstr(t_vec[0], hi.start_str);
+
+        hi.date_index_end = abs(atoi(t_vec[1].c_str()));
+        get_first_not_numstr(t_vec[1], hi.end_str);
+
         hi.sum = atoi(t_vec[2].c_str());
         hi.fpoint = atof(t_vec[3].c_str());
 
-        if (abs(hi.date_index) < abs(hi.date_index_end))
-            continue;
 
         vec_idex.push_back(hi);
     }
@@ -1967,11 +2727,29 @@ bool hquotation_search_index::do_check_hqend_avg_end_ge_num_ge(std::string &name
             cnt = 0;
             for (int i = 0; i < (int)vec_idex.size(); i++) 
             {
-                if (len  < 1 + abs(vec_idex[i].date_index))
+                int date_index = vec_idex[i].date_index;
+                int date_index_end = vec_idex[i].date_index_end;
+                if (!vec_idex[i].start_str.empty())
+                {
+                    date_index = p_data->get_search_sstr(ii->first, vec_idex[i].start_str, date_index, date_index_end);
+                    if (date_index < 0)
+                        continue;
+                }
+
+                if (!vec_idex[i].end_str.empty())
+                {
+                    date_index_end = p_data->get_search_sstr(ii->first, vec_idex[i].end_str, date_index, date_index_end);
+                    if (date_index_end < 0)
+                        continue;
+                }
+
+                if (date_index < date_index_end)
+                    continue;
+                if (len  < 1 + date_index)
                     continue;
 
                 count = 0;               
-                for (int k = len - abs(vec_idex[i].date_index) - 1; k <= len - abs(vec_idex[i].date_index_end) - 1; k++) {
+                for (int k = len - date_index - 1; k <= len - date_index_end - 1; k++) {
                     if (tt[k]->end_avg_end >= vec_idex[i].fpoint)
                         count++;
                 }
@@ -1997,11 +2775,29 @@ bool hquotation_search_index::do_check_hqend_avg_end_ge_num_ge(std::string &name
             cnt = 0;
             for (int i = 0; i < (int)vec_idex.size(); i++) 
             {
-                if (len  < 1 + abs(vec_idex[i].date_index))
+                int date_index = vec_idex[i].date_index;
+                int date_index_end = vec_idex[i].date_index_end;
+                if (!vec_idex[i].start_str.empty())
+                {
+                    date_index = p_data->get_search_sstr(ii->first, vec_idex[i].start_str, date_index, date_index_end);
+                    if (date_index < 0)
+                        continue;
+                }
+
+                if (!vec_idex[i].end_str.empty())
+                {
+                    date_index_end = p_data->get_search_sstr(ii->first, vec_idex[i].end_str, date_index, date_index_end);
+                    if (date_index_end < 0)
+                        continue;
+                }
+
+                if (date_index < date_index_end)
+                    continue;
+                if (len  < 1 + date_index)
                     continue;
 
                 count = 0;               
-                for (int k = len - abs(vec_idex[i].date_index) - 1; k <= len - abs(vec_idex[i].date_index_end) - 1; k++) {
+                for (int k = len - date_index - 1; k <= len - date_index_end - 1; k++) {
                     if (tt[k]->end_avg_end >= vec_idex[i].fpoint)
                         count++;
                 }
@@ -2106,7 +2902,9 @@ bool hquotation_search_index::do_check_rlow_hlow_ge(std::string &name, std::stri
         }
 
         hidex_item hi;
-        hi.date_index = atoi(t_vec[0].c_str());
+        hi.date_index = abs(atoi(t_vec[0].c_str()));
+        get_first_not_numstr(t_vec[0], hi.start_str);
+
         hi.fpoint = atof(t_vec[1].c_str());
         vec_idex.push_back(hi);
     }
@@ -2122,10 +2920,28 @@ bool hquotation_search_index::do_check_rlow_hlow_ge(std::string &name, std::stri
             cnt = 0;
             for (int i = 0; i < (int)vec_idex.size(); i++) 
             {
-                if (len  < 1 + abs(vec_idex[i].date_index))
+                int date_index = vec_idex[i].date_index;
+                int date_index_end = vec_idex[i].date_index_end;
+                if (!vec_idex[i].start_str.empty())
+                {
+                    date_index = p_data->get_search_sstr(ii->first, vec_idex[i].start_str, date_index, date_index_end);
+                    if (date_index < 0)
+                        continue;
+                }
+
+                if (!vec_idex[i].end_str.empty())
+                {
+                    date_index_end = p_data->get_search_sstr(ii->first, vec_idex[i].end_str, date_index, date_index_end);
+                    if (date_index_end < 0)
+                        continue;
+                }
+
+                if (date_index < date_index_end)
+                    continue;
+                if (len  < 1 + date_index)
                     continue;
 
-                if (tt[len - 1]->low >= vec_idex[i].fpoint * tt[len - abs(vec_idex[i].date_index) - 1]->low)
+                if (tt[len - 1]->low >= vec_idex[i].fpoint * tt[len - date_index - 1]->low)
                     cnt++;
             }
 
@@ -2146,10 +2962,28 @@ bool hquotation_search_index::do_check_rlow_hlow_ge(std::string &name, std::stri
             cnt = 0;
             for (int i = 0; i < (int)vec_idex.size(); i++) 
             {
-                if (len  < 1 + abs(vec_idex[i].date_index))
+                int date_index = vec_idex[i].date_index;
+                int date_index_end = vec_idex[i].date_index_end;
+                if (!vec_idex[i].start_str.empty())
+                {
+                    date_index = p_data->get_search_sstr(ii->first, vec_idex[i].start_str, date_index, date_index_end);
+                    if (date_index < 0)
+                        continue;
+                }
+
+                if (!vec_idex[i].end_str.empty())
+                {
+                    date_index_end = p_data->get_search_sstr(ii->first, vec_idex[i].end_str, date_index, date_index_end);
+                    if (date_index_end < 0)
+                        continue;
+                }
+
+                if (date_index < date_index_end)
+                    continue;
+                if (len  < 1 + date_index)
                     continue;
 
-                if (tt[len - 1]->low >= vec_idex[i].fpoint * tt[len - abs(vec_idex[i].date_index) - 1]->low)
+                if (tt[len - 1]->low >= vec_idex[i].fpoint * tt[len - date_index - 1]->low)
                     cnt++;
             }
 
@@ -2186,12 +3020,14 @@ bool hquotation_search_index::do_check_rlow_hlowest_ge(std::string &name, std::s
         }
 
         hidex_item hi;
-        hi.date_index = atoi(t_vec[0].c_str());
-        hi.date_index_end = atoi(t_vec[1].c_str());
+        hi.date_index = abs(atoi(t_vec[0].c_str()));
+        get_first_not_numstr(t_vec[0], hi.start_str);
+
+        hi.date_index_end = abs(atoi(t_vec[1].c_str()));
+        get_first_not_numstr(t_vec[1], hi.end_str);
+
         hi.fpoint = atof(t_vec[2].c_str());
 
-        if (abs(hi.date_index) < abs(hi.date_index_end))
-            continue;
 
         vec_idex.push_back(hi);
     }
@@ -2207,11 +3043,29 @@ bool hquotation_search_index::do_check_rlow_hlowest_ge(std::string &name, std::s
             cnt = 0;
             for (int i = 0; i < (int)vec_idex.size(); i++) 
             {
-                if (len  < 1 + abs(vec_idex[i].date_index))
+                int date_index = vec_idex[i].date_index;
+                int date_index_end = vec_idex[i].date_index_end;
+                if (!vec_idex[i].start_str.empty())
+                {
+                    date_index = p_data->get_search_sstr(ii->first, vec_idex[i].start_str, date_index, date_index_end);
+                    if (date_index < 0)
+                        continue;
+                }
+
+                if (!vec_idex[i].end_str.empty())
+                {
+                    date_index_end = p_data->get_search_sstr(ii->first, vec_idex[i].end_str, date_index, date_index_end);
+                    if (date_index_end < 0)
+                        continue;
+                }
+
+                if (date_index < date_index_end)
+                    continue;
+                if (len  < 1 + date_index)
                     continue;
 
                 float min = tt[len - 1]->low;                                        
-                for (int k = len - abs(vec_idex[i].date_index) - 1; k <= len  - abs(vec_idex[i].date_index_end) - 1; k++) 
+                for (int k = len - date_index - 1; k <= len  - date_index_end - 1; k++) 
                     if (min >= tt[k]->low)
                         min = tt[k]->low;
 
@@ -2236,11 +3090,29 @@ bool hquotation_search_index::do_check_rlow_hlowest_ge(std::string &name, std::s
             cnt = 0;
             for (int i = 0; i < (int)vec_idex.size(); i++) 
             {
-                if (len  < 1 + abs(vec_idex[i].date_index))
+                int date_index = vec_idex[i].date_index;
+                int date_index_end = vec_idex[i].date_index_end;
+                if (!vec_idex[i].start_str.empty())
+                {
+                    date_index = p_data->get_search_sstr(ii->first, vec_idex[i].start_str, date_index, date_index_end);
+                    if (date_index < 0)
+                        continue;
+                }
+
+                if (!vec_idex[i].end_str.empty())
+                {
+                    date_index_end = p_data->get_search_sstr(ii->first, vec_idex[i].end_str, date_index, date_index_end);
+                    if (date_index_end < 0)
+                        continue;
+                }
+
+                if (date_index < date_index_end)
+                    continue;
+                if (len  < 1 + date_index)
                     continue;
 
                 float min = tt[len - 1]->low;                                        
-                for (int k = len - abs(vec_idex[i].date_index) - 1; k <= len  - abs(vec_idex[i].date_index_end) - 1; k++) 
+                for (int k = len - date_index - 1; k <= len  - date_index_end - 1; k++) 
                     if (min >= tt[k]->low)
                         min = tt[k]->low;
 
@@ -2281,12 +3153,14 @@ bool hquotation_search_index::do_check_rlow_hlowest_le(std::string &name, std::s
         }
 
         hidex_item hi;
-        hi.date_index = atoi(t_vec[0].c_str());
-        hi.date_index_end = atoi(t_vec[1].c_str());
+        hi.date_index = abs(atoi(t_vec[0].c_str()));
+        get_first_not_numstr(t_vec[0], hi.start_str);
+        hi.date_index_end = abs(atoi(t_vec[1].c_str()));
+        get_first_not_numstr(t_vec[1], hi.end_str);
+
+
         hi.fpoint = atof(t_vec[2].c_str());
 
-        if (abs(hi.date_index) < abs(hi.date_index_end))
-            continue;
 
         vec_idex.push_back(hi);
     }
@@ -2302,11 +3176,29 @@ bool hquotation_search_index::do_check_rlow_hlowest_le(std::string &name, std::s
             cnt = 0;
             for (int i = 0; i < (int)vec_idex.size(); i++) 
             {
-                if (len  < 1 + abs(vec_idex[i].date_index))
+                int date_index = vec_idex[i].date_index;
+                int date_index_end = vec_idex[i].date_index_end;
+                if (!vec_idex[i].start_str.empty())
+                {
+                    date_index = p_data->get_search_sstr(ii->first, vec_idex[i].start_str, date_index, date_index_end);
+                    if (date_index < 0)
+                        continue;
+                }
+
+                if (!vec_idex[i].end_str.empty())
+                {
+                    date_index_end = p_data->get_search_sstr(ii->first, vec_idex[i].end_str, date_index, date_index_end);
+                    if (date_index_end < 0)
+                        continue;
+                }
+
+                if (date_index < date_index_end)
+                    continue;
+                if (len  < 1 + date_index)
                     continue;
 
                 float min = tt[len - 1]->low;                                        
-                for (int k = len - abs(vec_idex[i].date_index) - 1; k <= len - abs(vec_idex[i].date_index_end) - 1; k++) 
+                for (int k = len - date_index - 1; k <= len - date_index_end - 1; k++) 
                     if (min >= tt[k]->low)
                         min = tt[k]->low;
 
@@ -2331,11 +3223,29 @@ bool hquotation_search_index::do_check_rlow_hlowest_le(std::string &name, std::s
             cnt = 0;
             for (int i = 0; i < (int)vec_idex.size(); i++) 
             {
-                if (len  < 1 + abs(vec_idex[i].date_index))
+                int date_index = vec_idex[i].date_index;
+                int date_index_end = vec_idex[i].date_index_end;
+                if (!vec_idex[i].start_str.empty())
+                {
+                    date_index = p_data->get_search_sstr(ii->first, vec_idex[i].start_str, date_index, date_index_end);
+                    if (date_index < 0)
+                        continue;
+                }
+
+                if (!vec_idex[i].end_str.empty())
+                {
+                    date_index_end = p_data->get_search_sstr(ii->first, vec_idex[i].end_str, date_index, date_index_end);
+                    if (date_index_end < 0)
+                        continue;
+                }
+
+                if (date_index < date_index_end)
+                    continue;
+                if (len  < 1 + date_index)
                     continue;
 
                 float min = tt[len - 1]->low;                                        
-                for (int k = len - abs(vec_idex[i].date_index) - 1; k <= len - abs(vec_idex[i].date_index_end) - 1; k++) 
+                for (int k = len - date_index - 1; k <= len - date_index_end - 1; k++) 
                     if (min >= tt[k]->low)
                         min = tt[k]->low;
 
@@ -2377,12 +3287,12 @@ bool hquotation_search_index::do_check_rhigh_hhighest_ge(std::string &name, std:
         }
 
         hidex_item hi;
-        hi.date_index = atoi(t_vec[0].c_str());
-        hi.date_index_end = atoi(t_vec[1].c_str());
+        hi.date_index = abs(atoi(t_vec[0].c_str()));
+        get_first_not_numstr(t_vec[0], hi.start_str);
+        hi.date_index_end = abs(atoi(t_vec[1].c_str()));
+        get_first_not_numstr(t_vec[1], hi.end_str);
         hi.fpoint = atof(t_vec[2].c_str());
 
-        if (abs(hi.date_index) < abs(hi.date_index_end))
-            continue;
 
         vec_idex.push_back(hi);
     }
@@ -2398,11 +3308,29 @@ bool hquotation_search_index::do_check_rhigh_hhighest_ge(std::string &name, std:
             cnt = 0;
             for (int i = 0; i < (int)vec_idex.size(); i++) 
             {
-                if (len  < 1 + abs(vec_idex[i].date_index))
+                int date_index = vec_idex[i].date_index;
+                int date_index_end = vec_idex[i].date_index_end;
+                if (!vec_idex[i].start_str.empty())
+                {
+                    date_index = p_data->get_search_sstr(ii->first, vec_idex[i].start_str, date_index, date_index_end);
+                    if (date_index < 0)
+                        continue;
+                }
+
+                if (!vec_idex[i].end_str.empty())
+                {
+                    date_index_end = p_data->get_search_sstr(ii->first, vec_idex[i].end_str, date_index, date_index_end);
+                    if (date_index_end < 0)
+                        continue;
+                }
+
+                if (date_index < date_index_end)
+                    continue;
+                if (len  < 1 + date_index)
                     continue;
 
-                float max = tt[len -abs(vec_idex[i].date_index)- 1]->high;                                        
-                for (int k = len - abs(vec_idex[i].date_index) - 1; k <= len  -abs(vec_idex[i].date_index_end)- 1; k++) 
+                float max = tt[len -date_index- 1]->high;                                        
+                for (int k = len - date_index - 1; k <= len  -date_index_end- 1; k++) 
                     if (max <= tt[k]->high)
                         max = tt[k]->high;
 
@@ -2427,11 +3355,29 @@ bool hquotation_search_index::do_check_rhigh_hhighest_ge(std::string &name, std:
             cnt = 0;
             for (int i = 0; i < (int)vec_idex.size(); i++) 
             {
-                if (len  < 1 + abs(vec_idex[i].date_index))
+                int date_index = vec_idex[i].date_index;
+                int date_index_end = vec_idex[i].date_index_end;
+                if (!vec_idex[i].start_str.empty())
+                {
+                    date_index = p_data->get_search_sstr(ii->first, vec_idex[i].start_str, date_index, date_index_end);
+                    if (date_index < 0)
+                        continue;
+                }
+
+                if (!vec_idex[i].end_str.empty())
+                {
+                    date_index_end = p_data->get_search_sstr(ii->first, vec_idex[i].end_str, date_index, date_index_end);
+                    if (date_index_end < 0)
+                        continue;
+                }
+
+                if (date_index < date_index_end)
+                    continue;
+                if (len  < 1 + date_index)
                     continue;
 
-                float max = tt[len -abs(vec_idex[i].date_index)- 1]->high;                                        
-                for (int k = len - abs(vec_idex[i].date_index) - 1; k <= len -abs(vec_idex[i].date_index_end) - 1; k++) 
+                float max = tt[len -date_index- 1]->high;                                        
+                for (int k = len - date_index - 1; k <= len -date_index_end - 1; k++) 
                     if (max <= tt[k]->high)
                         max = tt[k]->high;
 
@@ -2472,11 +3418,12 @@ bool hquotation_search_index::do_check_rhigh_hhighest_le(std::string &name, std:
         }
 
         hidex_item hi;
-        hi.date_index = atoi(t_vec[0].c_str());
-        hi.date_index_end = atoi(t_vec[1].c_str());
+        hi.date_index = abs(atoi(t_vec[0].c_str()));
+        get_first_not_numstr(t_vec[0], hi.start_str);
+        hi.date_index_end = abs(atoi(t_vec[1].c_str()));
+        get_first_not_numstr(t_vec[1], hi.end_str);
         hi.fpoint = atof(t_vec[2].c_str());
-        if (abs(hi.date_index) < abs(hi.date_index_end))
-            continue;
+
         vec_idex.push_back(hi);
     }
 
@@ -2491,11 +3438,29 @@ bool hquotation_search_index::do_check_rhigh_hhighest_le(std::string &name, std:
             cnt = 0;
             for (int i = 0; i < (int)vec_idex.size(); i++) 
             {
-                if (len  < 1 + abs(vec_idex[i].date_index))
+                int date_index = vec_idex[i].date_index;
+                int date_index_end = vec_idex[i].date_index_end;
+                if (!vec_idex[i].start_str.empty())
+                {
+                    date_index = p_data->get_search_sstr(ii->first, vec_idex[i].start_str, date_index, date_index_end);
+                    if (date_index < 0)
+                        continue;
+                }
+
+                if (!vec_idex[i].end_str.empty())
+                {
+                    date_index_end = p_data->get_search_sstr(ii->first, vec_idex[i].end_str, date_index, date_index_end);
+                    if (date_index_end < 0)
+                        continue;
+                }
+
+                if (date_index < date_index_end)
+                    continue;
+                if (len  < 1 + date_index)
                     continue;
 
-                float max = tt[len -abs(vec_idex[i].date_index)- 1]->high;                                        
-                for (int k = len - abs(vec_idex[i].date_index) - 1; k <= len  -abs(vec_idex[i].date_index_end)- 1; k++) 
+                float max = tt[len -date_index- 1]->high;                                        
+                for (int k = len - date_index - 1; k <= len  -date_index_end- 1; k++) 
                     if (max <= tt[k]->high)
                         max = tt[k]->high;
 
@@ -2520,11 +3485,29 @@ bool hquotation_search_index::do_check_rhigh_hhighest_le(std::string &name, std:
             cnt = 0;
             for (int i = 0; i < (int)vec_idex.size(); i++) 
             {
-                if (len  < 1 + abs(vec_idex[i].date_index))
+                int date_index = vec_idex[i].date_index;
+                int date_index_end = vec_idex[i].date_index_end;
+                if (!vec_idex[i].start_str.empty())
+                {
+                    date_index = p_data->get_search_sstr(ii->first, vec_idex[i].start_str, date_index, date_index_end);
+                    if (date_index < 0)
+                        continue;
+                }
+
+                if (!vec_idex[i].end_str.empty())
+                {
+                    date_index_end = p_data->get_search_sstr(ii->first, vec_idex[i].end_str, date_index, date_index_end);
+                    if (date_index_end < 0)
+                        continue;
+                }
+
+                if (date_index < date_index_end)
+                    continue;
+                if (len  < 1 + date_index)
                     continue;
 
-                float max = tt[len -abs(vec_idex[i].date_index)- 1]->high;                                        
-                for (int k = len - abs(vec_idex[i].date_index) - 1; k <= len  -abs(vec_idex[i].date_index_end)- 1; k++) 
+                float max = tt[len -date_index- 1]->high;                                        
+                for (int k = len - date_index - 1; k <= len  -date_index_end- 1; k++) 
                     if (max <= tt[k]->high)
                         max = tt[k]->high;
 
@@ -2565,7 +3548,8 @@ bool hquotation_search_index::do_check_rlow_hlow_le(std::string &name, std::stri
         }
 
         hidex_item hi;
-        hi.date_index = atoi(t_vec[0].c_str());
+        hi.date_index = abs(atoi(t_vec[0].c_str()));
+        get_first_not_numstr(t_vec[0], hi.start_str);
         hi.fpoint = atof(t_vec[1].c_str());
         vec_idex.push_back(hi);
     }
@@ -2581,10 +3565,28 @@ bool hquotation_search_index::do_check_rlow_hlow_le(std::string &name, std::stri
             cnt = 0;
             for (int i = 0; i < (int)vec_idex.size(); i++) 
             {
-                if (len  < 1 + abs(vec_idex[i].date_index))
+                int date_index = vec_idex[i].date_index;
+                int date_index_end = vec_idex[i].date_index_end;
+                if (!vec_idex[i].start_str.empty())
+                {
+                    date_index = p_data->get_search_sstr(ii->first, vec_idex[i].start_str, date_index, date_index_end);
+                    if (date_index < 0)
+                        continue;
+                }
+
+                if (!vec_idex[i].end_str.empty())
+                {
+                    date_index_end = p_data->get_search_sstr(ii->first, vec_idex[i].end_str, date_index, date_index_end);
+                    if (date_index_end < 0)
+                        continue;
+                }
+
+                if (date_index < date_index_end)
+                    continue;
+                if (len  < 1 + date_index)
                     continue;
 
-                if (tt[len - 1]->low <= vec_idex[i].fpoint * tt[len - abs(vec_idex[i].date_index) - 1]->low)
+                if (tt[len - 1]->low <= vec_idex[i].fpoint * tt[len - date_index - 1]->low)
                     cnt++;
             }
 
@@ -2605,10 +3607,28 @@ bool hquotation_search_index::do_check_rlow_hlow_le(std::string &name, std::stri
             cnt = 0;
             for (int i = 0; i < (int)vec_idex.size(); i++) 
             {
-                if (len  < 1 + abs(vec_idex[i].date_index))
+                int date_index = vec_idex[i].date_index;
+                int date_index_end = vec_idex[i].date_index_end;
+                if (!vec_idex[i].start_str.empty())
+                {
+                    date_index = p_data->get_search_sstr(ii->first, vec_idex[i].start_str, date_index, date_index_end);
+                    if (date_index < 0)
+                        continue;
+                }
+
+                if (!vec_idex[i].end_str.empty())
+                {
+                    date_index_end = p_data->get_search_sstr(ii->first, vec_idex[i].end_str, date_index, date_index_end);
+                    if (date_index_end < 0)
+                        continue;
+                }
+
+                if (date_index < date_index_end)
+                    continue;
+                if (len  < 1 + date_index)
                     continue;
 
-                if (tt[len - 1]->low <= vec_idex[i].fpoint * tt[len - abs(vec_idex[i].date_index) - 1]->low)
+                if (tt[len - 1]->low <= vec_idex[i].fpoint * tt[len - date_index - 1]->low)
                     cnt++;
             }
 
@@ -2644,13 +3664,13 @@ bool hquotation_search_index::do_check_rlow_hlow_ge_num_ge(std::string &name, st
         }
 
         hidex_item hi;
-        hi.date_index = atoi(t_vec[0].c_str());
-        hi.date_index_end = atoi(t_vec[1].c_str());
+        hi.date_index = abs(atoi(t_vec[0].c_str()));
+        get_first_not_numstr(t_vec[0], hi.start_str);
+        hi.date_index_end = abs(atoi(t_vec[1].c_str()));
+        get_first_not_numstr(t_vec[1], hi.end_str);
         hi.sum = atoi(t_vec[2].c_str());
         hi.fpoint = atof(t_vec[3].c_str());
 
-        if (abs(hi.date_index) < abs(hi.date_index_end))
-            continue;
 
         vec_idex.push_back(hi);
     }
@@ -2667,11 +3687,29 @@ bool hquotation_search_index::do_check_rlow_hlow_ge_num_ge(std::string &name, st
             cnt = 0;
             for (int i = 0; i < (int)vec_idex.size(); i++) 
             {
-                if (len  < 1 + abs(vec_idex[i].date_index))
+                int date_index = vec_idex[i].date_index;
+                int date_index_end = vec_idex[i].date_index_end;
+                if (!vec_idex[i].start_str.empty())
+                {
+                    date_index = p_data->get_search_sstr(ii->first, vec_idex[i].start_str, date_index, date_index_end);
+                    if (date_index < 0)
+                        continue;
+                }
+
+                if (!vec_idex[i].end_str.empty())
+                {
+                    date_index_end = p_data->get_search_sstr(ii->first, vec_idex[i].end_str, date_index, date_index_end);
+                    if (date_index_end < 0)
+                        continue;
+                }
+
+                if (date_index < date_index_end)
+                    continue;
+                if (len  < 1 + date_index)
                     continue;
 
                 count = 0;               
-                for (int k = len - abs(vec_idex[i].date_index) - 1; k <= len - abs(vec_idex[i].date_index_end) - 1; k++) {
+                for (int k = len - date_index - 1; k <= len - date_index_end - 1; k++) {
                     if (tt[len -1]->low >= vec_idex[i].fpoint * tt[k]->low)
                         count++;
                 }
@@ -2697,11 +3735,29 @@ bool hquotation_search_index::do_check_rlow_hlow_ge_num_ge(std::string &name, st
             cnt = 0;
             for (int i = 0; i < (int)vec_idex.size(); i++) 
             {
-                if (len  < 1 + abs(vec_idex[i].date_index))
+                int date_index = vec_idex[i].date_index;
+                int date_index_end = vec_idex[i].date_index_end;
+                if (!vec_idex[i].start_str.empty())
+                {
+                    date_index = p_data->get_search_sstr(ii->first, vec_idex[i].start_str, date_index, date_index_end);
+                    if (date_index < 0)
+                        continue;
+                }
+
+                if (!vec_idex[i].end_str.empty())
+                {
+                    date_index_end = p_data->get_search_sstr(ii->first, vec_idex[i].end_str, date_index, date_index_end);
+                    if (date_index_end < 0)
+                        continue;
+                }
+
+                if (date_index < date_index_end)
+                    continue;
+                if (len  < 1 + date_index)
                     continue;
 
                 count = 0;               
-                for (int k = len - abs(vec_idex[i].date_index) - 1; k <= len - abs(vec_idex[i].date_index_end) - 1; k++) {
+                for (int k = len - date_index - 1; k <= len - date_index_end - 1; k++) {
                     if (tt[len -1]->low >= vec_idex[i].fpoint * tt[k]->low)
                         count++;
                 }
@@ -2744,7 +3800,8 @@ bool hquotation_search_index::do_check_rhigh_hhigh_ge(std::string &name, std::st
         }
 
         hidex_item hi;
-        hi.date_index = atoi(t_vec[0].c_str());
+        hi.date_index = abs(atoi(t_vec[0].c_str()));
+        get_first_not_numstr(t_vec[0], hi.start_str);
         hi.fpoint = atof(t_vec[1].c_str());
         vec_idex.push_back(hi);
     }
@@ -2760,10 +3817,28 @@ bool hquotation_search_index::do_check_rhigh_hhigh_ge(std::string &name, std::st
             cnt = 0;
             for (int i = 0; i < (int)vec_idex.size(); i++) 
             {
-                if (len  < 1 + abs(vec_idex[i].date_index))
+                int date_index = vec_idex[i].date_index;
+                int date_index_end = vec_idex[i].date_index_end;
+                if (!vec_idex[i].start_str.empty())
+                {
+                    date_index = p_data->get_search_sstr(ii->first, vec_idex[i].start_str, date_index, date_index_end);
+                    if (date_index < 0)
+                        continue;
+                }
+
+                if (!vec_idex[i].end_str.empty())
+                {
+                    date_index_end = p_data->get_search_sstr(ii->first, vec_idex[i].end_str, date_index, date_index_end);
+                    if (date_index_end < 0)
+                        continue;
+                }
+
+                if (date_index < date_index_end)
+                    continue;
+                if (len  < 1 + date_index)
                     continue;
 
-                if (tt[len - 1]->high >= vec_idex[i].fpoint * tt[len - abs(vec_idex[i].date_index) - 1]->high)
+                if (tt[len - 1]->high >= vec_idex[i].fpoint * tt[len - date_index - 1]->high)
                     cnt++;
             }
 
@@ -2784,10 +3859,28 @@ bool hquotation_search_index::do_check_rhigh_hhigh_ge(std::string &name, std::st
             cnt = 0;
             for (int i = 0; i < (int)vec_idex.size(); i++) 
             {
-                if (len  < 1 + abs(vec_idex[i].date_index))
+                int date_index = vec_idex[i].date_index;
+                int date_index_end = vec_idex[i].date_index_end;
+                if (!vec_idex[i].start_str.empty())
+                {
+                    date_index = p_data->get_search_sstr(ii->first, vec_idex[i].start_str, date_index, date_index_end);
+                    if (date_index < 0)
+                        continue;
+                }
+
+                if (!vec_idex[i].end_str.empty())
+                {
+                    date_index_end = p_data->get_search_sstr(ii->first, vec_idex[i].end_str, date_index, date_index_end);
+                    if (date_index_end < 0)
+                        continue;
+                }
+
+                if (date_index < date_index_end)
+                    continue;
+                if (len  < 1 + date_index)
                     continue;
 
-                if (tt[len - 1]->high >= vec_idex[i].fpoint * tt[len - abs(vec_idex[i].date_index) - 1]->high)
+                if (tt[len - 1]->high >= vec_idex[i].fpoint * tt[len - date_index - 1]->high)
                     cnt++;
             }
 
@@ -2824,7 +3917,9 @@ bool hquotation_search_index::do_check_rhigh_hhigh_le(std::string &name, std::st
         }
 
         hidex_item hi;
-        hi.date_index = atoi(t_vec[0].c_str());
+        hi.date_index = abs(atoi(t_vec[0].c_str()));
+        get_first_not_numstr(t_vec[0], hi.start_str);
+
         hi.fpoint = atof(t_vec[1].c_str());
         vec_idex.push_back(hi);
     }
@@ -2840,10 +3935,28 @@ bool hquotation_search_index::do_check_rhigh_hhigh_le(std::string &name, std::st
             cnt = 0;
             for (int i = 0; i < (int)vec_idex.size(); i++) 
             {
-                if (len  < 1 + abs(vec_idex[i].date_index))
+                int date_index = vec_idex[i].date_index;
+                int date_index_end = vec_idex[i].date_index_end;
+                if (!vec_idex[i].start_str.empty())
+                {
+                    date_index = p_data->get_search_sstr(ii->first, vec_idex[i].start_str, date_index, date_index_end);
+                    if (date_index < 0)
+                        continue;
+                }
+
+                if (!vec_idex[i].end_str.empty())
+                {
+                    date_index_end = p_data->get_search_sstr(ii->first, vec_idex[i].end_str, date_index, date_index_end);
+                    if (date_index_end < 0)
+                        continue;
+                }
+
+                if (date_index < date_index_end)
+                    continue;
+                if (len  < 1 + date_index)
                     continue;
 
-                if (tt[len - 1]->high <= vec_idex[i].fpoint * tt[len - abs(vec_idex[i].date_index) - 1]->high)
+                if (tt[len - 1]->high <= vec_idex[i].fpoint * tt[len - date_index - 1]->high)
                     cnt++;
             }
 
@@ -2864,10 +3977,28 @@ bool hquotation_search_index::do_check_rhigh_hhigh_le(std::string &name, std::st
             cnt = 0;
             for (int i = 0; i < (int)vec_idex.size(); i++) 
             {
-                if (len  < 1 + abs(vec_idex[i].date_index))
+                int date_index = vec_idex[i].date_index;
+                int date_index_end = vec_idex[i].date_index_end;
+                if (!vec_idex[i].start_str.empty())
+                {
+                    date_index = p_data->get_search_sstr(ii->first, vec_idex[i].start_str, date_index, date_index_end);
+                    if (date_index < 0)
+                        continue;
+                }
+
+                if (!vec_idex[i].end_str.empty())
+                {
+                    date_index_end = p_data->get_search_sstr(ii->first, vec_idex[i].end_str, date_index, date_index_end);
+                    if (date_index_end < 0)
+                        continue;
+                }
+
+                if (date_index < date_index_end)
+                    continue;
+                if (len  < 1 + date_index)
                     continue;
 
-                if (tt[len - 1]->high <= vec_idex[i].fpoint * tt[len - abs(vec_idex[i].date_index) - 1]->high)
+                if (tt[len - 1]->high <= vec_idex[i].fpoint * tt[len - date_index - 1]->high)
                     cnt++;
             }
 
@@ -2903,13 +4034,13 @@ bool hquotation_search_index::do_check_rhigh_hhigh_ge_num_ge(std::string &name, 
         }
 
         hidex_item hi;
-        hi.date_index = atoi(t_vec[0].c_str());
-        hi.date_index_end = atoi(t_vec[1].c_str());
+        hi.date_index = abs(atoi(t_vec[0].c_str()));
+        get_first_not_numstr(t_vec[0], hi.start_str);
+        hi.date_index_end = abs(atoi(t_vec[1].c_str()));
+        get_first_not_numstr(t_vec[1], hi.end_str);
         hi.sum = atoi(t_vec[2].c_str());
         hi.fpoint = atof(t_vec[3].c_str());
 
-        if (abs(hi.date_index) < abs(hi.date_index_end))
-            continue;
 
         vec_idex.push_back(hi);
     }
@@ -2926,11 +4057,29 @@ bool hquotation_search_index::do_check_rhigh_hhigh_ge_num_ge(std::string &name, 
             cnt = 0;
             for (int i = 0; i < (int)vec_idex.size(); i++) 
             {
-                if (len  < 1 + abs(vec_idex[i].date_index))
+                int date_index = vec_idex[i].date_index;
+                int date_index_end = vec_idex[i].date_index_end;
+                if (!vec_idex[i].start_str.empty())
+                {
+                    date_index = p_data->get_search_sstr(ii->first, vec_idex[i].start_str, date_index, date_index_end);
+                    if (date_index < 0)
+                        continue;
+                }
+
+                if (!vec_idex[i].end_str.empty())
+                {
+                    date_index_end = p_data->get_search_sstr(ii->first, vec_idex[i].end_str, date_index, date_index_end);
+                    if (date_index_end < 0)
+                        continue;
+                }
+
+                if (date_index < date_index_end)
+                    continue;
+                if (len  < 1 + date_index)
                     continue;
 
                 count = 0;               
-                for (int k = len - abs(vec_idex[i].date_index) - 1; k <= len - abs(vec_idex[i].date_index_end) - 1; k++) {
+                for (int k = len - date_index - 1; k <= len - date_index_end - 1; k++) {
                     if (tt[len -1]->high >= vec_idex[i].fpoint * tt[k]->high)
                         count++;
                 }
@@ -2956,11 +4105,29 @@ bool hquotation_search_index::do_check_rhigh_hhigh_ge_num_ge(std::string &name, 
             cnt = 0;
             for (int i = 0; i < (int)vec_idex.size(); i++) 
             {
-                if (len  < 1 + abs(vec_idex[i].date_index))
+                int date_index = vec_idex[i].date_index;
+                int date_index_end = vec_idex[i].date_index_end;
+                if (!vec_idex[i].start_str.empty())
+                {
+                    date_index = p_data->get_search_sstr(ii->first, vec_idex[i].start_str, date_index, date_index_end);
+                    if (date_index < 0)
+                        continue;
+                }
+
+                if (!vec_idex[i].end_str.empty())
+                {
+                    date_index_end = p_data->get_search_sstr(ii->first, vec_idex[i].end_str, date_index, date_index_end);
+                    if (date_index_end < 0)
+                        continue;
+                }
+
+                if (date_index < date_index_end)
+                    continue;
+                if (len  < 1 + date_index)
                     continue;
 
                 count = 0;               
-                for (int k = len - abs(vec_idex[i].date_index) - 1; k <= len - abs(vec_idex[i].date_index_end) - 1; k++) {
+                for (int k = len - date_index - 1; k <= len - date_index_end - 1; k++) {
                     if (tt[len -1]->high >= vec_idex[i].fpoint * tt[k]->high)
                         count++;
                 }
@@ -3002,7 +4169,8 @@ bool hquotation_search_index::do_check_hqend_end_5_ge(std::string &name, std::st
         }
 
         hidex_item hi;
-        hi.date_index = atoi(t_vec[0].c_str());
+        hi.date_index = abs(atoi(t_vec[0].c_str()));
+        get_first_not_numstr(t_vec[0], hi.start_str);
         hi.fpoint = atof(t_vec[1].c_str());
         vec_idex.push_back(hi);
     }
@@ -3018,10 +4186,28 @@ bool hquotation_search_index::do_check_hqend_end_5_ge(std::string &name, std::st
             cnt = 0;
             for (int i = 0; i < (int)vec_idex.size(); i++) 
             {
-                if (len  < 1 + abs(vec_idex[i].date_index))
+                int date_index = vec_idex[i].date_index;
+                int date_index_end = vec_idex[i].date_index_end;
+                if (!vec_idex[i].start_str.empty())
+                {
+                    date_index = p_data->get_search_sstr(ii->first, vec_idex[i].start_str, date_index, date_index_end);
+                    if (date_index < 0)
+                        continue;
+                }
+
+                if (!vec_idex[i].end_str.empty())
+                {
+                    date_index_end = p_data->get_search_sstr(ii->first, vec_idex[i].end_str, date_index, date_index_end);
+                    if (date_index_end < 0)
+                        continue;
+                }
+
+                if (date_index < date_index_end)
+                    continue;
+                if (len  < 1 + date_index)
                     continue;
 
-                if (tt[len - abs(vec_idex[i].date_index) - 1]->end_end_5 >= vec_idex[i].fpoint)
+                if (tt[len - date_index - 1]->end_end_5 >= vec_idex[i].fpoint)
                     cnt++;
             }
 
@@ -3042,10 +4228,28 @@ bool hquotation_search_index::do_check_hqend_end_5_ge(std::string &name, std::st
             cnt = 0;
             for (int i = 0; i < (int)vec_idex.size(); i++) 
             {
-                if (len  < 1 + abs(vec_idex[i].date_index))
+                int date_index = vec_idex[i].date_index;
+                int date_index_end = vec_idex[i].date_index_end;
+                if (!vec_idex[i].start_str.empty())
+                {
+                    date_index = p_data->get_search_sstr(ii->first, vec_idex[i].start_str, date_index, date_index_end);
+                    if (date_index < 0)
+                        continue;
+                }
+
+                if (!vec_idex[i].end_str.empty())
+                {
+                    date_index_end = p_data->get_search_sstr(ii->first, vec_idex[i].end_str, date_index, date_index_end);
+                    if (date_index_end < 0)
+                        continue;
+                }
+
+                if (date_index < date_index_end)
+                    continue;
+                if (len  < 1 + date_index)
                     continue;
 
-                if (tt[len - abs(vec_idex[i].date_index) - 1]->end_end_5 >= vec_idex[i].fpoint)
+                if (tt[len - date_index - 1]->end_end_5 >= vec_idex[i].fpoint)
                     cnt++;
             }
 
@@ -3081,7 +4285,8 @@ bool hquotation_search_index::do_check_hqend_end_5_le(std::string &name, std::st
         }
 
         hidex_item hi;
-        hi.date_index = atoi(t_vec[0].c_str());
+        hi.date_index = abs(atoi(t_vec[0].c_str()));
+        get_first_not_numstr(t_vec[0], hi.start_str);
         hi.fpoint = atof(t_vec[1].c_str());
         vec_idex.push_back(hi);
     }
@@ -3097,10 +4302,28 @@ bool hquotation_search_index::do_check_hqend_end_5_le(std::string &name, std::st
             cnt = 0;
             for (int i = 0; i < (int)vec_idex.size(); i++) 
             {
-                if (len  < 1 + abs(vec_idex[i].date_index))
+                int date_index = vec_idex[i].date_index;
+                int date_index_end = vec_idex[i].date_index_end;
+                if (!vec_idex[i].start_str.empty())
+                {
+                    date_index = p_data->get_search_sstr(ii->first, vec_idex[i].start_str, date_index, date_index_end);
+                    if (date_index < 0)
+                        continue;
+                }
+
+                if (!vec_idex[i].end_str.empty())
+                {
+                    date_index_end = p_data->get_search_sstr(ii->first, vec_idex[i].end_str, date_index, date_index_end);
+                    if (date_index_end < 0)
+                        continue;
+                }
+
+                if (date_index < date_index_end)
+                    continue;
+                if (len  < 1 + date_index)
                     continue;
 
-                if (tt[len - abs(vec_idex[i].date_index) - 1]->end_end_5 <= vec_idex[i].fpoint)
+                if (tt[len - date_index - 1]->end_end_5 <= vec_idex[i].fpoint)
                     cnt++;
             }
 
@@ -3121,10 +4344,28 @@ bool hquotation_search_index::do_check_hqend_end_5_le(std::string &name, std::st
             cnt = 0;
             for (int i = 0; i < (int)vec_idex.size(); i++) 
             {
-                if (len  < 1 + abs(vec_idex[i].date_index))
+                int date_index = vec_idex[i].date_index;
+                int date_index_end = vec_idex[i].date_index_end;
+                if (!vec_idex[i].start_str.empty())
+                {
+                    date_index = p_data->get_search_sstr(ii->first, vec_idex[i].start_str, date_index, date_index_end);
+                    if (date_index < 0)
+                        continue;
+                }
+
+                if (!vec_idex[i].end_str.empty())
+                {
+                    date_index_end = p_data->get_search_sstr(ii->first, vec_idex[i].end_str, date_index, date_index_end);
+                    if (date_index_end < 0)
+                        continue;
+                }
+
+                if (date_index < date_index_end)
+                    continue;
+                if (len  < 1 + date_index)
                     continue;
 
-                if (tt[len - abs(vec_idex[i].date_index) - 1]->end_end_5 <= vec_idex[i].fpoint)
+                if (tt[len - date_index - 1]->end_end_5 <= vec_idex[i].fpoint)
                     cnt++;
             }
 
@@ -3160,13 +4401,13 @@ bool hquotation_search_index::do_check_hqend_end_5_ge_num_ge(std::string &name, 
         }
 
         hidex_item hi;
-        hi.date_index = atoi(t_vec[0].c_str());
-        hi.date_index_end = atoi(t_vec[1].c_str());
+        hi.date_index = abs(atoi(t_vec[0].c_str()));
+        get_first_not_numstr(t_vec[0], hi.start_str);
+        hi.date_index_end = abs(atoi(t_vec[1].c_str()));
+        get_first_not_numstr(t_vec[1], hi.end_str);
         hi.sum = atoi(t_vec[2].c_str());
         hi.fpoint = atof(t_vec[3].c_str());
 
-        if (abs(hi.date_index) < abs(hi.date_index_end))
-            continue;
 
         vec_idex.push_back(hi);
     }
@@ -3183,11 +4424,29 @@ bool hquotation_search_index::do_check_hqend_end_5_ge_num_ge(std::string &name, 
             cnt = 0;
             for (int i = 0; i < (int)vec_idex.size(); i++) 
             {
-                if (len  < 1 + abs(vec_idex[i].date_index))
+                int date_index = vec_idex[i].date_index;
+                int date_index_end = vec_idex[i].date_index_end;
+                if (!vec_idex[i].start_str.empty())
+                {
+                    date_index = p_data->get_search_sstr(ii->first, vec_idex[i].start_str, date_index, date_index_end);
+                    if (date_index < 0)
+                        continue;
+                }
+
+                if (!vec_idex[i].end_str.empty())
+                {
+                    date_index_end = p_data->get_search_sstr(ii->first, vec_idex[i].end_str, date_index, date_index_end);
+                    if (date_index_end < 0)
+                        continue;
+                }
+
+                if (date_index < date_index_end)
+                    continue;
+                if (len  < 1 + date_index)
                     continue;
 
                 count = 0;               
-                for (int k = len - abs(vec_idex[i].date_index) - 1; k <= len - abs(vec_idex[i].date_index_end) - 1; k++) {
+                for (int k = len - date_index - 1; k <= len - date_index_end - 1; k++) {
                     if (tt[k]->end_end_5 >= vec_idex[i].fpoint)
                         count++;
                 }
@@ -3213,11 +4472,29 @@ bool hquotation_search_index::do_check_hqend_end_5_ge_num_ge(std::string &name, 
             cnt = 0;
             for (int i = 0; i < (int)vec_idex.size(); i++) 
             {
-                if (len  < 1 + abs(vec_idex[i].date_index))
+                int date_index = vec_idex[i].date_index;
+                int date_index_end = vec_idex[i].date_index_end;
+                if (!vec_idex[i].start_str.empty())
+                {
+                    date_index = p_data->get_search_sstr(ii->first, vec_idex[i].start_str, date_index, date_index_end);
+                    if (date_index < 0)
+                        continue;
+                }
+
+                if (!vec_idex[i].end_str.empty())
+                {
+                    date_index_end = p_data->get_search_sstr(ii->first, vec_idex[i].end_str, date_index, date_index_end);
+                    if (date_index_end < 0)
+                        continue;
+                }
+
+                if (date_index < date_index_end)
+                    continue;
+                if (len  < 1 + date_index)
                     continue;
 
                 count = 0;               
-                for (int k = len - abs(vec_idex[i].date_index) - 1; k <= len - abs(vec_idex[i].date_index_end) - 1; k++) {
+                for (int k = len - date_index - 1; k <= len - date_index_end - 1; k++) {
                     if (tt[k]->end_end_5 >= vec_idex[i].fpoint)
                         count++;
                 }
@@ -3260,7 +4537,8 @@ bool hquotation_search_index::do_check_hqend_end_10_ge(std::string &name, std::s
         }
 
         hidex_item hi;
-        hi.date_index = atoi(t_vec[0].c_str());
+        hi.date_index = abs(atoi(t_vec[0].c_str()));
+        get_first_not_numstr(t_vec[0], hi.start_str);
         hi.fpoint = atof(t_vec[1].c_str());
         vec_idex.push_back(hi);
     }
@@ -3276,10 +4554,28 @@ bool hquotation_search_index::do_check_hqend_end_10_ge(std::string &name, std::s
             cnt = 0;
             for (int i = 0; i < (int)vec_idex.size(); i++) 
             {
-                if (len  < 1 + abs(vec_idex[i].date_index))
+                int date_index = vec_idex[i].date_index;
+                int date_index_end = vec_idex[i].date_index_end;
+                if (!vec_idex[i].start_str.empty())
+                {
+                    date_index = p_data->get_search_sstr(ii->first, vec_idex[i].start_str, date_index, date_index_end);
+                    if (date_index < 0)
+                        continue;
+                }
+
+                if (!vec_idex[i].end_str.empty())
+                {
+                    date_index_end = p_data->get_search_sstr(ii->first, vec_idex[i].end_str, date_index, date_index_end);
+                    if (date_index_end < 0)
+                        continue;
+                }
+
+                if (date_index < date_index_end)
+                    continue;
+                if (len  < 1 + date_index)
                     continue;
 
-                if (tt[len - abs(vec_idex[i].date_index) - 1]->end_end_10 >= vec_idex[i].fpoint)
+                if (tt[len - date_index - 1]->end_end_10 >= vec_idex[i].fpoint)
                     cnt++;
             }
 
@@ -3300,10 +4596,28 @@ bool hquotation_search_index::do_check_hqend_end_10_ge(std::string &name, std::s
             cnt = 0;
             for (int i = 0; i < (int)vec_idex.size(); i++) 
             {
-                if (len  < 1 + abs(vec_idex[i].date_index))
+                int date_index = vec_idex[i].date_index;
+                int date_index_end = vec_idex[i].date_index_end;
+                if (!vec_idex[i].start_str.empty())
+                {
+                    date_index = p_data->get_search_sstr(ii->first, vec_idex[i].start_str, date_index, date_index_end);
+                    if (date_index < 0)
+                        continue;
+                }
+
+                if (!vec_idex[i].end_str.empty())
+                {
+                    date_index_end = p_data->get_search_sstr(ii->first, vec_idex[i].end_str, date_index, date_index_end);
+                    if (date_index_end < 0)
+                        continue;
+                }
+
+                if (date_index < date_index_end)
+                    continue;
+                if (len  < 1 + date_index)
                     continue;
 
-                if (tt[len - abs(vec_idex[i].date_index) - 1]->end_end_10 >= vec_idex[i].fpoint)
+                if (tt[len - date_index - 1]->end_end_10 >= vec_idex[i].fpoint)
                     cnt++;
             }
 
@@ -3339,7 +4653,8 @@ bool hquotation_search_index::do_check_hqend_end_10_le(std::string &name, std::s
         }
 
         hidex_item hi;
-        hi.date_index = atoi(t_vec[0].c_str());
+        hi.date_index = abs(atoi(t_vec[0].c_str()));
+        get_first_not_numstr(t_vec[0], hi.start_str);
         hi.fpoint = atof(t_vec[1].c_str());
         vec_idex.push_back(hi);
     }
@@ -3355,10 +4670,28 @@ bool hquotation_search_index::do_check_hqend_end_10_le(std::string &name, std::s
             cnt = 0;
             for (int i = 0; i < (int)vec_idex.size(); i++) 
             {
-                if (len  < 1 + abs(vec_idex[i].date_index))
+                int date_index = vec_idex[i].date_index;
+                int date_index_end = vec_idex[i].date_index_end;
+                if (!vec_idex[i].start_str.empty())
+                {
+                    date_index = p_data->get_search_sstr(ii->first, vec_idex[i].start_str, date_index, date_index_end);
+                    if (date_index < 0)
+                        continue;
+                }
+
+                if (!vec_idex[i].end_str.empty())
+                {
+                    date_index_end = p_data->get_search_sstr(ii->first, vec_idex[i].end_str, date_index, date_index_end);
+                    if (date_index_end < 0)
+                        continue;
+                }
+
+                if (date_index < date_index_end)
+                    continue;
+                if (len  < 1 + date_index)
                     continue;
 
-                if (tt[len - abs(vec_idex[i].date_index) - 1]->end_end_10 <= vec_idex[i].fpoint)
+                if (tt[len - date_index - 1]->end_end_10 <= vec_idex[i].fpoint)
                     cnt++;
             }
 
@@ -3379,10 +4712,28 @@ bool hquotation_search_index::do_check_hqend_end_10_le(std::string &name, std::s
             cnt = 0;
             for (int i = 0; i < (int)vec_idex.size(); i++) 
             {
-                if (len  < 1 + abs(vec_idex[i].date_index))
+                int date_index = vec_idex[i].date_index;
+                int date_index_end = vec_idex[i].date_index_end;
+                if (!vec_idex[i].start_str.empty())
+                {
+                    date_index = p_data->get_search_sstr(ii->first, vec_idex[i].start_str, date_index, date_index_end);
+                    if (date_index < 0)
+                        continue;
+                }
+
+                if (!vec_idex[i].end_str.empty())
+                {
+                    date_index_end = p_data->get_search_sstr(ii->first, vec_idex[i].end_str, date_index, date_index_end);
+                    if (date_index_end < 0)
+                        continue;
+                }
+
+                if (date_index < date_index_end)
+                    continue;
+                if (len  < 1 + date_index)
                     continue;
 
-                if (tt[len - abs(vec_idex[i].date_index) - 1]->end_end_10 <= vec_idex[i].fpoint)
+                if (tt[len - date_index - 1]->end_end_10 <= vec_idex[i].fpoint)
                     cnt++;
             }
 
@@ -3418,13 +4769,13 @@ bool hquotation_search_index::do_check_hqend_end_10_ge_num_ge(std::string &name,
         }
 
         hidex_item hi;
-        hi.date_index = atoi(t_vec[0].c_str());
-        hi.date_index_end = atoi(t_vec[1].c_str());
+        hi.date_index = abs(atoi(t_vec[0].c_str()));
+        get_first_not_numstr(t_vec[0], hi.start_str);
+        hi.date_index_end = abs(atoi(t_vec[1].c_str()));
+        get_first_not_numstr(t_vec[1], hi.end_str);
         hi.sum = atoi(t_vec[2].c_str());
         hi.fpoint = atof(t_vec[3].c_str());
 
-        if (abs(hi.date_index) < abs(hi.date_index_end))
-            continue;
 
         vec_idex.push_back(hi);
     }
@@ -3441,11 +4792,29 @@ bool hquotation_search_index::do_check_hqend_end_10_ge_num_ge(std::string &name,
             cnt = 0;
             for (int i = 0; i < (int)vec_idex.size(); i++) 
             {
-                if (len  < 1 + abs(vec_idex[i].date_index))
+                int date_index = vec_idex[i].date_index;
+                int date_index_end = vec_idex[i].date_index_end;
+                if (!vec_idex[i].start_str.empty())
+                {
+                    date_index = p_data->get_search_sstr(ii->first, vec_idex[i].start_str, date_index, date_index_end);
+                    if (date_index < 0)
+                        continue;
+                }
+
+                if (!vec_idex[i].end_str.empty())
+                {
+                    date_index_end = p_data->get_search_sstr(ii->first, vec_idex[i].end_str, date_index, date_index_end);
+                    if (date_index_end < 0)
+                        continue;
+                }
+
+                if (date_index < date_index_end)
+                    continue;
+                if (len  < 1 + date_index)
                     continue;
 
                 count = 0;               
-                for (int k = len - abs(vec_idex[i].date_index) - 1; k <= len - abs(vec_idex[i].date_index_end) - 1; k++) {
+                for (int k = len - date_index - 1; k <= len - date_index_end - 1; k++) {
                     if (tt[k]->end_end_10 >= vec_idex[i].fpoint)
                         count++;
                 }
@@ -3471,11 +4840,29 @@ bool hquotation_search_index::do_check_hqend_end_10_ge_num_ge(std::string &name,
             cnt = 0;
             for (int i = 0; i < (int)vec_idex.size(); i++) 
             {
-                if (len  < 1 + abs(vec_idex[i].date_index))
+                int date_index = vec_idex[i].date_index;
+                int date_index_end = vec_idex[i].date_index_end;
+                if (!vec_idex[i].start_str.empty())
+                {
+                    date_index = p_data->get_search_sstr(ii->first, vec_idex[i].start_str, date_index, date_index_end);
+                    if (date_index < 0)
+                        continue;
+                }
+
+                if (!vec_idex[i].end_str.empty())
+                {
+                    date_index_end = p_data->get_search_sstr(ii->first, vec_idex[i].end_str, date_index, date_index_end);
+                    if (date_index_end < 0)
+                        continue;
+                }
+
+                if (date_index < date_index_end)
+                    continue;
+                if (len  < 1 + date_index)
                     continue;
 
                 count = 0;               
-                for (int k = len - abs(vec_idex[i].date_index) - 1; k <= len - abs(vec_idex[i].date_index_end) - 1; k++) {
+                for (int k = len - date_index - 1; k <= len - date_index_end - 1; k++) {
                     if (tt[k]->end_end_10 >= vec_idex[i].fpoint)
                         count++;
                 }
@@ -3517,7 +4904,8 @@ bool hquotation_search_index::do_check_hqend_end_20_ge(std::string &name, std::s
         }
 
         hidex_item hi;
-        hi.date_index = atoi(t_vec[0].c_str());
+        hi.date_index = abs(atoi(t_vec[0].c_str()));
+        get_first_not_numstr(t_vec[0], hi.start_str);
         hi.fpoint = atof(t_vec[1].c_str());
         vec_idex.push_back(hi);
     }
@@ -3533,10 +4921,28 @@ bool hquotation_search_index::do_check_hqend_end_20_ge(std::string &name, std::s
             cnt = 0;
             for (int i = 0; i < (int)vec_idex.size(); i++) 
             {
-                if (len  < 1 + abs(vec_idex[i].date_index))
+                int date_index = vec_idex[i].date_index;
+                int date_index_end = vec_idex[i].date_index_end;
+                if (!vec_idex[i].start_str.empty())
+                {
+                    date_index = p_data->get_search_sstr(ii->first, vec_idex[i].start_str, date_index, date_index_end);
+                    if (date_index < 0)
+                        continue;
+                }
+
+                if (!vec_idex[i].end_str.empty())
+                {
+                    date_index_end = p_data->get_search_sstr(ii->first, vec_idex[i].end_str, date_index, date_index_end);
+                    if (date_index_end < 0)
+                        continue;
+                }
+
+                if (date_index < date_index_end)
+                    continue;
+                if (len  < 1 + date_index)
                     continue;
 
-                if (tt[len - abs(vec_idex[i].date_index) - 1]->end_end_20 >= vec_idex[i].fpoint)
+                if (tt[len - date_index - 1]->end_end_20 >= vec_idex[i].fpoint)
                     cnt++;
             }
 
@@ -3557,10 +4963,28 @@ bool hquotation_search_index::do_check_hqend_end_20_ge(std::string &name, std::s
             cnt = 0;
             for (int i = 0; i < (int)vec_idex.size(); i++) 
             {
-                if (len  < 1 + abs(vec_idex[i].date_index))
+                int date_index = vec_idex[i].date_index;
+                int date_index_end = vec_idex[i].date_index_end;
+                if (!vec_idex[i].start_str.empty())
+                {
+                    date_index = p_data->get_search_sstr(ii->first, vec_idex[i].start_str, date_index, date_index_end);
+                    if (date_index < 0)
+                        continue;
+                }
+
+                if (!vec_idex[i].end_str.empty())
+                {
+                    date_index_end = p_data->get_search_sstr(ii->first, vec_idex[i].end_str, date_index, date_index_end);
+                    if (date_index_end < 0)
+                        continue;
+                }
+
+                if (date_index < date_index_end)
+                    continue;
+                if (len  < 1 + date_index)
                     continue;
 
-                if (tt[len - abs(vec_idex[i].date_index) - 1]->end_end_20 >= vec_idex[i].fpoint)
+                if (tt[len - date_index - 1]->end_end_20 >= vec_idex[i].fpoint)
                     cnt++;
             }
 
@@ -3596,7 +5020,8 @@ bool hquotation_search_index::do_check_hqend_end_20_le(std::string &name, std::s
         }
 
         hidex_item hi;
-        hi.date_index = atoi(t_vec[0].c_str());
+        hi.date_index = abs(atoi(t_vec[0].c_str()));
+        get_first_not_numstr(t_vec[0], hi.start_str);
         hi.fpoint = atof(t_vec[1].c_str());
         vec_idex.push_back(hi);
     }
@@ -3612,10 +5037,28 @@ bool hquotation_search_index::do_check_hqend_end_20_le(std::string &name, std::s
             cnt = 0;
             for (int i = 0; i < (int)vec_idex.size(); i++) 
             {
-                if (len  < 1 + abs(vec_idex[i].date_index))
+                int date_index = vec_idex[i].date_index;
+                int date_index_end = vec_idex[i].date_index_end;
+                if (!vec_idex[i].start_str.empty())
+                {
+                    date_index = p_data->get_search_sstr(ii->first, vec_idex[i].start_str, date_index, date_index_end);
+                    if (date_index < 0)
+                        continue;
+                }
+
+                if (!vec_idex[i].end_str.empty())
+                {
+                    date_index_end = p_data->get_search_sstr(ii->first, vec_idex[i].end_str, date_index, date_index_end);
+                    if (date_index_end < 0)
+                        continue;
+                }
+
+                if (date_index < date_index_end)
+                    continue;
+                if (len  < 1 + date_index)
                     continue;
 
-                if (tt[len - abs(vec_idex[i].date_index) - 1]->end_end_20 <= vec_idex[i].fpoint)
+                if (tt[len - date_index - 1]->end_end_20 <= vec_idex[i].fpoint)
                     cnt++;
             }
 
@@ -3636,10 +5079,28 @@ bool hquotation_search_index::do_check_hqend_end_20_le(std::string &name, std::s
             cnt = 0;
             for (int i = 0; i < (int)vec_idex.size(); i++) 
             {
-                if (len  < 1 + abs(vec_idex[i].date_index))
+                int date_index = vec_idex[i].date_index;
+                int date_index_end = vec_idex[i].date_index_end;
+                if (!vec_idex[i].start_str.empty())
+                {
+                    date_index = p_data->get_search_sstr(ii->first, vec_idex[i].start_str, date_index, date_index_end);
+                    if (date_index < 0)
+                        continue;
+                }
+
+                if (!vec_idex[i].end_str.empty())
+                {
+                    date_index_end = p_data->get_search_sstr(ii->first, vec_idex[i].end_str, date_index, date_index_end);
+                    if (date_index_end < 0)
+                        continue;
+                }
+
+                if (date_index < date_index_end)
+                    continue;
+                if (len  < 1 + date_index)
                     continue;
 
-                if (tt[len - abs(vec_idex[i].date_index) - 1]->end_end_20 <= vec_idex[i].fpoint)
+                if (tt[len - date_index - 1]->end_end_20 <= vec_idex[i].fpoint)
                     cnt++;
             }
 
@@ -3676,13 +5137,13 @@ bool hquotation_search_index::do_check_hqend_end_20_ge_num_ge(std::string &name,
         }
 
         hidex_item hi;
-        hi.date_index = atoi(t_vec[0].c_str());
-        hi.date_index_end = atoi(t_vec[1].c_str());
+        hi.date_index = abs(atoi(t_vec[0].c_str()));
+        get_first_not_numstr(t_vec[0], hi.start_str);
+        hi.date_index_end = abs(atoi(t_vec[1].c_str()));
+        get_first_not_numstr(t_vec[1], hi.end_str);
         hi.sum = atoi(t_vec[2].c_str());
         hi.fpoint = atof(t_vec[3].c_str());
 
-        if (abs(hi.date_index) < abs(hi.date_index_end))
-            continue;
 
         vec_idex.push_back(hi);
     }
@@ -3699,11 +5160,29 @@ bool hquotation_search_index::do_check_hqend_end_20_ge_num_ge(std::string &name,
             cnt = 0;
             for (int i = 0; i < (int)vec_idex.size(); i++) 
             {
-                if (len  < 1 + abs(vec_idex[i].date_index))
+                int date_index = vec_idex[i].date_index;
+                int date_index_end = vec_idex[i].date_index_end;
+                if (!vec_idex[i].start_str.empty())
+                {
+                    date_index = p_data->get_search_sstr(ii->first, vec_idex[i].start_str, date_index, date_index_end);
+                    if (date_index < 0)
+                        continue;
+                }
+
+                if (!vec_idex[i].end_str.empty())
+                {
+                    date_index_end = p_data->get_search_sstr(ii->first, vec_idex[i].end_str, date_index, date_index_end);
+                    if (date_index_end < 0)
+                        continue;
+                }
+
+                if (date_index < date_index_end)
+                    continue;
+                if (len  < 1 + date_index)
                     continue;
 
                 count = 0;               
-                for (int k = len - abs(vec_idex[i].date_index) - 1; k <= len - abs(vec_idex[i].date_index_end) - 1; k++) {
+                for (int k = len - date_index - 1; k <= len - date_index_end - 1; k++) {
                     if (tt[k]->end_end_20 >= vec_idex[i].fpoint)
                         count++;
                 }
@@ -3729,11 +5208,29 @@ bool hquotation_search_index::do_check_hqend_end_20_ge_num_ge(std::string &name,
             cnt = 0;
             for (int i = 0; i < (int)vec_idex.size(); i++) 
             {
-                if (len  < 1 + abs(vec_idex[i].date_index))
+                int date_index = vec_idex[i].date_index;
+                int date_index_end = vec_idex[i].date_index_end;
+                if (!vec_idex[i].start_str.empty())
+                {
+                    date_index = p_data->get_search_sstr(ii->first, vec_idex[i].start_str, date_index, date_index_end);
+                    if (date_index < 0)
+                        continue;
+                }
+
+                if (!vec_idex[i].end_str.empty())
+                {
+                    date_index_end = p_data->get_search_sstr(ii->first, vec_idex[i].end_str, date_index, date_index_end);
+                    if (date_index_end < 0)
+                        continue;
+                }
+
+                if (date_index < date_index_end)
+                    continue;
+                if (len  < 1 + date_index)
                     continue;
 
                 count = 0;               
-                for (int k = len - abs(vec_idex[i].date_index) - 1; k <= len - abs(vec_idex[i].date_index_end) - 1; k++) {
+                for (int k = len - date_index - 1; k <= len - date_index_end - 1; k++) {
                     if (tt[k]->end_end_20 >= vec_idex[i].fpoint)
                         count++;
                 }
@@ -3775,7 +5272,8 @@ bool hquotation_search_index::do_check_hqend_end_30_ge(std::string &name, std::s
         }
 
         hidex_item hi;
-        hi.date_index = atoi(t_vec[0].c_str());
+        hi.date_index = abs(atoi(t_vec[0].c_str()));
+        get_first_not_numstr(t_vec[0], hi.start_str);
         hi.fpoint = atof(t_vec[1].c_str());
         vec_idex.push_back(hi);
     }
@@ -3791,10 +5289,28 @@ bool hquotation_search_index::do_check_hqend_end_30_ge(std::string &name, std::s
             cnt = 0;
             for (int i = 0; i < (int)vec_idex.size(); i++) 
             {
-                if (len  < 1 + abs(vec_idex[i].date_index))
+                int date_index = vec_idex[i].date_index;
+                int date_index_end = vec_idex[i].date_index_end;
+                if (!vec_idex[i].start_str.empty())
+                {
+                    date_index = p_data->get_search_sstr(ii->first, vec_idex[i].start_str, date_index, date_index_end);
+                    if (date_index < 0)
+                        continue;
+                }
+
+                if (!vec_idex[i].end_str.empty())
+                {
+                    date_index_end = p_data->get_search_sstr(ii->first, vec_idex[i].end_str, date_index, date_index_end);
+                    if (date_index_end < 0)
+                        continue;
+                }
+
+                if (date_index < date_index_end)
+                    continue;
+                if (len  < 1 + date_index)
                     continue;
 
-                if (tt[len - abs(vec_idex[i].date_index) - 1]->end_end_30 >= vec_idex[i].fpoint)
+                if (tt[len - date_index - 1]->end_end_30 >= vec_idex[i].fpoint)
                     cnt++;
             }
 
@@ -3815,10 +5331,28 @@ bool hquotation_search_index::do_check_hqend_end_30_ge(std::string &name, std::s
             cnt = 0;
             for (int i = 0; i < (int)vec_idex.size(); i++) 
             {
-                if (len  < 1 + abs(vec_idex[i].date_index))
+                int date_index = vec_idex[i].date_index;
+                int date_index_end = vec_idex[i].date_index_end;
+                if (!vec_idex[i].start_str.empty())
+                {
+                    date_index = p_data->get_search_sstr(ii->first, vec_idex[i].start_str, date_index, date_index_end);
+                    if (date_index < 0)
+                        continue;
+                }
+
+                if (!vec_idex[i].end_str.empty())
+                {
+                    date_index_end = p_data->get_search_sstr(ii->first, vec_idex[i].end_str, date_index, date_index_end);
+                    if (date_index_end < 0)
+                        continue;
+                }
+
+                if (date_index < date_index_end)
+                    continue;
+                if (len  < 1 + date_index)
                     continue;
 
-                if (tt[len - abs(vec_idex[i].date_index) - 1]->end_end_30 >= vec_idex[i].fpoint)
+                if (tt[len - date_index - 1]->end_end_30 >= vec_idex[i].fpoint)
                     cnt++;
             }
 
@@ -3854,7 +5388,8 @@ bool hquotation_search_index::do_check_hqend_end_30_le(std::string &name, std::s
         }
 
         hidex_item hi;
-        hi.date_index = atoi(t_vec[0].c_str());
+        hi.date_index = abs(atoi(t_vec[0].c_str()));
+        get_first_not_numstr(t_vec[0], hi.start_str);
         hi.fpoint = atof(t_vec[1].c_str());
         vec_idex.push_back(hi);
     }
@@ -3870,10 +5405,28 @@ bool hquotation_search_index::do_check_hqend_end_30_le(std::string &name, std::s
             cnt = 0;
             for (int i = 0; i < (int)vec_idex.size(); i++) 
             {
-                if (len  < 1 + abs(vec_idex[i].date_index))
+                int date_index = vec_idex[i].date_index;
+                int date_index_end = vec_idex[i].date_index_end;
+                if (!vec_idex[i].start_str.empty())
+                {
+                    date_index = p_data->get_search_sstr(ii->first, vec_idex[i].start_str, date_index, date_index_end);
+                    if (date_index < 0)
+                        continue;
+                }
+
+                if (!vec_idex[i].end_str.empty())
+                {
+                    date_index_end = p_data->get_search_sstr(ii->first, vec_idex[i].end_str, date_index, date_index_end);
+                    if (date_index_end < 0)
+                        continue;
+                }
+
+                if (date_index < date_index_end)
+                    continue;
+                if (len  < 1 + date_index)
                     continue;
 
-                if (tt[len - abs(vec_idex[i].date_index) - 1]->end_end_30 <= vec_idex[i].fpoint)
+                if (tt[len - date_index - 1]->end_end_30 <= vec_idex[i].fpoint)
                     cnt++;
             }
 
@@ -3894,10 +5447,28 @@ bool hquotation_search_index::do_check_hqend_end_30_le(std::string &name, std::s
             cnt = 0;
             for (int i = 0; i < (int)vec_idex.size(); i++) 
             {
-                if (len  < 1 + abs(vec_idex[i].date_index))
+                int date_index = vec_idex[i].date_index;
+                int date_index_end = vec_idex[i].date_index_end;
+                if (!vec_idex[i].start_str.empty())
+                {
+                    date_index = p_data->get_search_sstr(ii->first, vec_idex[i].start_str, date_index, date_index_end);
+                    if (date_index < 0)
+                        continue;
+                }
+
+                if (!vec_idex[i].end_str.empty())
+                {
+                    date_index_end = p_data->get_search_sstr(ii->first, vec_idex[i].end_str, date_index, date_index_end);
+                    if (date_index_end < 0)
+                        continue;
+                }
+
+                if (date_index < date_index_end)
+                    continue;
+                if (len  < 1 + date_index)
                     continue;
 
-                if (tt[len - abs(vec_idex[i].date_index) - 1]->end_end_30 <= vec_idex[i].fpoint)
+                if (tt[len - date_index - 1]->end_end_30 <= vec_idex[i].fpoint)
                     cnt++;
             }
 
@@ -3933,13 +5504,13 @@ bool hquotation_search_index::do_check_hqend_end_30_ge_num_ge(std::string &name,
         }
 
         hidex_item hi;
-        hi.date_index = atoi(t_vec[0].c_str());
-        hi.date_index_end = atoi(t_vec[1].c_str());
+        hi.date_index = abs(atoi(t_vec[0].c_str()));
+        get_first_not_numstr(t_vec[0], hi.start_str);
+        hi.date_index_end = abs(atoi(t_vec[1].c_str()));
+        get_first_not_numstr(t_vec[1], hi.end_str);
         hi.sum = atoi(t_vec[2].c_str());
         hi.fpoint = atof(t_vec[3].c_str());
 
-        if (abs(hi.date_index) < abs(hi.date_index_end))
-            continue;
 
         vec_idex.push_back(hi);
     }
@@ -3956,11 +5527,29 @@ bool hquotation_search_index::do_check_hqend_end_30_ge_num_ge(std::string &name,
             cnt = 0;
             for (int i = 0; i < (int)vec_idex.size(); i++) 
             {
-                if (len  < 1 + abs(vec_idex[i].date_index))
+                int date_index = vec_idex[i].date_index;
+                int date_index_end = vec_idex[i].date_index_end;
+                if (!vec_idex[i].start_str.empty())
+                {
+                    date_index = p_data->get_search_sstr(ii->first, vec_idex[i].start_str, date_index, date_index_end);
+                    if (date_index < 0)
+                        continue;
+                }
+
+                if (!vec_idex[i].end_str.empty())
+                {
+                    date_index_end = p_data->get_search_sstr(ii->first, vec_idex[i].end_str, date_index, date_index_end);
+                    if (date_index_end < 0)
+                        continue;
+                }
+
+                if (date_index < date_index_end)
+                    continue;
+                if (len  < 1 + date_index)
                     continue;
 
                 count = 0;               
-                for (int k = len - abs(vec_idex[i].date_index) - 1; k <= len - abs(vec_idex[i].date_index_end) - 1; k++) {
+                for (int k = len - date_index - 1; k <= len - date_index_end - 1; k++) {
                     if (tt[k]->end_end_30 >= vec_idex[i].fpoint)
                         count++;
                 }
@@ -3986,11 +5575,29 @@ bool hquotation_search_index::do_check_hqend_end_30_ge_num_ge(std::string &name,
             cnt = 0;
             for (int i = 0; i < (int)vec_idex.size(); i++) 
             {
-                if (len  < 1 + abs(vec_idex[i].date_index))
+                int date_index = vec_idex[i].date_index;
+                int date_index_end = vec_idex[i].date_index_end;
+                if (!vec_idex[i].start_str.empty())
+                {
+                    date_index = p_data->get_search_sstr(ii->first, vec_idex[i].start_str, date_index, date_index_end);
+                    if (date_index < 0)
+                        continue;
+                }
+
+                if (!vec_idex[i].end_str.empty())
+                {
+                    date_index_end = p_data->get_search_sstr(ii->first, vec_idex[i].end_str, date_index, date_index_end);
+                    if (date_index_end < 0)
+                        continue;
+                }
+
+                if (date_index < date_index_end)
+                    continue;
+                if (len  < 1 + date_index)
                     continue;
 
                 count = 0;               
-                for (int k = len - abs(vec_idex[i].date_index) - 1; k <= len - abs(vec_idex[i].date_index_end) - 1; k++) {
+                for (int k = len - date_index - 1; k <= len - date_index_end - 1; k++) {
                     if (tt[k]->end_end_30 >= vec_idex[i].fpoint)
                         count++;
                 }
@@ -4031,12 +5638,12 @@ bool hquotation_search_index::do_check_hqredvol_greenvol_ge(std::string &name, s
         }
 
         hidex_item hi;
-        hi.date_index = atoi(t_vec[0].c_str());
-        hi.date_index_end = atoi(t_vec[1].c_str());
+        hi.date_index = abs(atoi(t_vec[0].c_str()));
+        get_first_not_numstr(t_vec[0], hi.start_str);
+        hi.date_index_end = abs(atoi(t_vec[1].c_str()));
+        get_first_not_numstr(t_vec[1], hi.end_str);
         hi.fpoint = atof(t_vec[2].c_str());
 
-        if (abs(hi.date_index) < abs(hi.date_index_end))
-            continue;
 
         vec_idex.push_back(hi);
     }
@@ -4054,11 +5661,29 @@ bool hquotation_search_index::do_check_hqredvol_greenvol_ge(std::string &name, s
             cnt = 0;
             for (int i = 0; i < (int)vec_idex.size(); i++) 
             {
-                if (len  < 1 + abs(vec_idex[i].date_index))
+                int date_index = vec_idex[i].date_index;
+                int date_index_end = vec_idex[i].date_index_end;
+                if (!vec_idex[i].start_str.empty())
+                {
+                    date_index = p_data->get_search_sstr(ii->first, vec_idex[i].start_str, date_index, date_index_end);
+                    if (date_index < 0)
+                        continue;
+                }
+
+                if (!vec_idex[i].end_str.empty())
+                {
+                    date_index_end = p_data->get_search_sstr(ii->first, vec_idex[i].end_str, date_index, date_index_end);
+                    if (date_index_end < 0)
+                        continue;
+                }
+
+                if (date_index < date_index_end)
+                    continue;
+                if (len  < 1 + date_index)
                     continue;
 
                 red_change_rate = green_change_rate = 0;
-                for (int k = len - abs(vec_idex[i].date_index) - 1; k <= len - abs(vec_idex[i].date_index_end) - 1; k++) 
+                for (int k = len - date_index - 1; k <= len - date_index_end - 1; k++) 
                 {
                     if (tt[k]->end >= tt[k]->start)
                     {
@@ -4091,12 +5716,30 @@ bool hquotation_search_index::do_check_hqredvol_greenvol_ge(std::string &name, s
             cnt = 0;
             for (int i = 0; i < (int)vec_idex.size(); i++) 
             {
-                if (len  < 1 + abs(vec_idex[i].date_index))
+                int date_index = vec_idex[i].date_index;
+                int date_index_end = vec_idex[i].date_index_end;
+                if (!vec_idex[i].start_str.empty())
+                {
+                    date_index = p_data->get_search_sstr(ii->first, vec_idex[i].start_str, date_index, date_index_end);
+                    if (date_index < 0)
+                        continue;
+                }
+
+                if (!vec_idex[i].end_str.empty())
+                {
+                    date_index_end = p_data->get_search_sstr(ii->first, vec_idex[i].end_str, date_index, date_index_end);
+                    if (date_index_end < 0)
+                        continue;
+                }
+
+                if (date_index < date_index_end)
+                    continue;
+                if (len  < 1 + date_index)
                     continue;
 
                 red_change_rate = green_change_rate = 0;
 
-                for (int k = len - abs(vec_idex[i].date_index) - 1; k <= len - abs(vec_idex[i].date_index_end) - 1; k++) 
+                for (int k = len - date_index - 1; k <= len - date_index_end - 1; k++) 
                 {    
                     if (tt[k]->end >= tt[k]->start)
                     {    
@@ -4144,12 +5787,12 @@ bool hquotation_search_index::do_check_hqredvol_greenvol_le(std::string &name, s
         }
 
         hidex_item hi;
-        hi.date_index = atoi(t_vec[0].c_str());
-        hi.date_index_end = atoi(t_vec[1].c_str());
+        hi.date_index = abs(atoi(t_vec[0].c_str()));
+        get_first_not_numstr(t_vec[0], hi.start_str);
+        hi.date_index_end = abs(atoi(t_vec[1].c_str()));
+        get_first_not_numstr(t_vec[1], hi.end_str);
         hi.fpoint = atof(t_vec[2].c_str());
 
-        if (abs(hi.date_index) < abs(hi.date_index_end))
-            continue;
 
         vec_idex.push_back(hi);
     }
@@ -4168,11 +5811,29 @@ bool hquotation_search_index::do_check_hqredvol_greenvol_le(std::string &name, s
             cnt = 0;
             for (int i = 0; i < (int)vec_idex.size(); i++) 
             {
-                if (len  < 1 + abs(vec_idex[i].date_index))
+                int date_index = vec_idex[i].date_index;
+                int date_index_end = vec_idex[i].date_index_end;
+                if (!vec_idex[i].start_str.empty())
+                {
+                    date_index = p_data->get_search_sstr(ii->first, vec_idex[i].start_str, date_index, date_index_end);
+                    if (date_index < 0)
+                        continue;
+                }
+
+                if (!vec_idex[i].end_str.empty())
+                {
+                    date_index_end = p_data->get_search_sstr(ii->first, vec_idex[i].end_str, date_index, date_index_end);
+                    if (date_index_end < 0)
+                        continue;
+                }
+
+                if (date_index < date_index_end)
+                    continue;
+                if (len  < 1 + date_index)
                     continue;
 
                 red_change_rate = green_change_rate = 0;
-                for (int k = len - abs(vec_idex[i].date_index) - 1; k <= len - abs(vec_idex[i].date_index_end) - 1; k++) 
+                for (int k = len - date_index - 1; k <= len - date_index_end - 1; k++) 
                 {
                     if (tt[k]->end >= tt[k]->start)
                     {
@@ -4205,11 +5866,29 @@ bool hquotation_search_index::do_check_hqredvol_greenvol_le(std::string &name, s
             cnt = 0;
             for (int i = 0; i < (int)vec_idex.size(); i++) 
             {
-                if (len  < 1 + abs(vec_idex[i].date_index))
+                int date_index = vec_idex[i].date_index;
+                int date_index_end = vec_idex[i].date_index_end;
+                if (!vec_idex[i].start_str.empty())
+                {
+                    date_index = p_data->get_search_sstr(ii->first, vec_idex[i].start_str, date_index, date_index_end);
+                    if (date_index < 0)
+                        continue;
+                }
+
+                if (!vec_idex[i].end_str.empty())
+                {
+                    date_index_end = p_data->get_search_sstr(ii->first, vec_idex[i].end_str, date_index, date_index_end);
+                    if (date_index_end < 0)
+                        continue;
+                }
+
+                if (date_index < date_index_end)
+                    continue;
+                if (len  < 1 + date_index)
                     continue;
 
                 red_change_rate = green_change_rate = 0;
-                for (int k = len - abs(vec_idex[i].date_index) - 1; k <= len - abs(vec_idex[i].date_index_end) - 1; k++) 
+                for (int k = len - date_index - 1; k <= len - date_index_end - 1; k++) 
                 {
                     if (tt[k]->end >= tt[k]->start)
                     {

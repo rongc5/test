@@ -264,7 +264,7 @@ struct search_res
 using namespace std::placeholders;
 typedef std::function<bool(std::string &key, std::string &value, search_res & search)> base_search_index;
 
-typedef std::function<int(std::string & id, int date_index, int date_index_end)> search_sstr_index;
+typedef std::function<int(const std::string & id, int date_index, int date_index_end)> search_sstr_index;
 
 struct hsingle_search_item
 {
@@ -586,6 +586,23 @@ struct finance_search_item
     }
 };
 
+struct lru_sstr_item
+{
+    //key, index in id history
+    std::unordered_map<std::string, int, str_hasher> _mmap_index;
+    //key, index in deque;
+    std::unordered_map<std::string, std::list<std::string>::iterator, str_hasher> _mmap_deque;
+    std::list<std::string> _dq;
+
+    void clear()
+    {
+        _mmap_index.clear();
+        _mmap_deque.clear();
+        std::list<std::string> tq;
+        _dq.swap(tq);
+    }
+};
+
 
 class url_handler
 {
@@ -633,6 +650,10 @@ class destroy_msg: public normal_msg
 #define HTPP_RES_OK 1000
 #define HTPP_RES_ERR 1001
 #define HTPP_REQ_PATH_ERR 1002
+
+
+
+#define LRU_SSR_LENGTH_DF 1024
 
 
 

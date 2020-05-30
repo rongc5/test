@@ -110,4 +110,17 @@ void get_intersection(std::vector<std::set<std::string> > & arr, std::set<std::s
     res = search;
 }
 
+void get_first_not_numstr(std::string & src, std::string & dst)
+{
+    int i = 0;
+    for (i = 0; i < (int)src.size(); i++)
+    {
+        if ((src[i] >= 'a' && src[i] <= 'z') || (src[i] >= 'A' && src[i] <= 'Z'))
+            break;           
+    }
+
+    if ( i < (int)src.size())
+        dst = src.substr(i, src.size() - i);
+}
+
 
