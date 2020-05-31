@@ -64,7 +64,7 @@ class CurlHTTPFetcher(object):
     An C{L{HTTPFetcher}} that uses pycurl for fetching.
     See U{http://pycurl.sourceforge.net/}.
     """
-    ALLOWED_TIME = 30 # seconds
+    ALLOWED_TIME = 120 # seconds
 
     def _parseHeaders(self, header_file):
         header_file.seek(0)
@@ -267,7 +267,7 @@ def do_select(parser):
 
     try:
         curl =  CurlHTTPFetcher()
-        curl.ALLOWED_TIME = 2
+        curl.ALLOWED_TIME = 180
         res = curl.fetch(url, body, header)
     except BaseException, e:
         print e.message

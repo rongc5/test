@@ -75,7 +75,6 @@ class hquotation_search_index:public ToBufferMgr<hquotation_search_item>
         bool do_check_rhigh_hhigh_ge_num_ge(std::string &key, std::string &value, search_res & search);
 
         bool do_check_hqend_end_5_le(std::string &key, std::string &value, search_res & search);
-
         bool do_check_hqend_end_5_ge(std::string &key, std::string &value, search_res & search);
 
         bool do_check_hqend_end_5_ge_num_ge(std::string &key, std::string &value, search_res & search);
@@ -94,6 +93,11 @@ class hquotation_search_index:public ToBufferMgr<hquotation_search_item>
         bool do_check_hqend_end_30_ge(std::string &key, std::string &value, search_res & search);
 
         bool do_check_hqend_end_30_ge_num_ge(std::string &key, std::string &value, search_res & search);
+
+
+        bool do_check_hqend_end_le(std::string &key, std::string &value, search_res & search);
+        bool do_check_hqend_end_ge(std::string &key, std::string &value, search_res & search);
+
 
         bool do_check_hqredvol_greenvol_le(std::string &key, std::string &value, search_res & search);
 

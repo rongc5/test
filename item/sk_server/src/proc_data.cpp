@@ -528,6 +528,9 @@ void proc_data::reg_search_index()
 
     _search_index_map["hqredvol_greenvol_ge"] = std::bind(&hquotation_search_index::do_check_hqredvol_greenvol_ge, _hquotation_index, _1, _2, _3);
     _search_index_map["hqredvol_greenvol_le"] = std::bind(&hquotation_search_index::do_check_hqredvol_greenvol_le, _hquotation_index, _1, _2, _3);
+
+    _search_index_map["hqend_end_le"] = std::bind(&hquotation_search_index::do_check_hqend_end_le, _hquotation_index, _1, _2, _3);
+    _search_index_map["hqend_end_ge"] = std::bind(&hquotation_search_index::do_check_hqend_end_ge, _hquotation_index, _1, _2, _3);
 }
 
 base_search_index proc_data::get_search_index(std::string & key)

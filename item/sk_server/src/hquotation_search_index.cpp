@@ -3396,6 +3396,245 @@ bool hquotation_search_index::do_check_rhigh_hhighest_ge(std::string &name, std:
 }
 
 
+bool hquotation_search_index::do_check_hqend_end_ge(std::string &name, std::string &value, search_res & search) 
+{
+    hquotation_search_item * search_index = current();
+    proc_data* p_data = proc_data::instance();
+
+    std::vector<std::string> tmp_vec;
+    std::vector<hidex_item> vec_idex;
+
+
+    tmp_vec.push_back(value);
+
+    //-10:1:1.0;-5:1:1
+    for (uint32_t i = 0; i< tmp_vec.size(); i++)
+    {
+        std::vector<std::string> t_vec;
+        SplitString(tmp_vec[i].c_str(), ':', &t_vec, SPLIT_MODE_ALL);
+        if (t_vec.size() < 3) 
+        { 
+            continue;
+        }
+
+        hidex_item hi;
+        hi.date_index = abs(atoi(t_vec[0].c_str()));
+        get_first_not_numstr(t_vec[0], hi.start_str);
+
+        hi.date_index_end = abs(atoi(t_vec[1].c_str()));
+        get_first_not_numstr(t_vec[1], hi.end_str);
+
+        hi.fpoint = atof(t_vec[2].c_str());
+
+
+        vec_idex.push_back(hi);
+    }
+
+    int cnt = 0;
+
+    if (search.empty())
+    {
+        for (auto ii = search_index->id_quotation.begin(); ii != search_index->id_quotation.end(); ii++)
+        {
+            const std::deque< std::shared_ptr<quotation_t>> &  tt = ii->second;
+            int len = tt.size();
+            cnt = 0;
+            for (int i = 0; i < (int)vec_idex.size(); i++) 
+            {
+                int date_index = vec_idex[i].date_index;
+                int date_index_end = vec_idex[i].date_index_end;
+                if (!vec_idex[i].start_str.empty())
+                {
+                    date_index = p_data->get_search_sstr(ii->first, vec_idex[i].start_str, date_index, date_index_end);
+                    if (date_index < 0)
+                        continue;
+                }
+
+                if (!vec_idex[i].end_str.empty())
+                {
+                    date_index_end = p_data->get_search_sstr(ii->first, vec_idex[i].end_str, date_index, date_index_end);
+                    if (date_index_end < 0)
+                        continue;
+                }
+
+                if (len  < 1 + date_index ||  len < 1 + date_index_end) 
+                    continue;
+
+
+                if (tt[len - date_index - 1]->end >= vec_idex[i].fpoint * tt[len  -date_index_end- 1]->end)
+                    cnt++;
+            }
+
+            if (cnt)
+                search.append(name, ii->first);
+        }
+    }
+    else
+    {
+        for (auto k = search._id_sets.begin(); k != search._id_sets.end(); k++)
+        {
+            auto ii = search_index->id_quotation.find(*k);
+            if (ii == search_index->id_quotation.end())
+                continue;
+
+            const std::deque< std::shared_ptr<quotation_t>> &  tt = ii->second;
+            int len = tt.size();
+            cnt = 0;
+            for (int i = 0; i < (int)vec_idex.size(); i++) 
+            {
+                int date_index = vec_idex[i].date_index;
+                int date_index_end = vec_idex[i].date_index_end;
+                if (!vec_idex[i].start_str.empty())
+                {
+                    date_index = p_data->get_search_sstr(ii->first, vec_idex[i].start_str, date_index, date_index_end);
+                    if (date_index < 0)
+                        continue;
+                }
+
+                if (!vec_idex[i].end_str.empty())
+                {
+                    date_index_end = p_data->get_search_sstr(ii->first, vec_idex[i].end_str, date_index, date_index_end);
+                    if (date_index_end < 0)
+                        continue;
+                }
+
+                if (len  < 1 + date_index ||  len < 1 + date_index_end) 
+                    continue;
+
+
+                if (tt[len - date_index - 1]->end >= vec_idex[i].fpoint * tt[len  -date_index_end- 1]->end)
+                    cnt++;
+            }
+
+            if (cnt)
+                search.append(name, ii->first);
+        }
+    }
+
+
+    return true;
+}
+
+
+bool hquotation_search_index::do_check_hqend_end_le(std::string &name, std::string &value, search_res & search) 
+{
+    hquotation_search_item * search_index = current();
+    proc_data* p_data = proc_data::instance();
+
+    std::vector<std::string> tmp_vec;
+    std::vector<hidex_item> vec_idex;
+
+
+    tmp_vec.push_back(value);
+
+    //-10:1:1.0;-5:1:1
+    for (uint32_t i = 0; i< tmp_vec.size(); i++)
+    {
+        std::vector<std::string> t_vec;
+        SplitString(tmp_vec[i].c_str(), ':', &t_vec, SPLIT_MODE_ALL);
+        if (t_vec.size() < 3) 
+        { 
+            continue;
+        }
+
+        hidex_item hi;
+        hi.date_index = abs(atoi(t_vec[0].c_str()));
+        get_first_not_numstr(t_vec[0], hi.start_str);
+
+        hi.date_index_end = abs(atoi(t_vec[1].c_str()));
+        get_first_not_numstr(t_vec[1], hi.end_str);
+
+        hi.fpoint = atof(t_vec[2].c_str());
+
+
+        vec_idex.push_back(hi);
+    }
+
+    int cnt = 0;
+
+    if (search.empty())
+    {
+        for (auto ii = search_index->id_quotation.begin(); ii != search_index->id_quotation.end(); ii++)
+        {
+            const std::deque< std::shared_ptr<quotation_t>> &  tt = ii->second;
+            int len = tt.size();
+            cnt = 0;
+            for (int i = 0; i < (int)vec_idex.size(); i++) 
+            {
+                int date_index = vec_idex[i].date_index;
+                int date_index_end = vec_idex[i].date_index_end;
+                if (!vec_idex[i].start_str.empty())
+                {
+                    date_index = p_data->get_search_sstr(ii->first, vec_idex[i].start_str, date_index, date_index_end);
+                    if (date_index < 0)
+                        continue;
+                }
+
+                if (!vec_idex[i].end_str.empty())
+                {
+                    date_index_end = p_data->get_search_sstr(ii->first, vec_idex[i].end_str, date_index, date_index_end);
+                    if (date_index_end < 0)
+                        continue;
+                }
+
+                if (len  < 1 + date_index ||  len < 1 + date_index_end) 
+                    continue;
+
+
+                if (tt[len - date_index - 1]->end <= vec_idex[i].fpoint * tt[len  -date_index_end- 1]->end)
+                    cnt++;
+            }
+
+            if (cnt)
+                search.append(name, ii->first);
+        }
+    }
+    else
+    {
+        for (auto k = search._id_sets.begin(); k != search._id_sets.end(); k++)
+        {
+            auto ii = search_index->id_quotation.find(*k);
+            if (ii == search_index->id_quotation.end())
+                continue;
+
+            const std::deque< std::shared_ptr<quotation_t>> &  tt = ii->second;
+            int len = tt.size();
+            cnt = 0;
+            for (int i = 0; i < (int)vec_idex.size(); i++) 
+            {
+                int date_index = vec_idex[i].date_index;
+                int date_index_end = vec_idex[i].date_index_end;
+                if (!vec_idex[i].start_str.empty())
+                {
+                    date_index = p_data->get_search_sstr(ii->first, vec_idex[i].start_str, date_index, date_index_end);
+                    if (date_index < 0)
+                        continue;
+                }
+
+                if (!vec_idex[i].end_str.empty())
+                {
+                    date_index_end = p_data->get_search_sstr(ii->first, vec_idex[i].end_str, date_index, date_index_end);
+                    if (date_index_end < 0)
+                        continue;
+                }
+
+                if (len  < 1 + date_index ||  len < 1 + date_index_end) 
+                    continue;
+
+
+                if (tt[len - date_index - 1]->end <= vec_idex[i].fpoint * tt[len  -date_index_end- 1]->end)
+                    cnt++;
+            }
+
+            if (cnt)
+                search.append(name, ii->first);
+        }
+    }
+
+
+    return true;
+}
+
 bool hquotation_search_index::do_check_rhigh_hhighest_le(std::string &name, std::string &value, search_res & search)                                              
 {
     hquotation_search_item * search_index = current();
@@ -4378,6 +4617,7 @@ bool hquotation_search_index::do_check_hqend_end_5_le(std::string &name, std::st
 
     return true;
 }
+
 
 bool hquotation_search_index::do_check_hqend_end_5_ge_num_ge(std::string &name, std::string &value, search_res & search)
 {
