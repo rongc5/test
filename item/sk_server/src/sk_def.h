@@ -67,6 +67,16 @@ struct search_res
         _key_map.erase(key);
     }
 
+    //c = A
+    void assign(std::string & A, std::string &C)
+    {
+        auto ia = _key_map.find(A);
+        if (ia != _key_map.end())
+        {
+            _key_map[C] = _key_map[A];
+        }
+    }
+
     //c = a * B
     void get_intersection(std::string & A, std::string & B, std::string & C)
     {
@@ -251,6 +261,7 @@ struct search_res
         }
 
     }
+
 
     void clear_set()
     {

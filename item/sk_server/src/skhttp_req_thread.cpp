@@ -665,6 +665,9 @@ void skhttp_req_thread::handle_timeout(std::shared_ptr<timer_msg> & t_msg)
                 {
                     update_quotation_dict(); 
                     _history_quotation_num = strategy->history_quotation_num;
+
+                    p_data->_lrussr_index->destroy_idle();
+                    p_data->_lrussr_index->idle_2_current();
                 }
 
             }

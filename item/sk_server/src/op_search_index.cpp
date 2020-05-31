@@ -34,9 +34,9 @@ bool op_search_index::do_check_op_search(std::string &key, std::string &value, s
     }
 
 
+
     std::stack<std::string> name;
     std::stack<std::string> op;
-    std::string tmp_name = "ai,Aguhaonana";
 
     for (int i = 0; i < (int)vec.size(); i++)
     {
@@ -89,6 +89,14 @@ bool op_search_index::do_check_op_search(std::string &key, std::string &value, s
         }
     }
 
+    if (!name.empty() && vec.size() == 1)
+    {
+        search.assign(name.top(), key);
+        if (!name.empty() && name.top() != key)
+            search.earse_bykey(name.top());
+
+        name.pop();
+    }
 
 
     return true;
