@@ -62,6 +62,9 @@ class hquotation_search_index:public ToBufferMgr<hquotation_search_item>
         bool do_check_rlow_hlowest_ge(std::string &key, std::string &value, search_res & search);
         bool do_check_rlow_hlowest_le(std::string &key, std::string &value, search_res & search);
 
+        bool do_check_rlow_htrough_ge(std::string &key, std::string &value, search_res & search);
+        bool do_check_rlow_htrough_le(std::string &key, std::string &value, search_res & search);
+
         bool do_check_rlow_hlow_ge_num_ge(std::string &key, std::string &value, search_res & search);
 
         bool do_check_id_substr(std::string &key, std::string &value, search_res & search);
@@ -71,6 +74,9 @@ class hquotation_search_index:public ToBufferMgr<hquotation_search_item>
         bool do_check_rhigh_hhigh_ge(std::string &key, std::string &value, search_res & search);
         bool do_check_rhigh_hhighest_ge(std::string &key, std::string &value, search_res & search);
         bool do_check_rhigh_hhighest_le(std::string &key, std::string &value, search_res & search);
+
+        bool do_check_rhigh_hcrest_ge(std::string &key, std::string &value, search_res & search);
+        bool do_check_rhigh_hcrest_le(std::string &key, std::string &value, search_res & search);
 
         bool do_check_rhigh_hhigh_ge_num_ge(std::string &key, std::string &value, search_res & search);
 
@@ -97,6 +103,10 @@ class hquotation_search_index:public ToBufferMgr<hquotation_search_item>
 
         bool do_check_hqend_end_le(std::string &key, std::string &value, search_res & search);
         bool do_check_hqend_end_ge(std::string &key, std::string &value, search_res & search);
+
+
+        bool do_check_hqswing_le(std::string &key, std::string &value, search_res & search);
+        bool do_check_hqswing_ge(std::string &key, std::string &value, search_res & search);
 
 
         bool do_check_hqredvol_greenvol_le(std::string &key, std::string &value, search_res & search);

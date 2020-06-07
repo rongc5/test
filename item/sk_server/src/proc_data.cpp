@@ -503,12 +503,18 @@ void proc_data::reg_search_index()
     _search_index_map["rlow_hlowest_ge"] = std::bind(&hquotation_search_index::do_check_rlow_hlowest_ge, _hquotation_index, _1, _2, _3);
     _search_index_map["rlow_hlowest_le"] = std::bind(&hquotation_search_index::do_check_rlow_hlowest_le, _hquotation_index, _1, _2, _3);
 
+    _search_index_map["rlow_htrough_ge"] = std::bind(&hquotation_search_index::do_check_rlow_htrough_ge, _hquotation_index, _1, _2, _3);
+    _search_index_map["rlow_htrough_le"] = std::bind(&hquotation_search_index::do_check_rlow_htrough_le, _hquotation_index, _1, _2, _3);
+
     _search_index_map["rhigh_hhigh_ge"] = std::bind(&hquotation_search_index::do_check_rhigh_hhigh_ge, _hquotation_index, _1, _2, _3);
     _search_index_map["rhigh_hhigh_le"] = std::bind(&hquotation_search_index::do_check_rhigh_hhigh_le, _hquotation_index, _1, _2, _3);
     _search_index_map["rhigh_hhigh_ge_num_ge"] = std::bind(&hquotation_search_index::do_check_rhigh_hhigh_ge_num_ge, _hquotation_index, _1, _2, _3);
 
     _search_index_map["rhigh_hhighest_ge"] = std::bind(&hquotation_search_index::do_check_rhigh_hhighest_ge, _hquotation_index, _1, _2, _3);
     _search_index_map["rhigh_hhighest_le"] = std::bind(&hquotation_search_index::do_check_rhigh_hhighest_le, _hquotation_index, _1, _2, _3);
+
+    _search_index_map["rhigh_hcrest_ge"] = std::bind(&hquotation_search_index::do_check_rhigh_hcrest_ge, _hquotation_index, _1, _2, _3);
+    _search_index_map["rhigh_hcrest_le"] = std::bind(&hquotation_search_index::do_check_rhigh_hcrest_le, _hquotation_index, _1, _2, _3);
 
     _search_index_map["hqend_end_5_ge"] = std::bind(&hquotation_search_index::do_check_hqend_end_5_ge, _hquotation_index, _1, _2, _3);
     _search_index_map["hqend_end_5_le"] = std::bind(&hquotation_search_index::do_check_hqend_end_5_le, _hquotation_index, _1, _2, _3);
@@ -531,6 +537,9 @@ void proc_data::reg_search_index()
 
     _search_index_map["hqend_end_le"] = std::bind(&hquotation_search_index::do_check_hqend_end_le, _hquotation_index, _1, _2, _3);
     _search_index_map["hqend_end_ge"] = std::bind(&hquotation_search_index::do_check_hqend_end_ge, _hquotation_index, _1, _2, _3);
+
+    _search_index_map["hqswing_le"] = std::bind(&hquotation_search_index::do_check_hqswing_le, _hquotation_index, _1, _2, _3);
+    _search_index_map["hqswing_ge"] = std::bind(&hquotation_search_index::do_check_hqswing_ge, _hquotation_index, _1, _2, _3);
 }
 
 base_search_index proc_data::get_search_index(std::string & key)
@@ -574,14 +583,21 @@ std::shared_ptr<url_handler> proc_data::get_url_handler(std::string & key)
 
 }
 
-int proc_data::get_highest_index(const std::string & id, int date_index, int date_index_end)
+int proc_data::get_highest_index(const std::string & id, int date_index, int date_index_end, std::set<int> & res)
 {
     proc_data* p_data = proc_data::instance();
+    res.clear();
 
     hquotation_search_item * search_index = p_data->_hquotation_index->current();
 
     auto ii = search_index->id_quotation.find(id);
     if (ii == search_index->id_quotation.end())
+    {
+        return -1;
+    }
+
+    auto mm = search_index->id_crest.find(id);
+    if (mm == search_index->id_crest.end())
     {
         return -1;
     }
@@ -592,26 +608,47 @@ int proc_data::get_highest_index(const std::string & id, int date_index, int dat
     if (len  < 1 + abs(date_index) || len < 1 + abs(date_index_end))
         return -1;
 
-    float max = tt[len - abs(date_index_end) - 1]->high;                                        
-    index = len  -abs(date_index_end)- 1;
-    for (int k = len - abs(date_index) - 1; k <= len  -abs(date_index_end)- 1; k++) 
-        if (max <= tt[k]->high)
-        {
-            max = tt[k]->high;
-            index = k;
-        }
+    std::set<int>::iterator it_begin, it_end, itr;
 
-    return len - index - 1 ;
+    it_begin = mm->second.lower_bound(len - abs(date_index) - 1);
+    it_end = mm->second.upper_bound(len  -abs(date_index_end)- 1);
+
+    float max = 0;
+    for (itr = it_begin; itr != it_end; itr++)
+    {   
+        if (res.empty() || max < tt[*itr]->high)
+        {   
+            max = tt[*itr]->high;
+            res.clear();
+
+            res.insert(len - *itr - 1); 
+        }   
+        else if (max == tt[*itr]->high)
+        {   
+            res.insert(len - *itr - 1); 
+        }   
+    }  
+
+
+    return 0;
 }
 
-int proc_data::get_lowest_index(const std::string & id, int date_index, int date_index_end)
+
+int proc_data::get_crest_index(const std::string & id, int date_index, int date_index_end, std::set<int> & res)
 {
     proc_data* p_data = proc_data::instance();
+    res.clear();
 
     hquotation_search_item * search_index = p_data->_hquotation_index->current();
 
     auto ii = search_index->id_quotation.find(id);
     if (ii == search_index->id_quotation.end())
+    {
+        return -1;
+    }
+
+    auto mm = search_index->id_crest.find(id);
+    if (mm == search_index->id_crest.end())
     {
         return -1;
     }
@@ -622,27 +659,128 @@ int proc_data::get_lowest_index(const std::string & id, int date_index, int date
     if (len  < 1 + abs(date_index) || len < 1 + abs(date_index_end))
         return -1;
 
-    float max = tt[len - abs(date_index_end) - 1]->low;
-    index = len  -abs(date_index_end)- 1;
-    for (int k = len - abs(date_index) - 1; k <= len  -abs(date_index_end)- 1; k++)
-        if (max >= tt[k]->low)
-        {
-            max = tt[k]->low;
-            index = k;
-        }
+    std::set<int>::iterator it_begin, it_end, itr;
 
-    return len - index - 1 ;
+    it_begin = mm->second.lower_bound(len - abs(date_index) - 1);
+    it_end = mm->second.upper_bound(len  -abs(date_index_end)- 1);
+
+    float max = 0;
+    for (itr = it_begin; itr != it_end; itr++)
+    {   
+        res.insert(len - *itr - 1); 
+    }  
+
+
+    return 0;
 }
+
+
+
+int proc_data::get_lowest_index(const std::string & id, int date_index, int date_index_end, std::set<int> & res)
+{
+    proc_data* p_data = proc_data::instance();
+    res.clear();
+
+    hquotation_search_item * search_index = p_data->_hquotation_index->current();
+
+    auto ii = search_index->id_quotation.find(id);
+    if (ii == search_index->id_quotation.end())
+    {
+        return -1;
+    }
+
+    auto mm = search_index->id_trough.find(id);
+    if (mm == search_index->id_trough.end())
+    {
+        return -1;
+    }
+
+    const std::deque< std::shared_ptr<quotation_t>> &  tt = ii->second;
+    int len = tt.size();
+    int index;
+    if (len  < 1 + abs(date_index) || len < 1 + abs(date_index_end))
+        return -1;
+
+    std::set<int>::iterator it_begin, it_end, itr;
+
+    it_begin = mm->second.lower_bound(len - abs(date_index) - 1);
+    it_end = mm->second.upper_bound(len  -abs(date_index_end)- 1);
+
+    float max = 0;
+    for (itr = it_begin; itr != it_end; itr++)
+    {
+        if (res.empty() || max > tt[*itr]->low)
+        {
+            max = tt[*itr]->low;
+            res.clear();
+
+            res.insert(len - *itr - 1);
+        }
+        else if (max == tt[*itr]->low)
+        {
+            res.insert(len - *itr - 1);
+        }
+    }
+
+
+    return 0;
+}
+
+
+int proc_data::get_trough_index(const std::string & id, int date_index, int date_index_end, std::set<int> & res)
+{
+    proc_data* p_data = proc_data::instance();
+    res.clear();
+
+    hquotation_search_item * search_index = p_data->_hquotation_index->current();
+
+    auto ii = search_index->id_quotation.find(id);
+    if (ii == search_index->id_quotation.end())
+    {
+        return -1;
+    }
+
+    auto mm = search_index->id_trough.find(id);
+    if (mm == search_index->id_trough.end())
+    {
+        return -1;
+    }
+
+    const std::deque< std::shared_ptr<quotation_t>> &  tt = ii->second;
+    int len = tt.size();
+    int index;
+    if (len  < 1 + abs(date_index) || len < 1 + abs(date_index_end))
+        return -1;
+
+    std::set<int>::iterator it_begin, it_end, itr;
+
+    it_begin = mm->second.lower_bound(len - abs(date_index) - 1);
+    it_end = mm->second.upper_bound(len  -abs(date_index_end)- 1);
+
+    float max = 0;
+    for (itr = it_begin; itr != it_end; itr++)
+    {
+        res.insert(len - *itr - 1);
+    }
+
+
+    return 0;
+}
+
+
 
 void proc_data::reg_search_sstr()
 {
-    _search_sstr_map["highest"] = std::bind(&proc_data::get_highest_index, _1, _2, _3);
-    _search_sstr_map["lowest"] = std::bind(&proc_data::get_lowest_index, _1, _2, _3);
+    _search_sstr_map["highest"] = std::bind(&proc_data::get_highest_index, _1, _2, _3, _4);
+    _search_sstr_map["lowest"] = std::bind(&proc_data::get_lowest_index, _1, _2, _3, _4);
+    _search_sstr_map["trough"] = std::bind(&proc_data::get_trough_index, _1, _2, _3, _4);
+    _search_sstr_map["crest"] = std::bind(&proc_data::get_crest_index, _1, _2, _3, _4);
 }
 
 
-int proc_data::get_search_sstr(const std::string & id, const std::string & sstr, int date_index, int date_index_end)
+int proc_data::get_search_sstr(const std::string & id, const std::string & sstr, int date_index, int date_index_end, search_res & search, std::set<int> & res)
 {
+    res.clear();
     std::vector<std::string> vec;
     parse_sstr(sstr, vec);
     if (vec.empty())
@@ -650,11 +788,19 @@ int proc_data::get_search_sstr(const std::string & id, const std::string & sstr,
 
     date_index =  abs(date_index);
     date_index_end = abs(date_index_end);
-
+    std::set<int> index_set;
     int ret = 0;
     int tmp;
-    ret = _lrussr_index->get_search_sstr(id, vec[0], date_index, date_index_end);
-    if (ret < 0)
+    
+    if (search.exist_key_index(vec[0]))
+    {
+        search.get_index_bykey(vec[0], id, index_set);
+    }
+
+//    ret = _lrussr_index->get_search_sstr(id, vec[0], date_index, date_index_end);
+  //  if (ret < 0)
+    //{
+    else 
     {
         auto ii = _search_sstr_map.find(vec[0]);
         if (ii == _search_sstr_map.end())
@@ -662,13 +808,15 @@ int proc_data::get_search_sstr(const std::string & id, const std::string & sstr,
             return -1;
         }
 
-        ret = ii->second(id, date_index, date_index_end);
+        ret = ii->second(id, date_index, date_index_end, index_set);
     }
+    //}
 
-    tmp = ret;
-    if (ret >= 0)
+    for (auto ii = index_set.begin(); ii != index_set.end(); ii++)
     {
-        _lrussr_index->add_search_sstr(id, vec[0], date_index, date_index_end, ret);
+        tmp = *ii;
+        ret =  *ii;
+            //_lrussr_index->add_search_sstr(id, vec[0], date_index, date_index_end, ret);
 
         if (vec.size() == 3)
         {
@@ -683,9 +831,11 @@ int proc_data::get_search_sstr(const std::string & id, const std::string & sstr,
 
             ret = tmp;
         }
+
+       res.insert(ret);
     }
 
-    return ret;
+    return 0;
 }
 
 void proc_data::parse_sstr(const std::string & value, std::vector<std::string> & vec)

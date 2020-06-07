@@ -100,13 +100,17 @@ class proc_data:public reload_inf
     public:
 
         void reg_search_sstr();
-        int get_search_sstr(const std::string & id, const std::string & sstr, int date_index, int date_index_end);
+        int get_search_sstr(const std::string & id, const std::string & sstr, int date_index, int date_index_end, search_res & search, std::set<int> & res);
         void parse_sstr(const std::string & sstr, std::vector<std::string> & res);
 
 
 
-        static int get_highest_index(const std::string & id, int date_index, int date_index_end);
-        static int get_lowest_index(const std::string & id, int date_index, int date_index_end);
+        static int get_highest_index(const std::string & id, int date_index, int date_index_end, std::set<int> & res);
+        static int get_lowest_index(const std::string & id, int date_index, int date_index_end, std::set<int> & res);
+
+        static int get_trough_index(const std::string & id, int date_index, int date_index_end, std::set<int> & res);
+
+        static int get_crest_index(const std::string & id, int date_index, int date_index_end, std::set<int> & res);
 
     public:
         char proc_name[SIZE_LEN_256];

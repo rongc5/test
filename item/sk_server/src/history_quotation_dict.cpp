@@ -252,6 +252,58 @@ void history_quotation_dict::update_real_quotation(const std::string & trade_dat
         hqitem->id_sum_quotation[id] = dp;
     }
 
+    update_hquotation_wave(hqitem);
+}
+
+void history_quotation_dict::update_hquotation_wave(hquotation_search_item * hqitem)
+{
+    proc_data* p_data = proc_data::instance();
+    if (!hqitem)
+        return;
+
+    for (auto ii = hqitem->id_quotation.begin(); ii != hqitem->id_quotation.end(); ii++)
+    {
+        const std::string & id = ii->first; 
+        
+        auto kk = _id_date_dict.find(id);
+        if (kk == _id_date_dict.end())
+            continue;
+
+
+        for (int p = 0; p < (int)ii->second.size(); p++)
+        {   
+            if (!p && ii->second.size() > 1)
+            {
+                if (ii->second[p]->low < ii->second[p+1]->low)
+                    hqitem->id_trough[id].insert(p);
+
+                if (ii->second[p]->high > ii->second[p+1]->high)
+                    hqitem->id_crest[id].insert(p);
+
+                continue;
+            }
+
+            if (p < (int)ii->second.size() - 1)
+            {
+                if (ii->second[p+1]->low > ii->second[p]->low && ii->second[p-1]->low > ii->second[p]->low)
+                    hqitem->id_trough[id].insert(p);
+
+                if (ii->second[p]->high > ii->second[p+1]->high && ii->second[p]->high > ii->second[p-1]->high)
+                    hqitem->id_crest[id].insert(p);
+
+                continue;
+            }
+
+            if (p == (int)ii->second.size() - 1)
+            {
+                if (ii->second[p]->low < ii->second[p - 1]->low)
+                    hqitem->id_trough[id].insert(p);
+
+                 if (ii->second[p]->high > ii->second[p-1]->high)
+                    hqitem->id_crest[id].insert(p);
+            }
+        }
+    }
 }
 
 void history_quotation_dict::update_rquotation_search()

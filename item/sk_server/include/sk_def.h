@@ -4,6 +4,7 @@
 #include "common_util.h"
 
 #include <stack>
+#include "log_helper.h"
 
 struct ban_t
 {
@@ -55,11 +56,37 @@ typedef std::vector<single_t> single_vec;
 
 struct search_res
 {
-    //key, id, list
+    //key_id, list
     std::unordered_map<std::string, std::unordered_map<std::string, std::set<int>, str_hasher>, str_hasher> _key_map;
+
     bool empty()
     {
         return _id_sets.empty();
+    }
+
+    bool exist_key_index(std::string & key)
+    {
+        auto ia = _key_map.find(key);
+
+        return ia != _key_map.end();
+    }
+
+    void get_index_bykey(const std::string &key, const std::string & id, std::set<int> & res)
+    {
+        res.clear();
+        auto ii = _key_map.find(key); 
+        if (ii == _key_map.end()) 
+        {
+            return;
+        }
+
+        auto iii = ii->second.find(id);
+        if (iii != ii->second.end())
+        {
+            res.insert(iii->second.begin(), iii->second.end());
+        }
+
+        //LOG_NOTICE("key:%s  size: %d", key.c_str(), _key_map[key].size());
     }
 
     void earse_bykey(std::string & key)
@@ -84,23 +111,23 @@ struct search_res
         auto ib = _key_map.find(B);
 
         std::unordered_map<std::string, std::set<int>, str_hasher> mm;
-        std::set<int> dq;
+        std::set<int> dq;    
 
         if (ia == _key_map.end() || ib == _key_map.end())
-        {
-            _key_map[C] = mm;
-            return;
+        {           
+            _key_map[C] = mm;    
+            return; 
         }
 
         for (auto ii = ia->second.begin(); ii != ia->second.end(); ii++)
         {
             if (ib->second.count(ii->first))
             {
-                mm[ii->first] = dq;
-            }
+                mm[ii->first] = dq;  
+            }       
         }
 
-        _key_map[C] = mm;
+        _key_map[C] = mm;     
     }
 
     //c = a + B
@@ -157,13 +184,13 @@ struct search_res
             return;
         }
 
-         for (auto ii = ia->second.begin(); ii != ia->second.end(); ii++)
-         {
+        for (auto ii = ia->second.begin(); ii != ia->second.end(); ii++)
+        {
             if (!ib->second.count(ii->first))
             {
                 mm[ii->first] = dq;
             }
-         }
+        }
 
         _key_map[C] = mm;
     }
@@ -172,31 +199,35 @@ struct search_res
     {
         auto ii = _key_map.find(key);
         if (ii == _key_map.end())
-        {
+        {   
             std::unordered_map<std::string, std::set<int>, str_hasher> mm;
             std::set<int> dq;
             mm[id] = dq;
             _key_map[key] = mm;
+
         }
         else 
-        {
+        {   
             auto iii = ii->second.find(id);
             if (iii == ii->second.end())
-            {
+            {   
                 std::set<int> dq;
-                ii->second[id] = dq;
+                ii->second.insert(std::make_pair(id, dq));
 
             }
+
         }
+
     }
 
     void append(std::string & key)
     {
         auto ii = _key_map.find(key);
         if (ii == _key_map.end())
-        {
+        {   
             std::unordered_map<std::string, std::set<int>, str_hasher> mm;
             _key_map[key] = mm;
+
         }
     }
 
@@ -210,6 +241,7 @@ struct search_res
             dq.insert(index);
             mm[id] = dq;
             _key_map[key] = mm;
+
         }
         else 
         {
@@ -218,13 +250,39 @@ struct search_res
             {
                 std::set<int> dq;
                 dq.insert(index);
-                ii->second[id] = dq;
+                ii->second.insert(std::make_pair(id, dq));
 
             }
             else
             {
                 iii->second.insert(index);
             }
+
+        }
+    }
+
+
+    void append(std::string &key, const std::string &id, std::set<int> & index)
+    {
+        auto ii = _key_map.find(key);
+        if (ii == _key_map.end())
+        {
+            std::unordered_map<std::string, std::set<int>, str_hasher> mm;
+            mm[id] = index;
+            _key_map[key] = mm;
+        }
+        else 
+        {
+            auto iii = ii->second.find(id);
+            if (iii == ii->second.end())
+            {
+                ii->second.insert(std::make_pair(id, index));
+            }
+            else
+            {
+                iii->second.insert(index.begin(), index.end());
+            }
+
         }
     }
 
@@ -248,6 +306,7 @@ struct search_res
 
     void get_bykey(std::string &key, std::set<std::string> & res)
     {
+        res.clear();
         auto ii = _key_map.find(key); 
         if (ii == _key_map.end()) 
         {
@@ -260,6 +319,7 @@ struct search_res
             res.insert(iii->first);
         }
 
+        //LOG_NOTICE("key:%s  size: %d", key.c_str(), _key_map[key].size());
     }
 
 
@@ -275,7 +335,7 @@ struct search_res
 using namespace std::placeholders;
 typedef std::function<bool(std::string &key, std::string &value, search_res & search)> base_search_index;
 
-typedef std::function<int(const std::string & id, int date_index, int date_index_end)> search_sstr_index;
+typedef std::function<int(const std::string & id, int date_index, int date_index_end, std::set<int> & res)> search_sstr_index;
 
 struct hsingle_search_item
 {
@@ -434,6 +494,7 @@ struct technical_t
     float end_end_20;
     float end_end_30;
     float end_end_60;
+    float low_end_5;
 
     technical_t()
     {
@@ -509,6 +570,11 @@ struct hquotation_search_item
     //id: vector<quotation_t>
     std::unordered_map<std::string, std::deque< std::shared_ptr<quotation_t>>, str_hasher> id_sum_quotation;
 
+    //id, vector<int> index vec, wave info
+    std::unordered_map<std::string, std::set<int>, str_hasher> id_crest;
+
+    std::unordered_map<std::string, std::set<int>, str_hasher> id_trough;
+
     int get_index(const std::string & id, const std::string & date)
     {
         std::string key;
@@ -538,6 +604,8 @@ struct hquotation_search_item
         id_date_idx.clear();
         id_sum_quotation.clear();
         id_technical.clear();
+        id_crest.clear();
+        id_trough.clear();
     }
 
     static void creat_id_index_key(const std::string & id, int index, std::string & key)

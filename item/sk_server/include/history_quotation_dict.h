@@ -31,6 +31,8 @@ class history_quotation_dict:public reload_inf
 
         void update_rquotation_search();
 
+        void update_hquotation_wave(hquotation_search_item * hqitem);
+
     private:
         void set_path (const char* path);
         int load_history_quoation(const char * file);
