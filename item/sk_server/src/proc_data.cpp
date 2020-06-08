@@ -540,6 +540,12 @@ void proc_data::reg_search_index()
 
     _search_index_map["hqswing_le"] = std::bind(&hquotation_search_index::do_check_hqswing_le, _hquotation_index, _1, _2, _3);
     _search_index_map["hqswing_ge"] = std::bind(&hquotation_search_index::do_check_hqswing_ge, _hquotation_index, _1, _2, _3);
+
+    _search_index_map["hqlow_end_5_ge"] = std::bind(&hquotation_search_index::do_check_hqlow_end_5_ge, _hquotation_index, _1, _2, _3);
+    _search_index_map["hqlow_end_5_le"] = std::bind(&hquotation_search_index::do_check_hqlow_end_5_le, _hquotation_index, _1, _2, _3);
+
+    _search_index_map["hqhigh_end_5_ge"] = std::bind(&hquotation_search_index::do_check_hqhigh_end_5_ge, _hquotation_index, _1, _2, _3);
+    _search_index_map["hqhigh_end_5_le"] = std::bind(&hquotation_search_index::do_check_hqhigh_end_5_le, _hquotation_index, _1, _2, _3);
 }
 
 base_search_index proc_data::get_search_index(std::string & key)

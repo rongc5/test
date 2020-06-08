@@ -495,6 +495,7 @@ struct technical_t
     float end_end_30;
     float end_end_60;
     float low_end_5;
+    float high_end_5;
 
     technical_t()
     {
@@ -514,6 +515,8 @@ struct technical_t
         end_end_20 = 0;
         end_end_30 = 0;
         end_end_60 = 0;
+        low_end_5 = 0;
+        high_end_5 = 0;
     }
 };
 

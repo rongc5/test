@@ -94,8 +94,8 @@ class hquotation_search_index:public ToBufferMgr<hquotation_search_item>
         bool do_check_hqend_end_20_ge(std::string &key, std::string &value, search_res & search);
 
         bool do_check_hqend_end_20_ge_num_ge(std::string &key, std::string &value, search_res & search);
-        bool do_check_hqend_end_30_le(std::string &key, std::string &value, search_res & search);
 
+        bool do_check_hqend_end_30_le(std::string &key, std::string &value, search_res & search);
         bool do_check_hqend_end_30_ge(std::string &key, std::string &value, search_res & search);
 
         bool do_check_hqend_end_30_ge_num_ge(std::string &key, std::string &value, search_res & search);
@@ -112,6 +112,12 @@ class hquotation_search_index:public ToBufferMgr<hquotation_search_item>
         bool do_check_hqredvol_greenvol_le(std::string &key, std::string &value, search_res & search);
 
         bool do_check_hqredvol_greenvol_ge(std::string &key, std::string &value, search_res & search);
+
+        bool do_check_hqlow_end_5_le(std::string &key, std::string &value, search_res & search);
+        bool do_check_hqlow_end_5_ge(std::string &key, std::string &value, search_res & search);
+
+        bool do_check_hqhigh_end_5_le(std::string &key, std::string &value, search_res & search);
+        bool do_check_hqhigh_end_5_ge(std::string &key, std::string &value, search_res & search);
 
         struct hidex_item
         {

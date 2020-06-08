@@ -264,43 +264,39 @@ void history_quotation_dict::update_hquotation_wave(hquotation_search_item * hqi
     for (auto ii = hqitem->id_quotation.begin(); ii != hqitem->id_quotation.end(); ii++)
     {
         const std::string & id = ii->first; 
+        auto ff = hqitem->id_technical.find(id);
         
         auto kk = _id_date_dict.find(id);
-        if (kk == _id_date_dict.end())
+        if (kk == _id_date_dict.end() || ff == hqitem->id_technical.end())
             continue;
 
 
-        for (int p = 0; p < (int)ii->second.size(); p++)
+        for (int p = 0; p < (int)ii->second.size() && (int)ii->second.size() > 4; p++)
         {   
-            if (!p && ii->second.size() > 1)
+            if (!p)
             {
-                if (ii->second[p]->low < ii->second[p+1]->low)
+                if (ii->second[p]->low <= ii->second[p+1]->low && ii->second[p+1]->low <= ii->second[p+2]->low && ff->second[p]->low_end_5 < 1 &&
+                        (ff->second[p]->end_end_5 >= 1 || ff->second[p+1]->end_end_5 >=1 || ff->second[p + 2]->end_end_5 >=1 || ff->second[p + 3]->end_end_5 >=1))
                     hqitem->id_trough[id].insert(p);
 
-                if (ii->second[p]->high > ii->second[p+1]->high)
+                if (ii->second[p]->high >= ii->second[p+1]->high && ii->second[p+1]->high >= ii->second[p+2]->high && ff->second[p]->high_end_5 > 1 &&
+                        (ff->second[p]->end_end_5 < 1 || ff->second[p+1]->end_end_5 < 1 || ff->second[p + 2]->end_end_5 < 1))
                     hqitem->id_crest[id].insert(p);
 
                 continue;
             }
 
-            if (p < (int)ii->second.size() - 1)
+            if (p < (int)ii->second.size() - 2)
             {
-                if (ii->second[p+1]->low > ii->second[p]->low && ii->second[p-1]->low > ii->second[p]->low)
+                if (ii->second[p+1]->low >= ii->second[p]->low && ii->second[p-1]->low >= ii->second[p]->low && ff->second[p]->low_end_5 < 1 &&
+                        (ff->second[p]->end_end_5 >= 1 || ff->second[p+1]->end_end_5 >=1 || ff->second[p + 2]->end_end_5 >=1))
                     hqitem->id_trough[id].insert(p);
 
-                if (ii->second[p]->high > ii->second[p+1]->high && ii->second[p]->high > ii->second[p-1]->high)
+                if (ii->second[p]->high >= ii->second[p+1]->high && ii->second[p]->high >= ii->second[p-1]->high && ff->second[p]->high_end_5 > 1 &&
+                        (ff->second[p]->end_end_5 < 1 || ff->second[p+1]->end_end_5 < 1 || ff->second[p + 2]->end_end_5 < 1))
                     hqitem->id_crest[id].insert(p);
 
                 continue;
-            }
-
-            if (p == (int)ii->second.size() - 1)
-            {
-                if (ii->second[p]->low < ii->second[p - 1]->low)
-                    hqitem->id_trough[id].insert(p);
-
-                 if (ii->second[p]->high > ii->second[p-1]->high)
-                    hqitem->id_crest[id].insert(p);
             }
         }
     }
@@ -478,6 +474,20 @@ void history_quotation_dict::get_id_technical(std::shared_ptr<quotation_t> qt, s
         tt->end_end_60 = qt->end / tt->end_60;
         snprintf(t_buf, sizeof(t_buf), "%.2f", tt->end_end_60); 
         tt->end_end_60 = atof(t_buf);
+    }
+
+    if (tt->end_5)
+    {
+        tt->low_end_5 = qt->low / tt->end_5;
+        snprintf(t_buf, sizeof(t_buf), "%.2f", tt->low_end_5); 
+        tt->low_end_5 = atof(t_buf);
+    }
+
+    if (tt->end_5)
+    {
+        tt->high_end_5 = qt->high / tt->end_5;
+        snprintf(t_buf, sizeof(t_buf), "%.2f", tt->high_end_5); 
+        tt->high_end_5 = atof(t_buf);
     }
 
 
