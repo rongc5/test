@@ -254,6 +254,8 @@ def do_select(parser):
         line = line.strip()
         if not len(line) or line.startswith('#'):
             continue;
+        if line == "exit":
+            break
         url += urllib.quote(line)
         url += '&'
 
