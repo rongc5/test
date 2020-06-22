@@ -20,9 +20,11 @@ class history_quotation_dict:public reload_inf
 
         static void creat_key(const std::string & date, const std::string & id, std::string & key);
 
-        void update_real_quotation(const std::string & trade_date, const std::string & id, std::shared_ptr<quotation_t> & qt);
+        void update_real_quotation(const std::string & trade_date, const std::string & id, std::shared_ptr<quotation_original> & qt);
 
         void update_search_index();
+
+        static std::shared_ptr<quotation_t>  original_2_quotation(std::shared_ptr<quotation_original> & original);
 
     private:
         void get_id_technical(std::shared_ptr<quotation_t> qt, std::deque< std::shared_ptr<quotation_t>> & sum_quotation, int p, std::shared_ptr<technical_t> tt);
@@ -42,11 +44,17 @@ class history_quotation_dict:public reload_inf
         char _dumppath[SIZE_LEN_512];
         time_t _last_load;
     public:
+        //<id, quotation_original>
+        std::unordered_map<std::string, std::shared_ptr<quotation_original>, str_hasher> _real_dict;
+
         // <date_id, quotation> >
         std::unordered_map<std::string, std::shared_ptr<quotation_t>, str_hasher> _date_dict;
 
         //id, date,
         std::unordered_map<std::string, std::set<std::string>, str_hasher> _id_date_dict;
+
+    private:
+        std::string _last_date;
 };
 
 

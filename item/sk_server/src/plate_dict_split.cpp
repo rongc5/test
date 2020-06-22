@@ -53,8 +53,9 @@ int plate_dict_split::load()
         
         std::string id = *(tmp_vec.begin());
         tmp_vec.erase(tmp_vec.begin());
+        std::set<std::string> ts_set(tmp_vec.begin(), tmp_vec.end());
 
-        for (auto iit = tmp_vec.begin(); iit != tmp_vec.end(); iit++)
+        for (auto iit = ts_set.begin(); iit != ts_set.end(); iit++)
         {
             std::shared_ptr<std::string> ss(new std::string(trim(iit->c_str())));
             p_data->_plate_index->idle()->insert(std::make_pair(ss, id));

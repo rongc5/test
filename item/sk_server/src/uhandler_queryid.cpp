@@ -272,12 +272,14 @@ void uhandler_queryid::query_technical(std::string &id, Value & root, Document::
             root.AddMember(key, value, allocator);
         }
 
+        /*
         {
             key.SetString("end_30", allocator); 
             value.SetString(float_2_str(ii->second.back()->end_30).c_str(), allocator); 
 
             root.AddMember(key, value, allocator);
         }
+        */
 
         {
             key.SetString("down_pointer", allocator); 

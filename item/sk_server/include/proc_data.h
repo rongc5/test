@@ -100,6 +100,8 @@ class proc_data:public reload_inf
     public:
 
         void reg_search_sstr();
+
+        int get_date_index(const std::string & id, std::string & date_index, std::string & date_index_end, search_res & search, std::set<int> & date_index_out, std::set<int> & date_index_end_out);
         int get_search_sstr(const std::string & id, const std::string & sstr, int date_index, int date_index_end, search_res & search, std::set<int> & res);
         void parse_sstr(const std::string & sstr, std::vector<std::string> & res);
 

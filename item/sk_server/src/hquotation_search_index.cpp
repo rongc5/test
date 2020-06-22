@@ -19,8 +19,7 @@ bool hquotation_search_index::do_hqchange_rate_le(std::string &name, std::string
             return false;
         }
 
-        hi.date_index = abs(atoi(t_vec[0].c_str()));
-        get_first_not_numstr(t_vec[0], hi.start_str);
+        hi.date_index = t_vec[0];
 
         hi.fpoint = atof(t_vec[1].c_str());
     }
@@ -44,13 +43,10 @@ bool hquotation_search_index::do_hqchange_rate_le(std::string &name, std::string
             const std::deque< std::shared_ptr<quotation_t>> &  tt = ii->second;
             int len = tt.size();
 
-            std::set<int> date_index_set {hi.date_index};
-            std::set<int> date_index_end_set {hi.date_index_end};
+            std::set<int> date_index_set ;
+            std::set<int> date_index_end_set ;
 
-            if (!hi.start_str.empty())
-            {    
-                p_data->get_search_sstr(ii->first, hi.start_str, hi.date_index, hi.date_index_end, search, date_index_set);
-            }  
+            p_data->get_date_index(ii->first, hi.date_index, hi.date_index_end, search, date_index_set, date_index_end_set);
 
             for (auto date_index: date_index_set)
             {
@@ -83,8 +79,7 @@ bool hquotation_search_index::do_hqchange_rate_ge(std::string &name, std::string
             return false;
         }
 
-        hi.date_index = abs(atoi(t_vec[0].c_str()));
-        get_first_not_numstr(t_vec[0], hi.start_str);
+        hi.date_index = t_vec[0];
         hi.fpoint = atof(t_vec[1].c_str());
     }
 
@@ -106,13 +101,10 @@ bool hquotation_search_index::do_hqchange_rate_ge(std::string &name, std::string
             const std::deque< std::shared_ptr<quotation_t>> &  tt = ii->second;
             int len = tt.size();
 
-            std::set<int> date_index_set {hi.date_index};
-            std::set<int> date_index_end_set {hi.date_index_end};
+            std::set<int> date_index_set ;
+            std::set<int> date_index_end_set ;
 
-            if (!hi.start_str.empty())
-            {    
-                p_data->get_search_sstr(ii->first, hi.start_str, hi.date_index, hi.date_index_end, search, date_index_set);
-            }  
+            p_data->get_date_index(ii->first, hi.date_index, hi.date_index_end, search, date_index_set, date_index_end_set);
 
             for (auto date_index: date_index_set)
             {
@@ -145,8 +137,7 @@ bool hquotation_search_index::do_hqrange_percent_le(std::string &name, std::stri
             return false;
         }
 
-        hi.date_index = abs(atoi(t_vec[0].c_str()));
-        get_first_not_numstr(t_vec[0], hi.start_str);
+        hi.date_index = t_vec[0];
         hi.fpoint = atof(t_vec[1].c_str());
     }
 
@@ -169,13 +160,10 @@ bool hquotation_search_index::do_hqrange_percent_le(std::string &name, std::stri
             int len = tt.size();
 
 
-            std::set<int> date_index_set {hi.date_index};
-            std::set<int> date_index_end_set {hi.date_index_end};
+            std::set<int> date_index_set ;
+            std::set<int> date_index_end_set ;
 
-            if (!hi.start_str.empty())
-            {    
-                p_data->get_search_sstr(ii->first, hi.start_str, hi.date_index, hi.date_index_end, search, date_index_set);
-            }  
+            p_data->get_date_index(ii->first, hi.date_index, hi.date_index_end, search, date_index_set, date_index_end_set);
 
             for (auto date_index: date_index_set)
             {
@@ -207,8 +195,7 @@ bool hquotation_search_index::do_hqrange_percent_ge(std::string &name, std::stri
             return false;
         }
 
-        hi.date_index = abs(atoi(t_vec[0].c_str()));
-        get_first_not_numstr(t_vec[0], hi.start_str);
+        hi.date_index = t_vec[0];
         hi.fpoint = atof(t_vec[1].c_str());
     }
 
@@ -230,13 +217,10 @@ bool hquotation_search_index::do_hqrange_percent_ge(std::string &name, std::stri
             const std::deque< std::shared_ptr<quotation_t>> &  tt = ii->second;
             int len = tt.size();
 
-            std::set<int> date_index_set {hi.date_index};
-            std::set<int> date_index_end_set {hi.date_index_end};
+            std::set<int> date_index_set ;
+            std::set<int> date_index_end_set ;
 
-            if (!hi.start_str.empty())
-            {    
-                p_data->get_search_sstr(ii->first, hi.start_str, hi.date_index, hi.date_index_end, search, date_index_set);
-            }  
+            p_data->get_date_index(ii->first, hi.date_index, hi.date_index_end, search, date_index_set, date_index_end_set);
 
             for (auto date_index: date_index_set)
             {
@@ -268,11 +252,9 @@ bool hquotation_search_index::do_hqrange_percent_ge_num_ge(std::string &name, st
             return false;
         }
 
-        hi.date_index = abs(atoi(t_vec[0].c_str()));
-        get_first_not_numstr(t_vec[0], hi.start_str);
+        hi.date_index = t_vec[0];
 
-        hi.date_index_end = abs(atoi(t_vec[1].c_str()));
-        get_first_not_numstr(t_vec[1], hi.end_str);
+        hi.date_index_end = t_vec[1];
 
         hi.sum = atoi(t_vec[2].c_str());
         hi.fpoint = atof(t_vec[3].c_str());
@@ -297,18 +279,10 @@ bool hquotation_search_index::do_hqrange_percent_ge_num_ge(std::string &name, st
             const std::deque< std::shared_ptr<quotation_t>> &  tt = ii->second;
             int len = tt.size();
 
-            std::set<int> date_index_set {hi.date_index};
-            std::set<int> date_index_end_set {hi.date_index_end};
+            std::set<int> date_index_set ;
+            std::set<int> date_index_end_set ;
 
-            if (!hi.start_str.empty())
-            {    
-                p_data->get_search_sstr(ii->first, hi.start_str, hi.date_index, hi.date_index_end, search, date_index_set);
-            }  
-
-            if (!hi.end_str.empty())
-            {    
-                p_data->get_search_sstr(ii->first, hi.end_str, hi.date_index, hi.date_index_end, search, date_index_end_set);
-            }  
+            p_data->get_date_index(ii->first, hi.date_index, hi.date_index_end, search, date_index_set, date_index_end_set);
 
             for (auto date_index: date_index_set)
             {
@@ -352,11 +326,9 @@ bool hquotation_search_index::do_hqrange_percent_le_num_ge(std::string &name, st
             return false;
         }
 
-        hi.date_index = abs(atoi(t_vec[0].c_str()));
-        get_first_not_numstr(t_vec[0], hi.start_str);
+        hi.date_index = t_vec[0];
 
-        hi.date_index_end = abs(atoi(t_vec[1].c_str()));
-        get_first_not_numstr(t_vec[1], hi.end_str);
+        hi.date_index_end = t_vec[1];
 
         hi.sum = atoi(t_vec[2].c_str());
         hi.fpoint = atof(t_vec[3].c_str());
@@ -381,18 +353,10 @@ bool hquotation_search_index::do_hqrange_percent_le_num_ge(std::string &name, st
             const std::deque< std::shared_ptr<quotation_t>> &  tt = ii->second;
             int len = tt.size();
 
-            std::set<int> date_index_set {hi.date_index};
-            std::set<int> date_index_end_set {hi.date_index_end};
+            std::set<int> date_index_set ;
+            std::set<int> date_index_end_set ;
 
-            if (!hi.start_str.empty())
-            {    
-                p_data->get_search_sstr(ii->first, hi.start_str, hi.date_index, hi.date_index_end, search, date_index_set);
-            }  
-
-            if (!hi.end_str.empty())
-            {    
-                p_data->get_search_sstr(ii->first, hi.end_str, hi.date_index, hi.date_index_end, search, date_index_end_set);
-            }  
+            p_data->get_date_index(ii->first, hi.date_index, hi.date_index_end, search, date_index_set, date_index_end_set);
 
             for (auto date_index: date_index_set)
             {
@@ -437,11 +401,9 @@ bool hquotation_search_index::do_hq_sum_change_rate_le(std::string &name, std::s
             return false;
         }
 
-        hi.date_index = abs(atoi(t_vec[0].c_str()));
-        get_first_not_numstr(t_vec[0], hi.start_str);
+        hi.date_index = t_vec[0];
 
-        hi.date_index_end = abs(atoi(t_vec[1].c_str()));
-        get_first_not_numstr(t_vec[1], hi.end_str);
+        hi.date_index_end = t_vec[1];
 
         hi.fpoint = atof(t_vec[2].c_str());
     }
@@ -465,18 +427,10 @@ bool hquotation_search_index::do_hq_sum_change_rate_le(std::string &name, std::s
             const std::deque< std::shared_ptr<quotation_t>> &  tt = ii->second;
             int len = tt.size();
 
-            std::set<int> date_index_set {hi.date_index};
-            std::set<int> date_index_end_set {hi.date_index_end};
+            std::set<int> date_index_set ;
+            std::set<int> date_index_end_set ;
 
-            if (!hi.start_str.empty())
-            {    
-                p_data->get_search_sstr(ii->first, hi.start_str, hi.date_index, hi.date_index_end, search, date_index_set);
-            }  
-
-            if (!hi.end_str.empty())
-            {    
-                p_data->get_search_sstr(ii->first, hi.end_str, hi.date_index, hi.date_index_end, search, date_index_end_set);
-            }  
+            p_data->get_date_index(ii->first, hi.date_index, hi.date_index_end, search, date_index_set, date_index_end_set);
 
             for (auto date_index: date_index_set)
             {
@@ -521,11 +475,9 @@ bool hquotation_search_index::do_hq_sum_change_rate_ge(std::string &name, std::s
             return false;
         }
 
-        hi.date_index = abs(atoi(t_vec[0].c_str()));
-        get_first_not_numstr(t_vec[0], hi.start_str);
+        hi.date_index = t_vec[0];
 
-        hi.date_index_end = abs(atoi(t_vec[1].c_str()));
-        get_first_not_numstr(t_vec[1], hi.end_str);
+        hi.date_index_end = t_vec[1];
 
         hi.fpoint = atof(t_vec[2].c_str());
     }
@@ -549,18 +501,10 @@ bool hquotation_search_index::do_hq_sum_change_rate_ge(std::string &name, std::s
             const std::deque< std::shared_ptr<quotation_t>> &  tt = ii->second;
             int len = tt.size();
 
-            std::set<int> date_index_set {hi.date_index};
-            std::set<int> date_index_end_set {hi.date_index_end};
+            std::set<int> date_index_set ;
+            std::set<int> date_index_end_set ;
 
-            if (!hi.start_str.empty())
-            {    
-                p_data->get_search_sstr(ii->first, hi.start_str, hi.date_index, hi.date_index_end, search, date_index_set);
-            }  
-
-            if (!hi.end_str.empty())
-            {    
-                p_data->get_search_sstr(ii->first, hi.end_str, hi.date_index, hi.date_index_end, search, date_index_end_set);
-            }  
+            p_data->get_date_index(ii->first, hi.date_index, hi.date_index_end, search, date_index_set, date_index_end_set);
 
             for (auto date_index: date_index_set)
             {
@@ -605,10 +549,8 @@ bool hquotation_search_index::do_hq_sum_range_percent_le(std::string &name, std:
             return false;
         }
 
-        hi.date_index = abs(atoi(t_vec[0].c_str()));
-        get_first_not_numstr(t_vec[0], hi.start_str);
-        hi.date_index_end = abs(atoi(t_vec[1].c_str()));
-        get_first_not_numstr(t_vec[1], hi.end_str);
+        hi.date_index = t_vec[0];
+        hi.date_index_end = t_vec[1];
 
         hi.fpoint = atof(t_vec[2].c_str());
     }
@@ -632,18 +574,10 @@ bool hquotation_search_index::do_hq_sum_range_percent_le(std::string &name, std:
             const std::deque< std::shared_ptr<quotation_t>> &  tt = ii->second;
             int len = tt.size();
 
-            std::set<int> date_index_set {hi.date_index};
-            std::set<int> date_index_end_set {hi.date_index_end};
+            std::set<int> date_index_set ;
+            std::set<int> date_index_end_set ;
 
-            if (!hi.start_str.empty())
-            {    
-                p_data->get_search_sstr(ii->first, hi.start_str, hi.date_index, hi.date_index_end, search, date_index_set);
-            }  
-
-            if (!hi.end_str.empty())
-            {    
-                p_data->get_search_sstr(ii->first, hi.end_str, hi.date_index, hi.date_index_end, search, date_index_end_set);
-            }  
+            p_data->get_date_index(ii->first, hi.date_index, hi.date_index_end, search, date_index_set, date_index_end_set);
 
             for (auto date_index: date_index_set)
             {
@@ -689,10 +623,8 @@ bool hquotation_search_index::do_hq_sum_range_percent_ge(std::string &name, std:
             return false;
         }
 
-        hi.date_index = abs(atoi(t_vec[0].c_str()));
-        get_first_not_numstr(t_vec[0], hi.start_str);
-        hi.date_index_end = abs(atoi(t_vec[1].c_str()));
-        get_first_not_numstr(t_vec[1], hi.end_str);
+        hi.date_index = t_vec[0];
+        hi.date_index_end = t_vec[1];
 
 
         hi.fpoint = atof(t_vec[2].c_str());
@@ -717,18 +649,10 @@ bool hquotation_search_index::do_hq_sum_range_percent_ge(std::string &name, std:
             const std::deque< std::shared_ptr<quotation_t>> &  tt = ii->second;
             int len = tt.size();
 
-            std::set<int> date_index_set {hi.date_index};
-            std::set<int> date_index_end_set {hi.date_index_end};
+            std::set<int> date_index_set ;
+            std::set<int> date_index_end_set ;
 
-            if (!hi.start_str.empty())
-            {    
-                p_data->get_search_sstr(ii->first, hi.start_str, hi.date_index, hi.date_index_end, search, date_index_set);
-            }  
-
-            if (!hi.end_str.empty())
-            {    
-                p_data->get_search_sstr(ii->first, hi.end_str, hi.date_index, hi.date_index_end, search, date_index_end_set);
-            }  
+            p_data->get_date_index(ii->first, hi.date_index, hi.date_index_end, search, date_index_set, date_index_end_set);
 
             for (auto date_index: date_index_set)
             {
@@ -773,8 +697,7 @@ bool hquotation_search_index::do_check_hqdown_pointer_ge(std::string &name, std:
             return false;
         }
 
-        hi.date_index = abs(atoi(t_vec[0].c_str()));
-        get_first_not_numstr(t_vec[0], hi.start_str);
+        hi.date_index = t_vec[0];
 
         hi.fpoint = atof(t_vec[1].c_str());
     }
@@ -797,13 +720,10 @@ bool hquotation_search_index::do_check_hqdown_pointer_ge(std::string &name, std:
             const std::deque< std::shared_ptr<technical_t>> &  tt = ii->second;
             int len = tt.size();
 
-            std::set<int> date_index_set {hi.date_index};
-            std::set<int> date_index_end_set {hi.date_index_end};
+            std::set<int> date_index_set ;
+            std::set<int> date_index_end_set ;
 
-            if (!hi.start_str.empty())
-            {    
-                p_data->get_search_sstr(ii->first, hi.start_str, hi.date_index, hi.date_index_end, search, date_index_set);
-            }  
+            p_data->get_date_index(ii->first, hi.date_index, hi.date_index_end, search, date_index_set, date_index_end_set);
 
             for (auto date_index: date_index_set)
             {
@@ -835,8 +755,7 @@ bool hquotation_search_index::do_check_hqdown_pointer_le(std::string &name, std:
             return false;
         }
 
-        hi.date_index = abs(atoi(t_vec[0].c_str()));
-        get_first_not_numstr(t_vec[0], hi.start_str);
+        hi.date_index = t_vec[0];
         hi.fpoint = atof(t_vec[1].c_str());
     }
 
@@ -858,13 +777,10 @@ bool hquotation_search_index::do_check_hqdown_pointer_le(std::string &name, std:
             const std::deque< std::shared_ptr<technical_t>> &  tt = ii->second;
             int len = tt.size();
 
-            std::set<int> date_index_set {hi.date_index};
-            std::set<int> date_index_end_set {hi.date_index_end};
+            std::set<int> date_index_set ;
+            std::set<int> date_index_end_set ;
 
-            if (!hi.start_str.empty())
-            {    
-                p_data->get_search_sstr(ii->first, hi.start_str, hi.date_index, hi.date_index_end, search, date_index_set);
-            }  
+            p_data->get_date_index(ii->first, hi.date_index, hi.date_index_end, search, date_index_set, date_index_end_set);
 
             for (auto date_index: date_index_set)
             {
@@ -896,10 +812,8 @@ bool hquotation_search_index::do_check_hqdown_pointer_ge_num_ge(std::string &nam
             return false;
         }
 
-        hi.date_index = abs(atoi(t_vec[0].c_str()));
-        get_first_not_numstr(t_vec[0], hi.start_str);
-        hi.date_index_end = abs(atoi(t_vec[1].c_str()));
-        get_first_not_numstr(t_vec[1], hi.end_str);
+        hi.date_index = t_vec[0];
+        hi.date_index_end = t_vec[1];
 
         hi.sum = atoi(t_vec[2].c_str());
         hi.fpoint = atof(t_vec[3].c_str());
@@ -924,18 +838,10 @@ bool hquotation_search_index::do_check_hqdown_pointer_ge_num_ge(std::string &nam
             const std::deque< std::shared_ptr<technical_t>> &  tt = ii->second;
             int len = tt.size();
 
-            std::set<int> date_index_set {hi.date_index};
-            std::set<int> date_index_end_set {hi.date_index_end};
+            std::set<int> date_index_set ;
+            std::set<int> date_index_end_set ;
 
-            if (!hi.start_str.empty())
-            {    
-                p_data->get_search_sstr(ii->first, hi.start_str, hi.date_index, hi.date_index_end, search, date_index_set);
-            }  
-
-            if (!hi.end_str.empty())
-            {    
-                p_data->get_search_sstr(ii->first, hi.end_str, hi.date_index, hi.date_index_end, search, date_index_end_set);
-            }  
+            p_data->get_date_index(ii->first, hi.date_index, hi.date_index_end, search, date_index_set, date_index_end_set);
 
             for (auto date_index: date_index_set)
             {
@@ -981,8 +887,7 @@ bool hquotation_search_index::do_check_hqup_pointer_ge(std::string &name, std::s
             return false;
         }
 
-        hi.date_index = abs(atoi(t_vec[0].c_str()));
-        get_first_not_numstr(t_vec[0], hi.start_str);
+        hi.date_index = t_vec[0];
 
         hi.fpoint = atof(t_vec[1].c_str());
     }
@@ -1006,13 +911,10 @@ bool hquotation_search_index::do_check_hqup_pointer_ge(std::string &name, std::s
             int len = tt.size();
 
 
-            std::set<int> date_index_set {hi.date_index};
-            std::set<int> date_index_end_set {hi.date_index_end};
+            std::set<int> date_index_set ;
+            std::set<int> date_index_end_set ;
 
-            if (!hi.start_str.empty())
-            {    
-                p_data->get_search_sstr(ii->first, hi.start_str, hi.date_index, hi.date_index_end, search, date_index_set);
-            }  
+            p_data->get_date_index(ii->first, hi.date_index, hi.date_index_end, search, date_index_set, date_index_end_set);
 
             for (auto date_index: date_index_set)
             {
@@ -1044,8 +946,7 @@ bool hquotation_search_index::do_check_hqup_pointer_le(std::string &name, std::s
             return false;
         }
 
-        hi.date_index = abs(atoi(t_vec[0].c_str()));
-        get_first_not_numstr(t_vec[0], hi.start_str);
+        hi.date_index = t_vec[0];
 
         hi.fpoint = atof(t_vec[1].c_str());
     }
@@ -1068,13 +969,10 @@ bool hquotation_search_index::do_check_hqup_pointer_le(std::string &name, std::s
             const std::deque< std::shared_ptr<technical_t>> &  tt = ii->second;
             int len = tt.size();
 
-            std::set<int> date_index_set {hi.date_index};
-            std::set<int> date_index_end_set {hi.date_index_end};
+            std::set<int> date_index_set ;
+            std::set<int> date_index_end_set ;
 
-            if (!hi.start_str.empty())
-            {    
-                p_data->get_search_sstr(ii->first, hi.start_str, hi.date_index, hi.date_index_end, search, date_index_set);
-            }  
+            p_data->get_date_index(ii->first, hi.date_index, hi.date_index_end, search, date_index_set, date_index_end_set);
 
             for (auto date_index: date_index_set)
             {
@@ -1106,11 +1004,9 @@ bool hquotation_search_index::do_check_hqup_pointer_ge_num_ge(std::string &name,
             return false;
         }
 
-        hi.date_index = abs(atoi(t_vec[0].c_str()));
-        get_first_not_numstr(t_vec[0], hi.start_str);
+        hi.date_index = t_vec[0];
 
-        hi.date_index_end = abs(atoi(t_vec[1].c_str()));
-        get_first_not_numstr(t_vec[1], hi.end_str);
+        hi.date_index_end = t_vec[1];
 
         hi.sum = atoi(t_vec[2].c_str());
         hi.fpoint = atof(t_vec[3].c_str());
@@ -1135,18 +1031,10 @@ bool hquotation_search_index::do_check_hqup_pointer_ge_num_ge(std::string &name,
             const std::deque< std::shared_ptr<technical_t>> &  tt = ii->second;
             int len = tt.size();
 
-            std::set<int> date_index_set {hi.date_index};
-            std::set<int> date_index_end_set {hi.date_index_end};
+            std::set<int> date_index_set ;
+            std::set<int> date_index_end_set ;
 
-            if (!hi.start_str.empty())
-            {    
-                p_data->get_search_sstr(ii->first, hi.start_str, hi.date_index, hi.date_index_end, search, date_index_set);
-            }  
-
-            if (!hi.end_str.empty())
-            {    
-                p_data->get_search_sstr(ii->first, hi.end_str, hi.date_index, hi.date_index_end, search, date_index_end_set);
-            }  
+            p_data->get_date_index(ii->first, hi.date_index, hi.date_index_end, search, date_index_set, date_index_end_set);
 
             for (auto date_index: date_index_set)
             {
@@ -1190,8 +1078,7 @@ bool hquotation_search_index::do_check_hqend_start_ge(std::string &name, std::st
             return false;
         }
 
-        hi.date_index = abs(atoi(t_vec[0].c_str()));
-        get_first_not_numstr(t_vec[0], hi.start_str);
+        hi.date_index = t_vec[0];
 
         hi.fpoint = atof(t_vec[1].c_str());
     }
@@ -1214,13 +1101,10 @@ bool hquotation_search_index::do_check_hqend_start_ge(std::string &name, std::st
             const std::deque< std::shared_ptr<technical_t>> &  tt = ii->second;
             int len = tt.size();
 
-            std::set<int> date_index_set {hi.date_index};
-            std::set<int> date_index_end_set {hi.date_index_end};
+            std::set<int> date_index_set ;
+            std::set<int> date_index_end_set ;
 
-            if (!hi.start_str.empty())
-            {    
-                p_data->get_search_sstr(ii->first, hi.start_str, hi.date_index, hi.date_index_end, search, date_index_set);
-            }  
+            p_data->get_date_index(ii->first, hi.date_index, hi.date_index_end, search, date_index_set, date_index_end_set);
 
             for (auto date_index: date_index_set)
             {
@@ -1252,8 +1136,7 @@ bool hquotation_search_index::do_check_hqend_start_le(std::string &name, std::st
             return false;
         }
 
-        hi.date_index = abs(atoi(t_vec[0].c_str()));
-        get_first_not_numstr(t_vec[0], hi.start_str);
+        hi.date_index = t_vec[0];
         hi.fpoint = atof(t_vec[1].c_str());
     }
 
@@ -1275,13 +1158,10 @@ bool hquotation_search_index::do_check_hqend_start_le(std::string &name, std::st
             const std::deque< std::shared_ptr<technical_t>> &  tt = ii->second;
             int len = tt.size();
 
-            std::set<int> date_index_set {hi.date_index};
-            std::set<int> date_index_end_set {hi.date_index_end};
+            std::set<int> date_index_set ;
+            std::set<int> date_index_end_set ;
 
-            if (!hi.start_str.empty())
-            {    
-                p_data->get_search_sstr(ii->first, hi.start_str, hi.date_index, hi.date_index_end, search, date_index_set);
-            }  
+            p_data->get_date_index(ii->first, hi.date_index, hi.date_index_end, search, date_index_set, date_index_end_set);
 
             for (auto date_index: date_index_set)
             {
@@ -1313,11 +1193,9 @@ bool hquotation_search_index::do_check_hqend_start_ge_num_ge(std::string &name, 
             return false;
         }
 
-        hi.date_index = abs(atoi(t_vec[0].c_str()));
-        get_first_not_numstr(t_vec[0], hi.start_str);
+        hi.date_index = t_vec[0];
 
-        hi.date_index_end = abs(atoi(t_vec[1].c_str()));
-        get_first_not_numstr(t_vec[1], hi.end_str);
+        hi.date_index_end = t_vec[1];
 
         hi.sum = atoi(t_vec[2].c_str());
         hi.fpoint = atof(t_vec[3].c_str());
@@ -1342,18 +1220,10 @@ bool hquotation_search_index::do_check_hqend_start_ge_num_ge(std::string &name, 
             const std::deque< std::shared_ptr<technical_t>> &  tt = ii->second;
             int len = tt.size();
 
-            std::set<int> date_index_set {hi.date_index};
-            std::set<int> date_index_end_set {hi.date_index_end};
+            std::set<int> date_index_set ;
+            std::set<int> date_index_end_set ;
 
-            if (!hi.start_str.empty())
-            {    
-                p_data->get_search_sstr(ii->first, hi.start_str, hi.date_index, hi.date_index_end, search, date_index_set);
-            }  
-
-            if (!hi.end_str.empty())
-            {    
-                p_data->get_search_sstr(ii->first, hi.end_str, hi.date_index, hi.date_index_end, search, date_index_end_set);
-            }  
+            p_data->get_date_index(ii->first, hi.date_index, hi.date_index_end, search, date_index_set, date_index_end_set);
 
             for (auto date_index: date_index_set)
             {
@@ -1398,11 +1268,9 @@ bool hquotation_search_index::do_check_hqend_start_ge_ratio_ge(std::string &name
             return false;
         }
 
-        hi.date_index = abs(atoi(t_vec[0].c_str()));
-        get_first_not_numstr(t_vec[0], hi.start_str);
+        hi.date_index = t_vec[0];
 
-        hi.date_index_end = abs(atoi(t_vec[1].c_str()));
-        get_first_not_numstr(t_vec[1], hi.end_str);
+        hi.date_index_end = t_vec[1];
 
         hi.sum = atoi(t_vec[2].c_str());
         hi.fpoint = atof(t_vec[3].c_str());
@@ -1428,18 +1296,10 @@ bool hquotation_search_index::do_check_hqend_start_ge_ratio_ge(std::string &name
             int len = tt.size();
 
 
-            std::set<int> date_index_set {hi.date_index};
-            std::set<int> date_index_end_set {hi.date_index_end};
+            std::set<int> date_index_set ;
+            std::set<int> date_index_end_set ;
 
-            if (!hi.start_str.empty())
-            {    
-                p_data->get_search_sstr(ii->first, hi.start_str, hi.date_index, hi.date_index_end, search, date_index_set);
-            }  
-
-            if (!hi.end_str.empty())
-            {    
-                p_data->get_search_sstr(ii->first, hi.end_str, hi.date_index, hi.date_index_end, search, date_index_end_set);
-            }  
+            p_data->get_date_index(ii->first, hi.date_index, hi.date_index_end, search, date_index_set, date_index_end_set);
 
             for (auto date_index: date_index_set)
             {
@@ -1484,8 +1344,7 @@ bool hquotation_search_index::do_check_hqend_avg_end_ge(std::string &name, std::
             return false;
         }
 
-        hi.date_index = abs(atoi(t_vec[0].c_str()));
-        get_first_not_numstr(t_vec[0], hi.start_str);
+        hi.date_index = t_vec[0];
 
         hi.fpoint = atof(t_vec[1].c_str());
     }
@@ -1508,13 +1367,10 @@ bool hquotation_search_index::do_check_hqend_avg_end_ge(std::string &name, std::
             const std::deque< std::shared_ptr<technical_t>> &  tt = ii->second;
             int len = tt.size();
 
-            std::set<int> date_index_set {hi.date_index};
-            std::set<int> date_index_end_set {hi.date_index_end};
+            std::set<int> date_index_set ;
+            std::set<int> date_index_end_set ;
 
-            if (!hi.start_str.empty())
-            {    
-                p_data->get_search_sstr(ii->first, hi.start_str, hi.date_index, hi.date_index_end, search, date_index_set);
-            }  
+            p_data->get_date_index(ii->first, hi.date_index, hi.date_index_end, search, date_index_set, date_index_end_set);
 
             for (auto date_index: date_index_set)
             {
@@ -1546,8 +1402,7 @@ bool hquotation_search_index::do_check_hqend_avg_end_le(std::string &name, std::
             return false;
         }
 
-        hi.date_index = abs(atoi(t_vec[0].c_str()));
-        get_first_not_numstr(t_vec[0], hi.start_str);
+        hi.date_index = t_vec[0];
         hi.fpoint = atof(t_vec[1].c_str());
     }
 
@@ -1569,13 +1424,10 @@ bool hquotation_search_index::do_check_hqend_avg_end_le(std::string &name, std::
             const std::deque< std::shared_ptr<technical_t>> &  tt = ii->second;
             int len = tt.size();
 
-            std::set<int> date_index_set {hi.date_index};
-            std::set<int> date_index_end_set {hi.date_index_end};
+            std::set<int> date_index_set ;
+            std::set<int> date_index_end_set ;
 
-            if (!hi.start_str.empty())
-            {    
-                p_data->get_search_sstr(ii->first, hi.start_str, hi.date_index, hi.date_index_end, search, date_index_set);
-            }  
+            p_data->get_date_index(ii->first, hi.date_index, hi.date_index_end, search, date_index_set, date_index_end_set);
 
             for (auto date_index: date_index_set)
             {
@@ -1607,11 +1459,9 @@ bool hquotation_search_index::do_check_hqend_avg_end_ge_num_ge(std::string &name
             return false;
         }
 
-        hi.date_index = abs(atoi(t_vec[0].c_str()));
-        get_first_not_numstr(t_vec[0], hi.start_str);
+        hi.date_index = t_vec[0];
 
-        hi.date_index_end = abs(atoi(t_vec[1].c_str()));
-        get_first_not_numstr(t_vec[1], hi.end_str);
+        hi.date_index_end = t_vec[1];
 
         hi.sum = atoi(t_vec[2].c_str());
         hi.fpoint = atof(t_vec[3].c_str());
@@ -1636,18 +1486,10 @@ bool hquotation_search_index::do_check_hqend_avg_end_ge_num_ge(std::string &name
             const std::deque< std::shared_ptr<technical_t>> &  tt = ii->second;
             int len = tt.size();
 
-            std::set<int> date_index_set {hi.date_index};
-            std::set<int> date_index_end_set {hi.date_index_end};
+            std::set<int> date_index_set ;
+            std::set<int> date_index_end_set ;
 
-            if (!hi.start_str.empty())
-            {    
-                p_data->get_search_sstr(ii->first, hi.start_str, hi.date_index, hi.date_index_end, search, date_index_set);
-            }  
-
-            if (!hi.end_str.empty())
-            {    
-                p_data->get_search_sstr(ii->first, hi.end_str, hi.date_index, hi.date_index_end, search, date_index_end_set);
-            }  
+            p_data->get_date_index(ii->first, hi.date_index, hi.date_index_end, search, date_index_set, date_index_end_set);
 
             for (auto date_index: date_index_set)
             {
@@ -1734,8 +1576,7 @@ bool hquotation_search_index::do_check_rlow_hlow_ge(std::string &name, std::stri
             return false;
         }
 
-        hi.date_index = abs(atoi(t_vec[0].c_str()));
-        get_first_not_numstr(t_vec[0], hi.start_str);
+        hi.date_index = t_vec[0];
 
         hi.fpoint = atof(t_vec[1].c_str());
     }
@@ -1758,13 +1599,10 @@ bool hquotation_search_index::do_check_rlow_hlow_ge(std::string &name, std::stri
             const std::deque< std::shared_ptr<quotation_t>> &  tt = ii->second;
             int len = tt.size();
 
-            std::set<int> date_index_set {hi.date_index};
-            std::set<int> date_index_end_set {hi.date_index_end};
+            std::set<int> date_index_set ;
+            std::set<int> date_index_end_set ;
 
-            if (!hi.start_str.empty())
-            {    
-                p_data->get_search_sstr(ii->first, hi.start_str, hi.date_index, hi.date_index_end, search, date_index_set);
-            }  
+            p_data->get_date_index(ii->first, hi.date_index, hi.date_index_end, search, date_index_set, date_index_end_set);
 
             for (auto date_index: date_index_set)
             {
@@ -1797,11 +1635,9 @@ bool hquotation_search_index::do_check_rlow_hlowest_ge(std::string &name, std::s
             return false;
         }
 
-        hi.date_index = abs(atoi(t_vec[0].c_str()));
-        get_first_not_numstr(t_vec[0], hi.start_str);
+        hi.date_index = t_vec[0];
 
-        hi.date_index_end = abs(atoi(t_vec[1].c_str()));
-        get_first_not_numstr(t_vec[1], hi.end_str);
+        hi.date_index_end = t_vec[1];
 
         hi.fpoint = atof(t_vec[2].c_str());
     }
@@ -1824,17 +1660,10 @@ bool hquotation_search_index::do_check_rlow_hlowest_ge(std::string &name, std::s
             const std::deque< std::shared_ptr<quotation_t>> &  tt = ii->second;
             int len = tt.size();
 
-            std::set<int> date_index_set {hi.date_index};
-            std::set<int> date_index_end_set {hi.date_index_end};
-            if (!hi.start_str.empty())
-            {    
-                p_data->get_search_sstr(ii->first, hi.start_str, hi.date_index, hi.date_index_end, search, date_index_set);
-            }  
+            std::set<int> date_index_set ;
+            std::set<int> date_index_end_set ;
 
-            if (!hi.end_str.empty())
-            {    
-                p_data->get_search_sstr(ii->first, hi.end_str, hi.date_index, hi.date_index_end, search, date_index_end_set);
-            }  
+            p_data->get_date_index(ii->first, hi.date_index, hi.date_index_end, search, date_index_set, date_index_end_set);
 
             for (auto date_index: date_index_set)
             {
@@ -1844,7 +1673,7 @@ bool hquotation_search_index::do_check_rlow_hlowest_ge(std::string &name, std::s
                     if (len  < 1 + date_index || date_index < date_index_end)
                         continue;
 
-                    p_data->get_search_sstr(ii->first, "lowest", hi.date_index, hi.date_index_end, search, index);
+                    p_data->get_search_sstr(ii->first, "lowest", date_index, date_index_end, search, index);
                     if (index.empty()) 
                         continue;
 
@@ -1875,11 +1704,9 @@ bool hquotation_search_index::do_check_rlow_htrough_ge(std::string &name, std::s
             return false;
         }
 
-        hi.date_index = abs(atoi(t_vec[0].c_str()));
-        get_first_not_numstr(t_vec[0], hi.start_str);
+        hi.date_index = t_vec[0];
 
-        hi.date_index_end = abs(atoi(t_vec[1].c_str()));
-        get_first_not_numstr(t_vec[1], hi.end_str);
+        hi.date_index_end = t_vec[1];
 
         hi.fpoint = atof(t_vec[2].c_str());
     }
@@ -1902,17 +1729,10 @@ bool hquotation_search_index::do_check_rlow_htrough_ge(std::string &name, std::s
             const std::deque< std::shared_ptr<quotation_t>> &  tt = ii->second;
             int len = tt.size();
 
-            std::set<int> date_index_set {hi.date_index};
-            std::set<int> date_index_end_set {hi.date_index_end};
-            if (!hi.start_str.empty())
-            {    
-                p_data->get_search_sstr(ii->first, hi.start_str, hi.date_index, hi.date_index_end, search, date_index_set);
-            }  
+            std::set<int> date_index_set ;
+            std::set<int> date_index_end_set ;
 
-            if (!hi.end_str.empty())
-            {    
-                p_data->get_search_sstr(ii->first, hi.end_str, hi.date_index, hi.date_index_end, search, date_index_end_set);
-            }  
+            p_data->get_date_index(ii->first, hi.date_index, hi.date_index_end, search, date_index_set, date_index_end_set);
 
             for (auto date_index: date_index_set)
             {
@@ -1922,7 +1742,7 @@ bool hquotation_search_index::do_check_rlow_htrough_ge(std::string &name, std::s
                     if (len  < 1 + date_index || date_index < date_index_end)
                         continue;
 
-                    p_data->get_search_sstr(ii->first, "trough", hi.date_index, hi.date_index_end, search, index);
+                    p_data->get_search_sstr(ii->first, "trough", date_index, date_index_end, search, index);
                     if (index.empty()) 
                         continue;
 
@@ -1953,10 +1773,8 @@ bool hquotation_search_index::do_check_rlow_hlowest_le(std::string &name, std::s
             return false;
         }
 
-        hi.date_index = abs(atoi(t_vec[0].c_str()));
-        get_first_not_numstr(t_vec[0], hi.start_str);
-        hi.date_index_end = abs(atoi(t_vec[1].c_str()));
-        get_first_not_numstr(t_vec[1], hi.end_str);
+        hi.date_index = t_vec[0];
+        hi.date_index_end = t_vec[1];
 
 
         hi.fpoint = atof(t_vec[2].c_str());
@@ -1980,17 +1798,10 @@ bool hquotation_search_index::do_check_rlow_hlowest_le(std::string &name, std::s
             const std::deque< std::shared_ptr<quotation_t>> &  tt = ii->second;
             int len = tt.size();
 
-            std::set<int> date_index_set {hi.date_index};
-            std::set<int> date_index_end_set {hi.date_index_end};
-            if (!hi.start_str.empty())
-            {    
-                p_data->get_search_sstr(ii->first, hi.start_str, hi.date_index, hi.date_index_end, search, date_index_set);
-            }  
+            std::set<int> date_index_set ;
+            std::set<int> date_index_end_set ;
 
-            if (!hi.end_str.empty())
-            {    
-                p_data->get_search_sstr(ii->first, hi.end_str, hi.date_index, hi.date_index_end, search, date_index_end_set);
-            }  
+            p_data->get_date_index(ii->first, hi.date_index, hi.date_index_end, search, date_index_set, date_index_end_set);
 
             for (auto date_index: date_index_set)
             {
@@ -2000,7 +1811,7 @@ bool hquotation_search_index::do_check_rlow_hlowest_le(std::string &name, std::s
                     if (len  < 1 + date_index || date_index < date_index_end)
                         continue;
 
-                    p_data->get_search_sstr(ii->first, "lowest", hi.date_index, hi.date_index_end, search, index);
+                    p_data->get_search_sstr(ii->first, "lowest", date_index, date_index_end, search, index);
                     if (index.empty()) 
                         continue;
 
@@ -2031,10 +1842,8 @@ bool hquotation_search_index::do_check_rlow_htrough_le(std::string &name, std::s
             return false;
         }
 
-        hi.date_index = abs(atoi(t_vec[0].c_str()));
-        get_first_not_numstr(t_vec[0], hi.start_str);
-        hi.date_index_end = abs(atoi(t_vec[1].c_str()));
-        get_first_not_numstr(t_vec[1], hi.end_str);
+        hi.date_index = t_vec[0];
+        hi.date_index_end = t_vec[1];
 
 
         hi.fpoint = atof(t_vec[2].c_str());
@@ -2058,17 +1867,10 @@ bool hquotation_search_index::do_check_rlow_htrough_le(std::string &name, std::s
             const std::deque< std::shared_ptr<quotation_t>> &  tt = ii->second;
             int len = tt.size();
 
-            std::set<int> date_index_set {hi.date_index};
-            std::set<int> date_index_end_set {hi.date_index_end};
-            if (!hi.start_str.empty())
-            {    
-                p_data->get_search_sstr(ii->first, hi.start_str, hi.date_index, hi.date_index_end, search, date_index_set);
-            }  
+            std::set<int> date_index_set ;
+            std::set<int> date_index_end_set ;
 
-            if (!hi.end_str.empty())
-            {    
-                p_data->get_search_sstr(ii->first, hi.end_str, hi.date_index, hi.date_index_end, search, date_index_end_set);
-            }  
+            p_data->get_date_index(ii->first, hi.date_index, hi.date_index_end, search, date_index_set, date_index_end_set);
 
             for (auto date_index: date_index_set)
             {
@@ -2078,7 +1880,7 @@ bool hquotation_search_index::do_check_rlow_htrough_le(std::string &name, std::s
                     if (len  < 1 + date_index || date_index < date_index_end)
                         continue;
 
-                    p_data->get_search_sstr(ii->first, "trough", hi.date_index, hi.date_index_end, search, index);
+                    p_data->get_search_sstr(ii->first, "trough", date_index, date_index_end, search, index);
                     if (index.empty()) 
                         continue;
 
@@ -2109,10 +1911,8 @@ bool hquotation_search_index::do_check_rhigh_hhighest_ge(std::string &name, std:
             return false;
         }
 
-        hi.date_index = abs(atoi(t_vec[0].c_str()));
-        get_first_not_numstr(t_vec[0], hi.start_str);
-        hi.date_index_end = abs(atoi(t_vec[1].c_str()));
-        get_first_not_numstr(t_vec[1], hi.end_str);
+        hi.date_index = t_vec[0];
+        hi.date_index_end = t_vec[1];
         hi.fpoint = atof(t_vec[2].c_str());
     }
 
@@ -2134,17 +1934,10 @@ bool hquotation_search_index::do_check_rhigh_hhighest_ge(std::string &name, std:
             const std::deque< std::shared_ptr<quotation_t>> &  tt = ii->second;
             int len = tt.size();
 
-            std::set<int> date_index_set {hi.date_index};
-            std::set<int> date_index_end_set {hi.date_index_end};
-            if (!hi.start_str.empty())
-            {    
-                p_data->get_search_sstr(ii->first, hi.start_str, hi.date_index, hi.date_index_end, search, date_index_set);
-            }  
+            std::set<int> date_index_set ;
+            std::set<int> date_index_end_set ;
 
-            if (!hi.end_str.empty())
-            {    
-                p_data->get_search_sstr(ii->first, hi.end_str, hi.date_index, hi.date_index_end, search, date_index_end_set);
-            }  
+            p_data->get_date_index(ii->first, hi.date_index, hi.date_index_end, search, date_index_set, date_index_end_set);
 
             for (auto date_index: date_index_set)
             {
@@ -2154,7 +1947,7 @@ bool hquotation_search_index::do_check_rhigh_hhighest_ge(std::string &name, std:
                     if (len  < 1 + date_index || date_index < date_index_end)
                         continue;
 
-                    p_data->get_search_sstr(ii->first, "highest", hi.date_index, hi.date_index_end, search, index);
+                    p_data->get_search_sstr(ii->first, "highest", date_index, date_index_end, search, index);
                     if (index.empty()) 
                         continue;
 
@@ -2185,10 +1978,8 @@ bool hquotation_search_index::do_check_rhigh_hcrest_ge(std::string &name, std::s
             return false;
         }
 
-        hi.date_index = abs(atoi(t_vec[0].c_str()));
-        get_first_not_numstr(t_vec[0], hi.start_str);
-        hi.date_index_end = abs(atoi(t_vec[1].c_str()));
-        get_first_not_numstr(t_vec[1], hi.end_str);
+        hi.date_index = t_vec[0];
+        hi.date_index_end = t_vec[1];
         hi.fpoint = atof(t_vec[2].c_str());
     }
 
@@ -2210,17 +2001,10 @@ bool hquotation_search_index::do_check_rhigh_hcrest_ge(std::string &name, std::s
             const std::deque< std::shared_ptr<quotation_t>> &  tt = ii->second;
             int len = tt.size();
 
-            std::set<int> date_index_set {hi.date_index};
-            std::set<int> date_index_end_set {hi.date_index_end};
-            if (!hi.start_str.empty())
-            {    
-                p_data->get_search_sstr(ii->first, hi.start_str, hi.date_index, hi.date_index_end, search, date_index_set);
-            }  
+            std::set<int> date_index_set ;
+            std::set<int> date_index_end_set ;
 
-            if (!hi.end_str.empty())
-            {    
-                p_data->get_search_sstr(ii->first, hi.end_str, hi.date_index, hi.date_index_end, search, date_index_end_set);
-            }  
+            p_data->get_date_index(ii->first, hi.date_index, hi.date_index_end, search, date_index_set, date_index_end_set);
 
             for (auto date_index: date_index_set)
             {
@@ -2230,7 +2014,7 @@ bool hquotation_search_index::do_check_rhigh_hcrest_ge(std::string &name, std::s
                     if (len  < 1 + date_index || date_index < date_index_end)
                         continue;
 
-                    p_data->get_search_sstr(ii->first, "crest", hi.date_index, hi.date_index_end, search, index);
+                    p_data->get_search_sstr(ii->first, "crest", date_index, date_index_end, search, index);
                     if (index.empty()) 
                         continue;
 
@@ -2261,11 +2045,9 @@ bool hquotation_search_index::do_check_hqend_end_ge(std::string &name, std::stri
             return false;
         }
 
-        hi.date_index = abs(atoi(t_vec[0].c_str()));
-        get_first_not_numstr(t_vec[0], hi.start_str);
+        hi.date_index = t_vec[0];
 
-        hi.date_index_end = abs(atoi(t_vec[1].c_str()));
-        get_first_not_numstr(t_vec[1], hi.end_str);
+        hi.date_index_end = t_vec[1];
 
         hi.fpoint = atof(t_vec[2].c_str());
     }
@@ -2288,18 +2070,10 @@ bool hquotation_search_index::do_check_hqend_end_ge(std::string &name, std::stri
             const std::deque< std::shared_ptr<quotation_t>> &  tt = ii->second;
             int len = tt.size();
 
-            std::set<int> date_index_set {hi.date_index};
-            std::set<int> date_index_end_set {hi.date_index_end};
+            std::set<int> date_index_set ;
+            std::set<int> date_index_end_set ;
 
-            if (!hi.start_str.empty())
-            {    
-                p_data->get_search_sstr(ii->first, hi.start_str, hi.date_index, hi.date_index_end, search, date_index_set);
-            }  
-
-            if (!hi.end_str.empty())
-            {    
-                p_data->get_search_sstr(ii->first, hi.end_str, hi.date_index, hi.date_index_end, search, date_index_end_set);
-            }  
+            p_data->get_date_index(ii->first, hi.date_index, hi.date_index_end, search, date_index_set, date_index_end_set);
 
             for (auto date_index: date_index_set)
             {
@@ -2341,11 +2115,9 @@ bool hquotation_search_index::do_check_hqend_end_le(std::string &name, std::stri
             return false;
         }
 
-        hi.date_index = abs(atoi(t_vec[0].c_str()));
-        get_first_not_numstr(t_vec[0], hi.start_str);
+        hi.date_index = t_vec[0];
 
-        hi.date_index_end = abs(atoi(t_vec[1].c_str()));
-        get_first_not_numstr(t_vec[1], hi.end_str);
+        hi.date_index_end = t_vec[1];
 
         hi.fpoint = atof(t_vec[2].c_str());
     }
@@ -2368,18 +2140,10 @@ bool hquotation_search_index::do_check_hqend_end_le(std::string &name, std::stri
             const std::deque< std::shared_ptr<quotation_t>> &  tt = ii->second;
             int len = tt.size();
 
-            std::set<int> date_index_set {hi.date_index};
-            std::set<int> date_index_end_set {hi.date_index_end};
+            std::set<int> date_index_set ;
+            std::set<int> date_index_end_set ;
 
-            if (!hi.start_str.empty())
-            {    
-                p_data->get_search_sstr(ii->first, hi.start_str, hi.date_index, hi.date_index_end, search, date_index_set);
-            }  
-
-            if (!hi.end_str.empty())
-            {    
-                p_data->get_search_sstr(ii->first, hi.end_str, hi.date_index, hi.date_index_end, search, date_index_end_set);
-            }  
+            p_data->get_date_index(ii->first, hi.date_index, hi.date_index_end, search, date_index_set, date_index_end_set);
 
             for (auto date_index: date_index_set)
             {
@@ -2420,11 +2184,9 @@ bool hquotation_search_index::do_check_hqswing_le(std::string &name, std::string
             return false;
         }
 
-        hi.date_index = abs(atoi(t_vec[0].c_str()));
-        get_first_not_numstr(t_vec[0], hi.start_str);
+        hi.date_index = t_vec[0];
 
-        hi.date_index_end = abs(atoi(t_vec[1].c_str()));
-        get_first_not_numstr(t_vec[1], hi.end_str);
+        hi.date_index_end = t_vec[1];
 
         hi.fpoint = atof(t_vec[2].c_str());
     }
@@ -2447,18 +2209,10 @@ bool hquotation_search_index::do_check_hqswing_le(std::string &name, std::string
             const std::deque< std::shared_ptr<quotation_t>> &  tt = ii->second;
             int len = tt.size();
 
-            std::set<int> date_index_set {hi.date_index};
-            std::set<int> date_index_end_set {hi.date_index_end};
+            std::set<int> date_index_set ;
+            std::set<int> date_index_end_set ;
 
-            if (!hi.start_str.empty())
-            {    
-                p_data->get_search_sstr(ii->first, hi.start_str, hi.date_index, hi.date_index_end, search, date_index_set);
-            }  
-
-            if (!hi.end_str.empty())
-            {    
-                p_data->get_search_sstr(ii->first, hi.end_str, hi.date_index, hi.date_index_end, search, date_index_end_set);
-            }  
+            p_data->get_date_index(ii->first, hi.date_index, hi.date_index_end, search, date_index_set, date_index_end_set);
 
             for (auto date_index: date_index_set)
             {
@@ -2501,11 +2255,9 @@ bool hquotation_search_index::do_check_hqswing_ge(std::string &name, std::string
             return false;
         }
 
-        hi.date_index = abs(atoi(t_vec[0].c_str()));
-        get_first_not_numstr(t_vec[0], hi.start_str);
+        hi.date_index = t_vec[0];
 
-        hi.date_index_end = abs(atoi(t_vec[1].c_str()));
-        get_first_not_numstr(t_vec[1], hi.end_str);
+        hi.date_index_end = t_vec[1];
 
         hi.fpoint = atof(t_vec[2].c_str());
     }
@@ -2528,18 +2280,10 @@ bool hquotation_search_index::do_check_hqswing_ge(std::string &name, std::string
             const std::deque< std::shared_ptr<quotation_t>> &  tt = ii->second;
             int len = tt.size();
 
-            std::set<int> date_index_set {hi.date_index};
-            std::set<int> date_index_end_set {hi.date_index_end};
+            std::set<int> date_index_set ;
+            std::set<int> date_index_end_set ;
 
-            if (!hi.start_str.empty())
-            {    
-                p_data->get_search_sstr(ii->first, hi.start_str, hi.date_index, hi.date_index_end, search, date_index_set);
-            }  
-
-            if (!hi.end_str.empty())
-            {    
-                p_data->get_search_sstr(ii->first, hi.end_str, hi.date_index, hi.date_index_end, search, date_index_end_set);
-            }  
+            p_data->get_date_index(ii->first, hi.date_index, hi.date_index_end, search, date_index_set, date_index_end_set);
 
             for (auto date_index: date_index_set)
             {
@@ -2582,10 +2326,8 @@ bool hquotation_search_index::do_check_rhigh_hhighest_le(std::string &name, std:
             return false;
         }
 
-        hi.date_index = abs(atoi(t_vec[0].c_str()));
-        get_first_not_numstr(t_vec[0], hi.start_str);
-        hi.date_index_end = abs(atoi(t_vec[1].c_str()));
-        get_first_not_numstr(t_vec[1], hi.end_str);
+        hi.date_index = t_vec[0];
+        hi.date_index_end = t_vec[1];
         hi.fpoint = atof(t_vec[2].c_str());
     }
 
@@ -2607,17 +2349,10 @@ bool hquotation_search_index::do_check_rhigh_hhighest_le(std::string &name, std:
             const std::deque< std::shared_ptr<quotation_t>> &  tt = ii->second;
             int len = tt.size();
 
-            std::set<int> date_index_set {hi.date_index};
-            std::set<int> date_index_end_set {hi.date_index_end};
-            if (!hi.start_str.empty())
-            {    
-                p_data->get_search_sstr(ii->first, hi.start_str, hi.date_index, hi.date_index_end, search, date_index_set);
-            }  
+            std::set<int> date_index_set ;
+            std::set<int> date_index_end_set ;
 
-            if (!hi.end_str.empty())
-            {    
-                p_data->get_search_sstr(ii->first, hi.end_str, hi.date_index, hi.date_index_end, search, date_index_end_set);
-            }  
+            p_data->get_date_index(ii->first, hi.date_index, hi.date_index_end, search, date_index_set, date_index_end_set);
 
             for (auto date_index: date_index_set)
             {
@@ -2627,7 +2362,7 @@ bool hquotation_search_index::do_check_rhigh_hhighest_le(std::string &name, std:
                     if (len  < 1 + date_index || date_index < date_index_end)
                         continue;
 
-                    p_data->get_search_sstr(ii->first, "highest", hi.date_index, hi.date_index_end, search, index);
+                    p_data->get_search_sstr(ii->first, "highest", date_index, date_index_end, search, index);
                     if (index.empty()) 
                         continue;
 
@@ -2658,10 +2393,8 @@ bool hquotation_search_index::do_check_rhigh_hcrest_le(std::string &name, std::s
             return false;
         }
 
-        hi.date_index = abs(atoi(t_vec[0].c_str()));
-        get_first_not_numstr(t_vec[0], hi.start_str);
-        hi.date_index_end = abs(atoi(t_vec[1].c_str()));
-        get_first_not_numstr(t_vec[1], hi.end_str);
+        hi.date_index = t_vec[0];
+        hi.date_index_end = t_vec[1];
         hi.fpoint = atof(t_vec[2].c_str());
     }
 
@@ -2683,17 +2416,10 @@ bool hquotation_search_index::do_check_rhigh_hcrest_le(std::string &name, std::s
             const std::deque< std::shared_ptr<quotation_t>> &  tt = ii->second;
             int len = tt.size();
 
-            std::set<int> date_index_set {hi.date_index};
-            std::set<int> date_index_end_set {hi.date_index_end};
-            if (!hi.start_str.empty())
-            {    
-                p_data->get_search_sstr(ii->first, hi.start_str, hi.date_index, hi.date_index_end, search, date_index_set);
-            }  
+            std::set<int> date_index_set ;
+            std::set<int> date_index_end_set ;
 
-            if (!hi.end_str.empty())
-            {    
-                p_data->get_search_sstr(ii->first, hi.end_str, hi.date_index, hi.date_index_end, search, date_index_end_set);
-            }  
+            p_data->get_date_index(ii->first, hi.date_index, hi.date_index_end, search, date_index_set, date_index_end_set);
 
             for (auto date_index: date_index_set)
             {
@@ -2703,7 +2429,7 @@ bool hquotation_search_index::do_check_rhigh_hcrest_le(std::string &name, std::s
                     if (len  < 1 + date_index || date_index < date_index_end)
                         continue;
 
-                    p_data->get_search_sstr(ii->first, "crest", hi.date_index, hi.date_index_end, search, index);
+                    p_data->get_search_sstr(ii->first, "crest", date_index, date_index_end, search, index);
                     if (index.empty()) 
                         continue;
 
@@ -2734,8 +2460,7 @@ bool hquotation_search_index::do_check_rlow_hlow_le(std::string &name, std::stri
             return false;
         }
 
-        hi.date_index = abs(atoi(t_vec[0].c_str()));
-        get_first_not_numstr(t_vec[0], hi.start_str);
+        hi.date_index = t_vec[0];
         hi.fpoint = atof(t_vec[1].c_str());
     }
 
@@ -2757,13 +2482,10 @@ bool hquotation_search_index::do_check_rlow_hlow_le(std::string &name, std::stri
             const std::deque< std::shared_ptr<quotation_t>> &  tt = ii->second;
             int len = tt.size();
 
-            std::set<int> date_index_set {hi.date_index};
-            std::set<int> date_index_end_set {hi.date_index_end};
+            std::set<int> date_index_set ;
+            std::set<int> date_index_end_set ;
 
-            if (!hi.start_str.empty())
-            {    
-                p_data->get_search_sstr(ii->first, hi.start_str, hi.date_index, hi.date_index_end, search, date_index_set);
-            }  
+            p_data->get_date_index(ii->first, hi.date_index, hi.date_index_end, search, date_index_set, date_index_end_set);
 
             for (auto date_index: date_index_set)
             {
@@ -2795,10 +2517,8 @@ bool hquotation_search_index::do_check_rlow_hlow_ge_num_ge(std::string &name, st
             return false;
         }
 
-        hi.date_index = abs(atoi(t_vec[0].c_str()));
-        get_first_not_numstr(t_vec[0], hi.start_str);
-        hi.date_index_end = abs(atoi(t_vec[1].c_str()));
-        get_first_not_numstr(t_vec[1], hi.end_str);
+        hi.date_index = t_vec[0];
+        hi.date_index_end = t_vec[1];
         hi.sum = atoi(t_vec[2].c_str());
         hi.fpoint = atof(t_vec[3].c_str());
     }
@@ -2822,18 +2542,10 @@ bool hquotation_search_index::do_check_rlow_hlow_ge_num_ge(std::string &name, st
             const std::deque< std::shared_ptr<quotation_t>> &  tt = ii->second;
             int len = tt.size();
 
-            std::set<int> date_index_set {hi.date_index};
-            std::set<int> date_index_end_set {hi.date_index_end};
+            std::set<int> date_index_set ;
+            std::set<int> date_index_end_set ;
 
-            if (!hi.start_str.empty())
-            {    
-                p_data->get_search_sstr(ii->first, hi.start_str, hi.date_index, hi.date_index_end, search, date_index_set);
-            }  
-
-            if (!hi.end_str.empty())
-            {    
-                p_data->get_search_sstr(ii->first, hi.end_str, hi.date_index, hi.date_index_end, search, date_index_end_set);
-            }  
+            p_data->get_date_index(ii->first, hi.date_index, hi.date_index_end, search, date_index_set, date_index_end_set);
 
             for (auto date_index: date_index_set)
             {
@@ -2878,8 +2590,7 @@ bool hquotation_search_index::do_check_rhigh_hhigh_ge(std::string &name, std::st
             return false;
         }
 
-        hi.date_index = abs(atoi(t_vec[0].c_str()));
-        get_first_not_numstr(t_vec[0], hi.start_str);
+        hi.date_index = t_vec[0];
         hi.fpoint = atof(t_vec[1].c_str());
     }
 
@@ -2901,13 +2612,10 @@ bool hquotation_search_index::do_check_rhigh_hhigh_ge(std::string &name, std::st
             const std::deque< std::shared_ptr<quotation_t>> &  tt = ii->second;
             int len = tt.size();
 
-            std::set<int> date_index_set {hi.date_index};
-            std::set<int> date_index_end_set {hi.date_index_end};
+            std::set<int> date_index_set ;
+            std::set<int> date_index_end_set ;
 
-            if (!hi.start_str.empty())
-            {    
-                p_data->get_search_sstr(ii->first, hi.start_str, hi.date_index, hi.date_index_end, search, date_index_set);
-            }  
+            p_data->get_date_index(ii->first, hi.date_index, hi.date_index_end, search, date_index_set, date_index_end_set);
 
             for (auto date_index: date_index_set)
             {
@@ -2940,8 +2648,7 @@ bool hquotation_search_index::do_check_rhigh_hhigh_le(std::string &name, std::st
             return false;
         }
 
-        hi.date_index = abs(atoi(t_vec[0].c_str()));
-        get_first_not_numstr(t_vec[0], hi.start_str);
+        hi.date_index = t_vec[0];
 
         hi.fpoint = atof(t_vec[1].c_str());
     }
@@ -2964,13 +2671,10 @@ bool hquotation_search_index::do_check_rhigh_hhigh_le(std::string &name, std::st
             const std::deque< std::shared_ptr<quotation_t>> &  tt = ii->second;
             int len = tt.size();
 
-            std::set<int> date_index_set {hi.date_index};
-            std::set<int> date_index_end_set {hi.date_index_end};
+            std::set<int> date_index_set ;
+            std::set<int> date_index_end_set ;
 
-            if (!hi.start_str.empty())
-            {    
-                p_data->get_search_sstr(ii->first, hi.start_str, hi.date_index, hi.date_index_end, search, date_index_set);
-            }  
+            p_data->get_date_index(ii->first, hi.date_index, hi.date_index_end, search, date_index_set, date_index_end_set);
 
             for (auto date_index: date_index_set)
             {
@@ -3003,10 +2707,8 @@ bool hquotation_search_index::do_check_rhigh_hhigh_ge_num_ge(std::string &name, 
             return false;
         }
 
-        hi.date_index = abs(atoi(t_vec[0].c_str()));
-        get_first_not_numstr(t_vec[0], hi.start_str);
-        hi.date_index_end = abs(atoi(t_vec[1].c_str()));
-        get_first_not_numstr(t_vec[1], hi.end_str);
+        hi.date_index = t_vec[0];
+        hi.date_index_end = t_vec[1];
         hi.sum = atoi(t_vec[2].c_str());
         hi.fpoint = atof(t_vec[3].c_str());
     }
@@ -3030,18 +2732,10 @@ bool hquotation_search_index::do_check_rhigh_hhigh_ge_num_ge(std::string &name, 
             const std::deque< std::shared_ptr<quotation_t>> &  tt = ii->second;
             int len = tt.size();
 
-            std::set<int> date_index_set {hi.date_index};
-            std::set<int> date_index_end_set {hi.date_index_end};
+            std::set<int> date_index_set ;
+            std::set<int> date_index_end_set ;
 
-            if (!hi.start_str.empty())
-            {    
-                p_data->get_search_sstr(ii->first, hi.start_str, hi.date_index, hi.date_index_end, search, date_index_set);
-            }  
-
-            if (!hi.end_str.empty())
-            {    
-                p_data->get_search_sstr(ii->first, hi.end_str, hi.date_index, hi.date_index_end, search, date_index_end_set);
-            }  
+            p_data->get_date_index(ii->first, hi.date_index, hi.date_index_end, search, date_index_set, date_index_end_set);
 
             for (auto date_index: date_index_set)
             {
@@ -3085,8 +2779,7 @@ bool hquotation_search_index::do_check_hqend_end_5_ge(std::string &name, std::st
             return false;
         }
 
-        hi.date_index = abs(atoi(t_vec[0].c_str()));
-        get_first_not_numstr(t_vec[0], hi.start_str);
+        hi.date_index = t_vec[0];
         hi.fpoint = atof(t_vec[1].c_str());
     }
 
@@ -3108,13 +2801,10 @@ bool hquotation_search_index::do_check_hqend_end_5_ge(std::string &name, std::st
             const std::deque< std::shared_ptr<technical_t>> &  tt = ii->second;
             int len = tt.size();
 
-            std::set<int> date_index_set {hi.date_index};
-            std::set<int> date_index_end_set {hi.date_index_end};
+            std::set<int> date_index_set ;
+            std::set<int> date_index_end_set ;
 
-            if (!hi.start_str.empty())
-            {    
-                p_data->get_search_sstr(ii->first, hi.start_str, hi.date_index, hi.date_index_end, search, date_index_set);
-            }  
+            p_data->get_date_index(ii->first, hi.date_index, hi.date_index_end, search, date_index_set, date_index_end_set);
 
             for (auto date_index: date_index_set)
             {
@@ -3146,8 +2836,7 @@ bool hquotation_search_index::do_check_hqend_end_5_le(std::string &name, std::st
             return false;
         }
 
-        hi.date_index = abs(atoi(t_vec[0].c_str()));
-        get_first_not_numstr(t_vec[0], hi.start_str);
+        hi.date_index = t_vec[0];
         hi.fpoint = atof(t_vec[1].c_str());
     }
 
@@ -3169,13 +2858,10 @@ bool hquotation_search_index::do_check_hqend_end_5_le(std::string &name, std::st
             const std::deque< std::shared_ptr<technical_t>> &  tt = ii->second;
             int len = tt.size();
 
-            std::set<int> date_index_set {hi.date_index};
-            std::set<int> date_index_end_set {hi.date_index_end};
+            std::set<int> date_index_set ;
+            std::set<int> date_index_end_set ;
 
-            if (!hi.start_str.empty())
-            {    
-                p_data->get_search_sstr(ii->first, hi.start_str, hi.date_index, hi.date_index_end, search, date_index_set);
-            }  
+            p_data->get_date_index(ii->first, hi.date_index, hi.date_index_end, search, date_index_set, date_index_end_set);
 
             for (auto date_index: date_index_set)
             {
@@ -3208,10 +2894,8 @@ bool hquotation_search_index::do_check_hqend_end_5_ge_num_ge(std::string &name, 
             return false;
         }
 
-        hi.date_index = abs(atoi(t_vec[0].c_str()));
-        get_first_not_numstr(t_vec[0], hi.start_str);
-        hi.date_index_end = abs(atoi(t_vec[1].c_str()));
-        get_first_not_numstr(t_vec[1], hi.end_str);
+        hi.date_index = t_vec[0];
+        hi.date_index_end = t_vec[1];
         hi.sum = atoi(t_vec[2].c_str());
         hi.fpoint = atof(t_vec[3].c_str());
     }
@@ -3235,18 +2919,10 @@ bool hquotation_search_index::do_check_hqend_end_5_ge_num_ge(std::string &name, 
             const std::deque< std::shared_ptr<technical_t>> &  tt = ii->second;
             int len = tt.size();
 
-            std::set<int> date_index_set {hi.date_index};
-            std::set<int> date_index_end_set {hi.date_index_end};
+            std::set<int> date_index_set ;
+            std::set<int> date_index_end_set ;
 
-            if (!hi.start_str.empty())
-            {    
-                p_data->get_search_sstr(ii->first, hi.start_str, hi.date_index, hi.date_index_end, search, date_index_set);
-            }  
-
-            if (!hi.end_str.empty())
-            {    
-                p_data->get_search_sstr(ii->first, hi.end_str, hi.date_index, hi.date_index_end, search, date_index_end_set);
-            }  
+            p_data->get_date_index(ii->first, hi.date_index, hi.date_index_end, search, date_index_set, date_index_end_set);
 
             for (auto date_index: date_index_set)
             {
@@ -3291,8 +2967,7 @@ bool hquotation_search_index::do_check_hqend_end_10_ge(std::string &name, std::s
             return false;
         }
 
-        hi.date_index = abs(atoi(t_vec[0].c_str()));
-        get_first_not_numstr(t_vec[0], hi.start_str);
+        hi.date_index = t_vec[0];
         hi.fpoint = atof(t_vec[1].c_str());
     }
 
@@ -3314,13 +2989,10 @@ bool hquotation_search_index::do_check_hqend_end_10_ge(std::string &name, std::s
             const std::deque< std::shared_ptr<technical_t>> &  tt = ii->second;
             int len = tt.size();
 
-            std::set<int> date_index_set {hi.date_index};
-            std::set<int> date_index_end_set {hi.date_index_end};
+            std::set<int> date_index_set ;
+            std::set<int> date_index_end_set ;
 
-            if (!hi.start_str.empty())
-            {    
-                p_data->get_search_sstr(ii->first, hi.start_str, hi.date_index, hi.date_index_end, search, date_index_set);
-            }  
+            p_data->get_date_index(ii->first, hi.date_index, hi.date_index_end, search, date_index_set, date_index_end_set);
 
             for (auto date_index: date_index_set)
             {
@@ -3352,8 +3024,7 @@ bool hquotation_search_index::do_check_hqend_end_10_le(std::string &name, std::s
             return false;
         }
 
-        hi.date_index = abs(atoi(t_vec[0].c_str()));
-        get_first_not_numstr(t_vec[0], hi.start_str);
+        hi.date_index = t_vec[0];
         hi.fpoint = atof(t_vec[1].c_str());
     }
 
@@ -3375,13 +3046,10 @@ bool hquotation_search_index::do_check_hqend_end_10_le(std::string &name, std::s
             const std::deque< std::shared_ptr<technical_t>> &  tt = ii->second;
             int len = tt.size();
 
-            std::set<int> date_index_set {hi.date_index};
-            std::set<int> date_index_end_set {hi.date_index_end};
+            std::set<int> date_index_set ;
+            std::set<int> date_index_end_set ;
 
-            if (!hi.start_str.empty())
-            {    
-                p_data->get_search_sstr(ii->first, hi.start_str, hi.date_index, hi.date_index_end, search, date_index_set);
-            }  
+            p_data->get_date_index(ii->first, hi.date_index, hi.date_index_end, search, date_index_set, date_index_end_set);
 
             for (auto date_index: date_index_set)
             {
@@ -3413,10 +3081,8 @@ bool hquotation_search_index::do_check_hqend_end_10_ge_num_ge(std::string &name,
             return false;
         }
 
-        hi.date_index = abs(atoi(t_vec[0].c_str()));
-        get_first_not_numstr(t_vec[0], hi.start_str);
-        hi.date_index_end = abs(atoi(t_vec[1].c_str()));
-        get_first_not_numstr(t_vec[1], hi.end_str);
+        hi.date_index = t_vec[0];
+        hi.date_index_end = t_vec[1];
         hi.sum = atoi(t_vec[2].c_str());
         hi.fpoint = atof(t_vec[3].c_str());
     }
@@ -3440,18 +3106,10 @@ bool hquotation_search_index::do_check_hqend_end_10_ge_num_ge(std::string &name,
             const std::deque< std::shared_ptr<technical_t>> &  tt = ii->second;
             int len = tt.size();
 
-            std::set<int> date_index_set {hi.date_index};
-            std::set<int> date_index_end_set {hi.date_index_end};
+            std::set<int> date_index_set ;
+            std::set<int> date_index_end_set ;
 
-            if (!hi.start_str.empty())
-            {    
-                p_data->get_search_sstr(ii->first, hi.start_str, hi.date_index, hi.date_index_end, search, date_index_set);
-            }  
-
-            if (!hi.end_str.empty())
-            {    
-                p_data->get_search_sstr(ii->first, hi.end_str, hi.date_index, hi.date_index_end, search, date_index_end_set);
-            }  
+            p_data->get_date_index(ii->first, hi.date_index, hi.date_index_end, search, date_index_set, date_index_end_set);
 
             for (auto date_index: date_index_set)
             {
@@ -3495,8 +3153,7 @@ bool hquotation_search_index::do_check_hqend_end_20_ge(std::string &name, std::s
             return false;
         }
 
-        hi.date_index = abs(atoi(t_vec[0].c_str()));
-        get_first_not_numstr(t_vec[0], hi.start_str);
+        hi.date_index = t_vec[0];
         hi.fpoint = atof(t_vec[1].c_str());
     }
 
@@ -3518,13 +3175,10 @@ bool hquotation_search_index::do_check_hqend_end_20_ge(std::string &name, std::s
             const std::deque< std::shared_ptr<technical_t>> &  tt = ii->second;
             int len = tt.size();
 
-            std::set<int> date_index_set {hi.date_index};
-            std::set<int> date_index_end_set {hi.date_index_end};
+            std::set<int> date_index_set ;
+            std::set<int> date_index_end_set ;
 
-            if (!hi.start_str.empty())
-            {    
-                p_data->get_search_sstr(ii->first, hi.start_str, hi.date_index, hi.date_index_end, search, date_index_set);
-            }  
+            p_data->get_date_index(ii->first, hi.date_index, hi.date_index_end, search, date_index_set, date_index_end_set);
 
             for (auto date_index: date_index_set)
             {
@@ -3556,8 +3210,7 @@ bool hquotation_search_index::do_check_hqend_end_20_le(std::string &name, std::s
             return false;
         }
 
-        hi.date_index = abs(atoi(t_vec[0].c_str()));
-        get_first_not_numstr(t_vec[0], hi.start_str);
+        hi.date_index = t_vec[0];
         hi.fpoint = atof(t_vec[1].c_str());
     }
 
@@ -3579,13 +3232,10 @@ bool hquotation_search_index::do_check_hqend_end_20_le(std::string &name, std::s
             const std::deque< std::shared_ptr<technical_t>> &  tt = ii->second;
             int len = tt.size();
 
-            std::set<int> date_index_set {hi.date_index};
-            std::set<int> date_index_end_set {hi.date_index_end};
+            std::set<int> date_index_set ;
+            std::set<int> date_index_end_set ;
 
-            if (!hi.start_str.empty())
-            {    
-                p_data->get_search_sstr(ii->first, hi.start_str, hi.date_index, hi.date_index_end, search, date_index_set);
-            }  
+            p_data->get_date_index(ii->first, hi.date_index, hi.date_index_end, search, date_index_set, date_index_end_set);
 
             for (auto date_index: date_index_set)
             {
@@ -3618,10 +3268,8 @@ bool hquotation_search_index::do_check_hqend_end_20_ge_num_ge(std::string &name,
             return false;
         }
 
-        hi.date_index = abs(atoi(t_vec[0].c_str()));
-        get_first_not_numstr(t_vec[0], hi.start_str);
-        hi.date_index_end = abs(atoi(t_vec[1].c_str()));
-        get_first_not_numstr(t_vec[1], hi.end_str);
+        hi.date_index = t_vec[0];
+        hi.date_index_end = t_vec[1];
         hi.sum = atoi(t_vec[2].c_str());
         hi.fpoint = atof(t_vec[3].c_str());
     }
@@ -3645,18 +3293,10 @@ bool hquotation_search_index::do_check_hqend_end_20_ge_num_ge(std::string &name,
             const std::deque< std::shared_ptr<technical_t>> &  tt = ii->second;
             int len = tt.size();
 
-            std::set<int> date_index_set {hi.date_index};
-            std::set<int> date_index_end_set {hi.date_index_end};
+            std::set<int> date_index_set ;
+            std::set<int> date_index_end_set ;
 
-            if (!hi.start_str.empty())
-            {    
-                p_data->get_search_sstr(ii->first, hi.start_str, hi.date_index, hi.date_index_end, search, date_index_set);
-            }  
-
-            if (!hi.end_str.empty())
-            {    
-                p_data->get_search_sstr(ii->first, hi.end_str, hi.date_index, hi.date_index_end, search, date_index_end_set);
-            }  
+            p_data->get_date_index(ii->first, hi.date_index, hi.date_index_end, search, date_index_set, date_index_end_set);
 
             for (auto date_index: date_index_set)
             {
@@ -3684,6 +3324,7 @@ bool hquotation_search_index::do_check_hqend_end_20_ge_num_ge(std::string &name,
     return true;
 }
 
+/*
 bool hquotation_search_index::do_check_hqend_end_30_ge(std::string &name, std::string &value, search_res & search)
 {
     hquotation_search_item * search_index = current();
@@ -3700,8 +3341,7 @@ bool hquotation_search_index::do_check_hqend_end_30_ge(std::string &name, std::s
             return false;
         }
 
-        hi.date_index = abs(atoi(t_vec[0].c_str()));
-        get_first_not_numstr(t_vec[0], hi.start_str);
+        hi.date_index = t_vec[0];
         hi.fpoint = atof(t_vec[1].c_str());
     }
 
@@ -3723,13 +3363,10 @@ bool hquotation_search_index::do_check_hqend_end_30_ge(std::string &name, std::s
             const std::deque< std::shared_ptr<technical_t>> &  tt = ii->second;
             int len = tt.size();
 
-            std::set<int> date_index_set {hi.date_index};
-            std::set<int> date_index_end_set {hi.date_index_end};
+            std::set<int> date_index_set ;
+            std::set<int> date_index_end_set ;
 
-            if (!hi.start_str.empty())
-            {    
-                p_data->get_search_sstr(ii->first, hi.start_str, hi.date_index, hi.date_index_end, search, date_index_set);
-            }  
+            p_data->get_date_index(ii->first, hi.date_index, hi.date_index_end, search, date_index_set, date_index_end_set);
 
             for (auto date_index: date_index_set)
             {
@@ -3744,6 +3381,7 @@ bool hquotation_search_index::do_check_hqend_end_30_ge(std::string &name, std::s
 
     return true;
 }
+*/
 
 bool hquotation_search_index::do_check_hqhigh_end_5_ge(std::string &name, std::string &value, search_res & search)
 {
@@ -3761,8 +3399,7 @@ bool hquotation_search_index::do_check_hqhigh_end_5_ge(std::string &name, std::s
             return false;
         }
 
-        hi.date_index = abs(atoi(t_vec[0].c_str()));
-        get_first_not_numstr(t_vec[0], hi.start_str);
+        hi.date_index = t_vec[0];
         hi.fpoint = atof(t_vec[1].c_str());
     }
 
@@ -3784,13 +3421,10 @@ bool hquotation_search_index::do_check_hqhigh_end_5_ge(std::string &name, std::s
             const std::deque< std::shared_ptr<technical_t>> &  tt = ii->second;
             int len = tt.size();
 
-            std::set<int> date_index_set {hi.date_index};
-            std::set<int> date_index_end_set {hi.date_index_end};
+            std::set<int> date_index_set ;
+            std::set<int> date_index_end_set ;
 
-            if (!hi.start_str.empty())
-            {    
-                p_data->get_search_sstr(ii->first, hi.start_str, hi.date_index, hi.date_index_end, search, date_index_set);
-            }  
+            p_data->get_date_index(ii->first, hi.date_index, hi.date_index_end, search, date_index_set, date_index_end_set);
 
             for (auto date_index: date_index_set)
             {
@@ -3822,8 +3456,7 @@ bool hquotation_search_index::do_check_hqlow_end_5_ge(std::string &name, std::st
             return false;
         }
 
-        hi.date_index = abs(atoi(t_vec[0].c_str()));
-        get_first_not_numstr(t_vec[0], hi.start_str);
+        hi.date_index = t_vec[0];
         hi.fpoint = atof(t_vec[1].c_str());
     }
 
@@ -3845,13 +3478,10 @@ bool hquotation_search_index::do_check_hqlow_end_5_ge(std::string &name, std::st
             const std::deque< std::shared_ptr<technical_t>> &  tt = ii->second;
             int len = tt.size();
 
-            std::set<int> date_index_set {hi.date_index};
-            std::set<int> date_index_end_set {hi.date_index_end};
+            std::set<int> date_index_set ;
+            std::set<int> date_index_end_set ;
 
-            if (!hi.start_str.empty())
-            {    
-                p_data->get_search_sstr(ii->first, hi.start_str, hi.date_index, hi.date_index_end, search, date_index_set);
-            }  
+            p_data->get_date_index(ii->first, hi.date_index, hi.date_index_end, search, date_index_set, date_index_end_set);
 
             for (auto date_index: date_index_set)
             {
@@ -3883,8 +3513,7 @@ bool hquotation_search_index::do_check_hqhigh_end_5_le(std::string &name, std::s
             return false;
         }
 
-        hi.date_index = abs(atoi(t_vec[0].c_str()));
-        get_first_not_numstr(t_vec[0], hi.start_str);
+        hi.date_index = t_vec[0];
         hi.fpoint = atof(t_vec[1].c_str());
     }
 
@@ -3906,13 +3535,10 @@ bool hquotation_search_index::do_check_hqhigh_end_5_le(std::string &name, std::s
             const std::deque< std::shared_ptr<technical_t>> &  tt = ii->second;
             int len = tt.size();
 
-            std::set<int> date_index_set {hi.date_index};
-            std::set<int> date_index_end_set {hi.date_index_end};
+            std::set<int> date_index_set ;
+            std::set<int> date_index_end_set ;
 
-            if (!hi.start_str.empty())
-            {    
-                p_data->get_search_sstr(ii->first, hi.start_str, hi.date_index, hi.date_index_end, search, date_index_set);
-            }  
+            p_data->get_date_index(ii->first, hi.date_index, hi.date_index_end, search, date_index_set, date_index_end_set);
 
             for (auto date_index: date_index_set)
             {
@@ -3945,8 +3571,7 @@ bool hquotation_search_index::do_check_hqlow_end_5_le(std::string &name, std::st
             return false;
         }
 
-        hi.date_index = abs(atoi(t_vec[0].c_str()));
-        get_first_not_numstr(t_vec[0], hi.start_str);
+        hi.date_index = t_vec[0];
         hi.fpoint = atof(t_vec[1].c_str());
     }
 
@@ -3968,13 +3593,10 @@ bool hquotation_search_index::do_check_hqlow_end_5_le(std::string &name, std::st
             const std::deque< std::shared_ptr<technical_t>> &  tt = ii->second;
             int len = tt.size();
 
-            std::set<int> date_index_set {hi.date_index};
-            std::set<int> date_index_end_set {hi.date_index_end};
+            std::set<int> date_index_set ;
+            std::set<int> date_index_end_set ;
 
-            if (!hi.start_str.empty())
-            {    
-                p_data->get_search_sstr(ii->first, hi.start_str, hi.date_index, hi.date_index_end, search, date_index_set);
-            }  
+            p_data->get_date_index(ii->first, hi.date_index, hi.date_index_end, search, date_index_set, date_index_end_set);
 
             for (auto date_index: date_index_set)
             {
@@ -3990,7 +3612,7 @@ bool hquotation_search_index::do_check_hqlow_end_5_le(std::string &name, std::st
     return true;
 }
 
-
+/*
 bool hquotation_search_index::do_check_hqend_end_30_le(std::string &name, std::string &value, search_res & search)
 {
     hquotation_search_item * search_index = current();
@@ -4007,8 +3629,7 @@ bool hquotation_search_index::do_check_hqend_end_30_le(std::string &name, std::s
             return false;
         }
 
-        hi.date_index = abs(atoi(t_vec[0].c_str()));
-        get_first_not_numstr(t_vec[0], hi.start_str);
+        hi.date_index = t_vec[0];
         hi.fpoint = atof(t_vec[1].c_str());
     }
 
@@ -4030,13 +3651,10 @@ bool hquotation_search_index::do_check_hqend_end_30_le(std::string &name, std::s
             const std::deque< std::shared_ptr<technical_t>> &  tt = ii->second;
             int len = tt.size();
 
-            std::set<int> date_index_set {hi.date_index};
-            std::set<int> date_index_end_set {hi.date_index_end};
+            std::set<int> date_index_set ;
+            std::set<int> date_index_end_set ;
 
-            if (!hi.start_str.empty())
-            {    
-                p_data->get_search_sstr(ii->first, hi.start_str, hi.date_index, hi.date_index_end, search, date_index_set);
-            }  
+            p_data->get_date_index(ii->first, hi.date_index, hi.date_index_end, search, date_index_set, date_index_end_set);
 
             for (auto date_index: date_index_set)
             {
@@ -4068,10 +3686,8 @@ bool hquotation_search_index::do_check_hqend_end_30_ge_num_ge(std::string &name,
             return false;
         }
 
-        hi.date_index = abs(atoi(t_vec[0].c_str()));
-        get_first_not_numstr(t_vec[0], hi.start_str);
-        hi.date_index_end = abs(atoi(t_vec[1].c_str()));
-        get_first_not_numstr(t_vec[1], hi.end_str);
+        hi.date_index = t_vec[0];
+        hi.date_index_end = t_vec[1];
         hi.sum = atoi(t_vec[2].c_str());
         hi.fpoint = atof(t_vec[3].c_str());
     }
@@ -4095,18 +3711,10 @@ bool hquotation_search_index::do_check_hqend_end_30_ge_num_ge(std::string &name,
             const std::deque< std::shared_ptr<technical_t>> &  tt = ii->second;
             int len = tt.size();
 
-            std::set<int> date_index_set {hi.date_index};
-            std::set<int> date_index_end_set {hi.date_index_end};
+            std::set<int> date_index_set ;
+            std::set<int> date_index_end_set ;
 
-            if (!hi.start_str.empty())
-            {    
-                p_data->get_search_sstr(ii->first, hi.start_str, hi.date_index, hi.date_index_end, search, date_index_set);
-            }  
-
-            if (!hi.end_str.empty())
-            {    
-                p_data->get_search_sstr(ii->first, hi.end_str, hi.date_index, hi.date_index_end, search, date_index_end_set);
-            }  
+            p_data->get_date_index(ii->first, hi.date_index, hi.date_index_end, search, date_index_set, date_index_end_set);
 
             for (auto date_index: date_index_set)
             {
@@ -4133,6 +3741,7 @@ bool hquotation_search_index::do_check_hqend_end_30_ge_num_ge(std::string &name,
 
     return true;
 }
+*/
 
 bool hquotation_search_index::do_check_hqredvol_greenvol_ge(std::string &name, std::string &value, search_res & search)                                              
 {
@@ -4150,10 +3759,8 @@ bool hquotation_search_index::do_check_hqredvol_greenvol_ge(std::string &name, s
             return false;
         }
 
-        hi.date_index = abs(atoi(t_vec[0].c_str()));
-        get_first_not_numstr(t_vec[0], hi.start_str);
-        hi.date_index_end = abs(atoi(t_vec[1].c_str()));
-        get_first_not_numstr(t_vec[1], hi.end_str);
+        hi.date_index = t_vec[0];
+        hi.date_index_end = t_vec[1];
         hi.fpoint = atof(t_vec[2].c_str());
     }
 
@@ -4178,18 +3785,10 @@ bool hquotation_search_index::do_check_hqredvol_greenvol_ge(std::string &name, s
 
             const std::deque< std::shared_ptr<quotation_t>> &  tt = ii->second;
             int len = tt.size();
-            std::set<int> date_index_set {hi.date_index};
-            std::set<int> date_index_end_set {hi.date_index_end};
+            std::set<int> date_index_set ;
+            std::set<int> date_index_end_set ;
 
-            if (!hi.start_str.empty())
-            {    
-                p_data->get_search_sstr(ii->first, hi.start_str, hi.date_index, hi.date_index_end, search, date_index_set);
-            }  
-
-            if (!hi.end_str.empty())
-            {    
-                p_data->get_search_sstr(ii->first, hi.end_str, hi.date_index, hi.date_index_end, search, date_index_end_set);
-            }  
+            p_data->get_date_index(ii->first, hi.date_index, hi.date_index_end, search, date_index_set, date_index_end_set);
 
             for (auto date_index: date_index_set)
             {
@@ -4241,10 +3840,8 @@ bool hquotation_search_index::do_check_hqredvol_greenvol_le(std::string &name, s
             return false;
         }
 
-        hi.date_index = abs(atoi(t_vec[0].c_str()));
-        get_first_not_numstr(t_vec[0], hi.start_str);
-        hi.date_index_end = abs(atoi(t_vec[1].c_str()));
-        get_first_not_numstr(t_vec[1], hi.end_str);
+        hi.date_index = t_vec[0];
+        hi.date_index_end = t_vec[1];
         hi.fpoint = atof(t_vec[2].c_str());
     }
 
@@ -4269,18 +3866,10 @@ bool hquotation_search_index::do_check_hqredvol_greenvol_le(std::string &name, s
             const std::deque< std::shared_ptr<quotation_t>> &  tt = ii->second;
             int len = tt.size();
 
-            std::set<int> date_index_set {hi.date_index};
-            std::set<int> date_index_end_set {hi.date_index_end};
+            std::set<int> date_index_set ;
+            std::set<int> date_index_end_set ;
 
-            if (!hi.start_str.empty())
-            {    
-                p_data->get_search_sstr(ii->first, hi.start_str, hi.date_index, hi.date_index_end, search, date_index_set);
-            }  
-
-            if (!hi.end_str.empty())
-            {    
-                p_data->get_search_sstr(ii->first, hi.end_str, hi.date_index, hi.date_index_end, search, date_index_end_set);
-            }  
+            p_data->get_date_index(ii->first, hi.date_index, hi.date_index_end, search, date_index_set, date_index_end_set);
 
             for (auto date_index: date_index_set)
             {

@@ -14,11 +14,11 @@ std::shared_ptr<quotation_t> operator + (const std::shared_ptr<quotation_t>  qt,
     qq->end = mm->end + qt->end; 
     qq->high = mm->high + qt->high; 
     qq->low = mm->low + qt->low; 
-    qq->last_closed = mm->last_closed + qt->last_closed;
+    //qq->last_closed = mm->last_closed + qt->last_closed;
     qq->vol = mm->vol + qt->vol; 
-    qq->vol = mm->buy_vol + qt->buy_vol;
-    qq->sell_vol = mm->sell_vol + qt->sell_vol;
-    qq->swing = mm->swing + qt->swing;
+    //qq->buy_vol = mm->buy_vol + qt->buy_vol;
+    //qq->sell_vol = mm->sell_vol + qt->sell_vol;
+    //qq->swing = mm->swing + qt->swing;
     qq->change_rate = mm->change_rate + qt->change_rate;
     qq->range_percent = mm->range_percent + qt->range_percent; 
     qq->total_price = mm->total_price + qt->total_price;
@@ -94,28 +94,37 @@ int history_quotation_dict::load_history_quoation(const char * file)
             continue;
         }
 
-        std::shared_ptr<quotation_t> qt(new quotation_t);
+        std::shared_ptr<quotation_t> qt;
+        std::shared_ptr<quotation_original> qo(new quotation_original);
+
         const std::string &id = strVec[0];
+        
         
         auto id_dict = p_data->_id_dict->current();
         auto id_name = id_dict->_id_name_map.find(id);
         if (id_name != id_dict->_id_name_map.end())
         {
-            snprintf(qt->name, sizeof(qt->name), "%s", id_name->second.c_str());
+            snprintf(qo->name, sizeof(qo->name), "%s", id_name->second.c_str());
         }
+        
 
-        qt->start = atof(strVec[1].c_str());
-        qt->end = atof(strVec[2].c_str());
-        qt->high = atof(strVec[3].c_str());
-        qt->low = atof(strVec[4].c_str());
-        qt->last_closed = atof(strVec[5].c_str());
-        qt->vol = atoi(strVec[6].c_str());
-        qt->buy_vol = atoi(strVec[7].c_str());
-        qt->sell_vol = atoi(strVec[8].c_str());
-        qt->swing = atof(strVec[9].c_str());
-        qt->change_rate = atof(strVec[10].c_str());
-        qt->range_percent = atof(strVec[11].c_str());
-        qt->total_price = atoi(strVec[12].c_str());
+        qo->start = atof(strVec[1].c_str());
+        qo->end = atof(strVec[2].c_str());
+        qo->high = atof(strVec[3].c_str());
+        qo->low = atof(strVec[4].c_str());
+        qo->last_closed = atof(strVec[5].c_str());
+        qo->vol = atoi(strVec[6].c_str());
+        qo->buy_vol = atoi(strVec[7].c_str());
+        qo->sell_vol = atoi(strVec[8].c_str());
+        qo->swing = atof(strVec[9].c_str());
+        qo->change_rate = atof(strVec[10].c_str());
+        qo->range_percent = atof(strVec[11].c_str());
+        qo->total_price = atoi(strVec[12].c_str());
+
+        qt = original_2_quotation(qo);
+
+        if (date == _last_date)
+            _real_dict[id] = qo;
 
         creat_key(date, id, key);
         auto ii = _date_dict.find(key);
@@ -143,13 +152,17 @@ int history_quotation_dict::load_history_quoation(const char * file)
     return 0;
 }
 
-void history_quotation_dict::update_real_quotation(const std::string & trade_date, const std::string & id, std::shared_ptr<quotation_t> & qt)
+void history_quotation_dict::update_real_quotation(const std::string & trade_date, const std::string & id, std::shared_ptr<quotation_original> & qt)
 {
     std::string key; 
 
     creat_key(trade_date, id, key);
 
-    _date_dict[key] = qt;
+    _real_dict[id] = qt;
+
+    _date_dict[key] = original_2_quotation(qt);
+
+    _last_date = trade_date;
 
     auto ii = _id_date_dict.find(id);
     if (ii == _id_date_dict.end())
@@ -306,25 +319,16 @@ void history_quotation_dict::update_rquotation_search()
 {
     proc_data* p_data = proc_data::instance();
 
-    hquotation_search_item * hqitem = p_data->_hquotation_index->idle();
     auto cur = p_data->_rquotation_index->current();
     auto idl = p_data->_rquotation_index->idle();
 
-    for (auto ii = hqitem->id_quotation.begin(); ii != hqitem->id_quotation.end(); ii++)
+    for (auto ii = _real_dict.begin(); ii != _real_dict.end(); ii++)
     {
         const std::string & id = ii->first; 
 
 
-        if (!ii->second.size())
-            continue;
-
-        int index = ii->second.size() - 1;
-        std::string date = hqitem->get_date(id, index);
-        if (date != p_data->_trade_date)
-            continue;
-
         {
-            std::deque< std::shared_ptr<quotation_t>> dq;
+            std::deque< std::shared_ptr<quotation_original>> dq;
             idl->id_quotation[id] = dq;
             auto mm = cur->id_quotation.find(id);
             if (mm != cur->id_quotation.end()) 
@@ -332,9 +336,9 @@ void history_quotation_dict::update_rquotation_search()
                 idl->id_quotation[id] = mm->second;
             }   
 
-            if (idl->id_quotation[id].empty() || idl->id_quotation[id].back() != ii->second.back())
+            if (idl->id_quotation[id].empty() || idl->id_quotation[id].back() != ii->second)
             {
-                idl->id_quotation[id].push_back(ii->second.back());
+                idl->id_quotation[id].push_back(ii->second);
             }
 
             if (idl->id_quotation[id].size() > p_data->_conf->_strategy->current()->real_quotation_deque_length)
@@ -342,12 +346,15 @@ void history_quotation_dict::update_rquotation_search()
                 idl->id_quotation[id].pop_front();
             }
 
-            idl->end_index.insert(std::make_pair(ii->second.back()->end, id));
-            idl->change_rate_index.insert(std::make_pair(ii->second.back()->change_rate, id));
-            idl->range_percent_index.insert(std::make_pair(ii->second.back()->range_percent, id));
+            idl->end_index.insert(std::make_pair(ii->second->end, id));
+            idl->change_rate_index.insert(std::make_pair(ii->second->change_rate, id));
+            idl->range_percent_index.insert(std::make_pair(ii->second->range_percent, id));
         }
 
         {
+
+            hquotation_search_item * hqitem = p_data->_hquotation_index->idle();
+
             std::deque< std::shared_ptr<technical_t>> dq;
             auto mm = cur->id_technical.find(id);
             if (mm != cur->id_technical.end())
@@ -390,10 +397,13 @@ void history_quotation_dict::update_rquotation_search()
                 {
                     idl->end_end20_index.insert(std::make_pair(iii->second.back()->end_end_20, id));
                 }
+
+                /*
                 if (iii->second.back()->end_end_30)
                 {
                     idl->end_end30_index.insert(std::make_pair(iii->second.back()->end_end_30, id));
                 }
+                */
             }
         }
     }
@@ -427,6 +437,7 @@ void history_quotation_dict::get_id_technical(std::shared_ptr<quotation_t> qt, s
         tt->end_20 = atof(t_buf);
     }
 
+    /*
     if (p >= 30)
     {
         tt->end_30 = (sum_quotation[p]->end - sum_quotation[p - 30]->end)/30;
@@ -440,6 +451,7 @@ void history_quotation_dict::get_id_technical(std::shared_ptr<quotation_t> qt, s
         snprintf(t_buf, sizeof(t_buf), "%.2f", tt->end_60);
         tt->end_60 = atof(t_buf);
     }
+    */
 
     if (tt->end_5)
     {
@@ -462,6 +474,7 @@ void history_quotation_dict::get_id_technical(std::shared_ptr<quotation_t> qt, s
         tt->end_end_20 = atof(t_buf);
     }
 
+    /*
     if (tt->end_30)
     {
         tt->end_end_30 = qt->end / tt->end_30;
@@ -475,6 +488,7 @@ void history_quotation_dict::get_id_technical(std::shared_ptr<quotation_t> qt, s
         snprintf(t_buf, sizeof(t_buf), "%.2f", tt->end_end_60); 
         tt->end_end_60 = atof(t_buf);
     }
+    */
 
     if (tt->end_5)
     {
@@ -553,6 +567,9 @@ int history_quotation_dict::load()
     char * ptr = NULL, *bname;
     uint32_t query_sign[2];
 
+    std::set<std::string> file_set;
+    std::set<std::string> date_set;
+
     while (fgets(line, sizeof(line), fp)) 
     {
         if('\0' == line[0]){
@@ -563,10 +580,26 @@ int history_quotation_dict::load()
         if (ptr == NULL || *ptr == '\0'|| *ptr == '#')
             continue;
 
-        load_history_quoation(ptr);
+        file_set.insert(std::string(ptr));
+
+        std::string date = basename(ptr);
+
+        date_set.insert(std::string(ptr));
+
     }
 
     fclose(fp);
+
+    if (!date_set.empty())
+    {
+        _last_date = *(date_set.rbegin());
+    }
+
+    for (auto filename : file_set)
+    {
+        load_history_quoation(filename.c_str());
+    }
+
     struct stat st;
     stat(_fullpath, &st);
     _last_load = st.st_mtime;
@@ -627,6 +660,12 @@ int history_quotation_dict::destroy()
     proc_data* p_data = proc_data::instance();
 
     //LOG_TRACE("%p", this);
+    
+    {
+        std::unordered_map<std::string, std::shared_ptr<quotation_original>, str_hasher> tmp;
+        _real_dict.swap(tmp);
+    }
+    //
     {
         std::unordered_map<std::string, std::shared_ptr<quotation_t>, str_hasher> tmp;
         _date_dict.swap(tmp);
@@ -644,4 +683,24 @@ int history_quotation_dict::destroy()
 
 
     return 0;
+}
+
+std::shared_ptr<quotation_t>  history_quotation_dict::original_2_quotation(std::shared_ptr<quotation_original> & original)
+{
+    std::shared_ptr<quotation_t> qq = std::make_shared<quotation_t>();
+
+    qq->start = original->start;
+    qq->end = original->end; 
+    qq->high = original->high; 
+    qq->low = original->low; 
+    //qq->last_closed = original->last_closed;
+    qq->vol = original->vol; 
+    //qq->buy_vol = original->buy_vol;
+    //qq->sell_vol = original->sell_vol;
+    //qq->swing = original->swing;
+    qq->change_rate = original->change_rate;
+    qq->range_percent = original->range_percent; 
+    qq->total_price = original->total_price;
+
+    return qq;
 }

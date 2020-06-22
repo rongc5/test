@@ -50,7 +50,7 @@ void rquotation_data_process::msg_recv_finish()
     LOG_DEBUG("recv_buf: %s", _recv_buf.c_str());
     //FILE_WRITE("123", _recv_buf.c_str());
     char t_buf[SIZE_LEN_512];
-    std::shared_ptr<quotation_t> qt(new quotation_t);
+    std::shared_ptr<quotation_original> qt(new quotation_original);
     float down_pointer = 0;
     float up_pointer = 0;
     float avg_end = 0;

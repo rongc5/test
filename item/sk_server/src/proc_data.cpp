@@ -404,8 +404,10 @@ void proc_data::reg_search_index()
     _search_index_map["end_end20_le"] = std::bind(&rquotation_search_index::do_check_end_end20_le, _rquotation_index, _1, _2, _3);
     _search_index_map["end_end20_ge"] = std::bind(&rquotation_search_index::do_check_end_end20_ge, _rquotation_index, _1, _2, _3);
 
+    /*
     _search_index_map["end_end30_le"] = std::bind(&rquotation_search_index::do_check_end_end30_le, _rquotation_index, _1, _2, _3);
     _search_index_map["end_end30_ge"] = std::bind(&rquotation_search_index::do_check_end_end30_ge, _rquotation_index, _1, _2, _3);
+    */
 
     _finance_index = std::make_shared<finance_search_index>();
     _search_index_map["pe_le"] = std::bind(&finance_search_index::do_check_pe_le, _finance_index, _1, _2, _3);
@@ -528,9 +530,11 @@ void proc_data::reg_search_index()
     _search_index_map["hqend_end_20_le"] = std::bind(&hquotation_search_index::do_check_hqend_end_20_le, _hquotation_index, _1, _2, _3);
     _search_index_map["hqend_end_20_ge_num_ge"] = std::bind(&hquotation_search_index::do_check_hqend_end_20_ge_num_ge, _hquotation_index, _1, _2, _3);
 
+    /*
     _search_index_map["hqend_end_30_ge"] = std::bind(&hquotation_search_index::do_check_hqend_end_30_ge, _hquotation_index, _1, _2, _3);
     _search_index_map["hqend_end_30_le"] = std::bind(&hquotation_search_index::do_check_hqend_end_30_le, _hquotation_index, _1, _2, _3);
     _search_index_map["hqend_end_30_ge_num_ge"] = std::bind(&hquotation_search_index::do_check_hqend_end_30_ge_num_ge, _hquotation_index, _1, _2, _3);
+    */
 
     _search_index_map["hqredvol_greenvol_ge"] = std::bind(&hquotation_search_index::do_check_hqredvol_greenvol_ge, _hquotation_index, _1, _2, _3);
     _search_index_map["hqredvol_greenvol_le"] = std::bind(&hquotation_search_index::do_check_hqredvol_greenvol_le, _hquotation_index, _1, _2, _3);
@@ -781,6 +785,94 @@ void proc_data::reg_search_sstr()
     _search_sstr_map["lowest"] = std::bind(&proc_data::get_lowest_index, _1, _2, _3, _4);
     _search_sstr_map["trough"] = std::bind(&proc_data::get_trough_index, _1, _2, _3, _4);
     _search_sstr_map["crest"] = std::bind(&proc_data::get_crest_index, _1, _2, _3, _4);
+}
+
+int proc_data::get_date_index(const std::string & id, std::string & date_index, std::string & date_index_end, search_res & search, std::set<int> & date_index_out, std::set<int> & date_index_end_out)
+{
+    date_index_out.clear();
+    date_index_end_out.clear();
+
+    std::vector<std::string> tmp_vec;
+    SplitString(date_index.c_str(), ',', &tmp_vec, SPLIT_MODE_ONE);
+    if (!tmp_vec.size())
+    {
+        tmp_vec.push_back(date_index);
+    }
+
+    if (search.exist_key_index(tmp_vec[0]))
+    {
+        search.get_index_bykey(tmp_vec[0], id, date_index_out);
+    }
+    else
+    {
+        date_index_out.insert(abs(atoi(tmp_vec[0].c_str())));
+    }
+
+
+    std::vector<std::string> t_vec;
+    SplitString(date_index_end.c_str(), ',', &t_vec, SPLIT_MODE_ONE);
+    if (!t_vec.size())
+    {
+        t_vec.push_back(date_index_end);
+    }
+
+    if (search.exist_key_index(t_vec[0]))
+    {
+        search.get_index_bykey(t_vec[0], id, date_index_end_out);
+    }
+    else
+    {
+        date_index_end_out.insert(abs(atoi(t_vec[0].c_str())));
+    }
+
+    {
+        std::set<int> out;
+        if (tmp_vec.size()>= 2 && !tmp_vec[1].empty())
+        {
+
+            for (auto date_index: date_index_out)
+            {
+                std::set<int> t;
+                for (auto date_index_end: date_index_end_out)
+                {
+                    if (date_index < date_index_end)
+                        continue;
+
+                    get_search_sstr(id, tmp_vec[1], date_index, date_index_end, search, t); 
+                }
+
+                out.insert(t.begin(), t.end());
+            }
+
+            date_index_out = out;
+        }
+    }
+
+    {
+        std::set<int> out;
+        if (t_vec.size()>= 2 && !t_vec[1].empty())
+        {
+
+            for (auto date_index: date_index_out)
+            {
+                std::set<int> t;
+                for (auto date_index_end: date_index_end_out)
+                {
+                    if (date_index < date_index_end)
+                        continue;
+
+                    get_search_sstr(id, t_vec[1], date_index, date_index_end, search, t); 
+                }
+
+                out.insert(t.begin(), t.end());
+            }
+
+            date_index_end_out = out;
+        }
+
+    }
+
+    return 0;
 }
 
 

@@ -51,10 +51,11 @@ int plate_dict::load()
         
         std::string id = *(tmp_vec.begin());
         tmp_vec.erase(tmp_vec.begin());
+        std::set<std::string> ts_set(tmp_vec.begin(), tmp_vec.end());
 
         std::vector<std::shared_ptr<std::string> > ts_vec;
 
-        for (auto ii = tmp_vec.begin(); ii != tmp_vec.end(); ii++)
+        for (auto ii = ts_set.begin(); ii != ts_set.end(); ii++)
         {
             std::shared_ptr<std::string> ss(new std::string(*ii));
             auto iii = _plate_set.find(ss);

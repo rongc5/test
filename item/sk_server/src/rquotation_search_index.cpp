@@ -426,6 +426,7 @@ bool rquotation_search_index::do_check_end_end20_ge(std::string &name, std::stri
     return true;
 }
 
+/*
 bool rquotation_search_index::do_check_end_end30_le(std::string &name, std::string &value, search_res & search)
 {
     float end = 0;
@@ -472,3 +473,4 @@ bool rquotation_search_index::do_check_end_end30_ge(std::string &name, std::stri
 
     return true;
 }
+*/

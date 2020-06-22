@@ -45,9 +45,11 @@ class rquotation_search_index:public ToBufferMgr<rquotation_search_item>
 
         bool do_check_end_end20_ge(std::string &key, std::string &value, search_res & search);
 
+        /*
         bool do_check_end_end30_le(std::string &key, std::string &value, search_res & search);
 
         bool do_check_end_end30_ge(std::string &key, std::string &value, search_res & search);
+        */
 
 
 };

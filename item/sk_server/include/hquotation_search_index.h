@@ -95,10 +95,12 @@ class hquotation_search_index:public ToBufferMgr<hquotation_search_item>
 
         bool do_check_hqend_end_20_ge_num_ge(std::string &key, std::string &value, search_res & search);
 
+        /*
         bool do_check_hqend_end_30_le(std::string &key, std::string &value, search_res & search);
         bool do_check_hqend_end_30_ge(std::string &key, std::string &value, search_res & search);
 
         bool do_check_hqend_end_30_ge_num_ge(std::string &key, std::string &value, search_res & search);
+        */
 
 
         bool do_check_hqend_end_le(std::string &key, std::string &value, search_res & search);
@@ -121,23 +123,17 @@ class hquotation_search_index:public ToBufferMgr<hquotation_search_item>
 
         struct hidex_item
         {
-            int date_index;
-            int date_index_end;
+            std::string date_index;
+            std::string date_index_end;
             float fpoint;
             int ipoint;
             int sum;
             std::string sstr;
-            std::string start_str;
-            std::string end_str;
             hidex_item()
             {
-                date_index = 0;
-                date_index_end = 0;
                 fpoint = 0;
                 ipoint = 0;
                 sum = 0;
-                start_str;
-                end_str;
             }
         };
 };

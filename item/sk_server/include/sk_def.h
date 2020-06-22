@@ -415,6 +415,71 @@ struct rsingle_search_item
 
 struct quotation_t
 {
+    //char name[SIZE_LEN_16];
+
+    float start;
+    float end;
+    float high;
+    float low;
+    //float last_closed;
+
+    int vol;
+    //int buy_vol;
+    //int sell_vol;
+
+    //float swing;
+
+    float change_rate;
+    float range_percent;
+
+    float total_price;
+
+    quotation_t & operator += (const quotation_t & qt)
+    {
+        this->start += qt.start;
+        this->end += qt.end;
+        this->high += qt.high;
+        this->low += qt.low;
+        //this->last_closed += qt.last_closed;
+        this->vol += qt.vol;
+        //this->buy_vol += qt.buy_vol;
+        //this->sell_vol += qt.sell_vol;
+        //this->swing += qt.swing;
+        this->change_rate += qt.change_rate;
+        this->range_percent += qt.range_percent;
+        this->total_price += qt.total_price;
+
+        return *this;
+    }
+
+
+
+    quotation_t()
+    {
+        //name[0] = '\0';
+
+        start = 0;
+        end = 0;
+        high = 0;
+        low = 0;
+        //last_closed = 0;
+
+        vol = 0;
+        //buy_vol = 0;
+        //sell_vol = 0;
+
+        //swing = 0;
+
+        change_rate = 0;
+        range_percent = 0;
+
+        total_price = 0;
+    }
+};
+
+
+struct quotation_original
+{
     char name[SIZE_LEN_16];
 
     float start;
@@ -434,7 +499,7 @@ struct quotation_t
 
     float total_price;
 
-    quotation_t & operator += (const quotation_t & qt)
+    quotation_original & operator += (const quotation_original & qt)
     {
         this->start += qt.start;
         this->end += qt.end;
@@ -454,7 +519,7 @@ struct quotation_t
 
 
 
-    quotation_t()
+    quotation_original()
     {
         name[0] = '\0';
 
@@ -482,8 +547,8 @@ struct technical_t
     float end_5;
     float end_10;
     float end_20;
-    float end_30;
-    float end_60;
+    //float end_30;
+    //float end_60;
     float down_pointer;
     float up_pointer;
     float avg_end;
@@ -492,8 +557,8 @@ struct technical_t
     float end_end_5;
     float end_end_10;
     float end_end_20;
-    float end_end_30;
-    float end_end_60;
+    //float end_end_30;
+    //float end_end_60;
     float low_end_5;
     float high_end_5;
 
@@ -502,8 +567,8 @@ struct technical_t
         end_5 = 0;
         end_10 = 0;
         end_20 = 0;
-        end_30 = 0;
-        end_60 = 0;
+        //end_30 = 0;
+        //end_60 = 0;
         down_pointer = 0;
         up_pointer = 0;
         avg_end = 0;
@@ -513,8 +578,8 @@ struct technical_t
         end_end_5 = 0;
         end_end_10 = 0;
         end_end_20 = 0;
-        end_end_30 = 0;
-        end_end_60 = 0;
+        //end_end_30 = 0;
+        //end_end_60 = 0;
         low_end_5 = 0;
         high_end_5 = 0;
     }
@@ -523,7 +588,7 @@ struct technical_t
 struct rquotation_search_item
 {
     //id: vector<quotation_t>
-    std::unordered_map<std::string, std::deque< std::shared_ptr<quotation_t>>, str_hasher> id_quotation;
+    std::unordered_map<std::string, std::deque< std::shared_ptr<quotation_original>>, str_hasher> id_quotation;
     //id: vector<technical_t>
     std::unordered_map<std::string, std::deque< std::shared_ptr<technical_t>>, str_hasher> id_technical;
 
@@ -537,7 +602,7 @@ struct rquotation_search_item
     std::multimap<float, std::string> end_end5_index;
     std::multimap<float, std::string> end_end10_index;
     std::multimap<float, std::string> end_end20_index;
-    std::multimap<float, std::string> end_end30_index;
+    //std::multimap<float, std::string> end_end30_index;
 
     void clear()
     {
@@ -552,7 +617,7 @@ struct rquotation_search_item
         end_end5_index.clear();
         end_end10_index.clear();
         end_end20_index.clear();
-        end_end30_index.clear();
+        //end_end30_index.clear();
 
     }
 };
