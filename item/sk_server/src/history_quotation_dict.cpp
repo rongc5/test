@@ -584,7 +584,7 @@ int history_quotation_dict::load()
 
         std::string date = basename(ptr);
 
-        date_set.insert(std::string(ptr));
+        date_set.insert(date);
 
     }
 
