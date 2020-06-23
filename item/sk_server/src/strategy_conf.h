@@ -57,6 +57,12 @@ class strategy_conf:public reload_inf
         std::string plate_dict_path;
         std::string plate_dict_file;
 
+        std::string cir_holder_dict_split_path;
+        std::string cir_holder_dict_split_file;
+
+        std::string cir_holder_dict_path;
+        std::string cir_holder_dict_file;
+
         std::string addr_dict_split_path;
         std::string addr_dict_split_file;
 

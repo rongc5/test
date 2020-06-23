@@ -1,20 +1,19 @@
-#include "plate_dict_split.h"
+#include "cir_holder_dict.h"
 #include "base_def.h"
 #include "log_helper.h"
 #include "ul_sign.h"
 #include "common_util.h"
-#include "proc_data.h"
 
-plate_dict_split::plate_dict_split()
+cir_holder_dict::cir_holder_dict()
 {
 }
 
-plate_dict_split::~plate_dict_split()
+cir_holder_dict::~cir_holder_dict()
 {
     destroy();
 }
 
-int plate_dict_split::init(const char * path, const char * file, const char *dump_dir)
+int cir_holder_dict::init(const char * path, const char * file, const char *dump_dir)
 {
     snprintf(_fullpath, sizeof(_fullpath), "%s/%s", path, file);
     snprintf(_dumppath, sizeof(_dumppath), "%s/%s", dump_dir, file);
@@ -24,9 +23,8 @@ int plate_dict_split::init(const char * path, const char * file, const char *dum
     return 0;
 }
 
-int plate_dict_split::load()
+int cir_holder_dict::load()
 {
-    proc_data* p_data = proc_data::instance();
     FILE * fp = fopen(_fullpath, "r");
     ASSERT_WARNING(fp != NULL,"open query dict failed. path[%s]", _fullpath);
 
@@ -52,23 +50,27 @@ int plate_dict_split::load()
         }
         
         std::string id = *(tmp_vec.begin());
-        tmp_vec.erase(tmp_vec.begin());
-        std::set<std::string> ts_set(tmp_vec.begin(), tmp_vec.end());
+//        tmp_vec.erase(tmp_vec.begin());
+        std::set<std::string> ts_set(tmp_vec.begin() + 2, tmp_vec.end());
 
-        for (auto iit = ts_set.begin(); iit != ts_set.end(); iit++)
+        std::vector<std::shared_ptr<std::string> > ts_vec;
+
+        for (auto ii = ts_set.begin(); ii != ts_set.end(); ii++)
         {
-            std::shared_ptr<std::string> ss(new std::string(trim(iit->c_str())));
-            auto iii = _plate_set.find(ss);
-            if (iii != _plate_set.end())
+            std::shared_ptr<std::string> ss(new std::string(*ii));
+            auto iii = _cir_holder_set.find(ss);
+            if (iii != _cir_holder_set.end())
             {
-                p_data->_plate_index->idle()->insert(std::make_pair(*iii, id));
+                ts_vec.push_back(*iii);
             }
             else
             {
-                _plate_set.insert(ss);
-                p_data->_plate_index->idle()->insert(std::make_pair(ss, id));
+                ts_vec.push_back(ss);
+                _cir_holder_set.insert(ss);
             }
         }
+        
+        _id_dict.insert(std::make_pair(id, ts_vec));
     }
 
     fclose(fp);
@@ -76,24 +78,22 @@ int plate_dict_split::load()
     stat(_fullpath, &st);
     _last_load = st.st_mtime;
 
-    p_data->_plate_index->idle_2_current();
-
     return 0;
 }
 
-int plate_dict_split::reload()
+int cir_holder_dict::reload()
 {
     destroy();
 
     return load();
 }
 
-void plate_dict_split::set_path (const char* path)
+void cir_holder_dict::set_path (const char* path)
 {
     snprintf(_fullpath, sizeof(_fullpath), "%s", path);
 }
 
-bool plate_dict_split::need_reload()
+bool cir_holder_dict::need_reload()
 {
     struct stat st;
 
@@ -105,21 +105,37 @@ bool plate_dict_split::need_reload()
     return false;
 }
 
-int plate_dict_split::dump()
+int cir_holder_dict::dump()
 {
+    FILE * fp = fopen(_dumppath, "w");
+    ASSERT_WARNING(fp != NULL, "cir_holder_dict dump_data failed, open file [%s] error", _dumppath);
+
+    for (auto &p_data: _id_dict)
+    {
+        fprintf(fp,"id[%s]\t",p_data.first.c_str());
+
+        for (auto ii = p_data.second.begin(); ii != p_data.second.end(); ii++)
+        {
+            fprintf(fp, "%s", (*ii)->c_str());
+        }
+
+        fprintf(fp, "\n");
+    }
+    fclose(fp);
+
     return 0;
 }
 
-int plate_dict_split::destroy()
+int cir_holder_dict::destroy()
 {
-    proc_data* p_data = proc_data::instance();
     {
-        p_data->_plate_index->idle()->clear();
+        std::unordered_map<std::string, std::vector<std::shared_ptr<std::string> >, str_hasher, str_equaler> tmp;
+        _id_dict.swap(tmp);
     }
 
     {
         std::unordered_set<std::shared_ptr<std::string>, str_hasher, str_equaler> tmp;
-        _plate_set.swap(tmp);
+        _cir_holder_set.swap(tmp);
     }
 
     return 0;

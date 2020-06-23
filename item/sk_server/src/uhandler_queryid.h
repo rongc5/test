@@ -53,6 +53,8 @@ class uhandler_queryid:public url_handler
 
         static void query_sum_quotation(std::string & history_date, std::string &id, Value & root, Document::AllocatorType & allocator);
 
+        static void query_cir_holder(std::string &id, Value & root, Document::AllocatorType & allocator);
+
 };
 
 #endif

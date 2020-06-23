@@ -24,6 +24,8 @@ class plate_dict_split:public reload_inf
         char _fullpath[SIZE_LEN_512];
         char _dumppath[SIZE_LEN_512];
         time_t _last_load;
+    private:
+        std::unordered_set<std::shared_ptr<std::string>, str_hasher, str_equaler> _plate_set;
 };
 
 

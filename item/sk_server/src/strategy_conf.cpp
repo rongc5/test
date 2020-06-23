@@ -176,6 +176,28 @@ void strategy_conf::do_parse()
         plate_dict_file = _cfg["plate_dict_file"];
     }
 
+
+    if (has_key<std::string, std::string>(_cfg, "cir_holder_dict_split_path"))
+    {
+        cir_holder_dict_split_path = _cfg["cir_holder_dict_split_path"];
+    }
+
+    if (has_key<std::string, std::string>(_cfg, "cir_holder_dict_split_file"))
+    {
+        cir_holder_dict_split_file = _cfg["cir_holder_dict_split_file"];
+    }
+
+    if (has_key<std::string, std::string>(_cfg, "cir_holder_dict_path"))
+    {
+        cir_holder_dict_path = _cfg["cir_holder_dict_path"];
+    }
+
+    if (has_key<std::string, std::string>(_cfg, "cir_holder_dict_file"))
+    {
+        cir_holder_dict_file = _cfg["cir_holder_dict_file"];
+    }
+
+
     if (has_key<std::string, std::string>(_cfg, "addr_dict_split_path"))
     {
         addr_dict_split_path = _cfg["addr_dict_split_path"];
@@ -439,6 +461,28 @@ int strategy_conf::destroy()
         std::string tmp;
         tmp.swap(plate_dict_file);
     }
+
+    {
+        std::string tmp;
+        tmp.swap(cir_holder_dict_split_path);
+    }
+
+    {
+        std::string tmp;
+        tmp.swap(cir_holder_dict_split_file);
+    }
+
+
+    {
+        std::string tmp;
+        tmp.swap(cir_holder_dict_path);
+    }
+
+    {
+        std::string tmp;
+        tmp.swap(cir_holder_dict_file);
+    }
+
 
     {
         std::string tmp;

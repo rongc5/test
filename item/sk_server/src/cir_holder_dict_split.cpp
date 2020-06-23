@@ -1,20 +1,20 @@
-#include "plate_dict_split.h"
+#include "cir_holder_dict_split.h"
 #include "base_def.h"
 #include "log_helper.h"
 #include "ul_sign.h"
 #include "common_util.h"
 #include "proc_data.h"
 
-plate_dict_split::plate_dict_split()
+cir_holder_dict_split::cir_holder_dict_split()
 {
 }
 
-plate_dict_split::~plate_dict_split()
+cir_holder_dict_split::~cir_holder_dict_split()
 {
     destroy();
 }
 
-int plate_dict_split::init(const char * path, const char * file, const char *dump_dir)
+int cir_holder_dict_split::init(const char * path, const char * file, const char *dump_dir)
 {
     snprintf(_fullpath, sizeof(_fullpath), "%s/%s", path, file);
     snprintf(_dumppath, sizeof(_dumppath), "%s/%s", dump_dir, file);
@@ -24,7 +24,7 @@ int plate_dict_split::init(const char * path, const char * file, const char *dum
     return 0;
 }
 
-int plate_dict_split::load()
+int cir_holder_dict_split::load()
 {
     proc_data* p_data = proc_data::instance();
     FILE * fp = fopen(_fullpath, "r");
@@ -52,21 +52,22 @@ int plate_dict_split::load()
         }
         
         std::string id = *(tmp_vec.begin());
-        tmp_vec.erase(tmp_vec.begin());
-        std::set<std::string> ts_set(tmp_vec.begin(), tmp_vec.end());
+        //tmp_vec.erase(tmp_vec.begin());
+        std::set<std::string> ts_set(tmp_vec.begin() + 2, tmp_vec.end());
 
         for (auto iit = ts_set.begin(); iit != ts_set.end(); iit++)
         {
             std::shared_ptr<std::string> ss(new std::string(trim(iit->c_str())));
-            auto iii = _plate_set.find(ss);
-            if (iii != _plate_set.end())
+
+            auto iii = _cir_holder_set.find(ss);
+            if (iii != _cir_holder_set.end())
             {
-                p_data->_plate_index->idle()->insert(std::make_pair(*iii, id));
+                p_data->_cir_holder_index->idle()->insert(std::make_pair(*iii, id));
             }
             else
             {
-                _plate_set.insert(ss);
-                p_data->_plate_index->idle()->insert(std::make_pair(ss, id));
+                _cir_holder_set.insert(ss);
+                p_data->_cir_holder_index->idle()->insert(std::make_pair(ss, id));
             }
         }
     }
@@ -76,24 +77,24 @@ int plate_dict_split::load()
     stat(_fullpath, &st);
     _last_load = st.st_mtime;
 
-    p_data->_plate_index->idle_2_current();
+    p_data->_cir_holder_index->idle_2_current();
 
     return 0;
 }
 
-int plate_dict_split::reload()
+int cir_holder_dict_split::reload()
 {
     destroy();
 
     return load();
 }
 
-void plate_dict_split::set_path (const char* path)
+void cir_holder_dict_split::set_path (const char* path)
 {
     snprintf(_fullpath, sizeof(_fullpath), "%s", path);
 }
 
-bool plate_dict_split::need_reload()
+bool cir_holder_dict_split::need_reload()
 {
     struct stat st;
 
@@ -105,21 +106,21 @@ bool plate_dict_split::need_reload()
     return false;
 }
 
-int plate_dict_split::dump()
+int cir_holder_dict_split::dump()
 {
     return 0;
 }
 
-int plate_dict_split::destroy()
+int cir_holder_dict_split::destroy()
 {
     proc_data* p_data = proc_data::instance();
     {
-        p_data->_plate_index->idle()->clear();
+        p_data->_cir_holder_index->idle()->clear();
     }
 
-    {
+    {   
         std::unordered_set<std::shared_ptr<std::string>, str_hasher, str_equaler> tmp;
-        _plate_set.swap(tmp);
+        _cir_holder_set.swap(tmp);
     }
 
     return 0;

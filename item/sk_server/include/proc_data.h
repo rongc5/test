@@ -15,6 +15,7 @@
 #include "finance_search_index.h"
 #include "op_search_index.h"
 #include "lruSsr_search_index.h"
+#include "cir_holder_search_index.h"
 
 class ua_dict;
 class ban_dict;
@@ -23,6 +24,8 @@ class addr_dict_split;
 class addr_dict;
 class plate_dict_split;
 class plate_dict;
+class cir_holder_dict_split;
+class cir_holder_dict;
 class history_single_dict;
 class history_quotation_dict;
 class holiday_dict;
@@ -64,6 +67,10 @@ class proc_data:public reload_inf
 
         reload_mgr<plate_dict> * _plate_dict;
 
+        reload_mgr<cir_holder_dict_split> * _cir_holder_dict_split;
+
+        reload_mgr<cir_holder_dict> * _cir_holder_dict;
+
         std::shared_ptr<history_single_dict> _hsingle_dict;
 
         std::shared_ptr<history_quotation_dict> _hquoation_dict;
@@ -80,6 +87,8 @@ class proc_data:public reload_inf
 
         std::shared_ptr<address_search_index> _address_index;
         std::shared_ptr<plate_search_index> _plate_index;
+
+        std::shared_ptr<cir_holder_search_index> _cir_holder_index;
 
         std::shared_ptr<rsingle_search_index> _rsingle_index;
 

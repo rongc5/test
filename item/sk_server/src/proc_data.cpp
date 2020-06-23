@@ -14,6 +14,8 @@
 #include "uhandler_select.h"
 #include "uhandler_queryid.h"
 #include "uhandler_default.h"
+#include "cir_holder_dict_split.h"
+#include "cir_holder_dict.h"
 
 int proc_data::init(sk_conf * conf)
 {
@@ -107,6 +109,35 @@ int proc_data::init(sk_conf * conf)
                 _conf->_strategy->current()->plate_dict_file.c_str(), _conf->dump_dir.c_str());
 
         _plate_dict = new (std::nothrow)reload_mgr<plate_dict>(addr_dict1, addr_dict2);
+    }
+
+
+    {
+        cir_holder_dict_split *addr_dict1 = new (std::nothrow)cir_holder_dict_split();
+        ASSERT_WARNING(addr_dict1 != NULL, "allocate cir_holder_dict_split fail");
+        addr_dict1->init(_conf->_strategy->current()->cir_holder_dict_split_path.c_str(),
+                _conf->_strategy->current()->cir_holder_dict_split_file.c_str(), _conf->dump_dir.c_str());
+
+        cir_holder_dict_split *addr_dict2 = new (std::nothrow)cir_holder_dict_split();
+        ASSERT_WARNING(addr_dict2 != NULL, "allocate cir_holder_dict_split fail");
+        addr_dict2->init(_conf->_strategy->current()->cir_holder_dict_split_path.c_str(),
+                _conf->_strategy->current()->cir_holder_dict_split_file.c_str(), _conf->dump_dir.c_str());
+
+        _cir_holder_dict_split = new (std::nothrow)reload_mgr<cir_holder_dict_split>(addr_dict1, addr_dict2);
+    }
+
+    {
+        cir_holder_dict *addr_dict1 = new (std::nothrow)cir_holder_dict();
+        ASSERT_WARNING(addr_dict1 != NULL, "allocate cir_holder_dict fail");
+        addr_dict1->init(_conf->_strategy->current()->cir_holder_dict_path.c_str(),
+                _conf->_strategy->current()->cir_holder_dict_file.c_str(), _conf->dump_dir.c_str());
+
+        cir_holder_dict *addr_dict2 = new (std::nothrow)cir_holder_dict();
+        ASSERT_WARNING(addr_dict2 != NULL, "allocate cir_holder_dict fail");
+        addr_dict2->init(_conf->_strategy->current()->cir_holder_dict_path.c_str(),
+                _conf->_strategy->current()->cir_holder_dict_file.c_str(), _conf->dump_dir.c_str());
+
+        _cir_holder_dict = new (std::nothrow)reload_mgr<cir_holder_dict>(addr_dict1, addr_dict2);
     }
 
     //id_rdict *id_dict1 = new (std::nothrow)id_rdict();
@@ -207,6 +238,10 @@ int proc_data::load()
 
     _plate_dict->load();
 
+    _cir_holder_dict_split->load();
+
+    _cir_holder_dict->load();
+
     _hsingle_dict->load();
 
     _hquoation_dict->load();
@@ -266,6 +301,19 @@ int proc_data::reload()
         flag = 1;
     }
 
+    if (_cir_holder_dict_split && _cir_holder_dict_split->need_reload())
+    {
+        _cir_holder_dict_split->reload();
+        flag = 1;
+    }
+
+    if (_cir_holder_dict && _cir_holder_dict->need_reload())
+    {
+        _cir_holder_dict->reload();
+        flag = 1;
+    }
+
+
     if (_hsingle_dict && _hsingle_dict->need_reload())
     {
         _hsingle_dict->reload();
@@ -308,6 +356,10 @@ int proc_data::dump()
 
     _plate_dict->dump();
 
+    _cir_holder_dict_split->dump();
+
+    _cir_holder_dict->dump();
+
     _hsingle_dict->dump();
 
     _hquoation_dict->dump();
@@ -333,6 +385,10 @@ int proc_data::destroy()
     _plate_dict_split->destroy();
 
     _plate_dict->destroy();
+
+    _cir_holder_dict_split->destroy();
+
+    _cir_holder_dict->destroy();
 
     _hsingle_dict->destroy();
 
@@ -360,6 +416,10 @@ int proc_data::destroy_idle()
     _plate_dict_split->idle()->destroy();
 
     _plate_dict->idle()->destroy();
+
+    _cir_holder_dict_split->idle()->destroy();
+
+    _cir_holder_dict->idle()->destroy();
 
     _holiday_dict->idle()->destroy();
 
@@ -439,6 +499,9 @@ void proc_data::reg_search_index()
 
     _plate_index = std::make_shared<plate_search_index>();
     _search_index_map["plate"] = std::bind(&plate_search_index::search, _plate_index, _1, _2, _3);
+
+    _cir_holder_index = std::make_shared<cir_holder_search_index>();
+    _search_index_map["cir_holder"] = std::bind(&cir_holder_search_index::search, _cir_holder_index, _1, _2, _3);
 
     _rsingle_index = std::make_shared<rsingle_search_index>();
     _search_index_map["rsingle_diff_ge"] = std::bind(&rsingle_search_index::do_check_rsingle_ge, _rsingle_index, _1, _2, _3);

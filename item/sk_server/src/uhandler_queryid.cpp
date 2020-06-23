@@ -3,6 +3,7 @@
 #include "sk_util.h"
 #include "finance_dict.h"
 #include "plate_dict.h"
+#include "cir_holder_dict.h"
 #include "addr_dict.h"
 #include "history_single_dict.h"
 #include "history_quotation_dict.h"
@@ -67,8 +68,7 @@ int uhandler_queryid::do_check_queryid(std::map<std::string, std::string> & url_
     proc_data* p_data = proc_data::instance();
 
     {
-        auto ii = url_para_map.find("id");
-        if (ii == url_para_map.end())
+        if (!has_key<std::string, std::string>(url_para_map, "id"))
         {
             return HTPP_RES_ERR;
         }
@@ -117,6 +117,15 @@ int uhandler_queryid::do_check_queryid(std::map<std::string, std::string> & url_
         root.AddMember(key, child, allocator);
     }
 
+    if (has_key<std::string, std::string>(url_para_map, "cir_holder"))
+    {
+        //Value child(kArrayType);
+        query_cir_holder(url_para_map["id"], root, allocator);
+
+        //key.SetString("cir_holder", allocator);
+        //root.AddMember(key, child, allocator);
+    }
+
     {
         Value child(kObjectType);
         query_single(url_para_map["id"], child, allocator);
@@ -133,9 +142,11 @@ int uhandler_queryid::do_check_queryid(std::map<std::string, std::string> & url_
         root.AddMember(key, child, allocator);
     }
 
+    /*
     {
         query_blocked(url_para_map["id"], root, allocator);
     }
+    */
 
     {
         query_addr(url_para_map["id"], root, allocator);
@@ -309,6 +320,31 @@ void uhandler_queryid::query_plate(std::string &id, Value & root, Document::Allo
         {
             value.SetString(ft->c_str(), allocator); 
             root.PushBack(value, allocator);
+        }
+    }
+}
+
+void uhandler_queryid::query_cir_holder(std::string &id, Value & root, Document::AllocatorType & allocator)
+{
+    int count = 0;
+    proc_data* p_data = proc_data::instance();
+    cir_holder_dict * _cir_holder_dict = p_data->_cir_holder_dict->current();
+    auto ii = _cir_holder_dict->_id_dict.find(id);
+    if (ii != _cir_holder_dict->_id_dict.end())
+    {
+        for (auto ft: ii->second)
+        {
+            count++;
+
+            std::string key =  "cir_holder_" + std::to_string(count);
+            Value k(kStringType);
+            Value v(kStringType);
+
+            k.SetString(key.c_str(), allocator);
+
+            v.SetString(ft->c_str(), allocator); 
+
+            root.AddMember(k, v, allocator);
         }
     }
 }

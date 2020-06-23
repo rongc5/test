@@ -32,6 +32,8 @@ OBJ	= $(LOC_DIR)/main.o     \
 	  $(LOC_DIR)/addr_dict.o \
 	  $(LOC_DIR)/plate_dict_split.o \
 	  $(LOC_DIR)/plate_dict.o \
+	  $(LOC_DIR)/cir_holder_dict_split.o \
+	  $(LOC_DIR)/cir_holder_dict.o \
 	  $(LOC_DIR)/history_single_dict.o \
 	  $(LOC_DIR)/history_quotation_dict.o \
 	  $(LOC_DIR)/holiday_dict.o \
@@ -47,6 +49,7 @@ OBJ	= $(LOC_DIR)/main.o     \
 	  $(LOC_DIR)/hquotation_search_index.o \
 	  $(LOC_DIR)/rquotation_search_index.o \
 	  $(LOC_DIR)/plate_search_index.o \
+	  $(LOC_DIR)/cir_holder_search_index.o \
 	  $(LOC_DIR)/hsingle_search_index.o \
 	  $(LOC_DIR)/rsingle_search_index.o \
 	  $(LOC_DIR)/finance_search_index.o \

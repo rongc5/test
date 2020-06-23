@@ -1,14 +1,14 @@
-#ifndef _PLATE_DICT_SPLIT_H_
-#define _PLATE_DICT_SPLIT_H_
+#ifndef _cir_holder_DICT_H_
+#define _cir_holder_DICT_H_
 
 #include "base_reload.h"
 #include "sk_def.h"
 
-class plate_dict_split:public reload_inf
+class cir_holder_dict:public reload_inf
 {
     public:
-        virtual ~plate_dict_split();
-        plate_dict_split();
+        virtual ~cir_holder_dict();
+        cir_holder_dict();
 
         virtual int init(const char * path, const char * file, const char *dump_dir);
         virtual int load();
@@ -24,8 +24,9 @@ class plate_dict_split:public reload_inf
         char _fullpath[SIZE_LEN_512];
         char _dumppath[SIZE_LEN_512];
         time_t _last_load;
-    private:
-        std::unordered_set<std::shared_ptr<std::string>, str_hasher, str_equaler> _plate_set;
+    public:
+        std::unordered_map<std::string, std::vector<std::shared_ptr<std::string> >, str_hasher, str_equaler> _id_dict;
+        std::unordered_set<std::shared_ptr<std::string>, str_hasher, str_equaler> _cir_holder_set;
 };
 
 
