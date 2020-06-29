@@ -58,6 +58,4 @@ class history_quotation_dict:public reload_inf
 };
 
 
-std::shared_ptr<quotation_t> operator + (const std::shared_ptr<quotation_t>  qt, const std::shared_ptr<quotation_t>  mm);
-
 #endif

@@ -28,6 +28,8 @@ class cir_holder_dict_split;
 class cir_holder_dict;
 class history_single_dict;
 class history_quotation_dict;
+class history_wquotation_dict;
+class history_wsingle_dict;
 class holiday_dict;
 class proc_data:public reload_inf
 {
@@ -75,6 +77,10 @@ class proc_data:public reload_inf
 
         std::shared_ptr<history_quotation_dict> _hquoation_dict;
 
+        std::shared_ptr<history_wsingle_dict> _hwsingle_dict;
+
+        std::shared_ptr<history_wquotation_dict> _hwquoation_dict;
+
         reload_mgr<holiday_dict> * _holiday_dict;
 
         sk_conf * _conf;
@@ -94,9 +100,12 @@ class proc_data:public reload_inf
 
         //date, single, id
         std::shared_ptr<hsingle_search_index> _hsingle_index;
+        std::shared_ptr<hsingle_search_index> _hwsingle_index;
 
         // history quotation 
         std::shared_ptr<hquotation_search_index> _hquotation_index;
+
+        std::shared_ptr<hquotation_search_index> _hwquotation_index;
 
         std::shared_ptr<finance_search_index> _finance_index;
 

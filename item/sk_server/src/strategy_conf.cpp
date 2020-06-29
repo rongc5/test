@@ -66,6 +66,11 @@ void strategy_conf::do_parse()
         real_morning_stime = _cfg["real_morning_stime"];
     }
 
+    if (has_key<std::string, std::string>(_cfg, "backup_stime"))
+    {
+        backup_stime = _cfg["backup_stime"];
+    }
+
     if (has_key<std::string, std::string>(_cfg, "real_morning_etime"))
     {
         real_morning_etime = _cfg["real_morning_etime"];
@@ -238,9 +243,41 @@ void strategy_conf::do_parse()
         history_quotation_file = _cfg["history_quotation_file"];
     }
 
+
+    if (has_key<std::string, std::string>(_cfg, "history_wsingle_path"))
+    {
+        history_wsingle_path = _cfg["history_wsingle_path"];
+    }
+
+    if (has_key<std::string, std::string>(_cfg, "history_wsingle_file"))
+    {
+        history_wsingle_file = _cfg["history_wsingle_file"];
+    }
+
+    if (has_key<std::string, std::string>(_cfg, "history_wquotation_path"))
+    {
+        history_wquotation_path = _cfg["history_wquotation_path"];
+    }
+
+    if (has_key<std::string, std::string>(_cfg, "history_wquotation_file"))
+    {
+        history_wquotation_file = _cfg["history_wquotation_file"];
+    }
+
+
     if (has_key<std::string, std::string>(_cfg, "holiday_dict_path"))
     {
         holiday_dict_path = _cfg["holiday_dict_path"];
+    }
+
+    if (has_key<std::string, std::string>(_cfg, "backup_files_path"))
+    {
+        backup_files_path = _cfg["backup_files_path"];
+    }
+
+    if (has_key<std::string, std::string>(_cfg, "backuped_path"))
+    {
+        backuped_path = _cfg["backuped_path"];
     }
 
     if (has_key<std::string, std::string>(_cfg, "holiday_dict_file"))
@@ -261,6 +298,16 @@ void strategy_conf::do_parse()
     if (has_key<std::string, std::string>(_cfg, "history_single_num"))
     {
         history_single_num = atoi(_cfg["history_single_num"].c_str());
+    }
+
+    if (has_key<std::string, std::string>(_cfg, "history_wquotation_num"))
+    {
+        history_wquotation_num = atoi(_cfg["history_wquotation_num"].c_str());
+    }
+
+    if (has_key<std::string, std::string>(_cfg, "history_wsingle_num"))
+    {
+        history_wsingle_num = atoi(_cfg["history_wsingle_num"].c_str());
     }
 
     if (has_key<std::string, std::string>(_cfg, "real_single_deque_length"))
@@ -430,9 +477,42 @@ int strategy_conf::destroy()
         tmp.swap(history_quotation_file);
     }
 
+
+    {
+        std::string tmp;
+        tmp.swap(history_wsingle_path);
+    }
+
+
+    {
+        std::string tmp;
+        tmp.swap(history_wsingle_file);
+    }
+
+    {
+        std::string tmp;
+        tmp.swap(history_wquotation_path);
+    }
+
+    {
+        std::string tmp;
+        tmp.swap(history_wquotation_file);
+    }
+
+
     {
         std::string tmp;
         tmp.swap(holiday_dict_path);
+    }
+
+    {
+        std::string tmp;
+        tmp.swap(backup_files_path);
+    }
+
+    {
+        std::string tmp;
+        tmp.swap(backuped_path);
     }
 
 
@@ -527,6 +607,11 @@ int strategy_conf::destroy()
     {
         std::string tmp;
         tmp.swap(real_morning_stime);
+    }
+
+    {
+        std::string tmp;
+        tmp.swap(backup_stime);
     }
 
     {

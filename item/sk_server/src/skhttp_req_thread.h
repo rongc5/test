@@ -49,15 +49,25 @@ class skhttp_req_thread:public base_net_thread
         time_t get_real_time(const char * date, const char * time);
 
         bool need_dump_real_quotation();
-
         bool need_dump_real_single();
 
         void dump_real_quotation();
         void dump_real_single();
 
-        void update_quotation_dict();
+        bool need_update_quotation_dict();
+        bool need_update_single_dict();
 
+        void update_quotation_dict();
         void update_single_dict();
+
+        bool need_update_wquotation_dict();
+        bool need_update_wsingle_dict();
+
+        void update_wquotation_dict();
+        void update_wsingle_dict();
+
+        bool need_backup();
+        void backup();
 
     protected:
         std::string _req_date;
@@ -82,6 +92,13 @@ class skhttp_req_thread:public base_net_thread
 
         uint32_t _history_quotation_num;
         uint32_t _history_single_num;
+
+        uint32_t _history_wquotation_num;
+        uint32_t _history_wsingle_num;
+
+        time_t backup_stime;
+
+        bool is_backuped;
 
         uint32_t _req_circle_times;//each day req circle times;
 

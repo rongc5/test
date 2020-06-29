@@ -26,6 +26,8 @@ class holiday_dict:public reload_inf
 
         void get_trade_date(std::string & trade_date);
 
+        void get_yearweek(const std::string &in, std::string &out);
+
     private:
         void set_path (const char* path);
 
@@ -35,7 +37,8 @@ class holiday_dict:public reload_inf
         time_t _last_load;
     public:
         // <date>
-        std::unordered_map<std::string, std::string, str_hasher> _date_dict;
+        //std::unordered_map<std::string, std::string, str_hasher> _date_dict;
+        std::unordered_set<std::string, str_hasher> _date_dict;
 };
 
 

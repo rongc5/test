@@ -14,6 +14,7 @@
 #include "id_dict.h"
 #include "history_quotation_dict.h"
 #include "strategy_conf.h"
+#include "history_wquotation_dict.h"
 
 rquotation_data_process::rquotation_data_process(http_base_process * _p_process):http_base_data_process(_p_process)
 {
@@ -94,6 +95,7 @@ void rquotation_data_process::msg_recv_finish()
     else
     {
         p_data->_hquoation_dict->update_real_quotation(p_data->_trade_date, _id, qt);
+        p_data->_hwquoation_dict->update_real_wquotation(p_data->_trade_date, _id, qt);
     }
 
 over:

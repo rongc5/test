@@ -45,6 +45,12 @@ class strategy_conf:public reload_inf
         std::string history_quotation_path;
         std::string history_quotation_file;
 
+        std::string history_wsingle_path;
+        std::string history_wsingle_file;
+
+        std::string history_wquotation_path;
+        std::string history_wquotation_file;
+
         std::string holiday_dict_path;
         std::string holiday_dict_file;
 
@@ -75,6 +81,10 @@ class strategy_conf:public reload_inf
         std::string real_quotation_api;
         std::string real_single_api;
 
+        std::string backup_files_path;
+        std::string backuped_path;
+
+        std::string backup_stime;
     public:
         std::string real_morning_stime;
         std::string real_morning_etime;
@@ -100,6 +110,10 @@ class strategy_conf:public reload_inf
         uint32_t history_quotation_num;
 
         uint32_t history_single_num;
+
+        uint32_t history_wquotation_num;
+
+        uint32_t history_wsingle_num;
 
         uint32_t destroy_idle_millisecond;
 

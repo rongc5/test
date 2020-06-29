@@ -31,25 +31,9 @@ struct single_t
         diff = 0;
     }
 
-    bool operator != (const single_t & st) const
-    {
-        //if (this->in != st.in || this->out != st.out || this->diff != st.diff)
-        if (this->diff != st.diff)
-        {
-            return true;
-        }
+    bool operator != (const single_t & st) const;
 
-        return false;
-    }
-
-    single_t & operator += (const single_t & st)
-    {
-        //this->in += st.in;
-        //this->out += st.out;
-        this->diff += st.diff;
-
-        return *this;
-    }
+    single_t & operator += (const single_t & st);
 };
 
 typedef std::vector<single_t> single_vec;
@@ -59,275 +43,39 @@ struct search_res
     //key_id, list
     std::unordered_map<std::string, std::unordered_map<std::string, std::set<int>, str_hasher>, str_hasher> _key_map;
 
-    bool empty()
-    {
-        return _id_sets.empty();
-    }
+    bool empty();
 
-    bool exist_key_index(std::string & key)
-    {
-        auto ia = _key_map.find(key);
+    bool exist_key_index(std::string & key);
 
-        return ia != _key_map.end();
-    }
+    void get_index_bykey(const std::string &key, const std::string & id, std::set<int> & res);
 
-    void get_index_bykey(const std::string &key, const std::string & id, std::set<int> & res)
-    {
-        res.clear();
-        auto ii = _key_map.find(key); 
-        if (ii == _key_map.end()) 
-        {
-            return;
-        }
-
-        auto iii = ii->second.find(id);
-        if (iii != ii->second.end())
-        {
-            res.insert(iii->second.begin(), iii->second.end());
-        }
-
-        //LOG_NOTICE("key:%s  size: %d", key.c_str(), _key_map[key].size());
-    }
-
-    void earse_bykey(std::string & key)
-    {
-        _key_map.erase(key);
-    }
+    void earse_bykey(std::string & key);
 
     //c = A
-    void assign(std::string & A, std::string &C)
-    {
-        auto ia = _key_map.find(A);
-        if (ia != _key_map.end())
-        {
-            _key_map[C] = _key_map[A];
-        }
-    }
+    void assign(std::string & A, std::string &C);
 
     //c = a * B
-    void get_intersection(std::string & A, std::string & B, std::string & C)
-    {
-        auto ia = _key_map.find(A);
-        auto ib = _key_map.find(B);
-
-        std::unordered_map<std::string, std::set<int>, str_hasher> mm;
-        std::set<int> dq;    
-
-        if (ia == _key_map.end() || ib == _key_map.end())
-        {           
-            _key_map[C] = mm;    
-            return; 
-        }
-
-        for (auto ii = ia->second.begin(); ii != ia->second.end(); ii++)
-        {
-            if (ib->second.count(ii->first))
-            {
-                mm[ii->first] = dq;  
-            }       
-        }
-
-        _key_map[C] = mm;     
-    }
+    void get_intersection(std::string & A, std::string & B, std::string & C);
 
     //c = a + B
-    void get_union(std::string & A, std::string & B, std::string & C)
-    {
-        auto ia = _key_map.find(A);
-        auto ib = _key_map.find(B);
-
-        std::unordered_map<std::string, std::set<int>, str_hasher> mm;
-        std::set<int> dq;
-
-        if (ia == _key_map.end() && ib == _key_map.end())
-        {
-            _key_map[C] = mm;
-            return;
-        }
-
-        if (ia != _key_map.end())
-        {
-            for (auto ii = ia->second.begin(); ii != ia->second.end(); ii++)
-            {
-                mm[ii->first] = dq; 
-            }
-        }
-
-        if (ib != _key_map.end())
-        {
-            for (auto ii = ib->second.begin(); ii != ib->second.end(); ii++)
-            {
-                mm[ii->first] = dq; 
-            }
-        }
-
-        _key_map[C] = mm; 
-    }
+    void get_union(std::string & A, std::string & B, std::string & C);
 
     // C = A - B
-    void get_diff(std::string & A, std::string & B, std::string & C)
-    {
-        auto ia = _key_map.find(A);
-        auto ib = _key_map.find(B);
+    void get_diff(std::string & A, std::string & B, std::string & C);
 
-        std::unordered_map<std::string, std::set<int>, str_hasher> mm;
-        std::set<int> dq;
-        if (ia == _key_map.end())
-        {
-            _key_map[C] = mm;
-            return;
-        }
+    void append(std::string &key, const std::string &id);
 
-        if (ib == _key_map.end())
-        {
-            _key_map[C] = _key_map[A];
-            return;
-        }
+    void append(std::string & key);
 
-        for (auto ii = ia->second.begin(); ii != ia->second.end(); ii++)
-        {
-            if (!ib->second.count(ii->first))
-            {
-                mm[ii->first] = dq;
-            }
-        }
+    void append(std::string &key, const std::string &id, int index);
 
-        _key_map[C] = mm;
-    }
+    void append(std::string &key, const std::string &id, std::set<int> & index);
 
-    void append(std::string &key, const std::string &id)
-    {
-        auto ii = _key_map.find(key);
-        if (ii == _key_map.end())
-        {   
-            std::unordered_map<std::string, std::set<int>, str_hasher> mm;
-            std::set<int> dq;
-            mm[id] = dq;
-            _key_map[key] = mm;
+    void set_bykey(std::string &key);
 
-        }
-        else 
-        {   
-            auto iii = ii->second.find(id);
-            if (iii == ii->second.end())
-            {   
-                std::set<int> dq;
-                ii->second.insert(std::make_pair(id, dq));
+    void get_bykey(std::string &key, std::set<std::string> & res);
 
-            }
-
-        }
-
-    }
-
-    void append(std::string & key)
-    {
-        auto ii = _key_map.find(key);
-        if (ii == _key_map.end())
-        {   
-            std::unordered_map<std::string, std::set<int>, str_hasher> mm;
-            _key_map[key] = mm;
-
-        }
-    }
-
-    void append(std::string &key, const std::string &id, int index)
-    {
-        auto ii = _key_map.find(key);
-        if (ii == _key_map.end())
-        {
-            std::unordered_map<std::string, std::set<int>, str_hasher> mm;
-            std::set<int> dq;
-            dq.insert(index);
-            mm[id] = dq;
-            _key_map[key] = mm;
-
-        }
-        else 
-        {
-            auto iii = ii->second.find(id);
-            if (iii == ii->second.end())
-            {
-                std::set<int> dq;
-                dq.insert(index);
-                ii->second.insert(std::make_pair(id, dq));
-
-            }
-            else
-            {
-                iii->second.insert(index);
-            }
-
-        }
-    }
-
-
-    void append(std::string &key, const std::string &id, std::set<int> & index)
-    {
-        auto ii = _key_map.find(key);
-        if (ii == _key_map.end())
-        {
-            std::unordered_map<std::string, std::set<int>, str_hasher> mm;
-            mm[id] = index;
-            _key_map[key] = mm;
-        }
-        else 
-        {
-            auto iii = ii->second.find(id);
-            if (iii == ii->second.end())
-            {
-                ii->second.insert(std::make_pair(id, index));
-            }
-            else
-            {
-                iii->second.insert(index.begin(), index.end());
-            }
-
-        }
-    }
-
-    void set_bykey(std::string &key)
-    {
-        std::set<std::string> tmp;
-        _id_sets.swap(tmp);
-
-        auto ii = _key_map.find(key); 
-        if (ii == _key_map.end()) 
-        {
-
-            return;
-        }
-
-        for (auto iii = ii->second.begin(); iii != ii->second.end(); iii++)
-        {
-            _id_sets.insert(iii->first);
-        }
-    }
-
-    void get_bykey(std::string &key, std::set<std::string> & res)
-    {
-        res.clear();
-        auto ii = _key_map.find(key); 
-        if (ii == _key_map.end()) 
-        {
-
-            return;
-        }
-
-        for (auto iii = ii->second.begin(); iii != ii->second.end(); iii++)
-        {
-            res.insert(iii->first);
-        }
-
-        //LOG_NOTICE("key:%s  size: %d", key.c_str(), _key_map[key].size());
-    }
-
-
-    void clear_set()
-    {
-        _id_sets.clear();
-    }
-
+    void clear_set();
 
     std::set<std::string> _id_sets;
 };
@@ -348,51 +96,15 @@ struct hsingle_search_item
 
     std::unordered_map<std::string, std::deque< std::shared_ptr<single_vec>>, str_hasher> id_sum_single;
 
-    int get_index(const std::string & id, const std::string & date)
-    {
-        std::string key;
-        creat_id_date_key(id, date, key);
-        
-        auto mm = id_date_idx.find(key);
-        if (mm == id_date_idx.end())
-            return -1;
-        return mm->second;
-    }
+    int get_index(const std::string & id, const std::string & date);
 
-    std::string  get_date(const std::string & id, int index)
-    {
-        std::string key;
-        creat_id_index_key(id, index, key);
+    std::string  get_date(const std::string & id, int index);
 
-        auto mm = id_idx_date.find(key);
-        if (mm == id_idx_date.end())
-            return "";
-        return mm->second;
-    }
+    void clear();
 
-    void clear()
-    {
-        id_single.clear();
-        id_idx_date.clear();
-        id_date_idx.clear();
-        id_sum_single.clear();
-    }
+    static void creat_id_index_key(const std::string & id, int index, std::string & key);
 
-    static void creat_id_index_key(const std::string & id, int index, std::string & key)
-    {
-        key.clear();
-        char t_buf[SIZE_LEN_128] = {'\0'};
-        snprintf(t_buf, sizeof(t_buf), "%s_%d", id.c_str(), index);
-        key.append(t_buf);
-    }
-
-    static void creat_id_date_key(const std::string & id, const std::string & date, std::string & key)
-    {
-        key.clear();
-        char t_buf[SIZE_LEN_128] = {'\0'};
-        snprintf(t_buf, sizeof(t_buf), "%s_%s", id.c_str(), date.c_str());
-        key.append(t_buf);
-    }
+    static void creat_id_date_key(const std::string & id, const std::string & date, std::string & key);
 };
 
 
@@ -404,12 +116,7 @@ struct rsingle_search_item
     //reverse search;
     std::vector<std::multimap<int, std::string> > rsingle_diff_index;
 
-    void clear()
-    {
-        id_single.clear();
-        rsingle_diff_index.clear();
-    }
-
+    void clear();
 };
 
 
@@ -434,47 +141,9 @@ struct quotation_t
 
     float total_price;
 
-    quotation_t & operator += (const quotation_t & qt)
-    {
-        this->start += qt.start;
-        this->end += qt.end;
-        this->high += qt.high;
-        this->low += qt.low;
-        //this->last_closed += qt.last_closed;
-        this->vol += qt.vol;
-        //this->buy_vol += qt.buy_vol;
-        //this->sell_vol += qt.sell_vol;
-        //this->swing += qt.swing;
-        this->change_rate += qt.change_rate;
-        this->range_percent += qt.range_percent;
-        this->total_price += qt.total_price;
+    quotation_t & operator += (const quotation_t & qt);
 
-        return *this;
-    }
-
-
-
-    quotation_t()
-    {
-        //name[0] = '\0';
-
-        start = 0;
-        end = 0;
-        high = 0;
-        low = 0;
-        //last_closed = 0;
-
-        vol = 0;
-        //buy_vol = 0;
-        //sell_vol = 0;
-
-        //swing = 0;
-
-        change_rate = 0;
-        range_percent = 0;
-
-        total_price = 0;
-    }
+    quotation_t();
 };
 
 
@@ -499,47 +168,9 @@ struct quotation_original
 
     float total_price;
 
-    quotation_original & operator += (const quotation_original & qt)
-    {
-        this->start += qt.start;
-        this->end += qt.end;
-        this->high += qt.high;
-        this->low += qt.low;
-        this->last_closed += qt.last_closed;
-        this->vol += qt.vol;
-        this->buy_vol += qt.buy_vol;
-        this->sell_vol += qt.sell_vol;
-        this->swing += qt.swing;
-        this->change_rate += qt.change_rate;
-        this->range_percent += qt.range_percent;
-        this->total_price += qt.total_price;
+    quotation_original & operator += (const quotation_original & qt);
 
-        return *this;
-    }
-
-
-
-    quotation_original()
-    {
-        name[0] = '\0';
-
-        start = 0;
-        end = 0;
-        high = 0;
-        low = 0;
-        last_closed = 0;
-
-        vol = 0;
-        buy_vol = 0;
-        sell_vol = 0;
-
-        swing = 0;
-
-        change_rate = 0;
-        range_percent = 0;
-
-        total_price = 0;
-    }
+    quotation_original();
 };
 
 struct technical_t
@@ -562,27 +193,7 @@ struct technical_t
     float low_end_5;
     float high_end_5;
 
-    technical_t()
-    {
-        end_5 = 0;
-        end_10 = 0;
-        end_20 = 0;
-        //end_30 = 0;
-        //end_60 = 0;
-        down_pointer = 0;
-        up_pointer = 0;
-        avg_end = 0;
-        end_start = 0;
-        end_avg_end = 0;
-
-        end_end_5 = 0;
-        end_end_10 = 0;
-        end_end_20 = 0;
-        //end_end_30 = 0;
-        //end_end_60 = 0;
-        low_end_5 = 0;
-        high_end_5 = 0;
-    }
+    technical_t();
 };
 
 struct rquotation_search_item
@@ -604,22 +215,7 @@ struct rquotation_search_item
     std::multimap<float, std::string> end_end20_index;
     //std::multimap<float, std::string> end_end30_index;
 
-    void clear()
-    {
-        id_quotation.clear();
-        id_technical.clear();
-        end_index.clear();
-        change_rate_index.clear();
-        range_percent_index.clear();
-        down_pointer_index.clear();
-        up_pointer_index.clear();
-        end_avg_end_index.clear();
-        end_end5_index.clear();
-        end_end10_index.clear();
-        end_end20_index.clear();
-        //end_end30_index.clear();
-
-    }
+    void clear();
 };
 
 struct hquotation_search_item
@@ -643,54 +239,15 @@ struct hquotation_search_item
 
     std::unordered_map<std::string, std::set<int>, str_hasher> id_trough;
 
-    int get_index(const std::string & id, const std::string & date)
-    {
-        std::string key;
-        creat_id_date_key(id, date, key);
-        
-        auto mm = id_date_idx.find(key);
-        if (mm == id_date_idx.end())
-            return -1;
-        return mm->second;
-    }
+    int get_index(const std::string & id, const std::string & date);
 
-    std::string  get_date(const std::string & id, int index)
-    {
-        std::string key;
-        creat_id_index_key(id, index, key);
+    std::string  get_date(const std::string & id, int index);
 
-        auto mm = id_idx_date.find(key);
-        if (mm == id_idx_date.end())
-            return "";
-        return mm->second;
-    }
+    void clear();
 
-    void clear()
-    {
-        id_quotation.clear();
-        id_idx_date.clear();
-        id_date_idx.clear();
-        id_sum_quotation.clear();
-        id_technical.clear();
-        id_crest.clear();
-        id_trough.clear();
-    }
+    static void creat_id_index_key(const std::string & id, int index, std::string & key);
 
-    static void creat_id_index_key(const std::string & id, int index, std::string & key)
-    {   
-        key.clear();
-        char t_buf[SIZE_LEN_128] = {'\0'};
-        snprintf(t_buf, sizeof(t_buf), "%s_%d", id.c_str(), index);
-        key.append(t_buf);
-    }
-
-    static void creat_id_date_key(const std::string & id, const std::string & date, std::string & key)
-    {   
-        key.clear();
-        char t_buf[SIZE_LEN_128] = {'\0'};
-        snprintf(t_buf, sizeof(t_buf), "%s_%s", id.c_str(), date.c_str());
-        key.append(t_buf);
-    } 
+    static void creat_id_date_key(const std::string & id, const std::string & date, std::string & key);
 };
 
 struct finance_t
@@ -703,6 +260,18 @@ struct finance_t
     float mgxj;
     float zysrgr;
     float jlrgr;
+
+    finance_t()
+    {
+        pe = 0;
+        pb = 0;
+        cir_value = 0;
+        value = 0;
+        mgsy = 0;
+        mgxj = 0;
+        zysrgr = 0;
+        jlrgr = 0;
+    }
 };
 
 struct finance_search_item 
@@ -719,18 +288,7 @@ struct finance_search_item
     std::multimap<float, std::string> zysrgr_index;
     std::multimap<float, std::string> jlrgr_index;
 
-    void clear()
-    {
-        id_finance.clear();
-        pe_index.clear();
-        pb_index.clear();
-        value_index.clear();
-        cir_value_index.clear();
-        mgxj_index.clear();
-        mgsy_index.clear();
-        zysrgr_index.clear();
-        jlrgr_index.clear();
-    }
+    void clear();
 };
 
 struct lru_sstr_item
@@ -741,13 +299,7 @@ struct lru_sstr_item
     std::unordered_map<std::string, std::list<std::string>::iterator, str_hasher> _mmap_deque;
     std::list<std::string> _dq;
 
-    void clear()
-    {
-        _mmap_index.clear();
-        _mmap_deque.clear();
-        std::list<std::string> tq;
-        _dq.swap(tq);
-    }
+    void clear();
 };
 
 
@@ -801,6 +353,8 @@ class destroy_msg: public normal_msg
 
 
 #define LRU_SSR_LENGTH_DF 1024
+
+std::shared_ptr<quotation_t> operator + (const std::shared_ptr<quotation_t>  qt, const std::shared_ptr<quotation_t>  mm);
 
 
 

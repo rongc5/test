@@ -1,21 +1,22 @@
-#include "history_quotation_dict.h"
+#include "history_wquotation_dict.h"
 #include "base_def.h"
 #include "log_helper.h"
 #include "ul_sign.h"
 #include "common_util.h"
 #include "proc_data.h"
 #include "id_dict.h"
+#include "holiday_dict.h"
 
-history_quotation_dict::history_quotation_dict()
+history_wquotation_dict::history_wquotation_dict()
 {
 }
 
-history_quotation_dict::~history_quotation_dict()
+history_wquotation_dict::~history_wquotation_dict()
 {
     destroy();
 }
 
-int history_quotation_dict::init(const char * path, const char * file, const char *dump_dir)
+int history_wquotation_dict::init(const char * path, const char * file, const char *dump_dir)
 {
     snprintf(_fullpath, sizeof(_fullpath), "%s/%s", path, file);
     snprintf(_dumppath, sizeof(_dumppath), "%s/%s", dump_dir, file);
@@ -25,7 +26,7 @@ int history_quotation_dict::init(const char * path, const char * file, const cha
     return 0;
 }
 
-void history_quotation_dict::creat_key(const std::string & date, const std::string & id, std::string & key)
+void history_wquotation_dict::creat_key(const std::string & date, const std::string & id, std::string & key)
 {
     key.clear();
 
@@ -36,19 +37,31 @@ void history_quotation_dict::creat_key(const std::string & date, const std::stri
     return;
 }
 
-int history_quotation_dict::load_history_quoation(const char * file)
+void history_wquotation_dict::get_history_wquotation(const std::string & week, const std::set<std::string> & files)
+{
+   for (auto file: files)
+   {
+       load_history_wquotation(week, file.c_str());
+
+       if (week == _last_week)
+       {
+           _last_file_date.insert(basename((char *)file.c_str()));
+       }
+   }
+}
+
+int history_wquotation_dict::load_history_wquotation(const std::string & week, const char * file)
 {
     if (!file)
     {
         return -1;
     }
 
-    std::string date = basename((char *)file);
+    const std::string & date = week;
 
     proc_data* p_data = proc_data::instance();
     FILE * fp = fopen(file, "r");
     ASSERT_WARNING(fp != NULL,"open file failed. file[%s]", file);
-
 
     std::vector<std::string> strVec;
     char line[SIZE_LEN_1024];
@@ -75,7 +88,7 @@ int history_quotation_dict::load_history_quoation(const char * file)
         }
 
         std::shared_ptr<quotation_t> qt;
-        std::shared_ptr<quotation_original> qo(new quotation_original);
+        std::shared_ptr<quotation_original> qo = std::make_shared<quotation_original>();
 
         const std::string &id = strVec[0];
         
@@ -103,78 +116,134 @@ int history_quotation_dict::load_history_quoation(const char * file)
 
         qt = original_2_quotation(qo);
 
-        if (date == _last_date)
-            _real_dict[id] = qo;
 
-        creat_key(date, id, key);
-        auto ii = _date_dict.find(key);
-        if (ii == _date_dict.end())
-        {
-            _date_dict.insert(std::make_pair(key, qt));
-        }
+        update_date_dict(date, id, qt);
 
-        {   
-            auto ii = _id_date_dict.find(id);
-            if (ii == _id_date_dict.end())
-            {   
-                std::set<std::string> t_set;
-                t_set.insert(date);
-                _id_date_dict.insert(std::make_pair(id, t_set));
-            }   
-            else
-            {   
-                ii->second.insert(date);
-            }   
-        }
+        update_id_date(date, id);
     }
     fclose(fp);
 
     return 0;
 }
 
-void history_quotation_dict::update_real_quotation(const std::string & trade_date, const std::string & id, std::shared_ptr<quotation_original> & qt)
+void history_wquotation_dict::update_date_dict(const std::string & date, const std::string & id, const std::shared_ptr<quotation_t> & qt)
 {
-    std::string key; 
+    std::string key;
+    creat_key(date, id, key);
+    auto ii = _date_dict.find(key);
+    if (ii == _date_dict.end())
+    {
+        _date_dict.insert(std::make_pair(key, qt));
+    }
+    else
+    {
+        ii->second->end = qt->end;
 
-    creat_key(trade_date, id, key);
+        if (ii->second->high < qt->high)
+            ii->second->high =  qt->high;
 
-    _real_dict[id] = qt;
+        if (ii->second->low > qt->low)
+            ii->second->low = qt->low;
 
-    _date_dict[key] = original_2_quotation(qt);
+        ii->second->vol += qt->vol;
+        ii->second->change_rate += qt->change_rate;
+        ii->second->range_percent += qt->range_percent;
+        ii->second->total_price += qt->total_price;
+    }
+}
 
+void history_wquotation_dict::update_real_wquotation(const std::string & trade_date, const std::string & id, std::shared_ptr<quotation_original> & qt)
+{
+    std::shared_ptr<quotation_t> qq = original_2_quotation(qt);
+
+    _last_date_dict[id] = qq;
     _last_date = trade_date;
+}
 
+void history_wquotation_dict::update_id_date(const std::string & date, const std::string & id)
+{
     auto ii = _id_date_dict.find(id);
     if (ii == _id_date_dict.end())
     {   
         std::set<std::string> t_set;
-        t_set.insert(trade_date);
+        t_set.insert(date);
         _id_date_dict.insert(std::make_pair(id, t_set));
     }   
     else
     {   
-        ii->second.insert(trade_date);
+        ii->second.insert(date);
+    }
+}
+
+void history_wquotation_dict::destroy_date_dict(const std::string & week,const  std::string & id)
+{
+    std::string key;
+    creat_key(week, id, key);
+    
+    _date_dict.erase(key);
+}
+
+void history_wquotation_dict::destroy_date_dict(const std::string & week)
+{
+    for (auto ii: _id_date_dict)
+    {
+        destroy_date_dict(week, ii.first);
+    }
+}
+
+void history_wquotation_dict::update_search_index()
+{
+    proc_data* p_data = proc_data::instance();
+    holiday_dict * _holiday_dict = p_data->_holiday_dict->current();
+
+    if (_last_date.empty())
+        return;
+
+    std::string yw_tmp;
+    _holiday_dict->get_yearweek(_last_date, yw_tmp);
+    
+    if (_last_week == yw_tmp)
+    {
+       if (!_last_file_date.count(_last_date))
+       {
+           destroy_date_dict(yw_tmp);
+
+           get_history_wquotation(yw_tmp, _last_files); 
+
+           for (auto ii :  _last_date_dict)
+           {
+               update_date_dict(yw_tmp, ii.first, ii.second);
+               update_id_date(yw_tmp, ii.first);
+           }
+       }
+    }
+    else
+    {
+        destroy_date_dict(yw_tmp);
+        for (auto ii :  _last_date_dict)
+        {
+            update_date_dict(yw_tmp, ii.first, ii.second);
+            update_id_date(yw_tmp, ii.first);
+        }
     }
 
+    update_load_search();
 }
 
- void history_quotation_dict::update_search_index()
+void history_wquotation_dict::update_load_search()
 {
     proc_data* p_data = proc_data::instance();
-    p_data->_hquotation_index->idle()->clear();
-    p_data->_rquotation_index->idle()->clear();
+    p_data->_hwquotation_index->idle()->clear();
 
-    update_hquotation_search();
-    update_rquotation_search();
+    update_hwquotation_search();
 
-    p_data->_hquotation_index->idle_2_current();
-    p_data->_rquotation_index->idle_2_current();
+    p_data->_hwquotation_index->idle_2_current();
 }
 
- void history_quotation_dict::update_hquotation_search()
+ void history_wquotation_dict::update_hwquotation_search()
 {
     proc_data* p_data = proc_data::instance();
-    auto hqitem = p_data->_hquotation_index->idle();
+    auto hqitem = p_data->_hwquotation_index->idle();
     for (auto ii = _id_date_dict.begin(); ii != _id_date_dict.end(); ii++)
     {
          const std::string & id = ii->first; 
@@ -245,10 +314,10 @@ void history_quotation_dict::update_real_quotation(const std::string & trade_dat
         hqitem->id_sum_quotation[id] = dp;
     }
 
-    update_hquotation_wave(hqitem);
+    update_hwquotation_wave(hqitem);
 }
 
-void history_quotation_dict::update_hquotation_wave(hquotation_search_item * hqitem)
+void history_wquotation_dict::update_hwquotation_wave(hquotation_search_item * hqitem)
 {
     proc_data* p_data = proc_data::instance();
     if (!hqitem)
@@ -295,102 +364,7 @@ void history_quotation_dict::update_hquotation_wave(hquotation_search_item * hqi
     }
 }
 
-void history_quotation_dict::update_rquotation_search()
-{
-    proc_data* p_data = proc_data::instance();
-
-    auto cur = p_data->_rquotation_index->current();
-    auto idl = p_data->_rquotation_index->idle();
-
-    for (auto ii = _real_dict.begin(); ii != _real_dict.end(); ii++)
-    {
-        const std::string & id = ii->first; 
-
-
-        {
-            std::deque< std::shared_ptr<quotation_original>> dq;
-            idl->id_quotation[id] = dq;
-            auto mm = cur->id_quotation.find(id);
-            if (mm != cur->id_quotation.end()) 
-            {
-                idl->id_quotation[id] = mm->second;
-            }   
-
-            if (idl->id_quotation[id].empty() || idl->id_quotation[id].back() != ii->second)
-            {
-                idl->id_quotation[id].push_back(ii->second);
-            }
-
-            if (idl->id_quotation[id].size() > p_data->_conf->_strategy->current()->real_quotation_deque_length)
-            {
-                idl->id_quotation[id].pop_front();
-            }
-
-            idl->end_index.insert(std::make_pair(ii->second->end, id));
-            idl->change_rate_index.insert(std::make_pair(ii->second->change_rate, id));
-            idl->range_percent_index.insert(std::make_pair(ii->second->range_percent, id));
-        }
-
-        {
-
-            hquotation_search_item * hqitem = p_data->_hquotation_index->idle();
-
-            std::deque< std::shared_ptr<technical_t>> dq;
-            auto mm = cur->id_technical.find(id);
-            if (mm != cur->id_technical.end())
-            {
-                idl->id_technical[id] = mm->second;
-            }
-            auto iii = hqitem->id_technical.find(id);
-
-            if (iii != hqitem->id_technical.end())
-            {
-                idl->id_technical[id].push_back(iii->second.back());
-
-                if (idl->id_technical[id].size() > p_data->_conf->_strategy->current()->real_quotation_deque_length)
-                {
-                    idl->id_technical[id].pop_front();
-                }
-
-
-                if (iii->second.back()->down_pointer)
-                {
-                    idl->down_pointer_index.insert(std::make_pair(iii->second.back()->down_pointer, id));
-                }
-                if (iii->second.back()->up_pointer)
-                {
-                    idl->up_pointer_index.insert(std::make_pair(iii->second.back()->up_pointer, id));
-                }
-                if (iii->second.back()->end_avg_end)
-                {
-                    idl->end_avg_end_index.insert(std::make_pair(iii->second.back()->end_avg_end, id));
-                }
-                if (iii->second.back()->end_end_5)
-                {
-                    idl->end_end5_index.insert(std::make_pair(iii->second.back()->end_end_5, id));
-                }
-                if (iii->second.back()->end_end_10)
-                {
-                    idl->end_end10_index.insert(std::make_pair(iii->second.back()->end_end_10, id));
-                }
-                if (iii->second.back()->end_end_20)
-                {
-                    idl->end_end20_index.insert(std::make_pair(iii->second.back()->end_end_20, id));
-                }
-
-                /*
-                if (iii->second.back()->end_end_30)
-                {
-                    idl->end_end30_index.insert(std::make_pair(iii->second.back()->end_end_30, id));
-                }
-                */
-            }
-        }
-    }
-
-}
-
-void history_quotation_dict::get_id_technical(std::shared_ptr<quotation_t> qt, std::deque< std::shared_ptr<quotation_t>> & sum_quotation, int p, std::shared_ptr<technical_t> tt)
+void history_wquotation_dict::get_id_technical(std::shared_ptr<quotation_t> qt, std::deque< std::shared_ptr<quotation_t>> & sum_quotation, int p, std::shared_ptr<technical_t> tt)
 {
     char t_buf[SIZE_LEN_1024];
     t_buf[0] = '\0';
@@ -538,7 +512,7 @@ void history_quotation_dict::get_id_technical(std::shared_ptr<quotation_t> qt, s
     }
 }
 
-int history_quotation_dict::load()
+int history_wquotation_dict::load()
 {
     FILE * fp = fopen(_fullpath, "r");
     ASSERT_WARNING(fp != NULL,"open query dict failed. path[%s]", _fullpath);
@@ -547,8 +521,8 @@ int history_quotation_dict::load()
     char * ptr = NULL, *bname;
     uint32_t query_sign[2];
 
-    std::set<std::string> file_set;
-    std::set<std::string> date_set;
+    std::map<std::string, std::set<std::string>> file_set;
+    std::vector<std::string> strVec;
 
     while (fgets(line, sizeof(line), fp)) 
     {
@@ -560,48 +534,51 @@ int history_quotation_dict::load()
         if (ptr == NULL || *ptr == '\0'|| *ptr == '#')
             continue;
 
-        file_set.insert(std::string(ptr));
+        SplitString(ptr, '\t', &strVec, SPLIT_MODE_ALL | SPLIT_MODE_TRIM);
+        if (strVec.size() < 2)
+        {
+            continue;
+        }
 
-        std::string date = basename(ptr);
-
-        date_set.insert(date);
-
+        std::set<std::string> files(strVec.begin() + 1, strVec.end());
+        file_set.insert(std::make_pair(strVec[0], files));
     }
 
     fclose(fp);
 
-    if (!date_set.empty())
+    if (!file_set.empty())
     {
-        _last_date = *(date_set.rbegin());
+        _last_week = file_set.rbegin()->first;
+        _last_files = file_set.rbegin()->second;
     }
 
-    for (auto filename : file_set)
+    for (auto ii : file_set)
     {
-        load_history_quoation(filename.c_str());
+        get_history_wquotation(ii.first, ii.second);
     }
 
     struct stat st;
     stat(_fullpath, &st);
     _last_load = st.st_mtime;
 
-    update_search_index();
+    update_load_search();
 
     return 0;
 }
 
-int history_quotation_dict::reload()
+int history_wquotation_dict::reload()
 {
     destroy();
 
     return load();
 }
 
-void history_quotation_dict::set_path (const char* path)
+void history_wquotation_dict::set_path (const char* path)
 {
     snprintf(_fullpath, sizeof(_fullpath), "%s", path);
 }
 
-bool history_quotation_dict::need_reload()
+bool history_wquotation_dict::need_reload()
 {
     struct stat st;
 
@@ -613,10 +590,10 @@ bool history_quotation_dict::need_reload()
     return false;
 }
 
-int history_quotation_dict::dump()
+int history_wquotation_dict::dump()
 {
     //FILE * fp = fopen(_dumppath, "w");
-    //ASSERT_WARNING(fp != NULL, "history_quotation_dict dump_data failed, open file [%s] error", _dumppath);
+    //ASSERT_WARNING(fp != NULL, "history_wquotation_dict dump_data failed, open file [%s] error", _dumppath);
 
     //for (auto &p_data: _date_dict)
     //{
@@ -635,17 +612,13 @@ int history_quotation_dict::dump()
     return 0;
 }
 
-int history_quotation_dict::destroy()
+int history_wquotation_dict::destroy()
 {
     proc_data* p_data = proc_data::instance();
 
     //LOG_TRACE("%p", this);
-    
-    {
-        std::unordered_map<std::string, std::shared_ptr<quotation_original>, str_hasher> tmp;
-        _real_dict.swap(tmp);
-    }
     //
+
     {
         std::unordered_map<std::string, std::shared_ptr<quotation_t>, str_hasher> tmp;
         _date_dict.swap(tmp);
@@ -661,11 +634,35 @@ int history_quotation_dict::destroy()
         _id_date_dict.swap(tmp);
     }
 
+    {
+        std::unordered_map<std::string, std::shared_ptr<quotation_t>, str_hasher> tmp;
+        _last_date_dict.swap(tmp);
+    }
+
+    {
+        std::set<std::string> tmp;
+        _last_files.swap(tmp);
+    }
+
+    {
+        std::set<std::string> tmp;
+        _last_file_date.swap(tmp);
+    }
+
+    {
+        std::string tmp;
+        _last_week.swap(tmp);
+    }
+
+    {
+        std::string tmp;
+        _last_date.swap(tmp);
+    }
 
     return 0;
 }
 
-std::shared_ptr<quotation_t>  history_quotation_dict::original_2_quotation(std::shared_ptr<quotation_original> & original)
+std::shared_ptr<quotation_t>  history_wquotation_dict::original_2_quotation(std::shared_ptr<quotation_original> & original)
 {
     std::shared_ptr<quotation_t> qq = std::make_shared<quotation_t>();
 

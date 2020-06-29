@@ -44,10 +44,10 @@ int holiday_dict::load()
         
         std::vector<std::string> tmp_vec;
         SplitString(ptr, '\t', &tmp_vec, SPLIT_MODE_ALL);
-        if (tmp_vec.size() < 2)
-            continue;
+        if (!tmp_vec.size())
+            tmp_vec.push_back(ptr);
 
-        _date_dict.insert(std::make_pair(tmp_vec[0], tmp_vec[1]));
+        _date_dict.insert(tmp_vec[0]);
     }
 
     fclose(fp);
@@ -106,7 +106,7 @@ int holiday_dict::dump()
 
 int holiday_dict::destroy()
 {
-    std::unordered_map<std::string, std::string, str_hasher> tmp;
+    std::unordered_set<std::string, str_hasher> tmp;
     _date_dict.swap(tmp);
 
     return 0;
@@ -149,8 +149,7 @@ bool holiday_dict::is_trade_date(const char * date)
     if (weekday > 5 || weekday < 1)
         return false;
 
-    auto ii = _date_dict.find(std::string(date));
-    if (ii != _date_dict.end())
+    if (_date_dict.count(date))
         return false;
 
     return true;
@@ -181,4 +180,21 @@ void holiday_dict::get_trade_date(std::string & trade_date)
     get_trade_date(date, trade_date);
 }
 
+void holiday_dict::get_yearweek(const std::string &in, std::string &out)
+{
+
+    out.clear();
+
+    struct tm tmin;
+    struct tm *tminp=&tmin;
+
+    memset(tminp, 0, sizeof(struct tm));
+
+    char tmp[SIZE_LEN_512];
+    memset(tmp,0,sizeof(tmp));
+    strptime(in.c_str(),"%Y%m%d %Z",tminp);
+
+    strftime(tmp,sizeof(tmp),"%Y%W",tminp);
+    out.append(tmp);
+}
 

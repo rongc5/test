@@ -30,14 +30,19 @@ void reload_thread::handle_timeout(std::shared_ptr<timer_msg> & t_msg)
         {
             destroy_idle_start();
         }
+        else
+        {
+            reload_timer_start();
+        }
 
-        reload_timer_start();
         malloc_trim(0);
     }
     else if (t_msg->_timer_type == TIMER_TYPE_DESTROY_IDLE && p_data)
     {
         p_data->destroy_idle();
         p_data->_conf->destroy_idle();
+
+        reload_timer_start();
     }
 }
 

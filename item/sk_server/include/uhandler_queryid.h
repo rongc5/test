@@ -55,6 +55,23 @@ class uhandler_queryid:public url_handler
 
         static void query_cir_holder(std::string &id, Value & root, Document::AllocatorType & allocator);
 
+        static void query_history_wsingle(uint32_t last_day_num, std::string &id, Value & root, Document::AllocatorType & allocator);
+
+        static void query_sum_wsingle(uint32_t last_day_num, std::string &id, Value & root, Document::AllocatorType & allocator);
+
+        static void query_history_wquotation(uint32_t last_day_num, std::string &id, Value & root, Document::AllocatorType & allocator);
+
+        static void query_sum_wquotation(uint32_t last_day_num, std::string &id, Value & root, Document::AllocatorType & allocator);
+
+
+        static void query_history_wsingle(std::string & history_date, std::string &id, Value & root, Document::AllocatorType & allocator);
+
+        static void query_sum_wsingle(std::string & history_date, std::string &id, Value & root, Document::AllocatorType & allocator);
+
+        static void query_history_wquotation(std::string & history_date, std::string &id, Value & root, Document::AllocatorType & allocator);
+
+        static void query_sum_wquotation(std::string & history_date, std::string &id, Value & root, Document::AllocatorType & allocator);
+
 };
 
 #endif

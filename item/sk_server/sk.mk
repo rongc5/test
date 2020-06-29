@@ -24,6 +24,7 @@ OBJ	= $(LOC_DIR)/main.o     \
 	  $(LOC_DIR)/id_dict.o \
 	  $(LOC_DIR)/ua_dict.o \
 	  $(LOC_DIR)/sk_conf.o \
+	  $(LOC_DIR)/sk_def.o \
 	  $(LOC_DIR)/proc_data.o \
 	  $(LOC_DIR)/rquotation_data_process.o \
 	  $(LOC_DIR)/rsingle_data_process.o \
@@ -36,6 +37,8 @@ OBJ	= $(LOC_DIR)/main.o     \
 	  $(LOC_DIR)/cir_holder_dict.o \
 	  $(LOC_DIR)/history_single_dict.o \
 	  $(LOC_DIR)/history_quotation_dict.o \
+	  $(LOC_DIR)/history_wsingle_dict.o \
+	  $(LOC_DIR)/history_wquotation_dict.o \
 	  $(LOC_DIR)/holiday_dict.o \
 	  $(LOC_DIR)/strategy_conf.o \
 	  $(LOC_DIR)/reload_thread.o \
