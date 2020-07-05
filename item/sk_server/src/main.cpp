@@ -31,6 +31,9 @@ void do_init()
     reload_thread * master_thread = new reload_thread();
     skhttp_req_thread * req_thread = new skhttp_req_thread();
 
+    proc_data::instance()->add_name_thread("reload_thread", master_thread);
+    proc_data::instance()->add_name_thread("req_thread", req_thread);
+
     master_thread->start();
     req_thread->start();
 

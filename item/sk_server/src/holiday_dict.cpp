@@ -3,6 +3,8 @@
 #include "log_helper.h"
 #include "ul_sign.h"
 #include "common_util.h"
+#include "proc_data.h"
+#include "base_net_thread.h"
 
 holiday_dict::holiday_dict()
 {
@@ -55,7 +57,29 @@ int holiday_dict::load()
     stat(_fullpath, &st);
     _last_load = st.st_mtime;
 
+    update_trade_search_index();
+
     return 0;
+}
+
+void holiday_dict::update_trade_search_index()
+{
+    proc_data* p_data = proc_data::instance();
+
+    if (!p_data) 
+        return;
+
+    base_net_thread * req_thread = p_data->get_thread("req_thread");
+    if (!req_thread)
+        return;
+
+    std::shared_ptr<normal_msg>  net_obj(new normal_msg);
+    net_obj->_msg_op = NORMAL_MSG_UPDATE_TRADE_DATE;
+
+    ObjId id; 
+    id._id = OBJ_ID_THREAD;
+    id._thread_index = req_thread->get_thread_index();
+    base_net_thread::put_obj_msg(id, net_obj);
 }
 
 int holiday_dict::reload()
@@ -178,23 +202,5 @@ void holiday_dict::get_trade_date(std::string & trade_date)
     time_t now = get_timestr(date, sizeof(date), "%Y%m%d");
 
     get_trade_date(date, trade_date);
-}
-
-void holiday_dict::get_yearweek(const std::string &in, std::string &out)
-{
-
-    out.clear();
-
-    struct tm tmin;
-    struct tm *tminp=&tmin;
-
-    memset(tminp, 0, sizeof(struct tm));
-
-    char tmp[SIZE_LEN_512];
-    memset(tmp,0,sizeof(tmp));
-    strptime(in.c_str(),"%Y%m%d %Z",tminp);
-
-    strftime(tmp,sizeof(tmp),"%Y%W",tminp);
-    out.append(tmp);
 }
 

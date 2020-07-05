@@ -59,6 +59,7 @@ OBJ	= $(LOC_DIR)/main.o     \
 	  $(LOC_DIR)/block_search_index.o \
 	  $(LOC_DIR)/op_search_index.o \
 	  $(LOC_DIR)/lruSsr_search_index.o \
+	  $(LOC_DIR)/week_tradedate_search_index.o \
 
 
 AR=ar

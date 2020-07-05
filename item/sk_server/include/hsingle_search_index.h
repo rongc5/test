@@ -26,16 +26,14 @@ class hsingle_search_index:public ToBufferMgr<hsingle_search_item>
         struct hidex_item
         {
             uint32_t single_index;
-            int date_index;
-            int date_index_end;
+            std::string date_index;
+            std::string date_index_end;
             int single;
             int single_diff;
             int sum;
             hidex_item()
             {
                 single_index = 0;
-                date_index = 0;
-                date_index_end = 0;
                 single = 0;
                 single_diff = 0;
                 sum = 0;

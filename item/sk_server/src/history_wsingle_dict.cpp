@@ -190,7 +190,7 @@ void history_wsingle_dict::update_search_index()
         return;
 
     std::string yw_tmp;
-    _holiday_dict->get_yearweek(_last_date, yw_tmp);
+    get_yearweek(_last_date, yw_tmp);
 
     if (_last_week == yw_tmp)
     {

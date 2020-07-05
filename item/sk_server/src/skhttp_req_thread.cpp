@@ -66,6 +66,7 @@ void skhttp_req_thread::handle_msg(std::shared_ptr<normal_msg> & p_msg)
                     {
                         p_data->_block_set->destroy_idle();
                         p_data->_block_set->idle_2_current();
+                        add_destroy_idle_timer();
                     }
                     p_data->_hquoation_dict->update_search_index();
                     p_data->_hwquoation_dict->update_search_index();
@@ -85,6 +86,12 @@ void skhttp_req_thread::handle_msg(std::shared_ptr<normal_msg> & p_msg)
                     add_single_timer();
                 }
 
+            }
+            break;
+        case NORMAL_MSG_UPDATE_TRADE_DATE:
+            {
+                LOG_DEBUG("update_trade date");
+                first_in_day();    
             }
             break;
     }
@@ -112,6 +119,7 @@ void skhttp_req_thread::real_req_start()
     {
         do_quotation();
     }
+
 
     if (_req_single)
     {
@@ -216,16 +224,17 @@ void skhttp_req_thread::first_in_day()
 
         holiday_dict * _holiday_dict = p_data->_holiday_dict->current();
         _holiday_dict->get_trade_date(_req_date, _trade_date);
-
         p_data->_trade_date = _trade_date;
 
         {
             _req_circle_times = 0;
-            p_data->_block_set->destroy_idle();
-            p_data->_block_set->idle_2_current();
+            update_block_set_search_index();
 
-            p_data->_lrussr_index->destroy_idle();
-            p_data->_lrussr_index->idle_2_current();
+            update_lrussr_search_index();
+
+            update_week_tdate_search_index();
+
+            add_destroy_idle_timer();
 
             is_backuped = true;
         }
@@ -541,7 +550,6 @@ void skhttp_req_thread::update_wquotation_dict()
 {
     char t_buf[SIZE_LEN_512];
     char path_buf[SIZE_LEN_512];
-    std::set<std::string> files;
 
     proc_data* p_data = proc_data::instance();
     if (!p_data)
@@ -549,75 +557,32 @@ void skhttp_req_thread::update_wquotation_dict()
 
     strategy_conf * strategy = p_data->_conf->_strategy->current();
 
-    struct dirent *r;
-    DIR *p;
-    uint32_t i = 0;
-
-    p = opendir(strategy->real_quotation_path.c_str());
-    if (p == NULL)
-    {   
-        LOG_WARNING("opendir:%s", strategy->real_quotation_path.c_str());
-
-        return;
-    } 
-
-    while ((r= readdir(p)) != NULL)
-    {   
-        if (r->d_type == DT_REG && strstr(r->d_name, "20"))
-        {
-            snprintf(t_buf, sizeof(t_buf), "%s/%s", strategy->real_quotation_path.c_str(), r->d_name);
-            files.insert(t_buf);
-        }
-    } 
-    closedir(p);
-
-
     snprintf(t_buf, sizeof(t_buf), "%s/.tmp_quotationw", strategy->history_wquotation_path.c_str());
     FILE * fp = fopen(t_buf, "a");
     if (!fp){ 
         return;
     }
 
-    i = 0;
-    std::string yw;
-    holiday_dict * _holiday_dict = p_data->_holiday_dict->current();
-    for (auto ii = files.rbegin(); ii != files.rend(); ii++)
+    uint32_t i = 0;
+    auto search_index = p_data->_wtdate_set->current();
+    for (auto ii = search_index->rbegin(); ii != search_index->rend(); ii++, i++)
     {
-        std::string date = basename((char *)ii->c_str());
-        std::string yw_tmp;
-        _holiday_dict->get_yearweek(date, yw_tmp);
-        if (yw.empty())
-        {
-            if (i >= strategy->history_wquotation_num)
-            {
-                break;
-            }
+        if (i >= strategy->history_wquotation_num)
+        {    
+            break;
+        }    
+        fprintf(fp, "%s", ii->first.c_str());
 
-            fprintf(fp, "%s\t%s", yw_tmp.c_str(), ii->c_str());
-            i++;
-        }
-        else if (yw != yw_tmp)
-        {
-            fprintf(fp, "\n");
-            if (i >= strategy->history_wquotation_num)
-            {
-                break;
-            }
+        for (auto iii = ii->second.begin(); iii != ii->second.end(); iii++)
+        {    
+            fprintf(fp, "\t%s/%s", strategy->real_quotation_path.c_str(), iii->c_str());
+        }    
 
-            fprintf(fp, "%s\t%s", yw_tmp.c_str(), ii->c_str());
-            i++;
-        }
-        else
-        {
-            fprintf(fp, "\t%s", ii->c_str());
-        }
-
-        yw = yw_tmp;
-    }
-    if (i < strategy->history_wquotation_num)
         fprintf(fp, "\n");
+    }
 
     fclose(fp);
+
     snprintf(path_buf, sizeof(path_buf), "%s/%s", strategy->history_wquotation_path.c_str(), strategy->history_wquotation_file.c_str());
 
     int ret = rename(t_buf, path_buf);
@@ -641,7 +606,7 @@ bool skhttp_req_thread::need_backup()
     {   
         if (_holiday_dict->is_trade_date(_req_date.c_str()) && is_backuped){
             time_t now = time(NULL);
-            if (now > dump_real_time)
+            if (now > backup_stime)
             {
                 is_backuped = false;
                 return true;
@@ -783,7 +748,6 @@ void skhttp_req_thread::update_wsingle_dict()
 {
     char t_buf[SIZE_LEN_512];
     char path_buf[SIZE_LEN_512];
-    std::set<std::string> files;
 
     proc_data* p_data = proc_data::instance();
     if (!p_data)
@@ -791,76 +755,32 @@ void skhttp_req_thread::update_wsingle_dict()
 
     strategy_conf * strategy = p_data->_conf->_strategy->current();
 
-    struct dirent *r;
-    DIR *p;
-    uint32_t i = 0;
-
-    p = opendir(strategy->real_single_path.c_str());
-    if (p == NULL)
-    {   
-        LOG_WARNING("opendir:%s", strategy->real_single_path.c_str());
-
-        return;
-    } 
-
-    while ((r= readdir(p)) != NULL)
-    {   
-        if (r->d_type == DT_REG && strstr(r->d_name, "20"))
-        {
-            snprintf(t_buf, sizeof(t_buf), "%s/%s", strategy->real_single_path.c_str(), r->d_name);
-            files.insert(t_buf);
-        }
-    } 
-    closedir(p);
-
-
     snprintf(t_buf, sizeof(t_buf), "%s/.tmp_wsingle", strategy->history_wsingle_path.c_str());
     FILE * fp = fopen(t_buf, "a");
     if (!fp){ 
         return;
     }
 
-    i = 0;
-    std::string yw;
-    holiday_dict * _holiday_dict = p_data->_holiday_dict->current();
-    for (auto ii = files.rbegin(); ii != files.rend(); ii++)
+    uint32_t i = 0;
+    auto search_index = p_data->_wtdate_set->current();
+    for (auto ii = search_index->rbegin(); ii != search_index->rend(); ii++, i++)
     {
-        std::string date = basename((char *)ii->c_str());
-        std::string yw_tmp;
-        _holiday_dict->get_yearweek(date, yw_tmp);
-        if (yw.empty())
-        {
             if (i >= strategy->history_wsingle_num)
             {
                 break;
             }
+            fprintf(fp, "%s", ii->first.c_str());
 
-            fprintf(fp, "%s\t%s", yw_tmp.c_str(), ii->c_str());
-            i++;
-        }
-        else if (yw != yw_tmp)
-        {
+            for (auto iii = ii->second.begin(); iii != ii->second.end(); iii++)
+            {
+                fprintf(fp, "\t%s/%s", strategy->real_single_path.c_str(), iii->c_str());
+            }
+
             fprintf(fp, "\n");
-            if (i >= strategy->history_wsingle_num)
-            {
-                break;
-            }
-
-            fprintf(fp, "%s\t%s", yw_tmp.c_str(), ii->c_str());
-            i++;
-        }
-        else
-        {
-            fprintf(fp, "\t%s", ii->c_str());
-        }
-
-        yw = yw_tmp;
     }
 
-    if (i < strategy->history_wsingle_num)
-        fprintf(fp, "\n");
-
     fclose(fp);
+
     snprintf(path_buf, sizeof(path_buf), "%s/%s", strategy->history_wsingle_path.c_str(), strategy->history_wsingle_file.c_str());
 
     int ret = rename(t_buf, path_buf);
@@ -1011,8 +931,9 @@ void skhttp_req_thread::handle_timeout(std::shared_ptr<timer_msg> & t_msg)
                 {
                     update_quotation_dict(); 
 
-                    p_data->_lrussr_index->destroy_idle();
-                    p_data->_lrussr_index->idle_2_current();
+                    update_lrussr_search_index();
+
+                    add_destroy_idle_timer();
                 }
 
                 if (flag || need_update_wquotation_dict())
@@ -1075,6 +996,13 @@ void skhttp_req_thread::handle_timeout(std::shared_ptr<timer_msg> & t_msg)
 
             }
             break;
+        case TIMER_TYPE_DESTROY_IDLE:
+            {
+                 p_data->_wtdate_set->destroy_idle();
+                 p_data->_block_set->destroy_idle();
+                 p_data->_lrussr_index->destroy_idle();
+            }
+            break;
     }
 }
 
@@ -1096,3 +1024,104 @@ time_t skhttp_req_thread::get_real_time(const char * date, const char * time)
     return t;
 }
 
+void skhttp_req_thread::update_week_tdate_search_index()
+{
+    proc_data* p_data = proc_data::instance();
+
+    p_data->_wtdate_set->destroy_idle();
+
+    strategy_conf * strategy = p_data->_conf->_strategy->current();
+    int num = strategy->history_wsingle_num > strategy->history_wquotation_num? strategy->history_wsingle_num:strategy->history_wquotation_num;
+
+    struct dirent *r;
+    DIR *p;
+    int i = 0;
+    std::set<std::string> files;
+
+    p = opendir(strategy->real_quotation_path.c_str());
+    if (p == NULL)
+    {   
+        LOG_WARNING("opendir:%s", strategy->real_quotation_path.c_str());
+
+        return;
+    } 
+
+    while ((r= readdir(p)) != NULL)
+    {   
+        if (r->d_type == DT_REG && strstr(r->d_name, "20"))
+        {
+            files.insert(r->d_name);
+        }
+    } 
+    closedir(p);
+
+
+    i = 0;
+    std::string yw;
+    for (auto ii = files.rbegin(); ii != files.rend(); ii++)
+    {
+        std::string date = basename((char *)ii->c_str());
+        std::string yw_tmp;
+        get_yearweek(date, yw_tmp);
+        if (yw.empty())
+        {
+            if (i >= num)
+            {
+                break;
+            }
+
+            p_data->_wtdate_set->add_week_date(yw_tmp, date);
+            i++;
+        }
+        else if (yw != yw_tmp)
+        {
+            if (i >= num)
+            {
+                break;
+            }
+
+            p_data->_wtdate_set->add_week_date(yw_tmp, date);
+            i++;
+        }
+        else
+        {
+            p_data->_wtdate_set->add_week_date(yw_tmp, date);
+        }
+
+        yw = yw_tmp;
+    }
+
+    std::string date;
+    holiday_dict * _holiday_dict = p_data->_holiday_dict->current();
+    _holiday_dict->get_trade_date(date);
+    std::string yw_tmp;
+    get_yearweek(date, yw_tmp);
+    p_data->_wtdate_set->add_week_date(yw_tmp, date);
+
+    p_data->_wtdate_set->idle_2_current();
+}
+
+void skhttp_req_thread::add_destroy_idle_timer()
+{
+    proc_data* p_data = proc_data::instance();
+    std::shared_ptr<timer_msg> t_msg(new timer_msg);
+
+    t_msg->_timer_type = TIMER_TYPE_DESTROY_IDLE;
+    t_msg->_time_length = p_data->_conf->_strategy->current()->destroy_idle_millisecond;
+    t_msg->_obj_id = OBJ_ID_THREAD;
+    add_timer(t_msg);
+}
+
+void skhttp_req_thread::update_block_set_search_index()
+{
+    proc_data* p_data = proc_data::instance();
+    p_data->_block_set->destroy_idle();
+    p_data->_block_set->idle_2_current();
+}
+
+void skhttp_req_thread::update_lrussr_search_index()
+{
+    proc_data* p_data = proc_data::instance();
+    p_data->_lrussr_index->destroy_idle();
+    p_data->_lrussr_index->idle_2_current();
+}

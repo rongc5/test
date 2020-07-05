@@ -29,6 +29,8 @@ class skhttp_req_thread:public base_net_thread
 
         void add_single_timer();
 
+        void add_destroy_idle_timer();
+
         void do_quotation();
 
         void add_quotation_timer();
@@ -68,6 +70,12 @@ class skhttp_req_thread:public base_net_thread
 
         bool need_backup();
         void backup();
+
+        void update_week_tdate_search_index();
+
+        void update_block_set_search_index();
+
+        void update_lrussr_search_index();
 
     protected:
         std::string _req_date;

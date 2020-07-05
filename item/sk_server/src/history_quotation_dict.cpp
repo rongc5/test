@@ -264,29 +264,33 @@ void history_quotation_dict::update_hquotation_wave(hquotation_search_item * hqi
             continue;
 
 
-        for (int p = 0; p < (int)ii->second.size() && (int)ii->second.size() > 4; p++)
+        for (int p = 0; p < (int)ii->second.size() && (int)ii->second.size() > 3; p++)
         {   
             if (!p)
             {
                 if (ii->second[p]->low <= ii->second[p+1]->low && ii->second[p+1]->low <= ii->second[p+2]->low && ff->second[p]->low_end_5 < 1 &&
-                        (ff->second[p]->end_end_5 >= 1 || ff->second[p+1]->end_end_5 >=1 || ff->second[p + 2]->end_end_5 >=1 || ff->second[p + 3]->end_end_5 >=1))
+                        (ff->second[p]->end_end_5 >= 1 || ff->second[p+1]->end_end_5 >=1 || ff->second[p + 2]->end_end_5 >=1 || 
+                         (ii->second.size() > 4 && ff->second[p + 3]->end_end_5 >=1)))
                     hqitem->id_trough[id].insert(p);
 
                 if (ii->second[p]->high >= ii->second[p+1]->high && ii->second[p+1]->high >= ii->second[p+2]->high && ff->second[p]->high_end_5 > 1 &&
-                        (ff->second[p]->end_end_5 < 1 || ff->second[p+1]->end_end_5 < 1 || ff->second[p + 2]->end_end_5 < 1 || ff->second[p + 3]->end_end_5 < 1))
+                        (ff->second[p]->end_end_5 < 1 || ff->second[p+1]->end_end_5 < 1 || ff->second[p + 2]->end_end_5 < 1 || 
+                         (ii->second.size() > 4 && ff->second[p + 3]->end_end_5 < 1)))
                     hqitem->id_crest[id].insert(p);
 
                 continue;
             }
 
-            if (p < (int)ii->second.size() - 3)
+            if (p < (int)ii->second.size() - 2)
             {
                 if (ii->second[p+1]->low >= ii->second[p]->low && ii->second[p-1]->low >= ii->second[p]->low && ff->second[p]->low_end_5 < 1 &&
-                        (ff->second[p]->end_end_5 >= 1 || ff->second[p+1]->end_end_5 >=1 || ff->second[p + 2]->end_end_5 >=1 || ff->second[p + 3]->end_end_5 >=1))
+                        (ff->second[p]->end_end_5 >= 1 || ff->second[p+1]->end_end_5 >=1 || ff->second[p + 2]->end_end_5 >=1 || 
+                         (ii->second.size() - p > 3 && ff->second[p + 3]->end_end_5 >=1)))
                     hqitem->id_trough[id].insert(p);
 
                 if (ii->second[p]->high >= ii->second[p+1]->high && ii->second[p]->high >= ii->second[p-1]->high && ff->second[p]->high_end_5 > 1 &&
-                        (ff->second[p]->end_end_5 < 1 || ff->second[p+1]->end_end_5 < 1 || ff->second[p + 2]->end_end_5 < 1 || ff->second[p + 3]->end_end_5 < 1))
+                        (ff->second[p]->end_end_5 < 1 || ff->second[p+1]->end_end_5 < 1 || ff->second[p + 2]->end_end_5 < 1 || 
+                         (ii->second.size() -p > 3 && ff->second[p + 3]->end_end_5 < 1)))
                     hqitem->id_crest[id].insert(p);
 
                 continue;

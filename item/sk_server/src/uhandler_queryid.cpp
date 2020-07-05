@@ -574,6 +574,8 @@ void uhandler_queryid::query_history_wsingle(uint32_t last_day_num, std::string 
         return;
     }
 
+    std::set<std::string>  date;
+
     int len = 0;
     for (uint32_t i = 0; i< last_day_num && i < ii->second.size(); i++)
     {
@@ -594,6 +596,14 @@ void uhandler_queryid::query_history_wsingle(uint32_t last_day_num, std::string 
             t_str.append("wsingle");
             t_str.append("_");
             t_str.append(mm->second);
+
+            p_data->_wtdate_set->get_trade_date(mm->second, date);
+
+            if (!date.empty())
+            {    
+                t_str += "_" + *date.begin() + "_" + *date.rbegin();
+            } 
+
 
             k.SetString(t_str.c_str(), allocator);
 
@@ -691,6 +701,8 @@ void uhandler_queryid::query_history_wsingle(std::string & history_date, std::st
     {    
         return;
     }
+    std::set<std::string>  date;
+
     int index = hsitem->get_index(id, history_date);
     if (index >= 0)
     {
@@ -701,6 +713,13 @@ void uhandler_queryid::query_history_wsingle(std::string & history_date, std::st
         t_str.append("wsingle");
         t_str.append("_");
         t_str.append(history_date);
+
+        p_data->_wtdate_set->get_trade_date(history_date, date);
+
+        if (!date.empty())
+        {    
+            t_str += "_" + *date.begin() + "_" + *date.rbegin();
+        } 
 
         k.SetString(t_str.c_str(), allocator);
 
@@ -848,6 +867,7 @@ void uhandler_queryid::query_history_wquotation(uint32_t last_day_num, std::stri
     int i = 0;
     int len = 0;
     std::string date;
+    std::set<std::string>  date_set;
     for (i = last_day_num; i >= 0; i--)
     {
         if (i > (int)ii->second.size())
@@ -868,6 +888,12 @@ void uhandler_queryid::query_history_wquotation(uint32_t last_day_num, std::stri
             t_str.append("wquotation");
             t_str.append("_");
             t_str.append(date);
+
+            p_data->_wtdate_set->get_trade_date(date, date_set);
+            if (!date_set.empty())
+            {
+                t_str += "_" + *date_set.begin() + "_" + *date_set.rbegin();
+            }
 
             k.SetString(t_str.c_str(), allocator);
 
@@ -1028,6 +1054,10 @@ void uhandler_queryid::query_history_wquotation(std::string & history_date, std:
     int index = hqitem->get_index(id, history_date);
     auto ii = hqitem->id_quotation.find(id);
 
+    std::set<std::string>  date;
+
+    p_data->_wtdate_set->get_trade_date(history_date, date);
+
     if (ii != hqitem->id_quotation.end() && index >= 0)
     {
         Value k(kStringType);
@@ -1040,6 +1070,10 @@ void uhandler_queryid::query_history_wquotation(std::string & history_date, std:
         t_str.append("wquotation");
         t_str.append("_");
         t_str.append(history_date);
+        if (!date.empty())
+        {
+            t_str += "_" + *date.begin() + "_" + *date.rbegin();
+        }
 
         k.SetString(t_str.c_str(), allocator);
 

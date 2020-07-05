@@ -321,6 +321,8 @@ enum SETS_OP_TRPE
 #define NORMAL_MSG_DESTROY_QT 1000
 #define NORMAL_MSG_DESTROY_ST 1001
 
+#define NORMAL_MSG_UPDATE_TRADE_DATE 1002
+
 class destroy_msg: public normal_msg
 {
     public:
@@ -342,13 +344,16 @@ class destroy_msg: public normal_msg
 #define TIMER_TYPE_QUOTATION_IDLE_2_CURRENT 10003
 #define TIMER_TYPE_SINGLE_IDLE_2_CURRENT 10004
 
+
 #define TIMER_TYPE_HTTP_REQ 10009
 #define TIMER_TYPE_DESTROY_IDLE 10010
+
 
 
 #define HTPP_RES_OK 1000
 #define HTPP_RES_ERR 1001
 #define HTPP_REQ_PATH_ERR 1002
+
 
 
 

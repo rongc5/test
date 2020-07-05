@@ -10,6 +10,7 @@
 #include "plate_search_index.h"
 #include "rsingle_search_index.h"
 #include "block_search_index.h"
+#include "week_tradedate_search_index.h"
 #include "hquotation_search_index.h"
 #include "rquotation_search_index.h"
 #include "finance_search_index.h"
@@ -31,6 +32,7 @@ class history_quotation_dict;
 class history_wquotation_dict;
 class history_wsingle_dict;
 class holiday_dict;
+class base_net_thread;
 class proc_data:public reload_inf
 {
     public:
@@ -91,6 +93,8 @@ class proc_data:public reload_inf
         //search index;
         std::shared_ptr<block_search_index> _block_set;
 
+        std::shared_ptr<week_tradedate_search_index> _wtdate_set;
+
         std::shared_ptr<address_search_index> _address_index;
         std::shared_ptr<plate_search_index> _plate_index;
 
@@ -132,6 +136,10 @@ class proc_data:public reload_inf
 
         static int get_crest_index(const std::string & id, int date_index, int date_index_end, std::set<int> & res);
 
+        void add_name_thread(const std::string & name, base_net_thread * thread);
+
+        base_net_thread * get_thread(const std::string & name);
+
     public:
         char proc_name[SIZE_LEN_256];
         std::string _trade_date;
@@ -142,6 +150,8 @@ class proc_data:public reload_inf
         std::map<std::string, std::shared_ptr<url_handler> > _uhandler_map;
 
         std::map<std::string, search_sstr_index> _search_sstr_map;
+
+        std::unordered_map<std::string, base_net_thread *, str_hasher> _name_thread_map;
 
 
     private:

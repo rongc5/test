@@ -18,6 +18,7 @@
 #include "cir_holder_dict.h"
 #include "history_wsingle_dict.h"
 #include "history_wquotation_dict.h"
+#include "base_net_thread.h"
 
 int proc_data::init(sk_conf * conf)
 {
@@ -216,6 +217,23 @@ int proc_data::init(sk_conf * conf)
 
     return 0;
 }
+
+void proc_data::add_name_thread(const std::string & name, base_net_thread * thread)
+{
+    _name_thread_map.insert(std::make_pair(name, thread));
+}
+
+base_net_thread * proc_data::get_thread(const std::string & name)
+{
+    auto ii = _name_thread_map.find(name);
+    if (ii != _name_thread_map.end())
+    {
+        return ii->second;
+    }
+
+    return NULL;
+}
+
 
 proc_data* proc_data::_singleton;
 
@@ -475,6 +493,7 @@ int proc_data::destroy_idle()
 void proc_data::reg_search_index()
 {
     _lrussr_index = std::make_shared<lruSsr_search_index>();
+    _wtdate_set = std::make_shared<week_tradedate_search_index>();
 
     _op_index = std::make_shared<op_search_index>();
     _search_index_map["op"] = std::bind(&op_search_index::do_check_op_search, _op_index, _1, _2, _3);

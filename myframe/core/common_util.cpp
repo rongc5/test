@@ -729,3 +729,21 @@ bool end_with(const std::string &mainStr, const std::string &toMatch)
     else
         return false;
 }
+
+void get_yearweek(const std::string &in, std::string &out)
+{
+
+    out.clear();
+
+    struct tm tmin;
+    struct tm *tminp=&tmin;
+
+    memset(tminp, 0, sizeof(struct tm));
+
+    char tmp[SIZE_LEN_512];
+    memset(tmp,0,sizeof(tmp));
+    strptime(in.c_str(),"%Y%m%d %Z",tminp);
+
+    strftime(tmp,sizeof(tmp),"%Y%W",tminp);
+    out.append(tmp);
+}

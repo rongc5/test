@@ -26,7 +26,7 @@ class holiday_dict:public reload_inf
 
         void get_trade_date(std::string & trade_date);
 
-        void get_yearweek(const std::string &in, std::string &out);
+        void update_trade_search_index();
 
     private:
         void set_path (const char* path);
