@@ -611,6 +611,10 @@ bool skhttp_req_thread::need_backup()
                 is_backuped = false;
                 return true;
             }
+            else
+            {
+                return false;
+            }
         }else {
             return false;
         }
