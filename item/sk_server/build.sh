@@ -18,3 +18,24 @@ elif [ $# == 1 ];then
         tar -czvf $base_file.tar.gz $base_file core idl conf ${base_file}ctl.sh
     fi
 fi
+
+
+
+#
+#wget https://www.openssl.org/source/openssl-1.1.0g.tar.gz
+#tar -zxvf openssl-1.1.0g.tar.gz 
+#cd openssl-1.1.0g/
+#./config --prefix=/usr/local/openssl
+#./config -t
+#make
+#make install
+#cp /usr/local/openssl/lib/*.a /usr/lib64/
+
+
+
+##dns
+#yum -y install nscd
+#systemctl status nscd
+#systemctl start nscd
+#strings /var/db/nscd/hosts
+
