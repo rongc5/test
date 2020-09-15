@@ -330,7 +330,7 @@ void history_single_dict::update_rsingle_search()
             const auto & single = kk->second.back();
             for (uint32_t i = 0; i< single->size(); i++)
             {   
-                if (single->at(i).diff > 0)
+                if (single->at(i).diff != 0)
                 {   
                     idl->rsingle_diff_index[i].insert(std::make_pair(single->at(i).diff, id));
                 }   
