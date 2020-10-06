@@ -4,7 +4,7 @@
 bool single_t::operator != (const single_t & st) const
 {
     //if (this->in != st.in || this->out != st.out || this->diff != st.diff)
-    if (this->diff != st.diff)
+    if (this->diff != st.diff || this->in != st.in || this->out != st.out)
     {
         return true;
     }
@@ -14,14 +14,12 @@ bool single_t::operator != (const single_t & st) const
 
 single_t & single_t::operator += (const single_t & st)
 {
-    //this->in += st.in;
-    //this->out += st.out;
+    this->in += st.in;
+    this->out += st.out;
     this->diff += st.diff;
 
     return *this;
 }
-
-
 
 bool search_res::empty()
 {

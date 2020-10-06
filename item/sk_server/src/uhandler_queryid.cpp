@@ -136,6 +136,15 @@ int uhandler_queryid::do_check_queryid(std::map<std::string, std::string> & url_
 
     {
         Value child(kObjectType);
+        query_single_ratio(url_para_map["id"], child, allocator);
+
+        key.SetString("vratio", allocator);
+        root.AddMember(key, child, allocator);
+    }
+
+
+    {
+        Value child(kObjectType);
         query_technical(url_para_map["id"], child, allocator);
 
         key.SetString("technical", allocator);
@@ -157,6 +166,10 @@ int uhandler_queryid::do_check_queryid(std::map<std::string, std::string> & url_
         query_history_single(atoi(url_para_map["history_num"].c_str()), url_para_map["id"], root, allocator);
 
         query_sum_single(atoi(url_para_map["history_num"].c_str()), url_para_map["id"], root, allocator);
+
+        query_history_single_ratio(atoi(url_para_map["history_num"].c_str()), url_para_map["id"], root, allocator);
+
+        query_sum_single_ratio(atoi(url_para_map["history_num"].c_str()), url_para_map["id"], root, allocator);
 
         query_history_quotation(atoi(url_para_map["history_num"].c_str()), url_para_map["id"], root, allocator);
         query_sum_quotation(atoi(url_para_map["history_num"].c_str()), url_para_map["id"], root, allocator);
@@ -233,22 +246,29 @@ void uhandler_queryid::query_quotation(std::string &id, Value & root, Document::
         }
 
         {
-            key.SetString("last_closed", allocator); 
+            key.SetString("lclosed", allocator); 
             value.SetString(float_2_str(ii->second.back()->last_closed).c_str(), allocator); 
 
             root.AddMember(key, value, allocator);
         }
 
         {
-            key.SetString("change_rate", allocator); 
+            key.SetString("crate", allocator); 
             value.SetString(float_2_str(ii->second.back()->change_rate).c_str(), allocator); 
 
             root.AddMember(key, value, allocator);
         }
 
         {
-            key.SetString("range_percent", allocator); 
+            key.SetString("rpercent", allocator); 
             value.SetString(float_2_str(ii->second.back()->range_percent).c_str(), allocator); 
+
+            root.AddMember(key, value, allocator);
+        }
+
+        {
+            key.SetString("qr_ratio", allocator); 
+            value.SetString(float_2_str(ii->second.back()->quantity_relative_ratio).c_str(), allocator); 
 
             root.AddMember(key, value, allocator);
         }
@@ -389,6 +409,36 @@ void uhandler_queryid::query_single(std::string &id, Value & root, Document::All
     }
 }
 
+void uhandler_queryid::query_single_ratio(std::string &id, Value & root, Document::AllocatorType & allocator)
+{
+    char t_buf[SIZE_LEN_64];
+    proc_data* p_data = proc_data::instance();
+    strategy_conf * strategy = p_data->_conf->_strategy->current();
+    auto rsingle_dict_index = p_data->_rsingle_index->current();
+
+    auto ii = rsingle_dict_index->id_single.find(id);
+    if (ii != rsingle_dict_index->id_single.end())
+    {
+        for (uint32_t i = 0; i < strategy->real_single_scale.size(); i++)
+        {
+            Value key(kStringType);
+            Value child(kArrayType);
+
+            snprintf(t_buf, sizeof(t_buf), "vratio_%d", i);
+            key.SetString(t_buf, allocator);
+
+            for (auto ft: ii->second)
+            {
+                if (i < ft->size())
+                {
+                    std::string str = float_2_str(ft->at(i).dratio * 100).append("%");
+                    child.PushBack(Value().SetString(str.c_str(), str.length(), allocator), allocator);
+                }
+            }
+            root.AddMember(key, child, allocator);
+        }
+    }
+}
 
 void uhandler_queryid::query_blocked(std::string &id, Value & root, Document::AllocatorType & allocator)
 {
@@ -561,6 +611,66 @@ void uhandler_queryid::query_history_single(uint32_t last_day_num, std::string &
     }
 }
 
+void uhandler_queryid::query_history_single_ratio(uint32_t last_day_num, std::string &id, Value & root, Document::AllocatorType & allocator)
+{
+    proc_data* p_data = proc_data::instance();
+    char t_buf[SIZE_LEN_64];
+
+    hsingle_search_item * _hsingle_dict = p_data->_hsingle_index->current();
+
+    auto ii = _hsingle_dict->id_single.find(id);
+    if (ii == _hsingle_dict->id_single.end())
+    {
+        return;
+    }
+
+    int len = 0;
+    for (uint32_t i = 0; i< last_day_num && i < ii->second.size(); i++)
+    {
+        len = ii->second.size() - i - 1;
+        if (len < 0)
+            continue;
+
+        std::string key;           
+        hsingle_search_item::creat_id_index_key(id, len, key);
+
+        auto mm = _hsingle_dict->id_idx_date.find(key);
+        if (mm != _hsingle_dict->id_idx_date.end())
+        {
+            Value k(kStringType);
+            Value child(kObjectType);
+
+            std::string t_str;
+            t_str.append("vratio");
+            t_str.append("_");
+            t_str.append(mm->second);
+
+            k.SetString(t_str.c_str(), allocator);
+
+            const std::deque<std::shared_ptr<single_vec>> & dq = ii->second[len];
+
+            for (uint32_t k = 0; !dq.empty() && k < dq[0]->size(); k++)
+            {
+                Value key_1(kStringType);
+                Value child_1(kArrayType);
+
+                snprintf(t_buf, sizeof(t_buf), "vratio_%d", k);
+                key_1.SetString(t_buf, allocator);
+
+                for (uint32_t j = 0; j < dq.size(); j++)
+                {
+                    std::string str = float_2_str(dq[j]->at(k).dratio * 100).append("%");
+                    child_1.PushBack(Value().SetString(str.c_str(), str.length(), allocator), allocator);
+                }
+
+                child.AddMember(key_1, child_1, allocator);
+            }
+
+            root.AddMember(k, child, allocator);
+        }
+    }
+}
+
 void uhandler_queryid::query_history_wsingle(uint32_t last_day_num, std::string &id, Value & root, Document::AllocatorType & allocator)
 {
     proc_data* p_data = proc_data::instance();
@@ -689,6 +799,37 @@ void uhandler_queryid::query_sum_single(uint32_t last_day_num, std::string &id, 
     }
 
 }
+
+void uhandler_queryid::query_sum_single_ratio(uint32_t last_day_num, std::string &id, Value & root, Document::AllocatorType & allocator)
+{
+    proc_data* p_data = proc_data::instance();
+
+    std::string date;
+
+    hsingle_search_item * hsitem = p_data->_hsingle_index->current();
+    auto ii = hsitem->id_sum_single.find(id);
+    if (ii == hsitem->id_sum_single.end())
+    {
+        return;
+    }
+
+    int i = 0;
+    int len = 0;
+    for ( i = last_day_num;  i >= 0; i--)
+    {
+        if (i > (int)ii->second.size() - 1)
+            continue;
+        
+        len  = ii->second.size() - i -1;
+        date = hsitem->get_date(id, len);
+        if (!date.empty()) {
+            query_sum_single_ratio(date, id, root, allocator);
+            break;
+        }
+    }
+
+}
+
 
 void uhandler_queryid::query_history_wsingle(std::string & history_date, std::string &id, Value & root, Document::AllocatorType & allocator)
 {
@@ -851,6 +992,44 @@ void uhandler_queryid::query_sum_single(std::string & history_date, std::string 
     }
 }
 
+void uhandler_queryid::query_sum_single_ratio(std::string & history_date, std::string &id, Value & root, Document::AllocatorType & allocator)
+{
+    proc_data* p_data = proc_data::instance();
+
+    single_vec st;
+    std::string key;
+    hsingle_search_item * hsitem = p_data->_hsingle_index->current();
+    
+    int index = hsitem->get_index(id, history_date);
+    auto ii = hsitem->id_sum_single.find(id);
+
+    if (ii != hsitem->id_sum_single.end() && index >= 0)
+    {
+        Value k(kStringType);
+        Value child(kArrayType);
+
+        std::string t_str;
+        t_str.append("vratio_sum");
+        t_str.append("_");
+        t_str.append(history_date);
+
+        k.SetString(t_str.c_str(), allocator);
+
+        for (int k = ii->second[index]->size() - 1;k >= 0; k--)
+        {
+            unsigned long long sum = ii->second[ii->second.size() - 1]->at(k).in + ii->second[ii->second.size() - 1]->at(k).out;
+            unsigned long long dsum = ii->second[index]->at(k).in + ii->second[index]->at(k).out;
+            sum = dsum && sum? sum - dsum: 0;
+            int diff = ii->second[ii->second.size() - 1]->at(k).diff - ii->second[index]->at(k).diff;
+            float dratio = sum ? diff * 1.0 / sum : 0;
+            std::string str = float_2_str(dratio * 100).append("%");
+            child.PushBack(Value().SetString(str.c_str(), str.length(), allocator), allocator);
+        }
+
+        root.AddMember(k, child, allocator);
+    }
+}
+
 void uhandler_queryid::query_history_wquotation(uint32_t last_day_num, std::string &id, Value & root, Document::AllocatorType & allocator)
 {
     proc_data* p_data = proc_data::instance();
@@ -912,11 +1091,18 @@ void uhandler_queryid::query_history_wquotation(uint32_t last_day_num, std::stri
             }
 
             {
-                key.SetString("range_percent", allocator); 
+                key.SetString("rpercent", allocator); 
                 value.SetString(float_2_str(ii->second[len]->range_percent).c_str(), allocator); 
 
                 v.AddMember(key, value, allocator);
             }
+            {
+                key.SetString("vol", allocator); 
+                value.SetString(float_2_str(ii->second[len]->vol).c_str(), allocator); 
+
+                v.AddMember(key, value, allocator);
+            }
+
 
             root.AddMember(k, v, allocator);
         }
@@ -977,8 +1163,15 @@ void uhandler_queryid::query_history_quotation(uint32_t last_day_num, std::strin
             }
 
             {
-                key.SetString("range_percent", allocator); 
+                key.SetString("rpercent", allocator); 
                 value.SetString(float_2_str(ii->second[len]->range_percent).c_str(), allocator); 
+
+                v.AddMember(key, value, allocator);
+            }
+
+            {
+                key.SetString("vol", allocator); 
+                value.SetString(float_2_str(ii->second[len]->vol).c_str(), allocator); 
 
                 v.AddMember(key, value, allocator);
             }
@@ -1092,8 +1285,15 @@ void uhandler_queryid::query_history_wquotation(std::string & history_date, std:
         }
 
         {
-            key.SetString("range_percent", allocator); 
+            key.SetString("rpercent", allocator); 
             value.SetString(float_2_str(ii->second[index]->range_percent).c_str(), allocator); 
+
+            v.AddMember(key, value, allocator);
+        }
+
+        {
+            key.SetString("vol", allocator); 
+            value.SetString(float_2_str(ii->second[index]->vol).c_str(), allocator); 
 
             v.AddMember(key, value, allocator);
         }
@@ -1142,8 +1342,15 @@ void uhandler_queryid::query_history_quotation(std::string & history_date, std::
         }
 
         {
-            key.SetString("range_percent", allocator); 
+            key.SetString("rpercent", allocator); 
             value.SetString(float_2_str(ii->second[index]->range_percent).c_str(), allocator); 
+
+            v.AddMember(key, value, allocator);
+        }
+
+        {
+            key.SetString("vol", allocator); 
+            value.SetString(float_2_str(ii->second[index]->vol).c_str(), allocator); 
 
             v.AddMember(key, value, allocator);
         }

@@ -101,6 +101,9 @@ int history_quotation_dict::load_history_quoation(const char * file)
         qo->range_percent = atof(strVec[11].c_str());
         qo->total_price = atoi(strVec[12].c_str());
 
+        if (strVec.size() > 13)
+            qo->quantity_relative_ratio = atoi(strVec[13].c_str());
+
         qt = original_2_quotation(qo);
 
         if (date == _last_date)

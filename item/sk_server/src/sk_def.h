@@ -20,15 +20,17 @@ struct ban_t
 
 struct single_t
 {
-    //int in;
-    //int out;
+    unsigned long long in;
+    unsigned long long out;
     int diff;
+    float dratio;
 
     single_t()
     {
-        //in = 0;
-        //out = 0;
+        in = 0;
+        out = 0;
         diff = 0;
+        dratio = 0 ;
     }
 
     bool operator != (const single_t & st) const;
@@ -167,6 +169,7 @@ struct quotation_original
     float range_percent;
 
     float total_price;
+    float quantity_relative_ratio;
 
     quotation_original & operator += (const quotation_original & qt);
 

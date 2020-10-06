@@ -80,7 +80,10 @@ int history_single_dict::load_history_single(const char * file)
 
                 //hs.in = atoi(strVec[i].c_str());
                 //hs.out = atoi(strVec[i + 1].c_str());
+                hs.in = atoi(strVec[i].c_str());
+                hs.out = atoi(strVec[i + 1].c_str());
                 hs.diff = atoi(strVec[i + 2].c_str());
+                hs.dratio = (hs.in + hs.out)? hs.diff*1.0/(hs.in + hs.out):0;
 
                 single->push_back(hs);
             }
@@ -110,7 +113,25 @@ int history_single_dict::load_history_single(const char * file)
                 for (; j < tmpVec.size(); j++, k++)
                 {
                     single_t hs;
-                    hs.diff = atoi(tmpVec[j].c_str());
+                    if (strstr(tmpVec[j].c_str(), ":"))
+                    {
+                        std::vector<std::string> ttVec;
+                        SplitString(tmpVec[j].c_str(), ':', &ttVec, SPLIT_MODE_ALL | SPLIT_MODE_TRIM);
+                        if (ttVec.size() < 2)
+                        {
+                            continue;
+                        }
+
+                        hs.in = atoi(ttVec[0].c_str());
+                        hs.out = atoi(ttVec[1].c_str());
+                        hs.diff = hs.in - hs.out;
+                    }
+                    else
+                    {
+                        hs.diff = atoi(tmpVec[j].c_str());
+                    }
+                    hs.dratio = (hs.in + hs.out)? hs.diff*1.0/(hs.in + hs.out):0;
+
                     st[k]->push_back(hs);
                 }
             }
@@ -152,6 +173,8 @@ void history_single_dict::update_real_single(const std::string & trade_date, con
     //creat_key(trade_date, id, key);
     proc_data* p_data = proc_data::instance(); 
     strategy_conf * strategy = p_data->_conf->_strategy->current();
+
+    _last_date = trade_date;
 
     {
         std::string key;
@@ -268,6 +291,8 @@ void history_single_dict::update_hsingle_search()
             {
 
                 ss->at(m).diff = dp[p]->at(m).diff + ii->second[p].back()->at(m).diff;
+                ss->at(m).in = dp[p]->at(m).in + ii->second[p].back()->at(m).in;
+                ss->at(m).out = dp[p]->at(m).out + ii->second[p].back()->at(m).out;
                 m++;
             }
 
@@ -292,7 +317,7 @@ void history_single_dict::update_rsingle_search()
     {
         const std::string & id = ii->first;
         std::string key;
-        creat_key(p_data->_trade_date, id, key);
+        creat_key(_last_date, id, key);
 
         auto kk = _date_dict.find(key);
         if (kk == _date_dict.end())
@@ -337,7 +362,6 @@ void history_single_dict::update_rsingle_search()
             } 
         }
 
-
     }
 }
 
@@ -354,6 +378,8 @@ int history_single_dict::load()
     strategy_conf * strategy = p_data->_conf->_strategy->current();
     uint32_t i = 0;
 
+    std::set<std::string> file_set;
+    std::set<std::string> date_set;
 
     while (fgets(line, sizeof(line), fp)) 
     {
@@ -365,10 +391,24 @@ int history_single_dict::load()
         if (ptr == NULL || *ptr == '\0'|| *ptr == '#')
             continue;
 
-        load_history_single(ptr);
+        file_set.insert(std::string(ptr));
+
+        std::string date = basename(ptr);
+        date_set.insert(date);
     }
 
     fclose(fp);
+
+    if (!date_set.empty())
+    {   
+        _last_date = *(date_set.rbegin());
+    }   
+
+    for (auto filename : file_set)
+    {   
+        load_history_single(filename.c_str());
+    } 
+
     struct stat st;
     stat(_fullpath, &st);
     _last_load = st.st_mtime;

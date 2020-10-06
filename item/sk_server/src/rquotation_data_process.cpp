@@ -85,6 +85,7 @@ void rquotation_data_process::msg_recv_finish()
     qt->change_rate = atof(strVec[38].c_str());
     qt->range_percent = atof(strVec[32].c_str());
     qt->total_price = atof(strVec[37].c_str());
+    qt->quantity_relative_ratio = atof(strVec[49].c_str());
     
     
 

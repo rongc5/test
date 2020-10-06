@@ -485,6 +485,9 @@ void skhttp_req_thread::dump_real_quotation()
         tmp.append(float_2_str(ii->second.back()->total_price));
         tmp.append(1, '\t');
 
+        tmp.append(float_2_str(ii->second.back()->quantity_relative_ratio));
+        tmp.append(1, '\t');
+
         FILE_WRITE(t_buf, "%s", tmp.c_str());
     }
 }
@@ -893,7 +896,7 @@ void skhttp_req_thread::dump_real_single()
         {
             for (i = k; i < st.size(); i++) 
             {
-                snprintf(tmp, sizeof(tmp), "%d,", st[i]->at(j).diff);
+                snprintf(tmp, sizeof(tmp), "%d:%d,", st[i]->at(j).in, st[i]->at(j).out);
                 t_str.append(tmp);
             }
             

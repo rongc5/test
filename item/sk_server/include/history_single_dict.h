@@ -20,7 +20,7 @@ class history_single_dict:public reload_inf
 
         static void creat_key(const std::string & date, const std::string & id, std::string & key);
 
-        void update_real_single(const std::string & trade_date, const std::string & id, std::shared_ptr<single_vec>  single);
+        void update_real_single(const std::string & trade_date, const std::string & id, std::shared_ptr<single_vec> single);
 
         void update_search_index();
     private:
@@ -40,6 +40,8 @@ class history_single_dict:public reload_inf
         std::unordered_map<std::string, std::deque<std::shared_ptr<single_vec> >, str_hasher> _date_dict;
         //id, date,
         std::unordered_map<std::string, std::set<std::string>, str_hasher> _id_date_dict;
+    private:
+        std::string _last_date;
 };
 
 
