@@ -92,6 +92,16 @@ void skhttp_req_thread::handle_msg(std::shared_ptr<normal_msg> & p_msg)
             {
                 LOG_DEBUG("update_trade date");
                 first_in_day();    
+
+                update_quotation_dict();
+                update_wquotation_dict();
+
+                update_single_dict();
+                update_wsingle_dict();
+
+                //if (need_backup()) {    
+                    //backup();
+                //} 
             }
             break;
     }
@@ -112,7 +122,7 @@ void skhttp_req_thread::real_req_start()
         //LOG_DEBUG("the _base_container size > %d", p_data->_conf->max_reqhttp_num);
         return;
     }
-    
+
     //usleep(200000);
 
     if (_req_quotation)
@@ -377,7 +387,7 @@ bool skhttp_req_thread::need_dump_real_quotation()
 
     if (!_holiday_dict->is_trade_date(_trade_date.c_str()))
         return false;
-    
+
     snprintf(t_buf, sizeof(t_buf), "%s/%s", strategy->real_quotation_path.c_str(), _trade_date.c_str());
 
     int d = access(t_buf, F_OK);
@@ -391,7 +401,7 @@ bool skhttp_req_thread::need_dump_real_quotation()
     }else {
         return true;
     }
-    
+
     return false;
 }
 
@@ -407,7 +417,7 @@ bool skhttp_req_thread::need_dump_real_single()
     strategy_conf * strategy = p_data->_conf->_strategy->current();
     if (!_holiday_dict->is_trade_date(_trade_date.c_str()))
         return false;
-    
+
     snprintf(t_buf, sizeof(t_buf), "%s/%s", strategy->real_single_path.c_str(), _trade_date.c_str());
 
     int d = access(t_buf, F_OK);
@@ -421,7 +431,7 @@ bool skhttp_req_thread::need_dump_real_single()
     }else {
         return true;
     }
-    
+
     return false;
 }
 
@@ -643,7 +653,7 @@ void skhttp_req_thread::backup()
     if (strategy->backup_files_path.empty())
         return;
 
-     SplitString(strategy->backup_files_path.c_str(), ',', &strVec, SPLIT_MODE_ALL | SPLIT_MODE_TRIM);
+    SplitString(strategy->backup_files_path.c_str(), ',', &strVec, SPLIT_MODE_ALL | SPLIT_MODE_TRIM);
     if (!strVec.size())
         strVec.push_back(strategy->backup_files_path);
 
@@ -654,7 +664,7 @@ void skhttp_req_thread::backup()
         cmd.append(" ");
         cmd.append(ii);
     }
-    
+
     system(cmd.c_str());
 }
 
@@ -772,18 +782,18 @@ void skhttp_req_thread::update_wsingle_dict()
     auto search_index = p_data->_wtdate_set->current();
     for (auto ii = search_index->rbegin(); ii != search_index->rend(); ii++, i++)
     {
-            if (i >= strategy->history_wsingle_num)
-            {
-                break;
-            }
-            fprintf(fp, "%s", ii->first.c_str());
+        if (i >= strategy->history_wsingle_num)
+        {
+            break;
+        }
+        fprintf(fp, "%s", ii->first.c_str());
 
-            for (auto iii = ii->second.begin(); iii != ii->second.end(); iii++)
-            {
-                fprintf(fp, "\t%s/%s", strategy->real_single_path.c_str(), iii->c_str());
-            }
+        for (auto iii = ii->second.begin(); iii != ii->second.end(); iii++)
+        {
+            fprintf(fp, "\t%s/%s", strategy->real_single_path.c_str(), iii->c_str());
+        }
 
-            fprintf(fp, "\n");
+        fprintf(fp, "\n");
     }
 
     fclose(fp);
@@ -899,7 +909,7 @@ void skhttp_req_thread::dump_real_single()
                 snprintf(tmp, sizeof(tmp), "%d:%d,", st[i]->at(j).in, st[i]->at(j).out);
                 t_str.append(tmp);
             }
-            
+
             t_str.append(1, '\t');
         }
 
@@ -919,7 +929,7 @@ void skhttp_req_thread::handle_timeout(std::shared_ptr<timer_msg> & t_msg)
                 bool flag = false;
                 _quotation_index = 0;
                 _quotation_destroy_num = 0;
-                
+
                 _id_dic = p_data->_id_dict->current();
                 _ua_dic = p_data->_ua_dict->current();
 
@@ -1005,9 +1015,9 @@ void skhttp_req_thread::handle_timeout(std::shared_ptr<timer_msg> & t_msg)
             break;
         case TIMER_TYPE_DESTROY_IDLE:
             {
-                 p_data->_wtdate_set->destroy_idle();
-                 p_data->_block_set->destroy_idle();
-                 p_data->_lrussr_index->destroy_idle();
+                p_data->_wtdate_set->destroy_idle();
+                p_data->_block_set->destroy_idle();
+                p_data->_lrussr_index->destroy_idle();
             }
             break;
     }
