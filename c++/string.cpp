@@ -26,5 +26,14 @@ int main(int argc, char *argv[])
     string b = a;
     cout << b.c_str();
 
+    string m = "hello";
+
+    string n = "hello";
+
+    if (m == n)
+    {
+        cout << "equal" <<'\n';
+    }
+
     return 0;
 }

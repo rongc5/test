@@ -5,6 +5,7 @@ time_t get_timestr(char dest[], size_t dest_len, const char * format)
     if (!dest || !dest_len || !format){
         return 0;
     }   
+    dest[0] = '\0';
 
     time_t now;
     struct tm *tm_now;
@@ -21,6 +22,7 @@ time_t get_timestr_millSecond(char dest[], size_t dest_len, const char * format)
     if (!dest || !dest_len || !format){
         return 0;
     }   
+    dest[0] = '\0';
 
     time_t now;
     struct tm *tm_now;

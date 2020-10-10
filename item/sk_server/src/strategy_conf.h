@@ -125,6 +125,8 @@ class strategy_conf:public reload_inf
 
         uint32_t lru_ssr_length;
 
+        float is_not_trade_date_ratio;
+
         std::vector<uint32_t> real_single_scale;
 };
 

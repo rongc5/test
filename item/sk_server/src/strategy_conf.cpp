@@ -335,6 +335,11 @@ void strategy_conf::do_parse()
         per_day_min_req_circle_times = atoi(_cfg["per_day_min_req_circle_times"].c_str());
     }
 
+    if (has_key<std::string, std::string>(_cfg, "is_not_trade_date_ratio"))
+    {
+        is_not_trade_date_ratio = atof(_cfg["is_not_trade_date_ratio"].c_str());
+    }
+
     if (has_key<std::string, std::string>(_cfg, "lru_ssr_length"))
     {
         lru_ssr_length = atoi(_cfg["lru_ssr_length"].c_str());

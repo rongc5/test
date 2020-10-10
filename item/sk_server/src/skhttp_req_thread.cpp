@@ -289,11 +289,11 @@ bool skhttp_req_thread::is_real_time()
             }
         }
 
-        if (!_holiday_dict->is_trade_date(date))
-            return false;
-
         if (now >= (real_morning_stime + 1200) && _req_circle_times < p_data->_conf->_strategy->current()->per_day_min_req_circle_times)
             return true;
+
+        if (!_holiday_dict->is_trade_date(date))
+            return false;
 
         if (now >= real_morning_stime && now <= real_morning_etime)
             return true;
@@ -388,6 +388,9 @@ bool skhttp_req_thread::need_dump_real_quotation()
     if (!_holiday_dict->is_trade_date(_trade_date.c_str()))
         return false;
 
+    if (_req_circle_times < p_data->_conf->_strategy->current()->per_day_min_req_circle_times)
+        return false;
+
     snprintf(t_buf, sizeof(t_buf), "%s/%s", strategy->real_quotation_path.c_str(), _trade_date.c_str());
 
     int d = access(t_buf, F_OK);
@@ -416,6 +419,9 @@ bool skhttp_req_thread::need_dump_real_single()
     holiday_dict * _holiday_dict = p_data->_holiday_dict->current();
     strategy_conf * strategy = p_data->_conf->_strategy->current();
     if (!_holiday_dict->is_trade_date(_trade_date.c_str()))
+        return false;
+
+    if (_req_circle_times < p_data->_conf->_strategy->current()->per_day_min_req_circle_times)
         return false;
 
     snprintf(t_buf, sizeof(t_buf), "%s/%s", strategy->real_single_path.c_str(), _trade_date.c_str());
@@ -760,6 +766,76 @@ bool skhttp_req_thread::need_update_single_dict()
     return true;
 }
 
+bool skhttp_req_thread::need_update_holiday_dict()
+{
+   proc_data* p_data = proc_data::instance();
+   time_t now = time(NULL);
+
+
+   if (p_data && p_data->_conf)
+   {
+       holiday_dict * _holiday_dict = p_data->_holiday_dict->current();
+       if (now < real_morning_stime)
+           return false;
+
+       if (!_holiday_dict->is_trade_date(_trade_date.c_str()))
+           return false;
+
+       if (!_req_circle_times || _req_circle_times > p_data->_conf->_strategy->current()->per_day_min_req_circle_times)
+           return false;
+
+
+        // 获取比率
+        hquotation_search_item * search_index = p_data->_hquotation_index->current();
+        int index = 0;
+        int len = 0;
+        int count = 0;
+        int sum = search_index->id_quotation.size();
+        if (!sum)
+            return false;
+
+        for (auto ii = search_index->id_quotation.begin(); ii != search_index->id_quotation.end(); ii++)
+        {
+            const std::string & id = ii->first;
+            const std::deque< std::shared_ptr<quotation_t>> & tt = ii->second;
+            len = ii->second.size();
+            index = search_index->get_index(id, _trade_date);
+            if (index < 0 || len < 2)
+                continue;
+
+            if (tt[len - 1 - 1]->end == tt[len - 1]->end) 
+                count++;
+
+            if (count *1.0/sum > p_data->_conf->_strategy->current()->is_not_trade_date_ratio)
+                return true;
+        }
+
+
+       return false;
+   }
+}
+
+void skhttp_req_thread::update_holiday_dict()
+{
+    char t_buf[SIZE_LEN_512];
+    proc_data* p_data = proc_data::instance();
+    if (!p_data)
+        return ;
+    
+    strategy_conf * strategy = p_data->_conf->_strategy->current();
+    snprintf(t_buf, sizeof(t_buf), "%s/%s", strategy->holiday_dict_path.c_str(), strategy->holiday_dict_file.c_str());
+    FILE * fp = fopen(t_buf, "a");
+    if (!fp){ 
+        return;
+    }
+    
+    t_buf[0] = '\0';
+    time_t now = get_timestr(t_buf, sizeof(t_buf), "%Y%m%d %H:%M:%S");
+    fprintf(fp, "#%s\n", t_buf);
+    fprintf(fp, "%s\n", _trade_date.c_str());
+    
+    fclose(fp);
+}
 
 void skhttp_req_thread::update_wsingle_dict()
 {
@@ -956,6 +1032,11 @@ void skhttp_req_thread::handle_timeout(std::shared_ptr<timer_msg> & t_msg)
                 if (flag || need_update_wquotation_dict())
                 {
                     update_wquotation_dict();
+                }
+
+                if (need_update_holiday_dict())
+                {
+                   update_holiday_dict(); 
                 }
 
                 if (need_backup())

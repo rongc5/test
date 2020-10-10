@@ -77,6 +77,10 @@ class skhttp_req_thread:public base_net_thread
 
         void update_lrussr_search_index();
 
+        bool need_update_holiday_dict();
+
+        void update_holiday_dict();
+
     protected:
         std::string _req_date;
         std::string _trade_date;
