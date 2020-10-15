@@ -32,6 +32,7 @@ class history_quotation_dict;
 class history_wquotation_dict;
 class history_wsingle_dict;
 class holiday_dict;
+class userid_dict;
 class base_net_thread;
 class proc_data:public reload_inf
 {
@@ -85,6 +86,8 @@ class proc_data:public reload_inf
 
         reload_mgr<holiday_dict> * _holiday_dict;
 
+        std::shared_ptr<userid_dict> _userid_dict;
+
         sk_conf * _conf;
 
         finance_dict  _finance_dict;
@@ -136,13 +139,22 @@ class proc_data:public reload_inf
 
         static int get_crest_index(const std::string & id, int date_index, int date_index_end, std::set<int> & res);
 
+        void add_name_thread(const std::string & name, std::vector<base_net_thread *> & thread);
         void add_name_thread(const std::string & name, base_net_thread * thread);
 
-        base_net_thread * get_thread(const std::string & name);
+        std::vector<base_net_thread *> * get_thread(const std::string & name);
+
+        void update_req_date(const std::string & date);
+
+        void update_trade_date(const std::string & date);
+
+        const std::string * get_req_date();
+
+        const std::string * get_trade_date();
+
 
     public:
         char proc_name[SIZE_LEN_256];
-        std::string _trade_date;
 
     private:
         std::map<std::string, base_search_index> _search_index_map;
@@ -151,8 +163,10 @@ class proc_data:public reload_inf
 
         std::map<std::string, search_sstr_index> _search_sstr_map;
 
-        std::unordered_map<std::string, base_net_thread *, str_hasher> _name_thread_map;
+        std::unordered_map<std::string, std::vector<base_net_thread *>, str_hasher> _name_thread_map;
 
+        ToBufferMgr<std::string> _req_date;
+        ToBufferMgr<std::string> _trade_date;
 
     private:
         static proc_data* _singleton;

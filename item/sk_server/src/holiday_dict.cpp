@@ -69,7 +69,7 @@ void holiday_dict::update_trade_search_index()
     if (!p_data) 
         return;
 
-    base_net_thread * req_thread = p_data->get_thread("req_thread");
+    std::vector<base_net_thread *> * req_thread = p_data->get_thread("req_thread");
     if (!req_thread)
         return;
 
@@ -78,7 +78,7 @@ void holiday_dict::update_trade_search_index()
 
     ObjId id; 
     id._id = OBJ_ID_THREAD;
-    id._thread_index = req_thread->get_thread_index();
+    id._thread_index = (*req_thread->begin())->get_thread_index();
     base_net_thread::put_obj_msg(id, net_obj);
 }
 

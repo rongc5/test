@@ -45,6 +45,7 @@ void do_init()
         skhttp_res_thread * net_thread = new skhttp_res_thread();
         lthread->add_worker_thread(net_thread->get_thread_index());
         net_thread->start();
+        proc_data::instance()->add_name_thread("res_thread", net_thread);
     }
 
     lthread->start();

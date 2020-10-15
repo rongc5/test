@@ -60,6 +60,8 @@ OBJ	= $(LOC_DIR)/main.o     \
 	  $(LOC_DIR)/op_search_index.o \
 	  $(LOC_DIR)/lruSsr_search_index.o \
 	  $(LOC_DIR)/week_tradedate_search_index.o \
+	  $(LOC_DIR)/userid_dict.o \
+	  $(LOC_DIR)/skhttp_res_thread.o \
 
 
 AR=ar

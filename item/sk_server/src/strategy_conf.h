@@ -85,6 +85,10 @@ class strategy_conf:public reload_inf
         std::string backuped_path;
 
         std::string backup_stime;
+
+        std::string userid_dict_path;
+        std::string userid_dict_file;
+        
     public:
         std::string real_morning_stime;
         std::string real_morning_etime;

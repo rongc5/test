@@ -244,6 +244,18 @@ void strategy_conf::do_parse()
     }
 
 
+    if (has_key<std::string, std::string>(_cfg, "userid_dict_path"))
+    {
+        userid_dict_path = _cfg["userid_dict_path"];
+    }
+
+    if (has_key<std::string, std::string>(_cfg, "userid_dict_file"))
+    {
+        userid_dict_file = _cfg["userid_dict_file"];
+    }
+
+
+
     if (has_key<std::string, std::string>(_cfg, "history_wsingle_path"))
     {
         history_wsingle_path = _cfg["history_wsingle_path"];
@@ -480,6 +492,16 @@ int strategy_conf::destroy()
     {
         std::string tmp;
         tmp.swap(history_quotation_file);
+    }
+
+    {
+        std::string tmp;
+        tmp.swap(userid_dict_path);
+    }
+
+    {
+        std::string tmp;
+        tmp.swap(userid_dict_file);
     }
 
 

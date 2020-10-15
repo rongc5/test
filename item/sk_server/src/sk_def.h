@@ -325,6 +325,8 @@ enum SETS_OP_TRPE
 #define NORMAL_MSG_DESTROY_ST 1001
 
 #define NORMAL_MSG_UPDATE_TRADE_DATE 1002
+#define NORMAL_MSG_REG_FOR_DATE_INFO 1003
+#define NORMAL_MSG_UPDATE_DATE_INFO 1004
 
 class destroy_msg: public normal_msg
 {
@@ -338,6 +340,30 @@ class destroy_msg: public normal_msg
         std::string id; 
 };
 
+class reg_date_msg: public normal_msg
+{
+    public:
+        reg_date_msg()
+        {   
+            //_msg_op = NORMAL_MSG_DESTROY;
+        }   
+
+        virtual ~reg_date_msg(){}
+        uint32_t _thread_index;
+};
+
+class date_msg: public normal_msg
+{
+    public:
+        date_msg()
+        {   
+            //_msg_op = NORMAL_MSG_DESTROY;
+        }   
+
+        virtual ~date_msg(){}
+        std::string req_date; 
+        std::string trade_date; 
+};
 
 
 #define TIMER_TYPE_RELOAD_CONF 10000

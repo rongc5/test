@@ -81,6 +81,11 @@ class skhttp_req_thread:public base_net_thread
 
         void update_holiday_dict();
 
+
+        //void notify_update_date();
+
+        //void reset_threadid_map_flag();
+
     protected:
         std::string _req_date;
         std::string _trade_date;
@@ -116,6 +121,8 @@ class skhttp_req_thread:public base_net_thread
 
         id_dict * _id_dic;
         ua_dict * _ua_dic;
+
+        //std::unordered_map<uint32_t, int> _reg_date_threadid_map;
 };
 
 

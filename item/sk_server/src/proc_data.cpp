@@ -11,6 +11,7 @@
 #include "history_single_dict.h"
 #include "history_quotation_dict.h"
 #include "holiday_dict.h"
+#include "userid_dict.h"
 #include "uhandler_select.h"
 #include "uhandler_queryid.h"
 #include "uhandler_default.h"
@@ -188,6 +189,12 @@ int proc_data::init(sk_conf * conf)
     }
 
     {
+        _userid_dict = std::make_shared<userid_dict>();
+        _userid_dict->init(_conf->_strategy->current()->userid_dict_path.c_str(),
+                _conf->_strategy->current()->userid_dict_file.c_str(), conf->dump_dir.c_str());
+    }
+
+    {
         holiday_dict *td_dict1 = new (std::nothrow)holiday_dict();
         ASSERT_WARNING(td_dict1 != NULL, "allocate holiday_dict fail");
         td_dict1->init(_conf->_strategy->current()->holiday_dict_path.c_str(), 
@@ -220,18 +227,34 @@ int proc_data::init(sk_conf * conf)
 
 void proc_data::add_name_thread(const std::string & name, base_net_thread * thread)
 {
-    _name_thread_map.insert(std::make_pair(name, thread));
+
+    auto ii = _name_thread_map.find(name);
+    if (ii != _name_thread_map.end())
+    {
+        ii->second.push_back(thread);
+    }
+    else
+    {
+        std::vector<base_net_thread *> vc;
+        vc.push_back(thread);
+        _name_thread_map.insert(std::make_pair(name, vc));
+    }
 }
 
-base_net_thread * proc_data::get_thread(const std::string & name)
+std::vector<base_net_thread *> * proc_data::get_thread(const std::string & name)
 {
     auto ii = _name_thread_map.find(name);
     if (ii != _name_thread_map.end())
     {
-        return ii->second;
+        return &(ii->second);
     }
 
     return NULL;
+}
+
+void proc_data::add_name_thread(const std::string & name, std::vector<base_net_thread *> & thread)
+{
+    _name_thread_map.insert(std::make_pair(name, thread));
 }
 
 
@@ -277,6 +300,8 @@ int proc_data::load()
     _hsingle_dict->load();
 
     _hquoation_dict->load();
+
+    _userid_dict->load();
 
     _hwsingle_dict->load();
 
@@ -362,6 +387,12 @@ int proc_data::reload()
         flag = 1;
     }
 
+    if (_userid_dict && _userid_dict->need_reload())
+    {
+        _userid_dict->reload();
+        flag = 1;
+    }
+
     if (_hwsingle_dict && _hwsingle_dict->need_reload())
     {
         _hwsingle_dict->reload();
@@ -412,6 +443,8 @@ int proc_data::dump()
 
     _hquoation_dict->dump();
 
+    _userid_dict->dump();
+
     _hwsingle_dict->dump();
 
     _hwquoation_dict->dump();
@@ -445,6 +478,8 @@ int proc_data::destroy()
     _hsingle_dict->destroy();
 
     _hquoation_dict->destroy();
+
+    _userid_dict->destroy();
 
     _hwsingle_dict->destroy();
 
@@ -1196,4 +1231,27 @@ void proc_data::parse_sstr(const std::string & value, std::vector<std::string> &
             vec.push_back(str);
     }   
 
+}
+
+
+void proc_data::update_req_date(const std::string & date)
+{
+    _req_date.idle()->assign(date);
+    _req_date.idle_2_current();
+}
+
+void proc_data::update_trade_date(const std::string & date)
+{
+    _trade_date.idle()->assign(date);
+    _trade_date.idle_2_current();
+}
+
+const std::string * proc_data::get_req_date()
+{
+    return _req_date.current();
+}
+
+const std::string * proc_data::get_trade_date()
+{
+    return _trade_date.current();
 }

@@ -95,8 +95,8 @@ void rquotation_data_process::msg_recv_finish()
     }
     else
     {
-        p_data->_hquoation_dict->update_real_quotation(p_data->_trade_date, _id, qt);
-        p_data->_hwquoation_dict->update_real_wquotation(p_data->_trade_date, _id, qt);
+        p_data->_hquoation_dict->update_real_quotation(*p_data->get_trade_date(), _id, qt);
+        p_data->_hwquoation_dict->update_real_wquotation(*p_data->get_trade_date(), _id, qt);
     }
 
 over:

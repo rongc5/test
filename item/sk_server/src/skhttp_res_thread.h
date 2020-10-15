@@ -10,22 +10,14 @@
 class skhttp_res_thread:public base_net_thread
 {
     public:
-        virtual void handle_msg(std::shared_ptr<normal_msg> & p_msg)
-        {
-           if (!p_msg) 
-               return;
+        skhttp_res_thread();
 
-           if (p_msg->_msg_op == NORMAL_MSG_CONNECT)
-           {
-               std::shared_ptr<content_msg> p=std::dynamic_pointer_cast<content_msg>(p_msg);
-               if (p)
-               {
-                    skhttp_res_data_process::gen_listen_obj(p->fd, _base_container);
-               }
-           }
-        }
+        void reg_for_date();
+
+        virtual void handle_msg(std::shared_ptr<normal_msg> & p_msg);
 
         //virtual void run_process();
+        //获取日期时间， 检验当前日期用户是否过期, 为了避免重复获取， 故仅仅由req thread 获取后即可
 };
 
 

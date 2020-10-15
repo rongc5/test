@@ -104,10 +104,54 @@ void skhttp_req_thread::handle_msg(std::shared_ptr<normal_msg> & p_msg)
                 //} 
             }
             break;
+        case NORMAL_MSG_REG_FOR_DATE_INFO:
+            {
+                LOG_DEBUG("recive msg NORMAL_MSG_UPDATE_DATE_INFO");
+                
+                std::shared_ptr<date_msg> p=std::dynamic_pointer_cast<date_msg>(p_msg);
+                if (p && !_req_date.empty())
+                {
+                    //_reg_date_threadid_map[p->_thread_index] = 0;
+                }
+                
+            }
+            break;
     }
 
     return;
 }
+
+#if 0
+void skhttp_req_thread::notify_update_date()
+{
+    for (auto it = _reg_date_threadid_map.begin(); it != _reg_date_threadid_map.end(); it++)
+    {
+        if (!it->second)
+        {
+            std::shared_ptr<date_msg>  net_obj(new date_msg);
+            net_obj->_msg_op = NORMAL_MSG_UPDATE_DATE_INFO;
+
+            ObjId id; 
+            id._id = OBJ_ID_THREAD;
+            id._thread_index = it->first;
+
+            p->req_date = _req_date;
+            p->trade_date = _trade_date;
+
+            base_net_thread::put_obj_msg(id, net_obj);
+            it->second += 1;
+        }
+    }
+}
+
+void skhttp_req_thread::reset_threadid_map_flag()
+{
+    for (auto it = _reg_date_threadid_map.begin(); it != _reg_date_threadid_map.end(); it++)
+    {
+        it->second = 0;
+    }
+}
+#endif
 
 void skhttp_req_thread::real_req_start()
 {
@@ -234,7 +278,6 @@ void skhttp_req_thread::first_in_day()
 
         holiday_dict * _holiday_dict = p_data->_holiday_dict->current();
         _holiday_dict->get_trade_date(_req_date, _trade_date);
-        p_data->_trade_date = _trade_date;
 
         {
             _req_circle_times = 0;
@@ -247,6 +290,7 @@ void skhttp_req_thread::first_in_day()
             add_destroy_idle_timer();
 
             is_backuped = true;
+
         }
 
         real_morning_stime = get_real_time(_req_date.c_str(), 
@@ -264,6 +308,11 @@ void skhttp_req_thread::first_in_day()
 
         backup_stime = get_real_time(_req_date.c_str(), 
                 p_data->_conf->_strategy->current()->backup_stime.c_str());
+
+        //reset_threadid_map_flag();
+        
+        p_data->update_req_date(_req_date);
+        p_data->update_trade_date(_trade_date);
     }
 
 }
@@ -1044,6 +1093,8 @@ void skhttp_req_thread::handle_timeout(std::shared_ptr<timer_msg> & t_msg)
                     backup();
                 }
 
+                //notify_update_date();
+
             }
             break;
         case TIMER_TYPE_REQ_SINGLE:
@@ -1223,3 +1274,4 @@ void skhttp_req_thread::update_lrussr_search_index()
     p_data->_lrussr_index->destroy_idle();
     p_data->_lrussr_index->idle_2_current();
 }
+

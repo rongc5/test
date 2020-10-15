@@ -140,8 +140,8 @@ void rsingle_data_process::msg_recv_finish()
     if (flag)
     {
         std::shared_ptr<single_vec> st = get_rsingle(tmp_single);
-        p_data->_hsingle_dict->update_real_single(p_data->_trade_date, _id, st);
-        p_data->_hwsingle_dict->update_real_wsingle(p_data->_trade_date, _id, st);
+        p_data->_hsingle_dict->update_real_single(*p_data->get_trade_date(), _id, st);
+        p_data->_hwsingle_dict->update_real_wsingle(*p_data->get_trade_date(), _id, st);
     }
 
 over:
