@@ -83,8 +83,8 @@ int history_wsingle_dict::load_history_wsingle(const std::string & week, const c
             {
                 single_t hs;
 
-                //hs.in = atoi(strVec[i].c_str());
-                //hs.out = atoi(strVec[i + 1].c_str());
+                hs.in = atoi(strVec[i].c_str());
+                hs.out = atoi(strVec[i + 1].c_str());
                 hs.diff = atoi(strVec[i + 2].c_str());
 
                 single->push_back(hs);
@@ -114,8 +114,26 @@ int history_wsingle_dict::load_history_wsingle(const std::string & week, const c
                 uint32_t k = 0;
                 for (; j < tmpVec.size(); j++, k++)
                 {
-                    single_t hs;
-                    hs.diff = atoi(tmpVec[j].c_str());
+
+                    single_t hs; 
+                    if (strstr(tmpVec[j].c_str(), ":"))
+                    {   
+                        std::vector<std::string> ttVec;
+                        SplitString(tmpVec[j].c_str(), ':', &ttVec, SPLIT_MODE_ALL | SPLIT_MODE_TRIM);
+                        if (ttVec.size() < 2)
+                        {   
+                            continue;
+                        }   
+
+                        hs.in = atoi(ttVec[0].c_str());
+                        hs.out = atoi(ttVec[1].c_str());
+                        hs.diff = hs.in - hs.out;
+                    }   
+                    else
+                    {   
+                        hs.diff = atoi(tmpVec[j].c_str());
+                    }   
+
                     st[k]->push_back(hs);
                 }
             }
