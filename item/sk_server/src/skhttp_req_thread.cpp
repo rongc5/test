@@ -862,6 +862,8 @@ bool skhttp_req_thread::need_update_holiday_dict()
 
        return false;
    }
+
+   return false;
 }
 
 void skhttp_req_thread::update_holiday_dict()

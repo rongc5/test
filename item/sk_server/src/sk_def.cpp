@@ -85,7 +85,13 @@ void search_res::get_intersection(std::string & A, std::string & B, std::string 
     {
         if (ib->second.count(ii->first))
         {
-            mm[ii->first] = dq;  
+            auto kk = mm.find(ii->first);
+            if (kk == mm.end())
+                mm[ii->first] = dq; 
+
+            mm[ii->first].insert(ii->second.begin(), ii->second.end()); 
+            auto & ss = ib->second[ii->first];
+            mm[ii->first].insert(ss.begin(), ss.end()); 
         }       
     }
 
@@ -111,7 +117,11 @@ void search_res::get_union(std::string & A, std::string & B, std::string & C)
     {
         for (auto ii = ia->second.begin(); ii != ia->second.end(); ii++)
         {
-            mm[ii->first] = dq; 
+            auto kk = mm.find(ii->first);
+            if (kk == mm.end())
+                mm[ii->first] = dq; 
+
+            mm[ii->first].insert(ii->second.begin(), ii->second.end()); 
         }
     }
 
@@ -119,7 +129,11 @@ void search_res::get_union(std::string & A, std::string & B, std::string & C)
     {
         for (auto ii = ib->second.begin(); ii != ib->second.end(); ii++)
         {
-            mm[ii->first] = dq; 
+            auto kk = mm.find(ii->first);
+            if (kk == mm.end())
+                mm[ii->first] = dq; 
+
+            mm[ii->first].insert(ii->second.begin(), ii->second.end()); 
         }
     }
 
@@ -150,7 +164,7 @@ void search_res::get_diff(std::string & A, std::string & B, std::string & C)
     {
         if (!ib->second.count(ii->first))
         {
-            mm[ii->first] = dq;
+            mm[ii->first] = ii->second;
         }
     }
 
@@ -244,7 +258,6 @@ void search_res::append(std::string &key, const std::string &id, std::set<int> &
         {
             iii->second.insert(index.begin(), index.end());
         }
-
     }
 }
 

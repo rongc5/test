@@ -34,6 +34,8 @@ class listen_thread: public base_net_thread
         int add_worker_thread(uint32_t thread_index)
         {
             _process->add_worker_thread(thread_index);
+
+            return 0;
         }
 
     protected:

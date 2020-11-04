@@ -37,9 +37,9 @@ void skhttp_res_thread::handle_msg(std::shared_ptr<normal_msg> & p_msg)
     if (!p_msg) 
         return;
 
+    LOG_DEBUG("recive msg %d",p_msg->_msg_op);   
     switch(p_msg->_msg_op)
     {
-        LOG_DEBUG("recive msg %d",p_msg->_msg_op);   
         case NORMAL_MSG_CONNECT:
         {
             std::shared_ptr<content_msg> p=std::dynamic_pointer_cast<content_msg>(p_msg);

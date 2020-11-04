@@ -159,7 +159,7 @@ void log_thread::check_to_renmae(const char *filename, int max_size)
 void log_thread::log_thread_init()
 {
 	 if (_conf.log_path[0] != '0') {
-            char buf[SIZE_LEN_256];
+            char buf[SIZE_LEN_512];
             snprintf(buf, sizeof(buf), "mkdir -p %s", _conf.log_path);
             system(buf);         
      }
