@@ -38,7 +38,7 @@ void do_init()
     req_thread->start();
 
     listen_thread *lthread = new listen_thread();
-    lthread->init("0.0.0.0", conf->http_server_port);
+    lthread->init(conf->http_server_host, conf->http_server_port);
 
     for (uint32_t i = 0; i<= conf->http_server_thread_num; i++)
     {

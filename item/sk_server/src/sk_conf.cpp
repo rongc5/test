@@ -3,6 +3,7 @@
 
 sk_conf::sk_conf(const char * sk_conf)
 {
+    http_server_host = "127.0.0.1";
     http_server_port = 8080;
     http_server_thread_num = 3;
 
@@ -19,6 +20,7 @@ sk_conf::sk_conf(const char * sk_conf)
 
     cfg.get_vale("server", "strategy_path", strategy_path);
     cfg.get_vale("server", "strategy_file", strategy_file);
+    cfg.get_vale("server", "http_server_host", http_server_host);
 
     cfg.get_vale("server", "http_server_port", tmp);
     http_server_port = atoi(tmp.c_str());

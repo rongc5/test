@@ -13,6 +13,8 @@ class sk_conf: public reload_inf
         std::string strategy_path;
         std::string strategy_file;
 
+        std::string http_server_host;
+
         uint32_t http_server_port;
         uint32_t http_server_thread_num;
 
