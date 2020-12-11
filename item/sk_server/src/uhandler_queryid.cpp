@@ -9,6 +9,7 @@
 #include "history_quotation_dict.h"
 #include "base_net_obj.h"
 #include "id_dict.h"
+#include "userid_dict.h"
 
 #include "sk_util.h"
 #include "rsingle_data_process.h"
@@ -138,7 +139,15 @@ int uhandler_queryid::do_check_queryid(std::map<std::string, std::string> & url_
         Value child(kObjectType);
         query_single_ratio(url_para_map["id"], child, allocator);
 
-        key.SetString("vratio", allocator);
+        key.SetString("sratio", allocator);
+        root.AddMember(key, child, allocator);
+    }
+
+    {
+        Value child(kObjectType);
+        query_single_vratio(url_para_map["id"], child, allocator);
+
+        key.SetString("svr", allocator);
         root.AddMember(key, child, allocator);
     }
 
@@ -167,9 +176,17 @@ int uhandler_queryid::do_check_queryid(std::map<std::string, std::string> & url_
 
         query_sum_single(atoi(url_para_map["history_num"].c_str()), url_para_map["id"], root, allocator);
 
-        query_history_single_ratio(atoi(url_para_map["history_num"].c_str()), url_para_map["id"], root, allocator);
+        bool has_userid = has_key<std::string, std::string>(url_para_map, "userid");
 
-        query_sum_single_ratio(atoi(url_para_map["history_num"].c_str()), url_para_map["id"], root, allocator);
+        if (has_userid && p_data->_userid_dict->is_userid_valid(url_para_map["userid"], *p_data->get_req_date()))
+        {
+            query_history_single_ratio(atoi(url_para_map["history_num"].c_str()), url_para_map["id"], root, allocator);
+            query_sum_single_ratio(atoi(url_para_map["history_num"].c_str()), url_para_map["id"], root, allocator);
+
+            query_history_single_vratio(atoi(url_para_map["history_num"].c_str()), url_para_map["id"], root, allocator);
+            query_sum_single_vratio(atoi(url_para_map["history_num"].c_str()), url_para_map["id"], root, allocator);
+
+        }
 
         query_history_quotation(atoi(url_para_map["history_num"].c_str()), url_para_map["id"], root, allocator);
         query_sum_quotation(atoi(url_para_map["history_num"].c_str()), url_para_map["id"], root, allocator);
@@ -424,13 +441,14 @@ void uhandler_queryid::query_single_ratio(std::string &id, Value & root, Documen
             Value key(kStringType);
             Value child(kArrayType);
 
-            snprintf(t_buf, sizeof(t_buf), "vratio_%d", i);
+            snprintf(t_buf, sizeof(t_buf), "sratio_%d", i);
             key.SetString(t_buf, allocator);
 
             for (auto ft: ii->second)
             {
                 if (i < ft->size())
                 {
+                    //float dratio = (ft->at(i).in + ft->at(i).out)? ft->at(i).diff*1.0/(ft->at(i).in + ft->at(i).out):0;
                     std::string str = float_2_str(ft->at(i).dratio * 100).append("%");
                     child.PushBack(Value().SetString(str.c_str(), str.length(), allocator), allocator);
                 }
@@ -439,6 +457,48 @@ void uhandler_queryid::query_single_ratio(std::string &id, Value & root, Documen
         }
     }
 }
+
+
+void uhandler_queryid::query_single_vratio(std::string &id, Value & root, Document::AllocatorType & allocator)
+{
+    char t_buf[SIZE_LEN_64];
+    proc_data* p_data = proc_data::instance();
+    strategy_conf * strategy = p_data->_conf->_strategy->current();
+    auto rsingle_dict_index = p_data->_rsingle_index->current();
+
+    int vol  = 0;
+    auto & rquoation_dict_index = p_data->_rquotation_index->current()->id_quotation;
+    auto qq = rquoation_dict_index.find(id);
+    if (qq != rquoation_dict_index.end())
+    {
+        vol = qq->second.back()->vol;
+    }
+
+    auto ii = rsingle_dict_index->id_single.find(id);
+    if (ii != rsingle_dict_index->id_single.end())
+    {
+        for (uint32_t i = 0; i < strategy->real_single_scale.size(); i++)
+        {
+            Value key(kStringType);
+            Value child(kArrayType);
+
+            snprintf(t_buf, sizeof(t_buf), "svr_%d", i);
+            key.SetString(t_buf, allocator);
+
+            for (auto ft: ii->second)
+            {
+                if (i < ft->size())
+                {
+                    float dratio = vol ? ft->at(i).diff*1.0/vol:0;
+                    std::string str = float_2_str(dratio * 100).append("%");
+                    child.PushBack(Value().SetString(str.c_str(), str.length(), allocator), allocator);
+                }
+            }
+            root.AddMember(key, child, allocator);
+        }
+    }
+}
+
 
 void uhandler_queryid::query_blocked(std::string &id, Value & root, Document::AllocatorType & allocator)
 {
@@ -641,7 +701,7 @@ void uhandler_queryid::query_history_single_ratio(uint32_t last_day_num, std::st
             Value child(kObjectType);
 
             std::string t_str;
-            t_str.append("vratio");
+            t_str.append("sratio");
             t_str.append("_");
             t_str.append(mm->second);
 
@@ -654,12 +714,13 @@ void uhandler_queryid::query_history_single_ratio(uint32_t last_day_num, std::st
                 Value key_1(kStringType);
                 Value child_1(kArrayType);
 
-                snprintf(t_buf, sizeof(t_buf), "vratio_%d", k);
+                snprintf(t_buf, sizeof(t_buf), "sratio_%d", k);
                 key_1.SetString(t_buf, allocator);
 
                 for (uint32_t j = 0; j < dq.size(); j++)
                 {
-                    std::string str = float_2_str(dq[j]->at(k).dratio * 100).append("%");
+                    //float dratio = (dq[j]->at(k).in + dq[j]->at(k).out)? dq[j]->at(k).diff*1.0/(dq[j]->at(k).in + dq[j]->at(k).out):0;
+                    std::string str = float_2_str( dq[j]->at(k).dratio * 100).append("%");
                     child_1.PushBack(Value().SetString(str.c_str(), str.length(), allocator), allocator);
                 }
 
@@ -670,6 +731,88 @@ void uhandler_queryid::query_history_single_ratio(uint32_t last_day_num, std::st
         }
     }
 }
+
+
+void uhandler_queryid::query_history_single_vratio(uint32_t last_day_num, std::string &id, Value & root, Document::AllocatorType & allocator)
+{
+    proc_data* p_data = proc_data::instance();
+    char t_buf[SIZE_LEN_64];
+
+    hsingle_search_item * _hsingle_dict = p_data->_hsingle_index->current();
+
+    auto ii = _hsingle_dict->id_single.find(id);
+    if (ii == _hsingle_dict->id_single.end())
+    {
+        return;
+    }
+
+    hquotation_search_item * hqitem = p_data->_hquotation_index->current();
+    auto ff = hqitem->id_quotation.find(id);
+    if (ff == hqitem->id_quotation.end())
+    {    
+        return;
+    }
+
+    int len = 0;
+    int vlen = 0;
+    std::string date;
+    for (uint32_t i = 0; i< last_day_num && i < ii->second.size(); i++)
+    {
+        len = ii->second.size() - i - 1;
+        if (len < 0)
+            continue;
+
+          if (i > ff->second.size())
+            continue;
+
+        
+        vlen  = ff->second.size() - i;
+        date = hqitem->get_date(id, vlen);
+        int vol =0;
+        if (!date.empty())
+            vol = ff->second[vlen]->vol;
+
+        std::string key;           
+        hsingle_search_item::creat_id_index_key(id, len, key);
+
+        auto mm = _hsingle_dict->id_idx_date.find(key);
+        if (mm != _hsingle_dict->id_idx_date.end())
+        {
+            Value k(kStringType);
+            Value child(kObjectType);
+
+            std::string t_str;
+            t_str.append("svr");
+            t_str.append("_");
+            t_str.append(mm->second);
+
+            k.SetString(t_str.c_str(), allocator);
+
+            const std::deque<std::shared_ptr<single_vec>> & dq = ii->second[len];
+
+            for (uint32_t k = 0; !dq.empty() && k < dq[0]->size(); k++)
+            {
+                Value key_1(kStringType);
+                Value child_1(kArrayType);
+
+                snprintf(t_buf, sizeof(t_buf), "svr_%d", k);
+                key_1.SetString(t_buf, allocator);
+
+                for (uint32_t j = 0; j < dq.size(); j++)
+                {
+                    float dratio = (vol)? dq[j]->at(k).diff*1.0/vol:0;
+                    std::string str = float_2_str(dratio * 100).append("%");
+                    child_1.PushBack(Value().SetString(str.c_str(), str.length(), allocator), allocator);
+                }
+
+                child.AddMember(key_1, child_1, allocator);
+            }
+
+            root.AddMember(k, child, allocator);
+        }
+    }
+}
+
 
 void uhandler_queryid::query_history_wsingle(uint32_t last_day_num, std::string &id, Value & root, Document::AllocatorType & allocator)
 {
@@ -824,6 +967,37 @@ void uhandler_queryid::query_sum_single_ratio(uint32_t last_day_num, std::string
         date = hsitem->get_date(id, len);
         if (!date.empty()) {
             query_sum_single_ratio(date, id, root, allocator);
+            break;
+        }
+    }
+
+}
+
+
+void uhandler_queryid::query_sum_single_vratio(uint32_t last_day_num, std::string &id, Value & root, Document::AllocatorType & allocator)
+{
+    proc_data* p_data = proc_data::instance();
+
+    std::string date;
+
+    hsingle_search_item * hsitem = p_data->_hsingle_index->current();
+    auto ii = hsitem->id_sum_single.find(id);
+    if (ii == hsitem->id_sum_single.end())
+    {
+        return;
+    }
+
+    int i = 0;
+    int len = 0;
+    for ( i = last_day_num;  i >= 0; i--)
+    {
+        if (i > (int)ii->second.size() - 1)
+            continue;
+        
+        len  = ii->second.size() - i -1;
+        date = hsitem->get_date(id, len);
+        if (!date.empty()) {
+            query_sum_single_vratio(date, id, root, allocator);
             break;
         }
     }
@@ -1009,7 +1183,7 @@ void uhandler_queryid::query_sum_single_ratio(std::string & history_date, std::s
         Value child(kArrayType);
 
         std::string t_str;
-        t_str.append("vratio_sum");
+        t_str.append("sratio_sum");
         t_str.append("_");
         t_str.append(history_date);
 
@@ -1029,6 +1203,51 @@ void uhandler_queryid::query_sum_single_ratio(std::string & history_date, std::s
         root.AddMember(k, child, allocator);
     }
 }
+
+void uhandler_queryid::query_sum_single_vratio(std::string & history_date, std::string &id, Value & root, Document::AllocatorType & allocator)
+{
+    proc_data* p_data = proc_data::instance();
+
+    single_vec st;
+    std::string key;
+    hsingle_search_item * hsitem = p_data->_hsingle_index->current();
+    
+    int index = hsitem->get_index(id, history_date);
+    auto ii = hsitem->id_sum_single.find(id);
+
+    hquotation_search_item * hqitem = p_data->_hquotation_index->current();
+    long vol = 0;
+    int iindex = hqitem->get_index(id, history_date);
+    auto ff = hqitem->id_sum_quotation.find(id); 
+    if (ff != hqitem->id_sum_quotation.end() && iindex >= 1)
+    {
+        vol = ff->second[ii->second.size() - 1]->vol - ff->second[iindex]->vol;
+    }
+
+    if (ii != hsitem->id_sum_single.end() && index >= 0)
+    {
+        Value k(kStringType);
+        Value child(kArrayType);
+
+        std::string t_str;
+        t_str.append("svr_sum");
+        t_str.append("_");
+        t_str.append(history_date);
+
+        k.SetString(t_str.c_str(), allocator);
+
+        for (int k = ii->second[index]->size() - 1;k >= 0; k--)
+        {
+            int diff = ii->second[ii->second.size() - 1]->at(k).diff - ii->second[index]->at(k).diff;
+            float dratio = vol ? diff * 1.0 / vol : 0;
+            std::string str = float_2_str(dratio * 100).append("%");
+            child.PushBack(Value().SetString(str.c_str(), str.length(), allocator), allocator);
+        }
+
+        root.AddMember(k, child, allocator);
+    }
+}
+
 
 void uhandler_queryid::query_history_wquotation(uint32_t last_day_num, std::string &id, Value & root, Document::AllocatorType & allocator)
 {

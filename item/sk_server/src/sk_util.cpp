@@ -9,7 +9,7 @@ void get_standard_id(std::string & id)
     }
     
     std::string t_str;
-    if (start_with(id.c_str(), "60"))
+    if (start_with(id.c_str(), "6"))
     {
         t_str.append("sh");
         t_str.append(id);
@@ -18,7 +18,7 @@ void get_standard_id(std::string & id)
         return;
     }
 
-    if (start_with(id.c_str(), "30") || start_with(id.c_str(), "00"))
+    if (start_with(id.c_str(), "3") || start_with(id.c_str(), "0"))
     {
         t_str.append("sz");
         t_str.append(id);

@@ -618,10 +618,16 @@ void proc_data::reg_search_index()
     _search_index_map["hsingle_diff2_le"] = std::bind(&hsingle_search_index::do_hsingle_diff2_le, _hsingle_index, _1, _2, _3);
 
     _search_index_map["hsingle_diff_ge_num_ge"] = std::bind(&hsingle_search_index::do_hsingle_diff_ge_num_ge, _hsingle_index, _1, _2, _3);
-
     _search_index_map["hsingle_diff_sum_ge"] = std::bind(&hsingle_search_index::do_hsingle_sum_ge, _hsingle_index, _1, _2, _3);
-
     _search_index_map["hsingle_diff_sum_le"] = std::bind(&hsingle_search_index::do_hsingle_sum_le, _hsingle_index, _1, _2, _3);
+
+
+    _search_index_map["hsratio_ge"] = std::bind(&hsingle_search_index::do_hsratio_ge, _hsingle_index, _1, _2, _3);
+    _search_index_map["hsratio_le"] = std::bind(&hsingle_search_index::do_hsratio_le, _hsingle_index, _1, _2, _3);
+    _search_index_map["hsratio_ge_num_ge"] = std::bind(&hsingle_search_index::do_hsratio_ge_num_ge, _hsingle_index, _1, _2, _3);
+    _search_index_map["hsratio_sum_ge"] = std::bind(&hsingle_search_index::do_hsingle_sum_ge, _hsingle_index, _1, _2, _3);
+    _search_index_map["hsratio_sum_le"] = std::bind(&hsingle_search_index::do_hsingle_sum_le, _hsingle_index, _1, _2, _3);
+
 
     _hquotation_index = std::make_shared<hquotation_search_index>();
 

@@ -409,6 +409,12 @@ void history_quotation_dict::get_id_technical(std::shared_ptr<quotation_t> qt, s
         snprintf(t_buf, sizeof(t_buf), "%.2f", tt->end_5);
         tt->end_5 = atof(t_buf);
     }
+    else 
+    {
+        tt->end_5 = sum_quotation[p]->end/5;
+        snprintf(t_buf, sizeof(t_buf), "%.2f", tt->end_5);
+        tt->end_5 = atof(t_buf);
+    }
 
     if (p >= 10)
     {

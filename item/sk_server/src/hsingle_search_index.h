@@ -19,6 +19,18 @@ class hsingle_search_index:public ToBufferMgr<hsingle_search_item>
 
         bool do_hsingle_sum_le(std::string &key, std::string &value, search_res & search);
 
+
+        bool do_hsratio_le(std::string &key, std::string &value, search_res & search);
+
+        bool do_hsratio_ge(std::string &key, std::string &value, search_res & search);
+
+        bool do_hsratio_ge_num_ge(std::string &key, std::string &value, search_res & search);
+
+        bool do_hsratio_sum_ge(std::string &key, std::string &value, search_res & search);
+
+        bool do_hsratio_sum_le(std::string &key, std::string &value, search_res & search);
+
+
         bool do_hsingle_diff2_le(std::string &key, std::string &value, search_res & search);
 
         bool do_hsingle_diff2_ge(std::string &key, std::string &value, search_res & search);

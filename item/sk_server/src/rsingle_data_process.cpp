@@ -131,6 +131,7 @@ void rsingle_data_process::msg_recv_finish()
         sst.in = atoi(ssVec[i + 4].c_str());
         sst.out = atoi(ssVec[i + 5].c_str());
         sst.diff = sst.in - sst.out;
+
         sst.dratio = (sst.in + sst.out)? sst.diff*1.0/(sst.in + sst.out):0; 
 
         tmp_single->push_back(sst);
