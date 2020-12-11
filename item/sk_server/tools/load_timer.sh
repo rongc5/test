@@ -1,6 +1,6 @@
 #!/bin/bash
-. /etc/profile
-. ~/.bash_profile
+source /etc/profile
+source ~/.bash_profile
 
 
 
@@ -9,9 +9,9 @@ PROC_NAME=load_quarterly.sh
 
 ProcNumber=`ps -ef |grep -w $PROC_NAME|grep -v grep|wc -l`
 if [ $ProcNumber -le 0 ];then
-    echo "$PROC_NAME is not run"
+    echo $LINENO, "$PROC_NAME is not run" >> timer.log
 else
-    echo "$PROC_NAME is  running..", $stime >> timer.log
+    echo $LINENO, "$PROC_NAME is  running..", $stime >> timer.log
     exit
 fi
 
@@ -21,9 +21,9 @@ for PROC_NAME in $id_arr
 do
 ProcNumber=`ps -ef |grep -w $PROC_NAME|grep -v grep|wc -l`
 if [ $ProcNumber -le 0 ];then
-    echo "$PROC_NAME is not run"
+    echo $LINENO, "$PROC_NAME is not run" >> timer.log
 else
-    echo "$PROC_NAME is  running..", $stime >> timer.log
+    echo $LINENO, "$PROC_NAME is  running..", $stime >> timer.log
     exit
 fi
 done
@@ -35,13 +35,13 @@ programName=${0##*/}
 
 cd `dirname $0`
 path=`pwd`
-echo "start", $path, $programName, $stime >> timer.log
+echo $LINENO, "start", $path, $programName, $stime >> timer.log
 
 
-/bin/python $path/load_ids.py
-/bin/python $path/load_finance.py
-/bin/python $path/load_brief.py
-/bin/python $path/load_plate.py
+python $path/load_ids.py 
+python $path/load_finance.py 
+python $path/load_brief.py
+python $path/load_plate.py 
 
 cp ../data/addr* ~/sk_ser/data/
 cp ../data/plate_* ~/sk_ser/data/
@@ -50,4 +50,4 @@ cp ../data/code_all ~/sk_ser/data/
 
 
 etime=$(date "+%Y-%m-%d %H:%M:%S")
-echo "end", $path, $programName, $etime >> timer.log
+echo $LINENO, "end", $path, $programName, $etime >> timer.log
