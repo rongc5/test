@@ -30,10 +30,15 @@ class channel_data_process:public base_data_process
 
         void put_msg(uint32_t obj_id, std::shared_ptr<normal_msg> & p_msg);
 
+        void add_event_timer(uint64_t time_out = MAX_CHANNEL_EVENT_TIMEOUT);
+
+        virtual void handle_timeout(std::shared_ptr<timer_msg> & t_msg);
+
     protected:
         std::mutex _mutex;
         std::deque<normal_obj_msg > _queue;
         int _channelid;
+        uint64_t _last_time;
 };
 
 #endif

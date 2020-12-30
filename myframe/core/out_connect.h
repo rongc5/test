@@ -40,7 +40,7 @@ class out_connect:public base_connect<PROCESS>
             base_net_obj::_fd = socket(AF_INET, SOCK_STREAM, 0);
             if (base_net_obj::_fd == -1)
             {
-                THROW_COMMON_EXCEPT("create sock fail " << strerror(errno));
+                THROW_COMMON_EXCEPT("create sock fail " << strError(errno).c_str());
             }
 
             set_unblock(base_net_obj::_fd);
@@ -56,7 +56,7 @@ class out_connect:public base_connect<PROCESS>
             {
                 if (errno != EINPROGRESS && errno != EALREADY)
                 {
-                    LOG_WARNING("connect fail:%s", strerror(errno));
+                    LOG_WARNING("connect fail:%s", strError(errno).c_str());
                     return;
                 }
             }
@@ -74,7 +74,7 @@ class out_connect:public base_connect<PROCESS>
         {
             if ((event & EPOLLERR) == EPOLLERR || (event & EPOLLHUP) == EPOLLHUP)
             {
-                THROW_COMMON_EXCEPT("epoll error "<< strerror(errno));
+                THROW_COMMON_EXCEPT("epoll error "<< strError(errno).c_str());
             }
 
             if (_status == CONNECTING)

@@ -91,7 +91,7 @@ int get_prime_num(int num);
  *总是返回 @data;
  *
  */
-char* im_chomp(char *data);
+char* im_chomp(char *data, char ch='\n');
 
 #define STRIP_MODE_LEFT 0x1  
 #define STRIP_MODE_RIGHT 0x2
@@ -129,6 +129,8 @@ time_t get_timestr_millSecond(char dest[], size_t dest_len, const char * format)
 int UrlEncode(const std::string &sSrc, std::string &sDest);
 
 int UrlDecode(const std::string &sSrc, std::string &sDest);
+
+std::string strError(int errnum);
 
 #define ASSERT_WARNING(valid, fmt, arg...) \
     do{ \
@@ -236,6 +238,8 @@ bool has_key(const std::map<T, U> & query, const T & key)
 }
 
 int exec_shell_cmd(std::string & cmd, std::string & res);
+
+ std::string join2str(std::map<std::string, std::string> & ssmap, std::string & indelim, std::string & outdelim);
 
 template<typename T>
 class ToBufferMgr

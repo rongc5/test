@@ -83,7 +83,8 @@ void base_data_process::destroy()
 
 void base_data_process::add_timer(std::shared_ptr<timer_msg> & t_msg)
 {
-    if (auto sp = _p_connect.lock())
+    auto sp = _p_connect.lock();
+    if (sp)
         sp->add_timer(t_msg);
 }
 

@@ -38,6 +38,15 @@ time_t get_timestr_millSecond(char dest[], size_t dest_len, const char * format)
     return now;
 }
 
+std::string strError(int errnum)
+{
+    char err_buf[SIZE_LEN_1024];
+    err_buf[0] = '\0';
+
+    strerror_r(errnum, err_buf, sizeof(err_buf));
+    return std::string(err_buf);
+}
+
 uint64_t GetMilliSecond()
 {
     timeval tm; 
@@ -83,7 +92,7 @@ void set_unblock(int fd)
     fcntl(fd, F_SETFL, ret | O_NONBLOCK);
 }
 
-char* im_chomp(char *data) 
+char* im_chomp(char *data, char ch) 
 {
     char *ptr;
 
@@ -91,7 +100,7 @@ char* im_chomp(char *data)
         return NULL;
     }
 
-    ptr = strchr(data, '\n');
+    ptr = strchr(data, ch);
 
     if (ptr != NULL) {
         *ptr-- = 0;
@@ -748,4 +757,21 @@ void get_yearweek(const std::string &in, std::string &out)
 
     strftime(tmp,sizeof(tmp),"%Y%W",tminp);
     out.append(tmp);
+}
+
+std::string join2str(std::map<std::string, std::string> & ssmap, std::string & indelim, std::string & outdelim)
+{
+    std::string res;
+
+    for (auto ii: ssmap)
+    {   
+        res.append(ii.first.c_str());
+        if (!indelim.empty())
+            res.append(indelim.c_str());
+        res.append(ii.second.c_str());
+        if (!outdelim.empty())
+            res.append(outdelim.c_str());
+    }   
+
+    return res;
 }

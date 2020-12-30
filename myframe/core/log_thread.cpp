@@ -173,7 +173,7 @@ void log_thread::log_thread_init()
     _epoll_fd = epoll_create(DAFAULT_EPOLL_SIZE);
     if (_epoll_fd == -1)
     {       
-        THROW_COMMON_EXCEPT("epoll_create fail " << strerror(errno));
+        THROW_COMMON_EXCEPT("epoll_create fail " << strError(errno).c_str());
     }
 
     _epoll_size = SIZE_LEN_16;
@@ -194,7 +194,7 @@ void log_thread::log_thread_init()
     tmpEvent.data.fd = fd[0];
     ret = epoll_ctl(_epoll_fd, EPOLL_CTL_ADD, fd[0], &tmpEvent);
     if (ret != 0) {
-        THROW_COMMON_EXCEPT("add to epoll fail " << strerror(errno));
+        THROW_COMMON_EXCEPT("add to epoll fail " << strError(errno).c_str());
     }
     
     char tmp_buff[SIZE_LEN_128];
@@ -224,7 +224,7 @@ int log_thread::RECV(int fd, void *buf, size_t len)
     {
         if (errno != EAGAIN)
         {
-            THROW_COMMON_EXCEPT("this socket occur fatal error " << strerror(errno));
+            THROW_COMMON_EXCEPT("this socket occur fatal error " << strError(errno).c_str());
         }
 
         ret = 0;
@@ -272,7 +272,7 @@ void log_thread::obj_process()
 {
     int  nfds = ::epoll_wait(_epoll_fd, _epoll_events, _epoll_size, DEFAULT_EPOLL_WAITE);
     if (-1 == nfds){
-        //PDEBUG("errno: %s\n", strerror(errno));
+        //PDEBUG("errno: %s\n", strError(errno).c_str());
         return;
     }
 

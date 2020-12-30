@@ -14,8 +14,9 @@ void common_epoll::add_to_epoll(base_net_obj * p_obj)
     int ret = epoll_ctl(_epoll_fd, tmpOprate, p_obj->get_sfd(), &tmpEvent);
     LOG_DEBUG("add to epoll _epoll_fd[%d] _get_sock [%d]", _epoll_fd, p_obj->get_sfd());
     if (ret != 0) {
-        LOG_DEBUG("add to epoll fail %s", strerror(errno));
-        THROW_COMMON_EXCEPT("add to epoll fail " << strerror(errno));
+        std::string err = strError(errno);
+        LOG_DEBUG("add to epoll fail %s", err.c_str());
+        THROW_COMMON_EXCEPT("add to epoll fail " << err);
     }
 }
 
@@ -28,7 +29,7 @@ void common_epoll::del_from_epoll(base_net_obj * p_obj)
     int ret = epoll_ctl(_epoll_fd, tmpOprate, p_obj->get_sfd(), &tmpEvent);
     LOG_DEBUG("delete to epoll _epoll_fd[%d] _get_sock [%d]", _epoll_fd, p_obj->get_sfd());
     if (ret != 0)
-        THROW_COMMON_EXCEPT("del from epoll fail " << strerror(errno));
+        THROW_COMMON_EXCEPT("del from epoll fail " << strError(errno).c_str());
 }
 
 void common_epoll::mod_from_epoll(base_net_obj * p_obj)
@@ -39,7 +40,7 @@ void common_epoll::mod_from_epoll(base_net_obj * p_obj)
     tmpEvent.data.ptr = p_obj;
     int ret = epoll_ctl(_epoll_fd, tmpOprate, p_obj->get_sfd(), &tmpEvent);
     if (ret != 0)
-        THROW_COMMON_EXCEPT("mod from epoll fail "<< strerror(errno));
+        THROW_COMMON_EXCEPT("mod from epoll fail "<< strError(errno).c_str());
 }
 
 int common_epoll::epoll_wait(std::map<ObjId, std::shared_ptr<base_net_obj> > &expect_list, std::map<ObjId, std::shared_ptr<base_net_obj> > &remove_list, uint32_t num)
@@ -47,10 +48,12 @@ int common_epoll::epoll_wait(std::map<ObjId, std::shared_ptr<base_net_obj> > &ex
     int  nfds = ::epoll_wait(_epoll_fd, _epoll_events, _epoll_size, _epoll_wait_time);
     if (nfds == -1)
     {
-        LOG_DEBUG("epoll_wait fail [%s]", strerror(errno));          
+        std::string err = strError(errno);
+        LOG_DEBUG("epoll_wait fail [%s]", err.c_str());          
         if (errno == EINTR)
             return 0;
-        THROW_COMMON_EXCEPT("epoll_wait fail "<< strerror(errno));          
+        THROW_COMMON_EXCEPT("epoll_wait fail "<< err);          
+        //return 0;
     }      
 
     for (int i =0; i < nfds; i++)

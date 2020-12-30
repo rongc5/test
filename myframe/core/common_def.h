@@ -21,6 +21,7 @@ class normal_msg : public std::enable_shared_from_this<normal_msg>
     public:
         normal_msg(){}
         virtual ~normal_msg(){}
+        normal_msg(int op):_msg_op(op){}
         int _msg_op;
 };
 

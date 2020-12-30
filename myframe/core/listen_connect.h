@@ -37,19 +37,19 @@ class listen_connect:public base_net_obj
             int fd = socket(AF_INET, SOCK_STREAM, 0);
             if (fd < 0)         
             {
-                THROW_COMMON_EXCEPT("socket error " << strerror(errno));     
+                THROW_COMMON_EXCEPT("socket error " << strError(errno).c_str());     
             }
             setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, (void*)(&(reuse_addr)), sizeof(reuse_addr)); 
 
             if (::bind(fd, (struct sockaddr *) &address, sizeof(address)) < 0) 
             {        
-                THROW_COMMON_EXCEPT("bind error "  << strerror(errno) << " " << ip << ":" << port);
+                THROW_COMMON_EXCEPT("bind error "  << strError(errno).c_str() << " " << ip << ":" << port);
             }        
 
             ret = listen(fd, 250);
             if (ret == -1)
             {
-                THROW_COMMON_EXCEPT("listen error "  << strerror(errno));
+                THROW_COMMON_EXCEPT("listen error "  << strError(errno).c_str());
             }
 
             set_unblock(fd);
@@ -79,7 +79,7 @@ class listen_connect:public base_net_obj
                     }
                     else
                     {
-                        LOG_WARNING("accept fail:%s", strerror(errno));
+                        LOG_WARNING("accept fail:%s", strError(errno).c_str());
                         break;
                     }
                 }
