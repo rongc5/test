@@ -1,5 +1,7 @@
 #include "sk_util.h"
 #include <algorithm>
+#include <sys/types.h>
+#include <sys/wait.h>
 
 void get_standard_id(std::string & id)
 {
@@ -27,6 +29,25 @@ void get_standard_id(std::string & id)
         return;
     }
 }
+
+void creat_key(const string & date, const string & id, string & key)
+{
+    key.clear();
+
+    key.append(date);
+    key.append("_");
+    key.append(id);
+}
+
+string creat_key(const string & date, const string & id)
+{
+    string key;
+
+    creat_key(date, id, key);
+
+    return key;
+}
+
 
 std::string float_2_str(float a, int decimal)
 {
@@ -123,4 +144,25 @@ void get_first_not_numstr(std::string & src, std::string & dst)
         dst = src.substr(i, src.size() - i);
 }
 
+void forksystem(const char * cmd)
+{
+    if (!cmd)
+        return ;
+
+    pid_t pid;
+    int st = 0;
+    pid = fork();
+    if (pid == 0 ) {
+        system(cmd);
+        exit(1);
+    }
+
+    wait(&st);
+}
+
+string get_prefix_key(const string & str, const char * last)
+{
+    std::size_t found = str.find_last_of(last);
+    return str.substr(0,found);
+}
 

@@ -26,14 +26,14 @@ bool search_res::empty()
     return _id_sets.empty();
 }
 
-bool search_res::exist_key_index(std::string & key)
+bool search_res::exist_key_index(string & key)
 {
     auto ia = _key_map.find(key);
 
     return ia != _key_map.end();
 }
 
-void search_res::get_index_bykey(const std::string &key, const std::string & id, std::set<int> & res)
+void search_res::get_index_bykey(const string &key, const string & id, set<int> & res)
 {
     res.clear();
     auto ii = _key_map.find(key); 
@@ -51,13 +51,13 @@ void search_res::get_index_bykey(const std::string &key, const std::string & id,
     //LOG_NOTICE("key:%s  size: %d", key.c_str(), _key_map[key].size());
 }
 
-void search_res::earse_bykey(std::string & key)
+void search_res::earse_bykey(string & key)
 {
     _key_map.erase(key);
 }
 
 //c = A
-void search_res::assign(std::string & A, std::string &C)
+void search_res::assign(string & A, string &C)
 {
     auto ia = _key_map.find(A);
     if (ia != _key_map.end())
@@ -67,13 +67,13 @@ void search_res::assign(std::string & A, std::string &C)
 }
 
 //c = a * B
-void search_res::get_intersection(std::string & A, std::string & B, std::string & C)
+void search_res::get_intersection(string & A, string & B, string & C)
 {
     auto ia = _key_map.find(A);
     auto ib = _key_map.find(B);
 
-    std::unordered_map<std::string, std::set<int>, str_hasher> mm;
-    std::set<int> dq;    
+    unordered_map<string, set<int>, str_hasher> mm;
+    set<int> dq;    
 
     if (ia == _key_map.end() || ib == _key_map.end())
     {           
@@ -99,13 +99,13 @@ void search_res::get_intersection(std::string & A, std::string & B, std::string 
 }
 
 //c = a + B
-void search_res::get_union(std::string & A, std::string & B, std::string & C)
+void search_res::get_union(string & A, string & B, string & C)
 {
     auto ia = _key_map.find(A);
     auto ib = _key_map.find(B);
 
-    std::unordered_map<std::string, std::set<int>, str_hasher> mm;
-    std::set<int> dq;
+    unordered_map<string, set<int>, str_hasher> mm;
+    set<int> dq;
 
     if (ia == _key_map.end() && ib == _key_map.end())
     {
@@ -141,13 +141,13 @@ void search_res::get_union(std::string & A, std::string & B, std::string & C)
 }
 
 // C = A - B
-void search_res::get_diff(std::string & A, std::string & B, std::string & C)
+void search_res::get_diff(string & A, string & B, string & C)
 {
     auto ia = _key_map.find(A);
     auto ib = _key_map.find(B);
 
-    std::unordered_map<std::string, std::set<int>, str_hasher> mm;
-    std::set<int> dq;
+    unordered_map<string, set<int>, str_hasher> mm;
+    set<int> dq;
     if (ia == _key_map.end())
     {
         _key_map[C] = mm;
@@ -171,13 +171,13 @@ void search_res::get_diff(std::string & A, std::string & B, std::string & C)
     _key_map[C] = mm;
 }
 
-void search_res::append(std::string &key, const std::string &id)
+void search_res::append(string &key, const string &id)
 {
     auto ii = _key_map.find(key);
     if (ii == _key_map.end())
     {   
-        std::unordered_map<std::string, std::set<int>, str_hasher> mm;
-        std::set<int> dq;
+        unordered_map<string, set<int>, str_hasher> mm;
+        set<int> dq;
         mm[id] = dq;
         _key_map[key] = mm;
 
@@ -187,8 +187,8 @@ void search_res::append(std::string &key, const std::string &id)
         auto iii = ii->second.find(id);
         if (iii == ii->second.end())
         {   
-            std::set<int> dq;
-            ii->second.insert(std::make_pair(id, dq));
+            set<int> dq;
+            ii->second.insert(make_pair(id, dq));
 
         }
 
@@ -196,24 +196,24 @@ void search_res::append(std::string &key, const std::string &id)
 
 }
 
-void search_res::append(std::string & key)
+void search_res::append(string & key)
 {
     auto ii = _key_map.find(key);
     if (ii == _key_map.end())
     {   
-        std::unordered_map<std::string, std::set<int>, str_hasher> mm;
+        unordered_map<string, set<int>, str_hasher> mm;
         _key_map[key] = mm;
 
     }
 }
 
-void search_res::append(std::string &key, const std::string &id, int index)
+void search_res::append(string &key, const string &id, int index)
 {
     auto ii = _key_map.find(key);
     if (ii == _key_map.end())
     {
-        std::unordered_map<std::string, std::set<int>, str_hasher> mm;
-        std::set<int> dq;
+        unordered_map<string, set<int>, str_hasher> mm;
+        set<int> dq;
         dq.insert(index);
         mm[id] = dq;
         _key_map[key] = mm;
@@ -224,9 +224,9 @@ void search_res::append(std::string &key, const std::string &id, int index)
         auto iii = ii->second.find(id);
         if (iii == ii->second.end())
         {
-            std::set<int> dq;
+            set<int> dq;
             dq.insert(index);
-            ii->second.insert(std::make_pair(id, dq));
+            ii->second.insert(make_pair(id, dq));
 
         }
         else
@@ -238,12 +238,12 @@ void search_res::append(std::string &key, const std::string &id, int index)
 }
 
 
-void search_res::append(std::string &key, const std::string &id, std::set<int> & index)
+void search_res::append(string &key, const string &id, set<int> & index)
 {
     auto ii = _key_map.find(key);
     if (ii == _key_map.end())
     {
-        std::unordered_map<std::string, std::set<int>, str_hasher> mm;
+        unordered_map<string, set<int>, str_hasher> mm;
         mm[id] = index;
         _key_map[key] = mm;
     }
@@ -252,7 +252,7 @@ void search_res::append(std::string &key, const std::string &id, std::set<int> &
         auto iii = ii->second.find(id);
         if (iii == ii->second.end())
         {
-            ii->second.insert(std::make_pair(id, index));
+            ii->second.insert(make_pair(id, index));
         }
         else
         {
@@ -261,9 +261,9 @@ void search_res::append(std::string &key, const std::string &id, std::set<int> &
     }
 }
 
-void search_res::set_bykey(std::string &key)
+void search_res::set_bykey(string &key)
 {
-    std::set<std::string> tmp;
+    set<string> tmp;
     _id_sets.swap(tmp);
 
     auto ii = _key_map.find(key); 
@@ -279,7 +279,7 @@ void search_res::set_bykey(std::string &key)
     }
 }
 
-void search_res::get_bykey(std::string &key, std::set<std::string> & res)
+void search_res::get_bykey(string &key, set<string> & res)
 {
     res.clear();
     auto ii = _key_map.find(key); 
@@ -306,9 +306,9 @@ void search_res::clear_set()
 
 
 
-int hsingle_search_item::get_index(const std::string & id, const std::string & date)
+int hsingle_search_item::get_index(const string & id, const string & date)
 {
-    std::string key;
+    string key;
     creat_id_date_key(id, date, key);
 
     auto mm = id_date_idx.find(key);
@@ -317,9 +317,9 @@ int hsingle_search_item::get_index(const std::string & id, const std::string & d
     return mm->second;
 }
 
-std::string  hsingle_search_item::get_date(const std::string & id, int index)
+string  hsingle_search_item::get_date(const string & id, int index)
 {
-    std::string key;
+    string key;
     creat_id_index_key(id, index, key);
 
     auto mm = id_idx_date.find(key);
@@ -336,7 +336,7 @@ void hsingle_search_item::clear()
     id_sum_single.clear();
 }
 
-void hsingle_search_item::creat_id_index_key(const std::string & id, int index, std::string & key)
+void hsingle_search_item::creat_id_index_key(const string & id, int index, string & key)
 {
     key.clear();
     char t_buf[SIZE_LEN_128] = {'\0'};
@@ -344,7 +344,7 @@ void hsingle_search_item::creat_id_index_key(const std::string & id, int index, 
     key.append(t_buf);
 }
 
-void hsingle_search_item::creat_id_date_key(const std::string & id, const std::string & date, std::string & key)
+void hsingle_search_item::creat_id_date_key(const string & id, const string & date, string & key)
 {
     key.clear();
     char t_buf[SIZE_LEN_128] = {'\0'};
@@ -487,9 +487,9 @@ void rquotation_search_item::clear()
 
 }
 
-int hquotation_search_item::get_index(const std::string & id, const std::string & date)
+int hquotation_search_item::get_index(const string & id, const string & date)
 {
-    std::string key;
+    string key;
     creat_id_date_key(id, date, key);
 
     auto mm = id_date_idx.find(key);
@@ -498,9 +498,9 @@ int hquotation_search_item::get_index(const std::string & id, const std::string 
     return mm->second;
 }
 
-std::string  hquotation_search_item::get_date(const std::string & id, int index)
+string  hquotation_search_item::get_date(const string & id, int index)
 {
-    std::string key;
+    string key;
     creat_id_index_key(id, index, key);
 
     auto mm = id_idx_date.find(key);
@@ -520,7 +520,7 @@ void hquotation_search_item::clear()
     id_trough.clear();
 }
 
-void hquotation_search_item::creat_id_index_key(const std::string & id, int index, std::string & key)
+void hquotation_search_item::creat_id_index_key(const string & id, int index, string & key)
 {   
     key.clear();
     char t_buf[SIZE_LEN_128] = {'\0'};
@@ -528,7 +528,7 @@ void hquotation_search_item::creat_id_index_key(const std::string & id, int inde
     key.append(t_buf);
 }
 
-void hquotation_search_item::creat_id_date_key(const std::string & id, const std::string & date, std::string & key)
+void hquotation_search_item::creat_id_date_key(const string & id, const string & date, string & key)
 {   
     key.clear();
     char t_buf[SIZE_LEN_128] = {'\0'};
@@ -554,13 +554,13 @@ void lru_sstr_item::clear()
 {
     _mmap_index.clear();
     _mmap_deque.clear();
-    std::list<std::string> tq;
+    list<string> tq;
     _dq.swap(tq);
 }
 
-std::shared_ptr<quotation_t> operator + (const std::shared_ptr<quotation_t>  qt, const std::shared_ptr<quotation_t>  mm) 
+shared_ptr<quotation_t> operator + (const shared_ptr<quotation_t>  qt, const shared_ptr<quotation_t>  mm) 
 {   
-    std::shared_ptr<quotation_t> qq = std::make_shared<quotation_t>();
+    shared_ptr<quotation_t> qq = make_shared<quotation_t>();
 
     qq->start = mm->start + qt->start;
     qq->end = mm->end + qt->end; 

@@ -62,6 +62,28 @@ int holiday_dict::load()
     return 0;
 }
 
+void holiday_dict::update()
+{
+    char t_buf[SIZE_LEN_512];
+    proc_data* p_data = proc_data::instance();
+    if (!p_data)
+        return ;
+
+    strategy_conf * strategy = p_data->_conf->_strategy->current();
+    snprintf(t_buf, sizeof(t_buf), "%s/%s", strategy->holiday_dict_path.c_str(), strategy->holiday_dict_file.c_str());
+    FILE * fp = fopen(t_buf, "a");
+    if (!fp){ 
+        return;
+    }
+
+    t_buf[0] = '\0';
+    time_t now = get_timestr(t_buf, sizeof(t_buf), "%Y%m%d %H:%M:%S");
+    fprintf(fp, "#%s\n", t_buf);
+    fprintf(fp, "%s\n", p_data->get_trade_date()->c_str());
+
+    fclose(fp);
+}
+
 void holiday_dict::update_trade_search_index()
 {
     proc_data* p_data = proc_data::instance();

@@ -17,6 +17,7 @@ class holiday_dict:public reload_inf
         virtual bool need_reload();
         virtual int dump();
         virtual int destroy();
+        void update();
 
     public:
 

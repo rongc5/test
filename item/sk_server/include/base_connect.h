@@ -46,7 +46,7 @@ class base_connect:public base_net_obj
         {
             if ((event & EPOLLERR) == EPOLLERR || (event & EPOLLHUP) == EPOLLHUP)
             {
-                THROW_COMMON_EXCEPT("epoll error "<< strerror(errno));
+                THROW_COMMON_EXCEPT("epoll error "<< strError(errno).c_str());
             }
 
             if ((event & EPOLLIN) == EPOLLIN) //读
@@ -141,7 +141,7 @@ class base_connect:public base_net_obj
             {
                 if (errno != EAGAIN)
                 {
-                    THROW_COMMON_EXCEPT("this socket occur fatal error " << strerror(errno));
+                    THROW_COMMON_EXCEPT("this socket occur fatal error " << strError(errno).c_str());
                 }
                 ret = 0;
             }
@@ -164,7 +164,7 @@ class base_connect:public base_net_obj
             {
                 if (errno != EAGAIN && errno != EWOULDBLOCK)
                 {
-                    THROW_COMMON_EXCEPT("send data error " << strerror(errno));
+                    THROW_COMMON_EXCEPT("send data error " << strError(errno).c_str());
                 }
                 LOG_WARNING("send error");
                 ret = 0;
@@ -192,7 +192,7 @@ class base_connect:public base_net_obj
 
             if (_recv_buf_len > 0 || flag)
             {
-                LOG_DEBUG("process_recv_buf _recv_buf_len[%d] fd[%d]", _recv_buf_len, _fd);
+                LOG_DEBUG("process_recv_buf _recv_buf_len[%d] fd[%d], flag[%d]", _recv_buf_len, _fd, flag);
                 p_ret = _process->process_recv_buf(_recv_buf.data(), _recv_buf_len);
                 if (p_ret && p_ret <= _recv_buf_len)
                 {
@@ -204,7 +204,7 @@ class base_connect:public base_net_obj
                 }
             }		
 
-            LOG_DEBUG("process_recv_buf _recv_buf[%d] ip[%s]", _recv_buf.length(), _peer_net.ip.c_str());
+            LOG_DEBUG("process_recv_buf _recv_buf[%d] ip[%s] flag[%d]", _recv_buf.length(), _peer_net.ip.c_str(), flag);
         }
 
         void real_send()

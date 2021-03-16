@@ -26,22 +26,25 @@ class skhttp_req_thread:public base_net_thread
         void real_req_start();
     
         void do_single();
-
         void add_single_timer();
+
+        void do_main_funds();
+        void add_main_funds_timer();
 
         void add_destroy_idle_timer();
 
         void do_quotation();
-
         void add_quotation_timer();
 
         void first_in_day();
 
-        bool is_real_time();
+        bool is_real_time(uint32_t req_circle_times);
 
-        void req_real_quotation(const std::string & id);
+        void req_real_quotation(std::shared_ptr<std::set<std::string>> id_vec);
 
-        void req_real_single(const std::string & id);
+        void req_real_single(std::string id);
+
+        void req_real_main_funds(std::string id);
 
         virtual void handle_timeout(std::shared_ptr<timer_msg> & t_msg);
 
@@ -50,23 +53,18 @@ class skhttp_req_thread:public base_net_thread
     protected:
         time_t get_real_time(const char * date, const char * time);
 
+        void put_msg_2_realod(std::shared_ptr<normal_msg>  p_msg);
+
         bool need_dump_real_quotation();
         bool need_dump_real_single();
-
-        void dump_real_quotation();
-        void dump_real_single();
+        bool need_dump_real_main_funds();
 
         bool need_update_quotation_dict();
         bool need_update_single_dict();
-
-        void update_quotation_dict();
-        void update_single_dict();
+        bool need_update_main_funds_dict();
 
         bool need_update_wquotation_dict();
         bool need_update_wsingle_dict();
-
-        void update_wquotation_dict();
-        void update_wsingle_dict();
 
         bool need_backup();
         void backup();
@@ -79,9 +77,6 @@ class skhttp_req_thread:public base_net_thread
 
         bool need_update_holiday_dict();
 
-        void update_holiday_dict();
-
-
         //void notify_update_date();
 
         //void reset_threadid_map_flag();
@@ -91,13 +86,19 @@ class skhttp_req_thread:public base_net_thread
         std::string _trade_date;
         uint32_t _quotation_index; //request id_index in id_dict
         bool _req_quotation;
+        time_t _quotation_circle_start_time;
 
         uint32_t _single_index;
         bool _req_single;
+        time_t _single_circle_start_time;
+
+        uint32_t _main_funds_index;
+        bool _req_main_funds;
+        time_t _main_funds_circle_start_time;
 
         uint32_t _quotation_destroy_num;//response id_index in id_dict
         uint32_t _single_destroy_num;
-
+        uint32_t _main_funds_destroy_num;
 
         time_t real_morning_stime;
         time_t real_morning_etime;
@@ -108,7 +109,9 @@ class skhttp_req_thread:public base_net_thread
         time_t dump_real_time;
 
         uint32_t _history_quotation_num;
+        uint32_t _history_technical_num;
         uint32_t _history_single_num;
+        uint32_t _history_main_funds_num;
 
         uint32_t _history_wquotation_num;
         uint32_t _history_wsingle_num;
@@ -117,7 +120,9 @@ class skhttp_req_thread:public base_net_thread
 
         bool is_backuped;
 
-        uint32_t _req_circle_times;//each day req circle times;
+        uint32_t _req_quotation_circle_times;//each day req circle times;
+        uint32_t _req_single_circle_times;//each day req circle times;
+        uint32_t _req_main_funds_circle_times;//each day req circle times;
 
         id_dict * _id_dic;
         ua_dict * _ua_dic;

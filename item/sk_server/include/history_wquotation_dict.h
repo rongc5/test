@@ -17,6 +17,7 @@ class history_wquotation_dict:public reload_inf
         virtual bool need_reload();
         virtual int dump();
         virtual int destroy();
+        void update();
 
         static void creat_key(const std::string & date, const std::string & id, std::string & key);
 
@@ -34,6 +35,12 @@ class history_wquotation_dict:public reload_inf
         void update_hwquotation_search();
 
         void update_hwquotation_wave(hquotation_search_item * hqitem);
+
+        void dump_real_wquotation();
+
+        void dump_real_wtechnical();
+
+        void dump_hwquotation_wave();
 
     private:
         void set_path (const char* path);

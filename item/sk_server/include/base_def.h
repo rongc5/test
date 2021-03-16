@@ -161,6 +161,9 @@ const int URLESCAPE[] =
 /** 域名缓存默认超时时间 单位是毫秒***/
 #define MAX_DOMAIN_TIMEOUT (3 * 60 * 60 * 1000)
 
+/***channel 没有接收到event 的最长检测时间***/
+#define MAX_CHANNEL_EVENT_TIMEOUT  1000
+
 #define CRLF "\r\n"
 #define CRLF2 "\r\n\r\n"
 
@@ -175,6 +178,7 @@ const int URLESCAPE[] =
 #define WEB_SOCKET_HANDSHAKE_OK_TIMER_TYPE 3
 #define DOMAIN_CACHE_TIMER_TYPE 5
 #define NONE_DATA_TIMER_TYPE 6
+#define NONE_CHANNEL_EVENT_TIMER_TYPE 7
 
 #ifdef DEBUG
 #define PDEBUG(format, arg...) \

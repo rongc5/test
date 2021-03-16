@@ -17,6 +17,8 @@ class id_dict:public reload_inf
         virtual int dump();
         virtual int destroy();
 
+        size_t size();
+
     private:
         void set_path (const char* path);
 

@@ -6,6 +6,7 @@
 #include "proc_data.h"
 #include "id_dict.h"
 #include "holiday_dict.h"
+#include "sk_util.h"
 
 history_wquotation_dict::history_wquotation_dict()
 {
@@ -39,15 +40,15 @@ void history_wquotation_dict::creat_key(const std::string & date, const std::str
 
 void history_wquotation_dict::get_history_wquotation(const std::string & week, const std::set<std::string> & files)
 {
-   for (auto file: files)
-   {
-       load_history_wquotation(week, file.c_str());
+    for (auto file: files)
+    {
+        load_history_wquotation(week, file.c_str());
 
-       if (week == _last_week)
-       {
-           _last_file_date.insert(basename((char *)file.c_str()));
-       }
-   }
+        if (week == _last_week)
+        {
+            _last_file_date.insert(basename((char *)file.c_str()));
+        }
+    }
 }
 
 int history_wquotation_dict::load_history_wquotation(const std::string & week, const char * file)
@@ -64,6 +65,7 @@ int history_wquotation_dict::load_history_wquotation(const std::string & week, c
     ASSERT_WARNING(fp != NULL,"open file failed. file[%s]", file);
 
     std::vector<std::string> strVec;
+    std::vector<std::string> schemaVec;
     char line[SIZE_LEN_1024];
     char t_buf[SIZE_LEN_1024];
     char * ptr = NULL;
@@ -78,9 +80,21 @@ int history_wquotation_dict::load_history_wquotation(const std::string & week, c
         ptr = im_chomp(line); 
         if (ptr == NULL || *ptr == '\0'|| *ptr == '#')
             continue;
-        
-        SplitString(ptr, '\t', &strVec, SPLIT_MODE_ALL | SPLIT_MODE_TRIM);
-        
+
+
+        if (!strstr(ptr, ";"))
+            SplitString(ptr, '\t', &strVec, SPLIT_MODE_ALL | SPLIT_MODE_TRIM);
+        else
+        {   
+            if (strstr(ptr, "id"))
+            {   
+                SplitString(ptr, ';', &schemaVec, SPLIT_MODE_ALL | SPLIT_MODE_TRIM);
+                continue;
+            }else
+                SplitString(ptr, ';', &strVec, SPLIT_MODE_ALL | SPLIT_MODE_TRIM);
+        }
+
+
         if (strVec.size() < 13)
         {
             LOG_WARNING("file:%s, format err", file);
@@ -91,28 +105,98 @@ int history_wquotation_dict::load_history_wquotation(const std::string & week, c
         std::shared_ptr<quotation_original> qo = std::make_shared<quotation_original>();
 
         const std::string &id = strVec[0];
-        
-        
+
+
         auto id_dict = p_data->_id_dict->current();
         auto id_name = id_dict->_id_name_map.find(id);
         if (id_name != id_dict->_id_name_map.end())
         {
             snprintf(qo->name, sizeof(qo->name), "%s", id_name->second.c_str());
         }
-        
 
-        qo->start = atof(strVec[1].c_str());
-        qo->end = atof(strVec[2].c_str());
-        qo->high = atof(strVec[3].c_str());
-        qo->low = atof(strVec[4].c_str());
-        qo->last_closed = atof(strVec[5].c_str());
-        qo->vol = atoi(strVec[6].c_str());
-        qo->buy_vol = atoi(strVec[7].c_str());
-        qo->sell_vol = atoi(strVec[8].c_str());
-        qo->swing = atof(strVec[9].c_str());
-        qo->change_rate = atof(strVec[10].c_str());
-        qo->range_percent = atof(strVec[11].c_str());
-        qo->total_price = atoi(strVec[12].c_str());
+        if (!strstr(ptr, ";")) 
+        {
+            qo->start = atof(strVec[1].c_str());
+            qo->end = atof(strVec[2].c_str());
+            qo->high = atof(strVec[3].c_str());
+            qo->low = atof(strVec[4].c_str());
+            qo->last_closed = atof(strVec[5].c_str());
+            qo->vol = atoi(strVec[6].c_str());
+            qo->buy_vol = atoi(strVec[7].c_str());
+            qo->sell_vol = atoi(strVec[8].c_str());
+            qo->swing = atof(strVec[9].c_str());
+            qo->change_rate = atof(strVec[10].c_str());
+            qo->range_percent = atof(strVec[11].c_str());
+            qo->total_price = atoi(strVec[12].c_str());
+        }
+        else
+        {
+            for (uint32_t i = 0; i < strVec.size() && i < schemaVec.size(); i++)
+            {
+                if (schemaVec[i] == "start")
+                {
+                    qo->start = atof(strVec[i].c_str());
+                    continue;
+                }
+                if (schemaVec[i] == "end")
+                {
+                    qo->end = atof(strVec[i].c_str());
+                    continue;
+                }
+                if (schemaVec[i] == "high")
+                {
+                    qo->high = atof(strVec[i].c_str());
+                    continue;
+                }
+                if (schemaVec[i] == "low")
+                {
+                    qo->low = atof(strVec[i].c_str());
+                    continue;
+                }
+                if (schemaVec[i] == "last_closed")
+                {
+                    qo->last_closed = atof(strVec[i].c_str());
+                    continue;
+                }
+                if (schemaVec[i] == "vol")
+                {
+                    qo->vol = atoi(strVec[i].c_str());
+                    continue;
+                }
+                if (schemaVec[i] == "buy_vol")
+                {
+                    qo->buy_vol = atoi(strVec[i].c_str());
+                    continue;
+                }
+                if (schemaVec[i] == "sell_vol")
+                {
+                    qo->sell_vol = atoi(strVec[i].c_str());
+                    continue;
+                } 
+
+                if (schemaVec[i] == "swing")
+                {
+                    qo->swing = atof(strVec[i].c_str());
+                    continue;
+                }
+                if (schemaVec[i] == "change_rate")
+                {
+                    qo->change_rate = atof(strVec[i].c_str());
+                    continue;
+                }
+                if (schemaVec[i] == "range_percent")
+                {
+                    qo->range_percent = atof(strVec[i].c_str());
+                    continue;
+                }
+                if (schemaVec[i] == "total_price")
+                {
+                    qo->total_price = atoi(strVec[i].c_str());
+                    continue;
+                }
+            }
+        }
+
 
         qt = original_2_quotation(qo);
 
@@ -124,6 +208,52 @@ int history_wquotation_dict::load_history_wquotation(const std::string & week, c
     fclose(fp);
 
     return 0;
+}
+
+void history_wquotation_dict::update()
+{
+    char t_buf[SIZE_LEN_512];
+    char path_buf[SIZE_LEN_512];
+
+    proc_data* p_data = proc_data::instance();
+    if (!p_data)
+        return ;
+
+    strategy_conf * strategy = p_data->_conf->_strategy->current();
+
+    snprintf(t_buf, sizeof(t_buf), "%s/.tmp_quotationw", strategy->history_wquotation_path.c_str());
+    FILE * fp = fopen(t_buf, "a");
+    if (!fp){ 
+        return;
+    }    
+
+    uint32_t i = 0; 
+    auto search_index = p_data->_wtdate_set->current();
+    for (auto ii = search_index->rbegin(); ii != search_index->rend(); ii++, i++) 
+    {    
+        if (i >= strategy->history_wquotation_num)
+        {    
+            break;
+        }    
+        fprintf(fp, "%s", ii->first.c_str());
+
+        for (auto iii = ii->second.begin(); iii != ii->second.end(); iii++)
+        {    
+            fprintf(fp, "\t%s/%s", strategy->real_quotation_path.c_str(), iii->c_str());
+        }    
+
+        fprintf(fp, "\n");
+    }    
+
+    fclose(fp);
+
+    snprintf(path_buf, sizeof(path_buf), "%s/%s", strategy->history_wquotation_path.c_str(), strategy->history_wquotation_file.c_str());
+
+    int ret = rename(t_buf, path_buf);
+    if (ret < 0) 
+    {    
+        LOG_WARNING("rename t_buf:%s to path_buf:%s, err:%s", t_buf, path_buf, strerror(errno));
+    }  
 }
 
 void history_wquotation_dict::update_date_dict(const std::string & date, const std::string & id, const std::shared_ptr<quotation_t> & qt)
@@ -179,7 +309,7 @@ void history_wquotation_dict::destroy_date_dict(const std::string & week,const  
 {
     std::string key;
     creat_key(week, id, key);
-    
+
     _date_dict.erase(key);
 }
 
@@ -201,21 +331,21 @@ void history_wquotation_dict::update_search_index()
 
     std::string yw_tmp;
     get_yearweek(_last_date, yw_tmp);
-    
+
     if (_last_week == yw_tmp)
     {
-       if (!_last_file_date.count(_last_date))
-       {
-           destroy_date_dict(yw_tmp);
+        if (!_last_file_date.count(_last_date))
+        {
+            destroy_date_dict(yw_tmp);
 
-           get_history_wquotation(yw_tmp, _last_files); 
+            get_history_wquotation(yw_tmp, _last_files); 
 
-           for (auto ii :  _last_date_dict)
-           {
-               update_date_dict(yw_tmp, ii.first, ii.second);
-               update_id_date(yw_tmp, ii.first);
-           }
-       }
+            for (auto ii :  _last_date_dict)
+            {
+                update_date_dict(yw_tmp, ii.first, ii.second);
+                update_id_date(yw_tmp, ii.first);
+            }
+        }
     }
     else
     {
@@ -240,47 +370,47 @@ void history_wquotation_dict::update_load_search()
     p_data->_hwquotation_index->idle_2_current();
 }
 
- void history_wquotation_dict::update_hwquotation_search()
+void history_wquotation_dict::update_hwquotation_search()
 {
     proc_data* p_data = proc_data::instance();
     auto hqitem = p_data->_hwquotation_index->idle();
     for (auto ii = _id_date_dict.begin(); ii != _id_date_dict.end(); ii++)
     {
-         const std::string & id = ii->first; 
-         int len = 0;
-         for (auto iii = ii->second.begin(); iii != ii->second.end(); iii++, len++)
-         {
-              std::string key;
-              creat_key(*iii, id, key);
-              auto kk = _date_dict.find(key);
-              if (kk == _date_dict.end())
-                  continue;
+        const std::string & id = ii->first; 
+        int len = 0;
+        for (auto iii = ii->second.begin(); iii != ii->second.end(); iii++, len++)
+        {
+            std::string key;
+            creat_key(*iii, id, key);
+            auto kk = _date_dict.find(key);
+            if (kk == _date_dict.end())
+                continue;
 
-               auto mm = hqitem->id_quotation.find(id);
-               if (mm == hqitem->id_quotation.end())
-               {
-                   std::deque< std::shared_ptr<quotation_t>> tmp_vec;
-                   tmp_vec.push_back(kk->second);
-                   hqitem->id_quotation.insert(std::make_pair(id, tmp_vec));
-               }
-              else
-              {
-                  mm->second.push_back(kk->second);
-              }
+            auto mm = hqitem->id_quotation.find(id);
+            if (mm == hqitem->id_quotation.end())
+            {
+                std::deque< std::shared_ptr<quotation_t>> tmp_vec;
+                tmp_vec.push_back(kk->second);
+                hqitem->id_quotation.insert(std::make_pair(id, tmp_vec));
+            }
+            else
+            {
+                mm->second.push_back(kk->second);
+            }
 
-              std::string item_key;
-              hquotation_search_item::creat_id_index_key(id, len, item_key);
-              hqitem->id_idx_date.insert(std::make_pair(item_key, *iii));
-              hquotation_search_item::creat_id_date_key(id, *iii, item_key);
-              hqitem->id_date_idx.insert(std::make_pair(item_key, len));
-         }
+            std::string item_key;
+            hquotation_search_item::creat_id_index_key(id, len, item_key);
+            hqitem->id_idx_date.insert(std::make_pair(item_key, *iii));
+            hquotation_search_item::creat_id_date_key(id, *iii, item_key);
+            hqitem->id_date_idx.insert(std::make_pair(item_key, len));
+        }
     }
 
 
     for (auto ii = hqitem->id_quotation.begin(); ii != hqitem->id_quotation.end(); ii++)
     {
         const std::string & id = ii->first; 
-        
+
         auto kk = _id_date_dict.find(id);
         if (kk == _id_date_dict.end())
             continue;
@@ -327,7 +457,7 @@ void history_wquotation_dict::update_hwquotation_wave(hquotation_search_item * h
     {
         const std::string & id = ii->first; 
         auto ff = hqitem->id_technical.find(id);
-        
+
         auto kk = _id_date_dict.find(id);
         if (kk == _id_date_dict.end() || ff == hqitem->id_technical.end())
             continue;
@@ -397,20 +527,20 @@ void history_wquotation_dict::get_id_technical(std::shared_ptr<quotation_t> qt, 
     }
 
     /*
-    if (p >= 30)
-    {
-        tt->end_30 = (sum_quotation[p]->end - sum_quotation[p - 30]->end)/30;
-        snprintf(t_buf, sizeof(t_buf), "%.2f", tt->end_30);
-        tt->end_30 = atof(t_buf);
-    }
+       if (p >= 30)
+       {
+       tt->end_30 = (sum_quotation[p]->end - sum_quotation[p - 30]->end)/30;
+       snprintf(t_buf, sizeof(t_buf), "%.2f", tt->end_30);
+       tt->end_30 = atof(t_buf);
+       }
 
-    if (p >= 60)
-    {
-        tt->end_60 = (sum_quotation[p]->end - sum_quotation[p - 60]->end)/60;
-        snprintf(t_buf, sizeof(t_buf), "%.2f", tt->end_60);
-        tt->end_60 = atof(t_buf);
-    }
-    */
+       if (p >= 60)
+       {
+       tt->end_60 = (sum_quotation[p]->end - sum_quotation[p - 60]->end)/60;
+       snprintf(t_buf, sizeof(t_buf), "%.2f", tt->end_60);
+       tt->end_60 = atof(t_buf);
+       }
+       */
 
     if (tt->end_5)
     {
@@ -434,20 +564,20 @@ void history_wquotation_dict::get_id_technical(std::shared_ptr<quotation_t> qt, 
     }
 
     /*
-    if (tt->end_30)
-    {
-        tt->end_end_30 = qt->end / tt->end_30;
-        snprintf(t_buf, sizeof(t_buf), "%.2f", tt->end_end_30); 
-        tt->end_end_30 = atof(t_buf);
-    }
+       if (tt->end_30)
+       {
+       tt->end_end_30 = qt->end / tt->end_30;
+       snprintf(t_buf, sizeof(t_buf), "%.2f", tt->end_end_30); 
+       tt->end_end_30 = atof(t_buf);
+       }
 
-    if (tt->end_60)
-    {
-        tt->end_end_60 = qt->end / tt->end_60;
-        snprintf(t_buf, sizeof(t_buf), "%.2f", tt->end_end_60); 
-        tt->end_end_60 = atof(t_buf);
-    }
-    */
+       if (tt->end_60)
+       {
+       tt->end_end_60 = qt->end / tt->end_60;
+       snprintf(t_buf, sizeof(t_buf), "%.2f", tt->end_end_60); 
+       tt->end_end_60 = atof(t_buf);
+       }
+       */
 
     if (tt->end_5)
     {
@@ -602,19 +732,321 @@ int history_wquotation_dict::dump()
 
     //for (auto &p_data: _date_dict)
     //{
-        //fprintf(fp,"id[%s]\tpe[%.2f]\tpb[%.2f]\t",p_data.second.id.c_str(), p_data.second.pe, p_data.second.pb);
+    //fprintf(fp,"id[%s]\tpe[%.2f]\tpb[%.2f]\t",p_data.second.id.c_str(), p_data.second.pe, p_data.second.pb);
 
-        //fprintf(fp, "cir_value[%.2f]\tvalue[%.2f]\tmgsy[%.2f]\tmgxj[%.2f]\tmgsygr[%.2f]\t", 
-                //p_data.second.cir_value, 
-                //p_data.second.value, p_data.second.mgsy, p_data.second.mgxj, p_data.second.mgsygr);
+    //fprintf(fp, "cir_value[%.2f]\tvalue[%.2f]\tmgsy[%.2f]\tmgxj[%.2f]\tmgsygr[%.2f]\t", 
+    //p_data.second.cir_value, 
+    //p_data.second.value, p_data.second.mgsy, p_data.second.mgxj, p_data.second.mgsygr);
 
-        //fprintf(fp, "mgxjgr[%.2f]\tzysrgr[%.2f]\tyylrgr[%.2f]\tjlrgr[%.2f]time_str[%s]\n", 
-                //p_data.second.mgxjgr, p_data.second.zysrgr, p_data.second.yylrgr, p_data.second.jlrgr, 
-                //p_data.second.time_str.c_str());
+    //fprintf(fp, "mgxjgr[%.2f]\tzysrgr[%.2f]\tyylrgr[%.2f]\tjlrgr[%.2f]time_str[%s]\n", 
+    //p_data.second.mgxjgr, p_data.second.zysrgr, p_data.second.yylrgr, p_data.second.jlrgr, 
+    //p_data.second.time_str.c_str());
     //}
     //fclose(fp);
+    dump_real_wquotation();
+    dump_real_wtechnical();
+    dump_hwquotation_wave();
 
     return 0;
+}
+
+void history_wquotation_dict::dump_real_wquotation()
+{
+    char t_buf[SIZE_LEN_512]; 
+    char path_buf[SIZE_LEN_512];
+    proc_data* p_data = proc_data::instance();
+    if (!p_data)
+        return ;
+
+    std::string yw_tmp;
+    get_yearweek(*p_data->get_trade_date(), yw_tmp);
+    strategy_conf * strategy = p_data->_conf->_strategy->current();
+    snprintf(t_buf, sizeof(t_buf), "%s/tmp.%s", strategy->real_wquotation_path.c_str(), yw_tmp.c_str());
+    snprintf(path_buf, sizeof(t_buf), "%s/%s", strategy->real_wquotation_path.c_str(), yw_tmp.c_str());
+    vector<string> schemaVec;
+    SplitString(strategy->dump_wquotation_schema.c_str(), ';', &schemaVec, SPLIT_MODE_ALL | SPLIT_MODE_TRIM);
+
+    FILE_SYN_WRITE(t_buf, "%s\n", strategy->dump_wquotation_schema.c_str());
+
+
+    auto hqitem = p_data->_hwquotation_index->current();
+    for (auto ii = hqitem->id_quotation.begin(); ii != hqitem->id_quotation.end(); ii++)
+    {
+        if (p_data->_block_set->do_check_block(ii->first))
+        {
+            continue;
+        }
+
+        std::string tmp;
+
+        for (uint32_t i = 0; i < schemaVec.size(); i++)
+        {
+            if (schemaVec[i] == "id")
+            {
+            tmp.append(ii->first);
+            tmp.append(1, ';');  
+            continue;
+            }
+
+            if (schemaVec[i] == "start")
+            {
+            tmp.append(float_2_str(ii->second.back()->start));
+            tmp.append(1, ';');  
+            continue;
+            }
+
+            if (schemaVec[i] == "end")
+            {
+            tmp.append(float_2_str(ii->second.back()->end));
+            tmp.append(1, ';');  
+            continue;
+            }
+
+            if (schemaVec[i] == "high")
+            {
+            tmp.append(float_2_str(ii->second.back()->high));
+            tmp.append(1, ';');  
+            continue;
+            }
+
+            if (schemaVec[i] == "low")
+            {
+            tmp.append(float_2_str(ii->second.back()->low));
+            tmp.append(1, ';');  
+            continue;
+            }
+
+
+            if (schemaVec[i] == "vol")
+            {
+            tmp.append(int_2_str(ii->second.back()->vol));
+            tmp.append(1, ';');  
+            continue;
+            }
+
+            if (schemaVec[i] == "change_rate")
+            {
+            tmp.append(float_2_str(ii->second.back()->change_rate));
+            tmp.append(1, ';');  
+            continue;
+            }
+
+            if (schemaVec[i] == "range_percent")
+            {
+            tmp.append(float_2_str(ii->second.back()->range_percent));
+            tmp.append(1, ';');  
+            continue;
+            }
+
+            if (schemaVec[i] == "total_price")
+            {
+            tmp.append(float_2_str(ii->second.back()->total_price));
+            tmp.append(1, ';');  
+            continue;
+            }
+        }
+
+        FILE_SYN_WRITE(t_buf, "%s\n", tmp.c_str());
+    }
+
+
+
+    int ret = rename(t_buf, path_buf);
+    if (ret < 0)
+    {
+        LOG_WARNING("rename t_buf:%s to path_buf:%s, err:%s", t_buf, path_buf, strerror(errno));
+    }
+}
+
+void history_wquotation_dict::dump_real_wtechnical()
+{
+    char t_buf[SIZE_LEN_512]; 
+    char path_buf[SIZE_LEN_512];
+    proc_data* p_data = proc_data::instance();
+    if (!p_data)
+        return ;
+
+    std::string yw_tmp;
+    get_yearweek(*p_data->get_trade_date(), yw_tmp);
+    strategy_conf * strategy = p_data->_conf->_strategy->current();
+    snprintf(t_buf, sizeof(t_buf), "%s/tmp.%s", strategy->real_wtechnical_path.c_str(), yw_tmp.c_str());
+    snprintf(path_buf, sizeof(t_buf), "%s/%s", strategy->real_wtechnical_path.c_str(), yw_tmp.c_str());
+
+    FILE_SYN_WRITE(t_buf, "%s\n", strategy->dump_wtechnical_schema.c_str());
+    vector<string> schemaVec;
+    SplitString(strategy->dump_wtechnical_schema.c_str(), ';', &schemaVec, SPLIT_MODE_ALL | SPLIT_MODE_TRIM);
+
+
+    auto hqitem = p_data->_hwquotation_index->current();
+    for (auto ii = hqitem->id_technical.begin(); ii != hqitem->id_technical.end(); ii++)
+    {
+
+        if (p_data->_block_set->do_check_block(ii->first))
+        {
+            continue;
+        }
+
+        std::string tmp;
+
+        for (uint32_t i = 0; i < schemaVec.size(); i++) 
+        {    
+            if (schemaVec[i] == "id")
+            {    
+                tmp.append(ii->first);
+                tmp.append(1, ';');
+                continue;
+            }    
+
+            if (schemaVec[i] == "end_5")
+            {    
+                tmp.append(float_2_str(ii->second.back()->end_5));
+                tmp.append(1, ';');
+                continue;
+            }    
+
+            if (schemaVec[i] == "end_10") 
+            {    
+                tmp.append(float_2_str(ii->second.back()->end_10));
+                tmp.append(1, ';');
+                continue;
+            }
+
+            if (schemaVec[i] == "end_20")
+            {
+                tmp.append(float_2_str(ii->second.back()->end_20));
+                tmp.append(1, ';');
+                continue;
+            }
+
+            if (schemaVec[i] == "down_pointer")
+            {
+                tmp.append(float_2_str(ii->second.back()->down_pointer));
+                tmp.append(1, ';');
+                continue;
+            }
+
+            if (schemaVec[i] == "up_pointer")
+            {
+                tmp.append(float_2_str(ii->second.back()->up_pointer));
+                tmp.append(1, ';');
+                continue;
+            }
+
+            if (schemaVec[i] == "avg_end")
+            {
+                tmp.append(float_2_str(ii->second.back()->avg_end));
+                tmp.append(1, ';');
+                continue;
+            }
+
+            if (schemaVec[i] == "end_start")
+            {
+                tmp.append(float_2_str(ii->second.back()->end_start));
+                tmp.append(1, ';');
+                continue;
+            }
+
+            if (schemaVec[i] == "end_avg_end")
+            {
+                tmp.append(float_2_str(ii->second.back()->end_avg_end));
+                tmp.append(1, ';');
+                continue;
+            }
+
+            if (schemaVec[i] == "end_end_5") 
+            {
+                tmp.append(float_2_str(ii->second.back()->end_end_5));
+                tmp.append(1, ';');
+                continue;
+            }
+
+            if (schemaVec[i] == "end_end_10")
+            {
+                tmp.append(float_2_str(ii->second.back()->end_end_10));
+                tmp.append(1, ';');
+                continue;
+            }
+
+            if (schemaVec[i] == "end_end_20")
+            {
+                tmp.append(float_2_str(ii->second.back()->end_end_20));
+                tmp.append(1, ';');
+                continue;
+            }
+
+            if (schemaVec[i] == "low_end_5")
+            {
+                tmp.append(float_2_str(ii->second.back()->low_end_5));
+                tmp.append(1, ';');
+                continue;
+            }
+
+            if (schemaVec[i] == "high_end_5")
+            {
+                tmp.append(float_2_str(ii->second.back()->high_end_5));
+                tmp.append(1, ';');
+                continue;
+            }
+        }
+
+        FILE_SYN_WRITE(t_buf, "%s\n", tmp.c_str());
+    }
+
+
+
+    int ret = rename(t_buf, path_buf);
+    if (ret < 0)
+    {
+        LOG_WARNING("rename t_buf:%s to path_buf:%s, err:%s", t_buf, path_buf, strerror(errno));
+    }
+}
+
+void history_wquotation_dict::dump_hwquotation_wave()
+{
+    char t_buf[SIZE_LEN_512]; 
+    char path_buf[SIZE_LEN_512];
+    proc_data* p_data = proc_data::instance();
+    if (!p_data)
+        return ;
+
+    std::string yw_tmp;
+    get_yearweek(*p_data->get_trade_date(), yw_tmp);
+    strategy_conf * strategy = p_data->_conf->_strategy->current();
+    snprintf(t_buf, sizeof(t_buf), "%s/tmp.%s", strategy->history_wwave_path.c_str(), yw_tmp.c_str());
+    snprintf(path_buf, sizeof(t_buf), "%s/%s", strategy->history_wwave_path.c_str(), yw_tmp.c_str());
+    FILE_SYN_WRITE(t_buf, "%s\n", strategy->dump_wwave_schema.c_str());
+    vector<string> schemaVec;
+    SplitString(strategy->dump_wwave_schema.c_str(), ';', &schemaVec, SPLIT_MODE_ALL | SPLIT_MODE_TRIM);
+
+    auto cur = p_data->_hwquotation_index->current(); 
+
+    for (auto ii = cur->id_crest.begin(); ii != cur->id_crest.end(); ii++)
+    {
+        const string & id = ii->first;
+        for (auto kk = ii->second.begin(); kk != ii->second.end(); kk++)
+        {
+            string date = cur->get_date(id, *kk);
+            FILE_SYN_WRITE(t_buf, "%s;%s;%d;\n", id.c_str(), date.c_str(), 1);
+        }
+    }
+
+    for (auto ii = cur->id_trough.begin(); ii != cur->id_trough.end(); ii++)
+    {
+        const string & id = ii->first;
+        for (auto kk = ii->second.begin(); kk != ii->second.end(); kk++)
+        {
+            string date = cur->get_date(id, *kk);
+            FILE_SYN_WRITE(t_buf, "%s;%s;%d;\n", id.c_str(), date.c_str(), 0);
+        }
+    }
+
+    int ret = rename(t_buf, path_buf);
+    if (ret < 0)
+    {   
+        LOG_WARNING("rename t_buf:%s to path_buf:%s, err:%s", t_buf, path_buf, strerror(errno));
+    }
+
+    return ;
 }
 
 int history_wquotation_dict::destroy()
@@ -630,7 +1062,7 @@ int history_wquotation_dict::destroy()
 
         //if (tmp.size())
         //{
-            //LOG_TRACE("%s, %d", tmp.begin()->first.c_str(), tmp.begin()->second.use_count());
+        //LOG_TRACE("%s, %d", tmp.begin()->first.c_str(), tmp.begin()->second.use_count());
         //}
     }
 

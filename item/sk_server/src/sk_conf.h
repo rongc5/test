@@ -18,6 +18,8 @@ class sk_conf: public reload_inf
         uint32_t http_server_port;
         uint32_t http_server_thread_num;
 
+        uint32_t worker_thread_num;
+
         //std::string ip_deny_path;
 
         std::string dump_dir;

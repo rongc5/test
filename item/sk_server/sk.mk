@@ -12,6 +12,7 @@ LIB = -L$(LIB_DIR)/ -lmyframe -lrt -lsign -lpthread \
 	  /usr/lib64/libcrypt.a \
 	  /usr/lib64/libcrypto.a \
 	  /usr/lib64/libssl.a \
+	  -lcurl \
 
 
 CPPFLAGS = -gdwarf-2 -msse3 -W $(INCLUDE) -DDEBUG=1 -O0 -std=c++11
@@ -62,6 +63,10 @@ OBJ	= $(LOC_DIR)/main.o     \
 	  $(LOC_DIR)/week_tradedate_search_index.o \
 	  $(LOC_DIR)/userid_dict.o \
 	  $(LOC_DIR)/skhttp_res_thread.o \
+	  $(LOC_DIR)/worker_thread.o \
+	  $(LOC_DIR)/curl_req.o \
+	  $(LOC_DIR)/history_main_funds_dict.o \
+	  $(LOC_DIR)/rmain_funds_data_process.o \
 
 
 AR=ar

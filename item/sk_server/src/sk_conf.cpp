@@ -6,6 +6,7 @@ sk_conf::sk_conf(const char * sk_conf)
     http_server_host = "127.0.0.1";
     http_server_port = 8080;
     http_server_thread_num = 3;
+    worker_thread_num = 20;
 
     //ip_deny_num = 100;
 
@@ -27,6 +28,10 @@ sk_conf::sk_conf(const char * sk_conf)
 
     cfg.get_vale("server", "http_server_thread_num", tmp);
     http_server_thread_num = atoi(tmp.c_str());
+
+    cfg.get_vale("server", "worker_thread_num", tmp);
+    worker_thread_num = atoi(tmp.c_str());
+
 
     //cfg.get_vale("server", "ip_deny_path", ip_deny_path);
 

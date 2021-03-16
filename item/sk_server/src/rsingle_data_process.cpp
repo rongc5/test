@@ -98,10 +98,9 @@ int rsingle_data_process::get_single_index(const std::string &id, uint32_t index
     return i; 
 }
 
-void rsingle_data_process::msg_recv_finish()
+int rsingle_data_process::parse_single(std::string id, std::string _recv_buf)
 {
-    LOG_DEBUG("recv_buf: %s", _recv_buf.c_str());
-    //FILE_WRITE("123", _recv_buf.c_str());
+    LOG_DEBUG("id:%s _recv_buf: %s", id.c_str(), _recv_buf.c_str());
     proc_data * p_data = proc_data::instance();
 
     std::shared_ptr<single_vec> tmp_single(new single_vec);
@@ -115,7 +114,8 @@ void rsingle_data_process::msg_recv_finish()
     SplitString(_recv_buf.c_str(), "=", &strVec, SPLIT_MODE_ONE);
     if (strVec.size() < 2)
     {
-        goto over;
+        _recv_buf.clear();
+        return -1;
     }
 
     _recv_buf.clear();
@@ -140,16 +140,26 @@ void rsingle_data_process::msg_recv_finish()
 
     if (flag)
     {
-        std::shared_ptr<single_vec> st = get_rsingle(tmp_single);
-        p_data->_hsingle_dict->update_real_single(*p_data->get_trade_date(), _id, st);
-        p_data->_hwsingle_dict->update_real_wsingle(*p_data->get_trade_date(), _id, st);
+        std::shared_ptr<single_vec> st = get_rsingle(id, tmp_single);
+        gen_response_req_msg(id, st);
     }
+
+    return 0;
+}
+
+void rsingle_data_process::msg_recv_finish()
+{
+    LOG_DEBUG("recv_buf: %s", _recv_buf.c_str());
+    //FILE_WRITE("123", _recv_buf.c_str());
+    parse_single(_id, _recv_buf);
+    _recv_buf.clear();
 
 over:
     throw CMyCommonException("msg_recv_finish");
 }
 
-std::shared_ptr<single_vec> rsingle_data_process::get_rsingle(std::shared_ptr<single_vec> & tmp_single)
+
+std::shared_ptr<single_vec> rsingle_data_process::get_rsingle(std::string id, std::shared_ptr<single_vec> & tmp_single)
 {
     proc_data* p_data = proc_data::instance();
     strategy_conf * strategy = p_data->_conf->_strategy->current();
@@ -158,7 +168,7 @@ std::shared_ptr<single_vec> rsingle_data_process::get_rsingle(std::shared_ptr<si
 
     for (i = 0; i < strategy->real_single_scale.size(); i++)
     {
-        int index = get_single_index(_id, i);
+        int index = get_single_index(id, i);
         if (index < 0 || index > (int)tmp_single->size())
         {
             single_t tmp_st;
@@ -203,6 +213,88 @@ void rsingle_data_process::set_url_info(url_info & u_info)
 void rsingle_data_process::set_id(std::string id)
 {
     _id = id;
+}
+
+int rsingle_data_process::load_from_curl(std::string id, common_obj_container * net_container, std::map<std::string, std::string> & headers, curl_req & cur)
+{
+    proc_data* p_data = proc_data::instance();
+    strategy_conf * strategy = p_data->_conf->_strategy->current();
+    std::string url = strategy->real_single_api;
+
+    //std::string cmd;
+
+
+    //std::string path = strategy->req_single_from_file_path;
+    //if (!end_with(path, "/"))
+        //path.append("/");
+    //path.append(id);
+
+    //FILE * fp = NULL;
+    //char line[SIZE_LEN_1024];
+    //char * ptr = NULL;
+    std::string rec_str;
+
+    url.append(id);
+
+    cur.init_url(url, headers, p_data->_conf->_strategy->current()->req_http_timeout);   
+    cur.get_data(rec_str);
+    parse_single(id, rec_str);
+
+    //cmd.append("curl ");
+
+    //for (auto ii: headers)
+    //{
+        //cmd.append(" -H '");
+        //cmd.append(ii.first);
+        //cmd.append(": ");
+        //cmd.append(ii.second);
+        //cmd.append("'");
+    //}
+
+    //cmd.append(" '");
+    //cmd.append(url);
+    //cmd.append("'");
+
+    //cmd.append(" > ");
+    //cmd.append(path);
+
+
+
+    //LOG_DEBUG("cmd: %s", cmd.c_str());
+
+//    exec_shell_cmd(cmd, rec_str);
+
+#if 0
+    //system(cmd.c_str());
+    //
+
+    fp = fopen(path.c_str(), "r");
+    ASSERT_WARNING(fp != NULL,"open file failed. file[%s]", path.c_str());
+
+    while (fgets(line, sizeof(line), fp))
+    {
+        if('\0' == line[0])
+        {
+            continue;
+        }
+
+        ptr = im_chomp(line); 
+        if (ptr == NULL || *ptr == '\0'|| *ptr == '#')
+            continue;
+
+
+        rec_str.assign(ptr);
+
+        parse_single(id, rec_str);
+    }
+
+    fclose(fp);
+#endif
+    //parse_single(id, rec_str);
+
+    gen_destroy_msg(id);
+
+    return 0;
 }
 
 void rsingle_data_process::gen_net_obj(std::string id, common_obj_container * net_container, std::map<std::string, std::string> & headers)
@@ -294,16 +386,9 @@ void rsingle_data_process::destroy()
 
     if (connect)
     {   
-        std::shared_ptr<destroy_msg>  net_obj(new destroy_msg);
-        net_obj->id = _id;
-        net_obj->_msg_op = NORMAL_MSG_DESTROY_ST;
-
+        
         common_obj_container * net_container = connect->get_net_container();
-        ObjId id; 
-        id._id = OBJ_ID_THREAD;
-        id._thread_index = net_container->get_thread_index();
-        std::shared_ptr<normal_msg> ng = std::static_pointer_cast<normal_msg>(net_obj);
-        base_net_thread::put_obj_msg(id, ng);
+        gen_destroy_msg(_id);
 
         if (!_is_ok) 
         {   
@@ -312,3 +397,58 @@ void rsingle_data_process::destroy()
     }
 }
 
+void rsingle_data_process::gen_destroy_msg(const std::string &sid)
+{
+        auto id_vec = std::make_shared<std::set<std::string>>();
+        id_vec->insert(sid);
+
+        proc_data* p_data = proc_data::instance();
+        std::vector<base_net_thread *> * req_thread = p_data->get_thread("req_thread"); 
+        if (!req_thread)
+            return;
+
+        if (!req_thread->size())
+        {   
+            return;
+        }   
+        int index = 0;
+        LOG_DEBUG("id_vec.size(): 1");
+
+        std::shared_ptr<destroy_msg>  net_obj(new destroy_msg);
+        net_obj->id_vec = id_vec;
+        net_obj->_msg_op = NORMAL_MSG_DESTROY_ST;
+
+        ObjId id; 
+        id._id = OBJ_ID_THREAD;
+        id._thread_index = req_thread->at(index)->get_thread_index();
+        std::shared_ptr<normal_msg> ng = std::static_pointer_cast<normal_msg>(net_obj);
+        base_net_thread::put_obj_msg(id, ng);
+}
+
+void rsingle_data_process::gen_response_req_msg(const std::string &sid, std::shared_ptr<single_vec> st)
+{
+    proc_data* p_data = proc_data::instance();
+    std::vector<base_net_thread *> * req_thread = p_data->get_thread("req_thread"); 
+    if (!req_thread)
+        return;
+
+    if (!req_thread->size())
+    {   
+        return;
+    }   
+    int index = 0;
+    index = index % req_thread->size();
+    LOG_DEBUG("id_vec.size(): 1");
+
+    std::shared_ptr<response_req_msg> p_msg = std::make_shared<response_req_msg>(NORMAL_MSG_RESPONSE_SINGLE);
+    p_msg->_id = sid;
+    p_msg->_st = st;
+
+    ObjId id; 
+    id._id = OBJ_ID_THREAD;
+    id._thread_index = req_thread->at(index)->get_thread_index();
+
+
+    std::shared_ptr<normal_msg> ng = std::static_pointer_cast<normal_msg>(p_msg);
+    base_net_thread::put_obj_msg(id, ng);
+}

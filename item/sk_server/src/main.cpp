@@ -8,6 +8,7 @@
 #include "common_util.h"
 #include "skhttp_res_thread.h"
 #include "sk_util.h"
+#include "worker_thread.h"
 
 
 void do_init()
@@ -28,6 +29,13 @@ void do_init()
     proc_data::instance()->init(conf);
     proc_data::instance()->load();
 
+    for (uint32_t i = 0; i<= conf->worker_thread_num; i++)
+    {
+        auto * net_thread = new worker_thread();
+        net_thread->start();
+        proc_data::instance()->add_name_thread("worker_thread", net_thread);
+    }
+
     reload_thread * master_thread = new reload_thread();
     skhttp_req_thread * req_thread = new skhttp_req_thread();
 
@@ -47,6 +55,7 @@ void do_init()
         net_thread->start();
         proc_data::instance()->add_name_thread("res_thread", net_thread);
     }
+
 
     lthread->start();
 

@@ -17,8 +17,7 @@ class history_wsingle_dict:public reload_inf
         virtual bool need_reload();
         virtual int dump();
         virtual int destroy();
-
-        static void creat_key(const std::string & date, const std::string & id, std::string & key);
+        void update();
 
         void update_real_wsingle(const std::string & trade_date, const std::string & id, std::shared_ptr<single_vec>  single);
 
@@ -41,6 +40,8 @@ class history_wsingle_dict:public reload_inf
         void destroy_date_dict(const std::string & week);
 
         void complement(std::deque<std::shared_ptr<single_vec> > & st, int num);
+
+        void dump_real_wsingle();
 
     private:
         char _fullpath[SIZE_LEN_512];

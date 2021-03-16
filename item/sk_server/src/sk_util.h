@@ -5,6 +5,7 @@
 #include <signal.h>
 #include <sys/types.h>
 #include <sys/wait.h>
+using namespace std;
 
 void get_standard_id(std::string & id);
 
@@ -73,6 +74,13 @@ void get_intersection(std::vector<std::set<std::string> > & arr, std::set<std::s
 
 void get_first_not_numstr(std::string & src, std::string & dst);
 
+void forksystem(const char * cmd);
+
+void creat_key(const string & date, const string & id, string & key);
+
+string creat_key(const string & date, const string & id);
+
+string get_prefix_key(const string & key, const char * last);
 
 
 #endif

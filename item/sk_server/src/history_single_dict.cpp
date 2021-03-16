@@ -5,6 +5,7 @@
 #include "common_util.h"
 #include "proc_data.h"
 #include "hsingle_search_index.h"
+#include "sk_util.h"
 
 history_single_dict::history_single_dict()
 {
@@ -25,16 +26,6 @@ int history_single_dict::init(const char * path, const char * file, const char *
     return 0;
 }
 
-void history_single_dict::creat_key(const std::string & date, const std::string & id, std::string & key)
-{
-    key.clear();
-    //date_id;
-    key.append(date);
-    key.append("_");
-    key.append(id);
-
-    return;
-}
 
 int history_single_dict::load_history_single(const char * file)
 {
@@ -54,6 +45,7 @@ int history_single_dict::load_history_single(const char * file)
 
 
     std::vector<std::string> strVec;
+    std::vector<std::string> schemaVec;
     char line[SIZE_LEN_1024];
     char * ptr = NULL;
     std::string key;
@@ -68,27 +60,68 @@ int history_single_dict::load_history_single(const char * file)
         if (ptr == NULL || *ptr == '\0'|| *ptr == '#')
             continue;
         
-        SplitString(ptr, '\t', &strVec, SPLIT_MODE_ALL | SPLIT_MODE_TRIM); 
+        
+        if (!strstr(ptr, ";"))
+            SplitString(ptr, '\t', &strVec, SPLIT_MODE_ALL | SPLIT_MODE_TRIM); 
+        else
+        {
+            if (strstr(ptr, "id")) 
+            {
+                SplitString(ptr, ';', &schemaVec, SPLIT_MODE_ALL | SPLIT_MODE_TRIM);
+                continue;
+            } else
+                SplitString(ptr, ';', &strVec, SPLIT_MODE_ALL | SPLIT_MODE_TRIM);
+        }
+
+
         std::deque<std::shared_ptr<single_vec> > st;
 
-        if (!strstr(ptr, ","))
+        if (strstr(ptr, ";"))
         {
-            std::shared_ptr<single_vec> single(new single_vec);
-            for (uint32_t i = 1; i < strVec.size() && i+1 < strVec.size(); i += 3)
+            std::vector<std::string> tmpVec;
+            for (uint32_t i = 1; i < strVec.size(); i ++)
             {
-                single_t hs;
+                
+                SplitString(strVec[i].c_str(), ',', &tmpVec, SPLIT_MODE_ALL | SPLIT_MODE_TRIM); 
+                
+                uint32_t j = 0;
+                if (tmpVec.size() > log_single_deque_length && log_single_deque_length > 0)
+                {
+                    j = tmpVec.size() - log_single_deque_length;
+                }
 
-                //hs.in = atoi(strVec[i].c_str());
-                //hs.out = atoi(strVec[i + 1].c_str());
-                hs.in = atoi(strVec[i].c_str());
-                hs.out = atoi(strVec[i + 1].c_str());
-                hs.diff = atoi(strVec[i + 2].c_str());
-                hs.dratio = (hs.in + hs.out)? hs.diff*1.0/(hs.in + hs.out):0;
+                while (st.size() < tmpVec.size() - j)
+                {
+                    std::shared_ptr<single_vec> single(new single_vec);
+                    st.push_back(single);
+                }
 
-                single->push_back(hs);
+                uint32_t k = 0;
+                for (; j < tmpVec.size(); j++, k++)
+                {
+                    single_t hs;
+                    if (strstr(tmpVec[j].c_str(), "|"))
+                    {
+                        std::vector<std::string> ttVec;
+                        SplitString(tmpVec[j].c_str(), '|', &ttVec, SPLIT_MODE_ALL | SPLIT_MODE_TRIM);
+                        if (ttVec.size() < 2)
+                        {
+                            continue;
+                        }
+
+                        hs.in = atoi(ttVec[0].c_str());
+                        hs.out = atoi(ttVec[1].c_str());
+                        hs.diff = hs.in - hs.out;
+                    }
+                    else
+                    {
+                        hs.diff = atoi(tmpVec[j].c_str());
+                    }
+                    hs.dratio = (hs.in + hs.out)? hs.diff*1.0/(hs.in + hs.out):0;
+
+                    st[k]->push_back(hs);
+                }
             }
-
-            st.push_back(single);
         }
         else
         {
@@ -135,7 +168,6 @@ int history_single_dict::load_history_single(const char * file)
                     st[k]->push_back(hs);
                 }
             }
-            
         }
 
         creat_key(date, strVec[0], key);
@@ -442,6 +474,62 @@ bool history_single_dict::need_reload()
     return false;
 }
 
+void history_single_dict::update()
+{
+    char t_buf[SIZE_LEN_512];
+    char path_buf[SIZE_LEN_512];
+    std::set<std::string> files;
+
+    proc_data* p_data = proc_data::instance();
+    if (!p_data)
+        return ;
+
+    strategy_conf * strategy = p_data->_conf->_strategy->current();
+
+    struct dirent *r;
+    DIR *p;
+    uint32_t i = 0;
+
+    p = opendir(strategy->real_single_path.c_str());
+    if (p == NULL)
+    {   
+        LOG_WARNING("opendir:%s", strategy->real_single_path.c_str());
+        return;
+    } 
+
+    while ((r= readdir(p)) != NULL)
+    {   
+        if (r->d_type == DT_REG && start_with(r->d_name, "20"))
+        {
+            snprintf(t_buf, sizeof(t_buf), "%s/%s", strategy->real_single_path.c_str(), r->d_name);
+            files.insert(t_buf);
+        }
+    } 
+    closedir(p);
+
+    snprintf(t_buf, sizeof(t_buf), "%s/.tmp_single", strategy->history_single_path.c_str());
+    FILE * fp = fopen(t_buf, "a");
+    if (!fp){ 
+        return;
+    }
+
+    i = 0;
+    for (auto ii = files.rbegin(); ii != files.rend() && i < strategy->history_single_num; ii++, i++)
+    {
+        fprintf(fp, "%s\n", ii->c_str());
+    }
+
+
+    fclose(fp);
+    snprintf(path_buf, sizeof(path_buf), "%s/%s", strategy->history_single_path.c_str(), strategy->history_single_file.c_str());
+    int ret = rename(t_buf, path_buf);
+    if (ret < 0)
+    {
+        LOG_WARNING("rename t_buf:%s to path_buf:%s, err:%s", t_buf, path_buf, strerror(errno));
+    }
+}
+
+
 int history_single_dict::dump()
 {
     //FILE * fp = fopen(_dumppath, "w");
@@ -459,9 +547,83 @@ int history_single_dict::dump()
                 //p_data.second.mgxjgr, p_data.second.zysrgr, p_data.second.yylrgr, p_data.second.jlrgr, 
                 //p_data.second.time_str.c_str());
     //}
+    //
     //fclose(fp);
+    dump_real_single();
 
     return 0;
+}
+
+void history_single_dict::dump_real_single()
+{
+    char t_buf[SIZE_LEN_512]; 
+    char path_buf[SIZE_LEN_512];
+    char tmp[SIZE_LEN_512];
+
+    proc_data* p_data = proc_data::instance();
+    if (!p_data)
+        return ;
+
+    strategy_conf * strategy = p_data->_conf->_strategy->current();
+    snprintf(t_buf, sizeof(t_buf), "%s/tmp.%s", strategy->real_wsingle_path.c_str(), p_data->get_trade_date()->c_str());
+    snprintf(path_buf, sizeof(t_buf), "%s/%s", strategy->real_wsingle_path.c_str(), p_data->get_trade_date()->c_str());
+    FILE_SYN_WRITE(t_buf, "%s\n", strategy->dump_wsingle_schema.c_str());
+    //vector<string> schemaVec;
+    //SplitString(strategy->dump_single_schema.c_str(), ';', &schemaVec, SPLIT_MODE_ALL | SPLIT_MODE_TRIM);
+
+    for (auto ii = _id_date_dict.begin(); ii != _id_date_dict.end(); ii++)
+    {
+        const string & id = ii->first;
+        string key;
+        creat_key(_last_date, id, key);
+        auto kk = _date_dict.find(key);
+        if (kk == _date_dict.end())
+            continue;
+
+        std::string t_str;   
+
+        std::deque<std::shared_ptr<single_vec> > & st = kk->second; 
+        if (!st.size())      
+            continue;            
+
+        if (p_data->_block_set->do_check_block(ii->first))
+        {
+            continue;
+        }
+
+        t_str.append(id.c_str());
+        t_str.append(1, ';');
+
+        uint32_t i = 0;
+        uint32_t k = 0;
+        uint32_t log_single_deque_length_max = p_data->_conf->_strategy->current()->log_single_deque_length_max;
+        if (st.size() > log_single_deque_length_max && log_single_deque_length_max > 0)
+        {
+            i = st.size() - log_single_deque_length_max;
+        }
+        k = i;
+
+        for (uint32_t j =0; j < st.back()->size(); j++)
+        {
+            for (i = k; i < st.size(); i++) 
+            {
+                snprintf(tmp, sizeof(tmp), "%d|%d,", st[i]->at(j).in, st[i]->at(j).out);
+                t_str.append(tmp);
+            }
+
+            t_str.append(1, ';');
+        }
+
+        FILE_SYN_WRITE(t_buf, "%s\n", t_str.c_str());
+    }
+
+    int ret = rename(t_buf, path_buf);
+    if (ret < 0)
+    {
+        LOG_WARNING("rename t_buf:%s to path_buf:%s, err:%s", t_buf, path_buf, strerror(errno));
+    }
+
+    return ;
 }
 
 int history_single_dict::destroy()

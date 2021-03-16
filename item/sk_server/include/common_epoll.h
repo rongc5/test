@@ -3,6 +3,7 @@
 
 #include "common_def.h"
 #include "common_exception.h"
+#include "common_util.h"
 
 class base_net_obj;
 class common_epoll
@@ -29,7 +30,8 @@ class common_epoll
             _epoll_fd = epoll_create(_epoll_size);
             if (_epoll_fd == -1)
             {       
-                THROW_COMMON_EXCEPT("epoll_create fail " << strerror(errno));
+                std::string err = strError(errno);
+                THROW_COMMON_EXCEPT("epoll_create fail " << err.c_str());
             }
             _epoll_events = new epoll_event[_epoll_size]; 
 

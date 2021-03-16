@@ -98,4 +98,8 @@ int id_dict::destroy()
     return 0;
 }
 
+size_t id_dict::size()
+{
+    return _id_vec.size();
+}
 

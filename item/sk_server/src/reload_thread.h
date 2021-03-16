@@ -24,6 +24,14 @@ class reload_thread:public base_net_thread
 
         void destroy_idle_start();
 
+        void dump_real_quotation();
+
+        void dump_real_single();
+
+        void update_quotation_dict();
+
+        void update_single_dict();
+
     private:
         bool _is_first;
         int count;

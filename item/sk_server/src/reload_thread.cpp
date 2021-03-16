@@ -1,5 +1,11 @@
 #include "reload_thread.h"
 #include <malloc.h>
+#include "history_quotation_dict.h"
+#include "history_single_dict.h"
+#include "history_wquotation_dict.h"
+#include "history_wsingle_dict.h"
+#include "holiday_dict.h"
+#include "id_dict.h"
 
 reload_thread::reload_thread()
 {
@@ -17,7 +23,95 @@ void reload_thread::run_process()
 
 void reload_thread::handle_msg(std::shared_ptr<normal_msg> & p_msg)
 {
+    
+    proc_data* p_data = proc_data::instance();
+    if (!p_data || p_msg == nullptr)
+        return;
 
+#if 0
+    switch(p_msg->_msg_op)
+    {
+        case NORMAL_MSG_QUOTATION_IDLE_2_CURRENT:
+            {
+                //LOG_DEBUG("QUOTATION_IDLE_2_CURRENT");
+                //p_data->_hquoation_dict->update_search_index();
+                //p_data->_hwquoation_dict->update_search_index();
+            }
+            break;
+        case NORMAL_MSG_SINGLE_IDLE_2_CURRENT:
+            {
+                //LOG_DEBUG("SINGLE_IDLE_2_CURRENT");
+                //p_data->_hsingle_dict->update_search_index();
+                //p_data->_hwsingle_dict->update_search_index();
+            }
+            break;
+        case NORMAL_MSG_QUOTATION_DUMP:
+            {
+                //p_data->_hquoation_dict->dump();
+                //p_data->_hwquoation_dict->dump();
+            }
+            break;
+        case NORMAL_MSG_SINGLE_DUMP:
+            {
+                //p_data->_hsingle_dict->dump();
+                //p_data->_hwsingle_dict->dump();
+            }
+            break;
+        case NORMAL_MSG_QUOTATION_DICT_UPDATE:
+            {
+                //p_data->_hquoation_dict->update();
+            }
+            break;
+        case NORMAL_MSG_SINGLE_DICT_UPDATE:
+            {
+                //p_data->_hsingle_dict->update();
+            }
+            break;
+        case NORMAL_MSG_UPDATE_TRADE_DATE:
+            {
+                p_data->_hquoation_dict->update();
+                p_data->_hsingle_dict->update();
+
+                p_data->_hwquoation_dict->update();
+                p_data->_hwsingle_dict->update();
+            }
+            break;
+        case NORMAL_MSG_HOLIDAY_DICT_UPDATE:
+            {
+                //p_data->_holiday_dict->current()->update();
+            }
+            break;
+        //case NORMAL_MSG_RESPONSE_SINGLE:
+            //{    
+                //auto p=std::dynamic_pointer_cast<response_req_msg>(p_msg);
+                //if (p && p->_st)
+                //{    
+                    //LOG_DEBUG("NORMAL_MSG_RESPONSE_SINGLE:%s, size:%d", p->_id.c_str(),  p_data->_id_dict->current()->size());
+                    //p_data->_hsingle_dict->update_real_single(*p_data->get_trade_date(), p->_id, p->_st);
+                    //p_data->_hwsingle_dict->update_real_wsingle(*p_data->get_trade_date(), p->_id, p->_st);
+                //}    
+            //}    
+            //break;
+        //case NORMAL_MSG_RESPONSE_QUOTATION:
+            //{
+                //auto p=std::dynamic_pointer_cast<response_req_msg>(p_msg);
+                //if (p && p->_qt)
+                //{
+                    //if (p->_qt->start <= 1)
+                    //{
+                        //p_data->_block_set->idle()->insert(p->_id);
+                    //}
+                    //else
+                    //{
+                        //LOG_DEBUG("NORMAL_MSG_RESPONSE_QUOTATION:%s", p->_id.c_str(), p_data->_id_dict->current()->size());
+                        //p_data->_hquoation_dict->update_real_quotation(*p_data->get_trade_date(), p->_id, p->_qt);
+                        //p_data->_hwquoation_dict->update_real_wquotation(*p_data->get_trade_date(), p->_id, p->_qt);
+                    //}
+                //}
+            //}
+            //break;
+    }
+#endif
 }
 
 void reload_thread::handle_timeout(std::shared_ptr<timer_msg> & t_msg)

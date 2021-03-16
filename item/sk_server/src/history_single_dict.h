@@ -17,8 +17,7 @@ class history_single_dict:public reload_inf
         virtual bool need_reload();
         virtual int dump();
         virtual int destroy();
-
-        static void creat_key(const std::string & date, const std::string & id, std::string & key);
+        void update();
 
         void update_real_single(const std::string & trade_date, const std::string & id, std::shared_ptr<single_vec> single);
 
@@ -26,6 +25,8 @@ class history_single_dict:public reload_inf
     private:
         void update_hsingle_search();
         void update_rsingle_search();
+
+        void dump_real_single();
 
     private:
         void set_path (const char* path);

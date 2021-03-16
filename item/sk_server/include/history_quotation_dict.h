@@ -17,23 +17,30 @@ class history_quotation_dict:public reload_inf
         virtual bool need_reload();
         virtual int dump();
         virtual int destroy();
+        void update();
 
-        static void creat_key(const std::string & date, const std::string & id, std::string & key);
+        static void creat_key(const string & date, const string & id, string & key);
 
-        void update_real_quotation(const std::string & trade_date, const std::string & id, std::shared_ptr<quotation_original> & qt);
+        void update_real_quotation(const string & trade_date, const string & id, shared_ptr<quotation_original> & qt);
 
         void update_search_index();
 
-        static std::shared_ptr<quotation_t>  original_2_quotation(std::shared_ptr<quotation_original> & original);
+        static shared_ptr<quotation_t>  original_2_quotation(shared_ptr<quotation_original> & original);
 
     private:
-        void get_id_technical(std::shared_ptr<quotation_t> qt, std::deque< std::shared_ptr<quotation_t>> & sum_quotation, int p, std::shared_ptr<technical_t> tt);
+        void get_id_technical(shared_ptr<quotation_t> qt, deque< shared_ptr<quotation_t>> & sum_quotation, int p, shared_ptr<technical_t> tt);
 
         void update_hquotation_search();
 
         void update_rquotation_search();
 
         void update_hquotation_wave(hquotation_search_item * hqitem);
+
+        void dump_real_quotation();
+
+        void dump_common_technical();
+
+        void dump_hquotation_wave();
 
     private:
         void set_path (const char* path);
@@ -45,16 +52,16 @@ class history_quotation_dict:public reload_inf
         time_t _last_load;
     public:
         //<id, quotation_original>
-        std::unordered_map<std::string, std::shared_ptr<quotation_original>, str_hasher> _real_dict;
+        unordered_map<string, shared_ptr<quotation_original>, str_hasher> _real_dict;
 
         // <date_id, quotation> >
-        std::unordered_map<std::string, std::shared_ptr<quotation_t>, str_hasher> _date_dict;
+        unordered_map<string, shared_ptr<quotation_t>, str_hasher> _date_dict;
 
         //id, date,
-        std::unordered_map<std::string, std::set<std::string>, str_hasher> _id_date_dict;
+        unordered_map<string, set<string>, str_hasher> _id_date_dict;
 
     private:
-        std::string _last_date;
+        string _last_date;
 };
 
 
