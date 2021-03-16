@@ -304,4 +304,6 @@ int date_change(const std::string &in, int diff, std::string &out);
 //result like 202025, 一年中第多少周
 void get_yearweek(const std::string &in, std::string &out);
 
+void FILE_SYN_WRITE(const char * filename, const char *format, ...);
+
 #endif

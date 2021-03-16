@@ -775,3 +775,26 @@ std::string join2str(std::map<std::string, std::string> & ssmap, std::string & i
 
     return res;
 }
+
+void FILE_SYN_WRITE(const char * filename, const char *format, ...)
+{
+    FILE * fp = NULL;    
+    fp = fopen(filename, "a");
+    if (!fp){
+        return;
+    }   
+
+    va_list args1, args2;
+    va_start(args1, format);
+    va_copy(args2, args1);
+
+    auto _buf = std::make_shared<std::vector<char>>(vsnprintf(NULL, 0, format, args1) + 2); 
+    va_end(args1);
+
+    vsnprintf(_buf->data(), _buf->size(), format, args2);
+    va_end(args2);
+
+    fprintf(fp, "%s", _buf->data()); 
+
+    fclose(fp);
+}
