@@ -586,7 +586,7 @@ void history_wsingle_dict::dump_real_wsingle()
     {
         const string & id = ii->first;
         string key;
-        creat_key(_last_date, id, key);
+        creat_key(yw_tmp, id, key);
         auto kk = _date_dict.find(key);
         if (kk == _date_dict.end())
             continue;

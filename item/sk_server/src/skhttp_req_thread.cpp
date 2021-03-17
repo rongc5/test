@@ -39,10 +39,10 @@ skhttp_req_thread::skhttp_req_thread()
 
     proc_data* p_data = proc_data::instance();
 
-    is_backuped = true;
-
     _id_dic = p_data->_id_dict->current();
     _ua_dic = p_data->_ua_dict->current();
+
+    _is_first =  false;
 }
 
 void skhttp_req_thread::handle_msg(shared_ptr<normal_msg> & p_msg)
@@ -74,7 +74,6 @@ void skhttp_req_thread::handle_msg(shared_ptr<normal_msg> & p_msg)
                         add_destroy_idle_timer();
                     }
 
-                    //put_msg_2_realod(make_shared<normal_msg>(NORMAL_MSG_QUOTATION_IDLE_2_CURRENT));
                     LOG_DEBUG("QUOTATION_IDLE_2_CURRENT");
                     p_data->_hquoation_dict->update_search_index();
                     p_data->_hwquoation_dict->update_search_index();
@@ -97,7 +96,6 @@ void skhttp_req_thread::handle_msg(shared_ptr<normal_msg> & p_msg)
                 if (_single_destroy_num >= _id_dic->_id_vec.size())
                 {
                     _req_single_circle_times++;
-                    //put_msg_2_realod(make_shared<normal_msg>(NORMAL_MSG_SINGLE_IDLE_2_CURRENT));
                     LOG_DEBUG("SINGLE_IDLE_2_CURRENT");
                     p_data->_hsingle_dict->update_search_index();
                     p_data->_hwsingle_dict->update_search_index();
@@ -119,7 +117,6 @@ void skhttp_req_thread::handle_msg(shared_ptr<normal_msg> & p_msg)
                 if (_main_funds_destroy_num >= _id_dic->_id_vec.size())
                 {
                     _req_main_funds_circle_times++;
-                    //put_msg_2_realod(make_shared<normal_msg>(NORMAL_MSG_main_funds_IDLE_2_CURRENT));
                     LOG_DEBUG("main_funds_IDLE_2_CURRENT");
                     p_data->_hmain_funds_dict->update_search_index();
                     //p_data->_hwmain_funds_dict->update_search_index();
@@ -134,16 +131,12 @@ void skhttp_req_thread::handle_msg(shared_ptr<normal_msg> & p_msg)
                 LOG_DEBUG("update_trade date");
                 first_in_day();    
 
-                //put_msg_2_realod(p_msg);
                 p_data->_hquoation_dict->update();
                 p_data->_hsingle_dict->update();
 
                 p_data->_hwquoation_dict->update();
                 p_data->_hwsingle_dict->update();
 
-                //if (need_backup()) {    
-                    //backup();
-                //} 
             }
             break;
         case NORMAL_MSG_REG_FOR_DATE_INFO:
@@ -237,6 +230,12 @@ void skhttp_req_thread::reset_threadid_map_flag()
 
 void skhttp_req_thread::real_req_start()
 {
+    if (!_is_first)
+    {
+        _is_first = true;
+        reload_timer_start();
+    } 
+
     proc_data* p_data = proc_data::instance();
     if (!p_data || !p_data->_id_dict)
         return;
@@ -745,68 +744,6 @@ bool skhttp_req_thread::need_dump_real_quotation()
     return false;
 }
 
-bool skhttp_req_thread::need_backup()
-{
-    proc_data* p_data = proc_data::instance();
-    strategy_conf * strategy = p_data->_conf->_strategy->current();
-    holiday_dict * _holiday_dict = p_data->_holiday_dict->current();
-    char path_buf[SIZE_LEN_512]; 
-
-    path_buf[0] = '\0';
-    snprintf(path_buf, sizeof(path_buf), "%s", strategy->backuped_path.c_str());
-    int d = access(path_buf, F_OK);
-    if (!d)
-    {   
-        if (_holiday_dict->is_trade_date(_req_date.c_str()) && is_backuped){
-            time_t now = time(NULL);
-            if (now > backup_stime)
-            {
-                is_backuped = false;
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }else {
-            return false;
-        }
-    }   
-
-    return true;
-}
-
-void skhttp_req_thread::backup()
-{
-    //char t_buf[SIZE_LEN_512];
-    string cmd;
-    vector<string> strVec;
-
-    proc_data* p_data = proc_data::instance();
-    if (!p_data)
-        return ;
-
-    strategy_conf * strategy = p_data->_conf->_strategy->current();
-
-    //snprintf(t_buf, sizeof(t_buf), "%s.tmp", strategy->backuped_path.c_str());
-
-    if (strategy->backup_files_path.empty())
-        return;
-
-    SplitString(strategy->backup_files_path.c_str(), ',', &strVec, SPLIT_MODE_ALL | SPLIT_MODE_TRIM);
-    if (!strVec.size())
-        strVec.push_back(strategy->backup_files_path);
-
-    cmd.append("tar -czvf ");
-    cmd.append(strategy->backuped_path);
-    for (auto ii: strVec)
-    {
-        cmd.append(" ");
-        cmd.append(ii);
-    }
-
-    system(cmd.c_str());
-}
 
 bool skhttp_req_thread::need_update_wquotation_dict()
 {
@@ -1082,7 +1019,6 @@ void skhttp_req_thread::handle_timeout(shared_ptr<timer_msg> & t_msg)
 
                 if (need_dump_real_quotation())
                 {
-                    //put_msg_2_realod(make_shared<normal_msg>(NORMAL_MSG_QUOTATION_DUMP));
                     p_data->_hquoation_dict->dump();
                     p_data->_hwquoation_dict->dump();
 
@@ -1092,22 +1028,18 @@ void skhttp_req_thread::handle_timeout(shared_ptr<timer_msg> & t_msg)
 
                 if ((flag && now > dump_real_time ) || need_update_quotation_dict()) 
                 {
-                    //put_msg_2_realod(make_shared<normal_msg>(NORMAL_MSG_QUOTATION_DICT_UPDATE));
                     p_data->_hquoation_dict->update();
 
                     update_lrussr_search_index();
-
-                    add_destroy_idle_timer();
                 }
 
                 if ((flag && now > dump_real_time ) || need_update_wquotation_dict())
                 {
-                    put_msg_2_realod(make_shared<normal_msg>(NORMAL_MSG_WQUOTATION_DICT_UPDATE));
+                    p_data->_hwquoation_dict->update();
                 }
 
                 if (need_update_holiday_dict())
                 {
-                    //put_msg_2_realod(make_shared<normal_msg>(NORMAL_MSG_HOLIDAY_DICT_UPDATE));
                     p_data->_holiday_dict->current()->update();
                 }
 
@@ -1132,7 +1064,6 @@ void skhttp_req_thread::handle_timeout(shared_ptr<timer_msg> & t_msg)
 
                 if (need_dump_real_single())
                 {
-                    //put_msg_2_realod(make_shared<normal_msg>(NORMAL_MSG_SINGLE_DUMP));
                     p_data->_hsingle_dict->dump();
                     p_data->_hwsingle_dict->dump();
 
@@ -1141,14 +1072,12 @@ void skhttp_req_thread::handle_timeout(shared_ptr<timer_msg> & t_msg)
 
                 if ((flag && now > dump_real_time ) || need_update_single_dict()) 
                 {
-                    //put_msg_2_realod(make_shared<normal_msg>(NORMAL_MSG_SINGLE_DICT_UPDATE));
                     p_data->_hsingle_dict->update();
                 }
 
                 if ((flag && now > dump_real_time ) || need_update_wsingle_dict())
                 {
                     p_data->_hwsingle_dict->update();
-                    //put_msg_2_realod(make_shared<normal_msg>(NORMAL_MSG_WSINGLE_DICT_UPDATE)); 
                 }
             }
             break;
@@ -1165,7 +1094,6 @@ void skhttp_req_thread::handle_timeout(shared_ptr<timer_msg> & t_msg)
 
                 if (need_dump_real_main_funds())
                 {
-                    //put_msg_2_realod(make_shared<normal_msg>(NORMAL_MSG_main_funds_DUMP));
                     p_data->_hmain_funds_dict->dump();
                     //p_data->_hwmain_funds_dict->dump();
 
@@ -1174,14 +1102,12 @@ void skhttp_req_thread::handle_timeout(shared_ptr<timer_msg> & t_msg)
 
                 if ((flag && now > dump_real_time ) || need_update_main_funds_dict()) 
                 {
-                    //put_msg_2_realod(make_shared<normal_msg>(NORMAL_MSG_main_funds_DICT_UPDATE));
                     p_data->_hmain_funds_dict->update();
                 }
 
                 //if (flag || need_update_wmain_funds_dict())
                 //{
                  //   p_data->_hwmain_funds_dict->update();
-                    //put_msg_2_realod(make_shared<normal_msg>(NORMAL_MSG_Wmain_funds_DICT_UPDATE)); 
                 //}
             }
             break;
@@ -1219,27 +1145,25 @@ void skhttp_req_thread::handle_timeout(shared_ptr<timer_msg> & t_msg)
                 p_data->_wtdate_set->destroy_idle();
                 p_data->_block_set->destroy_idle();
                 p_data->_lrussr_index->destroy_idle();
+                p_data->destroy_idle();
+                p_data->_conf->destroy_idle();
+            }
+            break;
+        case TIMER_TYPE_RELOAD_CONF:
+            {
+                if (p_data->reload() || p_data->_conf->reload())
+                {
+                    add_destroy_idle_timer();
+                }
+
+                reload_timer_start();
+
+                malloc_trim(0);
             }
             break;
     }
 }
 
-void skhttp_req_thread::put_msg_2_realod(shared_ptr<normal_msg> p_msg)
-{
-    proc_data* p_data = proc_data::instance();
-    vector<base_net_thread *> * req_thread = p_data->get_thread("reload_thread"); 
-    if (!req_thread || !req_thread->size())
-        return;
-
-    int index = 0; 
-    index = index % req_thread->size();
-
-    ObjId id;  
-    id._id = OBJ_ID_THREAD;
-    id._thread_index = req_thread->at(index)->get_thread_index();
-
-    base_net_thread::put_obj_msg(id, p_msg);
-}
 
 void skhttp_req_thread::run_process()
 {
@@ -1361,3 +1285,18 @@ void skhttp_req_thread::update_lrussr_search_index()
     p_data->_lrussr_index->idle_2_current();
 }
 
+
+void skhttp_req_thread::reload_timer_start()
+{
+    proc_data* p_data = proc_data::instance();
+
+    if (p_data && p_data->_conf)
+    {
+        std::shared_ptr<timer_msg> t_msg(new timer_msg);
+
+        t_msg->_timer_type = TIMER_TYPE_RELOAD_CONF;
+        t_msg->_time_length = p_data->_conf->_strategy->current()->reload_millisecond;
+        t_msg->_obj_id = OBJ_ID_THREAD;
+        add_timer(t_msg);
+    }
+}

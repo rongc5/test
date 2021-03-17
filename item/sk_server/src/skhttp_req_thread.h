@@ -50,10 +50,14 @@ class skhttp_req_thread:public base_net_thread
 
         virtual void run_process();
 
+    public:
+
+        void reload_timer_start();
+
+        void destroy_idle_start();
+
     protected:
         time_t get_real_time(const char * date, const char * time);
-
-        void put_msg_2_realod(std::shared_ptr<normal_msg>  p_msg);
 
         bool need_dump_real_quotation();
         bool need_dump_real_single();
@@ -65,9 +69,6 @@ class skhttp_req_thread:public base_net_thread
 
         bool need_update_wquotation_dict();
         bool need_update_wsingle_dict();
-
-        bool need_backup();
-        void backup();
 
         void update_week_tdate_search_index();
 
@@ -128,6 +129,8 @@ class skhttp_req_thread:public base_net_thread
         ua_dict * _ua_dic;
 
         //std::unordered_map<uint32_t, int> _reg_date_threadid_map;
+    private:
+        bool _is_first;
 };
 
 

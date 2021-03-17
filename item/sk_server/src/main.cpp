@@ -1,7 +1,6 @@
 #include "base_def.h"
 #include "log_helper.h"
 #include "skhttp_req_thread.h"
-#include "reload_thread.h"
 #include "sk_conf.h"
 #include "proc_data.h"
 #include "listen_thread.h"
@@ -36,13 +35,12 @@ void do_init()
         proc_data::instance()->add_name_thread("worker_thread", net_thread);
     }
 
-    reload_thread * master_thread = new reload_thread();
+    //reload_thread * master_thread = new reload_thread();
     skhttp_req_thread * req_thread = new skhttp_req_thread();
 
-    proc_data::instance()->add_name_thread("reload_thread", master_thread);
+    //proc_data::instance()->add_name_thread("reload_thread", master_thread);
     proc_data::instance()->add_name_thread("req_thread", req_thread);
 
-    master_thread->start();
     req_thread->start();
 
     listen_thread *lthread = new listen_thread();

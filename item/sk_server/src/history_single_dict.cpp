@@ -565,9 +565,9 @@ void history_single_dict::dump_real_single()
         return ;
 
     strategy_conf * strategy = p_data->_conf->_strategy->current();
-    snprintf(t_buf, sizeof(t_buf), "%s/tmp.%s", strategy->real_wsingle_path.c_str(), p_data->get_trade_date()->c_str());
-    snprintf(path_buf, sizeof(t_buf), "%s/%s", strategy->real_wsingle_path.c_str(), p_data->get_trade_date()->c_str());
-    FILE_SYN_WRITE(t_buf, "%s\n", strategy->dump_wsingle_schema.c_str());
+    snprintf(t_buf, sizeof(t_buf), "%s/tmp.%s", strategy->real_single_path.c_str(), p_data->get_trade_date()->c_str());
+    snprintf(path_buf, sizeof(t_buf), "%s/%s", strategy->real_single_path.c_str(), p_data->get_trade_date()->c_str());
+    FILE_SYN_WRITE(t_buf, "%s\n", strategy->dump_single_schema.c_str());
     //vector<string> schemaVec;
     //SplitString(strategy->dump_single_schema.c_str(), ';', &schemaVec, SPLIT_MODE_ALL | SPLIT_MODE_TRIM);
 
