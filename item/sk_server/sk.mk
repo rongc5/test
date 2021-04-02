@@ -42,7 +42,6 @@ OBJ	= $(LOC_DIR)/main.o     \
 	  $(LOC_DIR)/history_wquotation_dict.o \
 	  $(LOC_DIR)/holiday_dict.o \
 	  $(LOC_DIR)/strategy_conf.o \
-	  $(LOC_DIR)/reload_thread.o \
 	  $(LOC_DIR)/skhttp_req_thread.o \
 	  $(LOC_DIR)/sk_util.o \
 	  $(LOC_DIR)/uhandler_select.o \
