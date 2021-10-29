@@ -12,6 +12,7 @@ class curl_req
         int init();
 
         void destroy();
+        void reset();
 
         int init_url(std::string url, std::map<std::string, std::string> & headers, int time_out=1000);
 

@@ -8,6 +8,26 @@
 #include "sk_def.h"
 #include "curl_req.h"
 
+//#include "stringbuffer.h"
+//#include "writer.h"
+//#include "document.h"
+//#include "memorystream.h"
+//#include "prettywriter.h"
+//#include "rapidjson.h"
+
+//#ifdef Uint
+//#undef Uint
+#include "document.h"
+#include "rapidjson.h"
+#include "prettywriter.h"
+#include "memorystream.h"
+#include "writer.h"
+#include "stringbuffer.h"
+//#define Uint(inp)   (unsigned int)(inp)
+//#endif
+
+using namespace rapidjson;
+
 class common_obj_container;
 class rmain_funds_data_process: public http_base_data_process
 {
@@ -36,7 +56,9 @@ class rmain_funds_data_process: public http_base_data_process
 
         static int load_from_curl(std::string id, common_obj_container * net_container, std::map<std::string, std::string> & headers, curl_req & cur);
 
-        static int parse_main_funds(std::string id, std::string rec_str);
+        static int parse_main_funds1(std::string id, std::string rec_str);
+
+        static int parse_main_funds2(std::string id, std::string rec_str);
 
         virtual void handle_timeout(std::shared_ptr<timer_msg> & t_msg);
 

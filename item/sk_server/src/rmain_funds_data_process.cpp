@@ -19,6 +19,7 @@
 #include "hquotation_search_index.h"
 
 
+
 rmain_funds_data_process::rmain_funds_data_process(http_base_process * _p_process):http_base_data_process(_p_process)
 {
     _is_ok = false;
@@ -50,7 +51,7 @@ void rmain_funds_data_process::header_recv_finish()
 }
 
 
-int rmain_funds_data_process::parse_main_funds(std::string id, std::string _recv_buf)
+int rmain_funds_data_process::parse_main_funds1(std::string id, std::string _recv_buf)
 {
     LOG_DEBUG("id:%s _recv_buf: %s", id.c_str(), _recv_buf.c_str());
     proc_data * p_data = proc_data::instance();
@@ -100,11 +101,75 @@ int rmain_funds_data_process::parse_main_funds(std::string id, std::string _recv
     return 0;
 }
 
+
+int rmain_funds_data_process::parse_main_funds2(std::string id, std::string _recv_buf)
+{
+    if (_recv_buf.empty()) {
+        LOG_WARNING("id:%s _recv_buf: %s", id.c_str(), _recv_buf.c_str());
+        return -1;
+    }
+    proc_data * p_data = proc_data::instance();
+
+    std::shared_ptr<main_funds_t> tmp_main_funds(new main_funds_t);
+
+    int ttmp;
+    std::vector<std::string> ssVec;
+    uint32_t i = 0;
+    bool flag = false;
+
+
+    Document document;
+    if (document.Parse(_recv_buf.c_str()).HasParseError()) {
+        LOG_WARNING("id:%s parse _recv_buf: %s size:%d, failed", id.c_str(), _recv_buf.c_str(), _recv_buf.size());
+        return -1;
+    }
+
+    if (!document.HasMember("code") || !document["code"].IsInt() || document["code"].GetInt()) {
+        LOG_WARNING("id:%s parse _recv_buf: %s size:%d, failed", id.c_str(), _recv_buf.c_str(), _recv_buf.size());
+        return -1;
+    }  
+
+    if (!document.HasMember("data") || !document["data"].IsObject()) {
+        LOG_WARNING("id:%s parse _recv_buf: %s size:%d, failed", id.c_str(), _recv_buf.c_str(), _recv_buf.size());
+        return -1;
+    }
+
+    const Value& data = document["data"];
+    
+    if (!data.HasMember("todayFundFlow") || !data["todayFundFlow"].IsObject()) {
+        LOG_WARNING("id:%s parse _recv_buf: %s size:%d, failed", id.c_str(), _recv_buf.c_str(), _recv_buf.size());
+        return -1;
+    }
+
+    const Value& fundFlow = data["todayFundFlow"];
+
+    if (!fundFlow.HasMember("mainNetIn") || !fundFlow["mainNetIn"].IsString()) {
+        LOG_WARNING("id:%s parse _recv_buf: %s size:%d, failed", id.c_str(), _recv_buf.c_str(), _recv_buf.size());
+        return -1;
+    }
+
+
+    tmp_main_funds->force_diff = atoi(fundFlow["mainNetIn"].GetString())/10000;
+    flag = true;
+
+    _recv_buf.clear();
+
+
+    if (flag)
+    {
+        gen_response_req_msg(id, tmp_main_funds);
+    }
+
+    return 0;
+}
+
+
+
 void rmain_funds_data_process::msg_recv_finish()
 {
-    LOG_DEBUG("recv_buf: %s", _recv_buf.c_str());
+    LOG_DEBUG("_id: %s recv_buf: %s", _id.c_str(), _recv_buf.c_str());
     //FILE_WRITE("123", _recv_buf.c_str());
-    parse_main_funds(_id, _recv_buf);
+    parse_main_funds2(_id, _recv_buf);
     _recv_buf.clear();
 
 over:
@@ -167,7 +232,7 @@ int rmain_funds_data_process::load_from_curl(std::string id, common_obj_containe
 
     cur.init_url(url, headers, p_data->_conf->_strategy->current()->req_http_timeout);   
     cur.get_data(rec_str);
-    parse_main_funds(id, rec_str);
+    parse_main_funds2(id, rec_str);
 
     //cmd.append("curl ");
 

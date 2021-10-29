@@ -63,6 +63,7 @@ struct main_funds_t
         small_diff = 0;
         force_dratio = 0;
         small_dratio = 0;
+        all = 0;
     }
 };
 
