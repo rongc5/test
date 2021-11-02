@@ -104,8 +104,8 @@ int curl_req::init_url(std::string url, std::map<std::string, std::string> & hea
     int count = 0;
     while (!curl_handle_ && count < 3)
     {
-        //destroy();
-        reset();
+        destroy();
+        //reset();
         if (init() < 0) { 
             count++;
          }
@@ -190,7 +190,7 @@ int curl_req::get_data(std::string & res)
     if (code != CURLE_OK || ret_code != 200) { 
         LOG_WARNING("curl_easy_getinfo() Failed! code [%d], error [%s], ret code [%ld]", code, curl_err_msg_, ret_code);
     }
-    //destroy();
+    destroy();
 
     res.append(res_data_buffer_.buf, res_data_buffer_.len);
     reset();
