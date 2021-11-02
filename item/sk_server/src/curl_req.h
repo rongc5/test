@@ -14,7 +14,7 @@ class curl_req
         void destroy();
         void reset();
 
-        int init_url(std::string url, std::map<std::string, std::string> & headers, int time_out=1000);
+        int init_url(std::string url, std::map<std::string, std::string> & headers, int time_out=1000, std::string cafile="");
 
         int get_data(std::string & res);
 

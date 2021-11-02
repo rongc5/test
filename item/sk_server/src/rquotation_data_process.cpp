@@ -79,7 +79,7 @@ int rquotation_data_process::load_from_curl(std::shared_ptr<std::set<std::string
         }
     }
 
-    cur.init_url(url, headers, p_data->_conf->_strategy->current()->req_http_timeout);
+    cur.init_url(url, headers, p_data->_conf->_strategy->current()->req_http_timeout, p_data->_conf->_strategy->current()->cafile);
     cur.get_data(rec_str);
 
     SplitString(rec_str.c_str(), ";", &strVec, SPLIT_MODE_ALL);

@@ -41,7 +41,7 @@ int id_dict::load()
             continue;
 
         std::vector<std::string> tmp_vec;
-        SplitString(ptr, '\t', &tmp_vec, SPLIT_MODE_ALL);
+        SplitString(ptr, ';', &tmp_vec, SPLIT_MODE_ALL);
         if (tmp_vec.size() >= 2)
         {
             _id_vec.push_back(tmp_vec[0]);

@@ -127,6 +127,11 @@ void strategy_conf::do_parse()
         dump_real_time = _cfg["dump_real_time"];
     }
 
+    if (has_key<string, string>(_cfg, "cafile"))
+    {
+        cafile = _cfg["cafile"];
+    }
+
     if (has_key<string, string>(_cfg, "req_http_timeout"))
     {
         req_http_timeout = atoi(_cfg["req_http_timeout"].c_str());
@@ -979,6 +984,11 @@ int strategy_conf::destroy()
     {
         string tmp;
         tmp.swap(dump_real_time);
+    }
+
+    {
+        string tmp;
+        tmp.swap(cafile);
     }
 
     {

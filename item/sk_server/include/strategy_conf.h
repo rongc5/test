@@ -123,6 +123,7 @@ class strategy_conf:public reload_inf
         string real_afternoon_etime;
 
         string dump_real_time;
+        string cafile;
 
         uint32_t req_quotation_millisecond;
         uint32_t req_single_millisecond;

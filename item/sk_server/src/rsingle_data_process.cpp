@@ -236,7 +236,7 @@ int rsingle_data_process::load_from_curl(std::string id, common_obj_container * 
 
     url.append(id);
 
-    cur.init_url(url, headers, p_data->_conf->_strategy->current()->req_http_timeout);   
+    cur.init_url(url, headers, p_data->_conf->_strategy->current()->req_http_timeout, p_data->_conf->_strategy->current()->cafile);   
     cur.get_data(rec_str);
     parse_single(id, rec_str);
 
