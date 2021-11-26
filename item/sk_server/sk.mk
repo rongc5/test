@@ -13,6 +13,7 @@ LIB = -L$(LIB_DIR)/ -lmyframe -lrt -lsign -lpthread \
 	  /usr/lib64/libcrypto.a \
 	  /usr/lib64/libssl.a \
 	  -lcurl \
+	  #/usr/local/lib/libcurl.a \
 
 
 CPPFLAGS = -gdwarf-2 -msse3 -W $(INCLUDE) -DDEBUG=1 -O0 -std=c++11

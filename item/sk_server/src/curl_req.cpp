@@ -9,27 +9,29 @@ curl_req::curl_req()
 int curl_req::init()
 {
     //curl_handle_ = curl_easy_init();
-    if (!curl_handle_) {
-        curl_handle_ = curl_easy_init();
-    }
+    //if (!curl_handle_) {
+    curl_handle_ = curl_easy_init();
+    //}
 
     if (!curl_handle_) {
         LOG_WARNING("curl_easy_init Failed!");
         return -1;
     }
 
+    //LOG_WARNING("curl_easy_init ok");
+
     CURLcode code = CURL_LAST;
 
     code = curl_easy_setopt(curl_handle_, CURLOPT_NOSIGNAL, 1L);
     if (CURLE_OK != code) {
         LOG_WARNING("set CURLOPT_NOSIGNAL Failed! code [%d], error [%s]", code, curl_err_msg_);
-        return -2;
+        //return -2;
     }
 
     code = curl_easy_setopt(curl_handle_, CURLOPT_ERRORBUFFER, curl_err_msg_);
     if (CURLE_OK != code) {
         LOG_WARNING("set CURLOPT_ERRORBUFFER Failed! code [%d], error [%s]", code, curl_err_msg_);
-        return -3;
+        //return -3;
     }
 
     curl_easy_setopt(curl_handle_, CURLOPT_VERBOSE, 0L);
@@ -39,7 +41,7 @@ int curl_req::init()
     code = curl_easy_setopt(curl_handle_, CURLOPT_HTTPGET, 0L);
     if (CURLE_OK != code) {
         LOG_WARNING("set CURLOPT_HTTPGET Failed! code [%d], error [%s]", code, curl_err_msg_);
-        return -4;
+        //return -4;
     }
 
     //    code = curl_easy_setopt(curl_handle_, CURLOPT_PORT, (long)online_conf_->port_);
@@ -47,25 +49,25 @@ int curl_req::init()
     code = curl_easy_setopt(curl_handle_, CURLOPT_TIMEOUT_MS, 1000);
     if (CURLE_OK != code) {
         LOG_WARNING("set CURLOPT_TIMEOUT Failed! code [%d], error [%s]", code, curl_err_msg_);
-        return -5;
+        //return -5;
     }
 
     code = curl_easy_setopt(curl_handle_, CURLOPT_CONNECTTIMEOUT_MS, 800);
     if (CURLE_OK != code) {
         LOG_WARNING("set CURLOPT_CONNECTTIMEOUT Failed! code [%d], error [%s]", code, curl_err_msg_);
-        return -6;
+        //return -6;
     }
 
     code = curl_easy_setopt(curl_handle_, CURLOPT_WRITEFUNCTION, write_callback);
     if (CURLE_OK != code) {
         LOG_WARNING("set CURLOPT_WRITEFUNCTION Failed! code [%d], error [%s]", code, curl_err_msg_);
-        return -7;
+        //return -7;
     }
 
     code = curl_easy_setopt(curl_handle_, CURLOPT_WRITEDATA, (char*)&(this->res_data_buffer_));
     if (CURLE_OK != code) {
         LOG_WARNING("set CURLOPT_WRITEDATA Failed! code [%d], error [%s]", code, curl_err_msg_);
-        return -8;
+        //return -8;
     }
 
 
@@ -76,12 +78,14 @@ void curl_req::destroy()
 {
     if (_header) {
         curl_slist_free_all(_header);
+        //LOG_WARNING("curl_slist_free_all ok");
         _header = NULL;
     }
 
     if (curl_handle_) {
         curl_easy_cleanup(curl_handle_);
         curl_handle_ = NULL;
+        //LOG_WARNING("curl_easy_cleanup ok");
     }
 
     return ;
@@ -106,9 +110,10 @@ int curl_req::init_url(std::string url, std::map<std::string, std::string> & hea
     {
         destroy();
         //reset();
-        if (init() < 0) { 
-            count++;
-         }
+        init();
+        //if (init() < 0) { 
+        count++;
+        //}
     }
 
     if (!curl_handle_)
@@ -130,6 +135,7 @@ int curl_req::init_url(std::string url, std::map<std::string, std::string> & hea
     }
 
     curl_easy_setopt(curl_handle_, CURLOPT_HTTPHEADER, _header);
+    //LOG_WARNING("curl_slist_append ok");
 
     if (time_out)
     {
@@ -165,13 +171,15 @@ int curl_req::init_url(std::string url, std::map<std::string, std::string> & hea
 
 int curl_req::get_data(std::string & res)
 {
+    long ret_code = 0;
+    CURLcode code = CURL_LAST;
     if (!curl_handle_)
     {
         LOG_WARNING("curl_handle_ is NULL");
+        goto over;
         return -1;
     }
 
-    CURLcode code = CURL_LAST;
 
     this->res_data_buffer_.len = 0;
     memset(this->res_data_buffer_.buf, 0, sizeof(this->res_data_buffer_.buf));
@@ -183,17 +191,20 @@ int curl_req::get_data(std::string & res)
     //_header = NULL;
     //}
     if (code != CURLE_OK) { 
-        LOG_WARNING("curl_easy_perform() Failed! code [%d], error [%s]", code, curl_err_msg_);
+        LOG_WARNING("curl_easy_perform() Failed! code [%d], error [%s]", code, curl_easy_strerror(code));
+        goto over;
     }
-    long ret_code = 0;
     code = curl_easy_getinfo(curl_handle_, CURLINFO_RESPONSE_CODE , &ret_code);
     if (code != CURLE_OK || ret_code != 200) { 
-        LOG_WARNING("curl_easy_getinfo() Failed! code [%d], error [%s], ret code [%ld]", code, curl_err_msg_, ret_code);
+        LOG_WARNING("curl_easy_getinfo() Failed! code [%d], error [%s], ret code [%ld]", code, curl_easy_strerror(code), ret_code);
+        goto over;
     }
-    destroy();
 
     res.append(res_data_buffer_.buf, res_data_buffer_.len);
-    reset();
+    //reset();
+
+over:
+    destroy();
 
     return 0;
 }

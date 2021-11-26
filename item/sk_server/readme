@@ -1,0 +1,57 @@
+1、外部导入code_all 
+文件为gbk格式
+加前缀sh, sz
+tail code_all 查看文件是否有乱码
+
+放入/home/mingz/stock/data
+
+服务没响应可能是curl 解析dns超时, 也可能是服务端做了改变
+cat /etc/resolv.conf #查看缓存
+systemctl status nscd          # dns 缓存查看状态
+systemctl start nscd            # 启动 nscd
+nscd -i hosts #清缓存
+
+
+-------------------------------------------------
+Centos7yum安装的libcurl访问https会造成内存泄漏。
+
+下载>=curl-7.70.0
+./configure --with-ssl
+make
+make install
+ldconfig
+
+cp /usr/local/lib/libcurl.so.4* /usr/lib64/
+ln -s /usr/lib64/libcurl.so.4.6.0 /usr/lib64/libcurl.so.4
+curl -V 查看版本
+------------------------------------------------
+
+locate libcurl.so.4 查找库文件路径
+updatedb 更新库文件数据库
+
+
+----------------------------------
+源码编译curl 需先编译openssl
+
+查看openssl 版本
+openssl version
+
+
+./config enable-ssl2 enable-ssl3 --prefix=/opt/openssl 1.1
+ ./configure --with-ssl --with-openssl=/opt/openssl 7.8
+
+ echo "/opt/openssl/lib/" >> /etc/ld.so.conf
+
+ 修复curl 变更引起的pycurl 不可用
+
+ 参考
+
+import pycurl
+
+ mv /usr/lib64/python2.7/site-packages/pycurl.so /usr/lib64/python2.7/site-packages/pycurl.so_back
+ rpm -ihv http://mirror.centos.org/centos/6/os/x86_64/Packages/python-devel-2.6.6-66.el6_8.x86_64.rpm
+ wget https://dl.bintray.com/pycurl/pycurl/pycurl-7.43.0.2.tar.gz
+ tar xzf pycurl-7.43.0.2.tar.gz 
+ cd pycurl-7.43.0.2
+ python setup.py build --curl-config=/usr/local/bin/curl-config
+ cp -p build/lib.linux-x86_64-2.6/pycurl.so /usr/lib64/python2.7/site-packages/pycurl.so
