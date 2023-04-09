@@ -10,8 +10,6 @@ sk_conf::sk_conf(const char * sk_conf)
 
     //ip_deny_num = 100;
 
-    log_type = LOGDEBUG;
-
     _filename.append(sk_conf); 
     
     _strategy = NULL;
@@ -32,26 +30,11 @@ sk_conf::sk_conf(const char * sk_conf)
     cfg.get_vale("server", "worker_thread_num", tmp);
     worker_thread_num = atoi(tmp.c_str());
 
+    cfg.get_vale("server", "log_path", log_path);
 
     //cfg.get_vale("server", "ip_deny_path", ip_deny_path);
 
     cfg.get_vale("server", "dump_dir", dump_dir);
-
-    cfg.get_vale("server", "log_type", tmp);
-    int ret = atoi(tmp.c_str());
-
-    if (ret > LOGDEBUG)
-    {
-        log_type = LOGDEBUG;
-    }
-    else if (ret <= LOGFATAL)
-    {
-        log_type = LOGFATAL;
-    }
-    else 
-    {
-        log_type = (LogType) ret;
-    }
 
     {
         strategy_conf *ua_dict1 = new (std::nothrow)strategy_conf();

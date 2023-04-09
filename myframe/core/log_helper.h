@@ -5,7 +5,8 @@
 #include "base_def.h"
 #include "base_singleton.h"
 
-#define LOG_INIT(log_conf) \
+
+#define LOG_INIT_OLD(log_conf) \
     do { \
         log_thread * thread = base_singleton<log_thread>::get_instance(); \
         if (thread) { \
@@ -17,12 +18,10 @@
         sleep(3); \
     }  while (0)
 
-#define LOG_SET_TYPE(type) \
+#define LOG_INIT(log_path) \
     do { \
-        log_thread * thread = base_singleton<log_thread>::get_instance(); \
-        if (thread) { \
-            thread->set_type(LogType(type));\
-        } \
+        log_thread::init(log_path); \
+        sleep(3); \
     }  while (0)
 
 #define LOG_WARNING(fmt, arg...) \
@@ -55,8 +54,7 @@
     } while (0)
 
 #define LOG_WRITE(t, fmt...) log_thread::log_write(t, ##fmt)
-
-
 #define FILE_WRITE(f, fmt...) log_thread::log_write(f, ##fmt)
+
 
 #endif

@@ -13,6 +13,8 @@ class sk_conf: public reload_inf
         std::string strategy_path;
         std::string strategy_file;
 
+        std::string log_path;
+
         std::string http_server_host;
 
         uint32_t http_server_port;
@@ -23,8 +25,6 @@ class sk_conf: public reload_inf
         //std::string ip_deny_path;
 
         std::string dump_dir;
-
-        LogType log_type;
 
         reload_mgr<strategy_conf> * _strategy;
 

@@ -13,6 +13,7 @@ import random
 import subprocess
 import ast
 import json
+import StringIO
 
 from time import strftime, localtime
 from datetime import timedelta, date
@@ -121,7 +122,7 @@ class CurlHTTPFetcher(object):
             # Presence of a body indicates that we should do a POST
             if body is not None:
                 c.setopt(pycurl.POST, 1)
-                c.setopt(pycurl.POSTFIELDS, body)
+                c.setopt(pycurl.POSTFIELDS, urllib.urlencode(body))
 
             while off > 0:
                 if not url.startswith('http://') and not url.startswith('https://'):
@@ -276,29 +277,96 @@ def do_query_id(parser):
         print print_res(res_str, parser)
 
 
-def do_select():
+# http://www.iwencai.com/unifiedwap/unified-wap/v2/result/get-robot-data
+# post
+#http://www.iwencai.com/gateway/urp/v7/landing/getDataList
 
-    #url='http://apitest.99shiji.com/api/v2/ad/ads?p=E02CD479E16061C96F604F15485BB63FFFAEC6DE050DFC1D3BEE816813C16F1E8B0E11A356C99161067922E41FCA85B4569D74DA40B9D0595B5AC833D3120A8E14898D8EAF8BAEC745ED177B7EAEC8B6ADD6777508DB8325AA280CEE0A8C7C4A8769137F40A85F7E06C978FF79CAB2BFDDECAE4D246216E7E6084CEE974D8DB507F782B8E3C3A691EA87BB7CB40DC048A860717B8A468D5204B0630643D888A67042DF83FB9FBE90AB9ACB031401DCE63A845B664DF362360A92416397C58F2992EFCCBD8E18BFAF495766853E8DFCFF5B4DE12C19C6E125D47D86301B437A01'
-    url = 'http://readfree.zhulang.com/v1/free/page?channel_id=2&tab_key=mfzq&offset=40&limit=10&version=1'
+def POST():
+    url = 'http://www.iwencai.com/unifiedwap/unified-wap/v2/result/get-robot-data'
 
     header = {}
     index = random.randint(0, len(user_agent_list) -1)
     #header['User-Agent'] = user_agent_list[index]
-    header['User-Agent'] = 'Mozilla/5.0 (Linux; Android 7.0] mid[43e1f7430b43c543'
-    header["appid"] = "APP17101967332747";
-    header["version"] = "2.0";
+    header['User-Agent'] = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36'
+    header["Referer"] = "http://www.iwencai.com/unifiedmobile/?q=%E4%BA%BA%E6%B0%94%E6%8E%92%E5%90%8D";
+    header["Origin"] = "http://www.iwencai.com";
+    header['Host'] = 'www.iwencai.com'
+    header['Cookie'] = 'chat_bot_session_id=b4bb9a3e04caf390556039de461d23bd; other_uid=Ths_iwencai_Xuangu_wqmd2x6n9qa2wxanptvasnri7x656m69; ta_random_userid=zd909m2ebs; cid=b5c74e62f7c2895b6e31ba69d049fb101669001849; THSSESSID=2b5db7769f0df582059c5d2cbc; v=Ax3j3JYwIseH9sbrAl0b7ROPKvISOlGMW261YN_iWXSjljMsp4phXOu-xTVs'
+    header['DNT'] = '1'
+    header['hexin-v']= 'Ax3j3JYwIseH9sbrAl0b7ROPKvISOlGMW261YN_iWXSjljMsp4phXOu-xTVs'
+    bodys='question=2022%E5%B9%B411%E6%9C%8813%E6%97%A5%E4%BA%BA%E6%B0%94%E6%8E%92%E5%90%8D&source=ths_mobile_iwencai&user_id=0&user_name=0&version=2.0&secondary_intent=&add_info=%7B%22urp%22%3A%7B%22scene%22%3A3%2C%22company%22%3A1%2C%22business%22%3A1%7D%2C%22contentType%22%3A%22json%22%7D&log_info=%7B%22input_type%22%3A%22click%22%7D&rsh=Ths_iwencai_Xuangu_wqmd2x6n9qa2wxanptvasnri7x656m69'
 
+    header_list = []
+    for header_name, header_value in header.iteritems():
+        header_list.append('%s: %s' % (header_name, header_value))
+
+
+    crl = pycurl.Curl()
+    crl.setopt(pycurl.VERBOSE,1)
+    crl.setopt(pycurl.FOLLOWLOCATION, 1)
+    crl.setopt(pycurl.MAXREDIRS, 5)
+#crl.setopt(pycurl.AUTOREFERER,1)
+    crl.setopt(pycurl.CONNECTTIMEOUT, 60)
+    crl.setopt(pycurl.TIMEOUT, 300)
+
+    if header_list:
+        crl.setopt(pycurl.HTTPHEADER, header_list)
+
+#crl.setopt(pycurl.PROXY,proxy)
+    crl.setopt(pycurl.HTTPPROXYTUNNEL,1)
+#crl.setopt(pycurl.NOSIGNAL, 1)
+    crl.fp = StringIO.StringIO()
+# Option -d/--data <data>  HTTP POST data
+    crl.setopt(crl.POSTFIELDS, bodys)
+    crl.setopt(pycurl.URL, url)
+    crl.setopt(crl.WRITEFUNCTION, crl.fp.write)
+    crl.perform()
+    print crl.fp.getvalue()
+
+def do_select():
+
+    #url='http://apitest.99shiji.com/api/v2/ad/ads?p=E02CD479E16061C96F604F15485BB63FFFAEC6DE050DFC1D3BEE816813C16F1E8B0E11A356C99161067922E41FCA85B4569D74DA40B9D0595B5AC833D3120A8E14898D8EAF8BAEC745ED177B7EAEC8B6ADD6777508DB8325AA280CEE0A8C7C4A8769137F40A85F7E06C978FF79CAB2BFDDECAE4D246216E7E6084CEE974D8DB507F782B8E3C3A691EA87BB7CB40DC048A860717B8A468D5204B0630643D888A67042DF83FB9FBE90AB9ACB031401DCE63A845B664DF362360A92416397C58F2992EFCCBD8E18BFAF495766853E8DFCFF5B4DE12C19C6E125D47D86301B437A01'
+    #url = 'http://readfree.zhulang.com/v1/free/page?channel_id=2&tab_key=mfzq&offset=40&limit=10&version=1'
+    url = 'http://www.iwencai.com/unifiedwap/unified-wap/v2/result/get-robot-data'
+
+    header = {}
+    index = random.randint(0, len(user_agent_list) -1)
+    #header['User-Agent'] = user_agent_list[index]
+    header['User-Agent'] = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36'
+    header["Referer"] = "http://www.iwencai.com/unifiedmobile/?q=%E4%BA%BA%E6%B0%94%E6%8E%92%E5%90%8D";
+    header["Origin"] = "http://www.iwencai.com";
+    header['Host'] = 'www.iwencai.com'
+    header['Cookie'] = 'chat_bot_session_id=b4bb9a3e04caf390556039de461d23bd; other_uid=Ths_iwencai_Xuangu_wqmd2x6n9qa2wxanptvasnri7x656m69; ta_random_userid=zd909m2ebs; cid=b5c74e62f7c2895b6e31ba69d049fb101669001849; THSSESSID=2b5db7769f0df582059c5d2cbc; v=A6pU9W1RvR-_JzFzl65UpLge_RtJGy_hIJqiBjRzVomIe0TFHKt-hfAv8jcH'
+    header['DNT'] = '1'
+    header['hexin-v']= 'A6pU9W1RvR-_JzFzl65UpLge_RtJGy_hIJqiBjRzVomIe0TFHKt-hfAv8jcH'
+
+#question: 2022年11月13日人气排名
+#source: ths_mobile_iwencai
+#user_id: 0
+#user_name: 0
+#version: 2.0
+#secondary_intent:
+    #add_info: {"urp":{"scene":3,"company":1,"business":1},"contentType":"json"}
+    #log_info: {"input_type":"typewrite"}
+    #rsh: Ths_iwencai_Xuangu_wqmd2x6n9qa2wxanptvasnri7x656m69
+    bodys = ''
+    bodys='question=2022%E5%B9%B411%E6%9C%8813%E6%97%A5%E4%BA%BA%E6%B0%94%E6%8E%92%E5%90%8D&source=ths_mobile_iwencai&user_id=0&user_name=0&version=2.0&secondary_intent=&add_info=%7B%22urp%22%3A%7B%22scene%22%3A3%2C%22company%22%3A1%2C%22business%22%3A1%7D%2C%22contentType%22%3A%22json%22%7D&log_info=%7B%22input_type%22%3A%22typewrite%22%7D&rsh=Ths_iwencai_Xuangu_wqmd2x6n9qa2wxanptvasnri7x656m69'
+
+    print bodys
+    res = {}
     try:
         curl =  CurlHTTPFetcher()
-        curl.ALLOWED_TIME = 5
-        res = curl.fetch(url, None, header)
+        #curl.ALLOWED_TIME = 15
+        res = curl.fetch(url, bodys, header)
     except BaseException, e:
         print e.message
 
-    res_str = res['body'].strip()
-    if res_str:
-        print res_str
+    print res
+    #res_str = res['body'].strip()
+    #if res_str:
+        #print res_str
 
 
 if __name__ == '__main__':
-    do_select()
+    #do_select()
+    POST()

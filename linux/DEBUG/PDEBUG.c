@@ -7,7 +7,7 @@
 //#define PDEBUG(format, arg...) printf("haier:   line:%d, func:%s, file:%s "format, __LINE__, __func__, __FILE__, ##arg)
 /*#define PDEBUG(format, arg...) printf("[__FILE__ __func__  __LINE__]"format, ##arg)*/
 //#undef PDEBUG
-//#define PDEBUG
+#define DEBUG 1
 
 
 #if DEBUG

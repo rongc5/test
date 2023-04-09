@@ -30,7 +30,7 @@ class CMyCommonException : public std::exception
 do { \
     std::stringstream ss; \
     ss << errorstr; \
-    LOG_WARNING("THROW_COMMON_EXCEPT:%s", ss.str());\
+    LOG_WARNING("THROW_COMMON_EXCEPT:%s", ss.str().c_str());\
     throw CMyCommonException(ss.str());\
 } while (0)
 

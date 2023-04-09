@@ -31,6 +31,7 @@ OBJ	= ${SRC_DIR}/common_obj_container.o                \
     ${SRC_DIR}/mybase64.o                        \
     ${SRC_DIR}/common_domain.o                        \
     ${SRC_DIR}/common_cfgparser.o                        \
+    ${SRC_DIR}/log_base.o                        \
 
 OBJ_INCLUDE=
 

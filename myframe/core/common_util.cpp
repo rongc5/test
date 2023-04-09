@@ -62,6 +62,7 @@ void get_proc_name(char buf[], size_t buf_len) {
         return;
     }
 
+    buf[0] = '\0';
     pid_t pid = getpid();
     char exec_file[SIZE_LEN_1024];
     char proc_name[SIZE_LEN_1024];
@@ -69,7 +70,6 @@ void get_proc_name(char buf[], size_t buf_len) {
     int ret = readlink(exec_file, proc_name, sizeof(proc_name));
     if (-1 == ret)
     {
-        buf[0] = 0;
         return;
     }
     proc_name[ret] = 0;
@@ -77,7 +77,6 @@ void get_proc_name(char buf[], size_t buf_len) {
     char *p = strrchr(proc_name, '/');
     if (NULL == p)
     {
-        buf[0] = 0;
         return;
     }
     snprintf(buf, buf_len, "%s", p + 1);

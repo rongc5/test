@@ -2,8 +2,6 @@
 #define __BASE_RELOAD_H_
 
 #include "base_def.h"
-#include "log_helper.h"
-
 
 /**
  * @brief 需要提供Load和Reload功能的类型，需要继承此接口。
@@ -24,11 +22,11 @@ class reload_inf
  *@brief 重载管理，判断是否需要重载
  */
 template<typename T>
-class reload_mgr 
+class reload_mgr: public reload_inf
 {
     public:
         reload_mgr(T * T1, T *T2);
-        ~reload_mgr();
+        virtual ~reload_mgr();
 
         /**
          *@brief 加载配置
@@ -47,7 +45,7 @@ class reload_mgr
 
         bool need_reload();
 
-        void dump();
+        int dump();
 
         int destroy();
 
@@ -118,7 +116,7 @@ int reload_mgr<T>::reload()
         return 0;
     } else 
     {
-        LOG_WARNING("reload data failed,%d", _curr);
+        PDEBUG("reload data failed,%d", _curr);
         return -1;
     }
 
@@ -137,10 +135,10 @@ T* reload_mgr<T>::current() {
 }
 
 template<typename T>
-void reload_mgr<T>::dump()
+int reload_mgr<T>::dump()
 {
     reload_inf* obj = current();
-    obj->dump();
+    return obj->dump();
 }
 
 template<typename T>

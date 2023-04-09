@@ -63,7 +63,7 @@ const ObjId & common_obj_container::gen_id_str()
 
 bool common_obj_container::push_real_net(std::shared_ptr<base_net_obj> & p_obj)
 {
-    LOG_DEBUG("base_net_obj:%d, .use_count:%d, _id:%d _thread_index:%d", p_obj, p_obj.use_count(), p_obj->get_id()._id, p_obj->get_id()._thread_index);
+    LOG_DEBUG("base_net_obj:%d, .use_count:%d, _id:%d _thread_index:%d", p_obj.get(), p_obj.use_count(), p_obj->get_id()._id, p_obj->get_id()._thread_index);
 
     auto it = _obj_net_map.find(p_obj->get_id()._id);
     if (it == _obj_net_map.end())
@@ -72,16 +72,16 @@ bool common_obj_container::push_real_net(std::shared_ptr<base_net_obj> & p_obj)
     }
     //_obj_net_map[p_obj->get_id()._id] = p_obj;
 
-    LOG_DEBUG("base_net_obj:%d, .use_count:%d, _id:%d _thread_index:%d", p_obj, p_obj.use_count(), p_obj->get_id()._id, p_obj->get_id()._thread_index);
+    LOG_DEBUG("base_net_obj:%d, .use_count:%d, _id:%d _thread_index:%d", p_obj.get(), p_obj.use_count(), p_obj->get_id()._id, p_obj->get_id()._thread_index);
 
     return true;
 }
 
 bool common_obj_container::remove_real_net(std::shared_ptr<base_net_obj> & p_obj)
 {
-    LOG_DEBUG("base_net_obj:%d, .use_count:%d, _id:%d _thread_index:%d", p_obj, p_obj.use_count(), p_obj->get_id()._id, p_obj->get_id()._thread_index);
+    LOG_DEBUG("base_net_obj:%d, .use_count:%d, _id:%d _thread_index:%d", p_obj.get(), p_obj.use_count(), p_obj->get_id()._id, p_obj->get_id()._thread_index);
     _obj_net_map.erase(p_obj->get_id()._id);
-    LOG_DEBUG("base_net_obj:%d, .use_count:%d, _id:%d _thread_index:%d", p_obj, p_obj.use_count(), p_obj->get_id()._id, p_obj->get_id()._thread_index);
+    LOG_DEBUG("base_net_obj:%d, .use_count:%d, _id:%d _thread_index:%d", p_obj.get(), p_obj.use_count(), p_obj->get_id()._id, p_obj->get_id()._thread_index);
 
     return true;
 }

@@ -8,10 +8,17 @@ JSON_DIR=./json/rapidjson
 INCLUDE = -I./${INC_DIR}/ -I./$(JSON_DIR)
 
 #LIB = -L$(LIB_DIR) -lrt -libmyframe -lpthread 
-LIB = -L$(LIB_DIR)/ -lmyframe -lrt -lsign -lpthread \
+#LIB = -L$(LIB_DIR)/ -lmyframe -lrt -lsign -lpthread \
 	  /usr/lib64/libcrypt.a \
 	  /usr/lib64/libcrypto.a \
 	  /usr/lib64/libssl.a \
+	  -lcurl \
+	  #/usr/local/lib/libcurl.a \
+
+LIB = -L$(LIB_DIR)/ -lmyframe -lrt -lsign -lpthread \
+	  -lcrypt \
+	  -lcrypto  \
+	  -lssl \
 	  -lcurl \
 	  #/usr/local/lib/libcurl.a \
 

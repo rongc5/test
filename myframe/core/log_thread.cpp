@@ -5,9 +5,8 @@
 #include "common_def.h"
 #include "common_exception.h"
 
-log_thread::log_thread(log_conf & conf):_conf(conf)
+log_thread::log_thread()
 {
-	log_thread_init();
 }
 
 log_thread::~log_thread()
@@ -19,9 +18,18 @@ log_thread::~log_thread()
     _queue[1- _current].clear();
 }
 
+void log_thread::init(const char * path)
+{
+    log_thread * thread = base_singleton<log_thread>::get_instance_ex();
+    thread->log_thread_init(path);
+
+    thread->start();
+}
+
+
 void log_thread::log_write(const char * filename, const char *format, ...)
 {
-    log_thread * thread = base_singleton<log_thread>::get_instance();
+    log_thread * thread = base_singleton<log_thread>::get_instance_ex();
     if (!thread) {
         return;
     }
@@ -43,15 +51,26 @@ void log_thread::log_write(const char * filename, const char *format, ...)
     }
 }
 
+bool log_thread::check_type(LogType type)
+{
+     log_conf * conf = _rlog_conf->current();
+    if (conf && type <= conf->type)
+    {
+        return true;
+    }
+
+    return false;
+}
+
 void log_thread::log_write(LogType type, const char *format, ...)
 {
 
-    log_thread * thread = base_singleton<log_thread>::get_instance();
+    log_thread * thread = base_singleton<log_thread>::get_instance_ex();
     if (!thread) {
         return;
     }
 
-    if (type > thread->get_log_conf().type){
+    if (!thread->check_type(type)){
         return;
     }
 
@@ -80,9 +99,17 @@ void log_thread::log_write(LogType type, const char *format, ...)
 
 void log_thread::put_msg(std::shared_ptr<log_msg> & p_msg)
 {
+    log_conf * conf = _rlog_conf->current();
+
     std::lock_guard<std::mutex> lck (_mutex);
-    int idle = 1 - _current;
-    _queue[idle].push_back(p_msg);
+
+    if (conf->model == LOGLOCAL) {
+        handle_msg(p_msg); 
+    } else {
+        int idle = 1 - _current;
+        _queue[idle].push_back(p_msg);
+    }
+
     //write(_channelid, CHANNEL_MSG_TAG, sizeof(CHANNEL_MSG_TAG));
     send(_channelid, CHANNEL_MSG_TAG, sizeof(CHANNEL_MSG_TAG), MSG_DONTWAIT);
 }
@@ -90,10 +117,13 @@ void log_thread::put_msg(std::shared_ptr<log_msg> & p_msg)
 void log_thread::handle_msg(std::shared_ptr<log_msg> & p_msg)
 {
     FILE * fp = NULL;
-    if (p_msg->_fname.empty())
+    
+    log_conf * conf = _rlog_conf->current();
+
+    if (p_msg->_fname.empty() && conf)
     {
-        check_to_renmae(_log_name[p_msg->_type]._name, _conf.file_max_size);
-        fp = fopen(_log_name[p_msg->_type]._name, "a");
+        check_to_renmae(conf->_log_name[p_msg->_type].c_str(), conf->file_max_size);
+        fp = fopen(conf->_log_name[p_msg->_type].c_str(), "a");
     }
     else
     {
@@ -106,36 +136,6 @@ void log_thread::handle_msg(std::shared_ptr<log_msg> & p_msg)
 
     fprintf(fp, "%s\n", p_msg->_buf->data());
     fclose(fp);
-}
-
-void log_thread::get_file_name(LogType type, char dest[], size_t dest_len)
-{
-	if (!dest || !dest_len){
-        return;
-    }   
-
-    switch (type)
-    {   
-        case LOGFATAL:
-            snprintf(dest, dest_len, "%s/%s.%s", _conf.log_path, _conf.prefix_file_name, "ft");
-            break;
-        case LOGWARNING:
-            snprintf(dest, dest_len, "%s/%s.%s", _conf.log_path, _conf.prefix_file_name, "wn");
-            break;
-        case LOGNOTICE:
-            snprintf(dest, dest_len, "%s/%s.%s", _conf.log_path, _conf.prefix_file_name, "nt");
-            break;
-        case LOGTRACE:
-            snprintf(dest, dest_len, "%s/%s.%s", _conf.log_path, _conf.prefix_file_name, "tc");
-            break;
-        case LOGDEBUG:
-            snprintf(dest, dest_len, "%s/%s.%s", _conf.log_path, _conf.prefix_file_name, "db");
-            break;
-        default:
-            break;
-    }   
-
-    return;
 }
 
 void log_thread::check_to_renmae(const char *filename, int max_size)
@@ -156,19 +156,14 @@ void log_thread::check_to_renmae(const char *filename, int max_size)
     }
 }
 
-void log_thread::log_thread_init()
+void log_thread::log_thread_init(const char * path)
 {
-	 if (_conf.log_path[0] != '0') {
-            char buf[SIZE_LEN_512];
-            snprintf(buf, sizeof(buf), "mkdir -p %s", _conf.log_path);
-            system(buf);         
-     }
+    if (!path) {
+        return ;
+    }
 
-
-	int i = LOGFATAL;
-	for (; i<LOGSIZE; i++) {
-		get_file_name((LogType)i, _log_name[i]._name, sizeof(_log_name[i]._name));
-	}
+    _rlog_conf = new reload_mgr<log_conf>(new log_conf(path), new log_conf(path));
+    log_conf_init();
 
     _epoll_fd = epoll_create(DAFAULT_EPOLL_SIZE);
     if (_epoll_fd == -1)
@@ -201,6 +196,22 @@ void log_thread::log_thread_init()
     get_proc_name(tmp_buff, sizeof(tmp_buff));
     _proc_name.append(tmp_buff);
 }
+
+void log_thread::log_conf_init()
+{
+    if (_rlog_conf) {
+        _rlog_conf->reload();
+    }
+
+    log_conf * conf = _rlog_conf->current();
+
+	 if (!conf->log_path.empty()) {
+            char buf[SIZE_LEN_512];
+            snprintf(buf, sizeof(buf), "mkdir -p %s", conf->log_path.c_str());
+            system(buf);         
+     }
+}
+
 
 void * log_thread::run()
 {
@@ -262,12 +273,6 @@ size_t log_thread::process_recv_buf(const char *buf, const size_t len)
     return len;
 }
 
-void log_thread::set_type(LogType type)
-{
-    _conf.type = type;
-}
-
-
 void log_thread::obj_process()
 {
     int  nfds = ::epoll_wait(_epoll_fd, _epoll_events, _epoll_size, DEFAULT_EPOLL_WAITE);
@@ -300,9 +305,9 @@ void log_thread::obj_process()
     }
     
     process_recv_buf(buf, ret);
+
+    if (_rlog_conf->need_reload()) {
+        log_conf_init();
+    }
 }
 
-const log_conf & log_thread::get_log_conf()
-{
-    return _conf;
-} 

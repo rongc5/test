@@ -18,12 +18,11 @@ void do_init()
     
     snprintf(conf_path, sizeof(conf_path), "./conf/%s.conf", proc_name);
 
-    log_conf lg_conf;
     sk_conf * conf = new (std::nothrow)sk_conf(conf_path);
+    LOG_INIT(conf->log_path.c_str());
+
     conf->load();
 
-    lg_conf.type = conf->log_type;
-    LOG_INIT(lg_conf);
 
     proc_data::instance()->init(conf);
     proc_data::instance()->load();

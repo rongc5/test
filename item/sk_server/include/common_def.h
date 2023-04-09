@@ -61,44 +61,6 @@ struct timer_msg
         uint32_t _time_length;
 };
 
-enum LogType {
-    LOGFATAL = 1,
-    LOGWARNING = 2,
-    LOGNOTICE = 4,
-    LOGTRACE = 8,
-    LOGDEBUG = 16,
-    LOGSIZE
-};
-
-struct log_conf{
-    uint32_t file_max_size;
-    char log_path[SIZE_LEN_256];
-    char prefix_file_name[SIZE_LEN_256];
-    LogType type;
-
-    log_conf();
-};
-
-class log_msg
-{
-    public:
-        log_msg()
-        {
-            _buf = NULL;
-        }
-        virtual ~log_msg()
-        {
-            if (_buf){
-                delete _buf;
-                _buf = NULL;
-            }
-        }
-
-        LogType _type;
-        std::string _fname;
-        std::vector<char> * _buf;
-};
-
 struct url_info
 {
     std::string url;
@@ -315,5 +277,6 @@ struct boundary_para
 };
 
 const uint32_t BOUNDARY_EXTRA_LEN = 8;
+
 
 #endif

@@ -7,8 +7,8 @@ import subprocess
 import os
 
 
-def log_write(filename, str):                                                                                                                                                   
-    file = open(filename, 'a') 
+def log_write(filename, str):
+    file = open(filename, 'a')
     file.write(str)
     file.write('\n')
     file.flush()
@@ -141,7 +141,7 @@ if __name__ == '__main__':
         dst = '%s/%s' % (hadoop_dir, 'part-00000')
         cmd = [HADOOP_BIN, 'fs', '-mv', src, dst]
         res_str = subprocess.Popen(cmd, stdout=subprocess.PIPE).communicate()[0]
-		
+
         dst = '%s/%s' % (hadoop_dir, '_SUCCESS')
         cmd = [HADOOP_BIN, 'fs', '-tochz', dst]
         res_str = subprocess.Popen(cmd, stdout=subprocess.PIPE).communicate()[0]
