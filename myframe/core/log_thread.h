@@ -12,6 +12,7 @@ class log_msg
         log_msg()
         {
             _buf = NULL;
+            _logid = 0;
         }
         virtual ~log_msg()
         {
@@ -24,6 +25,7 @@ class log_msg
         LogType _type;
         std::string _fname;
         std::vector<char> * _buf;
+        uint64_t _logid;
 };
 
 class log_thread:public base_thread
@@ -36,6 +38,8 @@ class log_thread:public base_thread
 
         static void log_write(LogType type, const char *format, ...);
         static void log_write(const char * filename, const char *format, ...);
+
+        static uint64_t get_logid();
 
         void handle_msg(std::shared_ptr<log_msg> & p_msg);
 
@@ -72,8 +76,9 @@ class log_thread:public base_thread
         std::string _recv_buf;
         volatile int _current;
         reload_mgr<log_conf> * _rlog_conf; 
-};
 
+        static uint64_t log_global_id;
+};
 
 
 #endif

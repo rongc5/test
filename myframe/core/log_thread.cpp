@@ -102,6 +102,7 @@ void log_thread::put_msg(std::shared_ptr<log_msg> & p_msg)
     log_conf * conf = _rlog_conf->current();
 
     std::lock_guard<std::mutex> lck (_mutex);
+    p_msg->_logid = get_logid();
 
     if (conf->model == LOGLOCAL) {
         handle_msg(p_msg); 
@@ -124,17 +125,23 @@ void log_thread::handle_msg(std::shared_ptr<log_msg> & p_msg)
     {
         check_to_renmae(conf->_log_name[p_msg->_type].c_str(), conf->file_max_size);
         fp = fopen(conf->_log_name[p_msg->_type].c_str(), "a");
+        if (!fp){
+            return;
+        }   
+
+        fprintf(fp, "[log_id:%" PRIu64 "]%s\n", p_msg->_logid, p_msg->_buf->data());
     }
     else
     {
         fp = fopen(p_msg->_fname.c_str(), "a");
+        if (!fp){
+            return;
+        }   
+
+        fprintf(fp, "%s\n", p_msg->_buf->data());
     }
 
-    if (!fp){
-        return;
-    }   
 
-    fprintf(fp, "%s\n", p_msg->_buf->data());
     fclose(fp);
 }
 
@@ -311,3 +318,14 @@ void log_thread::obj_process()
     }
 }
 
+uint64_t log_thread::get_logid()
+{
+    if (log_global_id < LOG_ID_MIN)
+    {
+        log_global_id = LOG_ID_MIN;
+    }
+
+    return log_global_id++;
+}
+
+uint64_t log_thread::log_global_id = 0;

@@ -54,6 +54,9 @@
 #include <mutex>
 #include <stdexcept>
 
+#include <inttypes.h>
+
+
 #define DAFAULT_EPOLL_SIZE 1000
 #define DEFAULT_EPOLL_WAITE 10
 #define DEFAULT_EPOLL_WAITE_SIZE 10
@@ -71,10 +74,12 @@ const int MAX_SEND_NUM = 5;
 const uint32_t MAX_HTTP_HEAD_LEN = 100*1024;
 
 
+
 #define MAX_BUF_SIZE 1024 * 10 * 10
 
 #define DEFAULT_LOG_BUCKETLEN 200
 
+const uint64_t LOG_ID_MIN = 1000;
 
 
 /******** 长度定义 *************/
