@@ -50,6 +50,7 @@ void skhttp_res_data_process::msg_recv_finish()
         _current_hander->perform(&req_head_para, &_recv_buf, &_base_process->get_res_head_para(), &_body);
 
     LOG_NOTICE("response:%s", _body.c_str());
+    //LOGDEBUG << "stream test" <<  _body;
 }
 
 std::string * skhttp_res_data_process::get_send_head()

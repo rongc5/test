@@ -6,6 +6,9 @@
 #include "base_singleton.h"
 #include "log_base.h"
 
+
+class log_thread;
+
 class log_msg
 {
     public:
@@ -27,6 +30,7 @@ class log_msg
         std::vector<char> * _buf;
         uint64_t _logid;
 };
+
 
 class log_thread:public base_thread
 {
@@ -80,5 +84,57 @@ class log_thread:public base_thread
         static uint64_t log_global_id;
 };
 
+class log_stream
+{
+    public:
+        log_stream(LogType type, int line, string func, string file)
+        {
+            switch (type)
+            {
+                case LOGTYPEDEBUG:
+                ss << "DEBUG:[" << pthread_self() << "]:[" << line << func << file << "]";
+                break;
+                case LOGTYPETRACE:
+                ss << "TRACE:[" << pthread_self() << "]:[" << line << func << file << "]";
+                break;
+                case LOGTYPENOTICE:
+                ss << "NOTICE:[" << pthread_self() << "]:[" << line << func << file << "]";
+                break;
+                case LOGTYPEFATAL:
+                ss << "FATAL:[" << pthread_self() << "]:[" << line << func << file << "]";
+                break;
+                case LOGTYPEWARNING:
+                ss << "WARNING:[" << pthread_self() << "]:[" << line << func << file << "]";
+                break;
+                default:
+                break;
+            }
+            _type = type;
+            //thread = base_singleton<log_thread>::get_instance_ex();
+        }
+
+        ~log_stream()
+        {
+            //此处调用会导致bug, 后期再查吧
+            log_thread::log_write(_type, "%s", ss.str().c_str());
+
+        }
+        template <typename T>
+            log_stream& operator<<(const T& data)
+            {
+                ss << data;
+                return *this;
+            }
+
+        string str()
+        {   
+            return ss.str();
+        }  
+    private:
+        stringstream ss;
+        LogType _type;
+        log_thread * thread;
+
+};
 
 #endif

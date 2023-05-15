@@ -8,12 +8,12 @@
 using namespace std;
 
 enum LogType {
-    LOGFATAL = 1,
-    LOGWARNING = 2,
-    LOGNOTICE = 4,
-    LOGTRACE = 8,
-    LOGDEBUG = 16, 
-    LOGSIZE
+    LOGTYPEFATAL = 1,
+    LOGTYPEWARNING = 2,
+    LOGTYPENOTICE = 4,
+    LOGTYPETRACE = 8,
+    LOGTYPEDEBUG = 16, 
+    LOGTYPESIZE
 };
 
 enum LogModel {
@@ -43,7 +43,7 @@ class log_conf:public reload_inf {
         LogModel model;
         string _dumppath;
 
-        string _log_name[LOGSIZE];
+        string _log_name[LOGTYPESIZE];
     private:
         void get_file_name(LogType type);
 

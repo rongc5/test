@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <sstream>
 
 using namespace std;
 
@@ -19,7 +20,29 @@ class Test
         {
             cout << "str:" <<str.c_str()<<'\n';
         }
+
+#if 1
+        template <typename T>
+            Test& operator<<(const T& data) {
+                // 将数据写入日志文件和标准输出
+            ss << data;
+            //cout << data;
+            return *this;
+        }
+
+#endif
+        void show()
+        {
+            cout << str();
+        }
+        string str()
+        {
+            return ss.str();
+        }
+    private:
+        stringstream ss;
 };
+
 
 int main(int argc, char *argv[])
 {
@@ -27,8 +50,13 @@ int main(int argc, char *argv[])
     
     t();
 
-    Test();
+    //Test();
 
-    t("hello world");
+    //t("hello world");
+
+    t << "123" << ":" << "hello" << '\n';
+    //cout << t.str();
+    //cout << t;
+
     return 0;
 }

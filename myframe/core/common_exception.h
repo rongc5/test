@@ -11,6 +11,7 @@ class CMyCommonException : public std::exception
         CMyCommonException(const std::string &err_str)
         {
             _errstr = err_str;
+            LOG_WARNING("THROW_COMMON_EXCEPT:%s", err_str.c_str());
         }
         
         virtual ~CMyCommonException() throw(){};    
@@ -30,9 +31,17 @@ class CMyCommonException : public std::exception
 do { \
     std::stringstream ss; \
     ss << errorstr; \
-    LOG_WARNING("THROW_COMMON_EXCEPT:%s", ss.str().c_str());\
     throw CMyCommonException(ss.str());\
 } while (0)
+
+
+//#define THROW_COMMON_EXCEPT(errorstr) \
+//do { \
+    //std::stringstream ss; \
+    //ss << errorstr; \
+    //LOG_WARNING("THROW_COMMON_EXCEPT:%s", ss.str().c_str());\
+    //throw CMyCommonException(ss.str());\
+//} while (0)
 
 #endif
 

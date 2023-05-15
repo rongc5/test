@@ -53,19 +53,19 @@ void log_conf::get_file_name(LogType type)
 
     switch (type)
     {   
-        case LOGFATAL:
+        case LOGTYPEFATAL:
             ss << log_path << "/" << prefix_file_name << ".ft";
             break;
-        case LOGWARNING:
+        case LOGTYPEWARNING:
             ss << log_path << "/" << prefix_file_name << ".wn";
             break;
-        case LOGNOTICE:
+        case LOGTYPENOTICE:
             ss << log_path << "/" << prefix_file_name << ".nt";
             break;
-        case LOGTRACE:
+        case LOGTYPETRACE:
             ss << log_path << "/" << prefix_file_name << ".tc";
             break;
-        case LOGDEBUG:
+        case LOGTYPEDEBUG:
             ss << log_path << "/" << prefix_file_name << ".db";
             break;
         default:
@@ -84,7 +84,7 @@ void log_conf::do_parse()
     prefix_file_name.assign(buf);
 
     file_max_size = DEFAULT_LOG_MAX_SIZE;
-    type = LOGDEBUG;
+    type = LOGTYPEDEBUG;
 
     log_path.assign("logs");
     model = LOGTHREAD;
@@ -124,9 +124,9 @@ void log_conf::do_parse()
     
     if (!prefix_file_name.empty() || !log_path.empty()) 
     {
-        int i = LOGFATAL;
+        int i = LOGTYPEFATAL;
         int j = 1;
-        for (; i<LOGSIZE; j++, i = 1 << j) {
+        for (; i<LOGTYPESIZE; j++, i = 1 << j) {
             get_file_name((LogType)i);
         }
     }

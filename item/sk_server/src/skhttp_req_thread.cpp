@@ -1123,7 +1123,7 @@ void skhttp_req_thread::handle_timeout(shared_ptr<timer_msg> & t_msg)
         case TIMER_TYPE_SINGLE_IDLE_2_CURRENT:
             {
                 //先更新再切换
-                LOG_DEBUG("SINGLE_IDLE_2_CURRENT");
+                //LOGDEBUG << "SINGLE_IDLE_2_CURRENT" << "stream test";
                 p_data->_hsingle_dict->update_search_index();
                 p_data->_hwsingle_dict->update_search_index();
 
@@ -1133,7 +1133,8 @@ void skhttp_req_thread::handle_timeout(shared_ptr<timer_msg> & t_msg)
         case TIMER_TYPE_MAIN_FUNDS_IDLE_2_CURRENT:
             {
                 //先更新再切换
-                LOG_DEBUG("main_funds_IDLE_2_CURRENT");
+                //LOG_DEBUG("main_funds_IDLE_2_CURRENT");
+                //LOGDEBUG << "main_funds_IDLE_2_CURRENT" << "stream test";
                 p_data->_hmain_funds_dict->update_search_index();
                 //p_data->_hwmain_funds_dict->update_search_index();
 

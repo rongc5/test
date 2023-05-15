@@ -26,35 +26,44 @@
 
 #define LOG_WARNING(fmt, arg...) \
     do { \
-        LOG_WRITE(LOGWARNING, "WARNING:[%lu]:[%d:%s:%s] " fmt, pthread_self(), __LINE__, __func__, __FILE__, ##arg); \
+        LOG_WRITE(LOGTYPEWARNING, "WARNING:[%lu]:[%d:%s:%s] " fmt, pthread_self(), __LINE__, __func__, __FILE__, ##arg); \
     } while (0)
 
 
 #define LOG_FATAL(fmt, arg...) \
     do { \
-        LOG_WRITE(LOGFATAL, "FATAL:[%lu]:[%d:%s:%s] " fmt, pthread_self(), __LINE__, __func__, __FILE__, ##arg); \
+        LOG_WRITE(LOGTYPEFATAL, "FATAL:[%lu]:[%d:%s:%s] " fmt, pthread_self(), __LINE__, __func__, __FILE__, ##arg); \
     } while (0)
 
 
 #define LOG_NOTICE(fmt, arg...) \
       do { \
-        LOG_WRITE(LOGNOTICE, "NOTICE:[%lu]:[%d:%s:%s] " fmt, pthread_self(), __LINE__, __func__, __FILE__, ##arg);\
+        LOG_WRITE(LOGTYPENOTICE, "NOTICE:[%lu]:[%d:%s:%s] " fmt, pthread_self(), __LINE__, __func__, __FILE__, ##arg);\
     } while (0)
 
 
 #define LOG_TRACE(fmt, arg...) \
     do { \
-        LOG_WRITE(LOGTRACE, "TRACE:[%lu]:[%d:%s:%s] " fmt, pthread_self(), __LINE__, __func__, __FILE__, ##arg); \
+        LOG_WRITE(LOGTYPETRACE, "TRACE:[%lu]:[%d:%s:%s] " fmt, pthread_self(), __LINE__, __func__, __FILE__, ##arg); \
     } while (0)
 
 
 #define LOG_DEBUG(fmt, arg...) \
     do { \
-        LOG_WRITE(LOGDEBUG, "DEBUG:[%lu]:[%d:%s:%s] " fmt, pthread_self(), __LINE__, __func__, __FILE__, ##arg); \
+        LOG_WRITE(LOGTYPEDEBUG, "DEBUG:[%lu]:[%d:%s:%s] " fmt, pthread_self(), __LINE__, __func__, __FILE__, ##arg); \
     } while (0)
 
 #define LOG_WRITE(t, fmt...) log_thread::log_write(t, ##fmt)
 #define FILE_WRITE(f, fmt...) log_thread::log_write(f, ##fmt)
 
+#define LOGWARNING log_stream(LOGTYPEWARNING, __LINE__, __func__, __FILE__)
+
+#define LOGFATAL log_stream(LOGTYPEFATAL, __LINE__, __func__, __FILE__) 
+
+#define LOGNOTICE log_stream(LOGTYPENOTICE, __LINE__, __func__, __FILE__)
+
+#define LOGTRACE log_stream(LOGTYPETRACE, __LINE__, __func__, __FILE__)
+
+#define LOGDEBUG log_stream(LOGTYPEDEBUG, __LINE__, __func__, __FILE__)
 
 #endif

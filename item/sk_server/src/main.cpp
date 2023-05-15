@@ -23,6 +23,11 @@ void do_init()
 
     conf->load();
 
+    //for (int i = 0; i < 1000; i++)
+    //{
+        //LOGDEBUG << "stream:" << i;
+        //LOGNOTICE << "stream:" << i;
+    //}
 
     proc_data::instance()->init(conf);
     proc_data::instance()->load();

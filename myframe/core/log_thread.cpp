@@ -198,6 +198,8 @@ void log_thread::log_thread_init(const char * path)
     if (ret != 0) {
         THROW_COMMON_EXCEPT("add to epoll fail " << strError(errno).c_str());
     }
+
+    fcntl(_channelid, F_SETFL, O_NONBLOCK);
     
     char tmp_buff[SIZE_LEN_128];
     get_proc_name(tmp_buff, sizeof(tmp_buff));
