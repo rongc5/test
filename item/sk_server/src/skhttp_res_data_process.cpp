@@ -35,7 +35,8 @@ void skhttp_res_data_process::msg_recv_finish()
     std::shared_ptr<base_net_obj> net_obj = get_base_net();
     net_addr & peer_addr = net_obj->get_peer_addr();
 
-    LOG_NOTICE("peer ip[%s] peer port[%d] url_path[%s]", peer_addr.ip.c_str(), peer_addr.port, req_head_para._url_path.c_str());
+    //LOG_NOTICE("peer ip[%s] peer port[%d] url_path[%s]", peer_addr.ip.c_str(), peer_addr.port, req_head_para._url_path.c_str());
+    LOGNOTICE << "peer ip[" << peer_addr.ip << "]" << " peer port [" << peer_addr.port << "] url_path[" << req_head_para._url_path << "]";
 
     std::vector<std::string> tmp_vec;
     SplitString(req_head_para._url_path.c_str(), '?', &tmp_vec, SPLIT_MODE_ALL);
@@ -49,7 +50,8 @@ void skhttp_res_data_process::msg_recv_finish()
     if (_current_hander)
         _current_hander->perform(&req_head_para, &_recv_buf, &_base_process->get_res_head_para(), &_body);
 
-    LOG_NOTICE("response:%s", _body.c_str());
+    //LOG_NOTICE("response:%s", _body.c_str());
+    LOGNOTICE << "response: " << _body ;
     //LOGDEBUG << "stream test" <<  _body;
 }
 

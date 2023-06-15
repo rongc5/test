@@ -17,8 +17,8 @@
 #include "uhandler_default.h"
 #include "cir_holder_dict_split.h"
 #include "cir_holder_dict.h"
-#include "history_wsingle_dict.h"
-#include "history_wquotation_dict.h"
+//#include "history_wsingle_dict.h"
+//#include "history_wquotation_dict.h"
 #include "base_net_thread.h"
 #include "history_main_funds_dict.h"
 
@@ -227,18 +227,18 @@ int proc_data::init(sk_conf * conf)
 
     }
 
-    {
-        _hwsingle_dict = make_shared<history_wsingle_dict>();
-        _hwsingle_dict->init(_conf->_strategy->current()->history_wsingle_path.c_str(), 
-                _conf->_strategy->current()->history_wsingle_file.c_str(), conf->dump_dir.c_str());
-    }
+//    {
+//        _hwsingle_dict = make_shared<history_wsingle_dict>();
+//        _hwsingle_dict->init(_conf->_strategy->current()->history_wsingle_path.c_str(),
+//                _conf->_strategy->current()->history_wsingle_file.c_str(), conf->dump_dir.c_str());
+//    }
 
 
-    {
-        _hwquoation_dict = make_shared<history_wquotation_dict>();
-        _hwquoation_dict->init(_conf->_strategy->current()->history_wquotation_path.c_str(),
-                _conf->_strategy->current()->history_wquotation_file.c_str(), conf->dump_dir.c_str());
-    }
+//    {
+//        _hwquoation_dict = make_shared<history_wquotation_dict>();
+//        _hwquoation_dict->init(_conf->_strategy->current()->history_wquotation_path.c_str(),
+//                _conf->_strategy->current()->history_wquotation_file.c_str(), conf->dump_dir.c_str());
+//    }
 
     return 0;
 }
@@ -323,9 +323,9 @@ int proc_data::load()
 
     _userid_dict->load();
 
-    _hwsingle_dict->load();
+//    _hwsingle_dict->load();
 
-    _hwquoation_dict->load();
+//    _hwquoation_dict->load();
 
     _holiday_dict->load();
 
@@ -418,17 +418,17 @@ int proc_data::reload()
         flag = 1;
     }
 
-    if (_hwsingle_dict && _hwsingle_dict->need_reload())
-    {
-        _hwsingle_dict->reload();
-        flag = 1;
-    }
+//    if (_hwsingle_dict && _hwsingle_dict->need_reload())
+//    {
+//        _hwsingle_dict->reload();
+//        flag = 1;
+//    }
 
-    if (_hwquoation_dict && _hwquoation_dict->need_reload())
-    {
-        _hwquoation_dict->reload();
-        flag = 1;
-    }
+//    if (_hwquoation_dict && _hwquoation_dict->need_reload())
+//    {
+//        _hwquoation_dict->reload();
+//        flag = 1;
+//    }
 
     if (_holiday_dict && _holiday_dict->need_reload())
     {
@@ -472,9 +472,9 @@ int proc_data::dump()
 
     _userid_dict->dump();
 
-    _hwsingle_dict->dump();
+//    _hwsingle_dict->dump();
 
-    _hwquoation_dict->dump();
+//    _hwquoation_dict->dump();
 
     _holiday_dict->dump();
 
@@ -510,9 +510,9 @@ int proc_data::destroy()
 
     _userid_dict->destroy();
 
-    _hwsingle_dict->destroy();
+//    _hwsingle_dict->destroy();
 
-    _hwquoation_dict->destroy();
+//    _hwquoation_dict->destroy();
 
     _holiday_dict->destroy();
 
@@ -541,10 +541,11 @@ int proc_data::destroy_idle()
 
     _cir_holder_dict->idle()->destroy();
 
-    //_hsingle_dict->idle()->destroy();
+    // _hsingle_dict->idle()->destroy();
 
-    //_hquoation_dict->idle()->destroy();
+    // _hquoation_dict->idle()->destroy();
 
+    // _hmain_funds_dict->idle()->destroy();
     //_hwsingle_dict->idle()->destroy();
 
     //_hwquoation_dict->idle()->destroy();
@@ -564,6 +565,8 @@ void proc_data::reg_search_index()
 
     _block_set = make_shared<block_search_index>();
     _search_index_map["block"] = bind(&block_search_index::do_check_block_search, _block_set, _1, _2, _3);
+
+    _rmain_funds_index = make_shared<rmain_funds_search_index>();
 
     _rquotation_index = make_shared<rquotation_search_index>();
     _search_index_map["end_le"] = bind(&rquotation_search_index::do_check_end_le, _rquotation_index, _1, _2, _3);
@@ -657,6 +660,7 @@ void proc_data::reg_search_index()
     _search_index_map["hsratio_sum_ge"] = bind(&hsingle_search_index::do_hsingle_sum_ge, _hsingle_index, _1, _2, _3);
     _search_index_map["hsratio_sum_le"] = bind(&hsingle_search_index::do_hsingle_sum_le, _hsingle_index, _1, _2, _3);
 
+    _hmain_funds_index = make_shared<hmain_funds_search_index>();
 
     _hquotation_index = make_shared<hquotation_search_index>();
 
@@ -749,7 +753,7 @@ void proc_data::reg_search_index()
     _search_index_map["hqhigh_end_5_ge"] = bind(&hquotation_search_index::do_check_hqhigh_end_5_ge, _hquotation_index, _1, _2, _3);
     _search_index_map["hqhigh_end_5_le"] = bind(&hquotation_search_index::do_check_hqhigh_end_5_le, _hquotation_index, _1, _2, _3);
 
-
+#if 0
     _hwquotation_index = make_shared<hquotation_search_index>();
 
     _search_index_map["hwqchange_rate_ge"] = bind(&hquotation_search_index::do_hqchange_rate_ge, _hwquotation_index, _1, _2, _3);
@@ -851,6 +855,7 @@ void proc_data::reg_search_index()
     _search_index_map["hwsingle_diff_sum_ge"] = bind(&hsingle_search_index::do_hsingle_sum_ge, _hwsingle_index, _1, _2, _3);
 
     _search_index_map["hwsingle_diff_sum_le"] = bind(&hsingle_search_index::do_hsingle_sum_le, _hwsingle_index, _1, _2, _3);
+#endif
 }
 
 base_search_index proc_data::get_search_index(string & key)

@@ -13,6 +13,8 @@
 #include "week_tradedate_search_index.h"
 #include "hquotation_search_index.h"
 #include "rquotation_search_index.h"
+#include "rmain_funds_search_index.h"
+#include "hmain_funds_search_index.h"
 #include "finance_search_index.h"
 #include "op_search_index.h"
 #include "lruSsr_search_index.h"
@@ -30,8 +32,8 @@ class cir_holder_dict;
 class history_single_dict;
 class history_main_funds_dict;
 class history_quotation_dict;
-class history_wquotation_dict;
-class history_wsingle_dict;
+//class history_wquotation_dict; 因为内存限制， 先去掉周线数据
+//lass history_wsingle_dict;
 class holiday_dict;
 class userid_dict;
 class base_net_thread;
@@ -84,9 +86,9 @@ class proc_data:public reload_inf
 
         shared_ptr<history_quotation_dict> _hquoation_dict;
 
-        shared_ptr<history_wsingle_dict> _hwsingle_dict;
+        //shared_ptr<history_wsingle_dict> _hwsingle_dict;
 
-        shared_ptr<history_wquotation_dict> _hwquoation_dict;
+        //shared_ptr<history_wquotation_dict> _hwquoation_dict;
 
         reload_mgr<holiday_dict> * _holiday_dict;
 
@@ -111,16 +113,21 @@ class proc_data:public reload_inf
 
         //date, single, id
         shared_ptr<hsingle_search_index> _hsingle_index;
-        shared_ptr<hsingle_search_index> _hwsingle_index;
+        //shared_ptr<hsingle_search_index> _hwsingle_index;
 
         // history quotation 
         shared_ptr<hquotation_search_index> _hquotation_index;
 
-        shared_ptr<hquotation_search_index> _hwquotation_index;
+        // history quotation
+        shared_ptr<hmain_funds_search_index> _hmain_funds_index;
+
+        //shared_ptr<hquotation_search_index> _hwquotation_index;
 
         shared_ptr<finance_search_index> _finance_index;
 
         shared_ptr<rquotation_search_index> _rquotation_index;
+
+        shared_ptr<rmain_funds_search_index> _rmain_funds_index;
 
         shared_ptr<op_search_index> _op_index;
 

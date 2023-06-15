@@ -46,8 +46,8 @@ OBJ	= $(LOC_DIR)/main.o     \
 	  $(LOC_DIR)/cir_holder_dict.o \
 	  $(LOC_DIR)/history_single_dict.o \
 	  $(LOC_DIR)/history_quotation_dict.o \
-	  $(LOC_DIR)/history_wsingle_dict.o \
-	  $(LOC_DIR)/history_wquotation_dict.o \
+      $(LOC_DIR)/rmain_funds_search_index.o \
+      $(LOC_DIR)/hmain_funds_search_index.o \
 	  $(LOC_DIR)/holiday_dict.o \
 	  $(LOC_DIR)/strategy_conf.o \
 	  $(LOC_DIR)/skhttp_req_thread.o \

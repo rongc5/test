@@ -14,7 +14,7 @@
 #include "id_dict.h"
 #include "history_quotation_dict.h"
 #include "strategy_conf.h"
-#include "history_wquotation_dict.h"
+//#include "history_wquotation_dict.h"
 #include "sk_util.h"
 
 rquotation_data_process::rquotation_data_process(http_base_process * _p_process):http_base_data_process(_p_process)

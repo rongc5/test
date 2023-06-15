@@ -4,7 +4,8 @@
 #include "ul_sign.h"
 #include "common_util.h"
 #include "proc_data.h"
-//#include "hmain_funds_search_index.h"
+#include "hmain_funds_search_index.h"
+#
 #include "sk_util.h"
 
 history_main_funds_dict::history_main_funds_dict()
@@ -80,7 +81,7 @@ int history_main_funds_dict::load_history_main_funds(const char * file)
         uint32_t j = 0;
         if (tmpVec.size() > log_main_funds_deque_length && log_main_funds_deque_length > 0)
         {
-            j = tmpVec.size() - log_main_funds_deque_length;
+            j = tmpVec.size() - log_main_funds_deque_length - 1;
         }
 
         uint32_t k = 0;
@@ -190,27 +191,26 @@ void history_main_funds_dict::update_real_main_funds(const std::string & trade_d
 void history_main_funds_dict::update_search_index()
 {
     proc_data* p_data = proc_data::instance();
-    //p_data->_hmain_funds_index->idle()->clear();
-    //p_data->_rmain_funds_index->idle()->clear();
 
-    //update_rmain_funds_search();
+    p_data->_hmain_funds_index->idle()->clear();
+    p_data->_rmain_funds_index->idle()->clear();
 
-    //update_hmain_funds_search();
+    update_hmain_funds_search();
+    update_rmain_funds_search();
 
-    //p_data->_hmain_funds_index->idle_2_current();
-    //p_data->_rmain_funds_index->idle_2_current();
+    p_data->_hmain_funds_index->idle_2_current();
+    p_data->_rmain_funds_index->idle_2_current();
 }
 
 void history_main_funds_dict::update_hmain_funds_search()
 {
-#if 0
     proc_data* p_data = proc_data::instance();
-    auto hmain_funds_index = p_data->_hmain_funds_index->idle();
+    auto hsingle_index = p_data->_hmain_funds_index->idle();
 
     for (auto ii = _id_date_dict.begin(); ii != _id_date_dict.end(); ii++)
     {
         const std::string & id = ii->first;
-        
+
         int len = 0;
         for (auto iii = ii->second.begin(); iii != ii->second.end(); iii++, len++)
         {
@@ -221,12 +221,13 @@ void history_main_funds_dict::update_hmain_funds_search()
             if (kk == _date_dict.end())
                 continue;
 
-            auto mm = hmain_funds_index->id_main_funds.find(id);        
-            if (mm == hmain_funds_index->id_main_funds.end())
+            auto mm = hsingle_index->id_main_funds.find(id);
+            if (mm == hsingle_index->id_main_funds.end())
             {
-                std::deque<std::deque< std::shared_ptr<main_funds_vec>>> tmp_vec;
+                //std::deque<std::deque< std::shared_ptr<single_vec>>> tmp_vec;
+                deque< deque<shared_ptr<main_funds_t> > > tmp_vec;
                  tmp_vec.push_back(kk->second);
-                 hmain_funds_index->id_main_funds.insert(std::make_pair(id, tmp_vec));
+                 hsingle_index->id_main_funds.insert(std::make_pair(id, tmp_vec));
             }
             else
             {
@@ -234,13 +235,15 @@ void history_main_funds_dict::update_hmain_funds_search()
             }
 
             std::string item_key;
-            hmain_funds_search_item::creat_id_index_key(id, len, item_key);
-            hmain_funds_index->id_idx_date.insert(std::make_pair(item_key, *iii));
-            hmain_funds_search_item::creat_id_date_key(id, *iii, item_key);
-            hmain_funds_index->id_date_idx.insert(std::make_pair(item_key, len));
+            hsingle_search_item::creat_id_index_key(id, len, item_key);
+            hsingle_index->id_idx_date.insert(std::make_pair(item_key, *iii));
+            hsingle_search_item::creat_id_date_key(id, *iii, item_key);
+            hsingle_index->id_date_idx.insert(std::make_pair(item_key, len));
         }
     }
 
+
+#if 0
     strategy_conf * strategy = p_data->_conf->_strategy->current(); 
     
     for (auto ii = hmain_funds_index->id_main_funds.begin(); ii != hmain_funds_index->id_main_funds.end(); ii++)
@@ -278,14 +281,11 @@ void history_main_funds_dict::update_hmain_funds_search()
 
 void history_main_funds_dict::update_rmain_funds_search()
 {
-#if 0
     proc_data* p_data = proc_data::instance();
     strategy_conf * strategy = p_data->_conf->_strategy->current();
 
     auto cur = p_data->_rmain_funds_index->current();
     auto idl = p_data->_rmain_funds_index->idle();
-
-    idl->rmain_funds_diff_index.resize(strategy->real_main_funds_scale.size());
 
     for (auto ii = _id_date_dict.begin(); ii != _id_date_dict.end(); ii++)
     {
@@ -305,39 +305,25 @@ void history_main_funds_dict::update_rmain_funds_search()
         }
 
         {
-            std::deque< std::shared_ptr<main_funds_vec>> dq; 
-            idl->id_main_funds[id] = dq; 
+            deque< shared_ptr<main_funds_t>> dq;
+            idl->id_main_funds[id] = dq;
             auto mm = cur->id_main_funds.find(id);
-            if (mm != cur->id_main_funds.end()) 
-            {   
+            if (mm != cur->id_main_funds.end())
+            {
                 idl->id_main_funds[id] = mm->second;
-            }   
+            }
 
-
-            if (idl->id_main_funds[id].empty() || idl->id_main_funds[id].back()->at(0) != kk->second.back()->at(0))
+            if (idl->id_main_funds[id].empty() || idl->id_main_funds[id].back() != kk->second.back())
             {
                 idl->id_main_funds[id].push_back(kk->second.back());
             }
 
-            if (idl->id_main_funds[id].size() > strategy->real_main_funds_deque_length && strategy->real_main_funds_deque_length > 0)
-            {   
+            if (idl->id_main_funds[id].size() > strategy->real_single_deque_length && strategy->real_single_deque_length > 0)
+            {
                 idl->id_main_funds[id].pop_front();
             }
         }
-
-        {
-            const auto & main_funds = kk->second.back();
-            for (uint32_t i = 0; i< main_funds->size(); i++)
-            {   
-                if (main_funds->at(i).diff != 0)
-                {   
-                    idl->rmain_funds_diff_index[i].insert(std::make_pair(main_funds->at(i).diff, id));
-                }   
-            } 
-        }
-
     }
-#endif
 }
 
 int history_main_funds_dict::load()

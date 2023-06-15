@@ -89,22 +89,23 @@ class log_stream
     public:
         log_stream(LogType type, int line, string func, string file)
         {
+            ss =make_shared<stringstream>();
             switch (type)
             {
                 case LOGTYPEDEBUG:
-                ss << "DEBUG:[" << pthread_self() << "]:[" << line << func << file << "]";
+                *ss << "DEBUG:[" << pthread_self() << "]:[" << line <<":" << func <<":"<< file << "]";
                 break;
                 case LOGTYPETRACE:
-                ss << "TRACE:[" << pthread_self() << "]:[" << line << func << file << "]";
+                *ss << "TRACE:[" << pthread_self() << "]:[" << line <<":" << func <<":"<< file << "]";
                 break;
                 case LOGTYPENOTICE:
-                ss << "NOTICE:[" << pthread_self() << "]:[" << line << func << file << "]";
+                *ss << "NOTICE:[" << pthread_self() << "]:[" << line <<":" << func <<":"<< file << "]";
                 break;
                 case LOGTYPEFATAL:
-                ss << "FATAL:[" << pthread_self() << "]:[" << line << func << file << "]";
+                *ss << "FATAL:[" << pthread_self() << "]:[" << line <<":" << func <<":"<< file << "]";
                 break;
                 case LOGTYPEWARNING:
-                ss << "WARNING:[" << pthread_self() << "]:[" << line << func << file << "]";
+                *ss << "WARNING:[" << pthread_self() << "]:[" << line <<":" << func <<":"<< file << "]";
                 break;
                 default:
                 break;
@@ -116,25 +117,22 @@ class log_stream
         ~log_stream()
         {
             //此处调用会导致bug, 后期再查吧
-            log_thread::log_write(_type, "%s", ss.str().c_str());
-
+            log_thread::log_write(_type, "%s", ss->str().data());
         }
         template <typename T>
             log_stream& operator<<(const T& data)
             {
-                ss << data;
+                *ss << data;
                 return *this;
             }
 
         string str()
         {   
-            return ss.str();
+            return ss->str();
         }  
     private:
-        stringstream ss;
+        shared_ptr<stringstream> ss;
         LogType _type;
-        log_thread * thread;
-
 };
 
 #endif

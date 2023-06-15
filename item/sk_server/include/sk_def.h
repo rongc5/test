@@ -228,6 +228,35 @@ struct technical_t
     technical_t();
 };
 
+struct rmain_funds_search_item
+{
+    //id: vector<quotation_t>
+    unordered_map<string, deque< shared_ptr<main_funds_t>>, str_hasher> id_main_funds;
+
+    void clear();
+};
+
+struct hmain_funds_search_item
+{
+    //id: vector<quotation_t>
+    unordered_map<string, deque< deque<shared_ptr<main_funds_t> > >, str_hasher> id_main_funds;
+
+    //id_index (vector -->index), date
+    unordered_map<string, string, str_hasher> id_idx_date;
+    //id_date, index
+    unordered_map<string, int, str_hasher> id_date_idx;
+
+    int get_index(const string & id, const string & date);
+
+    string  get_date(const string & id, int index);
+
+    void clear();
+
+    static void creat_id_index_key(const string & id, int index, string & key);
+
+    static void creat_id_date_key(const string & id, const string & date, string & key);
+};
+
 struct rquotation_search_item
 {
     //id: vector<quotation_t>
@@ -249,6 +278,7 @@ struct rquotation_search_item
 
     void clear();
 };
+
 
 struct hquotation_search_item
 {

@@ -129,6 +129,14 @@ int uhandler_queryid::do_check_queryid(std::map<std::string, std::string> & url_
 
     {
         Value child(kObjectType);
+        query_main_funds(url_para_map["id"], child, allocator);
+
+        key.SetString("main_funds", allocator);
+        root.AddMember(key, child, allocator);
+    }
+
+    {
+        Value child(kObjectType);
         query_single(url_para_map["id"], child, allocator);
 
         key.SetString("single", allocator);
@@ -173,6 +181,7 @@ int uhandler_queryid::do_check_queryid(std::map<std::string, std::string> & url_
     if (has_key<std::string, std::string>(url_para_map, "history_num"))
     {
         query_history_single(atoi(url_para_map["history_num"].c_str()), url_para_map["id"], root, allocator);
+        query_history_main_funds(atoi(url_para_map["history_num"].c_str()), url_para_map["id"], root, allocator);
 
         query_sum_single(atoi(url_para_map["history_num"].c_str()), url_para_map["id"], root, allocator);
 
@@ -191,7 +200,7 @@ int uhandler_queryid::do_check_queryid(std::map<std::string, std::string> & url_
         query_history_quotation(atoi(url_para_map["history_num"].c_str()), url_para_map["id"], root, allocator);
         query_sum_quotation(atoi(url_para_map["history_num"].c_str()), url_para_map["id"], root, allocator);
     }
-
+#if 0
     if (has_key<std::string, std::string>(url_para_map, "history_wnum"))
     {
         query_history_wsingle(atoi(url_para_map["history_wnum"].c_str()), url_para_map["id"], root, allocator);
@@ -201,6 +210,7 @@ int uhandler_queryid::do_check_queryid(std::map<std::string, std::string> & url_
         query_history_wquotation(atoi(url_para_map["history_wnum"].c_str()), url_para_map["id"], root, allocator);
         query_sum_wquotation(atoi(url_para_map["history_wnum"].c_str()), url_para_map["id"], root, allocator);
     }
+#endif
 
     if (has_key<std::string, std::string>(url_para_map, "history_date"))
     {
@@ -292,6 +302,29 @@ void uhandler_queryid::query_quotation(std::string &id, Value & root, Document::
     }
 }
 
+void uhandler_queryid::query_main_funds(std::string &id, Value & root, Document::AllocatorType & allocator)
+{
+    proc_data* p_data = proc_data::instance();
+    strategy_conf * strategy = p_data->_conf->_strategy->current();
+    auto rmain_funds_index = p_data->_rmain_funds_index->current();
+
+    auto ii = rmain_funds_index->id_main_funds.find(id);
+    if (ii != rmain_funds_index->id_main_funds.end())
+    {
+        {
+            Value key(kStringType);
+            Value child(kArrayType);
+
+            key.SetString("force_diff", allocator);
+
+            for (auto ft: ii->second)
+            {
+            child.PushBack(Value().SetInt(ft->force_diff), allocator);
+            }
+            root.AddMember(key, child, allocator);
+        }
+    }
+}
 void uhandler_queryid::query_technical(std::string &id, Value & root, Document::AllocatorType & allocator)
 {
     Value key(kStringType);
@@ -813,7 +846,7 @@ void uhandler_queryid::query_history_single_vratio(uint32_t last_day_num, std::s
     }
 }
 
-
+#if 0
 void uhandler_queryid::query_history_wsingle(uint32_t last_day_num, std::string &id, Value & root, Document::AllocatorType & allocator)
 {
     proc_data* p_data = proc_data::instance();
@@ -912,6 +945,7 @@ void uhandler_queryid::query_sum_wsingle(uint32_t last_day_num, std::string &id,
     }
 
 }
+#endif
 
 void uhandler_queryid::query_sum_single(uint32_t last_day_num, std::string &id, Value & root, Document::AllocatorType & allocator)
 {
@@ -1004,7 +1038,7 @@ void uhandler_queryid::query_sum_single_vratio(uint32_t last_day_num, std::strin
 
 }
 
-
+#if 0
 void uhandler_queryid::query_history_wsingle(std::string & history_date, std::string &id, Value & root, Document::AllocatorType & allocator)
 {
     proc_data* p_data = proc_data::instance();
@@ -1057,6 +1091,7 @@ void uhandler_queryid::query_history_wsingle(std::string & history_date, std::st
         root.AddMember(k, child, allocator);
     }
 }
+#endif
 
 void uhandler_queryid::query_history_single(std::string & history_date, std::string &id, Value & root, Document::AllocatorType & allocator)
 {
@@ -1102,6 +1137,64 @@ void uhandler_queryid::query_history_single(std::string & history_date, std::str
     }
 }
 
+void uhandler_queryid::query_history_main_funds(uint32_t last_day_num, std::string &id, Value & root, Document::AllocatorType & allocator)
+{
+    proc_data* p_data = proc_data::instance();
+    char t_buf[SIZE_LEN_64];
+
+    hmain_funds_search_item * _hsingle_dict = p_data->_hmain_funds_index->current();
+
+    auto ii = _hsingle_dict->id_main_funds.find(id);
+    if (ii == _hsingle_dict->id_main_funds.end())
+    {
+        return;
+    }
+
+    int len = 0;
+    for (uint32_t i = 0; i< last_day_num && i < ii->second.size(); i++)
+    {
+        len = ii->second.size() - i - 1;
+        if (len < 0)
+            continue;
+
+        std::string key;
+        hmain_funds_search_item::creat_id_index_key(id, len, key);
+
+        auto mm = _hsingle_dict->id_idx_date.find(key);
+        if (mm != _hsingle_dict->id_idx_date.end())
+        {
+            Value k(kStringType);
+            Value child(kObjectType);
+
+            std::string t_str;
+            t_str.append("main_funds");
+            t_str.append("_");
+            t_str.append(mm->second);
+
+            k.SetString(t_str.c_str(), allocator);
+
+            const deque<shared_ptr<main_funds_t> > & dq = ii->second[len];
+
+            {
+                Value key_1(kStringType);
+                Value child_1(kArrayType);
+
+                key_1.SetString("force_diff", allocator);
+
+                for (uint32_t j = 0; j < dq.size(); j++)
+                {
+                    child_1.PushBack(Value().SetInt(dq[j]->force_diff), allocator);
+                }
+
+                child.AddMember(key_1, child_1, allocator);
+            }
+
+            root.AddMember(k, child, allocator);
+        }
+    }
+}
+
+#if 0
 void uhandler_queryid::query_sum_wsingle(std::string & history_date, std::string &id, Value & root, Document::AllocatorType & allocator)
 {
     proc_data* p_data = proc_data::instance();
@@ -1133,6 +1226,7 @@ void uhandler_queryid::query_sum_wsingle(std::string & history_date, std::string
         root.AddMember(k, child, allocator);
     }
 }
+#endif
 
 void uhandler_queryid::query_sum_single(std::string & history_date, std::string &id, Value & root, Document::AllocatorType & allocator)
 {
@@ -1248,7 +1342,7 @@ void uhandler_queryid::query_sum_single_vratio(std::string & history_date, std::
     }
 }
 
-
+#if 0
 void uhandler_queryid::query_history_wquotation(uint32_t last_day_num, std::string &id, Value & root, Document::AllocatorType & allocator)
 {
     proc_data* p_data = proc_data::instance();
@@ -1327,6 +1421,7 @@ void uhandler_queryid::query_history_wquotation(uint32_t last_day_num, std::stri
         }
     }
 }
+#endif
 
 void uhandler_queryid::query_history_quotation(uint32_t last_day_num, std::string &id, Value & root, Document::AllocatorType & allocator)
 {
@@ -1428,6 +1523,8 @@ void uhandler_queryid::query_sum_quotation(uint32_t last_day_num, std::string &i
     }
 }
 
+#if 0
+
 void uhandler_queryid::query_sum_wquotation(uint32_t last_day_num, std::string &id, Value & root, Document::AllocatorType & allocator)
 {
     proc_data* p_data = proc_data::instance();
@@ -1520,6 +1617,7 @@ void uhandler_queryid::query_history_wquotation(std::string & history_date, std:
         root.AddMember(k, v, allocator);
     }
 }
+#endif
 
 void uhandler_queryid::query_history_quotation(std::string & history_date, std::string &id, Value & root, Document::AllocatorType & allocator)
 {
@@ -1613,6 +1711,7 @@ void uhandler_queryid::query_sum_quotation(std::string & history_date, std::stri
     }
 }
 
+#if 0
 void uhandler_queryid::query_sum_wquotation(std::string & history_date, std::string &id, Value & root, Document::AllocatorType & allocator)
 {
     proc_data* p_data = proc_data::instance();
@@ -1647,4 +1746,5 @@ void uhandler_queryid::query_sum_wquotation(std::string & history_date, std::str
         root.AddMember(k, v, allocator);
     }
 }
+#endif
 

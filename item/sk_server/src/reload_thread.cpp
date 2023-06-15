@@ -2,8 +2,8 @@
 #include <malloc.h>
 #include "history_quotation_dict.h"
 #include "history_single_dict.h"
-#include "history_wquotation_dict.h"
-#include "history_wsingle_dict.h"
+//#include "history_wquotation_dict.h"
+//#include "history_wsingle_dict.h"
 #include "holiday_dict.h"
 #include "id_dict.h"
 
@@ -71,9 +71,9 @@ void reload_thread::handle_msg(std::shared_ptr<normal_msg> & p_msg)
             {
                 p_data->_hquoation_dict->update();
                 p_data->_hsingle_dict->update();
-
-                p_data->_hwquoation_dict->update();
-                p_data->_hwsingle_dict->update();
+                p_data->_hmain_funds_dict->update();
+                //p_data->_hwquoation_dict->update();
+                //p_data->_hwsingle_dict->update();
             }
             break;
         case NORMAL_MSG_HOLIDAY_DICT_UPDATE:

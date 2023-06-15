@@ -25,6 +25,8 @@ class uhandler_queryid:public url_handler
 
         static void query_quotation(std::string &id, Value & root, Document::AllocatorType & allocator);
 
+        static void query_main_funds(std::string &id, Value & root, Document::AllocatorType & allocator);
+
         static void query_plate(std::string &id, Value & root, Document::AllocatorType & allocator);
 
         static void query_blocked(std::string &id, Value & root, Document::AllocatorType & allocator);
@@ -40,6 +42,8 @@ class uhandler_queryid:public url_handler
         static void query_technical(std::string &id, Value & root, Document::AllocatorType & allocator);
 
         static void query_history_single(uint32_t last_day_num, std::string &id, Value & root, Document::AllocatorType & allocator);
+
+        static void query_history_main_funds(uint32_t last_day_num, std::string &id, Value & root, Document::AllocatorType & allocator);
 
         static void query_history_single_ratio(uint32_t last_day_num, std::string &id, Value & root, Document::AllocatorType & allocator);
 
@@ -71,22 +75,23 @@ class uhandler_queryid:public url_handler
 
         static void query_cir_holder(std::string &id, Value & root, Document::AllocatorType & allocator);
 
-        static void query_history_wsingle(uint32_t last_day_num, std::string &id, Value & root, Document::AllocatorType & allocator);
 
-        static void query_sum_wsingle(uint32_t last_day_num, std::string &id, Value & root, Document::AllocatorType & allocator);
+        // static void query_history_wsingle(uint32_t last_day_num, std::string &id, Value & root, Document::AllocatorType & allocator);
 
-        static void query_history_wquotation(uint32_t last_day_num, std::string &id, Value & root, Document::AllocatorType & allocator);
+        // static void query_sum_wsingle(uint32_t last_day_num, std::string &id, Value & root, Document::AllocatorType & allocator);
 
-        static void query_sum_wquotation(uint32_t last_day_num, std::string &id, Value & root, Document::AllocatorType & allocator);
+        // static void query_history_wquotation(uint32_t last_day_num, std::string &id, Value & root, Document::AllocatorType & allocator);
+
+        // static void query_sum_wquotation(uint32_t last_day_num, std::string &id, Value & root, Document::AllocatorType & allocator);
 
 
-        static void query_history_wsingle(std::string & history_date, std::string &id, Value & root, Document::AllocatorType & allocator);
+        // static void query_history_wsingle(std::string & history_date, std::string &id, Value & root, Document::AllocatorType & allocator);
 
-        static void query_sum_wsingle(std::string & history_date, std::string &id, Value & root, Document::AllocatorType & allocator);
+        // static void query_sum_wsingle(std::string & history_date, std::string &id, Value & root, Document::AllocatorType & allocator);
 
-        static void query_history_wquotation(std::string & history_date, std::string &id, Value & root, Document::AllocatorType & allocator);
+        // static void query_history_wquotation(std::string & history_date, std::string &id, Value & root, Document::AllocatorType & allocator);
 
-        static void query_sum_wquotation(std::string & history_date, std::string &id, Value & root, Document::AllocatorType & allocator);
+        // static void query_sum_wquotation(std::string & history_date, std::string &id, Value & root, Document::AllocatorType & allocator);
 
 };
 

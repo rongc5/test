@@ -4,7 +4,7 @@
 #include "sk_def.h"
 #include "common_util.h"
 
-class rquotation_search_index:public ToBufferMgr<rquotation_search_item> 
+class rquotation_search_index:public ToBufferMgr<rquotation_search_item>
 {
     public:
         virtual ~rquotation_search_index(){}

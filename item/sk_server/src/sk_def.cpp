@@ -470,6 +470,57 @@ technical_t::technical_t()
     high_end_5 = 0;
 }
 
+void rmain_funds_search_item::clear()
+{
+    id_main_funds.clear();
+}
+
+void hmain_funds_search_item::clear()
+{
+    id_main_funds.clear();
+
+    id_idx_date.clear();
+    id_date_idx.clear();
+}
+
+int hmain_funds_search_item::get_index(const string & id, const string & date)
+{
+    string key;
+    creat_id_date_key(id, date, key);
+
+    auto mm = id_date_idx.find(key);
+    if (mm == id_date_idx.end())
+        return -1;
+    return mm->second;
+}
+
+string  hmain_funds_search_item::get_date(const string & id, int index)
+{
+    string key;
+    creat_id_index_key(id, index, key);
+
+    auto mm = id_idx_date.find(key);
+    if (mm == id_idx_date.end())
+        return "";
+    return mm->second;
+}
+
+void hmain_funds_search_item::creat_id_index_key(const string & id, int index, string & key)
+{
+    key.clear();
+    char t_buf[SIZE_LEN_128] = {'\0'};
+    snprintf(t_buf, sizeof(t_buf), "%s_%d", id.c_str(), index);
+    key.append(t_buf);
+}
+
+void hmain_funds_search_item::creat_id_date_key(const string & id, const string & date, string & key)
+{
+    key.clear();
+    char t_buf[SIZE_LEN_128] = {'\0'};
+    snprintf(t_buf, sizeof(t_buf), "%s_%s", id.c_str(), date.c_str());
+    key.append(t_buf);
+}
+
 void rquotation_search_item::clear()
 {
     id_quotation.clear();

@@ -8,8 +8,8 @@
 #include "history_single_dict.h"
 #include "history_quotation_dict.h"
 #include "lruSsr_search_index.h"
-#include "history_wsingle_dict.h"
-#include "history_wquotation_dict.h"
+//#include "history_wsingle_dict.h"
+//#include "history_wquotation_dict.h"
 #include "worker_thread.h"
 #include "history_main_funds_dict.h"
 
@@ -76,7 +76,7 @@ void skhttp_req_thread::handle_msg(shared_ptr<normal_msg> & p_msg)
 
                     LOG_DEBUG("QUOTATION_IDLE_2_CURRENT");
                     p_data->_hquoation_dict->update_search_index();
-                    p_data->_hwquoation_dict->update_search_index();
+                    //p_data->_hwquoation_dict->update_search_index();
 
                     add_quotation_timer();
                 }
@@ -98,7 +98,8 @@ void skhttp_req_thread::handle_msg(shared_ptr<normal_msg> & p_msg)
                     _req_single_circle_times++;
                     LOG_DEBUG("SINGLE_IDLE_2_CURRENT");
                     p_data->_hsingle_dict->update_search_index();
-                    p_data->_hwsingle_dict->update_search_index();
+                    //p_data->_hwsingle_dict->update_search_index();
+
 
                     add_single_timer();
                 }
@@ -133,9 +134,10 @@ void skhttp_req_thread::handle_msg(shared_ptr<normal_msg> & p_msg)
 
                 p_data->_hquoation_dict->update();
                 p_data->_hsingle_dict->update();
+                p_data->_hmain_funds_dict->update();
 
-                p_data->_hwquoation_dict->update();
-                p_data->_hwsingle_dict->update();
+                //p_data->_hwquoation_dict->update();
+                //p_data->_hwsingle_dict->update();
 
             }
             break;
@@ -158,7 +160,7 @@ void skhttp_req_thread::handle_msg(shared_ptr<normal_msg> & p_msg)
                 {    
                     LOG_DEBUG("NORMAL_MSG_RESPONSE_SINGLE:%s, size:%d", p->_id.c_str(),  p_data->_id_dict->current()->size());
                     p_data->_hsingle_dict->update_real_single(*p_data->get_trade_date(), p->_id, p->_st);
-                    p_data->_hwsingle_dict->update_real_wsingle(*p_data->get_trade_date(), p->_id, p->_st);
+                    //p_data->_hwsingle_dict->update_real_wsingle(*p_data->get_trade_date(), p->_id, p->_st);
                 }    
             }    
             break;
@@ -175,7 +177,7 @@ void skhttp_req_thread::handle_msg(shared_ptr<normal_msg> & p_msg)
                     {
                         LOG_DEBUG("NORMAL_MSG_RESPONSE_QUOTATION:%s", p->_id.c_str(), p_data->_id_dict->current()->size());
                         p_data->_hquoation_dict->update_real_quotation(*p_data->get_trade_date(), p->_id, p->_qt);
-                        p_data->_hwquoation_dict->update_real_wquotation(*p_data->get_trade_date(), p->_id, p->_qt);
+                        //p_data->_hwquoation_dict->update_real_wquotation(*p_data->get_trade_date(), p->_id, p->_qt);
                     }
                 }
             }
@@ -1020,7 +1022,7 @@ void skhttp_req_thread::handle_timeout(shared_ptr<timer_msg> & t_msg)
                 if (need_dump_real_quotation())
                 {
                     p_data->_hquoation_dict->dump();
-                    p_data->_hwquoation_dict->dump();
+                    //p_data->_hwquoation_dict->dump();
 
                     flag = true;
                 }
@@ -1033,10 +1035,10 @@ void skhttp_req_thread::handle_timeout(shared_ptr<timer_msg> & t_msg)
                     update_lrussr_search_index();
                 }
 
-                if ((flag && now > dump_real_time ) || need_update_wquotation_dict())
-                {
-                    p_data->_hwquoation_dict->update();
-                }
+                // if ((flag && now > dump_real_time ) || need_update_wquotation_dict())
+                // {
+                //     p_data->_hwquoation_dict->update();
+                // }
 
                 if (need_update_holiday_dict())
                 {
@@ -1065,7 +1067,7 @@ void skhttp_req_thread::handle_timeout(shared_ptr<timer_msg> & t_msg)
                 if (need_dump_real_single())
                 {
                     p_data->_hsingle_dict->dump();
-                    p_data->_hwsingle_dict->dump();
+                    //p_data->_hwsingle_dict->dump();
 
                     flag = true;
                 }
@@ -1075,10 +1077,10 @@ void skhttp_req_thread::handle_timeout(shared_ptr<timer_msg> & t_msg)
                     p_data->_hsingle_dict->update();
                 }
 
-                if ((flag && now > dump_real_time ) || need_update_wsingle_dict())
-                {
-                    p_data->_hwsingle_dict->update();
-                }
+                // if ((flag && now > dump_real_time ) || need_update_wsingle_dict())
+                // {
+                //     p_data->_hwsingle_dict->update();
+                // }
             }
             break;
         case TIMER_TYPE_REQ_MAIN_FUNDS:
@@ -1115,7 +1117,7 @@ void skhttp_req_thread::handle_timeout(shared_ptr<timer_msg> & t_msg)
             {
                 LOG_DEBUG("QUOTATION_IDLE_2_CURRENT");
                 p_data->_hquoation_dict->update_search_index();
-                p_data->_hwquoation_dict->update_search_index();
+                //p_data->_hwquoation_dict->update_search_index();
 
                 add_quotation_timer();
             }
@@ -1123,9 +1125,9 @@ void skhttp_req_thread::handle_timeout(shared_ptr<timer_msg> & t_msg)
         case TIMER_TYPE_SINGLE_IDLE_2_CURRENT:
             {
                 //先更新再切换
-                //LOGDEBUG << "SINGLE_IDLE_2_CURRENT" << "stream test";
+                LOGDEBUG << "SINGLE_IDLE_2_CURRENT" << "stream test";
                 p_data->_hsingle_dict->update_search_index();
-                p_data->_hwsingle_dict->update_search_index();
+                //p_data->_hwsingle_dict->update_search_index();
 
                 add_single_timer();
             }
@@ -1134,7 +1136,7 @@ void skhttp_req_thread::handle_timeout(shared_ptr<timer_msg> & t_msg)
             {
                 //先更新再切换
                 //LOG_DEBUG("main_funds_IDLE_2_CURRENT");
-                //LOGDEBUG << "main_funds_IDLE_2_CURRENT" << "stream test";
+                LOGDEBUG << "main_funds_IDLE_2_CURRENT" << "stream test";
                 p_data->_hmain_funds_dict->update_search_index();
                 //p_data->_hwmain_funds_dict->update_search_index();
 
