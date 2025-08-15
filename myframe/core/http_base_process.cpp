@@ -2,7 +2,7 @@
 #include "base_connect.h"
 #include "common_exception.h"
 #include "http_base_data_process.h"
-#include "log_helper.h"
+// Log functionality removed - use external rxlogger
 
 http_base_process::http_base_process(std::shared_ptr<base_net_obj> p):base_data_process(p)
 {
@@ -58,7 +58,7 @@ size_t http_base_process::process_recv_buf(const char *buf, size_t len)
         staus_change = true;				
     }
 
-    //LOG_DEBUG("%s\n", buf);
+    ////LOG_DEBUG("%s\n", buf);
 
     if (_http_status == RECV_BODY) //避免数据不被拷贝多次
     {	

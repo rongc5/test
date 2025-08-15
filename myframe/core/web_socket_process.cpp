@@ -1,7 +1,7 @@
 #include "web_socket_data_process.h"
 #include "web_socket_process.h"
 #include "base_net_obj.h"
-#include "log_helper.h"
+// Log functionality removed - use external rxlogger
 #include "common_exception.h"
 #include "mybase64.h"
 #include "common_util.h"
@@ -69,7 +69,7 @@ void web_socket_process::handle_timeout(std::shared_ptr<timer_msg> & t_msg)
         }
         else
         {
-            LOG_DEBUG("web socket handshake timer arrive, status ok");
+            //LOG_DEBUG("web socket handshake timer arrive, status ok");
         }
 
         return ;
@@ -127,7 +127,7 @@ void web_socket_process::send_ping(const char op_code, const std::string &ping_d
 {
     if (ping_data.length() < 125) //大于125字节的ping包不让发出去了
     {
-        LOG_DEBUG("send  ping to server");
+        //LOG_DEBUG("send  ping to server");
         std::string *p_str = new std::string;
         *p_str = web_socket_frame_header::gen_ping_header(op_code, ping_data);
         _p_tmp_str.push_back(p_str);
@@ -202,7 +202,7 @@ std::string *web_socket_process::SEND_WB_HANDSHAKE_OK_PROCESS()
     {
         p_str = _p_tmp_str.front();
         _p_tmp_str.pop_front();				
-        LOG_DEBUG("real send ping to peer");
+        //LOG_DEBUG("real send ping to peer");
     }
     else
     {
@@ -245,7 +245,7 @@ std::string *web_socket_process::SEND_WB_HANDSHAKE_OK_PROCESS()
 
 size_t web_socket_process::RECV_WB_HANDSHAKE_OK_PROCESS(const char *buf, const size_t len)
 {
-    LOG_DEBUG("RECV_WB_HANDSHAKE_OK_PROCESS %d", len);
+    //LOG_DEBUG("RECV_WB_HANDSHAKE_OK_PROCESS %d", len);
     char *left_buf = (char*)buf;
     uint32_t left_len = len;
     while(left_len > 0)

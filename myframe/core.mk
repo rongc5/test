@@ -1,22 +1,30 @@
 HOME_DIR=./
 SRC_DIR=${HOME_DIR}core
 
+# SSL支持配置 (通过环境变量或命令行设置)
+ENABLE_SSL ?= 0
+
 INCLUDE = -I./include/
 LIB = -L/usr/lib64/libpthread.a -L./lib/ \
 
-CPPFLAGS = -gdwarf-2 -msse3 -Wall $(INCLUDE) -DDEBUG=1 -O0 -std=c++11
+ifeq ($(ENABLE_SSL), 1)
+    CPPFLAGS = -gdwarf-2 -Wall $(INCLUDE) -DDEBUG=1 -O0 -std=c++11 -DENABLE_SSL
+    LIB += -lssl -lcrypto
+else
+    CPPFLAGS = -gdwarf-2 -Wall $(INCLUDE) -DDEBUG=1 -O0 -std=c++11
+endif
+
 CC  = g++ $(CPPFLAGS)
 
-OBJ	= ${SRC_DIR}/common_obj_container.o                \
+# 基础对象文件
+OBJ_BASE = ${SRC_DIR}/common_obj_container.o                \
     ${SRC_DIR}/base_thread.o                        \
     ${SRC_DIR}/base_net_thread.o                        \
     ${SRC_DIR}/base_data_process.o                        \
     ${SRC_DIR}/channel_data_process.o                        \
     ${SRC_DIR}/common_def.o                        \
     ${SRC_DIR}/common_epoll.o                        \
-    ${SRC_DIR}/log_thread.o                        \
     ${SRC_DIR}/base_net_obj.o                        \
-    ${SRC_DIR}/channel_data_process.o                        \
     ${SRC_DIR}/common_util.o                        \
     ${SRC_DIR}/base_timer.o                        \
     ${SRC_DIR}/web_socket_data_process.o                        \
@@ -30,8 +38,17 @@ OBJ	= ${SRC_DIR}/common_obj_container.o                \
     ${SRC_DIR}/http_req_process.o                        \
     ${SRC_DIR}/mybase64.o                        \
     ${SRC_DIR}/common_domain.o                        \
-    ${SRC_DIR}/common_cfgparser.o                        \
-    ${SRC_DIR}/log_base.o                        \
+    ${SRC_DIR}/common_cfgparser.o
+
+# SSL对象文件 (仅在启用SSL时编译)
+ifeq ($(ENABLE_SSL), 1)
+    OBJ_SSL = ${SRC_DIR}/ssl_context.o
+else
+    OBJ_SSL =
+endif
+
+# 所有对象文件
+OBJ = $(OBJ_BASE) $(OBJ_SSL)
 
 OBJ_INCLUDE=
 

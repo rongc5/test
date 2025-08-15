@@ -4,7 +4,7 @@
 #include "common_def.h"
 #include "base_net_obj.h"
 #include "common_obj_container.h"
-#include "log_helper.h"
+// Log functionality removed - use external rxlogger
 #include "common_exception.h"
 #include "common_epoll.h"
 #include "base_connect.h"
@@ -56,7 +56,7 @@ class out_connect:public base_connect<PROCESS>
             {
                 if (errno != EINPROGRESS && errno != EALREADY)
                 {
-                    LOG_WARNING("connect fail:%s", strError(errno).c_str());
+                    //LOG_WARNING("connect fail:%s", strError(errno).c_str());
                     return;
                 }
             }
@@ -94,7 +94,7 @@ class out_connect:public base_connect<PROCESS>
                 }
                 else if ((event & EPOLLOUT) == EPOLLOUT) //
                 {
-                    LOG_DEBUG("connect ok %s:%d", _ip.c_str(), _port);
+                    //LOG_DEBUG("connect ok %s:%d", _ip.c_str(), _port);
                     _status = CONNECT_OK;
                     connect_ok_process();
                 }
@@ -123,7 +123,7 @@ class out_connect:public base_connect<PROCESS>
 
         virtual void connect_ok_process()
         {
-            LOG_DEBUG("CONNECT OK");
+            //LOG_DEBUG("CONNECT OK");
             return;
         }
 

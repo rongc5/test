@@ -1,7 +1,7 @@
 #include "web_socket_data_process.h"
 #include "web_socket_msg.h"
 #include "web_socket_process.h"
-#include "log_helper.h"
+// Log functionality removed - use external rxlogger
 #include "base_net_obj.h"
 
 
@@ -9,12 +9,12 @@
 web_socket_data_process::web_socket_data_process(web_socket_process *p):base_data_process(p->get_base_net())
 {
     _process = p;
-    LOG_DEBUG("%p", this);
+    //LOG_DEBUG("%p", this);
 }
 
 web_socket_data_process::~web_socket_data_process()
 {
-    LOG_DEBUG("%p", this);
+    //LOG_DEBUG("%p", this);
     for(std::list<ws_msg_type>::iterator itr = _send_list.begin(); itr != _send_list.end(); ++itr)
     {
         delete itr->_p_msg;
@@ -23,12 +23,12 @@ web_socket_data_process::~web_socket_data_process()
 
 void web_socket_data_process::on_handshake_ok()		
 {
-    LOG_DEBUG("%p", this);
+    //LOG_DEBUG("%p", this);
 }
 
 void web_socket_data_process::on_ping(const char op_code, const std::string &ping_data)
 {			
-    LOG_DEBUG("%p", this);
+    //LOG_DEBUG("%p", this);
 }
 
 uint64_t web_socket_data_process::get_timeout_len()

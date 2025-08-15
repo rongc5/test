@@ -1,0 +1,80 @@
+# Compiled Object files
+*.o
+*.obj
+
+# Compiled Static libraries
+*.a
+*.lib
+
+# Compiled Dynamic libraries
+*.so
+*.dll
+*.dylib
+
+# Executables
+*.exe
+*.out
+*.app
+
+# Debug files
+*.dSYM/
+*.su
+
+# Build directories
+build/
+bin/
+lib/
+.libs/
+
+# IDE files
+.vscode/
+.vs/
+*.vcxproj
+*.vcxproj.filters
+*.vcxproj.user
+*.sln
+.idea/
+
+# Mac OS
+.DS_Store
+
+# Backup files
+*~
+*.bak
+*.backup
+*_backup_*/
+
+# Log files
+*.log
+
+# SSL certificates (for testing)
+*.crt
+*.key
+*.pem
+
+# Temporary files
+*.tmp
+*.temp
+
+# Core dumps
+core
+core.*
+
+# CMake
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile
+*.cmake
+
+# Autotools
+config.log
+config.status
+configure
+autom4te.cache/
+
+# Package files
+*.tar.gz
+*.zip
+*.deb
+*.rpm

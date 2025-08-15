@@ -4,7 +4,7 @@
 #include "http_base_process.h"
 #include "common_exception.h"
 #include "common_def.h"
-#include "log_helper.h"
+// Log functionality removed - use external rxlogger
 #include "http_base_data_process.h"
 #include "common_util.h"
 
@@ -57,7 +57,7 @@ void http_req_process::parse_first_line(const std::string & line)
 
 void http_req_process::parse_header(std::string & recv_head)
 {
-    LOG_DEBUG("recv_head:%s", recv_head.c_str());
+    //LOG_DEBUG("recv_head:%s", recv_head.c_str());
     std::string &head_str = recv_head;
     std::vector<std::string> strList;
     SplitString(head_str.c_str(), CRLF, &strList, SPLIT_MODE_ALL);
@@ -70,7 +70,7 @@ void http_req_process::parse_header(std::string & recv_head)
             if (2 == tmp_vec.size()) {
                 //THROW_COMMON_EXCEPT("http headers parms error");
                 _res_head_para._headers.insert(make_pair(tmp_vec[0], tmp_vec[1]));
-                LOG_DEBUG("%s: %s", tmp_vec[0].c_str(), tmp_vec[1].c_str());
+                //LOG_DEBUG("%s: %s", tmp_vec[0].c_str(), tmp_vec[1].c_str());
             }
         }
     }

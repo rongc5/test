@@ -4,7 +4,7 @@
 #include "http_res_process.h"
 #include "common_exception.h"
 #include "common_def.h"
-#include "log_helper.h"
+// Log functionality removed - use external rxlogger
 #include "http_base_process.h"
 #include "http_base_data_process.h"
 #include "common_util.h"
@@ -97,7 +97,7 @@ void http_res_process::parse_header(std::string & recv_head)
             SplitString(strList[i].c_str(), ":", &tmp_vec, SPLIT_MODE_ONE);
             if (2 == tmp_vec.size()) {
                 _req_head_para._headers.insert(make_pair(tmp_vec[0], tmp_vec[1]));
-                LOG_DEBUG("%s: %s", tmp_vec[0].c_str(), tmp_vec[1].c_str());
+                //LOG_DEBUG("%s: %s", tmp_vec[0].c_str(), tmp_vec[1].c_str());
             }
         }
     }

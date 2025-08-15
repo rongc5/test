@@ -1,5 +1,5 @@
 #include "web_socket_msg.h"
-#include "log_helper.h"
+// Log functionality removed - use external rxlogger
 #include "common_exception.h"
 #include "common_util.h"
 

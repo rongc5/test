@@ -2,7 +2,7 @@
 #define __LISTEN_CONNECT_H__
 
 #include "common_def.h"
-#include "log_helper.h"
+// Log functionality removed - use external rxlogger
 #include "base_net_obj.h"
 
 
@@ -74,12 +74,12 @@ class listen_connect:public base_net_obj
                     tmp_sock = accept(_fd, (sockaddr*)&addr, &len);
                     if (tmp_sock != -1)
                     {				
-                        LOG_DEBUG("recv fd[%d]\n", tmp_sock);
+                        //LOG_DEBUG("recv fd[%d]\n", tmp_sock);
                         _process->process(tmp_sock);
                     }
                     else
                     {
-                        LOG_WARNING("accept fail:%s", strError(errno).c_str());
+                        //LOG_WARNING("accept fail:%s", strError(errno).c_str());
                         break;
                     }
                 }

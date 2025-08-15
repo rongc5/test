@@ -2,7 +2,7 @@
 #define  __COMMON_EXCEPTION_H
 
 #include "common_def.h"
-#include "log_helper.h"
+// Log functionality removed - use external rxlogger
 
 class CMyCommonException : public std::exception 
 {
@@ -11,7 +11,7 @@ class CMyCommonException : public std::exception
         CMyCommonException(const std::string &err_str)
         {
             _errstr = err_str;
-            LOG_WARNING("THROW_COMMON_EXCEPT:%s", err_str.c_str());
+            //LOG_WARNING("THROW_COMMON_EXCEPT:%s", err_str.c_str());
         }
         
         virtual ~CMyCommonException() throw(){};    
@@ -39,7 +39,7 @@ do { \
 //do { \
     //std::stringstream ss; \
     //ss << errorstr; \
-    //LOG_WARNING("THROW_COMMON_EXCEPT:%s", ss.str().c_str());\
+    ////LOG_WARNING("THROW_COMMON_EXCEPT:%s", ss.str().c_str());\
     //throw CMyCommonException(ss.str());\
 //} while (0)
 

@@ -3,7 +3,7 @@
 
 #include "base_def.h"
 #include "common_def.h"
-#include "log_helper.h"
+// Log functionality removed - use external rxlogger
 
 #include "ul_sign.h"
 
@@ -135,7 +135,7 @@ std::string strError(int errnum);
 #define ASSERT_WARNING(valid, fmt, arg...) \
     do{ \
         if(!(valid)){ \
-            LOG_WARNING(fmt, ##arg); \
+            //LOG_WARNING(fmt, ##arg); \
             return -1; \
         } \
     }while(0)
@@ -143,7 +143,7 @@ std::string strError(int errnum);
 #define ASSERT_DEBUG(valid, fmt, arg...) \
     do{ \
         if(!(valid)){ \
-            LOG_DEBUG(fmt, ##arg); \
+            //LOG_DEBUG(fmt, ##arg); \
             return -1; \
         } \
     }while(0)

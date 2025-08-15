@@ -3,7 +3,7 @@
 #include "common_obj_container.h"
 #include "base_net_thread.h"
 #include "base_timer.h"
-#include "log_helper.h"
+// Log functionality removed - use external rxlogger
 #include "common_util.h"
 #include "common_domain.h"
 
@@ -63,7 +63,7 @@ const ObjId & common_obj_container::gen_id_str()
 
 bool common_obj_container::push_real_net(std::shared_ptr<base_net_obj> & p_obj)
 {
-    LOG_DEBUG("base_net_obj:%d, .use_count:%d, _id:%d _thread_index:%d", p_obj.get(), p_obj.use_count(), p_obj->get_id()._id, p_obj->get_id()._thread_index);
+    //LOG_DEBUG("base_net_obj:%d, .use_count:%d, _id:%d _thread_index:%d", p_obj.get(), p_obj.use_count(), p_obj->get_id()._id, p_obj->get_id()._thread_index);
 
     auto it = _obj_net_map.find(p_obj->get_id()._id);
     if (it == _obj_net_map.end())
@@ -72,16 +72,16 @@ bool common_obj_container::push_real_net(std::shared_ptr<base_net_obj> & p_obj)
     }
     //_obj_net_map[p_obj->get_id()._id] = p_obj;
 
-    LOG_DEBUG("base_net_obj:%d, .use_count:%d, _id:%d _thread_index:%d", p_obj.get(), p_obj.use_count(), p_obj->get_id()._id, p_obj->get_id()._thread_index);
+    //LOG_DEBUG("base_net_obj:%d, .use_count:%d, _id:%d _thread_index:%d", p_obj.get(), p_obj.use_count(), p_obj->get_id()._id, p_obj->get_id()._thread_index);
 
     return true;
 }
 
 bool common_obj_container::remove_real_net(std::shared_ptr<base_net_obj> & p_obj)
 {
-    LOG_DEBUG("base_net_obj:%d, .use_count:%d, _id:%d _thread_index:%d", p_obj.get(), p_obj.use_count(), p_obj->get_id()._id, p_obj->get_id()._thread_index);
+    //LOG_DEBUG("base_net_obj:%d, .use_count:%d, _id:%d _thread_index:%d", p_obj.get(), p_obj.use_count(), p_obj->get_id()._id, p_obj->get_id()._thread_index);
     _obj_net_map.erase(p_obj->get_id()._id);
-    LOG_DEBUG("base_net_obj:%d, .use_count:%d, _id:%d _thread_index:%d", p_obj.get(), p_obj.use_count(), p_obj->get_id()._id, p_obj->get_id()._thread_index);
+    //LOG_DEBUG("base_net_obj:%d, .use_count:%d, _id:%d _thread_index:%d", p_obj.get(), p_obj.use_count(), p_obj->get_id()._id, p_obj->get_id()._thread_index);
 
     return true;
 }
@@ -219,7 +219,7 @@ void common_obj_container::obj_process()
 
     for (std::vector<std::shared_ptr<base_net_obj> >::iterator tmp_itr = real_net_vec.begin(); 
             tmp_itr != real_net_vec.end(); tmp_itr++) {
-        LOG_DEBUG("remove_real_net: _id:%d, _thread_index:%d", (*tmp_itr)->get_id()._id, (*tmp_itr)->get_id()._thread_index);            
+        //LOG_DEBUG("remove_real_net: _id:%d, _thread_index:%d", (*tmp_itr)->get_id()._id, (*tmp_itr)->get_id()._thread_index);            
         remove_real_net(*tmp_itr);
     }
 
@@ -235,14 +235,14 @@ void common_obj_container::obj_process()
     _p_epoll->epoll_wait(exp_list, remove_list, tmp_num);
     for (std::map<ObjId, std::shared_ptr<base_net_obj> >::iterator itr = exp_list.begin(); itr != exp_list.end(); ++itr)
     {         	
-        LOG_DEBUG("step2: _id:%d, _thread_index:%d", itr->second->get_id()._id, itr->second->get_id()._thread_index);            
+        //LOG_DEBUG("step2: _id:%d, _thread_index:%d", itr->second->get_id()._id, itr->second->get_id()._thread_index);            
         itr->second->destroy();
         erase(itr->first._id);
     }
 
     for (std::map<ObjId, std::shared_ptr<base_net_obj> >::iterator itr = remove_list.begin(); itr != remove_list.end(); ++itr)
     {
-        LOG_DEBUG("remove_real_net: _id:%d, _thread_index:%d", itr->second->get_id()._id, itr->second->get_id()._thread_index);            
+        //LOG_DEBUG("remove_real_net: _id:%d, _thread_index:%d", itr->second->get_id()._id, itr->second->get_id()._thread_index);            
         itr->second->set_real_net(false);
         remove_real_net(itr->second);
     }

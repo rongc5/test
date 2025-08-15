@@ -7,7 +7,7 @@ void test_net_thread::handle_new_msg(pass_msg * p_msg)
     recv_msg * r_msg = dynamic_cast<recv_msg *> (p_msg->p_msg);
 
     //char buf[r_msg->_len + 1];
-    LOG_DEBUG("recv thread: %d %s", p_msg->_src_id._thread_index, r_msg->_ptr);
+    //LOG_DEBUG("recv thread: %d %s", p_msg->_src_id._thread_index, r_msg->_ptr);
 
     pass_msg * msg = new pass_msg();
 

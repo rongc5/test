@@ -1,6 +1,6 @@
 #include "web_socket_res_process.h"
 #include "base_net_obj.h"
-#include "log_helper.h"
+// Log functionality removed - use external rxlogger
 #include "common_exception.h"
 #include "common_util.h"
 #include "base_timer.h"

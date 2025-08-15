@@ -1,5 +1,5 @@
 #include "common_def.h"
-#include "log_helper.h"
+// Log functionality removed - use external rxlogger
 #include "common_util.h"
 #include "common_exception.h"
 
@@ -27,7 +27,7 @@ std::string http_response_code::get_response_str(int status_code)
     std::map<int, std::string>::iterator tmp_itr = _response_list.find(status_code);
     if (tmp_itr == _response_list.end())
     {
-        LOG_DEBUG("http response code not found:%d", status_code);
+        //LOG_DEBUG("http response code not found:%d", status_code);
         return str;
     }
 

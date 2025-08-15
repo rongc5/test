@@ -2,7 +2,7 @@
 #include "base_net_thread.h"
 #include "base_net_obj.h"
 #include "base_connect.h"
-#include "log_helper.h"
+// Log functionality removed - use external rxlogger
 #include "base_net_obj.h"
 #include "common_util.h"
 
@@ -20,7 +20,7 @@ size_t channel_data_process::process_recv_buf(const char *buf, size_t len)
         std::lock_guard<std::mutex> lck (_mutex);
         que.swap(_queue);
     }
-    LOG_DEBUG("buf:%s, len:%d, que.len:%d", buf, len, que.size());
+    //LOG_DEBUG("buf:%s, len:%d, que.len:%d", buf, len, que.size());
 
     size_t i = 0;
     auto sp = _p_connect.lock();
@@ -85,7 +85,7 @@ void channel_data_process::handle_timeout(std::shared_ptr<timer_msg> & t_msg)
         len = _queue.size();
     }
 
-    LOG_DEBUG("handle_timeout: timer_id:%u timer_type:%u, len:%d", t_msg->_timer_id, t_msg->_timer_type, len);
+    //LOG_DEBUG("handle_timeout: timer_id:%u timer_type:%u, len:%d", t_msg->_timer_id, t_msg->_timer_type, len);
 
     uint64_t now =  GetMilliSecond();
    if (t_msg->_timer_type == NONE_CHANNEL_EVENT_TIMER_TYPE)

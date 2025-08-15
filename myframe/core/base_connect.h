@@ -4,7 +4,7 @@
 #include "common_def.h"
 #include "base_net_obj.h"
 #include "common_obj_container.h"
-#include "log_helper.h"
+// Log functionality removed - use external rxlogger
 #include "common_exception.h"
 #include "common_epoll.h"
 
@@ -64,12 +64,12 @@ class base_connect:public base_net_obj
             int32_t ret = 0;
 
             if ((get_event() & EPOLLIN) == EPOLLIN) {
-                LOG_DEBUG("real_net_process real_recv");
+                //LOG_DEBUG("real_net_process real_recv");
                 real_recv(true);
             }
 
             if ((get_event() & EPOLLOUT) == EPOLLOUT) {
-                LOG_DEBUG("real_net_process real_send");
+                //LOG_DEBUG("real_net_process real_send");
                 real_send();
             }
 
@@ -146,7 +146,7 @@ class base_connect:public base_net_obj
                 ret = 0;
             }
 
-            //LOG_DEBUG("recv:%s", buf);
+            ////LOG_DEBUG("recv:%s", buf);
 
             return ret;
         }
@@ -158,7 +158,7 @@ class base_connect:public base_net_obj
                 THROW_COMMON_EXCEPT("close the socket " << _fd);
             }
 
-            //LOG_DEBUG("send:%s", buf);
+            ////LOG_DEBUG("send:%s", buf);
             ssize_t ret =  send(_fd, buf, len, MSG_DONTWAIT | MSG_NOSIGNAL);
             if (ret < 0)
             {
@@ -166,7 +166,7 @@ class base_connect:public base_net_obj
                 {
                     THROW_COMMON_EXCEPT("send data error " << strError(errno).c_str());
                 }
-                LOG_WARNING("send error");
+                //LOG_WARNING("send error");
                 ret = 0;
             }
             return ret;
@@ -192,7 +192,7 @@ class base_connect:public base_net_obj
 
             if (_recv_buf_len > 0 || flag)
             {
-                LOG_DEBUG("process_recv_buf _recv_buf_len[%d] fd[%d], flag[%d]", _recv_buf_len, _fd, flag);
+                //LOG_DEBUG("process_recv_buf _recv_buf_len[%d] fd[%d], flag[%d]", _recv_buf_len, _fd, flag);
                 p_ret = _process->process_recv_buf(_recv_buf.data(), _recv_buf_len);
                 if (p_ret && p_ret <= _recv_buf_len)
                 {
@@ -204,7 +204,7 @@ class base_connect:public base_net_obj
                 }
             }		
 
-            LOG_DEBUG("process_recv_buf _recv_buf[%d] ip[%s] flag[%d]", _recv_buf.length(), _peer_net.ip.c_str(), flag);
+            //LOG_DEBUG("process_recv_buf _recv_buf[%d] ip[%s] flag[%d]", _recv_buf.length(), _peer_net.ip.c_str(), flag);
         }
 
         void real_send()
@@ -239,7 +239,7 @@ class base_connect:public base_net_obj
                     else if (ret > 0)
                     {
                         _p_send_buf->erase(0, ret);
-                        LOG_WARNING("_p_send_buf erase %d", ret);
+                        //LOG_WARNING("_p_send_buf erase %d", ret);
                     }
                 }
 

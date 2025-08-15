@@ -2,7 +2,7 @@
 #include "web_socket_msg.h"
 #include "web_socket_req_process.h"
 #include "common_util.h"
-#include "log_helper.h"
+// Log functionality removed - use external rxlogger
 #include "common_exception.h"
 #include "web_socket_data_process.h"
 #include "base_net_obj.h"
@@ -23,7 +23,7 @@ ws_req_head_para &web_socket_req_process::get_req_para()
 
 void web_socket_req_process::ping_process(const int8_t op_code)//客户端不用处理服务器的ping
 {
-    LOG_DEBUG("recv server ping res");
+    //LOG_DEBUG("recv server ping res");
 }
 
 std::string* web_socket_req_process::SEND_WB_HEAD_FINISH_PROCESS()
